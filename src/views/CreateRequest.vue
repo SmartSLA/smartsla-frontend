@@ -5,64 +5,41 @@
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
             <v-toolbar color="primary">
-              <v-toolbar-title class="white--text">{{$t('Create new request')}}</v-toolbar-title>
+              <v-toolbar-title class="white--text">{{ $t("Create new request") }}</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-form>
-                <v-select
-					v-model="select"
-					:severity="severity"
-					label="Severity"
-				></v-select>
-                <v-select
-					v-model="select"
-					:logiciel="logiciel"
-					label="Logiciel"
-				></v-select>
+                <v-select v-model="select" :severity="severity" label="Severity"></v-select>
+                <v-select v-model="select" :logiciel="logiciel" label="Logiciel"></v-select>
                 <v-text-field
-                    prepend-icon=""
-                    name="Request name"
-                    :label="$t('Request name')"
-                    type="text"
+                  prepend-icon=""
+                  name="Request name"
+                  :label="$t('Request name')"
+                  type="text"
                 ></v-text-field>
-                <v-textarea
-					name="request-description"
-					label="Request Description"
-				></v-textarea>
-				<file-upload
-					class="file"
-					:url='url'
-					:thumb-url='thumbUrl'
-					:headers="headers"
-					@change="onFileChange"
-					btn-label="Select a file"
-					btn-uploading-label="Uploading file"
-				></file-upload>
+                <v-textarea name="request-description" label="Request Description"></v-textarea>
+                <file-upload
+                  class="file"
+                  :url="url"
+                  :thumb-url="thumbUrl"
+                  :headers="headers"
+                  @change="onFileChange"
+                  btn-label="Select a file"
+                  btn-uploading-label="Uploading file"
+                ></file-upload>
                 <v-text-field
-                    prepend-icon=""
-                    name="Related request"
-                    :label="$t('Related request')"
-                    type="text"
+                  prepend-icon=""
+                  name="Related request"
+                  :label="$t('Related request')"
+                  type="text"
                 ></v-text-field>
-                <v-text-field
-                    prepend-icon=""
-                    name="Version"
-                    :label="$t('Version')"
-                    type="text"
-                ></v-text-field>
-                <v-select
-					v-model="select"
-					:environnement="environnement"
-					label="Environnement"
-				></v-select>
+                <v-text-field prepend-icon="" name="Version" :label="$t('Version')" type="text"></v-text-field>
+                <v-select v-model="select" :environnement="environnement" label="Environnement"></v-select>
               </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                :disabled="submitRequest"
-                :loading="submitRequest"
-                @click="submit">{{$t('Submit')}}</v-btn>
+              <v-btn :disabled="submitRequest" :loading="submitRequest" @click="submit">{{ $t("Submit") }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>

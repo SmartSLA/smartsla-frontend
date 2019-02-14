@@ -4,7 +4,7 @@
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
           <v-toolbar color="primary">
-            <v-toolbar-title class="white--text">{{$t('OpenPaaS Login')}}</v-toolbar-title>
+            <v-toolbar-title class="white--text">{{ $t("OpenPaaS Login") }}</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-form class="login-form" @keydown.native.enter="login">
@@ -31,10 +31,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              :disabled="logMeIn"
-              :loading="logMeIn"
-              @click="login">{{$t('Login')}}</v-btn>
+            <v-btn :disabled="logMeIn" :loading="logMeIn" @click="login">{{ $t("Login") }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>

@@ -6,12 +6,11 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "Home",
   props: {
     msg: String
   }
 };
 </script>
 
-<style scoped lang="stylus">
-</style>
+<style scoped lang="stylus"></style>

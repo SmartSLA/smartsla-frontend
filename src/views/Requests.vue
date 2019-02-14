@@ -1,9 +1,5 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="requests"
-    class="elevation-1"
-  >
+  <v-data-table :headers="headers" :items="requests" class="elevation-1">
     <template slot="items" slot-scope="props">
       <td>{{ props.item.number }}</td>
       <td class="text-xs-left">{{ props.item.date }}</td>
@@ -14,7 +10,9 @@
       <td class="text-xs-left">{{ props.item.status }}</td>
       <td class="text-xs-left">{{ props.item.transmitter }}</td>
       <td class="text-xs-left">{{ props.item.responsible }}</td>
-      <td class="text-xs-left"><a href="#">{{props.item.voir}}</a></td>
+      <td class="text-xs-left">
+        <a href="#">{{ props.item.voir }}</a>
+      </td>
     </template>
   </v-data-table>
 </template>

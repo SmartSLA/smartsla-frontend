@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  baseUrl: process.env.NODE_ENV === "production" ? process.env.BASE_URL || "/" : "/",
+  publicPath: process.env.NODE_ENV === "production" ? process.env.BASE_URL || "/" : "/",
   transpileDependencies: ["vue-openpaas-components"],
   configureWebpack: {
     resolve: {
