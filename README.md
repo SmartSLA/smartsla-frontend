@@ -1,9 +1,4 @@
-# vue-openpaas-seed
-
-This project is a 'seed' to be used to create other OpenPaaS web application using Vue.
-It provides the layout and some basic components to start coding within minutes. Documentation is available on [http://docs.open-paas.org/frontend](http://docs.open-paas.org/frontend)
-
-The seed has been developed using Node 10, please use at least the same.
+# 08000
 
 ## Project configuration
 
