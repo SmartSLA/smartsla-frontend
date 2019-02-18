@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HelloWorld :msg="$t('Welcome to 08000')" />
+    <home :msg="$t('Welcome to 08000')" />
   </div>
 </template>
 
