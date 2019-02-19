@@ -13,5 +13,9 @@ export default {
 
   deleteTicket(ticketId) {
     return this.delete(`/ossa/ticket/${ticketId}`);
+  },
+
+  getTickets(author) {
+    return this.get(`/ossa/ticket/author/${author}`);
   }
 };
