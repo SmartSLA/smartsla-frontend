@@ -70,6 +70,7 @@ export default {
   methods: {
     submit() {
       this.submitRequest = false;
+      this.createTicket({});
     },
     thumbUrl(file) {
       return file.myThumbUrlProperty;
