@@ -43,26 +43,33 @@
 </template>
 
 <script>
-import { routeNames } from "@/router";
-
-export default {
-  name: "logged-main-navigation",
-  methods: {
-    home() {
-      return this.$router.push({ name: routeNames.HOME });
-    },
-    create_request() {
-      return this.$router.push({ name: routeNames.CREATEREQUEST });
-    },
-    requests() {
-      return this.$router.push({ name: routeNames.REQUESTS });
-    },
-    dashboard() {},
-    satisfaction() {},
-    historic() {},
-    contributions() {}
-  }
-};
+  import { routeNames } from "@/router";
+  export default {
+    name: "logged-main-navigation",
+    methods: {
+      home() {
+        return this.$router.push({ name: routeNames.HOME });
+      },
+      create_request() {
+        return this.$router.push({ name: routeNames.CREATEREQUEST });
+      },
+      requests() {
+        return this.$router.push({ name: routeNames.REQUESTS });
+      },
+      dashboard() {
+        return this.$router.push({ name: routeNames.DASHBOARD });
+      },
+      satisfaction() {
+        return this.$router.push({ name: routeNames.SATISFACTION });
+      },
+      historic() {
+        return this.$router.push({ name: routeNames.HISTORIC });
+      },
+      contributions() {
+        return this.$router.push({ name: routeNames.CONTRIBUTIONS });
+      }
+    }
+  };
 </script>
 
 <style lang="stylus" scoped>
