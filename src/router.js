@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "@/views/Home.vue";
 import CreateRequest from "@/views/CreateRequest.vue";
 import Requests from "@/views/Requests.vue";
+import Request from "@/views/Request.vue";
 import Login from "@/views/Login.vue";
 import ApplicationSettings from "@/services/application-settings";
 
@@ -13,6 +14,7 @@ export const routeNames = Object.freeze({
   HOME: "Home",
   CREATEREQUEST: "Create Request",
   REQUESTS: "Requests",
+  REQUEST: "Request",
   LOGIN: "Login"
 });
 
@@ -40,6 +42,14 @@ export default new Router({
       path: "/requests",
       name: routeNames.REQUESTS,
       component: Requests,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/request/:id",
+      name: routeNames.REQUEST,
+      component: Request,
       meta: {
         auth: true
       }
