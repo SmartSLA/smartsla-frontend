@@ -1,40 +1,74 @@
 <template>
-  <v-content>
+  <v-content >
+    <div>
+      <v-icon>create</v-icon>
+      <span>Create request</span>
+    </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
-            <v-toolbar color="primary">
+            <!-- <v-toolbar color="primary">
               <v-toolbar-title class="white--text">{{ $t("Create new request") }}</v-toolbar-title>
-            </v-toolbar>
+            </v-toolbar> -->
             <v-card-text>
               <v-form>
-                <v-select v-model="select" :severity="severity" label="Severity"></v-select>
-                <v-select v-model="select" :logiciel="logiciel" label="Logiciel"></v-select>
-                <v-text-field
-                  prepend-icon=""
-                  name="Request name"
-                  :label="$t('Request name')"
-                  type="text"
-                ></v-text-field>
-                <v-textarea name="request-description" label="Request Description"></v-textarea>
-                <file-upload
-                  class="file"
-                  :url="url"
-                  :thumb-url="thumbUrl"
-                  :headers="headers"
-                  @change="onFileChange"
-                  btn-label="Select a file"
-                  btn-uploading-label="Uploading file"
-                ></file-upload>
-                <v-text-field
-                  prepend-icon=""
-                  name="Related request"
-                  :label="$t('Related request')"
-                  type="text"
-                ></v-text-field>
-                <v-text-field prepend-icon="" name="Version" :label="$t('Version')" type="text"></v-text-field>
-                <v-select v-model="select" :environnement="environnement" label="Environnement"></v-select>
+                <div class="float-left">
+                  <v-select
+                    prepend-icon="report"
+                    v-model="select"
+                    :severity="severity"
+                    label="Severity"
+                  ></v-select>
+                  <v-select
+                    prepend-icon="laptop"
+                    v-model="select"
+                    :logiciel="logiciel"
+                    label="Software"
+                  ></v-select>
+                  <v-text-field
+                    prepend-icon="warning"
+                    name="Request name"
+                    :label="$t('Request name')"
+                    type="text"
+                  ></v-text-field>
+                  <v-textarea
+                    prepend-icon="notes"
+                    name="request-description"
+                    label="Request Description"
+                  ></v-textarea>
+                </div>
+                <v-divider vertical />
+                <div class="float-right">
+                  <file-upload
+                    prepend-icon="cloud_upload"
+                    class="file"
+                    :url="url"
+                    :thumb-url="thumbUrl"
+                    :headers="headers"
+                    @change="onFileChange"
+                    btn-label="Select a file"
+                    btn-uploading-label="Uploading file"
+                  ></file-upload>
+                  <v-text-field
+                    prepend-icon="attach_file"
+                    name="Related request"
+                    :label="$t('Related request')"
+                    type="text"
+                  ></v-text-field>
+                  <v-text-field
+                    prepend-icon="library_books"
+                    name="Version"
+                    :label="$t('Version')"
+                    type="text"
+                  ></v-text-field>
+                  <v-select
+                    prepend-icon="bug_report"
+                    v-model="select"
+                    :environnement="environnement"
+                    label="Environnement"
+                  ></v-select>
+                </div>
               </v-form>
             </v-card-text>
             <v-card-actions>
@@ -83,8 +117,21 @@ export default {
 };
 </script>
 <style type="text/css">
+.float-left {
+  float: left;
+  width: 50%;
+  padding: 20px;
+}
+.float-right {
+  float: right;
+  width: 50%;
+  padding: 20px;
+}
 .file-upload .input-wrapper .file-upload-label {
   color: #949494 !important;
   background-color: aliceblue;
+}
+.v-content {
+  padding: 40px 0px 0px 150px !important;
 }
 </style>
