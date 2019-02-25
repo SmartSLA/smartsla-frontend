@@ -32,6 +32,7 @@
                     prepend-icon="laptop"
                     return-object
                   ></v-autocomplete>
+
                   <v-text-field
                     prepend-icon="warning"
                     name="Request name"
@@ -167,6 +168,7 @@ export default {
   }
 };
 </script>
+
 <style type="text/css" scoped>
 .float-left {
   float: left;
