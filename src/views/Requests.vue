@@ -106,9 +106,6 @@ export default {
       email: "user/getEmail"
     })
   }
-  /*mounted () {
-    this.$http.getTickets(this.getEmail).then(response => this.requests = response.data);
-  }*/
 };
 </script>
 <style type="text/css">
