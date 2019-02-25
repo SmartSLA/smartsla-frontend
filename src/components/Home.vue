@@ -5,12 +5,12 @@
 </template>
 
 <script>
-  export default {
-    name: "Home",
-    props: {
-      msg: String
-    }
-  };
+export default {
+  name: "Home",
+  props: {
+    msg: String
+  }
+};
 </script>
 
 <style scoped lang="stylus"></style>
