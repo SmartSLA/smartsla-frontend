@@ -1,5 +1,5 @@
 <template>
-  <v-content >
+  <v-content>
     <div>
       <v-icon>create</v-icon>
       <span>Create request</span>
@@ -14,29 +14,15 @@
             <v-card-text>
               <v-form>
                 <div class="float-left">
-                  <v-select
-                    prepend-icon="report"
-                    v-model="select"
-                    :severity="severity"
-                    label="Severity"
-                  ></v-select>
-                  <v-select
-                    prepend-icon="laptop"
-                    v-model="select"
-                    :logiciel="logiciel"
-                    label="Software"
-                  ></v-select>
+                  <v-select prepend-icon="report" v-model="select" :severity="severity" label="Severity"></v-select>
+                  <v-select prepend-icon="laptop" v-model="select" :logiciel="logiciel" label="Software"></v-select>
                   <v-text-field
                     prepend-icon="warning"
                     name="Request name"
                     :label="$t('Request name')"
                     type="text"
                   ></v-text-field>
-                  <v-textarea
-                    prepend-icon="notes"
-                    name="request-description"
-                    label="Request Description"
-                  ></v-textarea>
+                  <v-textarea prepend-icon="notes" name="request-description" label="Request Description"></v-textarea>
                 </div>
                 <v-divider vertical />
                 <div class="float-right">
@@ -116,7 +102,7 @@ export default {
   }
 };
 </script>
-<style type="text/css">
+<style scoped type="text/css">
 .float-left {
   float: left;
   width: 50%;

@@ -96,7 +96,9 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>satisfaction</v-card-text>
+                  <v-card-text>{{
+                    $t("the satisfaction survey will be available once the ticket is closed")
+                  }}</v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>

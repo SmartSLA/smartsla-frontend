@@ -11,7 +11,7 @@
       <td class="text-xs-left">{{ props.item.transmitter }}</td>
       <td class="text-xs-left">{{ props.item.responsible }}</td>
       <td class="text-xs-left">
-        <a href="#">{{ props.item.voir }}</a>
+        <router-link :to="{ name: 'Request', params: { id: props.item.number } }">{{ $t("VOIR") }}</router-link>
       </td>
     </template>
   </v-data-table>
