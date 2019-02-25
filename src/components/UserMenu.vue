@@ -1,5 +1,11 @@
 <template>
-  <v-menu bottom left offset-y>
+<v-list right>
+  <v-spacer></v-spacer>
+  <v-list-tile @click.prevent="" class="user-menu-item">
+    <v-icon>search</v-icon>
+  </v-list-tile>
+  <v-spacer></v-spacer>
+  <v-menu offset-y>
     <op-avatar slot="activator"></op-avatar>
     <v-list>
       <v-list-tile>
@@ -17,10 +23,11 @@
         <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
       </v-list-tile>
       <v-list-tile @click.prevent="logout">
-        <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
+       <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
       </v-list-tile>
     </v-list>
   </v-menu>
+</v-list>
 </template>
 
 <script>
@@ -52,4 +59,14 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.user-menu-item
+  float: left;
+.v-list.theme--light
+    background-color: #eee;
+.theme--light.v-icon
+  color: #000000 !important;
+.v-menu.v-menu--inline
+    padding-left: 25px;
+    padding-top: 8px;
+</style>

@@ -5,12 +5,12 @@
         <!--<op-sidebar/>-->
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
-        <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
-          <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo.svg" />
+        <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
+          <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
         </v-toolbar-title>
         <logged-main-navigation v-if="$auth.check()" />
-        <v-spacer></v-spacer>
         <!--<op-applications-menu/>-->
+        <v-spacer></v-spacer>
         <op-user-menu v-if="$auth.check()" />
       </v-toolbar>
       <v-content>
@@ -51,6 +51,8 @@ export default {
 .v-list.logged-main-navigation.theme--light
   background-color: #EEEEEE;
 #header-logo
-  height: 35px;
-  width: 150px;
+  height: 34px;
+  width: 138px;
+.v-toolbar__content
+    background-color: #eee;
 </style>

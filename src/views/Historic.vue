@@ -1,11 +1,11 @@
 <template>
-  <div>{{msg}}</div>
+  <div>{{ msg }}</div>
 </template>
 <script>
 export default {
   data() {
     return {
-     msg:"Welcome to the historic!!"
+      msg: "Welcome to the historic!!"
     };
   }
 };
