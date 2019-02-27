@@ -7,6 +7,13 @@ export default {
     return {
       msg: "Welcome to Contributions Page!!"
     };
+  },
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
   }
 };
 </script>
