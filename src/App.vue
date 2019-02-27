@@ -2,14 +2,13 @@
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
       <v-navigation-drawer clipped fixed app>
-        <!--<op-sidebar/>-->
+        <component v-bind:is="componentName"></component>
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
           <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
         </v-toolbar-title>
         <logged-main-navigation v-if="$auth.check()" />
-        <!--<op-applications-menu/>-->
         <v-spacer></v-spacer>
         <op-user-menu v-if="$auth.check()" />
       </v-toolbar>
@@ -29,15 +28,23 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import UserMenu from "@/components/UserMenu.vue";
 import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
 import Snackbar from "@/components/Snackbar.vue";
+import NewRequestSideBar from "@/components/request/NewRequestSideBar.vue";
 
 export default {
   components: {
     "op-user-menu": UserMenu,
     "logged-main-navigation": LoggedMainNavigation,
-    "op-snackbar": Snackbar
+    "op-snackbar": Snackbar,
+    "new-request-side-bar": NewRequestSideBar
+  },
+  computed: {
+    ...mapGetters({
+      componentName: "sidebar/getSideBarComponent"
+    })
   },
   created() {
     this.$auth.ready(() => {
@@ -55,4 +62,6 @@ export default {
   width: 138px;
 .v-toolbar__content
     background-color: #eee;
+
+
 </style>

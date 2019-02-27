@@ -3,13 +3,13 @@
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm12 md12>
-          <v-card>
+          <v-card class="elevation-12">
+            <v-card-text>
+              <v-form>
             <div class="page-title">
               <v-icon>create</v-icon>
               <span>Create request</span>
             </div>
-            <v-card-text>
-              <v-form>
                 <div class="float-left">
                   <v-select prepend-icon="report" :items="severity" v-model="select" label="Standard"></v-select>
                   <v-autocomplete
@@ -85,19 +85,24 @@
 </template>
 
 <script>
-// import { routeNames } from "@/router";
+//import { routeNames } from "@/router";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 Vue.use(FileUpload);
 export default {
-  data: () => ({
-    severity: ["Bloquant", "Non bloquant"],
-    descriptionLimit: 60,
-    entries: [],
-    isLoading: false,
-    model: null,
-    search: null
-  }),
+  data() {
+    return {
+      url: "http://your-post.url",
+      headers: { "access-token": "<your-token>" },
+      filesUploaded: [],
+      submitRequest: false,
+      email: null,
+      password: null,
+      select: null,
+      states: ["Item 1", "Item 2", "Item 3", "Item 4"],
+      scale_states: ["Item 1", "Item 2", "Item 3", "Item 4"]
+    };
+  },
   methods: {
     submit() {
       this.submitRequest = false;
@@ -111,29 +116,21 @@ export default {
       this.fileUploaded = file;
     }
   },
-  computed: {
-    fields() {
-      if (!this.model) return [];
-
-      return Object.keys(this.model).map(key => {
-        return {
-          key,
-          value: this.model[key] || "n/a"
-        };
-      });
-    },
-    logiciel() {
-      return this.entries.map(entry => {
-        const Description =
-          entry.Description.length > this.descriptionLimit
-            ? entry.Description.slice(0, this.descriptionLimit) + "..."
-            : entry.Description;
-
-        return Object.assign({}, entry, { Description });
-      });
-    }
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "new-request-side-bar");
   },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
+  },
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "new-request-side-bar");
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
 
+  },
   watch: {
     search() {
       // Items have already been loaded
@@ -156,10 +153,11 @@ export default {
           console.log(err);
         })
         .finally(() => (this.isLoading = false));
-    }
+    },
   }
 };
 </script>
+
 
 <style type="text/css" scoped>
 .float-left {
