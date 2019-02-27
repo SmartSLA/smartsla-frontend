@@ -39,6 +39,12 @@
         {{ $t("Contributions") }}
       </v-list-tile-title>
     </v-list-tile>
+    <v-list-tile @click.prevent="orders" class="logged-main-navigation-item">
+      <v-list-tile-title>
+        <v-icon>grid_on</v-icon>
+        {{ $t("Orders") }}
+      </v-list-tile-title>
+    </v-list-tile>
   </v-list>
 </template>
 
@@ -67,18 +73,27 @@ export default {
     },
     contributions() {
       return this.$router.push({ name: routeNames.CONTRIBUTIONS });
+    },
+    orders() {
+      return this.$router.push({ name: routeNames.ORDERS });
     }
   }
 };
 </script>
 
 <style lang="stylus" scoped>
-.theme--light.v-icon {
-  color: #2196f3 !important;
-}
-.logged-main-navigation-item {
+.theme--light.v-icon
+  color: #000000 !important;
+
+.logged-main-navigation-item
   float: left;
-  color: #2196f3;
+  color: #000000;
   background-color: #EEEEEE;
-}
+
+.logged-main-navigation-item:hover
+    background-color: #DDDDDD !important;
+
+.active
+    background-color: #307dbf !important;
+    color: #FFFFFF !important;
 </style>

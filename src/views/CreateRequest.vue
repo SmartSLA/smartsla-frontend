@@ -1,21 +1,30 @@
 <template>
-  <v-content>
-    <div>
-      <v-icon>create</v-icon>
-      <span>Create request</span>
-    </div>
+  <v-content class="create-ticket">
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
-            <!-- <v-toolbar color="primary">
-              <v-toolbar-title class="white--text">{{ $t("Create new request") }}</v-toolbar-title>
-            </v-toolbar>-->
             <v-card-text>
               <v-form>
+            <div class="page-title">
+              <v-icon>create</v-icon>
+              <span>Create request</span>
+            </div>
                 <div class="float-left">
-                  <v-select prepend-icon="report" v-model="select" :severity="severity" label="Severity"></v-select>
-                  <v-select prepend-icon="laptop" v-model="select" :logiciel="logiciel" label="Software"></v-select>
+                  <v-select prepend-icon="report" :items="severity" v-model="select" label="Standard"></v-select>
+                  <v-autocomplete
+                    v-model="model"
+                    :items="logiciel"
+                    :loading="isLoading"
+                    :search-input.sync="search"
+                    item-text="Description"
+                    item-value="API"
+                    label="Software"
+                    placeholder="Start typing to Search"
+                    prepend-icon="laptop"
+                    return-object
+                  ></v-autocomplete>
+
                   <v-text-field
                     prepend-icon="warning"
                     name="Request name"
@@ -48,12 +57,19 @@
                     :label="$t('Version')"
                     type="text"
                   ></v-text-field>
-                  <v-select
-                    prepend-icon="bug_report"
-                    v-model="select"
-                    :environnement="environnement"
+
+                  <v-autocomplete
+                    v-model="model"
+                    :items="environnement"
+                    :loading="isLoading"
+                    :search-input.sync="search"
+                    item-text="Description"
+                    item-value="API"
                     label="Environnement"
-                  ></v-select>
+                    placeholder="Start typing to Search"
+                    prepend-icon="bug_report"
+                    return-object
+                  ></v-autocomplete>
                 </div>
               </v-form>
             </v-card-text>
@@ -106,10 +122,44 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
+  },
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "new-request-side-bar");
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
+
+  },
+  watch: {
+    search() {
+      // Items have already been loaded
+      if (this.items.length > 0) return;
+
+      // Items have already been requested
+      if (this.isLoading) return;
+
+      this.isLoading = true;
+
+      // Lazily load input items
+      fetch("https://api.publicapis.org/entries")
+        .then(res => res.json())
+        .then(res => {
+          const { count, entries } = res;
+          this.count = count;
+          this.entries = entries;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => (this.isLoading = false));
+    },
   }
 };
 </script>
-<style scoped type="text/css">
+
+
+<style type="text/css" scoped>
 .float-left {
   float: left;
   width: 50%;
@@ -120,11 +170,18 @@ export default {
   width: 50%;
   padding: 20px;
 }
-.file-upload .input-wrapper .file-upload-label {
-  color: #949494 !important;
-  background-color: aliceblue;
+.create-ticket {
+  padding: 0px !important;
+  margin: 0px !important;
 }
-.v-content {
-  padding: 40px 0px 0px 150px !important;
+.page-title {
+  padding: 20px;
+}
+.container.fluid.fill-height {
+  padding: 0px;
+}
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: #2196f3;
+  color: #fff;
 }
 </style>
