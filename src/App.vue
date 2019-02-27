@@ -2,7 +2,7 @@
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
       <v-navigation-drawer clipped fixed app>
-        <!--<op-sidebar/>-->
+        <component v-bind:is="componentName"></component>
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
@@ -10,7 +10,6 @@
         </v-toolbar-title>
         <logged-main-navigation v-if="$auth.check()" />
         <v-spacer></v-spacer>
-        <!--<op-applications-menu/>-->
         <op-user-menu v-if="$auth.check()" />
       </v-toolbar>
       <v-content>
@@ -29,15 +28,23 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import UserMenu from "@/components/UserMenu.vue";
 import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
 import Snackbar from "@/components/Snackbar.vue";
+import NewRequestSideBar from "@/components/request/NewRequestSideBar.vue";
 
 export default {
   components: {
     "op-user-menu": UserMenu,
     "logged-main-navigation": LoggedMainNavigation,
-    "op-snackbar": Snackbar
+    "op-snackbar": Snackbar,
+    "new-request-side-bar": NewRequestSideBar
+  },
+  computed: {
+    ...mapGetters({
+      componentName: "sidebar/getSideBarComponent"
+    })
   },
   created() {
     this.$auth.ready(() => {
@@ -48,9 +55,12 @@ export default {
 </script>
 
 <style lang="stylus">
-.v-list.logged-main-navigation.theme--light
+.v-list.logged-main-navigation.theme--light {
   background-color: #EEEEEE;
-#header-logo
+}
+
+#header-logo {
   height: 35px;
   width: 150px;
+}
 </style>
