@@ -10,7 +10,7 @@
           <v-card class="elevation-12">
             <!-- <v-toolbar color="primary">
               <v-toolbar-title class="white--text">{{ $t("Create new request") }}</v-toolbar-title>
-            </v-toolbar> -->
+            </v-toolbar>-->
             <v-card-text>
               <v-form>
                 <div class="float-left">
@@ -99,6 +99,13 @@ export default {
       // Handle files like:
       this.fileUploaded = file;
     }
+  },
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "new-request-side-bar");
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
   }
 };
 </script>
