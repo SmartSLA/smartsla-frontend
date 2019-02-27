@@ -10,10 +10,13 @@
       </v-list-tile-title>
     </v-list-tile>
     <v-list-tile @click.prevent="requests" class="logged-main-navigation-item">
-      <v-list-tile-title>
-        <v-icon>format_list_numbered</v-icon>
-        {{ $t("Requests") }}
-      </v-list-tile-title>
+      <v-badge color="red">
+        <span slot="badge">5</span>
+        <v-list-tile-title>
+          <v-icon>format_list_numbered</v-icon>
+          {{ $t("Requests") }}
+        </v-list-tile-title>
+      </v-badge>
     </v-list-tile>
     <v-list-tile @click.prevent="dashboard" class="logged-main-navigation-item">
       <v-list-tile-title>

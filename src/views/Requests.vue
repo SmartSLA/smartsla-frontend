@@ -1,21 +1,27 @@
 <template>
-  <v-data-table :headers="headers" :items="requests" class="elevation-1">
-    <template slot="items" slot-scope="props">
-      <td>{{ props.item.number }}</td>
-      <td class="text-xs-left">{{ props.item.date }}</td>
-      <td class="text-xs-left">{{ props.item.software }}</td>
-      <td class="text-xs-left">{{ props.item.criticality }}</td>
-      <td class="text-xs-left">{{ props.item.incident_wording }}</td>
-      <td class="text-xs-left">{{ props.item.severity }}</td>
-      <td class="text-xs-left">{{ props.item.status }}</td>
-      <td class="text-xs-left">{{ props.item.transmitter }}</td>
-      <td class="text-xs-left">{{ props.item.responsible }}</td>
-      <td class="text-xs-left">
-        <router-link :to="{ name: 'Request', params: { id: props.item.number } }">{{ $t("VOIR") }}</router-link>
-      </td>
-    </template>
-  </v-data-table>
+  <div class="requests-list">
+    <div class="page-title">
+      <span>Requests list (TICKETS)</span>
+    </div>
+    <v-data-table :headers="headers" :items="requests" class="elevation-1" hide-actions>
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.number }}</td>
+        <td class="text-xs-left">{{ props.item.date }}</td>
+        <td class="text-xs-left">{{ props.item.software }}</td>
+        <td class="text-xs-left">{{ props.item.criticality }}</td>
+        <td class="text-xs-left">{{ props.item.incident_wording }}</td>
+        <td class="text-xs-left">{{ props.item.severity }}</td>
+        <td class="text-xs-left">{{ props.item.status }}</td>
+        <td class="text-xs-left">{{ props.item.transmitter }}</td>
+        <td class="text-xs-left">{{ props.item.responsible }}</td>
+        <td class="text-xs-left">
+          <v-btn color="info" :to="{ name: 'Request', params: { id: props.item.number } }" class="view-request">{{ $t("VOIR") }}</v-btn>
+        </td>
+      </template>
+    </v-data-table>
+  </div>
 </template>
+
 <script>
 import { mapGetters } from "vuex";
 
@@ -108,8 +114,20 @@ export default {
   }
 };
 </script>
-<style type="text/css" scoped>
+<style type="stylus" scoped>
 .elevation-1 {
   width: 100% !important;
+  padding-bottom: 50px;
+  background-color: #FFFFFF;
+}
+.view-request{
+  color: #FFFFFF
+}
+.page-title {
+  color: #777777;
+  margin-bottom: 20px;
+}
+.elevation-1 th{
+  color: #000000;
 }
 </style>
