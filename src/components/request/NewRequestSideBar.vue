@@ -48,63 +48,18 @@
         </v-list>
       </v-flex>
       <v-flex xs12>
-        <v-list class="blue-grey lighten-5 grey--text body-1">
-          <v-list-tile @click="link">
-            <v-list-tile-action>
-              <v-icon color="grey">mdi-comment-question-outline</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{$t("FAQ")}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile @click="link">
-            <v-list-tile-action>
-              <v-icon color="grey">mdi-file-document</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{$t("watches")}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile @click="link">
-            <v-list-tile-action>
-              <v-icon color="grey">mdi-lightbulb-outline</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title class="body-1">{{$t("tips and tricks / best practices")}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile @click="link">
-            <v-list-tile-action>
-              <v-icon color="grey">mdi-forum-outline</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{$t("Forums")}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile @click="link">
-            <v-list-tile-action>
-              <v-icon color="grey">person</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{$t("User clubs")}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile @click="link">
-            <v-list-tile-action>
-              <v-icon color="grey">mdi-tie</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{$t("OBA experts")}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
+        <side-bar-links />
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
+import sideBarLinks from "@/components/SideBarLinks.vue";
 export default {
   name: "new-request-side-bar",
+  components: {
+    "side-bar-links": sideBarLinks
+  },
   methods: {
     link() {
       return;
