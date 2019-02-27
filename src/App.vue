@@ -1,7 +1,7 @@
 <template>
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
-      <v-navigation-drawer clipped fixed app>
+      <v-navigation-drawer clipped fixed app v-if="$auth.check()">
         <component v-bind:is="componentName"></component>
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
@@ -33,13 +33,15 @@ import UserMenu from "@/components/UserMenu.vue";
 import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
 import Snackbar from "@/components/Snackbar.vue";
 import NewRequestSideBar from "@/components/request/NewRequestSideBar.vue";
+import MainSideBar from "@/components/MainSideBar.vue";
 
 export default {
   components: {
     "op-user-menu": UserMenu,
     "logged-main-navigation": LoggedMainNavigation,
     "op-snackbar": Snackbar,
-    "new-request-side-bar": NewRequestSideBar
+    "new-request-side-bar": NewRequestSideBar,
+    "main-side-bar": MainSideBar
   },
   computed: {
     ...mapGetters({
