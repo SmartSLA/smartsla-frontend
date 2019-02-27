@@ -1,33 +1,33 @@
 <template>
-<v-list right>
-  <v-spacer></v-spacer>
-  <v-list-tile @click.prevent="" class="user-menu-item">
-    <v-icon>search</v-icon>
-  </v-list-tile>
-  <v-spacer></v-spacer>
-  <v-menu offset-y>
-    <op-avatar slot="activator"></op-avatar>
-    <v-list>
-      <v-list-tile>
-        <v-list-tile-content>
-          <v-list-tile-title class="title">{{ getDisplayName }}</v-list-tile-title>
-          <v-list-tile-sub-title>{{ getEmail }}</v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-divider />
-      <v-list-tile @click.prevent="profile">
-        <v-list-tile-title>{{ $t("Profile") }}</v-list-tile-title>
-      </v-list-tile>
-      <v-divider />
-      <v-list-tile @click.prevent="settings">
-        <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click.prevent="logout">
-       <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
-      </v-list-tile>
-    </v-list>
-  </v-menu>
-</v-list>
+  <v-list right>
+    <v-spacer></v-spacer>
+    <v-list-tile @click.prevent="" class="user-menu-item">
+      <v-icon>search</v-icon>
+    </v-list-tile>
+    <v-spacer></v-spacer>
+    <v-menu offset-y>
+      <op-avatar slot="activator"></op-avatar>
+      <v-list>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title class="title">{{ getDisplayName }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{ getEmail }}</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider />
+        <v-list-tile @click.prevent="profile">
+          <v-list-tile-title>{{ $t("Profile") }}</v-list-tile-title>
+        </v-list-tile>
+        <v-divider />
+        <v-list-tile @click.prevent="settings">
+          <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile @click.prevent="logout">
+          <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
+  </v-list>
 </template>
 
 <script>
@@ -45,9 +45,13 @@ export default {
       });
     },
 
-    profile() {},
+    profile() {
+      return this.$router.push({ name: routeNames.PROFILE });
+    },
 
-    settings() {}
+    settings() {
+      return this.$router.push({ name: routeNames.SETTINGS });
+    }
   },
   computed: {
     ...mapGetters({

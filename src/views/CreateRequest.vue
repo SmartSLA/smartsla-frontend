@@ -3,23 +3,15 @@
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm12 md12>
-          <v-card class="elevation-12">
+          <v-card>
             <div class="page-title">
               <v-icon>create</v-icon>
               <span>Create request</span>
             </div>
-            <!-- <v-toolbar color="primary">
-              <v-toolbar-title class="white--text">{{ $t("Create new request") }}</v-toolbar-title>
-            </v-toolbar> -->
             <v-card-text>
               <v-form>
                 <div class="float-left">
-                  <v-select
-                    prepend-icon="report"
-                    :items="severity"
-                    v-model="select"
-                    label="Standard"
-                  ></v-select>
+                  <v-select prepend-icon="report" :items="severity" v-model="select" label="Standard"></v-select>
                   <v-autocomplete
                     v-model="model"
                     :items="logiciel"
@@ -93,7 +85,7 @@
 </template>
 
 <script>
-//import { routeNames } from "@/router";
+// import { routeNames } from "@/router";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 Vue.use(FileUpload);
@@ -143,7 +135,7 @@ export default {
   },
 
   watch: {
-    search(val) {
+    search() {
       // Items have already been loaded
       if (this.items.length > 0) return;
 
@@ -181,9 +173,17 @@ export default {
   padding: 20px;
 }
 .create-ticket {
-  padding: 0px 0px 0px 0px !important;
+  padding: 0px !important;
+  margin: 0px !important;
 }
 .page-title {
   padding: 20px;
+}
+.container.fluid.fill-height {
+  padding: 0px;
+}
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: #2196f3;
+  color: #fff;
 }
 </style>

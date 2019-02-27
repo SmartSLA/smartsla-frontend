@@ -9,6 +9,9 @@ import Dashboard from "@/views/Dashboard.vue";
 import Satisfaction from "@/views/Satisfaction.vue";
 import Historic from "@/views/Historic.vue";
 import Contributions from "@/views/Contributions.vue";
+import Orders from "@/views/Orders.vue";
+import Profile from "@/views/Profile.vue";
+import Settings from "@/views/Settings.vue";
 import ApplicationSettings from "@/services/application-settings";
 
 Vue.use(Router);
@@ -23,6 +26,9 @@ export const routeNames = Object.freeze({
   SATISFACTION: "Satisfaction",
   HISTORIC: "Historic",
   CONTRIBUTIONS: "Contributions",
+  ORDERS: "Orders",
+  PROFILE: "Profile",
+  SETTINGS: "Settings",
   LOGIN: "Login"
 });
 
@@ -98,6 +104,30 @@ export default new Router({
       path: "/contributions",
       name: routeNames.CONTRIBUTIONS,
       component: Contributions,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/orders",
+      name: routeNames.ORDERS,
+      component: Orders,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/profile",
+      name: routeNames.PROFILE,
+      component: Profile,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/settings",
+      name: routeNames.SETTINGS,
+      component: Settings,
       meta: {
         auth: true
       }

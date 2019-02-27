@@ -108,7 +108,7 @@ export default {
   }
 };
 </script>
-<style type="text/css">
+<style type="text/css" scoped>
 .elevation-1 {
   width: 100% !important;
 }

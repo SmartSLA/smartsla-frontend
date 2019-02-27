@@ -74,7 +74,9 @@ export default {
     contributions() {
       return this.$router.push({ name: routeNames.CONTRIBUTIONS });
     },
-    orders() {}
+    orders() {
+      return this.$router.push({ name: routeNames.ORDERS });
+    }
   }
 };
 </script>
@@ -94,5 +96,4 @@ export default {
 .active
     background-color: #307dbf !important;
     color: #FFFFFF !important;
-
 </style>
