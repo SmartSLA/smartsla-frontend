@@ -151,4 +151,8 @@ export default {
 .v-content {
   padding: 40px 0px 0px 150px !important;
 }
+.elevation-12 {
+    -webkit-box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 1px rgba(0,0,0,0.14), 0px 1px 1px 1px rgba(0,0,0,0.12) !important;
+    box-shadow:  0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 1px rgba(0,0,0,0.14), 0px 1px 1px 1px rgba(0,0,0,0.12) !important;
+}
 </style>
