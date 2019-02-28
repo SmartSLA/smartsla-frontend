@@ -1,7 +1,12 @@
 import Vue from "vue";
 
 const state = {
-  user: null
+  user: {
+    _id: null,
+    firstname: "",
+    lastname: "",
+    preferredEmail: ""
+  }
 };
 
 const types = {
