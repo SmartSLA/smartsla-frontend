@@ -16,9 +16,8 @@
         <td class="text-xs-left">{{ props.item.responsible }}</td>
         <td class="text-xs-left">
           <v-btn color="info" :to="{ name: 'Request', params: { id: props.item.number } }"
-          class="view-request">
-          {{ $t("VOIR") }}
-          </v-btn>
+          class="view-request"
+          >{{ $t("VOIR") }}</v-btn>
         </td>
       </template>
     </v-data-table>

@@ -35,6 +35,7 @@ import Snackbar from "@/components/Snackbar.vue";
 import NewRequestSideBar from "@/components/request/NewRequestSideBar.vue";
 import MainSideBar from "@/components/MainSideBar.vue";
 import ContributionsSideBar from "@/components/ContributionsSideBar.vue";
+import IssueDetailSideBar from "@/components/request/IssueDetailSideBar.vue";
 
 export default {
   components: {
@@ -43,7 +44,8 @@ export default {
     "op-snackbar": Snackbar,
     "new-request-side-bar": NewRequestSideBar,
     "main-side-bar": MainSideBar,
-    "contributions-side-bar": ContributionsSideBar
+    "contributions-side-bar": ContributionsSideBar,
+    "issue-detail-side-bar": IssueDetailSideBar
   },
   computed: {
     ...mapGetters({
