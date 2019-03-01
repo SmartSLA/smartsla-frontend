@@ -1,9 +1,15 @@
 <template>
   <v-container grid-list-md>
     <v-card-text>
-      <a href="#" disabled class="text-lg-left action-links"> <v-icon class="mr-2">bug_report</v-icon>REQUEST VIEW </a>
-      <a href="#" class="action-links right"> <v-icon class="mr-2">backup</v-icon>EXPORT SHEET (CSV) </a>
-      <a href="#" class="action-links mr-5 right"> <v-icon class="mr-2">print</v-icon>PRINT SHEET </a>
+      <a href="#" disabled class="text-lg-left action-links">
+        <v-icon class="mr-2">bug_report</v-icon>{{$t('REQUEST VIEW')}}
+      </a>
+      <a href="#" class="action-links right">
+        <v-icon class="mr-2">backup</v-icon>{{$t('EXPORT SHEET (CSV)')}}
+      </a>
+      <a href="#" class="action-links mr-5 right">
+        <v-icon class="mr-2">print</v-icon>{{$t('PRINT SHEET')}}
+      </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
       <v-flex xs8 pr-5>
@@ -111,7 +117,7 @@
             <v-card light color="white">
               <v-card-title primary-title class="px-4">
                 <div>
-                  <h3 class="headline mb-0">{{ $t("Service level") }}</h3>
+                  <h3 class="headline mb-0 mx-4">{{ $t("Service level") }}</h3>
                 </div>
               </v-card-title>
               <v-divider class="mx-4"></v-divider>

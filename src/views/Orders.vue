@@ -18,7 +18,8 @@
 </template>
 <script>
 export default {
-  data() { return {
+  data() {
+    return {
       headers: [
         { text: "N°", value: "number" },
         { text: "UO", value: "software" },
@@ -78,13 +79,13 @@ export default {
 .elevation-1 {
   width: 100% !important;
   padding-bottom: 50px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 .page-title {
   color: #777777;
   margin-bottom: 20px;
 }
-.elevation-1 th{
+.elevation-1 th {
   color: #000000;
 }
 </style>
