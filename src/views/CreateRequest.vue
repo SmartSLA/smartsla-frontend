@@ -1,17 +1,14 @@
 <template>
   <v-content>
-    <div>
-      <v-icon>create</v-icon>
-      <span>Create request</span>
-    </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
-            <!-- <v-toolbar color="primary">
-              <v-toolbar-title class="white--text">{{ $t("Create new request") }}</v-toolbar-title>
-            </v-toolbar>-->
             <v-card-text>
+              <div>
+                <v-icon>create</v-icon>
+                <span>Create request</span>
+              </div>
               <v-form>
                 <div class="float-left">
                   <v-select prepend-icon="report" v-model="select" :severity="severity" label="Severity"></v-select>
@@ -149,10 +146,21 @@ export default {
   background-color: aliceblue;
 }
 .v-content {
-  padding: 40px 0px 0px 150px !important;
+  padding: 0px 0px 0px 0px !important;
 }
 .elevation-12 {
-    -webkit-box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 1px rgba(0,0,0,0.14), 0px 1px 1px 1px rgba(0,0,0,0.12) !important;
-    box-shadow:  0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 1px rgba(0,0,0,0.14), 0px 1px 1px 1px rgba(0,0,0,0.12) !important;
+  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  widows: 100%;
+}
+.container.fluid.fill-height {
+  margin: 0px;
+  padding: 10px;
+}
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: #2196f3;
+  color: #fff;
 }
 </style>
