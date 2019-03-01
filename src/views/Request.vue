@@ -278,9 +278,8 @@ export default {
       communityIssueLink: "https://github.com/glpi-project/glpi/issues/5457",
       subject: `bonjour,
       The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.?
-      The Woodman set to work at once, and so sharp was.
-
-
+      The Woodman set to work at once, and so sharp was. 
+      
       Cordialement`,
       linkedTickets: [23132132131321321, 15649879461615616],
       request: {}
@@ -293,6 +292,13 @@ export default {
     ...mapGetters({
       email: "user/getEmail"
     })
+  },
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
   }
 };
 </script>
