@@ -88,4 +88,7 @@ export default {
 .elevation-1 th {
   color: #000000;
 }
+.requests-list {
+  width: 100%;
+}
 </style>

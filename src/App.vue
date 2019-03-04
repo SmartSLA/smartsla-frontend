@@ -68,6 +68,6 @@ export default {
   width: 138px;
 .v-toolbar__content
     background-color: #eee;
-
-
+.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light
+  background-color : #2b303c;
 </style>

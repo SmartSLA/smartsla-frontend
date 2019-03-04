@@ -15,9 +15,9 @@
         <td class="text-xs-left">{{ props.item.transmitter }}</td>
         <td class="text-xs-left">{{ props.item.responsible }}</td>
         <td class="text-xs-left">
-          <v-btn color="info" :to="{ name: 'Request', params: { id: props.item.number } }"
-          class="view-request"
-          >{{ $t("VOIR") }}</v-btn>
+          <v-btn color="info" :to="{ name: 'Request', params: { id: props.item.number } }" class="view-request">{{
+            $t("VOIR")
+          }}</v-btn>
         </td>
       </template>
     </v-data-table>
@@ -138,5 +138,8 @@ export default {
 }
 .elevation-1 th {
   color: #000000;
+}
+.requests-list {
+  width: 100%;
 }
 </style>
