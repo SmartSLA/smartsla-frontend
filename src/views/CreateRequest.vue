@@ -1,14 +1,16 @@
 <template>
+
   <v-content>
+    <div>
+      <v-icon>create</v-icon>
+      <span>Create request</span>
+    </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
+        
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
             <v-card-text>
-              <div>
-                <v-icon>create</v-icon>
-                <span>Create request</span>
-              </div>
               <v-form>
                 <div class="float-left">
                   <v-select prepend-icon="report" v-model="select" :severity="severity" label="Severity"></v-select>
