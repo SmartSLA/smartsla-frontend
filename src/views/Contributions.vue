@@ -2,14 +2,10 @@
   <v-container grid-list-md>
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
-        <v-icon class="mr-2">format_line_spacing</v-icon>{{$t('CONTRIBUTIONS')}}
+        <v-icon class="mr-2">format_line_spacing</v-icon>{{ $t("CONTRIBUTIONS") }}
       </a>
-      <a href="#" class="action-links right">
-        <v-icon class="mr-2">backup</v-icon>{{$t('EXPORT SHEET (CSV)')}}
-      </a>
-      <a href="#" class="action-links mr-5 right">
-        <v-icon class="mr-2">print</v-icon>{{$t('PRINT SHEET')}}
-      </a>
+      <a href="#" class="action-links right"> <v-icon class="mr-2">backup</v-icon>{{ $t("EXPORT SHEET (CSV)") }} </a>
+      <a href="#" class="action-links mr-5 right"> <v-icon class="mr-2">print</v-icon>{{ $t("PRINT SHEET") }} </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
       <v-flex xs7 pr-4>
@@ -105,9 +101,7 @@
             <v-card light color="white" class="pb-3">
               <v-card-title primary-title class="px-4  text-capitalize">
                 <div>
-                  <h3
-                    class="headline mb-0"
-                  >{{ $t('otherSoftwareContributions.message', { software }) }}</h3>
+                  <h3 class="headline mb-0">{{ $t("otherSoftwareContributions.message", { software }) }}</h3>
                 </div>
               </v-card-title>
               <v-divider class="mx-4"></v-divider>
@@ -122,7 +116,7 @@
                   </v-list-tile-avatar>
                   <v-list-tile-content class="pl-0">
                     <v-list-tile-title>
-                      <strong>{{otherContribution.title}}</strong>
+                      <strong>{{ otherContribution.title }}</strong>
                     </v-list-tile-title>
                   </v-list-tile-content>
                 </v-list-tile>
@@ -142,25 +136,25 @@
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Dev") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Reversed") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Integrated") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("published") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="font-weight-bold grey--text">
@@ -239,5 +233,15 @@ export default {
 }
 .related-contributions-list {
   height: 35px !important;
+}
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
+.flex.xs8.pr-5 {
+  padding-right: 10px !important;
+}
+.container.grid-list-md .layout .flex {
+  padding: 15px;
 }
 </style>
