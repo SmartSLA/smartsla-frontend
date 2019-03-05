@@ -24,13 +24,13 @@
                 <v-divider vertical />
                 <div class="float-right">
                   <file-upload
-                    prepend-icon="cloud_upload"
+                    prepend-icon="attach_file"
                     class="file"
                     :url="url"
                     :thumb-url="thumbUrl"
                     :headers="headers"
                     @change="onFileChange"
-                    btn-label="Select a file"
+                    btn-label="Attach file"
                     btn-uploading-label="Uploading file"
                   ></file-upload>
                   <v-text-field
@@ -130,7 +130,7 @@ export default {
   }
 };
 </script>
-<style scoped type="text/css">
+<style scoped type="stylus">
 .float-left {
   float: left;
   width: 50%;
@@ -140,10 +140,6 @@ export default {
   float: right;
   width: 50%;
   padding: 20px;
-}
-.file-upload .input-wrapper .file-upload-label {
-  color: #949494 !important;
-  background-color: aliceblue;
 }
 .v-content {
   padding: 0px 0px 0px 0px !important;
@@ -162,5 +158,20 @@ export default {
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
   background-color: #2196f3;
   color: #fff;
+}
+.file-upload .input-wrapper {
+  background-color: #eee !important;
+  height: 50px !important;
+  width: 150px !important;
+}
+.file-upload .input-wrapper .file-upload-label {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+.file-upload .input-wrapper .file-upload-label .file-upload-icon {
+  float: left !important;
+  font-size: 30px !important ;
+}
+.file-upload .input-wrapper:hover {
+  background-color: #eee !important;
 }
 </style>
