@@ -70,4 +70,15 @@ export default {
     background-color: #eee;
 .v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light
   background-color : #2b303c;
+  width: 280px !important;
+.v-list__tile
+  font-size: 14px !important;
+.v-icon
+  font-size: 21px !important;
+.v-list__tile__action, .v-list__tile__avatar
+  min-width: 40px !important;
+.v-list.v-list--subheader.v-list--three-line.theme--light .v-list__tile__content
+  padding-left : 15px !important;
+.v-icon.pl-4
+  padding-left: 15px !important;
 </style>
