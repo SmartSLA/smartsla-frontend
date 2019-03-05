@@ -13,7 +13,7 @@
             :key="contribution.contributionId"
             class="sidebar-list-item white--text pl-0"
             :class="{ primary: contribution.contributionId == currentActiveContributionId }"
-            @click="switchContribution"
+            @click="switchContribution(contribution.contributionId)"
           >
             <v-list-tile-content>
               <v-list-tile-title class="text-capitalize title"
@@ -76,9 +76,20 @@ export default {
     };
   },
   methods: {
-    switchContribution() {
-      return;
+    switchContribution(contributionId) {
+      this.$store.dispatch("sidebar/setActiveContribution", contributionId);
     }
+  },
+  created() {
+    this.$store.dispatch("sidebar/setActiveContribution", this.currentActiveContributionId);
+  },
+  mounted() {
+    this.$store.watch(
+      (state, getters) => getters["sidebar/getActiveContribution"],
+      newId => {
+        this.currentActiveContributionId = newId;
+      }
+    );
   }
 };
 </script>
