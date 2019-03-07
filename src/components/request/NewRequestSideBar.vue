@@ -23,18 +23,6 @@
           <v-divider></v-divider>
           <v-list-tile class="sidebar-list-item white--text">
             <v-list-tile-avatar>
-              <v-icon large class="pl-4 pb-3" color="white">forum</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-content dark>
-              <v-list-tile-title class="text-capitalize title">{{ $t("chat") }}</v-list-tile-title>
-              <v-list-tile-sub-title class="white--text request-sidebar-description pl-1">{{
-                $t("To have quick answers to your questions")
-              }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-          <v-list-tile class="sidebar-list-item white--text">
-            <v-list-tile-avatar>
               <v-icon large class="pl-4 pb-3" color="white">phone_in_talk</v-icon>
             </v-list-tile-avatar>
             <v-list-tile-content>
