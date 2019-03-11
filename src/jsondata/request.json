@@ -1,0 +1,53 @@
+{
+  "gravity": "bloquant",
+  "ticketNumber": 2031654656516,
+  "software": "GLPI",
+  "ticketTitle": "GLPI : importer un fichier lss dans la version 1.85",
+  "ticketDate": "25/09/2016 - 10h30",
+  "attachedFile": "",
+  "subject": "bonjour,\nThe Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.?\nThe Woodman set to work at once, and so sharp was",
+  "linkedTickets": [
+    23132132131321320,
+    15649879461615616
+  ],
+  "requestStatus": {
+    "open": true,
+    "progress": true,
+    "closed": false,
+    "priority": "Anomalie bloquante",
+    "nextStep": "final solution",
+    "environment": "recette",
+    "os": "Linux"
+  },
+  "communityContribution": {
+    "communityIssueLink": "https://github.com/glpi-project/glpi/issues/5457",
+    "status": {
+      "dev": true,
+      "reversed": false,
+      "integrated": false,
+      "published": false,
+      "rejected": false
+    }
+  },
+  "requestTime": {
+    "recall": {
+      "value": "52 mn",
+      "done": true
+    },
+    "bypass": {
+      "value": "4JO et 52mn",
+      "done": true
+    },
+    "finalSolution": {
+      "value": "39JO et 52mn",
+      "done": false
+    }
+  },
+  "serviceLevel": {
+    "level": "Niveau standard _ incident bloquant",
+    "recall": "1HO",
+    "infoResponse": "8JO",
+    "bypass": "5JO",
+    "finalSolution": "40JO"
+  }
+}

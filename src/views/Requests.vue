@@ -25,8 +25,8 @@
 </template>
 
 <script>
+var requests = require("@/jsondata/requests.json");
 import { mapGetters } from "vuex";
-
 export default {
   data() {
     return {
@@ -42,68 +42,7 @@ export default {
         { text: "Responsible", value: "responsible" },
         { text: "voir", value: "voir" }
       ],
-      requests: [
-        {
-          number: 1,
-          date: "10/03/2018",
-          software: "Elastic search",
-          criticality: "Standard",
-          incident_wording: "Dysfonctionnement facettes",
-          severity: "Bloquant",
-          status: "Contournement",
-          transmitter: "Dupon",
-          responsible: "Vromin",
-          voir: "VOIR"
-        },
-        {
-          number: 2,
-          date: "12/03/2018",
-          software: "GLPI",
-          criticality: "Standard",
-          incident_wording: "Infos manquantes Formulaire de création",
-          severity: "Non Bloquant",
-          status: "Rappel Utilisateur",
-          transmitter: "Martin",
-          responsible: "Dufon",
-          voir: "VOIR"
-        },
-        {
-          number: 3,
-          date: "10/04/2018",
-          software: "Redis",
-          criticality: "Critique",
-          incident_wording: "problème de lock",
-          severity: "Bloquant",
-          status: "Solution définitive",
-          transmitter: "Bernas",
-          responsible: "Maudu",
-          voir: "VOIR"
-        },
-        {
-          number: 4,
-          date: "10/05/2018",
-          software: "AngularJS",
-          criticality: "standard",
-          incident_wording: "Fuite mémoire",
-          severity: "Bloquant",
-          status: "Réponse demande",
-          transmitter: "Bacron",
-          responsible: "Chapy",
-          voir: "VOIR"
-        },
-        {
-          number: 5,
-          date: "22/05/2018",
-          software: "NPM",
-          criticality: "standard",
-          incident_wording: "Problème de droits",
-          severity: "Bloquant",
-          status: "Contournement",
-          transmitter: "Jorac",
-          responsible: "Moutou",
-          voir: "VOIR"
-        }
-      ]
+      requests: []
     };
   },
   mounted() {
@@ -115,6 +54,7 @@ export default {
     })
   },
   created() {
+    this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
   },
   beforeRouteLeave(to, from, next) {
