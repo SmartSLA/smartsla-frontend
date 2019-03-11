@@ -31,48 +31,13 @@
   </v-container>
 </template>
 <script>
+var latestContributionsList = require("@/jsondata/lastcontributions.json");
 export default {
   name: "contributions-side-bar",
   data() {
     return {
       currentActiveContributionId: 3,
-      recentContributions: [
-        {
-          software: "LibreOffice",
-          date: "12/01/2018",
-          contributionId: 1
-        },
-        {
-          software: "OpenPaas",
-          date: "12/01/2017",
-          contributionId: 2
-        },
-        {
-          software: "OpenLdap",
-          date: "12/01/2016",
-          contributionId: 3
-        },
-        {
-          software: "HUAWAEI",
-          date: "12/01/2015",
-          contributionId: 4
-        },
-        {
-          software: "Sympa",
-          date: "12/01/2019",
-          contributionId: 5
-        },
-        {
-          software: "JaspePort",
-          date: "12/01/2016",
-          contributionId: 6
-        },
-        {
-          software: "OpenLdap",
-          date: "12/01/2016",
-          contributionId: 7
-        }
-      ]
+      recentContributions: []
     };
   },
   methods: {
@@ -81,6 +46,7 @@ export default {
     }
   },
   created() {
+    this.recentContributions = latestContributionsList;
     this.$store.dispatch("sidebar/setActiveContribution", this.currentActiveContributionId);
   },
   mounted() {

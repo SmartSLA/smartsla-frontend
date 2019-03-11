@@ -17,6 +17,7 @@
   </div>
 </template>
 <script>
+var requests = require("@/jsondata/orders.json");
 export default {
   data() {
     return {
@@ -27,46 +28,11 @@ export default {
         { text: "Status", value: "status" },
         { text: "voir", value: "voir" }
       ],
-      requests: [
-        {
-          number: 1,
-          software: "USPL PILE ICASSO",
-          date: "10/04/2016_09/04/2017",
-          status: "In progress",
-          voir: "VOIR"
-        },
-        {
-          number: 2,
-          software: "USL STANDARD LIMESURVEY",
-          date: "21/03/2015_20/03/2016",
-          status: "Done",
-          voir: "VOIR"
-        },
-        {
-          number: 3,
-          software: "USP CRITIQUE PAQUET SYSTEME CENTOS",
-          date: "11/05/2016_10/05/2017",
-          status: "In progress",
-          voir: "VOIR"
-        },
-        {
-          number: 4,
-          software: "USP STANDARD PAQUET NOSQL",
-          date: "11/05/2016_10/05/2017",
-          status: "In progress",
-          voir: "VOIR"
-        },
-        {
-          number: 5,
-          software: "USL CRITIQUE DRUPAL",
-          date: "11/02/2016_10/05/2017",
-          status: "In progress",
-          voir: "VOIR"
-        }
-      ]
+      requests: []
     };
   },
   created() {
+    this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
   },
   beforeRouteLeave(to, from, next) {
