@@ -6,37 +6,55 @@
 
     <div class="tickets-search">
       <v-btn-toggle v-model="toggle_multiple" class="transparent">
-        <v-btn :value="1" flat>
-          {{ $t("Opened") }}
-        </v-btn>
-
-        <v-btn :value="2" flat>
-          {{ $t("In progress") }}
-        </v-btn>
-
-        <v-btn :value="3" flat>
-          {{ $t("Closed") }}
-        </v-btn>
+        <v-btn value="1" flat>{{ $t("Opened") }}</v-btn>
+        <v-btn value="2" flat>{{ $t("In progress") }}</v-btn>
+        <v-btn value="3" flat>{{ $t("Closed") }}</v-btn>
       </v-btn-toggle>
-      <v-divider class="mx-2" vertical></v-divider>
-      <v-overflow-btn :items="dropdown_items" label="All Teams" hide-details class="pa-0"></v-overflow-btn>
+      <v-spacer class="mx-2"></v-spacer>
+      <v-select
+        solo
+        :items="teams"
+        v-model="teamsFilter"
+        hide-details
+        class="scoped-requests-search"
+        label="All teams"
+        @input="$emit('input')"
+      ></v-select>
+      <v-spacer class="mx-2"></v-spacer>
+      <v-text-field
+        v-model="search"
+        :placeholder="$t('Search')"
+        single-line
+        hide-details
+        solo
+        class="scoped-requests-search"
+      >
+        <template v-slot:append class="appended-select-scope">
+          <v-divider vertical></v-divider>
+          <v-select :items="filterGroups" v-model="searchCriteria" dense single-line hide-details solo flat></v-select>
+          <v-divider vertical></v-divider>
+          <v-icon @click="resetRequestSearch" outline class="pl-2">close</v-icon>
+        </template>
+      </v-text-field>
     </div>
 
-    <v-layout v-resize="onResize">
+    <v-layout>
       <v-data-table
         :headers="headers"
         :items="requests"
         class="elevation-1"
         :search="search"
+        :custom-filter="requestsFilter"
+        :filter="requestFilterByGroup"
         :pagination.sync="pagination"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
       >
         <template slot="items" slot-scope="props">
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.number } }">
-              {{ props.item.number }}
-            </router-link>
+            <router-link :to="{ name: 'Request', params: { id: props.item.number } }">{{
+              props.item.number
+            }}</router-link>
           </td>
           <td class="text-xs-left">{{ props.item.date }}</td>
           <td class="text-xs-left">{{ props.item.software }}</td>
@@ -58,6 +76,33 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      filterGroups: ["Ticket", "Client", "Contract", "Responsible", "Software"],
+      teams: [
+        {
+          text: "All Teams",
+          value: ""
+        },
+        {
+          text: "ossa",
+          value: "ossa"
+        },
+        {
+          text: "support",
+          value: "support"
+        },
+        {
+          text: "hosting",
+          value: "hosting"
+        }
+      ],
+      searchCriteria: "Ticket",
+      search: null,
+      toggle_multiple: "2",
+      teamsFilter: {
+        text: "All Teams",
+        value: ""
+      },
+      isMobile: false,
       headers: [
         { text: "N°", value: "number" },
         { text: "Date", value: "date" },
@@ -89,20 +134,34 @@ export default {
     next();
   },
   methods: {
-    mounted() {
-      this.$http.getTickets(this.email).then(response => (this.requests = response.data));
+    resetRequestSearch() {
+      this.search = null;
+      this.teamsFilter = "";
+      this.searchCriteria = this.filterGroups[0];
     },
-    computed: {
-      ...mapGetters({
-        email: "user/getEmail"
-      })
+
+    requestsFilter(items, search, Filter) {
+      if (this.teamsFilter.length) {
+        items = items.filter(item => item.team.toLowerCase() == this.teamsFilter);
+      }
+      return items.filter(item => Filter(item, search.toLowerCase()));
     },
-    created() {
-      this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-    },
-    beforeRouteLeave(to, from, next) {
-      this.$store.dispatch("sidebar/resetCurrentSideBar");
-      next();
+
+    requestFilterByGroup(item, search) {
+      switch (this.searchCriteria) {
+        case "Ticket":
+          return item.incident_wording.toLowerCase().includes(search);
+        case "Client":
+          return item.client.toLowerCase().includes(search);
+        case "Contract":
+          return item.contract.toLowerCase().includes(search);
+        case "Responsible":
+          return item.incident_wording.toLowerCase().includes(search);
+        case "Software":
+          return item.software.toLowerCase().includes(search);
+        default:
+          return false;
+      }
     }
   }
 };
@@ -216,5 +275,17 @@ td {
 .v-datatable thead th.column.sortable {
   padding: 0px;
   text-align: center !important;
+}
+.scoped-requests-search {
+  padding-top: 10px !important;
+}
+
+div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-text-field--placeholder.v-input--hide-details.theme--light
+  > div
+  > div
+  > div.v-input__append-inner
+  > div,
+div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.v-input--hide-details.theme--light {
+  max-width: 150px;
 }
 </style>

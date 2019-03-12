@@ -8,7 +8,10 @@
     "severity": "Bloquant",
     "status": "Contournement",
     "transmitter": "Dupon",
-    "responsible": "Vromin"
+    "responsible": "Vromin",
+    "client": "linagora",
+    "contract": "elastic",
+    "team": "support"
   },
   {
     "number": "00002",
@@ -19,7 +22,10 @@
     "severity": "Non Bloquant",
     "status": "Rappel Utilisateur",
     "transmitter": "Martin",
-    "responsible": "Dufon"
+    "responsible": "Dufon",
+    "client": "sncf",
+    "contract": "glpi",
+    "team": "hosting"
   },
   {
     "number": "00003",
@@ -30,7 +36,10 @@
     "severity": "Bloquant",
     "status": "Solution définitive",
     "transmitter": "Bernas",
-    "responsible": "Maudu"
+    "responsible": "Maudu",
+    "client": "poste",
+    "contract": "redis",
+    "team": "support"
   },
   {
     "number": "00004",
@@ -41,7 +50,10 @@
     "severity": "Bloquant",
     "status": "Réponse demande",
     "transmitter": "Bacron",
-    "responsible": "Chapy"
+    "responsible": "Chapy",
+    "client": "linagora",
+    "contract": "angular",
+    "team": "ossa"
   },
   {
     "number": "00005",
@@ -52,6 +64,9 @@
     "severity": "Bloquant",
     "status": "Contournement",
     "transmitter": "Jorac",
-    "responsible": "Moutou"
+    "responsible": "Moutou",
+    "client": "poste",
+    "contract": "angular",
+    "team": "ossa"
   }
 ]
