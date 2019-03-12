@@ -22,24 +22,33 @@
       <v-overflow-btn :items="dropdown_items" label="All Teams" hide-details class="pa-0"></v-overflow-btn>
     </div>
 
-    <v-data-table :headers="headers" :items="requests" class="elevation-1" :search="search">
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.number }}</td>
-        <td class="text-xs-left">{{ props.item.date }}</td>
-        <td class="text-xs-left">{{ props.item.software }}</td>
-        <td class="text-xs-left">{{ props.item.criticality }}</td>
-        <td class="text-xs-left">{{ props.item.incident_wording }}</td>
-        <td class="text-xs-left">{{ props.item.severity }}</td>
-        <td class="text-xs-left">{{ props.item.status }}</td>
-        <td class="text-xs-left">{{ props.item.transmitter }}</td>
-        <td class="text-xs-left">{{ props.item.responsible }}</td>
-        <td class="text-xs-left">
-          <v-btn color="info" :to="{ name: 'Request', params: { id: props.item.number } }" class="view-request">{{
-            $t("VOIR")
-          }}</v-btn>
-        </td>
-      </template>
-    </v-data-table>
+    <v-layout v-resize="onResize">
+      <v-data-table
+        :headers="headers"
+        :items="requests"
+        class="elevation-1"
+        :search="search"
+        :pagination.sync="pagination"
+        :hide-headers="isMobile"
+        :class="{ mobile: isMobile }"
+      >
+        <template slot="items" slot-scope="props">
+          <td>
+            <router-link :to="{ name: 'Request', params: { id: props.item.number } }">
+              {{ props.item.number }}
+            </router-link>
+          </td>
+          <td class="text-xs-left">{{ props.item.date }}</td>
+          <td class="text-xs-left">{{ props.item.software }}</td>
+          <td class="text-xs-left">{{ props.item.criticality }}</td>
+          <td class="text-xs-left">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-left">{{ props.item.severity }}</td>
+          <td class="text-xs-left">{{ props.item.status }}</td>
+          <td class="text-xs-left">{{ props.item.transmitter }}</td>
+          <td class="text-xs-left">{{ props.item.responsible }}</td>
+        </template>
+      </v-data-table>
+    </v-layout>
   </div>
 </template>
 
@@ -58,12 +67,11 @@ export default {
         { text: "Severity", value: "severity" },
         { text: "Status", value: "status" },
         { text: "Transmitter", value: "transmitter" },
-        { text: "Responsible", value: "responsible" },
-        { text: "voir", value: "voir" }
+        { text: "Responsible", value: "responsible" }
       ],
       requests: [
         {
-          number: 1,
+          number: "00001",
           date: "10/03/2018",
           software: "Elastic search",
           criticality: "Standard",
@@ -71,11 +79,10 @@ export default {
           severity: "Bloquant",
           status: "Contournement",
           transmitter: "Dupon",
-          responsible: "Vromin",
-          voir: "VOIR"
+          responsible: "Vromin"
         },
         {
-          number: 2,
+          number: "00002",
           date: "12/03/2018",
           software: "GLPI",
           criticality: "Standard",
@@ -83,11 +90,10 @@ export default {
           severity: "Non Bloquant",
           status: "Rappel Utilisateur",
           transmitter: "Martin",
-          responsible: "Dufon",
-          voir: "VOIR"
+          responsible: "Dufon"
         },
         {
-          number: 3,
+          number: "00003",
           date: "10/04/2018",
           software: "Redis",
           criticality: "Critique",
@@ -95,11 +101,10 @@ export default {
           severity: "Bloquant",
           status: "Solution définitive",
           transmitter: "Bernas",
-          responsible: "Maudu",
-          voir: "VOIR"
+          responsible: "Maudu"
         },
         {
-          number: 4,
+          number: "00004",
           date: "10/05/2018",
           software: "AngularJS",
           criticality: "standard",
@@ -107,11 +112,10 @@ export default {
           severity: "Bloquant",
           status: "Réponse demande",
           transmitter: "Bacron",
-          responsible: "Chapy",
-          voir: "VOIR"
+          responsible: "Chapy"
         },
         {
-          number: 5,
+          number: "00005",
           date: "22/05/2018",
           software: "NPM",
           criticality: "standard",
@@ -119,8 +123,7 @@ export default {
           severity: "Bloquant",
           status: "Contournement",
           transmitter: "Jorac",
-          responsible: "Moutou",
-          voir: "VOIR"
+          responsible: "Moutou"
         }
       ],
       dropdown_items: [
@@ -146,6 +149,23 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
+  },
+  methods: {
+    mounted() {
+      this.$http.getTickets(this.email).then(response => (this.requests = response.data));
+    },
+    computed: {
+      ...mapGetters({
+        email: "user/getEmail"
+      })
+    },
+    created() {
+      this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
+    },
+    beforeRouteLeave(to, from, next) {
+      this.$store.dispatch("sidebar/resetCurrentSideBar");
+      next();
+    }
   }
 };
 </script>
@@ -191,5 +211,72 @@ export default {
 }
 .v-text-field {
   margin-top: 10px;
+}
+.mobile {
+  color: #333;
+}
+
+@media screen and (max-width: 768px) {
+  .mobile table.v-table tr {
+    max-width: 100%;
+    position: relative;
+    display: block;
+  }
+
+  .mobile table.v-table tr:nth-child(odd) {
+    border-left: 6px solid deeppink;
+  }
+
+  .mobile table.v-table tr:nth-child(even) {
+    border-left: 6px solid cyan;
+  }
+
+  .mobile table.v-table tr td {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid #f5f5f5;
+    height: auto;
+    padding: 10px;
+  }
+
+  .mobile table.v-table tr td ul li:before {
+    content: attr(data-label);
+    padding-right: 0.5em;
+    text-align: left;
+    display: block;
+    color: #999;
+  }
+  .v-datatable__actions__select {
+    width: 50%;
+    margin: 0px;
+    justify-content: flex-start;
+  }
+  .mobile .theme--light.v-table tbody tr:hover:not(.v-datatable__expand-row) {
+    background: transparent;
+  }
+}
+.flex-content {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.flex-item {
+  padding: 5px;
+  width: 50%;
+  height: 40px;
+  font-weight: bold;
+}
+td {
+  margin: 0px !important;
+  padding: 0px !important;
+  text-align: center;
+}
+.v-datatable thead th.column.sortable {
+  padding: 0px;
+  text-align: center !important;
 }
 </style>

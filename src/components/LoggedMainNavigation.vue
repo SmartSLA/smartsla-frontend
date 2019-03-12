@@ -164,6 +164,9 @@ export default {
   padding: 0px;
   margin: 0px;
 
+.v-list__tile__title
+  padding-top: 5px;
+
 // .v-toolbar__title.ml-0.pl-3
 //   display: none;
 </style>

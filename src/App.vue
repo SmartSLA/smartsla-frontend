@@ -69,6 +69,8 @@ export default {
   height: 34px;
   width: 138px;
   margin-top: 10px;
+.v-toolbar__title.ml-0.pl-3
+  width: 230px !important;
 .v-toolbar__content
     background-color: #eee;
 // height: 50px !important;
@@ -102,7 +104,7 @@ export default {
 .v-list--three-line .v-list__tile
   margin-top: 10px !important;
 .user-menu-item
-  margin-left: 50%;
+  margin-left: 20%;
 // .v-toolbar__content .v-list.theme--light
 //   padding: 0px;
 //   height: 50px;

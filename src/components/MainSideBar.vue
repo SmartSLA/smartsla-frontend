@@ -2,9 +2,9 @@
   <v-container class="px-0">
     <v-layout row wrap>
       <v-flex xs12>
-        <div class="pl-4 pr-4">
+        <!-- <div class="pl-4 pr-4">
           <v-text-field :label="$t('Search')" solo prepend-inner-icon="search"></v-text-field>
-        </div>
+        </div> -->
         <v-list class="mini-side-bar">
           <v-list-tile @click="link" class="mini-side-bar-item">
             <v-list-tile-action>
