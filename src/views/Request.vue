@@ -79,12 +79,7 @@
                 </v-flex>
                 <v-flex xs11>
                   <b>{{ $t("Related requests") }}</b> :
-                  <a
-                    href="#"
-                    v-for="link in request.linkedTickets"
-                    :key="link"
-                    class="pr-2"
-                  >{{ link }}</a>
+                  <a href="#" v-for="link in request.linkedTickets" :key="link" class="pr-2">{{ link }}</a>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -93,34 +88,19 @@
             <v-tabs grow icons-and-text class="ml-3 mr-3">
               <v-tabs-slider color="primary"></v-tabs-slider>
               <v-tab href="#comment">{{ $t("comments") }}</v-tab>
-              <v-tab href="#chat">{{ $t("chat history") }}</v-tab>
               <v-tab href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat>
                   <v-form>
-                    <v-textarea
-                      solo
-                      autofocus
-                      auto-grow
-                      prepend-icon="subject"
-                      name="input-7-4"
-                      value
-                    ></v-textarea>
+                    <v-textarea solo autofocus auto-grow prepend-icon="subject" name="input-7-4" value></v-textarea>
                     <v-btn color="info">{{ $t("POST A NEW MESSAGE") }}</v-btn>
                   </v-form>
-                </v-card>
-              </v-tab-item>
-              <v-tab-item value="chat">
-                <v-card flat>
-                  <v-card-text>chat</v-card-text>
                 </v-card>
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
                   <v-card-text>
-                    {{
-                    $t("the satisfaction survey will be available once the ticket is closed")
-                    }}
+                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -141,35 +121,35 @@
               <v-list ml-0 mr-0 mt-0>
                 <v-list-tile>
                   <v-list-tile-content>
-                    <v-list-tile-title class="px-2 red--text">{{request.serviceLevel.level}}</v-list-tile-title>
+                    <v-list-tile-title class="px-2 red--text">{{ request.serviceLevel.level }}</v-list-tile-title>
                   </v-list-tile-content>
                 </v-list-tile>
                 <v-list-tile class="blue-grey lighten-5">
                   <v-list-tile-content>
                     <v-list-tile-title class="px-2 text-uppercase">{{ $t("recall") }}</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">{{request.serviceLevel.recall}}</v-list-tile-action>
+                  <v-list-tile-action class="grey--text px-2">{{ request.serviceLevel.recall }}</v-list-tile-action>
                 </v-list-tile>
                 <v-list-tile>
                   <v-list-tile-content>
                     <v-list-tile-title class="px-2 text-uppercase">{{ $t("info request answer") }}</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">{{request.serviceLevel.infoResponse}}</v-list-tile-action>
+                  <v-list-tile-action class="grey--text px-2">{{
+                    request.serviceLevel.infoResponse
+                  }}</v-list-tile-action>
                 </v-list-tile>
                 <v-list-tile class="blue-grey lighten-5">
                   <v-list-tile-content>
                     <v-list-tile-title class="px-2 text-uppercase">{{ $t("circumvention") }}</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">{{request.serviceLevel.bypass}}</v-list-tile-action>
+                  <v-list-tile-action class="grey--text px-2">{{ request.serviceLevel.bypass }}</v-list-tile-action>
                 </v-list-tile>
                 <v-list-tile>
                   <v-list-tile-content>
                     <v-list-tile-title class="px-2 text-uppercase">{{ $t("final solution") }}</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-list-tile-action 
-                  class="grey--text px-2"
-                  >
-                  {{request.serviceLevel.finalSolution}}
+                  <v-list-tile-action class="grey--text px-2">
+                    {{ request.serviceLevel.finalSolution }}
                   </v-list-tile-action>
                 </v-list-tile>
               </v-list>
@@ -179,13 +159,7 @@
             <v-card light color="white px-4 pt-2">
               <v-layout row wrap>
                 <v-flex xs12>
-                  <v-badge
-                    color="green"
-                    right
-                    bottom
-                    overlap
-                    v-if="request.requestTime.recall.done"
-                  >
+                  <v-badge color="green" right bottom overlap v-if="request.requestTime.recall.done">
                     <v-icon slot="badge" dark small>done</v-icon>
                     <v-icon large>access_time</v-icon>
                     <span></span>
@@ -195,13 +169,7 @@
                   {{ request.requestTime.recall.value }}
                 </v-flex>
                 <v-flex xs12>
-                  <v-badge
-                    color="green"
-                    right
-                    bottom
-                    overlap
-                    v-if="request.requestTime.bypass.done"
-                  >
+                  <v-badge color="green" right bottom overlap v-if="request.requestTime.bypass.done">
                     <v-icon slot="badge" dark small>done</v-icon>
                     <v-icon large>access_time</v-icon>
                     <span></span>
@@ -211,13 +179,7 @@
                   {{ request.requestTime.bypass.value }}
                 </v-flex>
                 <v-flex xs12>
-                  <v-badge
-                    color="green"
-                    right
-                    bottom
-                    overlap
-                    v-if="request.requestTime.finalSolution.done"
-                  >
+                  <v-badge color="green" right bottom overlap v-if="request.requestTime.finalSolution.done">
                     <v-icon slot="badge" dark small>done</v-icon>
                     <v-icon large>access_time</v-icon>
                     <span></span>
@@ -241,24 +203,21 @@
                 <v-flex xs8>
                   <v-layout class="mb-1">
                     <v-flex xs4 class="green--text font-weight-bold">
-                      <v-icon
-                        class="progress-arrow"
-                        :class="{'green--text': request.requestStatus.open}"
-                      >label_important</v-icon>
+                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.open }"
+                        >label_important</v-icon
+                      >
                       <small>{{ $t("Open") }}</small>
                     </v-flex>
                     <v-flex xs4 class="green--text font-weight-bold">
-                      <v-icon
-                        class="progress-arrow"
-                        :class="{'green--text': request.requestStatus.progress}"
-                      >label_important</v-icon>
+                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.progress }"
+                        >label_important</v-icon
+                      >
                       <small>{{ $t("Processing") }}</small>
                     </v-flex>
                     <v-flex xs4>
-                      <v-icon
-                        class="progress-arrow"
-                        :class="{'green--text': request.requestStatus.closed}"
-                      >label_important</v-icon>
+                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.closed }"
+                        >label_important</v-icon
+                      >
                       <small>{{ $t("Closed") }}</small>
                     </v-flex>
                   </v-layout>
@@ -266,19 +225,19 @@
               </v-layout>
               <v-card-text class="px-0 information">
                 <strong>{{ $t("Priority") }} :</strong>
-                {{request.requestStatus.priority}}
+                {{ request.requestStatus.priority }}
               </v-card-text>
               <v-card-text class="px-0 information">
                 <strong>{{ $t("Next step") }} :</strong>
-                {{request.requestStatus.nextStep}}
+                {{ request.requestStatus.nextStep }}
               </v-card-text>
               <v-card-text class="px-0 information">
                 <strong>{{ $t("Environment") }} :</strong>
-                {{request.requestStatus.environment}}
+                {{ request.requestStatus.environment }}
               </v-card-text>
               <v-card-text class="px-0 information">
                 <strong>{{ $t("Operating system") }} :</strong>
-                {{request.requestStatus.os}}
+                {{ request.requestStatus.os }}
               </v-card-text>
             </v-card>
           </v-flex>
@@ -293,38 +252,41 @@
                 <v-divider></v-divider>
                 <v-layout class="mb-1">
                   <v-flex class="green--text font-weight-bold">
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{'green--text': request.communityContribution.status.dev}"
-                    >label_important</v-icon>
+                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Dev") }}</small>
                   </v-flex>
                   <v-flex>
                     <v-icon
                       class="progress-arrow"
-                      :class="{'green--text': request.communityContribution.status.reversed}"
-                    >label_important</v-icon>
+                      :class="{ 'green--text': request.communityContribution.status.reversed }"
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
                   <v-flex>
                     <v-icon
                       class="progress-arrow"
-                      :class="{'green--text': request.communityContribution.status.integrated}"
-                    >label_important</v-icon>
+                      :class="{ 'green--text': request.communityContribution.status.integrated }"
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
                   <v-flex>
                     <v-icon
                       class="progress-arrow"
-                      :class="{'green--text': request.communityContribution.status.published}"
-                    >label_important</v-icon>
+                      :class="{ 'green--text': request.communityContribution.status.published }"
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("published") }}</small>
                   </v-flex>
                   <v-flex>
                     <v-icon
                       class="progress-arrow"
-                      :class="{'green--text': request.communityContribution.status.rejected}"
-                    >label_important</v-icon>
+                      :class="{ 'green--text': request.communityContribution.status.rejected }"
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
@@ -340,7 +302,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-var request = require("@/jsondata/request.json");
+var request = require("@/assets/data/request.json");
 export default {
   data() {
     return {

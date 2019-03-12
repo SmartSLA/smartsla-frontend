@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-var requests = require("@/jsondata/orders.json");
+var requests = require("@/assets/data/orders.json");
 export default {
   data() {
     return {

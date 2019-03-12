@@ -1,32 +1,29 @@
 <template>
-  <v-list right>
-    <div class="pull-right">
-      <v-list-tile @click.prevent="" class="user-menu-item">
-        <v-icon>search</v-icon>
-      </v-list-tile>
-      <v-menu offset-y>
-        <op-avatar slot="activator"></op-avatar>
-        <v-list>
-          <v-list-tile>
-            <v-list-tile-content>
-              <v-list-tile-title class="title">{{ getDisplayName }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ getEmail }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider />
-          <v-list-tile @click.prevent="profile">
-            <v-list-tile-title>{{ $t("Profile") }}</v-list-tile-title>
-          </v-list-tile>
-          <v-divider />
-          <v-list-tile @click.prevent="settings">
-            <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile @click.prevent="logout">
-            <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
-    </div>
+  <v-list right class="mb-1">
+    <global-search class="user-menu-item" />
+    <v-spacer></v-spacer>
+    <v-menu offset-y>
+      <op-avatar slot="activator"></op-avatar>
+      <v-list>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title class="title">{{ getDisplayName }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{ getEmail }}</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider />
+        <v-list-tile @click.prevent="profile">
+          <v-list-tile-title>{{ $t("Profile") }}</v-list-tile-title>
+        </v-list-tile>
+        <v-divider />
+        <v-list-tile @click.prevent="settings">
+          <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile @click.prevent="logout">
+          <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
   </v-list>
 </template>
 
@@ -34,10 +31,14 @@
 import { mapGetters } from "vuex";
 import { OPAvatar } from "vue-openpaas-components";
 import { routeNames } from "@/router";
+import globalSearch from "@/components/search/GlobalSearch.vue";
 
 export default {
   name: "op-user-menu",
-  components: { "op-avatar": OPAvatar },
+  components: {
+    "op-avatar": OPAvatar,
+    "global-search": globalSearch
+  },
   methods: {
     logout() {
       return this.$store.dispatch("session/logout").then(() => {

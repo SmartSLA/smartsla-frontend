@@ -31,7 +31,7 @@
   </v-container>
 </template>
 <script>
-var latestContributionsList = require("@/jsondata/lastcontributions.json");
+var latestContributionsList = require("@/assets/data/lastcontributions.json");
 export default {
   name: "contributions-side-bar",
   data() {

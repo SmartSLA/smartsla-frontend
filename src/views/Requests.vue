@@ -53,7 +53,7 @@
 </template>
 
 <script>
-var requests = require("@/jsondata/requests.json");
+var requests = require("@/assets/data/requests.json");
 import { mapGetters } from "vuex";
 export default {
   data() {

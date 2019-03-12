@@ -182,7 +182,7 @@
   </v-container>
 </template>
 <script>
-var contributions = require("@/jsondata/contributions.json");
+var contributions = require("@/assets/data/contributions.json");
 export default {
   data() {
     return {
