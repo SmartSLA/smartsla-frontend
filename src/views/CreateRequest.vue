@@ -1,5 +1,4 @@
 <template>
-
   <v-content>
     <div>
       <v-icon>create</v-icon>
@@ -7,7 +6,6 @@
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
-        
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
             <v-card-text>
@@ -25,16 +23,6 @@
                 </div>
                 <v-divider vertical />
                 <div class="float-right">
-                  <file-upload
-                    prepend-icon="attach_file"
-                    class="file"
-                    :url="url"
-                    :thumb-url="thumbUrl"
-                    :headers="headers"
-                    @change="onFileChange"
-                    btn-label="Attach file"
-                    btn-uploading-label="Uploading file"
-                  ></file-upload>
                   <v-text-field
                     prepend-icon="attach_file"
                     name="Related request"
@@ -53,6 +41,16 @@
                     :environnement="environnement"
                     label="Environnement"
                   ></v-select>
+                  <file-upload
+                    prepend-icon="attach_file"
+                    class="file"
+                    :url="url"
+                    :thumb-url="thumbUrl"
+                    :headers="headers"
+                    @change="onFileChange"
+                    btn-label="Attach file"
+                    btn-uploading-label="Uploading file"
+                  ></file-upload>
                 </div>
               </v-form>
             </v-card-text>
@@ -175,5 +173,11 @@ export default {
 }
 .file-upload .input-wrapper:hover {
   background-color: #eee !important;
+}
+.elevation-12.v-card.v-sheet.theme--light {
+  height: 450px !important;
+}
+.v-card__actions {
+  padding-top: 80px;
 }
 </style>

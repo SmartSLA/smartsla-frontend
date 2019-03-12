@@ -13,7 +13,7 @@
         <v-icon>mdi-file-document</v-icon>
       </v-list-tile-action>
       <v-list-tile-content>
-        <v-list-tile-title>{{ $t("watches") }}</v-list-tile-title>
+        <v-list-tile-title>{{ $t("Watches") }}</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
     <v-list-tile @click="link" class="side-bar-links-item">
@@ -21,7 +21,7 @@
         <v-icon>mdi-lightbulb-outline</v-icon>
       </v-list-tile-action>
       <v-list-tile-content>
-        <v-list-tile-title class="body-1">{{ $t("tips and tricks / best practices") }}</v-list-tile-title>
+        <v-list-tile-title class="body-1">{{ $t("Tips and tricks / best practices") }}</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
     <v-list-tile @click="link" class="side-bar-links-item">

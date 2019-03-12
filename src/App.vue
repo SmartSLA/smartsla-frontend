@@ -63,14 +63,21 @@ export default {
 <style lang="stylus">
 .v-list.logged-main-navigation.theme--light
   background-color: #EEEEEE;
+  margin: -20px;
+  padding: 0px;
 #header-logo
   height: 34px;
   width: 138px;
+  margin-top: 10px;
+.v-toolbar__title.ml-0.pl-3
+  width: 230px !important;
 .v-toolbar__content
     background-color: #eee;
+// height: 50px !important;
 .v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light
   background-color : #2b303c;
   width: 280px !important;
+// margin-top: 50px !important;
 .v-list__tile
   font-size: 14px !important;
 .v-icon
@@ -81,4 +88,26 @@ export default {
   padding-left : 15px !important;
 .v-icon.pl-4
   padding-left: 15px !important;
+.file-upload .input-wrapper
+  background-color: #eee !important;
+  height: 45px !important;
+  width: 150px !important;
+.file-upload .input-wrapper .file-upload-label
+  color: rgba(0, 0, 0, 0.54) !important;
+.file-upload .input-wrapper .file-upload-label .file-upload-icon
+  float: left !important;
+  font-size: 30px !important ;
+.file-upload .input-wrapper:hover
+  background-color: #eee !important;
+.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text, .v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text
+  font-size: 36px !important;
+.v-list--three-line .v-list__tile
+  margin-top: 10px !important;
+.user-menu-item
+  margin-left: 20%;
+// .v-toolbar__content .v-list.theme--light
+//   padding: 0px;
+//   height: 50px;
+// nav .v-list__tile.v-list__tile--link.theme--light
+//     height: 50px;
 </style>

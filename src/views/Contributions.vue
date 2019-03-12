@@ -84,7 +84,7 @@
                 </v-flex>
                 <v-flex xs11>
                   <b>{{ $t("binary link of the software integrating the patch") }}</b> :
-                  <br>
+                  <br />
                   <a class="pr-2">{{ contribution.softwareLink }}</a>
                 </v-flex>
               </v-layout>
@@ -96,7 +96,7 @@
                 </v-flex>
                 <v-flex xs11>
                   <b>{{ $t("exchanges with communities about the contribution") }}</b> :
-                  <br>
+                  <br />
                   <a class="pr-2" :href="contribution.communityPatchLink">{{ $t("see here") }}</a>
                 </v-flex>
               </v-layout>
@@ -110,9 +110,9 @@
             <v-card light color="white" class="pb-3">
               <v-card-title primary-title class="px-4 text-capitalize">
                 <div>
-                  <h3
-                    class="headline mb-0"
-                  >{{ $t("otherSoftwareContributions.message", { software: contribution.software }) }}</h3>
+                  <h3 class="headline mb-0">
+                    {{ $t("otherSoftwareContributions.message", { software: contribution.software }) }}
+                  </h3>
                 </div>
               </v-card-title>
               <v-divider class="mx-4"></v-divider>
@@ -147,25 +147,25 @@
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Dev") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Reversed") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Integrated") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("published") }}</small>
-                    <br>
+                    <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="font-weight-bold grey--text">
