@@ -13,6 +13,7 @@ import Orders from "@/views/Orders.vue";
 import Profile from "@/views/Profile.vue";
 import Settings from "@/views/Settings.vue";
 import ApplicationSettings from "@/services/application-settings";
+import CreateClient from "@/views/CreateClient.vue";
 
 Vue.use(Router);
 
@@ -20,6 +21,7 @@ Vue.use(Router);
 export const routeNames = Object.freeze({
   HOME: "Home",
   CREATEREQUEST: "Create Request",
+  CREATECLIENT: "Create Client",
   REQUESTS: "Requests",
   REQUEST: "Request",
   DASHBOARD: "Dashboard",
@@ -48,6 +50,14 @@ export default new Router({
       path: "/create-request",
       name: routeNames.CREATEREQUEST,
       component: CreateRequest,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/create-client",
+      name: routeNames.CREATECLIENT,
+      component: CreateClient,
       meta: {
         auth: true
       }
