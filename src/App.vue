@@ -105,6 +105,8 @@ export default {
   margin-top: 10px !important;
 .user-menu-item
   margin-left: 20%;
+.active-menu-link a
+  color: white !important;
 // .v-toolbar__content .v-list.theme--light
 //   padding: 0px;
 //   height: 50px;

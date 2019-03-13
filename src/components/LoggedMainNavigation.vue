@@ -1,98 +1,38 @@
 <template>
   <v-toolbar class="main-menu">
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-list-tile @click.prevent="create_request" class="logged-main-navigation-item">
+      <v-list-tile
+        v-for="menuItem in menuItems"
+        :key="menuItem.icon"
+        :to="{ name: menuItem.name }"
+        :class="{
+          'primary active-menu-link': menuItem.name == currentActiveMenu,
+          regular: menuItem.name != currentActiveMenu
+        }"
+        :dark="menuItem.name == currentActiveMenu"
+      >
         <v-list-tile-title>
-          <v-icon>create</v-icon>
-          {{ $t("Create Request") }}
-        </v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click.prevent="requests" class="logged-main-navigation-item">
-        <v-badge color="red">
-          <span slot="badge">5</span>
-          <v-list-tile-title>
-            <v-icon>format_list_numbered</v-icon>
-            {{ $t("Requests") }}
-          </v-list-tile-title>
-        </v-badge>
-      </v-list-tile>
-      <v-list-tile @click.prevent="dashboard" class="logged-main-navigation-item">
-        <v-list-tile-title>
-          <v-icon>dashboard</v-icon>
-          {{ $t("Dashboard") }}
-        </v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click.prevent="satisfaction" class="logged-main-navigation-item">
-        <v-list-tile-title>
-          <v-icon>favorite</v-icon>
-          {{ $t("Satisfaction") }}
-        </v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click.prevent="historic" class="logged-main-navigation-item">
-        <v-list-tile-title>
-          <v-icon>restore</v-icon>
-          {{ $t("Historic") }}
-        </v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click.prevent="contributions" class="logged-main-navigation-item">
-        <v-list-tile-title>
-          <v-icon>format_line_spacing</v-icon>
-          {{ $t("Contributions") }}
-        </v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click.prevent="orders" class="logged-main-navigation-item">
-        <v-list-tile-title>
-          <v-icon>grid_on</v-icon>
-          {{ $t("Orders") }}
+          <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
+          {{ menuItem.text }}
         </v-list-tile-title>
       </v-list-tile>
     </v-toolbar-items>
     <v-menu class="hidden-md-and-up">
       <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
       <v-list class="logged-main-navigation">
-        <v-list-tile @click.prevent="create_request" class="logged-main-navigation-item">
+        <v-list-tile
+          v-for="menuItem in menuItems"
+          :key="menuItem.icon"
+          :to="{ name: menuItem.name }"
+          :class="{
+            'primary active-menu-link': menuItem.name == currentActiveMenu,
+            regular: menuItem.name != currentActiveMenu
+          }"
+          :dark="menuItem.name == currentActiveMenu"
+        >
           <v-list-tile-title>
-            <v-icon>create</v-icon>
-            {{ $t("Create Request") }}
-          </v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile @click.prevent="requests" class="logged-main-navigation-item">
-          <v-badge color="red">
-            <span slot="badge">5</span>
-            <v-list-tile-title>
-              <v-icon>format_list_numbered</v-icon>
-              {{ $t("Requests") }}
-            </v-list-tile-title>
-          </v-badge>
-        </v-list-tile>
-        <v-list-tile @click.prevent="dashboard" class="logged-main-navigation-item">
-          <v-list-tile-title>
-            <v-icon>dashboard</v-icon>
-            {{ $t("Dashboard") }}
-          </v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile @click.prevent="satisfaction" class="logged-main-navigation-item">
-          <v-list-tile-title>
-            <v-icon>favorite</v-icon>
-            {{ $t("Satisfaction") }}
-          </v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile @click.prevent="historic" class="logged-main-navigation-item">
-          <v-list-tile-title>
-            <v-icon>restore</v-icon>
-            {{ $t("Historic") }}
-          </v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile @click.prevent="contributions" class="logged-main-navigation-item">
-          <v-list-tile-title>
-            <v-icon>format_line_spacing</v-icon>
-            {{ $t("Contributions") }}
-          </v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile @click.prevent="orders" class="logged-main-navigation-item">
-          <v-list-tile-title>
-            <v-icon>grid_on</v-icon>
-            {{ $t("Orders") }}
+            <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
+            {{ menuItem.text }}
           </v-list-tile-title>
         </v-list-tile>
       </v-list>
@@ -104,69 +44,98 @@
 import { routeNames } from "@/router";
 export default {
   name: "logged-main-navigation",
-  methods: {
-    home() {
-      return this.$router.push({ name: routeNames.HOME });
+  data() {
+    return {
+      menuItems: [
+        {
+          name: routeNames.CREATEREQUEST,
+          text: this.$i18n.t("Create Request"),
+          icon: "create"
+        },
+        {
+          name: routeNames.REQUESTS,
+          text: this.$i18n.t("Requests"),
+          icon: "format_list_numbered"
+        },
+        {
+          name: routeNames.DASHBOARD,
+          text: this.$i18n.t("Dashboard"),
+          icon: "dashboard"
+        },
+        {
+          name: routeNames.SATISFACTION,
+          text: this.$i18n.t("Satisfaction"),
+          icon: "favorite"
+        },
+        {
+          name: routeNames.HISTORIC,
+          text: this.$i18n.t("Historic"),
+          icon: "restore"
+        },
+        {
+          name: routeNames.CONTRIBUTIONS,
+          text: this.$i18n.t("Contributions"),
+          icon: "format_line_spacing"
+        },
+        {
+          name: routeNames.ORDERS,
+          text: this.$i18n.t("Orders"),
+          icon: "grid_on"
+        }
+      ]
+    };
+  },
+  computed: {
+    routeNames() {
+      return routeNames;
     },
-    create_request() {
-      return this.$router.push({ name: routeNames.CREATEREQUEST });
-    },
-    requests() {
-      return this.$router.push({ name: routeNames.REQUESTS });
-    },
-    dashboard() {
-      return this.$router.push({ name: routeNames.DASHBOARD });
-    },
-    satisfaction() {
-      return this.$router.push({ name: routeNames.SATISFACTION });
-    },
-    historic() {
-      return this.$router.push({ name: routeNames.HISTORIC });
-    },
-    contributions() {
-      return this.$router.push({ name: routeNames.CONTRIBUTIONS });
-    },
-    orders() {
-      return this.$router.push({ name: routeNames.ORDERS });
-    },
-    menuItems() {
-      return this.menu;
+
+    currentActiveMenu() {
+      return this.$route.name;
     }
   }
 };
 </script>
 
 <style lang="stylus" scoped>
-.theme--light.v-icon
+.theme--light.v-icon {
   color: #000000 !important;
+}
 
-.logged-main-navigation-item
+.regular {
   float: left;
   color: #000000;
   background-color: #EEEEEE;
+}
 
-.logged-main-navigation-item:hover
-    background-color: #DDDDDD !important;
+.regular:hover {
+  background-color: #DDDDDD !important;
+}
 
-.active
-    background-color: #307dbf !important;
-    color: #FFFFFF !important;
+.active {
+  background-color: #307dbf !important;
+  color: #FFFFFF !important;
+}
 
-.v-list.logged-main-navigation.theme--light
+.v-list.logged-main-navigation.theme--light {
   padding: 0px;
   display: grid;
   margin: 0px;
+}
 
-.main-menu.v-toolbar.theme--light
+.main-menu.v-toolbar.theme--light {
   box-shadow: none;
   width: 60%;
   float: left;
   padding: 0px;
   margin: 0px;
+}
 
-.v-list__tile__title
+.v-list__tile__title {
   padding-top: 5px;
+}
 
-// .v-toolbar__title.ml-0.pl-3
-//   display: none;
+.active-menu-link.v-list__tile--active {
+  color: red !important;
+}
 </style>
