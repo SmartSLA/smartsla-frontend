@@ -51,19 +51,74 @@
         :class="{ mobile: isMobile }"
       >
         <template slot="items" slot-scope="props">
-          <td>
+          <td class="text-xs-center">
             <router-link :to="{ name: 'Request', params: { id: props.item.number } }">{{
               props.item.number
             }}</router-link>
           </td>
-          <td class="text-xs-left">{{ props.item.date }}</td>
-          <td class="text-xs-left">{{ props.item.software }}</td>
-          <td class="text-xs-left">{{ props.item.criticality }}</td>
-          <td class="text-xs-left">{{ props.item.incident_wording }}</td>
-          <td class="text-xs-left">{{ props.item.severity }}</td>
-          <td class="text-xs-left">{{ props.item.status }}</td>
-          <td class="text-xs-left">{{ props.item.transmitter }}</td>
-          <td class="text-xs-left">{{ props.item.responsible }}</td>
+          <td>
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">{{
+              props.item.ticket_number
+            }}</router-link>
+          </td>
+          <td class="text-xs-center">
+            <v-badge v-if="props.item.id_ossa == 1" color="#5bc0de">
+              <template v-slot:badge>
+                <span>{{ props.item.id_ossa }}</span>
+              </template>
+            </v-badge>
+            <v-badge v-if="props.item.id_ossa == 2" color="#f0ad4e">
+              <template v-slot:badge>
+                <span>{{ props.item.id_ossa }}</span>
+              </template>
+            </v-badge>
+            <v-badge v-if="props.item.id_ossa == 3" color="#d9534f">
+              <template v-slot:badge>
+                <span>{{ props.item.id_ossa }}</span>
+              </template>
+            </v-badge>
+          </td>
+          <td class="text-xs-center">{{ props.item.severity }}</td>
+          <td class="text-xs-center">
+            <v-progress-linear
+              v-if="props.item.conf.color == 'error'"
+              color="error"
+              height="20"
+              value="30"
+            >
+              {{ props.item.remaining_time }}
+            </v-progress-linear>
+            <v-progress-linear
+              v-if="props.item.conf.color == 'warning'"
+              color="warning"
+              height="20"
+              value="50"
+            >
+              {{ props.item.remaining_time }}
+            </v-progress-linear>
+            <v-progress-linear
+              v-if="props.item.conf.color == 'info'"
+              color="info"
+              height="20"
+              value="80"
+            >
+              {{ props.item.remaining_time }}
+            </v-progress-linear>
+          </td>
+          <td class="text-xs-center">{{ props.item.status }}</td>
+          <td class="text-xs-center">{{ props.item.responsible }}</td>
+          <td class="text-xs-center">{{ props.item.transmitter }}</td>
+          <td class="text-xs-center">{{ props.item.type }}</td>
+          <td class="text-xs-center">
+            <a href="#">{{ props.item.client_contrat }}</a>
+          </td>
+          <td class="text-xs-center">
+            <span v-if="props.item.software == 'LibreOffice'" class="major-criticality">{{ props.item.software }}</span>
+            <span v-else class="minor-criticality">{{ props.item.software }}</span>
+          </td>
+          <td class="text-xs-center">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-center">{{ props.item.maj }}</td>
+          <td class="text-xs-center">{{ props.item.created }}</td>
         </template>
       </v-data-table>
     </v-layout>
@@ -76,7 +131,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      filterGroups: ["Ticket", "Client", "Contract", "Responsible", "Software"],
+      filterGroups: ["Ticket", "Client / Contract", "Responsible", "Software"],
       teams: [
         {
           text: "All Teams",
@@ -104,15 +159,20 @@ export default {
       },
       isMobile: false,
       headers: [
-        { text: "N°", value: "number" },
-        { text: "Date", value: "date" },
-        { text: "Software", value: "software" },
-        { text: "Criticality", value: "criticality" },
-        { text: "Incident wording", value: "incident_wording" },
+        { text: "#", value: "number" },
+        { text: "Ticket N°", value: "ticket_number" },
+        { text: "ID OSSA", value: "id_ossa" },
         { text: "Severity", value: "severity" },
+        { text: "Remaining time", value: "remaining_time" },
         { text: "Status", value: "status" },
+        { text: "Responsible", value: "responsible" },
         { text: "Transmitter", value: "transmitter" },
-        { text: "Responsible", value: "responsible" }
+        { text: "Type", value: "type" },
+        { text: "Client / Contrat", value: "client_contrat" },
+        { text: "Software", value: "software" },
+        { text: "Incident wording", value: "incident_wording" },
+        { text: "MAJ", value: "maj" },
+        { text: "Created", value: "created" }
       ],
       requests: []
     };
@@ -151,10 +211,8 @@ export default {
       switch (this.searchCriteria) {
         case "Ticket":
           return item.incident_wording.toLowerCase().includes(search);
-        case "Client":
-          return item.client.toLowerCase().includes(search);
-        case "Contract":
-          return item.contract.toLowerCase().includes(search);
+        case "Client / Contract":
+          return item.client_contract.toLowerCase().includes(search);
         case "Responsible":
           return item.incident_wording.toLowerCase().includes(search);
         case "Software":
@@ -213,45 +271,6 @@ export default {
   color: #333;
 }
 
-@media screen and (max-width: 768px) {
-  .mobile table.v-table tr {
-    max-width: 100%;
-    position: relative;
-    display: block;
-  }
-
-  .mobile table.v-table tr:nth-child(odd) {
-    border-left: 6px solid deeppink;
-  }
-
-  .mobile table.v-table tr:nth-child(even) {
-    border-left: 6px solid cyan;
-  }
-
-  .mobile table.v-table tr td {
-    display: flex;
-    width: 100%;
-    border-bottom: 1px solid #f5f5f5;
-    height: auto;
-    padding: 10px;
-  }
-
-  .mobile table.v-table tr td ul li:before {
-    content: attr(data-label);
-    padding-right: 0.5em;
-    text-align: left;
-    display: block;
-    color: #999;
-  }
-  .v-datatable__actions__select {
-    width: 50%;
-    margin: 0px;
-    justify-content: flex-start;
-  }
-  .mobile .theme--light.v-table tbody tr:hover:not(.v-datatable__expand-row) {
-    background: transparent;
-  }
-}
 .flex-content {
   padding: 0;
   margin: 0;
@@ -268,12 +287,12 @@ export default {
   font-weight: bold;
 }
 td {
-  margin: 0px !important;
-  padding: 0px !important;
+  margin: 2px !important;
+  padding: 2px !important;
   text-align: center;
 }
-.v-datatable thead th.column.sortable {
-  padding: 0px;
+th.column.sortable.text-xs-left {
+  padding: 2px !important;
   text-align: center !important;
 }
 .scoped-requests-search {
@@ -287,5 +306,12 @@ div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text
   > div,
 div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.v-input--hide-details.theme--light {
   max-width: 150px;
+}
+.major-criticality {
+  background-color: #d9534f;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 2px;
+  border-radius: 5px;
 }
 </style>
