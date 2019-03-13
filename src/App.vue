@@ -110,6 +110,8 @@ th.column.sortable.text-xs-left
   padding: 2px !important;
   text-align: center !important;
 
+.active-menu-link a
+  color: white !important;
 // .v-toolbar__content .v-list.theme--light
 //   padding: 0px;
 //   height: 50px;
