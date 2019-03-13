@@ -99,12 +99,17 @@ export default {
   font-size: 30px !important ;
 .file-upload .input-wrapper:hover
   background-color: #eee !important;
-.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text, .v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text
+.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text,
+.v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text
   font-size: 36px !important;
 .v-list--three-line .v-list__tile
   margin-top: 10px !important;
 .user-menu-item
   margin-left: 20%;
+th.column.sortable.text-xs-left 
+  padding: 2px !important;
+  text-align: center !important;
+
 .active-menu-link a
   color: white !important;
 // .v-toolbar__content .v-list.theme--light
