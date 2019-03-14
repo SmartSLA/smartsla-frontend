@@ -36,6 +36,7 @@ import NewRequestSideBar from "@/components/request/NewRequestSideBar.vue";
 import MainSideBar from "@/components/MainSideBar.vue";
 import ContributionsSideBar from "@/components/ContributionsSideBar.vue";
 import IssueDetailSideBar from "@/components/request/IssueDetailSideBar.vue";
+import AdminMainSideBar from "@/components/admin/AdminMainSideBar.vue";
 
 export default {
   components: {
@@ -45,7 +46,8 @@ export default {
     "new-request-side-bar": NewRequestSideBar,
     "main-side-bar": MainSideBar,
     "contributions-side-bar": ContributionsSideBar,
-    "issue-detail-side-bar": IssueDetailSideBar
+    "issue-detail-side-bar": IssueDetailSideBar,
+    "admin-main-side-bar": AdminMainSideBar
   },
   computed: {
     ...mapGetters({
@@ -105,7 +107,7 @@ export default {
   margin-top: 10px !important;
 .user-menu-item
   margin-left: 20%;
-th.column.sortable.text-xs-left 
+th.column.sortable.text-xs-left
   padding: 2px !important;
   text-align: center !important;
 

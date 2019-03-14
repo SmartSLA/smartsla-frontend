@@ -11,5 +11,20 @@ export default {
     url: "api/user",
     method: "GET",
     enabled: true
+  },
+  rolesVar: "isPlatformAdmin",
+  parseUserData(data) {
+    return data;
+  },
+  check(role, key) {
+    if (this.watch.authenticated === true) {
+      if (role === "admin") {
+        return this.watch.data[key || this.options.rolesVar];
+      }
+
+      return true;
+    }
+
+    return false;
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar class="main-menu">
+  <v-toolbar class="main-menu" v-if="$auth.ready()">
     <v-toolbar-items class="hidden-sm-and-down">
       <v-list-tile
         v-for="menuItem in menuItems"
@@ -10,9 +10,17 @@
           regular: menuItem.name != currentActiveMenu
         }"
         :dark="menuItem.name == currentActiveMenu"
+        v-if="menuItem.show"
       >
-        <v-list-tile-title>
-          <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
+        <v-badge color="red" v-if="menuItem.count">
+          <span slot="badge">{{ menuItem.count }}</span>
+          <v-list-tile-title>
+            <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
+            {{ menuItem.text }}
+          </v-list-tile-title>
+        </v-badge>
+        <v-list-tile-title v-else>
+          <v-icon>{{ menuItem.icon }}</v-icon>
           {{ menuItem.text }}
         </v-list-tile-title>
       </v-list-tile>
@@ -30,10 +38,17 @@
           }"
           :dark="menuItem.name == currentActiveMenu"
         >
+        <v-badge color="red" v-if="menuItem.count">
+          <span slot="badge">{{ menuItem.count }}</span>
           <v-list-tile-title>
             <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
             {{ menuItem.text }}
           </v-list-tile-title>
+        </v-badge>
+        <v-list-tile-title v-else>
+          <v-icon>{{ menuItem.icon }}</v-icon>
+          {{ menuItem.text }}
+        </v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-menu>
@@ -46,43 +61,7 @@ export default {
   name: "logged-main-navigation",
   data() {
     return {
-      menuItems: [
-        {
-          name: routeNames.CREATEREQUEST,
-          text: this.$i18n.t("Create Request"),
-          icon: "create"
-        },
-        {
-          name: routeNames.REQUESTS,
-          text: this.$i18n.t("Requests"),
-          icon: "format_list_numbered"
-        },
-        {
-          name: routeNames.DASHBOARD,
-          text: this.$i18n.t("Dashboard"),
-          icon: "dashboard"
-        },
-        {
-          name: routeNames.SATISFACTION,
-          text: this.$i18n.t("Satisfaction"),
-          icon: "favorite"
-        },
-        // {
-        //   name: routeNames.HISTORIC,
-        //   text: this.$i18n.t("Historic"),
-        //   icon: "restore"
-        // },
-        {
-          name: routeNames.CONTRIBUTIONS,
-          text: this.$i18n.t("Contributions"),
-          icon: "format_line_spacing"
-        },
-        {
-          name: routeNames.ORDERS,
-          text: this.$i18n.t("Orders"),
-          icon: "grid_on"
-        }
-      ]
+      menuItems: []
     };
   },
   computed: {
@@ -92,7 +71,65 @@ export default {
 
     currentActiveMenu() {
       return this.$route.name;
+    },
+
+    requestsCount() {
+      var requests = require("@/assets/data/requests.json");
+      return requests.length;
     }
+  },
+  created() {
+    this.menuItems = [
+      {
+        name: routeNames.CREATEREQUEST,
+        text: this.$i18n.t("Create Request"),
+        icon: "create",
+        show: true
+      },
+      {
+        name: routeNames.REQUESTS,
+        text: this.$i18n.t("Requests"),
+        icon: "format_list_numbered",
+        show: true,
+        count: this.requestsCount
+      },
+      {
+        name: routeNames.DASHBOARD,
+        text: this.$i18n.t("Dashboard"),
+        icon: "dashboard",
+        show: true
+      },
+      {
+        name: routeNames.SATISFACTION,
+        text: this.$i18n.t("Satisfaction"),
+        icon: "favorite",
+        show: true
+      },
+      /*{
+        name: routeNames.HISTORIC,
+        text: this.$i18n.t("Historic"),
+        icon: "restore",
+        show: true
+      },*/
+      {
+        name: routeNames.CONTRIBUTIONS,
+        text: this.$i18n.t("Contributions"),
+        icon: "format_line_spacing",
+        show: true
+      },
+      {
+        name: routeNames.ORDERS,
+        text: this.$i18n.t("Orders"),
+        icon: "grid_on",
+        show: true
+      },
+      {
+        name: routeNames.ADMINISTRATION,
+        text: this.$i18n.t("Administration"),
+        icon: "mdi-tune",
+        show: this.$auth.check("admin")
+      }
+    ];
   }
 };
 </script>
