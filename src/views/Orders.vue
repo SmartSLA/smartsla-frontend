@@ -3,7 +3,7 @@
     <div class="page-title">
       <span>ETAT DE TOUTES LES COMMANDES PASSEES EN EN COURS</span>
     </div>
-    <v-data-table :headers="headers" :items="requests" class="elevation-1" hide-actions>
+    <v-data-table :headers="headers" :items="requests" class="elevation-1">
       <template slot="items" slot-scope="props">
         <td>{{ props.item.number }}</td>
         <td class="text-xs-left">{{ props.item.software }}</td>

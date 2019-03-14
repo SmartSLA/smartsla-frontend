@@ -73,14 +73,13 @@ export default {
   width: 230px !important;
 .v-toolbar__content
     background-color: #eee;
-// height: 50px !important;
 .v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light
   background-color : #2b303c;
   width: 280px !important;
-// margin-top: 50px !important;
 .v-list__tile
   font-size: 14px !important;
-.v-icon
+.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light .v-icon,
+.v-toolbar.v-toolbar--clipped.v-toolbar--fixed.theme--light.primary .v-icon
   font-size: 21px !important;
 .v-list__tile__action, .v-list__tile__avatar
   min-width: 40px !important;
@@ -112,9 +111,11 @@ th.column.sortable.text-xs-left
 
 .active-menu-link a
   color: white !important;
-// .v-toolbar__content .v-list.theme--light
-//   padding: 0px;
-//   height: 50px;
-// nav .v-list__tile.v-list__tile--link.theme--light
-//     height: 50px;
+.login-bar .v-toolbar__content
+  background-color: #2196f3;
+button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light
+  background-color: #2196f3;
+button.v-btn.v-btn--flat.v-btn--icon.theme--light
+  background-color: #2196f3;
+  color: #fff;
 </style>

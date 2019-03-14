@@ -67,11 +67,11 @@ export default {
           text: this.$i18n.t("Satisfaction"),
           icon: "favorite"
         },
-        {
-          name: routeNames.HISTORIC,
-          text: this.$i18n.t("Historic"),
-          icon: "restore"
-        },
+        // {
+        //   name: routeNames.HISTORIC,
+        //   text: this.$i18n.t("Historic"),
+        //   icon: "restore"
+        // },
         {
           name: routeNames.CONTRIBUTIONS,
           text: this.$i18n.t("Contributions"),
