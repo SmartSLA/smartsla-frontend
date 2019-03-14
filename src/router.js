@@ -14,6 +14,7 @@ import Profile from "@/views/Profile.vue";
 import Settings from "@/views/Settings.vue";
 import ApplicationSettings from "@/services/application-settings";
 import CreateClient from "@/views/CreateClient.vue";
+import Administration from "@/views/admin/Administration.vue";
 
 Vue.use(Router);
 
@@ -31,7 +32,8 @@ export const routeNames = Object.freeze({
   ORDERS: "Orders",
   PROFILE: "Profile",
   SETTINGS: "Settings",
-  LOGIN: "Login"
+  LOGIN: "Login",
+  ADMINISTRATION: "Administration"
 });
 
 export default new Router({
@@ -138,6 +140,14 @@ export default new Router({
       path: "/settings",
       name: routeNames.SETTINGS,
       component: Settings,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/administration",
+      name: routeNames.ADMINISTRATION,
+      component: Administration,
       meta: {
         auth: true
       }

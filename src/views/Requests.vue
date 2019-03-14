@@ -80,28 +80,13 @@
           </td>
           <td class="text-xs-center">{{ props.item.severity }}</td>
           <td class="text-xs-center">
-            <v-progress-linear
-              v-if="props.item.conf.color == 'error'"
-              color="error"
-              height="20"
-              value="30"
-            >
+            <v-progress-linear v-if="props.item.conf.color == 'error'" color="error" height="20" value="30">
               {{ props.item.remaining_time }}
             </v-progress-linear>
-            <v-progress-linear
-              v-if="props.item.conf.color == 'warning'"
-              color="warning"
-              height="20"
-              value="50"
-            >
+            <v-progress-linear v-if="props.item.conf.color == 'warning'" color="warning" height="20" value="50">
               {{ props.item.remaining_time }}
             </v-progress-linear>
-            <v-progress-linear
-              v-if="props.item.conf.color == 'info'"
-              color="info"
-              height="20"
-              value="80"
-            >
+            <v-progress-linear v-if="props.item.conf.color == 'info'" color="info" height="20" value="80">
               {{ props.item.remaining_time }}
             </v-progress-linear>
           </td>
