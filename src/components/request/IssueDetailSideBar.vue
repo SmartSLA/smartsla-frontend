@@ -3,11 +3,19 @@
     <v-layout row wrap>
       <v-flex xs12>
         <v-list three-line subheader>
-          <v-subheader inset class="text-uppercase blue white--text title ml-0">
-            <v-icon large color="white">info</v-icon>
-            {{ $t("urgent request") }}
-          </v-subheader>
-          <v-icon large color="blue" class="arrow-down pr-4">play_arrow</v-icon>
+          <v-subheader inset class="text-uppercase blue text-md-center white--text ml-0">{{
+            $t("interlocutor in charge of the request")
+          }}</v-subheader>
+          <v-card class="pt-2">
+            <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
+            <br />
+            <v-img class="ml-5 mr-5" :src="avatarUrl" height="150px"></v-img>
+            <v-card-title primary-title>
+              <div>
+                <div class="title text-xs-center ml-4 grey--text text-capitalize">{{ displayName }}</div>
+              </div>
+            </v-card-title>
+          </v-card>
           <v-list-tile class="sidebar-list-item white--text pl-0">
             <v-list-tile-avatar>
               <v-icon large class="pl-4 pb-3" color="white">mdi-message-video</v-icon>
@@ -19,11 +27,16 @@
                 {{ $t("ex: discussion, screen sharing ...)") }}
               </v-list-tile-sub-title>
             </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon ripple>
+                <v-icon color="white lighten-1" @click="videoConference">play_circle_filled</v-icon>
+              </v-btn>
+            </v-list-tile-action>
           </v-list-tile>
           <v-divider></v-divider>
           <v-list-tile class="sidebar-list-item white--text">
             <v-list-tile-avatar>
-              <v-icon large class="pl-4 pb-3" color="white">phone_in_talk</v-icon>
+              <v-icon large class="pl-4 pb-3" color="white" @click="phoneCall">phone_in_talk</v-icon>
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title class="text-capitalize title">{{ $t("Phone") }}</v-list-tile-title>
@@ -32,6 +45,11 @@
                 <br />08.00.05.46.89
               </v-list-tile-sub-title>
             </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon ripple>
+                <v-icon color="white lighten-1">play_circle_filled</v-icon>
+              </v-btn>
+            </v-list-tile-action>
           </v-list-tile>
         </v-list>
       </v-flex>
@@ -42,20 +60,33 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import sideBarLinks from "@/components/SideBarLinks.vue";
 export default {
-  name: "new-request-side-bar",
+  name: "issue-detail-side-bar",
   components: {
     "side-bar-links": sideBarLinks
   },
   methods: {
     link() {
       return;
+    },
+    videoConference() {
+      return;
+    },
+    phoneCall() {
+      return;
     }
+  },
+  computed: {
+    ...mapGetters({
+      avatarUrl: "user/getAvatarUrl",
+      displayName: "user/getDisplayName"
+    })
   }
 };
 </script>
-<style lang="css" scoped>
+<style lang="css">
 .sidebar-list-item {
   background-color: #2b303c;
 }
@@ -72,6 +103,6 @@ export default {
 .arrow-down {
   transform: rotate(90deg);
   position: absolute;
-  left: 30%;
+  left: 35%;
 }
 </style>

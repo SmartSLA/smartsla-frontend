@@ -3,7 +3,7 @@
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
-          <v-toolbar color="primary">
+          <v-toolbar class="login-bar">
             <v-toolbar-title class="white--text">{{ $t("OpenPaaS Login") }}</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
@@ -79,3 +79,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+button.v-btn.theme--light {
+  background-color: #2196f3 !important;
+  color: #fff;
+}
+</style>

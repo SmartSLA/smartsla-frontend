@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>Create request</span>
+      <span>Create Client</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
@@ -11,52 +11,29 @@
             <v-card-text>
               <v-form>
                 <div class="float-left">
-                  <v-select prepend-icon="report" v-model="select" :severity="severity" label="Severity"></v-select>
-                  <v-select prepend-icon="laptop" v-model="select" :logiciel="logiciel" label="Software"></v-select>
-                  <v-text-field
-                    prepend-icon="warning"
-                    name="Request name"
-                    :label="$t('Request name')"
-                    type="text"
-                  ></v-text-field>
-                  <v-textarea prepend-icon="notes" name="request-description" label="Request Description"></v-textarea>
+                  <v-text-field name="Name" :label="$t('Name')" type="text"></v-text-field>
+                  <v-textarea name="adresse" label="Adresse"></v-textarea>
                 </div>
                 <v-divider vertical />
                 <div class="float-right">
-                  <v-text-field
-                    prepend-icon="attach_file"
-                    name="Related request"
-                    :label="$t('Related request')"
-                    type="text"
-                  ></v-text-field>
-                  <v-text-field
-                    prepend-icon="library_books"
-                    name="Version"
-                    :label="$t('Version')"
-                    type="text"
-                  ></v-text-field>
-                  <v-select
-                    prepend-icon="bug_report"
-                    v-model="select"
-                    :environnement="environnement"
-                    label="Environnement"
-                  ></v-select>
+                  <v-checkbox v-model="checkbox" :label="`Inactive`"></v-checkbox>
                   <file-upload
-                    prepend-icon="attach_file"
                     class="file"
                     :url="url"
                     :thumb-url="thumbUrl"
                     :headers="headers"
                     @change="onFileChange"
-                    btn-label="Attach file"
-                    btn-uploading-label="Uploading file"
+                    btn-label="Logo"
+                    btn-uploading-label="Logo"
                   ></file-upload>
+                  <v-text-field name="access-code" :label="$t('Access Code')" type="text"></v-text-field>
+                  <v-text-field name="help-access" :label="$t('Help access')" type="text"></v-text-field>
                 </div>
               </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn :disabled="submitRequest" :loading="submitRequest" @click="submit">{{ $t("Submit") }}</v-btn>
+              <v-btn :disabled="submitClient" :loading="submitClient" @click="submit">{{ $t("Validate") }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -86,7 +63,7 @@ export default {
   },
   methods: {
     submit() {
-      this.submitRequest = false;
+      this.submitClient = false;
       this.$http.createTicket({});
     },
     thumbUrl(file) {
@@ -98,7 +75,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "new-request-side-bar");
+    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");

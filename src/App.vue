@@ -34,6 +34,9 @@ import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
 import Snackbar from "@/components/Snackbar.vue";
 import NewRequestSideBar from "@/components/request/NewRequestSideBar.vue";
 import MainSideBar from "@/components/MainSideBar.vue";
+import ContributionsSideBar from "@/components/ContributionsSideBar.vue";
+import IssueDetailSideBar from "@/components/request/IssueDetailSideBar.vue";
+import AdminMainSideBar from "@/components/admin/AdminMainSideBar.vue";
 
 export default {
   components: {
@@ -41,7 +44,10 @@ export default {
     "logged-main-navigation": LoggedMainNavigation,
     "op-snackbar": Snackbar,
     "new-request-side-bar": NewRequestSideBar,
-    "main-side-bar": MainSideBar
+    "main-side-bar": MainSideBar,
+    "contributions-side-bar": ContributionsSideBar,
+    "issue-detail-side-bar": IssueDetailSideBar,
+    "admin-main-side-bar": AdminMainSideBar
   },
   computed: {
     ...mapGetters({
@@ -59,11 +65,59 @@ export default {
 <style lang="stylus">
 .v-list.logged-main-navigation.theme--light
   background-color: #EEEEEE;
+  margin: -20px;
+  padding: 0px;
 #header-logo
   height: 34px;
   width: 138px;
+  margin-top: 10px;
+.v-toolbar__title.ml-0.pl-3
+  width: 230px !important;
 .v-toolbar__content
     background-color: #eee;
+.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light
+  background-color : #2b303c;
+  width: 280px !important;
+.v-list__tile
+  font-size: 14px !important;
+.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light .v-icon,
+.v-toolbar.v-toolbar--clipped.v-toolbar--fixed.theme--light.primary .v-icon
+  font-size: 21px !important;
+.v-list__tile__action, .v-list__tile__avatar
+  min-width: 40px !important;
+.v-list.v-list--subheader.v-list--three-line.theme--light .v-list__tile__content
+  padding-left : 15px !important;
+.v-icon.pl-4
+  padding-left: 15px !important;
+.file-upload .input-wrapper
+  background-color: #eee !important;
+  height: 45px !important;
+  width: 150px !important;
+.file-upload .input-wrapper .file-upload-label
+  color: rgba(0, 0, 0, 0.54) !important;
+.file-upload .input-wrapper .file-upload-label .file-upload-icon
+  float: left !important;
+  font-size: 30px !important ;
+.file-upload .input-wrapper:hover
+  background-color: #eee !important;
+.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text,
+.v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text
+  font-size: 36px !important;
+.v-list--three-line .v-list__tile
+  margin-top: 10px !important;
+.user-menu-item
+  margin-left: 20%;
+th.column.sortable.text-xs-left
+  padding: 2px !important;
+  text-align: center !important;
 
-
+.active-menu-link a
+  color: white !important;
+.login-bar .v-toolbar__content
+  background-color: #2196f3;
+button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light
+  background-color: #2196f3;
+button.v-btn.v-btn--flat.v-btn--icon.theme--light
+  background-color: #2196f3;
+  color: #fff;
 </style>

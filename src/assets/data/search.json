@@ -1,0 +1,51 @@
+[
+  {
+    "header": "clients"
+  },
+  {
+    "name": "Sandra Adams",
+    "type": "client"
+  },
+  {
+    "name": "Ali Connors",
+    "type": "client"
+  },
+  {
+    "name": "Trevor Hansen",
+    "type": "client"
+  },
+  {
+    "name": "linagora",
+    "type": "client"
+  },
+  {
+    "name": "Tucker Smith",
+    "type": "client"
+  },
+  {
+    "divider": true
+  },
+  {
+    "header": "contracts"
+  },
+  {
+    "name": "Britta Holt",
+    "type": "contract"
+  },
+  {
+    "name": "Jane Smith ",
+    "type": "contract"
+  },
+  {
+    "name": "linagora openpaas",
+    "type": "contract"
+  },
+  {
+    "name": "John Smith",
+    "type": "contract"
+  },
+  {
+    "name": "Sandra Williams",
+    "type": "contract"
+  }
+]

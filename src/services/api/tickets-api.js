@@ -4,7 +4,6 @@ export default {
   },
 
   createTicket(options) {
-    console.log("hi");
     return this.post(`/ossa/ticket/create`, { options });
   },
 

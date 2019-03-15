@@ -1,9 +1,6 @@
 <template>
-  <v-list right>
-    <v-spacer></v-spacer>
-    <v-list-tile @click.prevent="" class="user-menu-item">
-      <v-icon>search</v-icon>
-    </v-list-tile>
+  <v-list right class="mb-1">
+    <global-search class="user-menu-item" />
     <v-spacer></v-spacer>
     <v-menu offset-y>
       <op-avatar slot="activator"></op-avatar>
@@ -34,10 +31,14 @@
 import { mapGetters } from "vuex";
 import { OPAvatar } from "vue-openpaas-components";
 import { routeNames } from "@/router";
+import globalSearch from "@/components/search/GlobalSearch.vue";
 
 export default {
   name: "op-user-menu",
-  components: { "op-avatar": OPAvatar },
+  components: {
+    "op-avatar": OPAvatar,
+    "global-search": globalSearch
+  },
   methods: {
     logout() {
       return this.$store.dispatch("session/logout").then(() => {
@@ -67,10 +68,13 @@ export default {
 .user-menu-item
   float: left;
 .v-list.theme--light
-    background-color: #eee;
+  background-color: #eee;
 .theme--light.v-icon
   color: #000000 !important;
 .v-menu.v-menu--inline
-    padding-left: 25px;
-    padding-top: 8px;
+  padding-left: 25px;
+  padding-top: 8px;
+.pull-right
+  float: right;
+  width: 75%;
 </style>
