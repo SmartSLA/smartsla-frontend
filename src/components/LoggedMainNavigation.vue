@@ -38,17 +38,17 @@
           }"
           :dark="menuItem.name == currentActiveMenu"
         >
-        <v-badge color="red" v-if="menuItem.count">
-          <span slot="badge">{{ menuItem.count }}</span>
-          <v-list-tile-title>
-            <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
+          <v-badge color="red" v-if="menuItem.count">
+            <span slot="badge">{{ menuItem.count }}</span>
+            <v-list-tile-title>
+              <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
+              {{ menuItem.text }}
+            </v-list-tile-title>
+          </v-badge>
+          <v-list-tile-title v-else>
+            <v-icon>{{ menuItem.icon }}</v-icon>
             {{ menuItem.text }}
           </v-list-tile-title>
-        </v-badge>
-        <v-list-tile-title v-else>
-          <v-icon>{{ menuItem.icon }}</v-icon>
-          {{ menuItem.text }}
-        </v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-menu>
