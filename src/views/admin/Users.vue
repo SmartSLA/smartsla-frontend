@@ -14,17 +14,22 @@
           hide-details
           solo
           class="users-search-name"
-        >
-        </v-text-field>
-        <v-select solo :items="clients" v-model="clients" hide-details label="Client" class="users-search-client">
-        </v-select>
-        <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"> </v-select>
+        ></v-text-field>
+        <v-select
+          solo
+          :items="clients"
+          v-model="clients"
+          hide-details
+          label="Client"
+          class="users-search-client"
+        ></v-select>
+        <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"></v-select>
         <div class="users-operations">
-          <a href="#">
+          <a href="#" class="users-actions">
             <v-icon>add_circle</v-icon>
             <span>Add user</span>
           </a>
-          <a href="#">
+          <a href="#" class="users-actions">
             <v-icon>arrow_downward</v-icon>
             <span>Export</span>
           </a>
@@ -38,9 +43,7 @@
             <div v-if="props.item.isdisabled == 'yes'">
               <strike>{{ props.item.name }}</strike>
             </div>
-            <div v-else>
-              {{ props.item.name }}
-            </div>
+            <div v-else>{{ props.item.name }}</div>
           </td>
           <td class="text-xs-center">{{ props.item.role }}</td>
           <td class="text-xs-center">{{ props.item.engineer }}</td>
@@ -48,10 +51,14 @@
           <td class="text-xs-center user-mail">{{ props.item.email }}</td>
           <td class="text-xs-center">{{ props.item.phone }}</td>
           <td class="text-xs-center">
-            <a href="#"><v-icon>search</v-icon></a>
+            <a href="#" class="users-actions">
+              <v-icon>search</v-icon>
+            </a>
           </td>
           <td class="text-xs-center">
-            <a href="#"><v-icon>create</v-icon></a>
+            <a href="#" class="users-actions">
+              <v-icon>create</v-icon>
+            </a>
           </td>
         </template>
       </v-data-table>
@@ -63,6 +70,9 @@ var users = require("@/assets/data/users.json");
 export default {
   data() {
     return {
+      search: "",
+      clients: [],
+      roles: [],
       headers: [
         { text: "Title", value: "title" },
         { text: "Name", value: "name" },
@@ -79,9 +89,11 @@ export default {
   },
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
+    this.$store.dispatch("sidebar/setActiveAdminMenu", "users");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
+    this.$store.dispatch("sidebar/resetAdminMenu");
     next();
   },
   beforeCreate() {
@@ -143,5 +155,8 @@ export default {
 .users-operations {
   margin: 10px;
   margin-left: 100px !important;
+}
+.users-actions {
+  text-decoration: none !important;
 }
 </style>

@@ -1,11 +1,13 @@
 const state = {
   currentSideBarComponent: null,
-  currentActiveContribution: null
+  currentActiveContribution: null,
+  currentActiveAdminMenu: null
 };
 
 const types = {
   SET_SIDEBAR: "SET_SIDEBAR",
-  SET_CONTRIBUTION: "SET_CONTRIBUTION"
+  SET_CONTRIBUTION: "SET_CONTRIBUTION",
+  SET_ADMIN_MENU: "SET_ADMIN_MENU"
 };
 
 const actions = {
@@ -19,6 +21,14 @@ const actions = {
 
   setActiveContribution({ commit }, activeContributionId) {
     commit(types.SET_CONTRIBUTION, activeContributionId);
+  },
+
+  setActiveAdminMenu({ commit }, activeMenuName) {
+    commit(types.SET_ADMIN_MENU, activeMenuName);
+  },
+
+  resetAdminMenu({ commit }) {
+    commit(types.SET_ADMIN_MENU, "");
   }
 };
 
@@ -29,6 +39,10 @@ const mutations = {
 
   [types.SET_CONTRIBUTION](state, value) {
     state.currentActiveContribution = value;
+  },
+
+  [types.SET_ADMIN_MENU](state, value) {
+    state.currentActiveAdminMenu = value;
   }
 };
 
@@ -39,6 +53,10 @@ const getters = {
 
   getActiveContribution(state) {
     return state.currentActiveContribution;
+  },
+
+  getActiveAdminMenu(state) {
+    return state.currentActiveAdminMenu;
   }
 };
 

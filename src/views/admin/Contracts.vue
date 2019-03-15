@@ -14,12 +14,23 @@
           hide-details
           solo
           class="contracts-search-name"
-        >
-        </v-text-field>
-        <v-select solo :items="clients" v-model="clients" hide-details label="Status" class="contracts-search-status">
-        </v-select>
-        <v-select solo :items="clients" v-model="clients" hide-details label="Tam" class="contracts-search-tam">
-        </v-select>
+        ></v-text-field>
+        <v-select
+          solo
+          :items="clients"
+          v-model="clients"
+          hide-details
+          label="Status"
+          class="contracts-search-status"
+        ></v-select>
+        <v-select
+          solo
+          :items="clients"
+          v-model="clients"
+          hide-details
+          label="Tam"
+          class="contracts-search-tam"
+        ></v-select>
         <v-select
           solo
           :items="roles"
@@ -27,18 +38,23 @@
           hide-details
           label="Commercial"
           class="contracts-search-commercial"
-        >
-        </v-select>
-        <v-select solo :items="clients" v-model="clients" hide-details label="Team" class="contracts-search-team">
-        </v-select>
+        ></v-select>
+        <v-select
+          solo
+          :items="clients"
+          v-model="clients"
+          hide-details
+          label="Team"
+          class="contracts-search-team"
+        ></v-select>
         <div class="contracts-operations">
-          <a href="#">
+          <a href="#" class="contracts-actions">
             <v-icon>add_circle</v-icon>
-            <span>Add user</span>
+            <span>{{ $t("Add user") }}</span>
           </a>
-          <a href="#">
+          <a href="#" class="contracts-actions">
             <v-icon>arrow_downward</v-icon>
-            <span>Export</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>
@@ -50,17 +66,19 @@
               <strike>{{ props.item.name }}</strike>
               <span class="expired-contracts">Expired</span>
             </div>
-            <div v-else>
-              {{ props.item.name }}
-            </div>
+            <div v-else>{{ props.item.name }}</div>
           </td>
           <td class="text-xs-center">{{ props.item.begin }}</td>
           <td class="text-xs-center">{{ props.item.end }}</td>
           <td class="text-xs-center">
-            <a href="#"><v-icon>search</v-icon></a>
+            <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
+              <v-icon>search</v-icon>
+            </router-link>
           </td>
           <td class="text-xs-center">
-            <a href="#"><v-icon>create</v-icon></a>
+            <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
+              <v-icon>create</v-icon>
+            </router-link>
           </td>
         </template>
       </v-data-table>
@@ -72,6 +90,9 @@ var contracts = require("@/assets/data/contracts.json");
 export default {
   data() {
     return {
+      search: "",
+      clients: [],
+      roles: [],
       headers: [
         { text: "Name", value: "name" },
         { text: "Begin", value: "begin" },
@@ -79,57 +100,17 @@ export default {
         { text: "View", value: "view" },
         { text: "Edit", value: "edit" }
       ],
-      contracts: [
-        {
-          name: "DGA Totem V3 (Drupal)",
-          begin: "08/09/2008",
-          end: "10/04/2012",
-          isdisabled: "yes"
-        },
-        {
-          name: "Easi Wal",
-          begin: "28/09/2009",
-          end: "08/02/2010",
-          isdisabled: "yes"
-        },
-        {
-          name: "Easi Wal wallonie.be",
-          begin: "22/02/2010",
-          end: "22/03/2010",
-          isdisabled: "yes"
-        },
-        {
-          name: "Reporter Sans Frontière www.rsf.org",
-          begin: "01/04/2010",
-          end: "30/04/2012",
-          isdisabled: "yes"
-        },
-        {
-          name: "L'Humanité site drupal",
-          begin: "18/06/2010",
-          end: "18/06/2011",
-          isdisabled: "yes"
-        },
-        {
-          name: "L'Humanité",
-          begin: "01/05/2012",
-          end: "31/03/2022",
-          isdisabled: "no"
-        },
-        {
-          name: "DGT - Club de Paris",
-          begin: "17/11/2015",
-          end: "19/12/2019",
-          isdisabled: "no"
-        }
-      ]
+      contracts: []
     };
   },
   created() {
+    this.contracts = contracts;
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
+    this.$store.dispatch("sidebar/setActiveAdminMenu", "contracts");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
+    this.$store.dispatch("sidebar/resetAdminMenu");
     next();
   },
   beforeCreate() {
@@ -199,5 +180,8 @@ export default {
   border: #fa4b4b solid 1px;
   border-radius: 5px;
   margin-left: 5px;
+}
+.contracts-actions {
+  text-decoration: none !important;
 }
 </style>

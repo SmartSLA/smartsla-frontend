@@ -4,7 +4,7 @@
       <v-flex xs12>
         <v-list three-line subheader>
           <v-subheader inset class="text-uppercase blue text-md-center white--text ml-0">{{
-            $t("LINAGORA's interlocutor in charge of the request")
+            $t("interlocutor in charge of the request")
           }}</v-subheader>
           <v-card class="pt-2">
             <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
