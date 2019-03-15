@@ -80,7 +80,7 @@ export default {
 };
 </script>
 <style scoped>
-button.v-btn.theme--light{
+button.v-btn.theme--light {
   background-color: #2196f3 !important;
   color: #fff;
 }

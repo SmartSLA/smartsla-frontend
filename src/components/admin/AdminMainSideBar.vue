@@ -34,7 +34,7 @@
             <v-list-tile-action>
               <v-icon>assignment</v-icon>
             </v-list-tile-action>
-            <v-list-tile-content>
+            <v-list-tile-content @click.prevent="contracts">
               <v-list-tile-title>{{ $t("Contracts") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -71,6 +71,9 @@ export default {
     },
     users() {
       return this.$router.push({ name: routeNames.USERS });
+    },
+    contracts() {
+      return this.$router.push({ name: routeNames.CONTRACTS });
     }
   }
 };
