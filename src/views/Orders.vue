@@ -1,5 +1,5 @@
 <template>
-  <div class="requests-list">
+  <div class="orders-list">
     <div class="page-title">
       <span>ETAT DE TOUTES LES COMMANDES PASSEES EN EN COURS</span>
     </div>
@@ -54,7 +54,7 @@ export default {
 .elevation-1 th {
   color: #000000;
 }
-.requests-list {
-  width: 100%;
+.orders-list {
+  width: 100% !important;
 }
 </style>

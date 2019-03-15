@@ -8,7 +8,7 @@
             <v-list-tile-action>
               <v-icon>people</v-icon>
             </v-list-tile-action>
-            <v-list-tile-content>
+            <v-list-tile-content @click.prevent="users">
               <v-list-tile-title>{{ $t("Users") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -62,11 +62,15 @@
   </v-container>
 </template>
 <script>
+import { routeNames } from "@/router";
 export default {
   name: "admin-main-side-bar",
   methods: {
     link() {
       return;
+    },
+    users() {
+      return this.$router.push({ name: routeNames.USERS });
     }
   }
 };
@@ -75,5 +79,8 @@ export default {
 .mini-side-bar, .mini-side-bar-item, .mini-side-bar-item .v-icon {
   background-color: 2b 303c;
   color: #FFFFFF;
+}
+.v-list__tile__content {
+  margin-left: 15px;
 }
 </style>
