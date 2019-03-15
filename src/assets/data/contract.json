@@ -1,0 +1,129 @@
+{
+  "name": "CDT - Club de Paris",
+  "client": {
+    "img": "?",
+    "name": "DGT - Club de Paris",
+    "id": 15
+  },
+  "contacts": {
+    "commercial": {
+      "name": "Nicolas Beaugendre",
+      "id": 27
+    },
+    "technical": {
+      "name": "Jérome HERLEDAN",
+      "id": 0
+    }
+  },
+  "mailingLists": {
+    "internal": [
+      "iabouljamal@linagora.com",
+      "hgoguelin@linagora.com"
+    ],
+    "external": [
+      "fchaillou@humanite.fr",
+      "souheila.boulkhodja@humanite.fr",
+      "webmaster@humanite.fr",
+      "info@humanite.fr"
+    ]
+  },
+  "startDate": "Tuesday 17 november 2015",
+  "endDate": "Thursday 19 december 2019",
+  "status": "active",
+  "schedule": "9h - 16h",
+  "sharedRequests": true,
+  "relatedSoftware": [
+    {
+      "id": 55,
+      "name": "Drupal",
+      "version": "7.4",
+      "os": "xxxx 32 bits",
+      "SupportDate": {
+        "start": "12/04/2020",
+        "end": "12/04/2021"
+      },
+      "critical": true,
+      "generic": true,
+      "technicalReferent": "Ismaeil Abouljamal"
+    },
+    {
+      "id": 50,
+      "name": "SoIR",
+      "version": "",
+      "os": "",
+      "SupportDate": {
+        "start": "24/12/2019",
+        "end": "23/11/2022"
+      },
+      "critical": false,
+      "generic": false,
+      "technicalReferent": "-"
+    }
+  ],
+  "contractualCommitments": [
+    {
+      "request": "Information",
+      "severity": "none",
+      "idOssa": "request inf.",
+      "bypassed": "-",
+      "fix": "-",
+      "description": "-"
+    },
+    {
+      "request": "Software anomaly",
+      "severity": "blocking",
+      "idOssa": "blocking",
+      "bypassed": "1 JO",
+      "fix": "2 JO",
+      "description": "Cette demande est à traiter dans les 2 jours ouvrés, et le client doit être contacté."
+    },
+    {
+      "request": "",
+      "severity": "major",
+      "idOssa": "non-blocking",
+      "bypassed": "5 JO",
+      "fix": "8 JO",
+      "description": "-"
+    },
+    {
+      "request": "",
+      "severity": "minor",
+      "idOssa": "non-blocking",
+      "bypassed": "-",
+      "fix": "10 JO",
+      "description": "-"
+    }
+  ],
+  "beneficiaries": [
+    {
+      "id": 5,
+      "name": "Florentin Roatta"
+    },
+    {
+      "id": 6,
+      "name": "Jean-Michel Boutin"
+    },
+    {
+      "id": 7,
+      "name": "Laurent Joguet"
+    },
+    {
+      "id": 8,
+      "name": "Guillaume Boudreaux"
+    }
+  ],
+  "teams": [
+    {
+      "id": 15,
+      "name": "Astreinte"
+    },
+    {
+      "id": 20,
+      "name": "LinStudio"
+    },
+    {
+      "id": 32,
+      "name": "Informatique interne"
+    }
+  ]
+}

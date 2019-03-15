@@ -17,6 +17,7 @@ import CreateClient from "@/views/CreateClient.vue";
 import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/Users.vue";
 import Contracts from "@/views/admin/Contracts.vue";
+import Contract from "@/views/admin/Contract.vue";
 
 Vue.use(Router);
 
@@ -37,7 +38,8 @@ export const routeNames = Object.freeze({
   LOGIN: "Login",
   ADMINISTRATION: "Administration",
   USERS: "Users",
-  CONTRACTS: "Contracts"
+  CONTRACTS: "Contracts",
+  CONTRACT: "Contract"
 });
 
 export default new Router({
@@ -166,8 +168,16 @@ export default new Router({
     },
     {
       path: "/contracts",
-      name: routeNames.Contracts,
+      name: routeNames.CONTRACTS,
       component: Contracts,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/contracts/:id",
+      name: routeNames.CONTRACT,
+      component: Contract,
       meta: {
         auth: true
       }
