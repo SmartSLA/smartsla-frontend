@@ -82,7 +82,7 @@ export default {
     this.menuItems = [
       {
         name: routeNames.CREATEREQUEST,
-        text: this.$i18n.t("Create Request"),
+        text: this.$i18n.t("New issue"),
         icon: "create",
         show: true
       },
@@ -117,12 +117,12 @@ export default {
         icon: "format_line_spacing",
         show: true
       },
-      {
+      /*{
         name: routeNames.ORDERS,
         text: this.$i18n.t("Orders"),
         icon: "grid_on",
         show: true
-      },
+      },*/
       {
         name: routeNames.ADMINISTRATION,
         text: this.$i18n.t("Administration"),
