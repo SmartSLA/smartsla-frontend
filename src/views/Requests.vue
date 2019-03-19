@@ -1,9 +1,19 @@
 <template>
   <div class="requests-list">
-    <div class="page-title">
-      <span>Requests list (TICKETS)</span>
-    </div>
-
+    <v-card-text>
+      <a href="#" disabled class="text-lg-left action-links">
+        <v-icon class="mr-2">bug_report</v-icon>
+        {{ $t("Requests list (TICKETS)") }}
+      </a>
+      <a href="#" class="action-links right">
+        <v-icon class="mr-2">backup</v-icon>
+        {{ $t("EXPORT SHEET (CSV)") }}
+      </a>
+      <a href="#" class="action-links mr-5 right">
+        <v-icon class="mr-2">print</v-icon>
+        {{ $t("PRINT SHEET") }}
+      </a>
+    </v-card-text>
     <div class="tickets-search">
       <v-btn-toggle v-model="toggle_multiple" class="transparent">
         <v-btn value="1" flat>{{ $t("Opened") }}</v-btn>
@@ -298,5 +308,9 @@ div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text
   font-weight: bold;
   padding: 2px;
   border-radius: 5px;
+}
+.action-links {
+  text-decoration: none;
+  color: grey;
 }
 </style>
