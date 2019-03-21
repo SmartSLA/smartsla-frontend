@@ -1,7 +1,7 @@
 <template>
   <v-autocomplete
     :items="searchResults"
-    :label="$t('Search for a client or a contract')"
+    :label="$t('Search for a client, contract or a ticket')"
     class="pt-0 global-search-box"
     append-icon="search"
     background-color="white"

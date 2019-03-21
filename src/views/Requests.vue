@@ -7,7 +7,7 @@
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET (CSV)") }}
+        {{ $t("EXPORT SHEET") }}
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
@@ -62,16 +62,16 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Request', params: { id: props.item.number } }">{{
-              props.item.number
-            }}</router-link>
+            <router-link :to="{ name: 'Request', params: { id: props.item.number } }">
+              {{ props.item.number }}
+            </router-link>
           </td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">{{
-              props.item.ticket_number
-            }}</router-link>
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
+              {{ props.item.ticket_number }}
+            </router-link>
           </td>
-          <td class="text-xs-center">
+          <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#5bc0de">
               <template v-slot:badge>
                 <span>{{ props.item.id_ossa }}</span>
@@ -88,32 +88,50 @@
               </template>
             </v-badge>
           </td>
-          <td class="text-xs-center">{{ props.item.severity }}</td>
-          <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="error" height="20" value="30">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
-            <v-progress-linear v-if="props.item.conf.color == 'warning'" color="warning" height="20" value="50">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
-            <v-progress-linear v-if="props.item.conf.color == 'info'" color="info" height="20" value="80">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
-          </td>
-          <td class="text-xs-center">{{ props.item.status }}</td>
-          <td class="text-xs-center">{{ props.item.responsible }}</td>
-          <td class="text-xs-center">{{ props.item.transmitter }}</td>
           <td class="text-xs-center">{{ props.item.type }}</td>
           <td class="text-xs-center">
-            <a href="#">{{ props.item.client_contrat }}</a>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{ props.item.severity }}</span>
+              </template>
+              <span>Demande à traiter dans un délais de 2 jours ouvrés</span>
+            </v-tooltip>
           </td>
           <td class="text-xs-center">
-            <span v-if="props.item.software == 'LibreOffice'" class="major-criticality">{{ props.item.software }}</span>
-            <span v-else class="minor-criticality">{{ props.item.software }}</span>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">{{
+                  props.item.software
+                }}</span>
+                <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
+              </template>
+              <span>Version : 1.4.6 / Criticité : Haute</span>
+            </v-tooltip>
           </td>
+
+          <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-center">{{ props.item.responsible }}</td>
+          <td class="text-xs-center">{{ props.item.transmitter }}</td>
+
+          <td class="text-xs-center">
+            <a href="#">{{ props.item.client_contrat.client }}</a>
+            /
+            <a href="#">{{ props.item.client_contrat.contract }}</a>
+          </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
           <td class="text-xs-center">{{ props.item.created }}</td>
+          <td class="text-xs-center">
+            <v-progress-linear v-if="props.item.conf.color == 'error'" color="error" height="20" value="30">{{
+              props.item.remaining_time
+            }}</v-progress-linear>
+            <v-progress-linear v-if="props.item.conf.color == 'warning'" color="warning" height="20" value="50">{{
+              props.item.remaining_time
+            }}</v-progress-linear>
+            <v-progress-linear v-if="props.item.conf.color == 'info'" color="info" height="20" value="80">{{
+              props.item.remaining_time
+            }}</v-progress-linear>
+          </td>
         </template>
       </v-data-table>
     </v-layout>
@@ -155,25 +173,28 @@ export default {
       isMobile: false,
       headers: [
         { text: "#", value: "number" },
-        { text: "Ticket N°", value: "ticket_number" },
-        { text: "ID OSSA", value: "id_ossa" },
-        { text: "Severity", value: "severity" },
-        { text: "Remaining time", value: "remaining_time" },
-        { text: "Status", value: "status" },
-        { text: "Responsible", value: "responsible" },
-        { text: "Transmitter", value: "transmitter" },
-        { text: "Type", value: "type" },
-        { text: "Client / Contrat", value: "client_contrat" },
-        { text: "Software", value: "software" },
-        { text: "Incident wording", value: "incident_wording" },
-        { text: "MAJ", value: "maj" },
-        { text: "Created", value: "created" }
+        { text: this.$i18n.t("Ticket N°"), value: "ticket_number" },
+        { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
+        { text: this.$i18n.t("Type"), value: "type" },
+        { text: this.$i18n.t("Severity"), value: "severity" },
+        { text: this.$i18n.t("Software"), value: "software" },
+        { text: this.$i18n.t("Status"), value: "status" },
+        { text: this.$i18n.t("Subject"), value: "incident_wording" },
+        { text: this.$i18n.t("Responsible"), value: "responsible" },
+        { text: this.$i18n.t("Transmitter"), value: "transmitter" },
+        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
+        { text: this.$i18n.t("MAJ"), value: "maj" },
+        { text: this.$i18n.t("Created"), value: "created" },
+        { text: this.$i18n.t("Remaining time"), value: "remaining_time" }
       ],
       requests: []
     };
   },
   mounted() {
     this.$http.getTickets(this.email).then(response => (this.requests = response.data));
+    if (this.$auth.ready() && !this.$auth.check("admin")) {
+      this.headers = this.headers.filter(header => header.value != "id_ossa");
+    }
   },
   computed: {
     ...mapGetters({
