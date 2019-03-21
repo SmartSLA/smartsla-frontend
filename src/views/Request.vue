@@ -27,6 +27,10 @@
                 <strong>{{ $t("Software") }} :</strong>
                 {{ request.software }}
               </v-card-text>
+              <v-card-text class="px-0 information">
+                <strong>{{ $t("Last update") }} :</strong>
+                {{ request.lastUpdate }}
+              </v-card-text>
             </v-flex>
             <v-flex xs4>
               <v-card-text class="px-0 information">
@@ -41,7 +45,7 @@
               </v-card-text>
             </v-flex>
             <v-flex xs4>
-              <v-btn color="info">{{ $t("TRANSFER TICKET") }}</v-btn>
+              <v-btn color="info" v-if="$auth.check('admin')">{{ $t("TRANSFER TICKET") }}</v-btn>
             </v-flex>
           </v-layout>
           <v-divider class="mx-3"></v-divider>
@@ -90,18 +94,40 @@
               <v-tab href="#comment">{{ $t("comments") }}</v-tab>
               <v-tab href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
-                <v-card flat>
+                <v-card flat pt2>
+                  <v-expansion-panel v-model="panel" expand>
+                    <v-expansion-panel-content v-for="comment in comments" :key="comment.id">
+                      <template v-slot:header>
+                        <div>
+                          <span class="subheading">{{ comment.name }}</span>
+                          {{ comment.date }}
+                        </div>
+                      </template>
+                      <v-card>
+                        <v-card-text>{{ comment.body }}</v-card-text>
+                      </v-card>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-divider></v-divider>
                   <v-form>
-                    <v-textarea solo autofocus auto-grow prepend-icon="subject" name="input-7-4" value></v-textarea>
-                    <v-btn color="info">{{ $t("POST A NEW MESSAGE") }}</v-btn>
+                    <v-textarea
+                      solo
+                      autofocus
+                      auto-grow
+                      prepend-icon="subject"
+                      name="input-7-4"
+                      class="pt-2"
+                      value
+                    ></v-textarea>
+                    <v-btn color="info">{{ $t("add comment") }}</v-btn>
                   </v-form>
                 </v-card>
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>
-                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
-                  </v-card-text>
+                  <v-card-text>{{
+                    $t("the satisfaction survey will be available once the ticket is closed")
+                  }}</v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -110,6 +136,59 @@
       </v-flex>
       <v-flex xs4 pt-0>
         <v-layout row wrap>
+          <v-flex xs12>
+            <v-card light color="white" class="px-4 pb-3">
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">{{ $t("Ticket status") }}</h3>
+                </div>
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-layout>
+                <v-flex xs8>
+                  <v-layout class="mb-1">
+                    <v-flex xs4 class="green--text font-weight-bold">
+                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.open }"
+                        >label_important</v-icon
+                      >
+                      <small>{{ $t("Open") }}</small>
+                    </v-flex>
+                    <v-flex xs4 class="green--text font-weight-bold">
+                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.progress }"
+                        >label_important</v-icon
+                      >
+                      <small>{{ $t("Processing") }}</small>
+                    </v-flex>
+                    <v-flex xs4>
+                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.closed }"
+                        >label_important</v-icon
+                      >
+                      <small>{{ $t("Closed") }}</small>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+              </v-layout>
+              <v-card-text class="px-0 information">
+                <strong>{{ $t("Next step") }} :</strong>
+                {{ request.requestStatus.nextStep }}
+              </v-card-text>
+            </v-card>
+          </v-flex>
+          <v-flex xs12>
+            <v-card light color="white" class="px-4 pb-3">
+              <v-card-title primary-title>
+                <h3 class="headline mb-0">{{ $t("Beneficiary") }}</h3></v-card-title
+              >
+              <v-divider></v-divider>
+              <v-card-text>
+                <span class="body-2"> {{ $t("contact") }} :</span> {{ request.beneficiary.contact }} <br />
+                <span class="body-2"> {{ $t("Phone") }} :</span> {{ request.beneficiary.phone }} <br />
+                <span class="body-2"> {{ $t("client") }} / {{ $t("contract") }} : </span>
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link> /
+                <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
+              </v-card-text>
+            </v-card>
+          </v-flex>
           <v-flex xs12>
             <v-card light color="white">
               <v-card-title primary-title class="px-4">
@@ -134,9 +213,9 @@
                   <v-list-tile-content>
                     <v-list-tile-title class="px-2 text-uppercase">{{ $t("info request answer") }}</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">{{
-                    request.serviceLevel.infoResponse
-                  }}</v-list-tile-action>
+                  <v-list-tile-action class="grey--text px-2">
+                    {{ request.serviceLevel.infoResponse }}
+                  </v-list-tile-action>
                 </v-list-tile>
                 <v-list-tile class="blue-grey lighten-5">
                   <v-list-tile-content>
@@ -148,9 +227,9 @@
                   <v-list-tile-content>
                     <v-list-tile-title class="px-2 text-uppercase">{{ $t("final solution") }}</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">
-                    {{ request.serviceLevel.finalSolution }}
-                  </v-list-tile-action>
+                  <v-list-tile-action class="grey--text px-2">{{
+                    request.serviceLevel.finalSolution
+                  }}</v-list-tile-action>
                 </v-list-tile>
               </v-list>
             </v-card>
@@ -189,56 +268,6 @@
                   {{ request.requestTime.finalSolution.value }}
                 </v-flex>
               </v-layout>
-            </v-card>
-          </v-flex>
-          <v-flex xs12>
-            <v-card light color="white" class="px-4 pb-3">
-              <v-card-title primary-title>
-                <div>
-                  <h3 class="headline mb-0">{{ $t("Ticket status") }}</h3>
-                </div>
-              </v-card-title>
-              <v-divider></v-divider>
-              <v-layout>
-                <v-flex xs8>
-                  <v-layout class="mb-1">
-                    <v-flex xs4 class="green--text font-weight-bold">
-                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.open }"
-                        >label_important</v-icon
-                      >
-                      <small>{{ $t("Open") }}</small>
-                    </v-flex>
-                    <v-flex xs4 class="green--text font-weight-bold">
-                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.progress }"
-                        >label_important</v-icon
-                      >
-                      <small>{{ $t("Processing") }}</small>
-                    </v-flex>
-                    <v-flex xs4>
-                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.closed }"
-                        >label_important</v-icon
-                      >
-                      <small>{{ $t("Closed") }}</small>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
-              <v-card-text class="px-0 information">
-                <strong>{{ $t("Priority") }} :</strong>
-                {{ request.requestStatus.priority }}
-              </v-card-text>
-              <v-card-text class="px-0 information">
-                <strong>{{ $t("Next step") }} :</strong>
-                {{ request.requestStatus.nextStep }}
-              </v-card-text>
-              <v-card-text class="px-0 information">
-                <strong>{{ $t("Environment") }} :</strong>
-                {{ request.requestStatus.environment }}
-              </v-card-text>
-              <v-card-text class="px-0 information">
-                <strong>{{ $t("Operating system") }} :</strong>
-                {{ request.requestStatus.os }}
-              </v-card-text>
             </v-card>
           </v-flex>
           <v-flex xs12>
@@ -291,7 +320,9 @@
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="communityIssueLink">{{ request.communityContribution.communityIssueLink }}</a>
+                <a :href="request.communityContribution.communityIssueLink">{{
+                  request.communityContribution.communityIssueLink
+                }}</a>
               </v-card>
             </v-card>
           </v-flex>
@@ -306,6 +337,8 @@ var request = require("@/assets/data/request.json");
 export default {
   data() {
     return {
+      panel: [true, true],
+      comments: [],
       request: {}
     };
   },
@@ -318,6 +351,7 @@ export default {
     })
   },
   created() {
+    this.comments = require("@/assets/data/comments.json");
     this.request = request;
     this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
   },
