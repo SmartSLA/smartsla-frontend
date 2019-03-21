@@ -62,9 +62,7 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Request', params: { id: props.item.number } }">
-              {{ props.item.number }}
-            </router-link>
+            {{ props.item.number }}
           </td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
@@ -164,6 +162,7 @@ export default {
         }
       ],
       searchCriteria: "Ticket",
+      pagination: "",
       search: null,
       toggle_multiple: "2",
       teamsFilter: {
@@ -172,20 +171,20 @@ export default {
       },
       isMobile: false,
       headers: [
-        { text: "#", value: "number" },
-        { text: this.$i18n.t("Ticket N°"), value: "ticket_number" },
-        { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
-        { text: this.$i18n.t("Type"), value: "type" },
-        { text: this.$i18n.t("Severity"), value: "severity" },
-        { text: this.$i18n.t("Software"), value: "software" },
-        { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("Subject"), value: "incident_wording" },
-        { text: this.$i18n.t("Responsible"), value: "responsible" },
-        { text: this.$i18n.t("Transmitter"), value: "transmitter" },
-        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
-        { text: this.$i18n.t("MAJ"), value: "maj" },
-        { text: this.$i18n.t("Created"), value: "created" },
-        { text: this.$i18n.t("Remaining time"), value: "remaining_time" }
+        { text: "#", value: "number", sortable: false },
+        { text: this.$i18n.t("Ticket N°"), value: "ticket_number", sortable: false },
+        { text: this.$i18n.t("ID OSSA"), value: "id_ossa", sortable: false },
+        { text: this.$i18n.t("Type"), value: "type", sortable: false },
+        { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
+        { text: this.$i18n.t("Software"), value: "software", sortable: false },
+        { text: this.$i18n.t("Status"), value: "status", sortable: false },
+        { text: this.$i18n.t("Subject"), value: "incident_wording", sortable: false },
+        { text: this.$i18n.t("Responsible"), value: "responsible", sortable: false },
+        { text: this.$i18n.t("Transmitter"), value: "transmitter", sortable: false },
+        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat", sortable: false },
+        { text: this.$i18n.t("MAJ"), value: "maj", sortable: false },
+        { text: this.$i18n.t("Created"), value: "created", sortable: false },
+        { text: this.$i18n.t("Remaining time"), value: "remaining_time", sortable: false }
       ],
       requests: []
     };

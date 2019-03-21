@@ -18,36 +18,38 @@
                       v-model="severity"
                       label="Severity"
                     ></v-select>
-                    <v-select
-                      prepend-icon="laptop"
+                    <v-autocomplete
                       :items="softwareList"
-                      v-model="software"
-                      label="Software"
-                    ></v-select>
-                    <v-text-field
-                      prepend-icon="library_books"
-                      name="Version"
-                      :label="$t('Version')"
-                      type="text"
-                    ></v-text-field>
-                    <v-select
-                      prepend-icon="bug_report"
-                      v-model="select"
-                      :environnement="environnement"
-                      label="Environnement"
-                    ></v-select>
+                      :label="$t('Software')"
+                      prepend-icon="laptop"
+                      background-color="white"
+                      :search-input.sync="software"
+                    ></v-autocomplete>
                     <v-text-field prepend-icon="warning" name="Title" :label="$t('Title')" type="text"></v-text-field>
                   </v-flex>
                   <v-flex xs12>
-                    <v-textarea prepend-icon="notes" name="description" label="Description"></v-textarea>
+                    <v-input prepend-icon="notes">
+                      <vue-editor placeholder="Description" v-model="description"></vue-editor>
+                    </v-input>
                   </v-flex>
                   <v-flex xs6>
-                    <v-text-field
-                      prepend-icon="attach_file"
-                      name="Related request"
-                      :label="$t('Related request')"
-                      type="text"
-                    ></v-text-field>
+                    <v-combobox
+                      v-model="chips"
+                      :items="relatedRequests"
+                      :label="$t('Related requests')"
+                      chips
+                      clearable
+                      prepend-icon="link"
+                      solo
+                      multiple
+                    >
+                      <template v-slot:selection="data">
+                        <v-chip :selected="data.selected" close @input="remove(data.item)">
+                          <strong>{{ data.item }}</strong
+                          >&nbsp;
+                        </v-chip>
+                      </template>
+                    </v-combobox>
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
@@ -81,10 +83,13 @@
 //import { routeNames } from "@/router";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
+import { VueEditor } from "vue2-editor";
+
 Vue.use(FileUpload);
 export default {
   data() {
     return {
+      description: "",
       url: "http://your-post.url",
       headers: { "access-token": "<your-token>" },
       filesUploaded: [],
@@ -97,8 +102,27 @@ export default {
       severity: "",
       software: "",
       severityList: ["Blocking", "Major", "Minor"],
-      softwareList: ["APIMan v1.2", "Apache v2.4", "Redis v4.0 Ubuntu 16.04", "Tomcat v8.0"]
+      softwareList: [
+        "APIMan v1.2 CentOs 6",
+        "APIMan v1.2 CentOs 7",
+        "APIMan v1.3 CentOs 7",
+        "APIMan v1.5 CentOs 7",
+        "Apache v2.3 Ubuntu 15.0",
+        "Apache v2.3 Ubuntu 16.04",
+        "Apache v2.4 Ubuntu 15.0",
+        "Apache v2.4 Ubuntu 16.04",
+        "Redis v3.0 Ubuntu 16.04",
+        "Redis v4.0 Ubuntu 16.04",
+        "Tomcat v7.0 CentOs 6",
+        "Tomcat v7.0 CentOs 7",
+        "Tomcat v8.0 CentOs 6",
+        "Tomcat v8.0 CentOs 7"
+      ],
+      relatedRequests: ["issue1", "issue3", "issue18", "issue41", "issue35", "issue70"]
     };
+  },
+  components: {
+    VueEditor
   },
   methods: {
     submit() {
@@ -195,5 +219,10 @@ export default {
 }
 .v-card__actions {
   padding-top: 80px;
+}
+
+.quillWrapper,
+.ql-editor {
+  width: 100%;
 }
 </style>
