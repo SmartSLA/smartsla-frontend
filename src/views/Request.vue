@@ -139,6 +139,21 @@
           <v-flex xs12>
             <v-card light color="white" class="px-4 pb-3">
               <v-card-title primary-title>
+                <h3 class="headline mb-0">{{ $t("Beneficiary") }}</h3></v-card-title
+              >
+              <v-divider></v-divider>
+              <v-card-text>
+                <span class="body-2"> {{ $t("contact") }} :</span> {{ request.beneficiary.contact }} <br />
+                <span class="body-2"> {{ $t("Phone") }} :</span> {{ request.beneficiary.phone }} <br />
+                <span class="body-2"> {{ $t("client") }} / {{ $t("contract") }} : </span>
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link> /
+                <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+          <v-flex xs12>
+            <v-card light color="white" class="px-4 pb-3">
+              <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">{{ $t("Ticket status") }}</h3>
                 </div>
@@ -171,21 +186,6 @@
               <v-card-text class="px-0 information">
                 <strong>{{ $t("Next step") }} :</strong>
                 {{ request.requestStatus.nextStep }}
-              </v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex xs12>
-            <v-card light color="white" class="px-4 pb-3">
-              <v-card-title primary-title>
-                <h3 class="headline mb-0">{{ $t("Beneficiary") }}</h3></v-card-title
-              >
-              <v-divider></v-divider>
-              <v-card-text>
-                <span class="body-2"> {{ $t("contact") }} :</span> {{ request.beneficiary.contact }} <br />
-                <span class="body-2"> {{ $t("Phone") }} :</span> {{ request.beneficiary.phone }} <br />
-                <span class="body-2"> {{ $t("client") }} / {{ $t("contract") }} : </span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link> /
-                <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
             </v-card>
           </v-flex>
