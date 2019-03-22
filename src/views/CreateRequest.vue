@@ -80,7 +80,6 @@
 </template>
 
 <script>
-//import { routeNames } from "@/router";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";

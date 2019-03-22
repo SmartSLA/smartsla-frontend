@@ -98,27 +98,21 @@
                   <v-expansion-panel v-model="panel" expand>
                     <v-expansion-panel-content v-for="comment in comments" :key="comment.id">
                       <template v-slot:header>
-                        <div>
+                        <div class="font-weight-bold">
                           <span class="subheading">{{ comment.name }}</span>
                           {{ comment.date }}
                         </div>
                       </template>
-                      <v-card>
+                      <v-card class="ml-4">
                         <v-card-text>{{ comment.body }}</v-card-text>
                       </v-card>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <v-divider></v-divider>
                   <v-form>
-                    <v-textarea
-                      solo
-                      autofocus
-                      auto-grow
-                      prepend-icon="subject"
-                      name="input-7-4"
-                      class="pt-2"
-                      value
-                    ></v-textarea>
+                    <v-input prepend-icon="subject" class="pt-2">
+                      <vue-editor v-model="comment"></vue-editor>
+                    </v-input>
                     <v-btn color="info">{{ $t("add comment") }}</v-btn>
                   </v-form>
                 </v-card>
@@ -333,14 +327,19 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import { VueEditor } from "vue2-editor";
 var request = require("@/assets/data/request.json");
 export default {
   data() {
     return {
       panel: [true, true],
       comments: [],
-      request: {}
+      request: {},
+      comment: "",
     };
+  },
+  components: {
+    VueEditor
   },
   mounted() {
     this.$http.getTicketById(this.$route.params.id).then(response => (this.request = response.data));
@@ -388,5 +387,9 @@ export default {
 }
 .container.grid-list-md .layout .flex {
   padding: 15px;
+}
+.quillWrapper,
+.ql-editor {
+  width: 100%;
 }
 </style>
