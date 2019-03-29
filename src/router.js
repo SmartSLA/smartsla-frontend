@@ -18,6 +18,7 @@ import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/Users.vue";
 import Contracts from "@/views/admin/Contracts.vue";
 import Contract from "@/views/admin/Contract.vue";
+import EditContract from "@/views/admin/EditContract.vue";
 
 Vue.use(Router);
 
@@ -39,7 +40,8 @@ export const routeNames = Object.freeze({
   ADMINISTRATION: "Administration",
   USERS: "Users",
   CONTRACTS: "Contracts",
-  CONTRACT: "Contract"
+  CONTRACT: "Contract",
+  EDITCONTRACT: "Edit Contract"
 });
 
 export default new Router({
@@ -178,6 +180,14 @@ export default new Router({
       path: "/contracts/:id",
       name: routeNames.CONTRACT,
       component: Contract,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/contracts/:id/edit/:section",
+      name: routeNames.EDITCONTRACT,
+      component: EditContract,
       meta: {
         auth: true
       }
