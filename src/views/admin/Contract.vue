@@ -18,7 +18,13 @@
                   </v-flex>
                   <v-flex xs6>
                     <div class="text-xs-right grey--text">
-                      <v-btn color="primary" fab small dark>
+                      <v-btn
+                        color="primary"
+                        fab
+                        small
+                        dark
+                        :to="{ name: 'Edit Contract', params: { id: 15, section: 'information' } }"
+                      >
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </div>
@@ -99,8 +105,14 @@
                     <h3 class="headline">{{ $t("Supported software") }}</h3>
                   </v-flex>
                   <v-flex xs6>
-                    <div class="text-xs-right grey--text" @click="edit">
-                      <v-btn color="primary" fab small dark>
+                    <div class="text-xs-right grey--text">
+                      <v-btn
+                        color="primary"
+                        fab
+                        small
+                        dark
+                        :to="{ name: 'Edit Contract', params: { id: 15, section: 'software' } }"
+                      >
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </div>
@@ -119,7 +131,7 @@
                     <td class="text-xs-left">
                       {{ $t("S") }}: {{ props.item.SupportDate.start }}
                       <br />
-                      {{ $t("E") }}: {{ props.item.SupportDate.start }}
+                      {{ $t("E") }}: {{ props.item.SupportDate.end }}
                     </td>
                     <td class="text-xs-left">
                       <v-chip color="red" text-color="white" label v-if="props.item.critical">{{ $t("Yes") }}</v-chip>
@@ -143,7 +155,13 @@
                   </v-flex>
                   <v-flex xs6>
                     <div class="text-xs-right grey--text">
-                      <v-btn color="primary" fab small dark>
+                      <v-btn
+                        color="primary"
+                        fab
+                        small
+                        dark
+                        :to="{ name: 'Edit Contract', params: { id: 15, section: 'engagements' } }"
+                      >
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </div>
@@ -180,7 +198,13 @@
               </v-flex>
               <v-flex xs6>
                 <div class="text-xs-right grey--text">
-                  <v-btn color="primary" fab small dark>
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'Edit Contract', params: { id: 15, section: 'hr' } }"
+                  >
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
