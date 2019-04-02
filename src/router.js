@@ -25,7 +25,7 @@ Vue.use(Router);
 // Set your routes here
 export const routeNames = Object.freeze({
   HOME: "Home",
-  CREATEREQUEST: "Create Request",
+  CREATEREQUEST: "New issue",
   CREATECLIENT: "Create Client",
   REQUESTS: "Requests",
   REQUEST: "Request",

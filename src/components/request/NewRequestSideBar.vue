@@ -2,40 +2,6 @@
   <v-container class="pt-0 px-0">
     <v-layout row wrap>
       <v-flex xs12>
-        <v-list three-line subheader>
-          <v-subheader inset class="text-uppercase blue white--text title ml-0">
-            <v-icon large color="white">info</v-icon>
-            {{ $t("urgent request") }}
-          </v-subheader>
-          <v-icon large color="blue" class="arrow-down pr-4">play_arrow</v-icon>
-          <v-list-tile class="sidebar-list-item white--text pl-0">
-            <v-list-tile-avatar>
-              <v-icon large class="pl-4 pb-3" color="white">mdi-message-video</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title class="text-capitalize title">{{ $t("videoconference") }}</v-list-tile-title>
-              <v-list-tile-sub-title class="white--text request-sidebar-description pl-1 caption">
-                {{ $t("For a direct exchange with your support") }}
-                {{ $t("ex: discussion, screen sharing ...)") }}
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-          <v-list-tile class="sidebar-list-item white--text">
-            <v-list-tile-avatar>
-              <v-icon large class="pl-4 pb-3" color="white">phone_in_talk</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title class="text-capitalize title">{{ $t("Phone") }}</v-list-tile-title>
-              <v-list-tile-sub-title class="white--text request-sidebar-description pl-1">
-                {{ $t("Contact us directly") }}
-                <br />08.00.05.46.89
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-flex>
-      <v-flex xs12>
         <side-bar-links />
       </v-flex>
     </v-layout>
