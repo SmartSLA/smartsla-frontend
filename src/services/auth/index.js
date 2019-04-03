@@ -21,7 +21,15 @@ export default {
       if (role === "admin") {
         //return this.watch.data[key || this.options.rolesVar];
         return (
-          this.watch.data.preferredEmail == "hgoguelin@linagora.com" || this.watch.data[key || this.options.rolesVar]
+          this.watch.data.preferredEmail == "hgoguelin@linagora.com" ||
+          this.watch.data.preferredEmail == "wgharbi@linagora.com" ||
+          this.watch.data.preferredEmail == "jsbevilacqua@linagora.com" ||
+          this.watch.data.preferredEmail == "dkaoua@linagora.com" ||
+          this.watch.data.preferredEmail == "sphanivon@linagora.com" ||
+          this.watch.data.preferredEmail == "kferjani@linagora.com" ||
+          this.watch.data.preferredEmail == "mmaudet@linagora.com" ||
+          this.watch.data.preferredEmail == "iabouljamal@linagora.com" ||
+          this.watch.data[key || this.options.rolesVar]
         );
       }
 
