@@ -26,7 +26,7 @@
             <v-list-tile-action>
               <v-icon>account_box</v-icon>
             </v-list-tile-action>
-            <v-list-tile-content>
+            <v-list-tile-content @click.prevent="clients">
               <v-list-tile-title>{{ $t("Clients") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -79,6 +79,9 @@ export default {
     },
     contracts() {
       return this.$router.push({ name: routeNames.CONTRACTS });
+    },
+    clients() {
+      return this.$router.push({ name: routeNames.CLIENTS });
     }
   },
   computed: {
