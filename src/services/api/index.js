@@ -6,9 +6,9 @@ import ticketsFunctions from "./tickets-api";
 import contributionFunctions from "./contributions-api";
 import contractsFunctions from "./contracts-api";
 import softwareFunctions from "./software-api";
-
+import clientFunctions from "./client-api";
 const defaults = {
-  baseURL: store.state.applicationConfiguration.baseUrl
+  baseURL: store.state.applicationConfiguration.baseUrl,
 };
 
 function Api(config) {
@@ -18,6 +18,7 @@ function Api(config) {
   Object.assign(instance, contributionFunctions);
   Object.assign(instance, contractsFunctions);
   Object.assign(instance, softwareFunctions);
+  Object.assign(instance, clientFunctions);
   return instance;
 }
 
