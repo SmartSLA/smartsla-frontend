@@ -16,6 +16,7 @@
           class="clients-search-name"
         ></v-text-field>
         <div class="clients-operations">
+          
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
             <span>Add client</span>
@@ -27,30 +28,13 @@
         </div>
       </div>
 
-      <v-data-table :headers="headers" :items="clients" class="elevation-1">
+      <v-data-table :headers="headers" :items="clients" class="elevation-1" :search="search">
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.title }}</td>
-          <td class="text-xs-center">
-            <div v-if="props.item.isdisabled == 'yes'">
-              <strike>{{ props.item.name }}</strike>
-            </div>
-            <div v-else>{{ props.item.name }}</div>
-          </td>
-          <td class="text-xs-center">{{ props.item.role }}</td>
-          <td class="text-xs-center">{{ props.item.engineer }}</td>
-          <td class="text-xs-center">{{ props.item.beneficiary }}</td>
-          <td class="text-xs-center client-mail">{{ props.item.email }}</td>
-          <td class="text-xs-center">{{ props.item.phone }}</td>
-          <td class="text-xs-center">
-            <a href="#" class="clients-actions">
-              <v-icon>search</v-icon>
-            </a>
-          </td>
-          <td class="text-xs-center">
-            <a href="#" class="clients-actions">
-              <v-icon>create</v-icon>
-            </a>
-          </td>
+          <td class="text-xs-center">{{ props.item.name }}</td>
+          <td class="text-xs-center">{{ props.item.adresse }}</td>
+          <td class="text-xs-center">{{ props.item.inactive }}</td>
+          <td class="text-xs-center">{{ props.item.access_code }}</td>
+          <td class="text-xs-center">{{ props.item.help_code }}</td>
         </template>
       </v-data-table>
     </div>
@@ -65,15 +49,11 @@ export default {
       clients: [],
       roles: [],
       headers: [
-        { text: "Title", value: "title" },
         { text: "Name", value: "name" },
-        { text: "Role", value: "role" },
-        { text: "Engineer", value: "engineer" },
-        { text: "Beneficiary", value: "beneficiary" },
-        { text: "E-mail", value: "email" },
-        { text: "Phone", value: "phone" },
-        { text: "View", value: "view" },
-        { text: "Edit", value: "edit" }
+        { text: "Adresse", value: "adresse" },
+        { text: "Inactive", value: "inactive" },
+        { text: "Access code", value: "access_code" },
+        { text: "Help code", value: "help_code" }
       ],
       clients
     };

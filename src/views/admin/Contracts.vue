@@ -50,7 +50,7 @@
         <div class="contracts-operations">
           <a href="#" class="contracts-actions">
             <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add user") }}</span>
+            <span>{{ $t("Add Contract") }}</span>
           </a>
           <a href="#" class="contracts-actions">
             <v-icon>arrow_downward</v-icon>

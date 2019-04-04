@@ -1,142 +1,72 @@
 [
     {
-      "title":"",
-      "name":"Alexandre CHAPELLON",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"achapellon@linagora.com",
-      "phone":"",
-      "isdisabled":"yes"
+      "name":"AAIR",
+      "adresse":"",
+      "inactive":"yes",
+      "access_code":"0",
+      "help_code":""
     },
     {
-      "title":"M",
-      "name":"Adrien CUNIN",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"acunin@linagora.com",
-      "phone":"0800054689",
-      "isdisabled":"yes"
+      "name":"ABES",
+      "adresse":"",
+      "inactive":"yes",
+      "access_code":"0",
+      "help_code":""
     },
     {
-      "title":"Directeur du Support",
-      "name":"Bruno BOMPAR",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"bbompar@linagora.com",
-      "phone":"0638454809",
-      "isdisabled":"yes"
+      "name":"ACCOR",
+      "adresse":"2 rue de la Mare Neuve 91000 Evry",
+      "inactive":"yes",
+      "access_code":"22267",
+      "help_code":""
     },
     {
-      "title":"",
-      "name":"Clément LASSIEUR",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"classieur@linagora.com",
-      "phone":"",
-      "isdisabled":"yes"
+      "name":"ACMS",
+      "adresse":"",
+      "inactive":"yes",
+      "access_code":"0",
+      "help_code":""
     },
     {
-      "title":"",
-      "name":"Christian LEVIEUGE",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"clevieuge@linagora.com",
-      "phone":"0675303612",
-      "isdisabled":"yes"
+      "name":"ADECCO",
+      "adresse":"83/85 Bd VIVIER MERLE 69487 LYON Cedex 03",
+      "inactive":"yes",
+      "access_code":"233226",
+      "help_code":""
     },
     {
-      "title":"",
-      "name":"Dan KOUA",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"dkoua@linagora.com",
-      "phone":"",
-      "isdisabled":"no"
+      "name":"ADETEM",
+      "adresse":"12 rue de Milan 75009 PARIS",
+      "inactive":"yes",
+      "access_code":"0",
+      "help_code":""
     },
     {
-      "title":"",
-      "name":"Florent ANGEBAULT",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"fangebault@linagora.com",
-      "phone":"",
-      "isdisabled":"yes"
+      "name":"AdNovum Informatik AG",
+      "adresse":"",
+      "inactive":"yes",
+      "access_code":"0",
+      "help_code":""
     },
     {
-      "title":"",
-      "name":"Julien ALTMEYER",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"jaltmeyer@linagora.com",
-      "phone":"",
-      "isdisabled":"yes"
+      "name":"AFNOR",
+      "adresse":"11, rue Francis de Pressensé 93571 La Plaine Saint-Denis Cedex ",
+      "inactive":"yes",
+      "access_code":"23667",
+      "help_code":""
     },
     {
-      "title":"",
-      "name":"Jérome HERLEDAN",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"jherledan@linagora.com",
-      "phone":"",
-      "isdisabled":"no"
+      "name":"Agricoll",
+      "adresse":"",
+      "inactive":"yes",
+      "access_code":"0",
+      "help_code":""
     },
     {
-      "title":"Responsable Hosting",
-      "name":"Jacques Olivier KAPPS",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"jokapps@linagora.com",
-      "phone":"",
-      "isdisabled":"yes"
-    },
-    {
-      "title":"Ingénieur OSSA - Architecte DevOps",
-      "name":"Jean-Sébastien BEVILACQUA",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"jsbevilacqua@linagora.com",
-      "phone":"",
-      "isdisabled":"no"
-    },
-    {
-      "title":"",
-      "name":"Khaled OUAFI",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"kouafi@linagora.com",
-      "phone":"",
-      "isdisabled":"yes"
-    },
-    {
-      "title":"",
-      "name":"LinagOSSA",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"jherledan@linagora.com",
-      "phone":"08000LINUX",
-      "isdisabled":"no"
-    },
-    {
-      "title":"",
-      "name":"Lotfi OULBANI",
-      "role":"admin",
-      "engineer":"yes",
-      "beneficiary":"",
-      "email":"loulbani@linagora.com",
-      "phone":"+33650384970",
-      "isdisabled":"yes"
-  }
+      "name":"AIFE",
+      "adresse":"Bercy 3 10 rue du Centre 93464 NOISY LE GRAND CEDEX",
+      "inactive":"yes",
+      "access_code":"94575",
+      "help_code":""
+    }
   ]
