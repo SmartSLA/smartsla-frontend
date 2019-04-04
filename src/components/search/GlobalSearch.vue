@@ -2,10 +2,14 @@
   <v-autocomplete
     :items="searchResults"
     :label="$t('Search for a client, contract or a ticket')"
+<<<<<<< HEAD
     class="pt-0 global-search-box"
+=======
+    class="pt-2 global-search-box"
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     append-icon="search"
     background-color="white"
-    box
+    solo
     hide-no-data
     item-text="name"
     item-value="name"

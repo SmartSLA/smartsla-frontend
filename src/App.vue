@@ -8,9 +8,14 @@
         <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
           <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
         </v-toolbar-title>
-        <logged-main-navigation v-if="$auth.check()" />
-        <v-spacer></v-spacer>
-        <op-user-menu v-if="$auth.check()" />
+        <v-layout row justify-space-between>
+          <v-flex grow>
+            <logged-main-navigation v-if="$auth.check()" />
+          </v-flex>
+          <v-flex shrink>
+            <op-user-menu v-if="$auth.check()" />
+          </v-flex>
+        </v-layout>
       </v-toolbar>
       <v-content>
         <v-container fluid fill-height>

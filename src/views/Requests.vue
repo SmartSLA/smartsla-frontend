@@ -63,7 +63,11 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
+<<<<<<< HEAD
             {{ props.index }}
+=======
+            {{ props.item.number }}
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
           </td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
@@ -96,6 +100,7 @@
               <span>Demande à traiter dans un délais de 2 jours ouvrés</span>
             </v-tooltip>
           </td>
+<<<<<<< HEAD
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
@@ -120,6 +125,32 @@
           <td class="text-xs-center">{{ props.item.maj }}</td>
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
+=======
+          <td class="text-xs-center">
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">{{
+                  props.item.software
+                }}</span>
+                <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
+              </template>
+              <span>Version : 1.4.6 / Criticité : Haute</span>
+            </v-tooltip>
+          </td>
+
+          <td class="text-xs-center">{{ props.item.status }}</td>
+          <td class="text-xs-center">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-center">{{ props.item.responsible }}</td>
+          <td class="text-xs-center">{{ props.item.transmitter }}</td>
+
+          <td class="text-xs-center">
+            <a href="#">{{ props.item.client_contrat.client }}</a>
+            /
+            <a href="#">{{ props.item.client_contrat.contract }}</a>
+          </td>
+          <td class="text-xs-center">{{ props.item.maj }}</td>
+          <td class="text-xs-center">{{ props.item.created }}</td>
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
           <td class="text-xs-center">
             <v-progress-linear v-if="props.item.conf.color == 'error'" color="error" height="20" value="30">{{
               props.item.remaining_time
@@ -163,8 +194,12 @@ export default {
         }
       ],
       searchCriteria: "Ticket",
+<<<<<<< HEAD
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
+=======
+      pagination: "",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
       search: null,
       toggle_multiple: "2",
       teamsFilter: {
@@ -179,14 +214,22 @@ export default {
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "software" },
+<<<<<<< HEAD
         { text: this.$i18n.t("Subject"), value: "incident_wording" },
         { text: this.$i18n.t("Assign To"), value: "assign_to" },
+=======
+        { text: this.$i18n.t("Status"), value: "status" },
+        { text: this.$i18n.t("Subject"), value: "incident_wording" },
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
         { text: this.$i18n.t("Responsible"), value: "responsible" },
         { text: this.$i18n.t("Transmitter"), value: "transmitter" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
         { text: this.$i18n.t("MAJ"), value: "maj" },
         { text: this.$i18n.t("Created"), value: "created" },
+<<<<<<< HEAD
         { text: this.$i18n.t("Status"), value: "status" },
+=======
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
         { text: this.$i18n.t("Remaining time"), value: "remaining_time" }
       ],
       requests: []

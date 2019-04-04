@@ -8,9 +8,13 @@ export default {
   },
 
   createClient(client) {
+<<<<<<< HEAD
     return this.post(`/ticketing/api/organizations`, client, {
       useCredentials: true
     });
+=======
+    return this.post(`/ticketing/api/organizations`, client, { useCredentails: true });
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
   },
 
   updateClient(clientId, client) {
@@ -20,4 +24,8 @@ export default {
   deleteClient(clientId) {
     return this.delete(`/ticketing/api/organizations/${clientId}`);
   }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
