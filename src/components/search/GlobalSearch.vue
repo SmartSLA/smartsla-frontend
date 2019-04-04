@@ -1,11 +1,16 @@
 <template>
   <v-autocomplete
     :items="searchResults"
+<<<<<<< HEAD
     :label="$t('Search for a client, contract or a ticket')"
     class="pt-0 global-search-box"
+=======
+    :label="$t('Search for a client or a contract')"
+    class="pt-2 global-search-box"
+>>>>>>> added locale switch
     append-icon="search"
     background-color="white"
-    box
+    solo
     hide-no-data
     item-text="name"
     item-value="name"
