@@ -47,5 +47,31 @@
   {
     "name": "Sandra Williams",
     "type": "contract"
+  },
+  {
+    "divider": true
+  },
+  {
+    "header": "Tickets"
+  },
+  {
+    "name": "Britta2 Holt",
+    "type": "ticket"
+  },
+  {
+    "name": "Jane2 Smith ",
+    "type": "tickete"
+  },
+  {
+    "name": "linagora2 openpaas",
+    "type": "ticket"
+  },
+  {
+    "name": "John22 Smith",
+    "type": "ticket"
+  },
+  {
+    "name": "Sandra2 Williams",
+    "type": "ticket"
   }
 ]

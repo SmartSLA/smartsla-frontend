@@ -16,41 +16,6 @@
               </div>
             </v-card-title>
           </v-card>
-          <v-list-tile class="sidebar-list-item white--text pl-0">
-            <v-list-tile-avatar>
-              <v-icon large class="pl-4 pb-3" color="white">mdi-message-video</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title class="text-capitalize title">{{ $t("videoconference") }}</v-list-tile-title>
-              <v-list-tile-sub-title class="white--text request-sidebar-description pl-1 caption">
-                {{ $t("For a direct exchange with your support") }}
-                {{ $t("ex: discussion, screen sharing ...)") }}
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-btn icon ripple>
-                <v-icon color="white lighten-1" @click="videoConference">play_circle_filled</v-icon>
-              </v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-          <v-divider></v-divider>
-          <v-list-tile class="sidebar-list-item white--text">
-            <v-list-tile-avatar>
-              <v-icon large class="pl-4 pb-3" color="white" @click="phoneCall">phone_in_talk</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title class="text-capitalize title">{{ $t("Phone") }}</v-list-tile-title>
-              <v-list-tile-sub-title class="white--text request-sidebar-description pl-1">
-                {{ $t("Contact us directly") }}
-                <br />08.00.05.46.89
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-btn icon ripple>
-                <v-icon color="white lighten-1">play_circle_filled</v-icon>
-              </v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
         </v-list>
       </v-flex>
       <v-flex xs12>

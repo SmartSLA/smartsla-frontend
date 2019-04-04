@@ -5,6 +5,7 @@
   "ticketTitle": "GLPI : importer un fichier lss dans la version 1.85",
   "ticketDate": "25/09/2016 - 10h30",
   "attachedFile": "",
+  "lastUpdate": "30/10/2016 - 16:12",
   "subject": "bonjour,\nThe Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.?\nThe Woodman set to work at once, and so sharp was",
   "linkedTickets": [
     23132132131321320,
@@ -49,5 +50,13 @@
     "infoResponse": "8JO",
     "bypass": "5JO",
     "finalSolution": "40JO"
+  },
+  "beneficiary": {
+    "contact": "Michel MORRISON",
+    "phone": "01.23.25.45.69 - 06.45.79.16.37",
+    "client_contract": {
+      "client": "ACIM",
+      "contract": "Marhé inter-Ministériel"
+    }
   }
 }
