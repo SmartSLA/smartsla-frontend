@@ -1,7 +1,5 @@
 <template>
-  <div v-if="$auth.ready() && $auth.check('admin')">
-    <router-view></router-view>
-  </div>
+  <div>{{ msg }}</div>
 </template>
 <script>
 export default {
