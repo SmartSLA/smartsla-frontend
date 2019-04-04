@@ -4,7 +4,7 @@
       <v-list-tile
         v-for="menuItem in menuItems"
         :key="menuItem.icon"
-        :to="{ name: menuItem.name }"
+        :to="{ name: menuItem.path || menuItem.name }"
         :class="{
           'primary active-menu-link': menuItem.name == currentActiveMenu,
           regular: menuItem.name != currentActiveMenu
@@ -125,6 +125,7 @@ export default {
       },*/
       {
         name: routeNames.ADMINISTRATION,
+        path: routeNames.ADMINHOME,
         text: this.$i18n.t("Administration"),
         icon: "mdi-tune",
         show: this.$auth.check("admin")

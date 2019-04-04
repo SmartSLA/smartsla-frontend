@@ -39,6 +39,7 @@ export const routeNames = Object.freeze({
   SETTINGS: "Settings",
   LOGIN: "Login",
   ADMINISTRATION: "Administration",
+  ADMINHOME: "Administration home",
   USERS: "Users",
   CONTRACTS: "Contracts",
   CONTRACT: "Contract",
@@ -163,6 +164,7 @@ export default new Router({
       children: [
         {
           path: "",
+          name: routeNames.ADMINHOME,
           component: AdministrationHome,
           meta: {
             auth: true
