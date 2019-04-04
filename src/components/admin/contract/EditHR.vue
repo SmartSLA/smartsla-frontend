@@ -177,7 +177,7 @@
       <v-layout row wrap align-center>
         <v-flex xs4></v-flex>
         <v-flex xs3>
-          <v-btn @click="createAccount" class="success" :disabled="createAccount">{{ $t("Validate changes") }}</v-btn>
+          <v-btn @click="validate" class="success" :disabled="createAccount">{{ $t("Validate changes") }}</v-btn>
         </v-flex>
         <v-flex xs3></v-flex>
       </v-layout>
@@ -284,7 +284,7 @@ export default {
       this.account.contracts = this.account.contracts.filter(contract => contract.id != contractId);
     },
 
-    createAccount() {
+    validate() {
       return;
     },
 
