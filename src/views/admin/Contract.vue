@@ -302,4 +302,8 @@ export default {
   text-decoration: none;
   color: grey;
 }
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
 </style>

@@ -5,14 +5,17 @@
     "id_ossa": "1",
     "severity": "Bloquant",
     "remaining_time": "2.42j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Contournement",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Dysfonctionnement facettes",
     "maj": "22 hours ago",
@@ -25,14 +28,17 @@
     "id_ossa": "3",
     "severity": "Non Bloquant",
     "remaining_time": "5.00j",
-    "conf":{
+    "conf": {
       "color": "error"
     },
     "status": "Rappel Utilisateur",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
     "maj": "yesterday",
@@ -45,14 +51,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "48.65j",
-    "conf":{
+    "conf": {
       "color": "info"
     },
     "status": "Solution définitive",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "problème de lock",
     "maj": "6 days ago",
@@ -65,14 +74,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "2.99j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Réponse demande",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
     "maj": "6 days ago",
@@ -85,14 +97,17 @@
     "id_ossa": "3",
     "severity": "Bloquant",
     "remaining_time": "2.95j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Contournement",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "NPM",
     "incident_wording": "Problème de droits",
     "maj": "1 week ago",
@@ -105,14 +120,17 @@
     "id_ossa": "1",
     "severity": "Bloquant",
     "remaining_time": "2.42j",
-    "conf":{
+    "conf": {
       "color": "info"
     },
     "status": "Contournement",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Dysfonctionnement facettes",
     "maj": "22 hours ago",
@@ -125,14 +143,17 @@
     "id_ossa": "3",
     "severity": "Non Bloquant",
     "remaining_time": "5.00j",
-    "conf":{
+    "conf": {
       "color": "error"
     },
     "status": "Rappel Utilisateur",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
     "maj": "yesterday",
@@ -145,14 +166,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "48.65j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Solution définitive",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "problème de lock",
     "maj": "6 days ago",
@@ -165,14 +189,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "2.99j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Réponse demande",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
     "maj": "6 days ago",
@@ -185,14 +212,17 @@
     "id_ossa": "3",
     "severity": "Bloquant",
     "remaining_time": "2.95j",
-    "conf":{
+    "conf": {
       "color": "info"
     },
     "status": "Contournement",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "NPM",
     "incident_wording": "Problème de droits",
     "maj": "1 week ago",
@@ -205,14 +235,17 @@
     "id_ossa": "1",
     "severity": "Bloquant",
     "remaining_time": "2.42j",
-    "conf":{
+    "conf": {
       "color": "info"
     },
     "status": "Contournement",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Dysfonctionnement facettes",
     "maj": "22 hours ago",
@@ -225,14 +258,17 @@
     "id_ossa": "3",
     "severity": "Non Bloquant",
     "remaining_time": "5.00j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Rappel Utilisateur",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
     "maj": "yesterday",
@@ -245,14 +281,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "48.65j",
-    "conf":{
+    "conf": {
       "color": "error"
     },
     "status": "Solution définitive",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "problème de lock",
     "maj": "6 days ago",
@@ -265,14 +304,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "2.99j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Réponse demande",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
     "maj": "6 days ago",
@@ -285,14 +327,17 @@
     "id_ossa": "3",
     "severity": "Bloquant",
     "remaining_time": "2.95j",
-    "conf":{
+    "conf": {
       "color": "error"
     },
     "status": "Contournement",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "NPM",
     "incident_wording": "Problème de droits",
     "maj": "1 week ago",
@@ -305,14 +350,17 @@
     "id_ossa": "1",
     "severity": "Bloquant",
     "remaining_time": "2.42j",
-    "conf":{
+    "conf": {
       "color": "error"
     },
     "status": "Contournement",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Dysfonctionnement facettes",
     "maj": "22 hours ago",
@@ -325,14 +373,17 @@
     "id_ossa": "3",
     "severity": "Non Bloquant",
     "remaining_time": "5.00j",
-    "conf":{
+    "conf": {
       "color": "info"
     },
     "status": "Rappel Utilisateur",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
     "maj": "yesterday",
@@ -345,14 +396,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "48.65j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Solution définitive",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "problème de lock",
     "maj": "6 days ago",
@@ -365,14 +419,17 @@
     "id_ossa": "2",
     "severity": "Bloquant",
     "remaining_time": "2.99j",
-    "conf":{
+    "conf": {
       "color": "info"
     },
     "status": "Réponse demande",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
     "maj": "6 days ago",
@@ -385,14 +442,17 @@
     "id_ossa": "3",
     "severity": "Bloquant",
     "remaining_time": "2.95j",
-    "conf":{
+    "conf": {
       "color": "warning"
     },
     "status": "Contournement",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
-    "client_contrat": "ACIM / Marché Inter-ministériel",
+    "client_contrat": {
+      "client": "ACIM",
+      "contract": "Marché Inter-ministériel"
+    },
     "software": "NPM",
     "incident_wording": "Problème de droits",
     "maj": "1 week ago",
