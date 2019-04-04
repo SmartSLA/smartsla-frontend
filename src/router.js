@@ -19,6 +19,7 @@ import Users from "@/views/admin/Users.vue";
 import Contracts from "@/views/admin/Contracts.vue";
 import Contract from "@/views/admin/Contract.vue";
 import EditContract from "@/views/admin/EditContract.vue";
+import AdministrationHome from "@/views/admin/Home.vue";
 
 Vue.use(Router);
 
@@ -154,43 +155,52 @@ export default new Router({
     },
     {
       path: "/administration",
-      name: routeNames.ADMINISTRATION,
       component: Administration,
+      name: routeNames.ADMINISTRATION,
       meta: {
         auth: true
-      }
-    },
-    {
-      path: "/users",
-      name: routeNames.USERS,
-      component: Users,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/contracts",
-      name: routeNames.CONTRACTS,
-      component: Contracts,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/contracts/:id",
-      name: routeNames.CONTRACT,
-      component: Contract,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/contracts/:id/edit/:section",
-      name: routeNames.EDITCONTRACT,
-      component: EditContract,
-      meta: {
-        auth: true
-      }
+      },
+      children: [
+        {
+          path: "",
+          component: AdministrationHome,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "users",
+          name: routeNames.USERS,
+          component: Users,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "contracts",
+          name: routeNames.CONTRACTS,
+          component: Contracts,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "contracts/:id",
+          name: routeNames.CONTRACT,
+          component: Contract,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "contracts/:id/edit/:section",
+          name: routeNames.EDITCONTRACT,
+          component: EditContract,
+          meta: {
+            auth: true
+          }
+        }
+      ]
     }
   ]
 });
