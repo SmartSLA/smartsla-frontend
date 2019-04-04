@@ -70,7 +70,7 @@ export default {
     },
 
     currentActiveMenu() {
-      return this.$route.name;
+      return this.$route.matched[0].name || this.$route.name;
     },
 
     requestsCount() {
@@ -172,7 +172,8 @@ export default {
   padding-top: 5px;
 }
 
-.active-menu-link.v-list__tile--active {
-  color: red !important;
+.v-list__tile--active {
+  background-color: #2196f3 !important;
+    border-color: #2196f3 !important;
 }
 </style>
