@@ -8,7 +8,9 @@ export default {
   },
 
   createClient(client) {
-    return this.post(`/ticketing/api/organizations`, client, { useCredentails: true });
+    return this.post(`/ticketing/api/organizations`, client, {
+      useCredentials: true
+    });
   },
 
   updateClient(clientId, client) {

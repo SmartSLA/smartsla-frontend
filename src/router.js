@@ -16,6 +16,7 @@ import ApplicationSettings from "@/services/application-settings";
 import CreateClient from "@/views/CreateClient.vue";
 import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/Users.vue";
+import Clients from "@/views/admin/Clients.vue";
 import Contracts from "@/views/admin/Contracts.vue";
 import Contract from "@/views/admin/Contract.vue";
 import EditContract from "@/views/admin/EditContract.vue";
@@ -41,6 +42,7 @@ export const routeNames = Object.freeze({
   ADMINISTRATION: "Administration",
   ADMINHOME: "Administration home",
   USERS: "Users",
+  CLIENTS: "Clients",
   CONTRACTS: "Contracts",
   CONTRACT: "Contract",
   EDITCONTRACT: "Edit Contract"
@@ -174,6 +176,14 @@ export default new Router({
           path: "users",
           name: routeNames.USERS,
           component: Users,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "clients",
+          name: routeNames.CLIENTS,
+          component: Clients,
           meta: {
             auth: true
           }

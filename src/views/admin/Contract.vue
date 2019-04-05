@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-md class="pt-0">
+  <v-container grid-list-md class="pt-0 pl-0">
     <v-card-text>
       <router-link class="text-lg-left action-links" :to="{ name: 'Contracts' }">
         <v-icon class="mr-2">arrow_back_ios</v-icon>

@@ -11,12 +11,12 @@
             <v-card-text>
               <v-form>
                 <div class="float-left">
-                  <v-text-field name="Name" :label="$t('Name')" type="text"></v-text-field>
+                  <v-text-field name="Name" :label="$t('Name')" v-model="clientName" type="text"></v-text-field>
                   <v-textarea name="adresse" label="Adresse"></v-textarea>
                 </div>
                 <v-divider vertical />
                 <div class="float-right">
-                  <v-checkbox v-model="checkbox" :label="`Inactive`"></v-checkbox>
+                  <v-checkbox :label="`Inactive`"></v-checkbox>
                   <file-upload
                     class="file"
                     :url="url"
@@ -33,7 +33,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn :disabled="submitClient" :loading="submitClient" @click="submit">{{ $t("Validate") }}</v-btn>
+              <v-btn @click="submit">{{ $t("Validate") }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -56,6 +56,7 @@ export default {
       submitRequest: false,
       email: null,
       password: null,
+      clientName: "",
       select: null,
       states: ["Item 1", "Item 2", "Item 3", "Item 4"],
       scale_states: ["Item 1", "Item 2", "Item 3", "Item 4"]
@@ -63,8 +64,12 @@ export default {
   },
   methods: {
     submit() {
-      this.submitClient = false;
-      this.$http.createTicket({});
+      this.$http.createClient({shortName: this.clientName}).then(response => {
+        console.log(response);
+      })
+      .catch( err => {
+        console.log(err);
+      })
     },
     thumbUrl(file) {
       return file.myThumbUrlProperty;
@@ -80,30 +85,6 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
-  },
-  watch: {
-    search() {
-      // Items have already been loaded
-      if (this.items.length > 0) return;
-
-      // Items have already been requested
-      if (this.isLoading) return;
-
-      this.isLoading = true;
-
-      // Lazily load input items
-      fetch("https://api.publicapis.org/entries")
-        .then(res => res.json())
-        .then(res => {
-          const { count, entries } = res;
-          this.count = count;
-          this.entries = entries;
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .finally(() => (this.isLoading = false));
-    }
   }
 };
 </script>
