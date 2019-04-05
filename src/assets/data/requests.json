@@ -1,14 +1,17 @@
 [
   {
-    "number": "1",
     "ticket_number": "00001",
     "id_ossa": "1",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.42j / 4.50j",
+=======
     "remaining_time": "2.42j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Contournement",
+    "status": "New",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
@@ -17,21 +20,25 @@
       "contract": "Marché Inter-ministériel"
     },
     "software": "LibreOffice",
-    "incident_wording": "Dysfonctionnement facettes",
+    "incident_wording": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
+    "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
-    "created": "yesterday",
+    "created": "20/05/2017 \n 10:00",
     "team": "support"
   },
   {
-    "number": "2",
     "ticket_number": "00002",
     "id_ossa": "3",
     "severity": "Non Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "5.00j / 15.00j",
+=======
     "remaining_time": "5.00j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "error"
     },
-    "status": "Rappel Utilisateur",
+    "status": "Taken into account",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
@@ -41,20 +48,24 @@
     },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
+    "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
-    "created": "2 weeks ago",
+    "created": "07/03/2018 \n 15:00",
     "team": "hosting"
   },
   {
-    "number": "3",
     "ticket_number": "00003",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "48.65j / 60.00j",
+=======
     "remaining_time": "48.65j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "info"
     },
-    "status": "Solution définitive",
+    "status": "Circumvention",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
@@ -64,20 +75,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "problème de lock",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "11 weeks ago",
+    "created": "02/11/2017 \n 14:00",
     "team": "support"
   },
   {
-    "number": "4",
     "ticket_number": "00004",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.99j / 6.00j",
+=======
     "remaining_time": "2.99j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Réponse demande",
+    "status": "New",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
@@ -87,20 +102,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "2 weeks ago",
+    "created": "20/05/2017 \n 10:00",
     "team": "ossa"
   },
   {
-    "number": "5",
     "ticket_number": "00005",
     "id_ossa": "3",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.95j / 6.00j",
+=======
     "remaining_time": "2.95j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Contournement",
+    "status": "New",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
@@ -110,20 +129,24 @@
     },
     "software": "NPM",
     "incident_wording": "Problème de droits",
+    "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
-    "created": "2 weeks ago",
+    "created": "22/05/2015 \n 09:30",
     "team": "ossa"
   },
   {
-    "number": "6",
     "ticket_number": "00006",
     "id_ossa": "1",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.42j / 3.00j",
+=======
     "remaining_time": "2.42j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "info"
     },
-    "status": "Contournement",
+    "status": "Fenced",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
@@ -132,21 +155,25 @@
       "contract": "Marché Inter-ministériel"
     },
     "software": "LibreOffice",
-    "incident_wording": "Dysfonctionnement facettes",
+    "incident_wording": "Les fichiers de logs ne contiennent plus des informations ",
+    "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
-    "created": "yesterday",
+    "created": "10/09/2018 \n 12:00",
     "team": "support"
   },
   {
-    "number": "7",
     "ticket_number": "00007",
     "id_ossa": "3",
     "severity": "Non Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "5.00j / 15.00j",
+=======
     "remaining_time": "5.00j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "error"
     },
-    "status": "Rappel Utilisateur",
+    "status": "Circumvention",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
@@ -156,20 +183,24 @@
     },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
+    "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
-    "created": "2 weeks ago",
+    "created": "21/07/2012 \n 17:00",
     "team": "hosting"
   },
   {
-    "number": "8",
     "ticket_number": "00008",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "48.65j / 95.00j",
+=======
     "remaining_time": "48.65j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Solution définitive",
+    "status": "Taken into account",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
@@ -179,20 +210,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "problème de lock",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "11 weeks ago",
+    "created": "14/12/2014 \n 10:00",
     "team": "support"
   },
   {
-    "number": "9",
     "ticket_number": "00009",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.99j / 6.00j",
+=======
     "remaining_time": "2.99j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Réponse demande",
+    "status": "Circumvention",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
@@ -202,20 +237,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "2 weeks ago",
+    "created": "20/05/2017 \n 10:00",
     "team": "ossa"
   },
   {
-    "number": "10",
     "ticket_number": "00010",
     "id_ossa": "3",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.95j / 4.00j",
+=======
     "remaining_time": "2.95j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "info"
     },
-    "status": "Contournement",
+    "status": "Resolution",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
@@ -224,21 +263,25 @@
       "contract": "Marché Inter-ministériel"
     },
     "software": "NPM",
-    "incident_wording": "Problème de droits",
+    "incident_wording": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
+    "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
-    "created": "2 weeks ago",
+    "created": "09/07/2011 \n 15:30",
     "team": "ossa"
   },
   {
-    "number": "11",
     "ticket_number": "00011",
     "id_ossa": "1",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.42j / 4.00j",
+=======
     "remaining_time": "2.42j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "info"
     },
-    "status": "Contournement",
+    "status": "Resolution",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
@@ -248,20 +291,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "Dysfonctionnement facettes",
+    "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
-    "created": "yesterday",
+    "created": "17/05/2017 \n 10:00",
     "team": "support"
   },
   {
-    "number": "12",
     "ticket_number": "00012",
     "id_ossa": "3",
     "severity": "Non Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "5.00j / 15.00j",
+=======
     "remaining_time": "5.00j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Rappel Utilisateur",
+    "status": "Fenced",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
@@ -271,20 +318,24 @@
     },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
+    "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
-    "created": "2 weeks ago",
+    "created": "20/05/2017 \n 10:00",
     "team": "hosting"
   },
   {
-    "number": "13",
     "ticket_number": "00013",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "48.65j / 150.00j",
+=======
     "remaining_time": "48.65j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "error"
     },
-    "status": "Solution définitive",
+    "status": "Fenced",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
@@ -293,21 +344,25 @@
       "contract": "Marché Inter-ministériel"
     },
     "software": "LibreOffice",
-    "incident_wording": "problème de lock",
+    "incident_wording": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "11 weeks ago",
+    "created": "20/05/2017 \n 12:00",
     "team": "support"
   },
   {
-    "number": "14",
     "ticket_number": "00014",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.99j / 6.00j",
+=======
     "remaining_time": "2.99j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Réponse demande",
+    "status": "New",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
@@ -317,20 +372,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "2 weeks ago",
+    "created": "20/05/2013 \n 10:00",
     "team": "ossa"
   },
   {
-    "number": "15",
     "ticket_number": "00015",
     "id_ossa": "3",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.95j / 9.OOj",
+=======
     "remaining_time": "2.95j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "error"
     },
-    "status": "Contournement",
+    "status": "Resolution",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
@@ -340,20 +399,24 @@
     },
     "software": "NPM",
     "incident_wording": "Problème de droits",
+    "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
-    "created": "2 weeks ago",
+    "created": "20/04/2014 \n 11:44",
     "team": "ossa"
   },
   {
-    "number": "16",
     "ticket_number": "00016",
     "id_ossa": "1",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.42j / 8.50j",
+=======
     "remaining_time": "2.42j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "error"
     },
-    "status": "Contournement",
+    "status": "Taken into account",
     "responsible": "Vromin",
     "transmitter": "Dupon",
     "type": "Anomalie",
@@ -363,20 +426,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "Dysfonctionnement facettes",
+    "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
-    "created": "yesterday",
+    "created": "28/09/2018 \n 16:00",
     "team": "support"
   },
   {
-    "number": "17",
     "ticket_number": "00017",
     "id_ossa": "3",
     "severity": "Non Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "5.00j / 6.00j",
+=======
     "remaining_time": "5.00j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "info"
     },
-    "status": "Rappel Utilisateur",
+    "status": "New",
     "responsible": "Dufon",
     "transmitter": "Martin",
     "type": "Evolution",
@@ -386,20 +453,24 @@
     },
     "software": "GLPI",
     "incident_wording": "Infos manquantes Formulaire de création",
+    "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
-    "created": "2 weeks ago",
+    "created": "25/02/2014 \n 18:00",
     "team": "hosting"
   },
   {
-    "number": "18",
     "ticket_number": "00018",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "48.65j / 95.00j",
+=======
     "remaining_time": "48.65j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Solution définitive",
+    "status": "Taken into account",
     "responsible": "Maudu",
     "transmitter": "Bernas",
     "type": "Anomalie",
@@ -409,20 +480,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "problème de lock",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "11 weeks ago",
+    "created": "13/05/2017 \n 14:00",
     "team": "support"
   },
   {
-    "number": "19",
     "ticket_number": "00019",
     "id_ossa": "2",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.99j / 4.00j",
+=======
     "remaining_time": "2.99j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "info"
     },
-    "status": "Réponse demande",
+    "status": "Resolution",
     "responsible": "Chapy",
     "transmitter": "Bacron",
     "type": "Evolution",
@@ -432,20 +507,24 @@
     },
     "software": "LibreOffice",
     "incident_wording": "Fuite mémoire",
+    "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
-    "created": "2 weeks ago",
+    "created": "20/05/2017 \n 10:00",
     "team": "ossa"
   },
   {
-    "number": "20",
     "ticket_number": "00020",
     "id_ossa": "3",
     "severity": "Bloquant",
+<<<<<<< HEAD
+    "remaining_time": "2.95j / 6.00j",
+=======
     "remaining_time": "2.95j",
+>>>>>>> dc486f381514a34556c1685e9f2bd6a48be87c69
     "conf": {
       "color": "warning"
     },
-    "status": "Contournement",
+    "status": "Taken into account",
     "responsible": "Moutou",
     "transmitter": "Jorac",
     "type": "Anomalie",
@@ -455,8 +534,9 @@
     },
     "software": "NPM",
     "incident_wording": "Problème de droits",
+    "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
-    "created": "2 weeks ago",
+    "created": "01/11/2018 \n 17:05",
     "team": "ossa"
   }
 ]
