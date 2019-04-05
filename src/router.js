@@ -20,6 +20,7 @@ import Clients from "@/views/admin/Clients.vue";
 import Contracts from "@/views/admin/Contracts.vue";
 import Contract from "@/views/admin/Contract.vue";
 import EditContract from "@/views/admin/EditContract.vue";
+import AdministrationHome from "@/views/admin/Home.vue";
 
 Vue.use(Router);
 
@@ -156,8 +157,8 @@ export default new Router({
     },
     {
       path: "/administration",
-      name: routeNames.ADMINISTRATION,
       component: Administration,
+      name: routeNames.ADMINISTRATION,
       meta: {
         auth: true
       }
