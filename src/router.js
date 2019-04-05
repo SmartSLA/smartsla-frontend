@@ -40,6 +40,7 @@ export const routeNames = Object.freeze({
   SETTINGS: "Settings",
   LOGIN: "Login",
   ADMINISTRATION: "Administration",
+  ADMINHOME: "Administration home",
   USERS: "Users",
   CLIENTS: "Clients",
   CONTRACTS: "Contracts",
