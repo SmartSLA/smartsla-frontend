@@ -50,16 +50,6 @@
           <td class="text-xs-center">{{ props.item.beneficiary }}</td>
           <td class="text-xs-center user-mail">{{ props.item.email }}</td>
           <td class="text-xs-center">{{ props.item.phone }}</td>
-          <td class="text-xs-center">
-            <a href="#" class="users-actions">
-              <v-icon>search</v-icon>
-            </a>
-          </td>
-          <td class="text-xs-center">
-            <a href="#" class="users-actions">
-              <v-icon>create</v-icon>
-            </a>
-          </td>
         </template>
       </v-data-table>
     </div>
@@ -80,9 +70,7 @@ export default {
         { text: "Engineer", value: "engineer" },
         { text: "Beneficiary", value: "beneficiary" },
         { text: "E-mail", value: "email" },
-        { text: "Phone", value: "phone" },
-        { text: "View", value: "view" },
-        { text: "Edit", value: "edit" }
+        { text: "Phone", value: "phone" }
       ],
       users
     };
