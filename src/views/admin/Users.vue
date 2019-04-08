@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <v-data-table :headers="headers" :items="users" class="elevation-1">
+      <v-data-table :headers="headers" :items="users" class="elevation-1" :search="search">
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.title }}</td>
           <td class="text-xs-center">

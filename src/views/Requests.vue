@@ -56,13 +56,14 @@
         :search="search"
         :custom-filter="requestsFilter"
         :filter="requestFilterByGroup"
+        :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            {{ props.item.number }}
+            {{ props.index }}
           </td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
@@ -106,9 +107,8 @@
               <span>Version : 1.4.6 / Criticité : Haute</span>
             </v-tooltip>
           </td>
-
-          <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-center">{{ props.item.assign_to }}</td>
           <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.transmitter }}</td>
 
@@ -119,6 +119,7 @@
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
           <td class="text-xs-center">{{ props.item.created }}</td>
+          <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
             <v-progress-linear v-if="props.item.conf.color == 'error'" color="error" height="20" value="30">{{
               props.item.remaining_time
@@ -162,7 +163,8 @@ export default {
         }
       ],
       searchCriteria: "Ticket",
-      pagination: "",
+      rowsPerPageItems: [10, 25, 50],
+      pagination: "10",
       search: null,
       toggle_multiple: "2",
       teamsFilter: {
@@ -177,13 +179,14 @@ export default {
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "software" },
-        { text: this.$i18n.t("Status"), value: "status" },
         { text: this.$i18n.t("Subject"), value: "incident_wording" },
+        { text: this.$i18n.t("Assign To"), value: "assign_to" },
         { text: this.$i18n.t("Responsible"), value: "responsible" },
         { text: this.$i18n.t("Transmitter"), value: "transmitter" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
         { text: this.$i18n.t("MAJ"), value: "maj" },
         { text: this.$i18n.t("Created"), value: "created" },
+        { text: this.$i18n.t("Status"), value: "status" },
         { text: this.$i18n.t("Remaining time"), value: "remaining_time" }
       ],
       requests: []

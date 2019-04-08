@@ -113,6 +113,12 @@
                     <v-input prepend-icon="subject" class="pt-2">
                       <vue-editor v-model="comment"></vue-editor>
                     </v-input>
+                    <markdown-editor
+                      :options="options"
+                      v-model="comment"
+                      toolbar="bold italic heading | image link | numlist bullist code quote | preview fullscreen"
+                      name="html"
+                    ></markdown-editor>
                     <v-btn color="info">{{ $t("add comment") }}</v-btn>
                   </v-form>
                 </v-card>
@@ -336,6 +342,15 @@ export default {
       comments: [],
       request: {},
       comment: "",
+      options: {
+        lineNumbers: true,
+        styleActiveLine: true,
+        styleSelectedText: true,
+        lineWrapping: true,
+        indentWithTabs: true,
+        tabSize: 2,
+        indentUnit: 2
+      }
     };
   },
   components: {
