@@ -4,20 +4,20 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
-        {{ $t("Requests list (TICKETS)") }}
+        {{ $i18n.t("Requests list (TICKETS)") }}
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET") }}
+        {{ $i18n.t("EXPORT SHEET") }}
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
+        {{ $i18n.t("PRINT SHEET") }}
       </a>
     </v-card-text>
 
     <div class="tickets-search">
-        <div class="requests-filter-label"><span>{{$t("Filter by:")}}</span></div>
+        <div class="requests-filter-label"><span>{{$i18n.t("Filter by:")}}</span></div>
         <v-spacer class="mx-2"></v-spacer>
         <v-select
           solo
@@ -40,7 +40,7 @@
           <v-icon dark>add</v-icon>
         </v-btn>
         <v-spacer class="mx-2"></v-spacer>
-        <div class="requests-filter-label"><span>{{$t("And / Or")}}</span></div>
+        <div class="requests-filter-label"><span>{{$i18n.t("And / Or")}}</span></div>
         <v-spacer class="mx-2"></v-spacer>
         <v-select
           solo
@@ -55,11 +55,11 @@
           <v-icon dark>add</v-icon>
         </v-btn>
         <v-spacer class="mx-2"></v-spacer>
-        <div class="requests-filter-label"><span>{{$t("And / Or")}}</span></div>
+        <div class="requests-filter-label"><span>{{$i18n.t("And / Or")}}</span></div>
         <v-spacer class="mx-2"></v-spacer>
         <v-text-field
           v-model="search"
-          :placeholder="$t('Search')"
+          :placeholder="$i18n.t('Search')"
           single-line
           hide-details
           solo
@@ -72,14 +72,14 @@
       v-model="categories"
       close
     >
-      {{$t("Example filter")}}
+      {{$i18n.t("Example filter")}}
     </v-chip>
 
     <v-chip
       v-model="categories"
       close
     >
-      {{$t("Example filter")}}
+      {{$i18n.t("Example filter")}}
     </v-chip>
     <v-layout>
       <v-data-table
