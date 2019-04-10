@@ -32,6 +32,7 @@
                       <vue-editor placeholder="Description" v-model="description"></vue-editor>
                     </v-input>
                   </v-flex>
+
                   <v-flex xs6>
                     <v-combobox
                       v-model="chips"
