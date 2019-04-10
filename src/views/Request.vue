@@ -335,7 +335,7 @@ export default {
       panel: [true, true],
       comments: [],
       request: {},
-      comment: "",
+      comment: ""
     };
   },
   components: {

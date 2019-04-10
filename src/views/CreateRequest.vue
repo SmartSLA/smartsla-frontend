@@ -12,12 +12,7 @@
               <v-form>
                 <v-layout wrap row>
                   <v-flex xs6>
-                    <v-text-field
-                      prepend-icon="warning"
-                      name="Title"
-                      :label="$t('Title')"
-                      type="text"
-                    ></v-text-field>
+                    <v-text-field prepend-icon="warning" name="Title" :label="$t('Title')" type="text"></v-text-field>
                   </v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs8>
@@ -75,29 +70,40 @@
                     </v-input>
                   </v-flex>
                   <v-flex xs6>
-                    <v-select
-                      :items="filterGroups"
-                      v-model="searchCriteria"
-                      
-                      single-line
-                      hide-details
-                      solo
-                      
-                    >
-                      <template v-slot:prepend>
+                    <v-layout>
+                      <v-flex xs4>
+                        <v-select
+                          prepend-icon="link"
+                          class="mr-0"
+                          :items="linkTypes"
+                          :label="$t('linking types')"
+                          v-model="searchCriteria"
+                          single-line
+                          hide-details
+                          solo
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs6 class="pl-0">
                         <v-select
                           v-model="chips"
                           :items="relatedRequests"
                           :label="$t('Related requests')"
-                          prepend-icon="link"
                           solo
                           multiple
                           class="pt-0"
                         >
+                          <template v-slot:append-outer>
+                            <v-btn solo class="ml-0 white black--text mt-0 full-height">
+                              <v-icon dark>add</v-icon>
+                            </v-btn>
+                          </template>
                         </v-select>
-                      </template>
-                    </v-select>
-
+                      </v-flex>
+                      <v-flex xs2></v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex xs6></v-flex>
+                  <v-flex xs10 class="pl-4">
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
@@ -116,11 +122,7 @@
               <v-layout>
                 <v-flex xs6 text-xs-right align-end>
                   <v-spacer></v-spacer>
-                  <v-btn
-                    :disabled="submitRequest"
-                    :loading="submitRequest"
-                    @click="submit"
-                  >{{ $t("Submit") }}</v-btn>
+                  <v-btn :disabled="submitRequest" :loading="submitRequest" @click="submit">{{ $t("Submit") }}</v-btn>
                 </v-flex>
               </v-layout>
             </v-card-actions>
@@ -141,6 +143,8 @@ export default {
   data() {
     return {
       chips: "",
+      searchCriteria: "",
+      linkTypes: ["type1", "type2", "type3"],
       description: "",
       url: "http://your-post.url",
       headers: { "access-token": "<your-token>" },
@@ -174,14 +178,7 @@ export default {
       ],
       osList: ["Linux", "Windows", "Mac OS"],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: [
-        "issue1",
-        "issue3",
-        "issue18",
-        "issue41",
-        "issue35",
-        "issue70"
-      ]
+      relatedRequests: ["issue1", "issue3", "issue18", "issue41", "issue35", "issue70"]
     };
   },
   components: {
@@ -234,6 +231,18 @@ export default {
 };
 </script>
 <style scoped type="stylus">
+.add-link {
+  height: 48px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+}
+
+.full-height {
+  height: 100%;
+}
+
 .float-left {
   float: left;
   width: 50%;
@@ -248,10 +257,10 @@ export default {
   padding: 0px 0px 0px 0px !important;
 }
 .elevation-12 {
-  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
   widows: 100%;
 }
 .container.fluid.fill-height {
@@ -287,5 +296,34 @@ export default {
 .quillWrapper,
 .ql-editor {
   width: 100%;
+}
+</style>
+<style lang="css">
+#openpaas
+  > div.application--wrap
+  > div
+  > main
+  > div
+  > div
+  > div
+  > main
+  > div
+  > div.container.fluid.fill-height
+  > div
+  > div
+  > div
+  > div.v-card__text
+  > form
+  > div
+  > div:nth-child(7)
+  > div
+  > div.flex.pl-0.xs6
+  > div
+  > div.v-input__append-outer {
+  height: 48px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
 }
 </style>

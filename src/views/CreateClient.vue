@@ -64,12 +64,14 @@ export default {
   },
   methods: {
     submit() {
-      this.$http.createClient({shortName: this.clientName}).then(response => {
-        console.log(response);
-      })
-      .catch( err => {
-        console.log(err);
-      })
+      this.$http
+        .createClient({ shortName: this.clientName })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     thumbUrl(file) {
       return file.myThumbUrlProperty;

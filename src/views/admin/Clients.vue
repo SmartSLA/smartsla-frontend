@@ -16,7 +16,6 @@
           class="clients-search-name"
         ></v-text-field>
         <div class="clients-operations">
-          
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
             <span>Add client</span>
@@ -54,8 +53,7 @@ export default {
         { text: "Inactive", value: "inactive" },
         { text: "Access code", value: "access_code" },
         { text: "Help code", value: "help_code" }
-      ],
-      clients
+      ]
     };
   },
   created() {
