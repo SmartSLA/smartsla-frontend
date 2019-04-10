@@ -10,22 +10,64 @@
           <v-card>
             <v-card-text>
               <v-form>
-                <v-layout wrap>
+                <v-layout wrap row>
                   <v-flex xs6>
-                    <v-select
-                      prepend-icon="report"
-                      :items="severityList"
-                      v-model="severity"
-                      label="Severity"
-                    ></v-select>
-                    <v-autocomplete
-                      :items="softwareList"
-                      :label="$t('Software')"
-                      prepend-icon="laptop"
-                      background-color="white"
-                      :search-input.sync="software"
-                    ></v-autocomplete>
-                    <v-text-field prepend-icon="warning" name="Title" :label="$t('Title')" type="text"></v-text-field>
+                    <v-text-field
+                      prepend-icon="warning"
+                      name="Title"
+                      :label="$t('Title')"
+                      type="text"
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs6></v-flex>
+                  <v-flex xs8>
+                    <v-layout row wrap>
+                      <v-flex xs3>
+                        <v-select prepend-icon="storage" :items="types" v-model="type" label="Type"></v-select>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                      <v-flex xs3>
+                        <v-select
+                          prepend-icon="report"
+                          :items="severityList"
+                          v-model="severity"
+                          label="Severity"
+                        ></v-select>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex xs4></v-flex>
+                  <v-flex xs8>
+                    <v-layout row wrap>
+                      <v-flex xs3>
+                        <v-autocomplete
+                          :items="softwareList"
+                          :label="$t('Software')"
+                          prepend-icon="laptop"
+                          background-color="white"
+                          :search-input.sync="software"
+                        ></v-autocomplete>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                      <v-flex xs3>
+                        <v-text-field
+                          :label="$t('Version')"
+                          prepend-icon="mdi-counter"
+                          background-color="white"
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                      <v-flex xs3>
+                        <v-autocomplete
+                          :items="osList"
+                          :label="$t('OS')"
+                          prepend-icon="mdi-package-variant-closed"
+                          background-color="white"
+                          :search-input.sync="os"
+                        ></v-autocomplete>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                    </v-layout>
                   </v-flex>
                   <v-flex xs12>
                     <v-input prepend-icon="notes">
@@ -33,23 +75,29 @@
                     </v-input>
                   </v-flex>
                   <v-flex xs6>
-                    <v-combobox
-                      v-model="chips"
-                      :items="relatedRequests"
-                      :label="$t('Related requests')"
-                      chips
-                      clearable
-                      prepend-icon="link"
+                    <v-select
+                      :items="filterGroups"
+                      v-model="searchCriteria"
+                      
+                      single-line
+                      hide-details
                       solo
-                      multiple
+                      
                     >
-                      <template v-slot:selection="data">
-                        <v-chip :selected="data.selected" close @input="remove(data.item)">
-                          <strong>{{ data.item }}</strong
-                          >&nbsp;
-                        </v-chip>
+                      <template v-slot:prepend>
+                        <v-select
+                          v-model="chips"
+                          :items="relatedRequests"
+                          :label="$t('Related requests')"
+                          prepend-icon="link"
+                          solo
+                          multiple
+                          class="pt-0"
+                        >
+                        </v-select>
                       </template>
-                    </v-combobox>
+                    </v-select>
+
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
@@ -68,7 +116,11 @@
               <v-layout>
                 <v-flex xs6 text-xs-right align-end>
                   <v-spacer></v-spacer>
-                  <v-btn :disabled="submitRequest" :loading="submitRequest" @click="submit">{{ $t("Submit") }}</v-btn>
+                  <v-btn
+                    :disabled="submitRequest"
+                    :loading="submitRequest"
+                    @click="submit"
+                  >{{ $t("Submit") }}</v-btn>
                 </v-flex>
               </v-layout>
             </v-card-actions>
@@ -88,6 +140,7 @@ Vue.use(FileUpload);
 export default {
   data() {
     return {
+      chips: "",
       description: "",
       url: "http://your-post.url",
       headers: { "access-token": "<your-token>" },
@@ -100,6 +153,8 @@ export default {
       scale_states: ["Item 1", "Item 2", "Item 3", "Item 4"],
       severity: "",
       software: "",
+      os: "",
+      type: "",
       severityList: ["Blocking", "Major", "Minor"],
       softwareList: [
         "APIMan v1.2 CentOs 6",
@@ -117,7 +172,16 @@ export default {
         "Tomcat v8.0 CentOs 6",
         "Tomcat v8.0 CentOs 7"
       ],
-      relatedRequests: ["issue1", "issue3", "issue18", "issue41", "issue35", "issue70"]
+      osList: ["Linux", "Windows", "Mac OS"],
+      types: ["type1", "type2", "type3", "type4"],
+      relatedRequests: [
+        "issue1",
+        "issue3",
+        "issue18",
+        "issue41",
+        "issue35",
+        "issue70"
+      ]
     };
   },
   components: {
@@ -184,10 +248,10 @@ export default {
   padding: 0px 0px 0px 0px !important;
 }
 .elevation-12 {
-  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
-    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
-    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
   widows: 100%;
 }
 .container.fluid.fill-height {
