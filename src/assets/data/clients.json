@@ -1,72 +1,72 @@
 [
     {
+      "id": "1",
+      "logo":"",
       "name":"AAIR",
-      "adresse":"",
-      "inactive":"yes",
-      "access_code":"0",
-      "help_code":""
+      "contracts":"",
+      "access_code":"0"
     },
     {
+      "id": "2",
+      "logo":"",
       "name":"ABES",
-      "adresse":"",
-      "inactive":"yes",
-      "access_code":"0",
-      "help_code":""
+      "contracts":"",
+      "access_code":"0"
     },
     {
+      "id": "3",
+      "logo":"",
       "name":"ACCOR",
-      "adresse":"2 rue de la Mare Neuve 91000 Evry",
-      "inactive":"yes",
-      "access_code":"22267",
-      "help_code":""
+      "contracts":"",
+      "access_code":"22267"
     },
     {
+      "id": "4",
+      "logo":"",
       "name":"ACMS",
-      "adresse":"",
-      "inactive":"yes",
-      "access_code":"0",
-      "help_code":""
+      "contracts":"",
+      "access_code":"0"
     },
     {
+      "id": "5",
+      "logo":"",
       "name":"ADECCO",
-      "adresse":"83/85 Bd VIVIER MERLE 69487 LYON Cedex 03",
-      "inactive":"yes",
-      "access_code":"233226",
-      "help_code":""
+      "contracts":"",
+      "access_code":"233226"
     },
     {
+      "id": "6",
+      "logo":"",
       "name":"ADETEM",
-      "adresse":"12 rue de Milan 75009 PARIS",
-      "inactive":"yes",
-      "access_code":"0",
-      "help_code":""
+      "contracts":"",
+      "access_code":"0"
     },
     {
+      "id": "7",
+      "logo":"",
       "name":"AdNovum Informatik AG",
-      "adresse":"",
-      "inactive":"yes",
-      "access_code":"0",
-      "help_code":""
+      "contracts":"",
+      "access_code":"0"
     },
     {
+      "id": "8",
+      "logo":"",
       "name":"AFNOR",
-      "adresse":"11, rue Francis de Pressensé 93571 La Plaine Saint-Denis Cedex ",
-      "inactive":"yes",
-      "access_code":"23667",
-      "help_code":""
+      "contracts":"",
+      "access_code":"23667"
     },
     {
+      "id": "9",
+      "logo":"",
       "name":"Agricoll",
-      "adresse":"",
-      "inactive":"yes",
-      "access_code":"0",
-      "help_code":""
+      "contracts":"",
+      "access_code":"0"
     },
     {
+      "id": "10",
+      "logo":"",
       "name":"AIFE",
-      "adresse":"Bercy 3 10 rue du Centre 93464 NOISY LE GRAND CEDEX",
-      "inactive":"yes",
-      "access_code":"94575",
-      "help_code":""
+      "contracts":"",
+      "access_code":"94575"
     }
   ]

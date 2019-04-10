@@ -1,29 +1,29 @@
 <template>
   <div v-if="$auth.ready() && $auth.check('admin')">
-    <div class="clients-list">
+    <div class="teams-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Clients list")}}
+          {{$i18n.t("Teams list")}}
         </span>
       </div>
-      <div class="clients-search">
-        <span class="clients-search-span">
+      <div class="teams-search">
+        <span class="teams-search-span">
           {{$i18n.t("Search by:")}}
         </span>
         <v-text-field
           v-model="search"
-          :placeholder="$i18n.t('Name')"
+          :placeholder="$i18n.t('Search')"
           single-line
           hide-details
           solo
-          class="clients-search-name"
+          class="teams-search-name"
         ></v-text-field>
-        <div class="clients-operations">
-          <a href="#" class="clients-actions">
+        <div class="teams-operations">
+          <a href="#" class="teams-actions">
             <v-icon>add_circle</v-icon>
-            <span>Add client</span>
+            <span>Add Team</span>
           </a>
-          <a href="#" class="clients-actions">
+          <a href="#" class="teams-actions">
             <v-icon>arrow_downward</v-icon>
             <span>Export</span>
           </a>
@@ -31,17 +31,16 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="clients"
+        :items="teams"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
         :search="search"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">{{ props.item.name }}</td>
-          <td class="text-xs-center">{{ props.item.contracts }}</td>
-          <td class="text-xs-center">{{ props.item.access_code }}</td>
+          <td class="text-xs-center">{{ props.item.contact }}</td>
+          <td class="text-xs-center">{{ props.item.devise }}</td>
         </template>
       </v-data-table>
     </div>
@@ -49,26 +48,26 @@
 </template>
 
 <script>
-var clients = require("@/assets/data/clients.json");
+var teams = require("@/assets/data/teams.json");
 export default {
   data() {
     return {
       search: "",
-      clients: [],
+      contact: [],
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
-      roles: [],
+      devise: [],
       headers: [
-        { text: "Logo", value: "logo" },
         { text: "Name", value: "name" },
-        { text: "Contracts", value: "conttracts" },
-        { text: "Access code", value: "access_code" }
-      ]
+        { text: "Contact", value: "contact" },
+        { text: "Devise", value: "devise" }
+      ],
+      teams
     };
   },
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "clients");
+    this.$store.dispatch("sidebar/setActiveAdminMenu", "teams");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -93,7 +92,7 @@ export default {
   margin-bottom: 20px;
 .elevation-1 th
   color: #000000;
-.clients-list
+.teams-list
   width: 100% !important;
 .container.fluid.fill-height
   padding: 50px;
@@ -101,30 +100,30 @@ export default {
   max-width: 100%;
 .layout.justify-center.align-center > div
   width: 100%;
-.clients-search-span
+.teams-search-span
   padding-top: 15px;
   width: 150px;
   color: #777;
-.clients-search-name,
-.clients-search-client,
-.clients-search-roles
+.teams-search-name,
+.teams-search-contact,
+.teams-search-devise
   width: 300px;
-.clients-search
+.teams-search
   display: inline-flex !important;
   margin-bottom: 20px;
-.v-input.clients-search-name,
-.v-input.clients-search-client
+.v-input.teams-search-name,
+.v-input.teams-search-contact
   margin-right: 20px !important;
-.client-mail
+.user-mail
   color: #2196f3 !important;
   font-weight: bold !important;
-.clients-operations a
+.teams-operations a
   margin-left: 20px;
-.clients-operations
+.teams-operations
   margin: 10px;
   margin-left: 100px !important;
-.clients-actions
+.teams-actions
   text-decoration: none !important;
-.clients-search
+.teams-search
   width: 100%;
 </style>

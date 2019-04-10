@@ -1,13 +1,13 @@
 <template>
   <div v-if="$auth.ready() && $auth.check('admin')">
-    <div class="users-list">
+    <div class="contributions-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Users list")}}
+          {{$i18n.t("Contributions list")}}
         </span>
       </div>
-      <div class="users-search">
-        <span class="users-search-span">
+      <div class="contributions-search">
+        <span class="contributions-search-span">
           {{$i18n.t("Search by:")}}
         </span>
         <v-text-field
@@ -16,35 +16,35 @@
           single-line
           hide-details
           solo
-          class="users-search-name"
+          class="contributions-search-name"
         ></v-text-field>
         <v-select
           solo
-          :items="clients"
-          v-model="clients"
+          :items="softwares"
+          v-model="softwares"
           hide-details
-          label="Client"
-          class="users-search-client"
+          label="software"
+          class="contributions-search-software"
         ></v-select>
         <v-select
           solo
-          :items="roles"
-          v-model="roles"
+          :items="statuss"
+          v-model="statuss"
           hide-details
-          label="Roles"
-          class="users-search-roles"
+          label="statuss"
+          class="contributions-search-statuss"
         ></v-select>
-        <div class="users-operations">
+        <div class="contributions-operations">
           <a
             href="#"
-            class="users-actions"
+            class="contributions-actions"
           >
             <v-icon>add_circle</v-icon>
-            <span>{{$i18n.t("Add user")}}</span>
+            <span>{{$i18n.t("Add contribution")}}</span>
           </a>
           <a
             href="#"
-            class="users-actions"
+            class="contributions-actions"
           >
             <v-icon>arrow_downward</v-icon>
             <span>{{$i18n.t("Export")}}</span>
@@ -53,25 +53,20 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="users"
+        :items="admincontributions"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
         :search="search"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.title }}</td>
-          <td class="text-xs-center">
-            <div v-if="props.item.isdisabled == 'yes'">
-              <strike>{{ props.item.name }}</strike>
-            </div>
-            <div v-else>{{ props.item.name }}</div>
-          </td>
-          <td class="text-xs-center">{{ props.item.role }}</td>
-          <td class="text-xs-center">{{ props.item.engineer }}</td>
-          <td class="text-xs-center">{{ props.item.beneficiary }}</td>
-          <td class="text-xs-center user-mail">{{ props.item.email }}</td>
-          <td class="text-xs-center">{{ props.item.phone }}</td>
+          <td class="text-xs-center">{{ props.item.software }}</td>
+          <td class="text-xs-center">{{ props.item.name }}</td>
+          <td class="text-xs-center">{{ props.item.status }}</td>
+          <td class="text-xs-center">{{ props.item.deposit }}</td>
+          <td class="text-xs-center">{{ props.item.closure }}</td>
+          <td class="text-xs-center">{{ props.item.time_limit }}</td>
+          <td class="text-xs-center">{{ props.item.updated }}</td>
         </template>
       </v-data-table>
     </div>
@@ -79,30 +74,30 @@
 </template>
 
 <script>
-var users = require("@/assets/data/users.json");
+var admincontributions = require("@/assets/data/admincontributions.json");
 export default {
   data() {
     return {
       search: "",
-      clients: [],
-      roles: [],
+      softwares: [],
+      statuss: [],
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: "Title", value: "title" },
+        { text: "Software", value: "software" },
         { text: "Name", value: "name" },
-        { text: "Role", value: "role" },
-        { text: "Engineer", value: "engineer" },
-        { text: "Beneficiary", value: "beneficiary" },
-        { text: "E-mail", value: "email" },
-        { text: "Phone", value: "phone" }
+        { text: "Status", value: "status" },
+        { text: "Deposit at", value: "deposit" },
+        { text: "Closure at", value: "closure" },
+        { text: "Time limit", value: "time_limit" },
+        { text: "Updated at", value: "updated" }
       ],
-      users
+      admincontributions
     };
   },
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "users");
+    this.$store.dispatch("sidebar/setActiveAdminMenu", "contributions");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -127,7 +122,7 @@ export default {
 .page-title
   color: #777777;
   margin-bottom: 20px;
-.users-list
+.contributions-list
   width: 100% !important;
 .container.fluid.fill-height
   padding: 50px;
@@ -135,30 +130,27 @@ export default {
   max-width: 100%;
 .layout.justify-center.align-center > div
   width: 100%;
-.users-search-span
+.contributions-search-span
   padding-top: 15px;
   width: 150px;
   color: #777;
-.users-search-name,
-.users-search-client,
-.users-search-roles
+.contributions-search-name,
+.contributions-search-software,
+.contributions-search-statuss
   width: 300px;
-.users-search
+.contributions-search
   display: inline-flex !important;
   margin-bottom: 20px;
-.v-input.users-search-name,
-.v-input.users-search-client
+.v-input.contributions-search-name,
+.v-input.contributions-search-software
   margin-right: 20px !important;
-.user-mail
-  color: #2196f3 !important;
-  font-weight: bold !important;
-.users-operations a
+.contributions-operations a
   margin-left: 20px;
-.users-operations
+.contributions-operations
   margin: 10px;
   margin-left: 100px !important;
-.users-actions
+.contributions-actions
   text-decoration: none !important;
-.users-search
+.contributions-search
   width: 100%;
 </style>

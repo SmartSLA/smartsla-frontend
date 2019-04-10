@@ -2,11 +2,14 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="contracts-list">
       <div class="page-title">
-        <span>Contracts list</span>
+        <span>
+          {{$i18n.t("Contracts list")}}
+        </span>
       </div>
-
       <div class="contracts-search">
-        <span class="contracts-search-span">Search by:</span>
+        <span class="contracts-search-span">
+          {{$i18n.t("Search by:")}}
+        </span>
         <v-text-field
           v-model="search"
           :placeholder="$t('Name')"
@@ -28,8 +31,8 @@
           :items="clients"
           v-model="clients"
           hide-details
-          label="Tam"
-          class="contracts-search-tam"
+          label="Team"
+          class="contracts-search-team"
         ></v-select>
         <v-select
           solo
@@ -38,14 +41,6 @@
           hide-details
           label="Commercial"
           class="contracts-search-commercial"
-        ></v-select>
-        <v-select
-          solo
-          :items="clients"
-          v-model="clients"
-          hide-details
-          label="Team"
-          class="contracts-search-team"
         ></v-select>
         <div class="contracts-operations">
           <a href="#" class="contracts-actions">
@@ -58,33 +53,44 @@
           </a>
         </div>
       </div>
-
-      <v-data-table :headers="headers" :items="contracts" class="elevation-1">
+      <v-data-table
+        :headers="headers"
+        :items="contracts"
+        :rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"
+        class="elevation-1"
+        :search="search"
+      >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
             <div v-if="props.item.isdisabled == 'yes'">
-              <strike>{{ props.item.name }}</strike>
+              <strike>
+                <router-link
+                  class="contracts-actions"
+                  :to="{ name: 'Contract', params: { id: props.item.id } }"
+                >
+                  {{ props.item.name }}
+                </router-link>
+              </strike>
               <span class="expired-contracts">Expired</span>
             </div>
-            <div v-else>{{ props.item.name }}</div>
+            <div v-else>
+              <router-link
+                class="contracts-actions"
+                :to="{ name: 'Contract', params: { id: props.item.id } }"
+              >
+                {{ props.item.name }}
+              </router-link>
+            </div>
           </td>
           <td class="text-xs-center">{{ props.item.begin }}</td>
           <td class="text-xs-center">{{ props.item.end }}</td>
-          <td class="text-xs-center">
-            <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
-              <v-icon>search</v-icon>
-            </router-link>
-          </td>
-          <td class="text-xs-center">
-            <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
-              <v-icon>create</v-icon>
-            </router-link>
-          </td>
         </template>
       </v-data-table>
     </div>
   </div>
 </template>
+
 <script>
 var contracts = require("@/assets/data/contracts.json");
 export default {
@@ -92,13 +98,13 @@ export default {
     return {
       search: "",
       clients: [],
+      rowsPerPageItems: [10, 25, 50],
+      pagination: "10",
       roles: [],
       headers: [
         { text: "Name", value: "name" },
         { text: "Begin", value: "begin" },
-        { text: "End", value: "end" },
-        { text: "View", value: "view" },
-        { text: "Edit", value: "edit" }
+        { text: "End", value: "end" }
       ],
       contracts: []
     };
@@ -120,68 +126,55 @@ export default {
   }
 };
 </script>
-<style type="text/css">
-.elevation-1 {
+<style lang="stylus" scoped>
+.elevation-1
   width: 100% !important;
   padding-bottom: 50px;
   background-color: #ffffff;
-}
-.page-title {
+.page-title
   color: #777777;
   margin-bottom: 20px;
-}
-.elevation-1 th {
+.elevation-1 th
   color: #000000;
-}
-.contracts-list {
+.contracts-list
   width: 100% !important;
-}
-.container.fluid.fill-height {
+.container.fluid.fill-height
   padding: 50px;
   width: 100%;
   max-width: 100%;
-}
-.layout.justify-center.align-center > div {
+.layout.justify-center.align-center > div
   width: 100%;
-}
-.contracts-search-span {
+.contracts-search-span
   padding-top: 15px;
   width: 100px;
   color: #777;
-}
 .contracts-search-name,
 .contracts-search-status,
 .contracts-search-tam,
 .contracts-search-commercial,
-.contracts-search-team {
+.contracts-search-team
   width: 200px;
-}
-.contracts-search {
+.contracts-search
   display: inline-flex !important;
   margin-bottom: 20px;
-}
-.v-input.contracts-search-name.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-text-field--placeholder.v-input--hide-details.theme--light,
-.v-input.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.v-input--hide-details.theme--light {
-  margin-right: 10px;
-}
-.user-mail {
+.v-input.contracts-search-name,
+.v-input.v-text-field
+  margin-right: 10px !important;
+.user-mail
   color: #a20000;
   font-weight: bold !important;
-}
-.contracts-operations a {
+.contracts-operations a
   margin-left: 20px;
-}
-.contracts-operations {
+.contracts-operations
   margin: 10px;
-}
-.expired-contracts {
+.expired-contracts
   color: #fa4b4b;
   padding: 2px;
   border: #fa4b4b solid 1px;
   border-radius: 5px;
   margin-left: 5px;
-}
-.contracts-actions {
+.contracts-actions
   text-decoration: none !important;
-}
+.contracts-search
+  width: 100% !important;
 </style>

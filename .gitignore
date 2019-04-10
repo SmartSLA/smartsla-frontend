@@ -3,7 +3,10 @@
 .deploy*/
 src/_drafts
 node_modules
+<<<<<<< HEAD
+=======
 dist
+>>>>>>> 81ff7fd2beea874380c0a92ad56bcda3e7805295
 # local env files
 .env.local
 .env.*.local
