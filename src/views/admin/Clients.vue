@@ -61,18 +61,10 @@ export default {
       headers: [
         { text: "Logo", value: "logo" },
         { text: "Name", value: "name" },
-<<<<<<< HEAD
-        { text: "Adresse", value: "adresse" },
-        { text: "Inactive", value: "inactive" },
-        { text: "Access code", value: "access_code" },
-        { text: "Help code", value: "help_code" }
-      ]
-=======
         { text: "Contracts", value: "conttracts" },
         { text: "Access code", value: "access_code" }
       ],
       clients
->>>>>>> 81ff7fd2beea874380c0a92ad56bcda3e7805295
     };
   },
   created() {
