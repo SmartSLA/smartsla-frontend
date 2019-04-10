@@ -18,7 +18,10 @@ import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/Users.vue";
 import Clients from "@/views/admin/Clients.vue";
 import Contracts from "@/views/admin/Contracts.vue";
+import Teams from "@/views/admin/Teams.vue";
+import Softwares from "@/views/admin/Softwares.vue";
 import Contract from "@/views/admin/Contract.vue";
+import AdminContributions from "@/views/admin/AdminContributions.vue";
 import EditContract from "@/views/admin/EditContract.vue";
 //import AdministrationHome from "@/views/admin/Home.vue";
 
@@ -42,9 +45,12 @@ export const routeNames = Object.freeze({
   ADMINISTRATION: "Administration",
   USERS: "Users",
   CLIENTS: "Clients",
+  SOFTWARES: "Softwares",
   CONTRACTS: "Contracts",
   CONTRACT: "Contract",
-  EDITCONTRACT: "Edit Contract"
+  ADMINCONTRIBUTIONS: "AdminContributions",
+  EDITCONTRACT: "Edit Contract",
+  TEAMS: "Teams"
 });
 
 export default new Router({
@@ -161,47 +167,81 @@ export default new Router({
       name: routeNames.ADMINISTRATION,
       meta: {
         auth: true
-      }
-    },
-    {
-      path: "/users",
-      name: routeNames.USERS,
-      component: Users,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/clients",
-      name: routeNames.CLIENTS,
-      component: Clients,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/contracts",
-      name: routeNames.CONTRACTS,
-      component: Contracts,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/contracts/:id",
-      name: routeNames.CONTRACT,
-      component: Contract,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/contracts/:id/edit/:section",
-      name: routeNames.EDITCONTRACT,
-      component: EditContract,
-      meta: {
-        auth: true
-      }
+      },
+      children: [
+        {
+          path: "",
+          name: routeNames.ADMINHOME,
+          component: AdministrationHome,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "users",
+          name: routeNames.USERS,
+          component: Users,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "teams",
+          name: routeNames.TEAMS,
+          component: Teams,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "Softwares",
+          name: routeNames.SOFTWARES,
+          component: Softwares,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "clients",
+          name: routeNames.CLIENTS,
+          component: Clients,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "admincontributions",
+          name: routeNames.ADMINCONTRIBUTIONS,
+          component: AdminContributions,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "contracts",
+          name: routeNames.CONTRACTS,
+          component: Contracts,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "contracts/:id",
+          name: routeNames.CONTRACT,
+          component: Contract,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "contracts/:id/edit/:section",
+          name: routeNames.EDITCONTRACT,
+          component: EditContract,
+          meta: {
+            auth: true
+          }
+        }
+      ]
     }
   ]
 });

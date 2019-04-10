@@ -7,6 +7,7 @@ import contributionFunctions from "./contributions-api";
 import contractsFunctions from "./contracts-api";
 import softwareFunctions from "./software-api";
 import clientFunctions from "./client-api";
+
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
 };

@@ -1,53 +1,86 @@
 <template>
   <div class="requests-list">
+
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
-        {{ $t("Requests list (TICKETS)") }}
+        {{ $i18n.t("Requests list (TICKETS)") }}
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET") }}
+        {{ $i18n.t("EXPORT SHEET") }}
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
+        {{ $i18n.t("PRINT SHEET") }}
       </a>
     </v-card-text>
-    <div class="tickets-search">
-      <v-btn-toggle v-model="toggle_multiple" class="transparent">
-        <v-btn value="1" flat>{{ $t("Opened") }}</v-btn>
-        <v-btn value="2" flat>{{ $t("In progress") }}</v-btn>
-        <v-btn value="3" flat>{{ $t("Closed") }}</v-btn>
-      </v-btn-toggle>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-select
-        solo
-        :items="teams"
-        v-model="teamsFilter"
-        hide-details
-        class="scoped-requests-search"
-        label="All teams"
-        @input="$emit('input')"
-      ></v-select>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-text-field
-        v-model="search"
-        :placeholder="$t('Search')"
-        single-line
-        hide-details
-        solo
-        class="scoped-requests-search"
-      >
-        <template v-slot:append class="appended-select-scope">
-          <v-divider vertical></v-divider>
-          <v-select :items="filterGroups" v-model="searchCriteria" dense single-line hide-details solo flat></v-select>
-          <v-divider vertical></v-divider>
-          <v-icon @click="resetRequestSearch" outline class="pl-2">close</v-icon>
-        </template>
-      </v-text-field>
-    </div>
 
+    <div class="tickets-search">
+        <div class="requests-filter-label"><span>{{$i18n.t("Filter by:")}}</span></div>
+        <v-spacer class="mx-2"></v-spacer>
+        <v-select
+          solo
+          :items="categories"
+          v-model="categoriesFilter"
+          hide-details
+          class="scoped-requests-search"
+          id="first-combo"
+          label="Categories"
+        ></v-select>
+        <v-select
+          solo
+          :items="values"
+          v-model="valuesFilter"
+          hide-details
+          class="scoped-requests-search"
+          label="values"
+        ></v-select>
+        <v-btn class="requests-filter-add">
+          <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-spacer class="mx-2"></v-spacer>
+        <div class="requests-filter-label"><span>{{$i18n.t("And / Or")}}</span></div>
+        <v-spacer class="mx-2"></v-spacer>
+        <v-select
+          solo
+          :items="selections"
+          v-model="storedSelectionsFilter"
+          hide-details
+          class="scoped-requests-search"
+          label="Stored selections"
+          @input="$emit('input')"
+        ></v-select>
+        <v-btn class="requests-filter-add">
+          <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-spacer class="mx-2"></v-spacer>
+        <div class="requests-filter-label"><span>{{$i18n.t("And / Or")}}</span></div>
+        <v-spacer class="mx-2"></v-spacer>
+        <v-text-field
+          v-model="search"
+          :placeholder="$i18n.t('Search')"
+          single-line
+          hide-details
+          solo
+          class="scoped-requests-search"
+        >
+        <v-icon @click="addNewFilter" outline class="pl-2">add</v-icon>
+        </v-text-field>
+    </div>
+    <v-chip
+      v-model="categories"
+      close
+    >
+      {{$i18n.t("Example filter")}}
+    </v-chip>
+
+    <v-chip
+      v-model="categories"
+      close
+    >
+      {{$i18n.t("Example filter")}}
+    </v-chip>
     <v-layout>
       <v-data-table
         :headers="headers"
@@ -189,7 +222,11 @@ export default {
         { text: this.$i18n.t("Status"), value: "status" },
         { text: this.$i18n.t("Remaining time"), value: "remaining_time" }
       ],
-      requests: []
+      requests: [],
+      categories: ["Type", "Severity", "Software", "Assign To", "Responsible", "Transmitter", "Client / Contract", "Status"],
+      values: [],
+      selections: [],
+      chip1: true
     };
   },
   mounted() {
@@ -238,7 +275,12 @@ export default {
         default:
           return false;
       }
-    }
+    },
+
+    addNewFilter() {},
+    categoriesFilter() {},
+    valuesFilter() {},
+    storedSelectionsFilter() {}
   }
 };
 </script>
@@ -323,7 +365,7 @@ div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text
   > div.v-input__append-inner
   > div,
 div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.v-input--hide-details.theme--light {
-  max-width: 150px;
+  max-width: 250px;
 }
 .major-criticality {
   background-color: #d9534f;
@@ -335,5 +377,15 @@ div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text
 .action-links {
   text-decoration: none;
   color: grey;
+}
+.requests-filter-add {
+  margin-top: 10px;
+  height: 48px;
+  margin-left: -10px;
+}
+
+.requests-filter-label{
+  padding-top: 25px;
+  color: #777;
 }
 </style>
