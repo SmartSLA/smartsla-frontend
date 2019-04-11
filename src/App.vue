@@ -85,7 +85,7 @@ export default {
   width: 280px !important;
 .v-list__tile
   font-size: 14px !important;
-.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light .v-icon,
+.v-navigation-drawer .v-icon,
 .v-toolbar.v-toolbar--clipped.v-toolbar--fixed.theme--light.primary .v-icon
   font-size: 21px !important;
 .v-list__tile__action, .v-list__tile__avatar

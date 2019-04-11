@@ -3,12 +3,12 @@
     <div class="softwares-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Softwares list")}}
+          {{ $i18n.t("Softwares list") }}
         </span>
       </div>
       <div class="softwares-search">
         <span class="softwares-search-span">
-          {{$i18n.t("Search by:")}}
+          {{ $i18n.t("Search by:") }}
         </span>
         <v-text-field
           v-model="search"
@@ -22,13 +22,13 @@
           <a href="#" class="softwares-actions">
             <v-icon>add_circle</v-icon>
             <span>
-              {{$i18n.t("Add Software")}}
+              {{ $i18n.t("Add Software") }}
             </span>
           </a>
           <a href="#" class="softwares-actions">
             <v-icon>arrow_downward</v-icon>
             <span>
-              {{$i18n.t("Export")}}
+              {{ $i18n.t("Export") }}
             </span>
           </a>
         </div>

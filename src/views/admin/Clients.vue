@@ -3,12 +3,12 @@
     <div class="clients-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Clients list")}}
+          {{ $i18n.t("Clients list") }}
         </span>
       </div>
       <div class="clients-search">
         <span class="clients-search-span">
-          {{$i18n.t("Search by:")}}
+          {{ $i18n.t("Search by:") }}
         </span>
         <v-text-field
           v-model="search"
@@ -54,7 +54,6 @@ export default {
   data() {
     return {
       search: "",
-      clients: [],
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       roles: [],
