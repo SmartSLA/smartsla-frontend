@@ -21,6 +21,7 @@
     </template>
   </v-autocomplete>
 </template>
+
 <script>
 export default {
   name: "global-search",
@@ -51,7 +52,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
 .global-search-box .v-icon
   transform: rotate(0deg) !important;
 </style>

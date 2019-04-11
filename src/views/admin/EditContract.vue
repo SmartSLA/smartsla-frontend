@@ -4,12 +4,12 @@
     <component :is="editSectionComponent"></component>
   </v-container>
 </template>
+
 <script>
 import EditContractInformation from "@/components/admin/contract/EditInformation.vue";
 import EditContractHR from "@/components/admin/contract/EditHR.vue";
 import EditContractSoftware from "@/components/admin/contract/EditSoftware.vue";
 import EditContractEngagements from "@/components/admin/contract/EditEngagements.vue";
-
 export default {
   name: "edit-contract",
   components: {
@@ -61,4 +61,6 @@ export default {
   }
 };
 </script>
-<style lang="stylus"></style>
+
+<style lang="stylus" scoped>
+</style>

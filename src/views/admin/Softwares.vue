@@ -89,11 +89,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-.elevation-1
-  width: 100% !important;
-  padding-bottom: 50px;
-  background-color: #ffffff;
+<style lang="stylus" scoped>
 .page-title
   color: #777777;
   margin-bottom: 20px;

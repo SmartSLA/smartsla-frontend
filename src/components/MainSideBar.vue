@@ -39,6 +39,7 @@
     </v-layout>
   </v-container>
 </template>
+
 <script>
 import sideBarLinks from "@/components/SideBarLinks.vue";
 export default {
@@ -53,9 +54,9 @@ export default {
   }
 };
 </script>
+
 <style lang="stylus" scoped>
-.mini-side-bar, .mini-side-bar-item, .mini-side-bar-item .v-icon {
+.mini-side-bar, .mini-side-bar-item, .mini-side-bar-item .v-icon
   background-color : 2b303c;
   color : #FFFFFF;
-}
 </style>

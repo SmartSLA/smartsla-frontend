@@ -24,6 +24,7 @@
     </v-layout>
   </v-container>
 </template>
+
 <script>
 import { mapGetters } from "vuex";
 import sideBarLinks from "@/components/SideBarLinks.vue";
@@ -51,23 +52,18 @@ export default {
   }
 };
 </script>
-<style lang="css">
-.sidebar-list-item {
-  background-color: #2b303c;
-}
 
-.sidebar-list-item .v-icon {
+<style lang="stylus" scoped>
+.sidebar-list-item
+  background-color: #2b303c;
+.sidebar-list-item .v-icon
   color: white;
-}
-.v-list--three-line .v-list__tile {
+.v-list--three-line .v-list__tile
   padding-left: 0 !important;
-}
-.request-sidebar-description {
+.request-sidebar-description
   border-left: 1px solid white;
-}
-.arrow-down {
+.arrow-down
   transform: rotate(90deg);
   position: absolute;
   left: 35%;
-}
 </style>

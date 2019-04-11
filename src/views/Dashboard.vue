@@ -17,6 +17,7 @@
     <img class="dashboard-image" src="@/assets/dashboard.png" />
   </v-container>
 </template>
+
 <script>
 export default {
   created() {
@@ -28,15 +29,11 @@ export default {
   }
 };
 </script>
-<style type="text/css" scoped>
-.elevation-1 {
+
+<style lang="stylus" scoped>
+.dashboard-image
   width: 100% !important;
-}
-.dashboard-image {
-  width: 100% !important;
-}
-.action-links {
+.action-links
   text-decoration: none;
   color: grey;
-}
 </style>

@@ -184,6 +184,7 @@
     </v-card>
   </div>
 </template>
+
 <script>
 export default {
   name: "edit-contract-hr",
@@ -294,4 +295,6 @@ export default {
   }
 };
 </script>
-<style lang="stylus"></style>
+
+<style lang="stylus">
+</style>

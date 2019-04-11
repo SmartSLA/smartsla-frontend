@@ -21,23 +21,17 @@ export default {
   }
 };
 </script>
-<style lang="css" scoped>
-.sidebar-list-item {
+<style lang="stylus" scoped>
+.sidebar-list-item
   background-color: #2b303c;
-}
-
-.sidebar-list-item .v-icon {
+.sidebar-list-item .v-icon
   color: white;
-}
-.v-list--three-line .v-list__tile {
+.v-list--three-line .v-list__tile
   padding-left: 0 !important;
-}
-.request-sidebar-description {
+.request-sidebar-description
   border-left: 1px solid white;
-}
-.arrow-down {
+.arrow-down
   transform: rotate(90deg);
   position: absolute;
   left: 30%;
-}
 </style>

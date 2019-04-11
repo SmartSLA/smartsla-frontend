@@ -68,6 +68,11 @@ export default {
 </script>
 
 <style lang="stylus">
+<style lang="stylus" scoped>
+.elevation-1
+  width: 100% !important;
+  padding-bottom: 50px;
+  background-color: #ffffff;
 .v-list.logged-main-navigation.theme--light
   background-color: #EEEEEE;
   margin: -20px;

@@ -331,6 +331,7 @@
     </v-layout>
   </v-container>
 </template>
+
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
@@ -375,36 +376,26 @@ export default {
   }
 };
 </script>
-<style scoped type="text/css">
-.elevation-1 {
-  width: 100% !important;
-}
-.action-links {
+
+<style lang="stylus" scoped>
+.action-links
   text-decoration: none;
   color: grey;
-}
-.progress-arrow {
+.progress-arrow
   font-size: 3.5em;
   display: block;
-}
-.information {
+.information
   padding: 0px;
-}
-.subject-text {
+.subject-text
   white-space: pre-line;
-}
-.container {
+.container
   max-width: 100% !important;
   padding: 0px;
-}
-.flex.xs8.pr-5 {
+.flex.xs8.pr-5
   padding-right: 10px !important;
-}
-.container.grid-list-md .layout .flex {
+.container.grid-list-md .layout .flex
   padding: 15px;
-}
 .quillWrapper,
-.ql-editor {
+.ql-editor
   width: 100%;
-}
 </style>

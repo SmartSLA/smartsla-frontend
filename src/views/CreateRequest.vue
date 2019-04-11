@@ -231,100 +231,80 @@ export default {
   }
 };
 </script>
-<style scoped type="stylus">
-.add-link {
+
+<style lang="stylus" scoped>
+.add-link
   height: 48px;
   padding-top: 0px;
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
-}
-
-.full-height {
+.full-height
   height: 100%;
-}
-
-.float-left {
+.float-left
   float: left;
   width: 50%;
   padding: 20px;
-}
-.float-right {
+.float-right
   float: right;
   width: 50%;
   padding: 20px;
-}
-.v-content {
+.v-content
   padding: 0px 0px 0px 0px !important;
-}
-.elevation-12 {
+.elevation-12
   -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
     0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
   box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
     0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
   widows: 100%;
-}
-.container.fluid.fill-height {
+.container.fluid.fill-height
   margin: 0px;
   padding: 10px;
-}
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat)
   background-color: #2196f3;
   color: #fff;
-}
-.file-upload .input-wrapper {
+.file-upload .input-wrapper
   background-color: #eee !important;
   height: 50px !important;
   width: 150px !important;
-}
-.file-upload .input-wrapper .file-upload-label {
+.file-upload .input-wrapper .file-upload-label
   color: rgba(0, 0, 0, 0.54) !important;
-}
-.file-upload .input-wrapper .file-upload-label .file-upload-icon {
+.file-upload .input-wrapper .file-upload-label .file-upload-icon
   float: left !important;
   font-size: 30px !important ;
-}
-.file-upload .input-wrapper:hover {
+.file-upload .input-wrapper:hover
   background-color: #eee !important;
-}
-.elevation-12.v-card.v-sheet.theme--light {
+.elevation-12.v-card.v-sheet.theme--light
   height: 450px !important;
-}
-.v-card__actions {
+.v-card__actions
   padding-top: 80px;
-}
-
 .quillWrapper,
-.ql-editor {
+.ql-editor
   width: 100%;
-}
-</style>
-<style lang="css">
 #openpaas
-  > div.application--wrap
-  > div
-  > main
-  > div
-  > div
-  > div
-  > main
-  > div
-  > div.container.fluid.fill-height
-  > div
-  > div
-  > div
-  > div.v-card__text
-  > form
-  > div
-  > div:nth-child(7)
-  > div
-  > div.flex.pl-0.xs6
-  > div
-  > div.v-input__append-outer {
+> div.application--wrap
+> div
+> main
+> div
+> div
+> div
+> main
+> div
+> div.container.fluid.fill-height
+> div
+> div
+> div
+> div.v-card__text
+> form
+> div
+> div:nth-child(7)
+> div
+> div.flex.pl-0.xs6
+> div
+> div.v-input__append-outer
   height: 48px;
   padding-top: 0px;
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
-}
 </style>

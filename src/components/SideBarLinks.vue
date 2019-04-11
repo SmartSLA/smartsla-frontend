@@ -50,6 +50,7 @@
     </v-list-tile>
   </v-list>
 </template>
+
 <script>
 export default {
   name: "side-bar-links",
@@ -60,11 +61,11 @@ export default {
   }
 };
 </script>
-<style type="stylus" scoped>
+
+<style lang="stylus" scoped>
 .side-bar-links,
 .side-bar-links-item,
-.side-bar-links-item .v-icon {
+.side-bar-links-item .v-icon
   background-color: #2b303c;
   color: #ffffff;
-}
 </style>

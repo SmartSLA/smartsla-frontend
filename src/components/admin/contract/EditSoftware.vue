@@ -157,6 +157,7 @@
     </v-layout>
   </v-card>
 </template>
+
 <script>
 export default {
   name: "edit-contract-software",
@@ -229,3 +230,6 @@ export default {
   }
 };
 </script>
+
+<style lang="stylus" scoped>
+</style>
