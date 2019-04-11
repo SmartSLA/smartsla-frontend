@@ -3,12 +3,12 @@
     <div class="users-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Users list")}}
+          {{ $i18n.t("Users list") }}
         </span>
       </div>
       <div class="users-search">
         <span class="users-search-span">
-          {{$i18n.t("Search by:")}}
+          {{ $i18n.t("Search by:") }}
         </span>
         <v-text-field
           v-model="search"
@@ -26,28 +26,15 @@
           label="Client"
           class="users-search-client"
         ></v-select>
-        <v-select
-          solo
-          :items="roles"
-          v-model="roles"
-          hide-details
-          label="Roles"
-          class="users-search-roles"
-        ></v-select>
+        <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"></v-select>
         <div class="users-operations">
-          <a
-            href="#"
-            class="users-actions"
-          >
+          <a href="#" class="users-actions">
             <v-icon>add_circle</v-icon>
-            <span>{{$i18n.t("Add user")}}</span>
+            <span>{{ $i18n.t("Add user") }}</span>
           </a>
-          <a
-            href="#"
-            class="users-actions"
-          >
+          <a href="#" class="users-actions">
             <v-icon>arrow_downward</v-icon>
-            <span>{{$i18n.t("Export")}}</span>
+            <span>{{ $i18n.t("Export") }}</span>
           </a>
         </div>
       </div>

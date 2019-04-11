@@ -51,8 +51,7 @@ export default {
   }
 };
 </script>
-<style lang="css">
-.global-search-box .v-icon {
+<style lang="stylus">
+.global-search-box .v-icon
   transform: rotate(0deg) !important;
-}
 </style>
