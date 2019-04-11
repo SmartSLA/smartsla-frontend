@@ -231,6 +231,7 @@
     </v-layout>
   </v-container>
 </template>
+
 <script>
 var contract = require("@/assets/data/contract.json");
 export default {
@@ -259,7 +260,6 @@ export default {
         }
       ];
     },
-
     contractualCommitmentsHeaders() {
       return [
         { text: this.$i18n.t("Request"), value: "request", sortable: false },
@@ -297,13 +297,12 @@ export default {
   }
 };
 </script>
+
 <style lang="stylus" scoped>
-.action-links {
+.action-links
   text-decoration: none;
   color: grey;
-}
-.container {
+.container
   max-width: 100% !important;
   padding: 0px;
-}
 </style>
