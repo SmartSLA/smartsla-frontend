@@ -42,7 +42,6 @@ import MainSideBar from "@/components/MainSideBar.vue";
 import ContributionsSideBar from "@/components/ContributionsSideBar.vue";
 import IssueDetailSideBar from "@/components/request/IssueDetailSideBar.vue";
 import AdminMainSideBar from "@/components/admin/AdminMainSideBar.vue";
-
 export default {
   components: {
     "op-user-menu": UserMenu,
@@ -120,7 +119,6 @@ export default {
 th.column.sortable.text-xs-left
   padding: 2px !important;
   text-align: center !important;
-
 .active-menu-link a
   color: white !important;
 .login-bar .v-toolbar__content
@@ -133,5 +131,7 @@ button.v-btn.v-btn--flat.v-btn--icon.theme--light
 tr:nth-child(even)
   background-color: #F9F9F9
 tr:nth-child(odd)
-  background-color: #FFF
+  background-color: #ffffff;
+.layout.justify-center.align-center > div
+    width: 100%;
 </style>
