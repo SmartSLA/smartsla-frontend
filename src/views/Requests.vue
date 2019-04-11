@@ -388,4 +388,7 @@ div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text
   padding-top: 25px;
   color: #777;
 }
+.tickets-search {
+  width: 100% !important;
+}
 </style>
