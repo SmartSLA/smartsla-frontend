@@ -43,6 +43,7 @@ export const routeNames = Object.freeze({
   SETTINGS: "Settings",
   LOGIN: "Login",
   ADMINISTRATION: "Administration",
+  ADMINHOME: "AdministrationHome",
   USERS: "Users",
   CLIENTS: "Clients",
   SOFTWARES: "Softwares",

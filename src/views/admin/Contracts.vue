@@ -3,12 +3,12 @@
     <div class="contracts-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Contracts list")}}
+          {{ $i18n.t("Contracts list") }}
         </span>
       </div>
       <div class="contracts-search">
         <span class="contracts-search-span">
-          {{$i18n.t("Search by:")}}
+          {{ $i18n.t("Search by:") }}
         </span>
         <v-text-field
           v-model="search"
@@ -65,20 +65,14 @@
           <td class="text-xs-center">
             <div v-if="props.item.isdisabled == 'yes'">
               <strike>
-                <router-link
-                  class="contracts-actions"
-                  :to="{ name: 'Contract', params: { id: props.item.id } }"
-                >
+                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
                   {{ props.item.name }}
                 </router-link>
               </strike>
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link
-                class="contracts-actions"
-                :to="{ name: 'Contract', params: { id: props.item.id } }"
-              >
+              <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
                 {{ props.item.name }}
               </router-link>
             </div>
@@ -101,11 +95,7 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       roles: [],
-      headers: [
-        { text: "Name", value: "name" },
-        { text: "Begin", value: "begin" },
-        { text: "End", value: "end" }
-      ],
+      headers: [{ text: "Name", value: "name" }, { text: "Begin", value: "begin" }, { text: "End", value: "end" }],
       contracts: []
     };
   },

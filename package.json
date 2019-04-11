@@ -14,7 +14,6 @@
     "@mdi/font": "^3.5.95",
     "@websanova/vue-auth": "^2.21.14-beta",
     "axios": "^0.18.0",
-    "markdown-it": "^8.4.2",
     "v-file-upload": "^3.1.7",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
