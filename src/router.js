@@ -23,7 +23,7 @@ import Softwares from "@/views/admin/Softwares.vue";
 import Contract from "@/views/admin/Contract.vue";
 import AdminContributions from "@/views/admin/AdminContributions.vue";
 import EditContract from "@/views/admin/EditContract.vue";
-//import AdministrationHome from "@/views/admin/Home.vue";
+import AdministrationHome from "@/views/admin/Home.vue";
 
 Vue.use(Router);
 
