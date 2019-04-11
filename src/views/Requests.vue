@@ -285,6 +285,7 @@ export default {
   }
 };
 </script>
+
 <style lang="stylus" scoped>
 .elevation-1
   width: 100% !important;
@@ -304,8 +305,8 @@ export default {
   color: #fff;
 .v-item-group.transparent.theme--light.v-btn-toggle
   margin-top: 10px;
-.v-input.pa-0.v-text-field.v-text-field--single-line.v-select.v-select--is-menu-active.v-autocomplete.v-overflow-btn.v-input--hide-details.v-input--is-focused.theme--light.primary--text,
-.v-input.pa-0.v-text-field.v-text-field--single-line.v-select.v-autocomplete.v-overflow-btn.v-input--hide-details.theme--light
+.v-input.pa-0.v-text-field.v-select.v-select--is-menu-active.v-autocomplete.v-input--is-focused.primary--text,
+.v-input.pa-0.v-text-field.v-select
   width: 200px !important;
 .tickets-search
   display: inline-flex;
@@ -339,14 +340,14 @@ th.column.sortable.text-xs-left
   text-align: center !important;
 .scoped-requests-search
   padding-top: 10px !important;
-div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-text-field--placeholder.v-input--hide-details.theme--light
-  > div
-  > div
-  > div.v-input__append-inner
-  > div,
-div.v-input.scoped-requests-search.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.v-input--hide-details.theme--light
+div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placeholder
+> div
+> div
+> div.v-input__append-inner
+> div,
+div.v-input.scoped-requests-searchv-text-field--enclosed.v-select
   max-width: 250px;
-.major-criticality 
+.major-criticality
   background-color: #d9534f;
   color: #ffffff;
   font-weight: bold;
