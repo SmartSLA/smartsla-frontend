@@ -3,12 +3,12 @@
     <div class="contributions-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Contributions list")}}
+          {{ $i18n.t("Contributions list") }}
         </span>
       </div>
       <div class="contributions-search">
         <span class="contributions-search-span">
-          {{$i18n.t("Search by:")}}
+          {{ $i18n.t("Search by:") }}
         </span>
         <v-text-field
           v-model="search"
@@ -35,19 +35,13 @@
           class="contributions-search-statuss"
         ></v-select>
         <div class="contributions-operations">
-          <a
-            href="#"
-            class="contributions-actions"
-          >
+          <a href="#" class="contributions-actions">
             <v-icon>add_circle</v-icon>
-            <span>{{$i18n.t("Add contribution")}}</span>
+            <span>{{ $i18n.t("Add contribution") }}</span>
           </a>
-          <a
-            href="#"
-            class="contributions-actions"
-          >
+          <a href="#" class="contributions-actions">
             <v-icon>arrow_downward</v-icon>
-            <span>{{$i18n.t("Export")}}</span>
+            <span>{{ $i18n.t("Export") }}</span>
           </a>
         </div>
       </div>

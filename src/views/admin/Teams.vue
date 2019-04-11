@@ -3,12 +3,12 @@
     <div class="teams-list">
       <div class="page-title">
         <span>
-          {{$i18n.t("Teams list")}}
+          {{ $i18n.t("Teams list") }}
         </span>
       </div>
       <div class="teams-search">
         <span class="teams-search-span">
-          {{$i18n.t("Search by:")}}
+          {{ $i18n.t("Search by:") }}
         </span>
         <v-text-field
           v-model="search"
