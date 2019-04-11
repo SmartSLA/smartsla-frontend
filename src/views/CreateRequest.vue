@@ -10,22 +10,59 @@
           <v-card>
             <v-card-text>
               <v-form>
-                <v-layout wrap>
+                <v-layout wrap row>
                   <v-flex xs6>
-                    <v-select
-                      prepend-icon="report"
-                      :items="severityList"
-                      v-model="severity"
-                      label="Severity"
-                    ></v-select>
-                    <v-autocomplete
-                      :items="softwareList"
-                      :label="$t('Software')"
-                      prepend-icon="laptop"
-                      background-color="white"
-                      :search-input.sync="software"
-                    ></v-autocomplete>
                     <v-text-field prepend-icon="warning" name="Title" :label="$t('Title')" type="text"></v-text-field>
+                  </v-flex>
+                  <v-flex xs6></v-flex>
+                  <v-flex xs8>
+                    <v-layout row wrap>
+                      <v-flex xs3>
+                        <v-select prepend-icon="storage" :items="types" v-model="type" label="Type"></v-select>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                      <v-flex xs3>
+                        <v-select
+                          prepend-icon="report"
+                          :items="severityList"
+                          v-model="severity"
+                          label="Severity"
+                        ></v-select>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex xs4></v-flex>
+                  <v-flex xs8>
+                    <v-layout row wrap>
+                      <v-flex xs3>
+                        <v-autocomplete
+                          :items="softwareList"
+                          :label="$t('Software')"
+                          prepend-icon="laptop"
+                          background-color="white"
+                          :search-input.sync="software"
+                        ></v-autocomplete>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                      <v-flex xs3>
+                        <v-text-field
+                          :label="$t('Version')"
+                          prepend-icon="mdi-counter"
+                          background-color="white"
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                      <v-flex xs3>
+                        <v-autocomplete
+                          :items="osList"
+                          :label="$t('OS')"
+                          prepend-icon="mdi-package-variant-closed"
+                          background-color="white"
+                          :search-input.sync="os"
+                        ></v-autocomplete>
+                      </v-flex>
+                      <v-flex xs1></v-flex>
+                    </v-layout>
                   </v-flex>
                   <v-flex xs12>
                     <v-input prepend-icon="notes">
@@ -34,23 +71,40 @@
                   </v-flex>
 
                   <v-flex xs6>
-                    <v-combobox
-                      v-model="chips"
-                      :items="relatedRequests"
-                      :label="$t('Related requests')"
-                      chips
-                      clearable
-                      prepend-icon="link"
-                      solo
-                      multiple
-                    >
-                      <template v-slot:selection="data">
-                        <v-chip :selected="data.selected" close @input="remove(data.item)">
-                          <strong>{{ data.item }}</strong
-                          >&nbsp;
-                        </v-chip>
-                      </template>
-                    </v-combobox>
+                    <v-layout>
+                      <v-flex xs4>
+                        <v-select
+                          prepend-icon="link"
+                          class="mr-0"
+                          :items="linkTypes"
+                          :label="$t('linking types')"
+                          v-model="searchCriteria"
+                          single-line
+                          hide-details
+                          solo
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs6 class="pl-0">
+                        <v-select
+                          v-model="chips"
+                          :items="relatedRequests"
+                          :label="$t('Related requests')"
+                          solo
+                          multiple
+                          class="pt-0"
+                        >
+                          <template v-slot:append-outer>
+                            <v-btn solo class="ml-0 white black--text mt-0 full-height">
+                              <v-icon dark>add</v-icon>
+                            </v-btn>
+                          </template>
+                        </v-select>
+                      </v-flex>
+                      <v-flex xs2></v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex xs6></v-flex>
+                  <v-flex xs10 class="pl-4">
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
@@ -89,6 +143,9 @@ Vue.use(FileUpload);
 export default {
   data() {
     return {
+      chips: "",
+      searchCriteria: "",
+      linkTypes: ["type1", "type2", "type3"],
       description: "",
       url: "http://your-post.url",
       headers: { "access-token": "<your-token>" },
@@ -101,6 +158,8 @@ export default {
       scale_states: ["Item 1", "Item 2", "Item 3", "Item 4"],
       severity: "",
       software: "",
+      os: "",
+      type: "",
       severityList: ["Blocking", "Major", "Minor"],
       softwareList: [
         "APIMan v1.2 CentOs 6",
@@ -118,6 +177,8 @@ export default {
         "Tomcat v8.0 CentOs 6",
         "Tomcat v8.0 CentOs 7"
       ],
+      osList: ["Linux", "Windows", "Mac OS"],
+      types: ["type1", "type2", "type3", "type4"],
       relatedRequests: ["issue1", "issue3", "issue18", "issue41", "issue35", "issue70"]
     };
   },
@@ -171,6 +232,18 @@ export default {
 };
 </script>
 <style scoped type="stylus">
+.add-link {
+  height: 48px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+}
+
+.full-height {
+  height: 100%;
+}
+
 .float-left {
   float: left;
   width: 50%;
@@ -224,5 +297,34 @@ export default {
 .quillWrapper,
 .ql-editor {
   width: 100%;
+}
+</style>
+<style lang="css">
+#openpaas
+  > div.application--wrap
+  > div
+  > main
+  > div
+  > div
+  > div
+  > main
+  > div
+  > div.container.fluid.fill-height
+  > div
+  > div
+  > div
+  > div.v-card__text
+  > form
+  > div
+  > div:nth-child(7)
+  > div
+  > div.flex.pl-0.xs6
+  > div
+  > div.v-input__append-outer {
+  height: 48px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
 }
 </style>
