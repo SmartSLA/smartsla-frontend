@@ -105,10 +105,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.elevation-1
-  width: 100% !important;
-  padding-bottom: 50px;
-  background-color: #ffffff;
 .elevation-1 th
   color: #000000;
 .page-title

@@ -16,6 +16,7 @@
     </v-data-table>
   </div>
 </template>
+
 <script>
 var requests = require("@/assets/data/orders.json");
 export default {
@@ -41,20 +42,13 @@ export default {
   }
 };
 </script>
-<style type="text/css" scoped>
-.elevation-1 {
-  width: 100% !important;
-  padding-bottom: 50px;
-  background-color: #ffffff;
-}
-.page-title {
+
+<style lang="stylus" scoped>
+.page-title
   color: #777777;
   margin-bottom: 20px;
-}
-.elevation-1 th {
+.elevation-1 th
   color: #000000;
-}
-.orders-list {
+.orders-list
   width: 100% !important;
-}
 </style>

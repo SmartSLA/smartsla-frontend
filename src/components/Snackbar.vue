@@ -7,7 +7,6 @@
 
 <script>
 import { mapState } from "vuex";
-
 export default {
   name: "Snackbar",
   computed: {
@@ -16,4 +15,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="stylus" scoped>
+</style>

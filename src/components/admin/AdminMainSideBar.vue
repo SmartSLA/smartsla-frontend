@@ -65,6 +65,7 @@
     </v-layout>
   </v-container>
 </template>
+
 <script>
 import { routeNames } from "@/router";
 import { mapGetters } from "vuex";
@@ -100,13 +101,11 @@ export default {
   }
 };
 </script>
+
 <style lang="stylus" scoped>
-.mini-side-bar, .mini-side-bar-item, .mini-side-bar-item .v-icon {
+.mini-side-bar, .mini-side-bar-item, .mini-side-bar-item .v-icon
   background-color: 2b 303c;
   color: #FFFFFF;
-}
-
-.v-list__tile__content {
+.v-list__tile__content
   margin-left: 15px;
-}
 </style>

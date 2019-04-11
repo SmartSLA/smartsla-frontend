@@ -181,6 +181,7 @@
     </v-layout>
   </v-container>
 </template>
+
 <script>
 var contributions = require("@/assets/data/contributions.json");
 export default {
@@ -216,35 +217,25 @@ export default {
   }
 };
 </script>
-<style type="text/css" scoped>
-.elevation-1 {
-  width: 100% !important;
-}
-.action-links {
+
+<style lang="stylus" scoped>
+.action-links
   text-decoration: none;
   color: grey;
-}
-.progress-arrow {
+.progress-arrow
   font-size: 3.5em;
   display: block;
-}
-.information {
+.information
   padding: 0px;
-}
-.subject-text {
+.subject-text
   white-space: pre-line;
-}
-.related-contributions-list {
+.related-contributions-list
   height: 35px !important;
-}
-.container {
+.container
   max-width: 100% !important;
   padding: 0px;
-}
-.flex.xs8.pr-5 {
+.flex.xs8.pr-5
   padding-right: 10px !important;
-}
-.container.grid-list-md .layout .flex {
+.container.grid-list-md .layout .flex
   padding: 15px;
-}
 </style>

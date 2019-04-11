@@ -30,6 +30,7 @@
     </v-layout>
   </v-container>
 </template>
+
 <script>
 var latestContributionsList = require("@/assets/data/lastcontributions.json");
 export default {
@@ -59,12 +60,11 @@ export default {
   }
 };
 </script>
-<style lang="css" scoped>
-.contributions-bar {
+
+<style lang="stylus" scoped>
+.contributions-bar
   background-color: #2b303c;
   height: 100%;
-}
-.see-all-link {
+.see-all-link
   width: 100%;
-}
 </style>

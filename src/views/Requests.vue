@@ -255,14 +255,12 @@ export default {
       this.teamsFilter = "";
       this.searchCriteria = this.filterGroups[0];
     },
-
     requestsFilter(items, search, Filter) {
       if (this.teamsFilter.length) {
         items = items.filter(item => item.team.toLowerCase() == this.teamsFilter);
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
-
     requestFilterByGroup(item, search) {
       switch (this.searchCriteria) {
         case "Ticket":
@@ -277,7 +275,6 @@ export default {
           return false;
       }
     },
-
     addNewFilter() {},
     categoriesFilter() {},
     valuesFilter() {},
@@ -287,10 +284,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.elevation-1
-  width: 100% !important;
-  padding-bottom: 50px;
-  background-color: #ffffff;
 .view-request
   color: #ffffff;
 .page-title

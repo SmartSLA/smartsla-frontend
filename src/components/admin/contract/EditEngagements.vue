@@ -100,6 +100,7 @@
     </v-layout>
   </v-card>
 </template>
+
 <script>
 export default {
   name: "contract-edit-engagements",
@@ -181,4 +182,6 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scoped></style>
+
+<style lang="stylus" scoped>
+</style>

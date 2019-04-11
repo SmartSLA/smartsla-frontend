@@ -41,7 +41,6 @@
 
 <script>
 import { routeNames } from "@/router";
-
 export default {
   data() {
     return {
@@ -79,9 +78,9 @@ export default {
   }
 };
 </script>
-<style scoped>
-button.v-btn.theme--light {
+
+<style lang="stylus" scoped>
+button.v-btn.theme--light
   background-color: #2196f3 !important;
   color: #fff;
-}
 </style>

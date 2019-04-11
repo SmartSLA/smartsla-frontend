@@ -27,6 +27,4 @@ export default {
 </script>
 
 <style lang="stylus">
-.elevation-1
-  width: 100% !important;
 </style>
