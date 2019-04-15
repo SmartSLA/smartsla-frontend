@@ -1,0 +1,8 @@
+{
+  "name": "SNCF",
+  "address": "21 rue bernard - 75001 Paris",
+  "accessCode": "1246",
+  "codeHint": "test",
+  "status": "active",
+  "image": "https://www.combodo.com/IMG/png/sncf.png"
+}

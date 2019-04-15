@@ -3,7 +3,6 @@
     <router-view></router-view>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -25,5 +24,8 @@ export default {
   }
 };
 </script>
-
-<style lang="stylus"></style>
+<style type="text/css">
+.elevation-1 {
+  width: 100% !important;
+}
+</style>

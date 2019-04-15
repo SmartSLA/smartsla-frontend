@@ -134,4 +134,11 @@ tr:nth-child(odd)
   background-color: #ffffff;
 .layout.justify-center.align-center > div
     width: 100%;
+#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(7) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
+  height: 48px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+}
 </style>
