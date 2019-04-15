@@ -1,15 +1,18 @@
 [
     {
+      "id": 1,
       "name":"Platformisation",
       "contact":"Harold GOGUELIN",
       "devise":""
     },
     {
+      "id": 2,
       "name":"OSSA",
       "contact":"Dan KOUA",
       "devise":""
     },
     {
+      "id": 3,
       "name":"OpenPaaas",
       "contact":"Michael BAILY",
       "devise":""

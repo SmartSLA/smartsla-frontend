@@ -12,7 +12,7 @@
               <v-list-tile-title>{{ $i18n.t("Users") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="link" class="mini-side-bar-item">
+          <v-list-tile @click="link" class="mini-side-bar-item" :class="{ primary: activeAdminMenu == 'teams' }">
             <v-list-tile-action>
               <v-icon>people_outline</v-icon>
             </v-list-tile-action>

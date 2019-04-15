@@ -1,0 +1,60 @@
+{
+  "id": 1,
+  "name": "EQUIPE OSSA",
+  "contact": {
+    "id": 15,
+    "name": "Dany QUAVAT"
+  },
+  "motto": "...",
+  "email": "team@08000linux.com",
+  "members": [
+    {
+      "id": 14,
+      "name": "Jean Michel"
+    },
+    {
+      "id": 16,
+      "name": "Jean Michel8"
+    },
+    {
+      "id": 15,
+      "name": "Jean Michel4"
+    },
+    {
+      "id": 17,
+      "name": "Jean Michel3"
+    },
+    {
+      "id": 18,
+      "name": "Jean Michel2"
+    }
+  ],
+  "contracts": [
+    {
+      "id": 4,
+      "name": "contract 1"
+    },
+    {
+      "id": 5,
+      "name": "contract 2"
+    },
+    {
+      "id": 6,
+      "name": "contract 3"
+    },
+    {
+      "id": 7,
+      "name": "contract 8"
+    }
+  ],
+  "alertSettings": {
+    "active": "yes",
+    "url": "https://08000linux.com",
+    "urlPage": "Page d'alerte pour l'equipe ossa",
+    "autoAlertActive": "yes",
+    "autoAlert": {
+      "start": "7:00",
+      "end": "7:30"
+    }
+  }
+}

@@ -1,28 +1,31 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "@/views/Home.vue";
-import CreateRequest from "@/views/CreateRequest.vue";
-import Requests from "@/views/Requests.vue";
-import Request from "@/views/Request.vue";
+import CreateRequest from "@/views/request/CreateRequest.vue";
+import Requests from "@/views/request/Requests.vue";
+import Request from "@/views/request/Request.vue";
 import Login from "@/views/Login.vue";
-import Dashboard from "@/views/Dashboard.vue";
-import Satisfaction from "@/views/Satisfaction.vue";
-import Historic from "@/views/Historic.vue";
-import Contributions from "@/views/Contributions.vue";
-import Orders from "@/views/Orders.vue";
-import Profile from "@/views/Profile.vue";
-import Settings from "@/views/Settings.vue";
+import Dashboard from "@/views/dashboard/Dashboard.vue";
+import Satisfaction from "@/views/satisfaction/Satisfaction.vue";
+import Historic from "@/views/history/Historic.vue";
+import Contributions from "@/views/contribution/Contributions.vue";
+import Orders from "@/views/order/Orders.vue";
+import Profile from "@/views/profile/Profile.vue";
+import Settings from "@/views/settings/Settings.vue";
 import ApplicationSettings from "@/services/application-settings";
-import CreateClient from "@/views/CreateClient.vue";
+import CreateClient from "@/views/client/CreateClient.vue";
 import Administration from "@/views/admin/Administration.vue";
-import Users from "@/views/admin/Users.vue";
-import Clients from "@/views/admin/Clients.vue";
-import Contracts from "@/views/admin/Contracts.vue";
-import Teams from "@/views/admin/Teams.vue";
-import Softwares from "@/views/admin/Softwares.vue";
-import Contract from "@/views/admin/Contract.vue";
-import AdminContributions from "@/views/admin/AdminContributions.vue";
-import EditContract from "@/views/admin/EditContract.vue";
+import Users from "@/views/admin/user/Users.vue";
+import User from "@/views/admin/user/User.vue";
+import Clients from "@/views/admin/client/Clients.vue";
+import Client from "@/views/admin/client/Client.vue";
+import Contracts from "@/views/admin/contract/Contracts.vue";
+import Teams from "@/views/admin/team/Teams.vue";
+import Team from "@/views/admin/team/Team.vue";
+import Softwares from "@/views/admin/software/Softwares.vue";
+import Contract from "@/views/admin/contract/Contract.vue";
+import AdminContributions from "@/views/admin/contribution/Contributions.vue";
+import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
 Vue.use(Router);
@@ -51,7 +54,10 @@ export const routeNames = Object.freeze({
   CONTRACT: "Contract",
   ADMINCONTRIBUTIONS: "AdminContributions",
   EDITCONTRACT: "Edit Contract",
-  TEAMS: "Teams"
+  TEAMS: "Teams",
+  USER: "User",
+  CLIENT: "Client",
+  TEAM: "Team"
 });
 
 export default new Router({
@@ -187,9 +193,25 @@ export default new Router({
           }
         },
         {
+          path: "users/:id",
+          name: routeNames.USER,
+          component: User,
+          meta: {
+            auth: true
+          }
+        },
+        {
           path: "teams",
           name: routeNames.TEAMS,
           component: Teams,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "teams/:id",
+          name: routeNames.TEAM,
+          component: Team,
           meta: {
             auth: true
           }
@@ -206,6 +228,14 @@ export default new Router({
           path: "clients",
           name: routeNames.CLIENTS,
           component: Clients,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "clients/:id",
+          name: routeNames.CLIENT,
+          component: Client,
           meta: {
             auth: true
           }
