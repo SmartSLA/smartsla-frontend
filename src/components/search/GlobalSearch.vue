@@ -2,7 +2,7 @@
   <v-autocomplete
     :items="searchResults"
     :label="$t('Search for a client, contract or a ticket')"
-    class="pt-0 global-search-box"
+    class="pt-2 global-search-box"
     append-icon="search"
     background-color="white"
     solo
@@ -52,7 +52,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
 .global-search-box .v-icon
   transform: rotate(0deg) !important;
 </style>

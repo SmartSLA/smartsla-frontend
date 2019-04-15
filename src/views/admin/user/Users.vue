@@ -49,10 +49,12 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.title }}</td>
           <td class="text-xs-center">
-            <div v-if="props.item.isdisabled == 'yes'">
-              <strike>{{ props.item.name }}</strike>
-            </div>
-            <div v-else>{{ props.item.name }}</div>
+            <router-link :to="{ name: 'User', params: { id: props.item.id } }">
+              <div v-if="props.item.isdisabled == 'yes'">
+                <strike>{{ props.item.name }}</strike>
+              </div>
+              <div v-else>{{ props.item.name }}</div>
+            </router-link>
           </td>
           <td class="text-xs-center">{{ props.item.role }}</td>
           <td class="text-xs-center">{{ props.item.engineer }}</td>

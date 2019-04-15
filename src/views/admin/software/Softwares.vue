@@ -74,7 +74,7 @@ export default {
   },
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "softwares");
+    this.$store.dispatch("sidebar/setActiveAdminMenu", "software");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
