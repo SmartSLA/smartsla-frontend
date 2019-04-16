@@ -13,7 +13,7 @@ import Orders from "@/views/order/Orders.vue";
 import Profile from "@/views/profile/Profile.vue";
 import Settings from "@/views/settings/Settings.vue";
 import ApplicationSettings from "@/services/application-settings";
-import CreateClient from "@/views/client/CreateClient.vue";
+import CreateClient from "@/views/admin/client/CreateClient.vue";
 import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/user/Users.vue";
 import User from "@/views/admin/user/User.vue";

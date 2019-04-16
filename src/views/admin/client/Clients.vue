@@ -61,8 +61,7 @@ export default {
         { text: "Name", value: "name" },
         { text: "Contracts", value: "conttracts" },
         { text: "Access code", value: "access_code" }
-      ],
-      clients
+      ]
     };
   },
   created() {

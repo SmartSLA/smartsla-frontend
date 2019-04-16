@@ -17,44 +17,96 @@
     <v-layout row wrap justify-space-between>
       <v-flex xs8 pr-5>
         <v-card light color="white">
-          <v-layout justify-center row fill-height wrap ml-3>
-            <v-flex xs4>
-              <v-card-text class="px-0 information">
-                <strong>{{ $t("Gravity") }} :</strong>
-                {{ request.gravity }}
-              </v-card-text>
-              <v-card-text class="px-0">
-                <strong>{{ $t("Software") }} :</strong>
-                {{ request.software }}
-              </v-card-text>
-              <v-card-text class="px-0 information">
-                <strong>{{ $t("Last update") }} :</strong>
-                {{ request.lastUpdate }}
-              </v-card-text>
+          <v-layout row wrap>
+            <v-flex xs1 class="mt-4">
+              <strong class="pt-4">{{ $t("Status") }} :</strong>
             </v-flex>
-            <v-flex xs4>
-              <v-card-text class="px-0 information">
+            <v-flex xs11>
+              <v-stepper non-linear>
+                <v-stepper-header>
+                  <v-stepper-step step="3" complete color="success">{{ $t("New") }}</v-stepper-step>
+
+                  <v-divider color="success"></v-divider>
+
+                  <v-stepper-step step="4" complete color="success">{{ $t("In progress") }}</v-stepper-step>
+
+                  <v-divider color="success"></v-divider>
+
+                  <v-stepper-step step="4" complete color="success">{{ $t("Bypass") }}</v-stepper-step>
+
+                  <v-divider color="primary"></v-divider>
+
+                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">{{
+                    $t("Solution")
+                  }}</v-stepper-step>
+
+                  <v-divider></v-divider>
+
+                  <v-stepper-step step>{{ $t("Closing") }}</v-stepper-step>
+                </v-stepper-header>
+              </v-stepper>
+            </v-flex>
+          </v-layout>
+          <v-divider />
+          <v-layout row wrap>
+            <v-flex xs10 class="pt-0 pb-0">
+              <v-card-title primary-title>
                 <div>
-                  <strong>{{ $t("Ticket #") }} :</strong>
-                  {{ request.ticketNumber }}
+                  <h3 class="headline mb-0">#{{ request.ticketNumber }} - {{ request.ticketTitle }}</h3>
                 </div>
-              </v-card-text>
-              <v-card-text class="px-0">
-                <strong>{{ $t("Created at") }} :</strong>
-                {{ request.ticketDate }}
-              </v-card-text>
+              </v-card-title>
             </v-flex>
-            <v-flex xs4>
-              <v-btn color="info" v-if="$auth.check('admin')">{{ $t("TRANSFER TICKET") }}</v-btn>
+            <v-flex xs2 class="pt-0 pb-0">
+              <div class="text-xs-right grey--text pt-3 justify-end">
+                <v-btn color="primary" fab small dark :to="{ name: '#', params: { id: 15, section: 'hr' } }">
+                  <v-icon>edit</v-icon>
+                </v-btn>
+              </div>
+            </v-flex>
+          </v-layout>
+          <v-divider />
+          <v-layout justify-center row fill-height wrap ml-3>
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("Type") }} :</strong>
+              {{ request.gravity }}
+            </v-flex>
+
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("severity") }} :</strong>
+              {{ request.gravity }}
+            </v-flex>
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("Created at") }} :</strong>
+              {{ request.ticketDate }}
+            </v-flex>
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("Created by") }} :</strong>
+              {{ request.ticketAuthor }}
+            </v-flex>
+
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("Assigned to") }} :</strong>
+              {{ request.responsible.name }}
+            </v-flex>
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("Last update") }} :</strong>
+              {{ request.lastUpdate }}
+            </v-flex>
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("Software") }} :</strong>
+              {{ request.software }}
+            </v-flex>
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("Version") }} :</strong>
+              {{ request.softwareVersion }}
+            </v-flex>
+            <v-flex xs4 class="pt-0 pb-1">
+              <strong>{{ $t("OS") }} :</strong>
+              {{ request.softwareOs }}
             </v-flex>
           </v-layout>
           <v-divider class="mx-3"></v-divider>
           <v-card>
-            <v-card-title primary-title>
-              <div>
-                <h3 class="headline mb-0">{{ request.ticketTitle }}</h3>
-              </div>
-            </v-card-title>
             <v-card-text>
               <v-layout>
                 <v-flex xs1>
@@ -72,7 +124,8 @@
                 </v-flex>
                 <v-flex xs11>
                   <b>{{ $t("Attachments") }}</b>
-                  : {{ request.attachedFile }}
+                  :
+                  <router-link :to="{ name: '#' }">{{ request.attachedFile }}</router-link>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -82,8 +135,20 @@
                   <v-icon>insert_link</v-icon>
                 </v-flex>
                 <v-flex xs11>
-                  <b>{{ $t("Related requests") }}</b> :
-                  <a href="#" v-for="link in request.linkedTickets" :key="link" class="pr-2">{{ link }}</a>
+                  <v-layout row wrap>
+                    <v-flex xs2>
+                      <strong>{{ $t("Related requests") }} :</strong>
+                    </v-flex>
+                    <v-flex xs7>
+                      <ul>
+                        <li v-for="(link, key) in request.linkedTickets" :key="key">
+                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
+                          <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
+                          <router-link :to="{ name: 'request', params: { id: link.id } }">#{{ link.id }}</router-link>
+                        </li>
+                      </ul>
+                    </v-flex>
+                  </v-layout>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -96,7 +161,7 @@
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
-                    <v-expansion-panel-content v-for="comment in comments" :key="comment.id">
+                    <v-expansion-panel-content v-for="comment in comments" :key="comment.id" color="grey lighten-4">
                       <template v-slot:header>
                         <div class="font-weight-bold">
                           <span class="subheading">{{ comment.name }}</span>
@@ -104,7 +169,26 @@
                         </div>
                       </template>
                       <v-card class="ml-4">
-                        <v-card-text>{{ comment.body }}</v-card-text>
+                        <v-layout row wrap>
+                          <v-flex xs2>
+                            <v-avatar size="60" tile="false">
+                              <v-img :src="comment.image"></v-img>
+                            </v-avatar>
+                          </v-flex>
+                          <v-flex xs10>
+                            <v-card-text>{{ comment.body }}</v-card-text>
+                            <v-card-text v-if="comment.attachedFile">
+                              <v-icon>attach_file</v-icon>
+                              <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                            </v-card-text>
+                            <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                              <span v-for="(action, keya) in comment.actions" :key="keya">
+                                {{ action.action }}
+                                <br />
+                              </span>
+                            </v-card-text>
+                          </v-flex>
+                        </v-layout>
                       </v-card>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -113,21 +197,41 @@
                     <v-input prepend-icon="subject" class="pt-2">
                       <vue-editor v-model="comment"></vue-editor>
                     </v-input>
-                    <markdown-editor
-                      :options="options"
-                      v-model="comment"
-                      toolbar="bold italic heading | image link | numlist bullist code quote | preview fullscreen"
-                      name="html"
-                    ></markdown-editor>
-                    <v-btn color="info">{{ $t("add comment") }}</v-btn>
+                    <v-input prepend-icon="no-icon" class="pt-2">
+                      <v-layout row wrap>
+                        <v-flex xs3>
+                          <v-select :items="statusList" :label="$t('Status')"></v-select>
+                        </v-flex>
+                        <v-flex xs3>
+                          <v-select :items="assigneeList" :label="$t('Assigned to')"></v-select>
+                        </v-flex>
+                        <v-flex xs3>
+                          <v-checkbox v-model="selected" color="primary" :label="$t('private comment')"></v-checkbox>
+                        </v-flex>
+                        <v-flex xs3>
+                          <file-upload
+                            prepend-icon="attach_file"
+                            class="file pt-2"
+                            btn-label="Attach file"
+                            btn-uploading-label="Uploading file"
+                          ></file-upload>
+                        </v-flex>
+                      </v-layout>
+                    </v-input>
+                    <v-layout row wrap>
+                      <v-flex xs5></v-flex>
+                      <v-flex xs7>
+                        <v-btn color="info" class="pl-4">{{ $t("add comment") }}</v-btn>
+                      </v-flex>
+                    </v-layout>
                   </v-form>
                 </v-card>
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>{{
-                    $t("the satisfaction survey will be available once the ticket is closed")
-                  }}</v-card-text>
+                  <v-card-text>
+                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
+                  </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -139,135 +243,83 @@
           <v-flex xs12>
             <v-card light color="white" class="px-4 pb-3">
               <v-card-title primary-title>
-                <h3 class="headline mb-0">{{ $t("Beneficiary") }}</h3></v-card-title
-              >
+                <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
+              </v-card-title>
               <v-divider></v-divider>
+              {{ $t("Supported") }}
+              <v-layout row wrap>
+                <v-flex xs10 class="px-1 pt-0 pb-0">
+                  <v-progress-linear color="error" height="18" value="100" class="mt-0"></v-progress-linear>
+                </v-flex>
+                <v-flex xs1 px-1 pt-0 pb-0>1HO</v-flex>
+                <v-flex xs1 px-1 pt-0 pb-0>
+                  <v-icon class="error--text">close</v-icon>
+                </v-flex>
+              </v-layout>
+              {{ $t("Bypass") }}
+              <v-layout row wrap class="text-xs-center">
+                <v-flex xs10 class="px-1 pt-0 pb-0">
+                  <v-progress-linear color="success" height="18" value="60" class="mt-0">8HO</v-progress-linear>
+                </v-flex>
+                <v-flex xs1 px-1 pt-0 pb-0>1HO</v-flex>
+                <v-flex xs1 px-1 pt-0 pb-0>
+                  <v-icon class="success--text">check</v-icon>
+                </v-flex>
+              </v-layout>
+              {{ $t("Solution") }}
+              <v-layout row wrap>
+                <v-flex xs10 class="px-1 pt-0 pb-0">
+                  <v-progress-linear color="success" height="18" value="60" class="mt-0"></v-progress-linear>
+                </v-flex>
+                <v-flex xs1 px-1 pt-0 pb-0>1HO</v-flex>
+                <v-flex xs1 px-1 pt-0 pb-0>
+                  <v-icon class="success--text">check</v-icon>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <v-flex xs12 align-center justify-center>
+            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">
+              {{ $t("interlocutor in charge of the request") }}
+            </h4>
+            <v-card class="pt-2">
+              <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
+              <br />
+              <v-avatar size="150">
+                <v-img :src="avatarUrl"></v-img>
+              </v-avatar>
+
               <v-card-text>
-                <span class="body-2"> {{ $t("contact") }} :</span> {{ request.beneficiary.contact }} <br />
-                <span class="body-2"> {{ $t("Phone") }} :</span> {{ request.beneficiary.phone }} <br />
-                <span class="body-2"> {{ $t("client") }} / {{ $t("contract") }} : </span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link> /
+                <strong>{{ $t("Contact") }} :</strong>
+                {{ request.responsible.name }}
+                <br />
+                <strong>{{ $t("Phone") }} :</strong>
+                {{ request.responsible.phone }}
+                <br />
+                <strong>{{ $t("eMail") }} :</strong>
+                {{ request.responsible.email }}
+              </v-card-text>
+            </v-card>
+            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">
+              {{ $t("Beneficiary") }}
+            </h4>
+            <v-card class="pt-2">
+              <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
+              <v-avatar size="150" tile="false">
+                <v-img :src="request.beneficiary.image"></v-img>
+              </v-avatar>
+              <v-card-text>
+                <strong>{{ $t("Contact") }} :</strong>
+                {{ request.beneficiary.contact }}
+                <br />
+                <strong>{{ $t("Phone") }} :</strong>
+                {{ request.beneficiary.phone }}
+                <br />
+                <span class="body-2">{{ $t("client") }} / {{ $t("contract") }} :&nbsp;</span>
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
+                >/
                 <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex xs12>
-            <v-card light color="white" class="px-4 pb-3">
-              <v-card-title primary-title>
-                <div>
-                  <h3 class="headline mb-0">{{ $t("Ticket status") }}</h3>
-                </div>
-              </v-card-title>
-              <v-divider></v-divider>
-              <v-layout>
-                <v-flex xs8>
-                  <v-layout class="mb-1">
-                    <v-flex xs4 class="green--text font-weight-bold">
-                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.open }"
-                        >label_important</v-icon
-                      >
-                      <small>{{ $t("Open") }}</small>
-                    </v-flex>
-                    <v-flex xs4 class="green--text font-weight-bold">
-                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.progress }"
-                        >label_important</v-icon
-                      >
-                      <small>{{ $t("Processing") }}</small>
-                    </v-flex>
-                    <v-flex xs4>
-                      <v-icon class="progress-arrow" :class="{ 'green--text': request.requestStatus.closed }"
-                        >label_important</v-icon
-                      >
-                      <small>{{ $t("Closed") }}</small>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
-              <v-card-text class="px-0 information">
-                <strong>{{ $t("Next step") }} :</strong>
-                {{ request.requestStatus.nextStep }}
-              </v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex xs12>
-            <v-card light color="white">
-              <v-card-title primary-title class="px-4">
-                <div>
-                  <h3 class="headline mb-0 mx-4">{{ $t("Service level") }}</h3>
-                </div>
-              </v-card-title>
-              <v-divider class="mx-4"></v-divider>
-              <v-list ml-0 mr-0 mt-0>
-                <v-list-tile>
-                  <v-list-tile-content>
-                    <v-list-tile-title class="px-2 red--text">{{ request.serviceLevel.level }}</v-list-tile-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile class="blue-grey lighten-5">
-                  <v-list-tile-content>
-                    <v-list-tile-title class="px-2 text-uppercase">{{ $t("recall") }}</v-list-tile-title>
-                  </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">{{ request.serviceLevel.recall }}</v-list-tile-action>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>
-                    <v-list-tile-title class="px-2 text-uppercase">{{ $t("info request answer") }}</v-list-tile-title>
-                  </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">
-                    {{ request.serviceLevel.infoResponse }}
-                  </v-list-tile-action>
-                </v-list-tile>
-                <v-list-tile class="blue-grey lighten-5">
-                  <v-list-tile-content>
-                    <v-list-tile-title class="px-2 text-uppercase">{{ $t("circumvention") }}</v-list-tile-title>
-                  </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">{{ request.serviceLevel.bypass }}</v-list-tile-action>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>
-                    <v-list-tile-title class="px-2 text-uppercase">{{ $t("final solution") }}</v-list-tile-title>
-                  </v-list-tile-content>
-                  <v-list-tile-action class="grey--text px-2">{{
-                    request.serviceLevel.finalSolution
-                  }}</v-list-tile-action>
-                </v-list-tile>
-              </v-list>
-            </v-card>
-          </v-flex>
-          <v-flex xs12>
-            <v-card light color="white px-4 pt-2">
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <v-badge color="green" right bottom overlap v-if="request.requestTime.recall.done">
-                    <v-icon slot="badge" dark small>done</v-icon>
-                    <v-icon large>access_time</v-icon>
-                    <span></span>
-                  </v-badge>
-                  <v-icon large v-else>access_time</v-icon>
-                  <strong class="pl-3">{{ $t("Recall") }} :</strong>
-                  {{ request.requestTime.recall.value }}
-                </v-flex>
-                <v-flex xs12>
-                  <v-badge color="green" right bottom overlap v-if="request.requestTime.bypass.done">
-                    <v-icon slot="badge" dark small>done</v-icon>
-                    <v-icon large>access_time</v-icon>
-                    <span></span>
-                  </v-badge>
-                  <v-icon large v-else>access_time</v-icon>
-                  <strong class="pl-3">{{ $t("Bypass") }} :</strong>
-                  {{ request.requestTime.bypass.value }}
-                </v-flex>
-                <v-flex xs12>
-                  <v-badge color="green" right bottom overlap v-if="request.requestTime.finalSolution.done">
-                    <v-icon slot="badge" dark small>done</v-icon>
-                    <v-icon large>access_time</v-icon>
-                    <span></span>
-                  </v-badge>
-                  <v-icon large v-else>access_time</v-icon>
-                  <strong class="pl-3">{{ $t("Final solution") }} :</strong>
-                  {{ request.requestTime.finalSolution.value }}
-                </v-flex>
-              </v-layout>
             </v-card>
           </v-flex>
           <v-flex xs12>
@@ -320,9 +372,9 @@
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">{{
-                  request.communityContribution.communityIssueLink
-                }}</a>
+                <a :href="request.communityContribution.communityIssueLink">
+                  {{ request.communityContribution.communityIssueLink }}
+                </a>
               </v-card>
             </v-card>
           </v-flex>
@@ -351,7 +403,9 @@ export default {
         indentWithTabs: true,
         tabSize: 2,
         indentUnit: 2
-      }
+      },
+      statusList: ["in progress", "closed", "suspended"],
+      assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"]
     };
   },
   components: {
@@ -362,7 +416,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      email: "user/getEmail"
+      email: "user/getEmail",
+      avatarUrl: "user/getAvatarUrl"
     })
   },
   created() {
@@ -378,24 +433,123 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.action-links
+.action-links {
   text-decoration: none;
   color: grey;
-.progress-arrow
+}
+
+.progress-arrow {
   font-size: 3.5em;
   display: block;
-.information
+}
+
+.information {
   padding: 0px;
-.subject-text
+}
+
+.subject-text {
   white-space: pre-line;
-.container
+}
+
+.container {
   max-width: 100% !important;
   padding: 0px;
-.flex.xs8.pr-5
+}
+
+.flex.xs8.pr-5 {
   padding-right: 10px !important;
-.container.grid-list-md .layout .flex
+}
+
+.container.grid-list-md .layout .flex {
   padding: 15px;
-.quillWrapper,
-.ql-editor
+}
+
+.quillWrapper, .ql-editor {
   width: 100%;
+}
+
+.arrow-down {
+  transform: rotate(90deg);
+  position: absolute;
+  left: 35%;
+}
+
+.v-image {
+  left: 50%;
+}
+
+#crumbs {
+  text-align: center;
+}
+
+#crumbs ul {
+  list-style: none;
+  display: inline-table;
+}
+
+#crumbs ul li {
+  display: inline;
+}
+
+#crumbs ul li a {
+  display: block;
+  float: left;
+  height: 50px;
+  background: #3498db;
+  text-align: center;
+  padding: 30px 40px 0 80px;
+  position: relative;
+  margin: 0 10px 0 0;
+  font-size: 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+#crumbs ul li a:after {
+  content: '';
+  border-top: 40px solid transparent;
+  border-bottom: 40px solid transparent;
+  border-left: 40px solid #3498db;
+  position: absolute;
+  right: -40px;
+  top: 0;
+  z-index: 1;
+}
+
+#crumbs ul li a:before {
+  content: '';
+  border-top: 40px solid transparent;
+  border-bottom: 40px solid transparent;
+  border-left: 40px solid #d4f2ff;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#crumbs ul li:first-child a {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#crumbs ul li:first-child a:before {
+  display: none;
+}
+
+#crumbs ul li:last-child a {
+  padding-right: 80px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+#crumbs ul li:last-child a:after {
+  display: none;
+}
+
+#crumbs ul li a:hover {
+  background: #fa5ba5;
+}
+
+#crumbs ul li a:hover:after {
+  border-left-color: #fa5ba5;
+}
 </style>
