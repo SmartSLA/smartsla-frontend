@@ -168,7 +168,29 @@
                           {{ comment.date }}
                         </div>
                       </template>
-                      <v-card class="ml-4">
+                      <v-card v-if="comment.authorid == 1" class="comment-mine ml-4">
+                        <v-layout row wrap>
+                          <v-flex xs2>
+                            <v-avatar size="60" tile="false">
+                              <v-img :src="comment.image"></v-img>
+                            </v-avatar>
+                          </v-flex>
+                          <v-flex xs10>
+                            <v-card-text>{{ comment.body }}</v-card-text>
+                            <v-card-text v-if="comment.attachedFile">
+                              <v-icon>attach_file</v-icon>
+                              <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                            </v-card-text>
+                            <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                              <span v-for="(action, keya) in comment.actions" :key="keya">
+                                {{ action.action }}
+                                <br />
+                              </span>
+                            </v-card-text>
+                          </v-flex>
+                        </v-layout>
+                      </v-card>
+                      <v-card v-if="comment.authorid !== 1" class="comment-not-mine ml-4">
                         <v-layout row wrap>
                           <v-flex xs2>
                             <v-avatar size="60" tile="false">
