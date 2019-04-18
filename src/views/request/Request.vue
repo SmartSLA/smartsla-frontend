@@ -161,58 +161,68 @@
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
-                    <v-expansion-panel-content v-for="comment in comments" :key="comment.id" color="grey lighten-4">
-                      <template v-slot:header>
-                        <div class="font-weight-bold">
-                          <span class="subheading">{{ comment.name }}</span>
-                          {{ comment.date }}
-                        </div>
-                      </template>
-                      <v-card v-if="comment.authorid == 1" class="comment-mine ml-4">
-                        <v-layout row wrap>
-                          <v-flex xs2>
-                            <v-avatar size="60" tile="false">
-                              <v-img :src="comment.image"></v-img>
-                            </v-avatar>
-                          </v-flex>
-                          <v-flex xs10>
-                            <v-card-text>{{ comment.body }}</v-card-text>
-                            <v-card-text v-if="comment.attachedFile">
-                              <v-icon>attach_file</v-icon>
-                              <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
-                            </v-card-text>
-                            <v-card-text v-if="comment.actions" class="grey--text font-italic">
-                              <span v-for="(action, keya) in comment.actions" :key="keya">
-                                {{ action.action }}
-                                <br />
-                              </span>
-                            </v-card-text>
-                          </v-flex>
-                        </v-layout>
-                      </v-card>
-                      <v-card v-if="comment.authorid !== 1" class="comment-not-mine ml-4">
-                        <v-layout row wrap>
-                          <v-flex xs2>
-                            <v-avatar size="60" tile="false">
-                              <v-img :src="comment.image"></v-img>
-                            </v-avatar>
-                          </v-flex>
-                          <v-flex xs10>
-                            <v-card-text>{{ comment.body }}</v-card-text>
-                            <v-card-text v-if="comment.attachedFile">
-                              <v-icon>attach_file</v-icon>
-                              <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
-                            </v-card-text>
-                            <v-card-text v-if="comment.actions" class="grey--text font-italic">
-                              <span v-for="(action, keya) in comment.actions" :key="keya">
-                                {{ action.action }}
-                                <br />
-                              </span>
-                            </v-card-text>
-                          </v-flex>
-                        </v-layout>
-                      </v-card>
-                    </v-expansion-panel-content>
+                    <div v-for="comment in comments" :key="comment.id" class="custom-comment-box">
+                      <v-expansion-panel-content  v-if="comment.authorid == 1" class="comment-mine" color="grey lighten-4">
+                        <template v-slot:header>
+                          <div class="font-weight-bold">
+                            <span class="subheading">{{ comment.name }}</span>
+                            {{ comment.date }}
+                          </div>
+                        </template>
+                        <v-card class="ml-4">
+                          <v-layout row wrap>
+                            <v-flex xs2>
+                              <v-avatar size="60" tile="false">
+                                <v-img :src="comment.image"></v-img>
+                              </v-avatar>
+                            </v-flex>
+                            <v-flex xs10>
+                              <v-card-text>{{ comment.body }}</v-card-text>
+                              <v-card-text v-if="comment.attachedFile">
+                                <v-icon>attach_file</v-icon>
+                                <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                              </v-card-text>
+                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                                <span v-for="(action, keya) in comment.actions" :key="keya">
+                                  {{ action.action }}
+                                  <br />
+                                </span>
+                              </v-card-text>
+                            </v-flex>
+                          </v-layout>
+                        </v-card>
+                      </v-expansion-panel-content>
+                      <v-expansion-panel-content v-if="comment.authorid !== 1" class="comment-not-mine" color="grey lighten-4">
+                        <template v-slot:header>
+                          <div class="font-weight-bold">
+                            <span class="subheading">{{ comment.name }}</span>
+                            {{ comment.date }}
+                          </div>
+                        </template>
+                        <v-card class="ml-4">
+                          <v-layout row wrap>
+                            <v-flex xs2>
+                              <v-avatar size="60" tile="false">
+                                <v-img :src="comment.image"></v-img>
+                              </v-avatar>
+                            </v-flex>
+                            <v-flex xs10>
+                              <v-card-text>{{ comment.body }}</v-card-text>
+                              <v-card-text v-if="comment.attachedFile">
+                                <v-icon>attach_file</v-icon>
+                                <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                              </v-card-text>
+                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                                <span v-for="(action, keya) in comment.actions" :key="keya">
+                                  {{ action.action }}
+                                  <br />
+                                </span>
+                              </v-card-text>
+                            </v-flex>
+                          </v-layout>
+                        </v-card>
+                      </v-expansion-panel-content>
+                    </div>
                   </v-expansion-panel>
                   <v-divider></v-divider>
                   <v-form>
@@ -455,65 +465,40 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.action-links {
+.action-links
   text-decoration: none;
   color: grey;
-}
-
-.progress-arrow {
+.progress-arrow
   font-size: 3.5em;
   display: block;
-}
-
-.information {
+.information
   padding: 0px;
-}
-
-.subject-text {
+.subject-text
   white-space: pre-line;
-}
-
-.container {
+.container
   max-width: 100% !important;
   padding: 0px;
-}
-
-.flex.xs8.pr-5 {
+.flex.xs8.pr-5
   padding-right: 10px !important;
-}
-
-.container.grid-list-md .layout .flex {
+.container.grid-list-md .layout .flex
   padding: 15px;
-}
-
-.quillWrapper, .ql-editor {
+.quillWrapper, .ql-editor
   width: 100%;
-}
-
-.arrow-down {
+.arrow-down
   transform: rotate(90deg);
   position: absolute;
-  left: 35%;
-}
-
-.v-image {
+  left: 45%;
+  width: 10%;
+.v-image
   left: 50%;
-}
-
-#crumbs {
+#crumbs
   text-align: center;
-}
-
-#crumbs ul {
+#crumbs ul
   list-style: none;
   display: inline-table;
-}
-
-#crumbs ul li {
+#crumbs ul li
   display: inline;
-}
-
-#crumbs ul li a {
+#crumbs ul li a
   display: block;
   float: left;
   height: 50px;
@@ -525,9 +510,7 @@ export default {
   font-size: 20px;
   text-decoration: none;
   color: #fff;
-}
-
-#crumbs ul li a:after {
+#crumbs ul li a:after
   content: '';
   border-top: 40px solid transparent;
   border-bottom: 40px solid transparent;
@@ -536,9 +519,7 @@ export default {
   right: -40px;
   top: 0;
   z-index: 1;
-}
-
-#crumbs ul li a:before {
+#crumbs ul li a:before
   content: '';
   border-top: 40px solid transparent;
   border-bottom: 40px solid transparent;
@@ -546,32 +527,43 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-}
-
-#crumbs ul li:first-child a {
+#crumbs ul li:first-child a
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-}
-
-#crumbs ul li:first-child a:before {
+#crumbs ul li:first-child a:before
   display: none;
-}
-
-#crumbs ul li:last-child a {
+#crumbs ul li:last-child a
   padding-right: 80px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-#crumbs ul li:last-child a:after {
+#crumbs ul li:last-child a:after
   display: none;
-}
-
-#crumbs ul li a:hover {
+#crumbs ul li a:hover
   background: #fa5ba5;
-}
-
-#crumbs ul li a:hover:after {
+#crumbs ul li a:hover:after
   border-left-color: #fa5ba5;
-}
+.v-expansion-panel.theme--light,
+.v-expansion-panel__container
+  border:none !important;
+  box-shadow: none !important;
+.comment-mine
+  background-color: #eaf6ff !important;
+  border-radius: 20px !important;
+  padding: 10px !important;
+  margin: 10px !important;
+  width: 90% !important;
+  float: left !important;
+.comment-not-mine
+  background-color: #f5f5f5 !important;
+  border-radius: 20px !important;
+  padding: 10px !important;
+  margin: 10px !important;
+  width: 90% !important;
+  float: right !important;
+.custom-comment-box
+  width: 100% !important;
+.comment-not-mine div
+  background-color: #f5f5f5 !important;
+.comment-mine div
+  background-color: #eaf6ff !important;
 </style>
