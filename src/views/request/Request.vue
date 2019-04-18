@@ -194,6 +194,11 @@
                   </v-expansion-panel>
                   <v-divider></v-divider>
                   <v-form>
+                    <template>
+                      <v-app>
+                        <Editor ref="editor" :outline="true" :preview="true" v-model="text" />
+                      </v-app>
+                    </template>
                     <v-input prepend-icon="subject" class="pt-2">
                       <vue-editor v-model="comment"></vue-editor>
                     </v-input>
@@ -387,8 +392,10 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
+import { Editor } from "vuetify-markdown-editor";
 var request = require("@/assets/data/request.json");
 export default {
+    name: 'app',
   data() {
     return {
       panel: [true, true],
@@ -405,14 +412,17 @@ export default {
         indentUnit: 2
       },
       statusList: ["in progress", "closed", "suspended"],
-      assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"]
+      assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
+            text: ''
     };
   },
   components: {
-    VueEditor
+    VueEditor,
+    Editor
   },
   mounted() {
     this.$http.getTicketById(this.$route.params.id).then(response => (this.request = response.data));
+        this.$refs.editor.focus();
   },
   computed: {
     ...mapGetters({
@@ -433,65 +443,40 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.action-links {
+.action-links
   text-decoration: none;
   color: grey;
-}
-
-.progress-arrow {
+.progress-arrow
   font-size: 3.5em;
   display: block;
-}
-
-.information {
+.information
   padding: 0px;
-}
-
-.subject-text {
+.subject-text
   white-space: pre-line;
-}
-
-.container {
+.container
   max-width: 100% !important;
   padding: 0px;
-}
-
-.flex.xs8.pr-5 {
+.flex.xs8.pr-5
   padding-right: 10px !important;
-}
-
-.container.grid-list-md .layout .flex {
+.container.grid-list-md .layout .flex
   padding: 15px;
-}
-
-.quillWrapper, .ql-editor {
+.quillWrapper, .ql-editor
   width: 100%;
-}
-
-.arrow-down {
+.arrow-down
   transform: rotate(90deg);
   position: absolute;
-  left: 35%;
-}
-
-.v-image {
+  left: 45%;
+  width: 10%;
+.v-image
   left: 50%;
-}
-
-#crumbs {
+#crumbs
   text-align: center;
-}
-
-#crumbs ul {
+#crumbs ul
   list-style: none;
   display: inline-table;
-}
-
-#crumbs ul li {
+#crumbs ul li
   display: inline;
-}
-
-#crumbs ul li a {
+#crumbs ul li a
   display: block;
   float: left;
   height: 50px;
@@ -503,9 +488,7 @@ export default {
   font-size: 20px;
   text-decoration: none;
   color: #fff;
-}
-
-#crumbs ul li a:after {
+#crumbs ul li a:after
   content: '';
   border-top: 40px solid transparent;
   border-bottom: 40px solid transparent;
@@ -514,9 +497,7 @@ export default {
   right: -40px;
   top: 0;
   z-index: 1;
-}
-
-#crumbs ul li a:before {
+#crumbs ul li a:before
   content: '';
   border-top: 40px solid transparent;
   border-bottom: 40px solid transparent;
@@ -524,32 +505,19 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-}
-
-#crumbs ul li:first-child a {
+#crumbs ul li:first-child a
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-}
-
-#crumbs ul li:first-child a:before {
+#crumbs ul li:first-child a:before
   display: none;
-}
-
-#crumbs ul li:last-child a {
+#crumbs ul li:last-child a
   padding-right: 80px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-#crumbs ul li:last-child a:after {
+#crumbs ul li:last-child a:after
   display: none;
-}
-
-#crumbs ul li a:hover {
+#crumbs ul li a:hover
   background: #fa5ba5;
-}
-
-#crumbs ul li a:hover:after {
+#crumbs ul li a:hover:after
   border-left-color: #fa5ba5;
-}
 </style>

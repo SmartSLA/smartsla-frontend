@@ -352,7 +352,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-select
 .requests-filter-add
   margin-top: 10px;
   height: 48px;
-  margin-left: -10px;
+  margin-left: 0px;
 .requests-filter-label
   padding-top: 25px;
   color: #777;
