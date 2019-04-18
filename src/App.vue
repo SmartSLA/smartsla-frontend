@@ -42,6 +42,7 @@ import MainSideBar from "@/components/MainSideBar.vue";
 import ContributionsSideBar from "@/components/ContributionsSideBar.vue";
 import IssueDetailSideBar from "@/components/request/IssueDetailSideBar.vue";
 import AdminMainSideBar from "@/components/admin/AdminMainSideBar.vue";
+
 export default {
   components: {
     "op-user-menu": UserMenu,
