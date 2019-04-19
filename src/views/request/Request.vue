@@ -576,5 +576,13 @@ export default {
   background-color: #f5f5f5 !important;
 .comment-mine div
   background-color: #eaf6ff !important;
-
+.v-expansion-panel__body .flex.xs2
+  width: auto;
+  float: left;
+.v-expansion-panel__body .flex.xs2
+  width: 80%;
+  float: left;
+.v-expansion-panel__body .v-card__text.grey--text.font-italic
+  float: right;
+  width: 80%;
 </style>

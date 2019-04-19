@@ -141,24 +141,24 @@ tr:nth-child(odd)
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
-#app .flex.pa-3.xs12.md6
+form #app .flex.pa-3.xs12.md6
   margin: 0px !important;
   padding: 0px !important;
   max-width: 100% !important;
   width: 100% !important;
   display: contents !important;
   clear: both !important;
-.layout.row.wrap
+form #app .layout.row.wrap
   display: block !important;
-#app
+form #app
   border: solid 1Px #ccc;
   min-height: 600px !important;
-#app textarea
+form #app textarea
   min-height: 300px !important;
   border: solid 1Px #ccc;
   padding: 0px;
   margin: 0px;
-#app .v-text-field__slot
+form #app .v-text-field__slot
   padding: 0px;
   margin: -5px;
 </style>
