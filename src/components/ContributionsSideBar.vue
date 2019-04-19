@@ -67,4 +67,11 @@ export default {
   height: 100%;
 .see-all-link
   width: 100%;
+.arrow-down
+  transform: rotate(90deg);
+  position: absolute;
+  left: 45%;
+  width: 10%;
+.v-list__tile__title.text-capitalize.title
+  font-size: 16px !important;
 </style>

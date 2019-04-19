@@ -55,4 +55,14 @@ export default {
 <style lang="stylus">
 .global-search-box .v-icon
   transform: rotate(0deg) !important;
+// .v-input.pt-2.global-search-box.v-select--is-menu-active.v-autocomplete.v-input--is-focused
+//   width: 300px;
+// .v-input.pt-2.global-search-box.v-autocomplete
+//   transition-duration: 0.5s;
+//   width: 50px;
+// .v-input.pt-2.global-search-box.v-autocomplete label 
+//   display: none;
+// .v-input.pt-2.global-search-box.v-select--is-menu-active.v-autocomplete.v-input--is-focused label
+//   display: block;
+
 </style>

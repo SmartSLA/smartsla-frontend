@@ -225,7 +225,12 @@
                     </div>
                   </v-expansion-panel>
                   <v-divider></v-divider>
-                  <v-form>
+                  <v-form class="comment-form">
+                    <template>
+                      <v-app>
+                        <Editor ref="editor" :outline="true" :preview="true" v-model="text" />
+                      </v-app>
+                    </template>
                     <v-input prepend-icon="subject" class="pt-2">
                       <vue-editor v-model="comment"></vue-editor>
                     </v-input>
@@ -419,8 +424,10 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
+import { Editor } from "vuetify-markdown-editor";
 var request = require("@/assets/data/request.json");
 export default {
+    name: 'app',
   data() {
     return {
       panel: [true, true],
@@ -437,14 +444,17 @@ export default {
         indentUnit: 2
       },
       statusList: ["in progress", "closed", "suspended"],
-      assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"]
+      assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
+            text: ''
     };
   },
   components: {
-    VueEditor
+    VueEditor,
+    Editor
   },
   mounted() {
     this.$http.getTicketById(this.$route.params.id).then(response => (this.request = response.data));
+        this.$refs.editor.focus();
   },
   computed: {
     ...mapGetters({
@@ -566,4 +576,5 @@ export default {
   background-color: #f5f5f5 !important;
 .comment-mine div
   background-color: #eaf6ff !important;
+
 </style>
