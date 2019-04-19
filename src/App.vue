@@ -135,11 +135,30 @@ tr:nth-child(odd)
   background-color: #ffffff;
 .layout.justify-center.align-center > div
     width: 100%;
-#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(7) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
+#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(7) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer
   height: 48px;
   padding-top: 0px;
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
-}
+#app .flex.pa-3.xs12.md6
+  margin: 0px !important;
+  padding: 0px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  display: contents !important;
+  clear: both !important;
+.layout.row.wrap
+  display: block !important;
+#app
+  border: solid 1Px #ccc;
+  min-height: 600px !important;
+#app textarea
+  min-height: 300px !important;
+  border: solid 1Px #ccc;
+  padding: 0px;
+  margin: 0px;
+#app .v-text-field__slot
+  padding: 0px;
+  margin: -5px;
 </style>

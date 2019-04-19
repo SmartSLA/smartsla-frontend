@@ -161,39 +161,71 @@
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
-                    <v-expansion-panel-content v-for="comment in comments" :key="comment.id" color="grey lighten-4">
-                      <template v-slot:header>
-                        <div class="font-weight-bold">
-                          <span class="subheading">{{ comment.name }}</span>
-                          {{ comment.date }}
-                        </div>
-                      </template>
-                      <v-card class="ml-4">
-                        <v-layout row wrap>
-                          <v-flex xs2>
-                            <v-avatar size="60" tile="false">
-                              <v-img :src="comment.image"></v-img>
-                            </v-avatar>
-                          </v-flex>
-                          <v-flex xs10>
-                            <v-card-text>{{ comment.body }}</v-card-text>
-                            <v-card-text v-if="comment.attachedFile">
-                              <v-icon>attach_file</v-icon>
-                              <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
-                            </v-card-text>
-                            <v-card-text v-if="comment.actions" class="grey--text font-italic">
-                              <span v-for="(action, keya) in comment.actions" :key="keya">
-                                {{ action.action }}
-                                <br />
-                              </span>
-                            </v-card-text>
-                          </v-flex>
-                        </v-layout>
-                      </v-card>
-                    </v-expansion-panel-content>
+                    <div v-for="comment in comments" :key="comment.id" class="custom-comment-box">
+                      <v-expansion-panel-content  v-if="comment.authorid == 1" class="comment-mine" color="grey lighten-4">
+                        <template v-slot:header>
+                          <div class="font-weight-bold">
+                            <span class="subheading">{{ comment.name }}</span>
+                            {{ comment.date }}
+                          </div>
+                        </template>
+                        <v-card class="ml-4">
+                          <v-layout row wrap>
+                            <v-flex xs2>
+                              <v-avatar size="60" tile="false">
+                                <v-img :src="comment.image"></v-img>
+                              </v-avatar>
+                            </v-flex>
+                            <v-flex xs10>
+                              <v-card-text>{{ comment.body }}</v-card-text>
+                              <v-card-text v-if="comment.attachedFile">
+                                <v-icon>attach_file</v-icon>
+                                <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                              </v-card-text>
+                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                                <span v-for="(action, keya) in comment.actions" :key="keya">
+                                  {{ action.action }}
+                                  <br />
+                                </span>
+                              </v-card-text>
+                            </v-flex>
+                          </v-layout>
+                        </v-card>
+                      </v-expansion-panel-content>
+                      <v-expansion-panel-content v-if="comment.authorid !== 1" class="comment-not-mine" color="grey lighten-4">
+                        <template v-slot:header>
+                          <div class="font-weight-bold">
+                            <span class="subheading">{{ comment.name }}</span>
+                            {{ comment.date }}
+                          </div>
+                        </template>
+                        <v-card class="ml-4">
+                          <v-layout row wrap>
+                            <v-flex xs2>
+                              <v-avatar size="60" tile="false">
+                                <v-img :src="comment.image"></v-img>
+                              </v-avatar>
+                            </v-flex>
+                            <v-flex xs10>
+                              <v-card-text>{{ comment.body }}</v-card-text>
+                              <v-card-text v-if="comment.attachedFile">
+                                <v-icon>attach_file</v-icon>
+                                <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                              </v-card-text>
+                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                                <span v-for="(action, keya) in comment.actions" :key="keya">
+                                  {{ action.action }}
+                                  <br />
+                                </span>
+                              </v-card-text>
+                            </v-flex>
+                          </v-layout>
+                        </v-card>
+                      </v-expansion-panel-content>
+                    </div>
                   </v-expansion-panel>
                   <v-divider></v-divider>
-                  <v-form>
+                  <v-form class="comment-form">
                     <template>
                       <v-app>
                         <Editor ref="editor" :outline="true" :preview="true" v-model="text" />
@@ -520,4 +552,29 @@ export default {
   background: #fa5ba5;
 #crumbs ul li a:hover:after
   border-left-color: #fa5ba5;
+.v-expansion-panel.theme--light,
+.v-expansion-panel__container
+  border:none !important;
+  box-shadow: none !important;
+.comment-mine
+  background-color: #eaf6ff !important;
+  border-radius: 20px !important;
+  padding: 10px !important;
+  margin: 10px !important;
+  width: 90% !important;
+  float: left !important;
+.comment-not-mine
+  background-color: #f5f5f5 !important;
+  border-radius: 20px !important;
+  padding: 10px !important;
+  margin: 10px !important;
+  width: 90% !important;
+  float: right !important;
+.custom-comment-box
+  width: 100% !important;
+.comment-not-mine div
+  background-color: #f5f5f5 !important;
+.comment-mine div
+  background-color: #eaf6ff !important;
+
 </style>
