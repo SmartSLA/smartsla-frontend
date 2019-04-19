@@ -584,5 +584,5 @@ export default {
   float: left;
 .v-expansion-panel__body .v-card__text.grey--text.font-italic
   float: right;
-  width: 80%;
+  width: 100%;
 </style>
