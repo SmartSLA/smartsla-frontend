@@ -156,9 +156,11 @@ form #app
 form #app textarea
   min-height: 300px !important;
   border: solid 1Px #ccc;
-  padding: 0px;
+  padding: 10px;
   margin: 0px;
 form #app .v-text-field__slot
   padding: 0px;
   margin: -5px;
+form #app .v-icon.v-icon--link.material-icons.theme--light
+  padding: 10px;
 </style>
