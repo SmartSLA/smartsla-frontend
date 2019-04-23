@@ -162,7 +162,11 @@
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
                     <div v-for="comment in comments" :key="comment.id" class="custom-comment-box">
-                      <v-expansion-panel-content  v-if="comment.authorid == 1" class="comment-mine" color="grey lighten-4">
+                      <v-expansion-panel-content
+                        v-if="comment.authorid == 1"
+                        class="comment-mine"
+                        color="grey lighten-4"
+                      >
                         <template v-slot:header>
                           <div class="font-weight-bold">
                             <span class="subheading">{{ comment.name }}</span>
@@ -192,7 +196,11 @@
                           </v-layout>
                         </v-card>
                       </v-expansion-panel-content>
-                      <v-expansion-panel-content v-if="comment.authorid !== 1" class="comment-not-mine" color="grey lighten-4">
+                      <v-expansion-panel-content
+                        v-if="comment.authorid !== 1"
+                        class="comment-not-mine"
+                        color="grey lighten-4"
+                      >
                         <template v-slot:header>
                           <div class="font-weight-bold">
                             <span class="subheading">{{ comment.name }}</span>
@@ -427,7 +435,7 @@ import { VueEditor } from "vue2-editor";
 import { Editor } from "vuetify-markdown-editor";
 var request = require("@/assets/data/request.json");
 export default {
-    name: 'app',
+  name: "app",
   data() {
     return {
       panel: [true, true],
@@ -445,7 +453,7 @@ export default {
       },
       statusList: ["in progress", "closed", "suspended"],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
-            text: ''
+      text: ""
     };
   },
   components: {
@@ -454,7 +462,7 @@ export default {
   },
   mounted() {
     this.$http.getTicketById(this.$route.params.id).then(response => (this.request = response.data));
-        this.$refs.editor.focus();
+    this.$refs.editor.focus();
   },
   computed: {
     ...mapGetters({

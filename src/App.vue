@@ -118,7 +118,7 @@ export default {
 .user-menu-item
   margin-left: 20%;
 th.column.sortable.text-xs-left
-  padding: 2px !important;
+  padding: 6px !important;
   text-align: center !important;
 .active-menu-link a
   color: white !important;

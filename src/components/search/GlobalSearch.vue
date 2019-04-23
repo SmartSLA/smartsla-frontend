@@ -60,9 +60,8 @@ export default {
 // .v-input.pt-2.global-search-box.v-autocomplete
 //   transition-duration: 0.5s;
 //   width: 50px;
-// .v-input.pt-2.global-search-box.v-autocomplete label 
+// .v-input.pt-2.global-search-box.v-autocomplete label
 //   display: none;
 // .v-input.pt-2.global-search-box.v-select--is-menu-active.v-autocomplete.v-input--is-focused label
 //   display: block;
-
 </style>
