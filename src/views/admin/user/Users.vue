@@ -2,14 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="users-list">
       <div class="page-title">
-        <span>
-          {{ $i18n.t("Users list") }}
-        </span>
+        <span>{{ $i18n.t("Users list") }}</span>
       </div>
       <div class="users-search">
-        <span class="users-search-span">
-          {{ $i18n.t("Search by:") }}
-        </span>
+        <span class="users-search-span">{{ $i18n.t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Name')"
@@ -28,10 +24,10 @@
         ></v-select>
         <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"></v-select>
         <div class="users-operations">
-          <a href="#" class="users-actions">
+          <router-link :to="{ name: 'NewUser' }" class="users-actions">
             <v-icon>add_circle</v-icon>
             <span>{{ $i18n.t("Add user") }}</span>
-          </a>
+          </router-link>
           <a href="#" class="users-actions">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $i18n.t("Export") }}</span>
@@ -78,13 +74,13 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: "Title", value: "title" },
-        { text: "Name", value: "name" },
-        { text: "Role", value: "role" },
-        { text: "Engineer", value: "engineer" },
-        { text: "Beneficiary", value: "beneficiary" },
-        { text: "E-mail", value: "email" },
-        { text: "Phone", value: "phone" }
+        { text: "Title", value: "title", class: "text-xs-center" },
+        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
+        { text: "Role", value: "role", sortable: false, class: "text-xs-center" },
+        { text: "Engineer", value: "engineer", sortable: false, class: "text-xs-center" },
+        { text: "Beneficiary", value: "beneficiary", sortable: false, class: "text-xs-center" },
+        { text: "E-mail", value: "email", sortable: false, class: "text-xs-center" },
+        { text: "Phone", value: "phone", sortable: false, class: "text-xs-center" }
       ],
       users
     };
@@ -107,43 +103,67 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.elevation-1 th
+.elevation-1 th {
   color: #000000;
-.page-title
+}
+
+.page-title {
   color: #777777;
   margin-bottom: 20px;
-.users-list
+}
+
+.users-list {
   width: 100% !important;
-.container.fluid.fill-height
+}
+
+.container.fluid.fill-height {
   padding: 50px;
   width: 100%;
   max-width: 100%;
-.layout.justify-center.align-center > div
+}
+
+.layout.justify-center.align-center > div {
   width: 100%;
-.users-search-span
+}
+
+.users-search-span {
   padding-top: 15px;
   width: 150px;
   color: #777;
-.users-search-name,
-.users-search-client,
-.users-search-roles
+}
+
+.users-search-name, .users-search-client, .users-search-roles {
   width: 300px;
-.users-search
+}
+
+.users-search {
   display: inline-flex !important;
   margin-bottom: 20px;
-.v-input.users-search-name,
-.v-input.users-search-client
+}
+
+.v-input.users-search-name, .v-input.users-search-client {
   margin-right: 20px !important;
-.user-mail
+}
+
+.user-mail {
   color: #2196f3 !important;
   font-weight: bold !important;
-.users-operations a
+}
+
+.users-operations a {
   margin-left: 20px;
-.users-operations
+}
+
+.users-operations {
   margin: 10px;
   margin-left: 100px !important;
-.users-actions
+}
+
+.users-actions {
   text-decoration: none !important;
-.users-search
+}
+
+.users-search {
   width: 100%;
+}
 </style>

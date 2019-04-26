@@ -56,9 +56,9 @@ export default {
       pagination: "10",
       devise: [],
       headers: [
-        { text: "Name", value: "name" },
-        { text: "Contact", value: "contact" },
-        { text: "Devise", value: "devise" }
+        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
+        { text: "Contact", value: "contact", sortable: false, class: "text-xs-center" },
+        { text: "Devise", value: "devise", sortable: false, class: "text-xs-center" }
       ],
       teams
     };

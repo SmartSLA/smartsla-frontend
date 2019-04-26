@@ -130,9 +130,9 @@ button.v-btn.v-btn--flat.v-btn--icon.theme--light
   background-color: #2196f3;
   color: #fff;
 tr:nth-child(even)
-  background-color: #F9F9F9
-tr:nth-child(odd)
   background-color: #ffffff;
+tr:nth-child(odd)
+  background-color: #F9F9F9;
 .layout.justify-center.align-center > div
     width: 100%;
 #openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(7) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer
@@ -141,6 +141,11 @@ tr:nth-child(odd)
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
+
+.ql-container {
+  background: #FAFAFA;
+}
+
 form #app .flex.pa-3.xs12.md6
   margin: 0px !important;
   padding: 0px !important;

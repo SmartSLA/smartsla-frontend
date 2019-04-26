@@ -17,14 +17,21 @@ import CreateClient from "@/views/admin/client/CreateClient.vue";
 import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/user/Users.vue";
 import User from "@/views/admin/user/User.vue";
+import EditUser from "@/views/admin/user/EditUser.vue";
 import Clients from "@/views/admin/client/Clients.vue";
 import Client from "@/views/admin/client/Client.vue";
+import EditClient from "@/views/admin/client/EditClient.vue";
 import Contracts from "@/views/admin/contract/Contracts.vue";
 import Teams from "@/views/admin/team/Teams.vue";
 import Team from "@/views/admin/team/Team.vue";
-import Softwares from "@/views/admin/software/Softwares.vue";
+import EditTeam from "@/views/admin/team/EditTeam.vue";
+import SoftwareList from "@/views/admin/software/Softwares.vue";
+import Software from "@/views/admin/software/Software.vue";
+import EditSoftware from "@/views/admin/software/EditSoftware.vue";
 import Contract from "@/views/admin/contract/Contract.vue";
 import AdminContributions from "@/views/admin/contribution/Contributions.vue";
+import AdminContribution from "@/views/admin/contribution/Contribution.vue";
+import EditContribution from "@/views/admin/contribution/EditContribution.vue";
 import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
@@ -49,15 +56,27 @@ export const routeNames = Object.freeze({
   ADMINHOME: "AdministrationHome",
   USERS: "Users",
   CLIENTS: "Clients",
-  SOFTWARES: "Softwares",
+  SOFTWARELIST: "Softwares",
   CONTRACTS: "Contracts",
   CONTRACT: "Contract",
   ADMINCONTRIBUTIONS: "AdminContributions",
+  ADMINCONTRIBUTION: "AdminContribution",
+  EDITCONTRIBUTION: "EditContribution",
+  NEWCONTRIBUTION: "NewContribution",
   EDITCONTRACT: "Edit Contract",
   TEAMS: "Teams",
   USER: "User",
   CLIENT: "Client",
-  TEAM: "Team"
+  TEAM: "Team",
+  EDITUSER: "UserEdit",
+  NEWUSER: "NewUser",
+  EDITTEAM: "TeamEdit",
+  NEWTEAM: "NewTeam",
+  NEWCLIENT: "NewClient",
+  EDITCLIENT: "EditClient",
+  EDITSOFTWARE: "EditSoftware",
+  NEWSOFTWARE: "NewSoftware",
+  SOFTWARE: "Software"
 });
 
 export default new Router({
@@ -193,9 +212,25 @@ export default new Router({
           }
         },
         {
+          path: "users/new",
+          name: routeNames.NEWUSER,
+          component: EditUser,
+          meta: {
+            auth: true
+          }
+        },
+        {
           path: "users/:id",
           name: routeNames.USER,
           component: User,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "users/:id/edit",
+          name: routeNames.EDITUSER,
+          component: EditUser,
           meta: {
             auth: true
           }
@@ -217,9 +252,49 @@ export default new Router({
           }
         },
         {
-          path: "Softwares",
-          name: routeNames.SOFTWARES,
-          component: Softwares,
+          path: "teams/new",
+          name: routeNames.NEWTEAM,
+          component: EditTeam,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "teams/:id/edit",
+          name: routeNames.EDITTEAM,
+          component: EditTeam,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "software",
+          name: routeNames.SOFTWARELIST,
+          component: SoftwareList,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "software/:id",
+          name: routeNames.SOFTWARE,
+          component: Software,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "software/:id/edit",
+          name: routeNames.EDITSOFTWARE,
+          component: EditSoftware,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "software/new",
+          name: routeNames.NEWSOFTWARE,
+          component: EditSoftware,
           meta: {
             auth: true
           }
@@ -241,9 +316,49 @@ export default new Router({
           }
         },
         {
+          path: "clients/:id/edit",
+          name: routeNames.EDITCLIENT,
+          component: EditClient,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "clients/new",
+          name: routeNames.NEWCLIENT,
+          component: EditClient,
+          meta: {
+            auth: true
+          }
+        },
+        {
           path: "admincontributions",
           name: routeNames.ADMINCONTRIBUTIONS,
           component: AdminContributions,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "admincontributions/:id",
+          name: routeNames.ADMINCONTRIBUTION,
+          component: AdminContribution,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "admincontributions/:id/edit",
+          name: routeNames.EDITCONTRIBUTION,
+          component: EditContribution,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "admincontributions/new",
+          name: routeNames.NEWCONTRIBUTION,
+          component: EditContribution,
           meta: {
             auth: true
           }

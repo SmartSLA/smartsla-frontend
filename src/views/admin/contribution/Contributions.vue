@@ -35,10 +35,10 @@
           class="contributions-search-statuss"
         ></v-select>
         <div class="contributions-operations">
-          <a href="#" class="contributions-actions">
+          <router-link :to="{ name: 'NewContribution' }" class="contributions-actions">
             <v-icon>add_circle</v-icon>
             <span>{{ $i18n.t("Add contribution") }}</span>
-          </a>
+          </router-link>
           <a href="#" class="contributions-actions">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $i18n.t("Export") }}</span>
@@ -55,7 +55,11 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.software }}</td>
-          <td class="text-xs-center">{{ props.item.name }}</td>
+          <td class="text-xs-center">
+            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }">
+              {{ props.item.name }}
+            </router-link>
+          </td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.deposit }}</td>
           <td class="text-xs-center">{{ props.item.closure }}</td>
@@ -78,13 +82,13 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: "Software", value: "software" },
-        { text: "Name", value: "name" },
-        { text: "Status", value: "status" },
-        { text: "Deposit at", value: "deposit" },
-        { text: "Closure at", value: "closure" },
-        { text: "Time limit", value: "time_limit" },
-        { text: "Updated at", value: "updated" }
+        { text: "Software", value: "software", sortable: false, class: "text-xs-center" },
+        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
+        { text: "Status", value: "status", sortable: false, class: "text-xs-center" },
+        { text: "Deposit at", value: "deposit", sortable: false, class: "text-xs-center" },
+        { text: "Closure at", value: "closure", sortable: false, class: "text-xs-center" },
+        { text: "Time limit", value: "time_limit", sortable: false, class: "text-xs-center" },
+        { text: "Updated at", value: "updated", sortable: false, class: "text-xs-center" }
       ],
       admincontributions
     };
