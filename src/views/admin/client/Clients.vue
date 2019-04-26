@@ -17,7 +17,7 @@
         <div class="clients-operations">
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
-            <router-link :to="{ name: 'Create Client' }">{{ $t("Add client") }}</router-link>
+            <router-link :to="{ name: 'NewClient' }">{{ $t("Add client") }}</router-link>
           </a>
           <a href="#" class="clients-actions">
             <v-icon>arrow_downward</v-icon>
@@ -57,10 +57,10 @@ export default {
       pagination: "10",
       roles: [],
       headers: [
-        { text: "Logo", value: "logo" },
-        { text: "Name", value: "name" },
-        { text: "Contracts", value: "conttracts" },
-        { text: "Access code", value: "access_code" }
+        { text: "Logo", value: "logo", sortable: false, class: "text-xs-center" },
+        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
+        { text: "Contracts", value: "conttracts", sortable: false, class: "text-xs-center" },
+        { text: "Access code", value: "access_code", sortable: false, class: "text-xs-center" }
       ]
     };
   },

@@ -19,12 +19,12 @@
           class="softwares-search-name"
         ></v-text-field>
         <div class="softwares-operations">
-          <a href="#" class="softwares-actions">
+          <router-link :to="{ name: 'NewSoftware' }" class="softwares-actions">
             <v-icon>add_circle</v-icon>
             <span>
               {{ $i18n.t("Add Software") }}
             </span>
-          </a>
+          </router-link>
           <a href="#" class="softwares-actions">
             <v-icon>arrow_downward</v-icon>
             <span>
@@ -43,7 +43,11 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
-          <td class="text-xs-center">{{ props.item.name }}</td>
+          <td class="text-xs-center">
+            <router-link :to="{ name: 'Software' }">
+              {{ props.item.name }}
+            </router-link>
+          </td>
           <td class="text-xs-center">{{ props.item.description }}</td>
           <td class="text-xs-center">{{ props.item.technologies }}</td>
           <td class="text-xs-center">{{ props.item.group }}</td>
@@ -63,11 +67,11 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: "Logo", value: "logo" },
-        { text: "Name", value: "name" },
-        { text: "Description", value: "description" },
-        { text: "Tehcnologies", value: "technologies" },
-        { text: "Group", value: "group" }
+        { text: "Logo", value: "logo", sortable: false, class: "text-xs-center" },
+        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
+        { text: "Description", value: "description", sortable: false, class: "text-xs-center" },
+        { text: "Tehcnologies", value: "technologies", sortable: false, class: "text-xs-center" },
+        { text: "Group", value: "group", sortable: false, class: "text-xs-center" }
       ],
       softwares
     };

@@ -123,17 +123,17 @@
                 <v-divider class="ml-1 mr-1"></v-divider>
                 <v-data-table :items="contract.relatedSoftware" :headers="softwareHeaders" hide-actions>
                   <template v-slot:items="props">
-                    <td class="text-xs-left">
+                    <td class="text-xs-center">
                       <router-link to="#">{{ props.item.name }}</router-link>
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
                     <td class="text-xs-center">{{ props.item.os }}</td>
-                    <td class="text-xs-left">
+                    <td class="text-xs-center">
                       {{ $t("S") }}: {{ props.item.SupportDate.start }}
                       <br />
                       {{ $t("E") }}: {{ props.item.SupportDate.end }}
                     </td>
-                    <td class="text-xs-left">
+                    <td class="text-xs-center">
                       <v-chip color="red" text-color="white" label v-if="props.item.critical">{{ $t("Yes") }}</v-chip>
                       <v-chip label v-else>{{ $t("No") }}</v-chip>
                     </td>

@@ -6,11 +6,22 @@
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="px-1 mt-4 pb-4">
-          <v-card-title primary-title class="px-2">
-            <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ team.name }}</h3>
-            </div>
-          </v-card-title>
+          <v-layout row wrap>
+            <v-flex xs10>
+              <v-card-title primary-title class="px-2">
+                <div>
+                  <h3 class="display-1 font-weight-medium mb-0">{{ team.name }}</h3>
+                </div>
+              </v-card-title>
+            </v-flex>
+            <v-flex xs2>
+              <div class="text-xs-right grey--text pt-3">
+                <v-btn color="primary" fab small dark :to="{ name: 'TeamEdit', params: { id: 15 } }">
+                  <v-icon>edit</v-icon>
+                </v-btn>
+              </div>
+            </v-flex>
+          </v-layout>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap class="pt-4 px-4">
             <v-flex xs6>
@@ -21,9 +32,9 @@
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Contact") }} :</strong>
-                  <router-link :to="{ name: 'Contact', params: { id: team.contact.id } }">{{
-                    team.contact.name
-                  }}</router-link>
+                  <router-link :to="{ name: 'Contact', params: { id: team.contact.id } }">
+                    {{ team.contact.name }}
+                  </router-link>
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Motto") }} :</strong>
@@ -56,9 +67,9 @@
                 <v-flex xs9>
                   <ul>
                     <li v-for="(contract, key) in team.contracts" :key="key">
-                      <router-link :to="{ name: 'Contract', params: { id: contract.id } }">{{
-                        contract.name
-                      }}</router-link>
+                      <router-link :to="{ name: 'Contract', params: { id: contract.id } }">
+                        {{ contract.name }}
+                      </router-link>
                     </li>
                   </ul>
                 </v-flex>
@@ -83,7 +94,8 @@
             </v-flex>
             <v-flex xs12>
               <strong>{{ $t("Link to alert page") }}:</strong>
-              &nbsp;<a :href="team.alertSettings.url" target="_blank">{{ team.alertSettings.urlPage }}</a>
+              &nbsp;
+              <a :href="team.alertSettings.url" target="_blank">{{ team.alertSettings.urlPage }}</a>
             </v-flex>
             <v-flex xs12>
               <strong>{{ $t("Automatic alert system active") }}:</strong>

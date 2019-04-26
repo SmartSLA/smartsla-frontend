@@ -88,7 +88,7 @@ export default {
       return this.$router.push({ name: routeNames.TEAMS });
     },
     softwares() {
-      return this.$router.push({ name: routeNames.SOFTWARES });
+      return this.$router.push({ name: routeNames.SOFTWARELIST });
     },
     admincontributions() {
       return this.$router.push({ name: routeNames.ADMINCONTRIBUTIONS });

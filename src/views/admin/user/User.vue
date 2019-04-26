@@ -6,11 +6,23 @@
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="px-1 mt-4 pb-4">
-          <v-card-title primary-title class="px-4">
-            <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ user.name }}</h3>
-            </div>
-          </v-card-title>
+          <v-layout row wrap>
+            <v-flex xs10>
+              <v-card-title primary-title class="px-4">
+                <div>
+                  <h3 class="display-1 font-weight-medium mb-0">{{ user.name }}</h3>
+                </div>
+              </v-card-title>
+            </v-flex>
+            <v-flex xs2>
+              <div class="text-xs-right grey--text pt-3">
+                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: 15 } }">
+                  <v-icon>edit</v-icon>
+                </v-btn>
+              </div>
+            </v-flex>
+          </v-layout>
+
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap class="pt-4 px-4">
             <v-flex xs6>
