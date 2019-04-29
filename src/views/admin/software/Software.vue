@@ -125,7 +125,7 @@
         </v-card>
       </v-flex>
       <v-flex xs4>
-        <v-card class="px-1 mt-4 pb-4 pl-4">
+        <v-card class="px-1 ml-3 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <h3 class="title">{{ $t("Contractual informations") }}</h3>
           </v-card-title>
