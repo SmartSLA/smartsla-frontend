@@ -116,7 +116,7 @@ export default new Router({
       }
     },
     {
-      path: "/request/:id",
+      path: "/requests/:id",
       name: routeNames.REQUEST,
       component: Request,
       meta: {

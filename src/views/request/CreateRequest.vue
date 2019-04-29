@@ -102,13 +102,13 @@
                       <v-flex xs2></v-flex>
                     </v-layout>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip close>{{ link.link }} : {{ link.request }}</v-chip>
-                      <br />
+                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs10 class="pl-4">
+                    <br />
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
@@ -208,6 +208,8 @@ export default {
         link: this.linkType,
         request: this.linkedRequest
       });
+
+      this.linkType = this.linkedRequest = "";
     }
   },
   created() {

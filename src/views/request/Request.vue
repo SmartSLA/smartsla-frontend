@@ -22,7 +22,7 @@
               <strong class="pt-4">{{ $t("Status") }} :</strong>
             </v-flex>
             <v-flex xs11>
-              <v-stepper non-linear>
+              <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
                   <v-stepper-step step="3" complete color="success">{{ $t("New") }}</v-stepper-step>
 
@@ -58,7 +58,7 @@
             </v-flex>
             <v-flex xs2 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn color="primary" fab small dark :to="{ name: '#', params: { id: 15, section: 'hr' } }">
+                <v-btn color="primary" fab small dark to="#">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -125,7 +125,7 @@
                 <v-flex xs11>
                   <b>{{ $t("Attachments") }}</b>
                   :
-                  <router-link :to="{ name: '#' }">{{ request.attachedFile }}</router-link>
+                  <router-link to="#">{{ request.attachedFile }}</router-link>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -144,7 +144,7 @@
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
                           <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'request', params: { id: link.id } }">#{{ link.id }}</router-link>
+                          <router-link :to="{ name: 'Request', params: { id: link.id } }">#{{ link.id }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -176,7 +176,7 @@
                         <v-card class="ml-4">
                           <v-layout row wrap>
                             <v-flex xs2>
-                              <v-avatar size="60" tile="false">
+                              <v-avatar size="60" :tile="false">
                                 <v-img :src="comment.image"></v-img>
                               </v-avatar>
                             </v-flex>
@@ -184,7 +184,7 @@
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                                <router-link to="#">{{ comment.attachedFile }}</router-link>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -210,7 +210,7 @@
                         <v-card class="ml-4">
                           <v-layout row wrap>
                             <v-flex xs2>
-                              <v-avatar size="60" tile="false">
+                              <v-avatar size="60" :tile="false">
                                 <v-img :src="comment.image"></v-img>
                               </v-avatar>
                             </v-flex>
@@ -218,7 +218,7 @@
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <router-link :to="{ name: '#' }">{{ comment.attachedFile }}</router-link>
+                                <router-link to="#">{{ comment.attachedFile }}</router-link>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -234,13 +234,20 @@
                   </v-expansion-panel>
                   <v-divider></v-divider>
                   <v-form class="comment-form">
-                    <template>
-                      <v-app>
-                        <Editor ref="editor" :outline="true" :preview="true" v-model="text" />
-                      </v-app>
-                    </template>
+                    <v-btn-toggle v-model="selectedEditor">
+                      <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
+                      <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
+                    </v-btn-toggle>
                     <v-input prepend-icon="subject" class="pt-2">
-                      <vue-editor v-model="comment"></vue-editor>
+                      <Editor
+                        ref="editor"
+                        :outline="true"
+                        :preview="true"
+                        v-model="comment"
+                        v-if="selectedEditor == 'markdown'"
+                      />
+                      <vue-editor v-model="comment" v-else></vue-editor>
+                      <br />
                     </v-input>
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
@@ -251,13 +258,18 @@
                           <v-select :items="assigneeList" :label="$t('Assigned to')"></v-select>
                         </v-flex>
                         <v-flex xs3>
-                          <v-checkbox v-model="selected" color="primary" :label="$t('private comment')"></v-checkbox>
+                          <v-checkbox
+                            v-model="privateComment"
+                            color="primary"
+                            :label="$t('private comment')"
+                          ></v-checkbox>
                         </v-flex>
                         <v-flex xs3>
                           <file-upload
                             prepend-icon="attach_file"
                             class="file pt-2"
                             btn-label="Attach file"
+                            url
                             btn-uploading-label="Uploading file"
                           ></file-upload>
                         </v-flex>
@@ -293,30 +305,36 @@
               <v-divider></v-divider>
               {{ $t("Supported") }}
               <v-layout row wrap>
-                <v-flex xs10 class="px-1 pt-0 pb-0">
-                  <v-progress-linear color="error" height="18" value="100" class="mt-0"></v-progress-linear>
+                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                  <v-progress-linear color="error" height="18" value="100" class="mt-0 white--text font-weight-bold"
+                    >8 HO</v-progress-linear
+                  >
                 </v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>1HO</v-flex>
+                <v-flex xs2 px-1 pt-0 pb-0>2 H</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
                   <v-icon class="error--text">close</v-icon>
                 </v-flex>
               </v-layout>
               {{ $t("Bypass") }}
-              <v-layout row wrap class="text-xs-center">
-                <v-flex xs10 class="px-1 pt-0 pb-0">
-                  <v-progress-linear color="success" height="18" value="60" class="mt-0">8HO</v-progress-linear>
+              <v-layout row wrap>
+                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                  <v-progress-linear color="success" height="18" value="40" class="mt-0 white--text font-weight-bold"
+                    >1.75 JO</v-progress-linear
+                  >
                 </v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>1HO</v-flex>
+                <v-flex xs2 px-1 pt-0 pb-0>2 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
                   <v-icon class="success--text">check</v-icon>
                 </v-flex>
               </v-layout>
               {{ $t("Solution") }}
               <v-layout row wrap>
-                <v-flex xs10 class="px-1 pt-0 pb-0">
-                  <v-progress-linear color="success" height="18" value="60" class="mt-0"></v-progress-linear>
+                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                  <v-progress-linear color="success" height="18" value="60" class="mt-0 white--text font-weight-bold"
+                    >2.5 JO</v-progress-linear
+                  >
                 </v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>1HO</v-flex>
+                <v-flex xs2 px-1 pt-0 pb-0>5 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
                   <v-icon class="success--text">check</v-icon>
                 </v-flex>
@@ -327,12 +345,17 @@
             <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">
               {{ $t("interlocutor in charge of the request") }}
             </h4>
-            <v-card class="pt-2">
+            <v-card class="pt-2 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
               <br />
-              <v-avatar size="150">
-                <v-img :src="avatarUrl"></v-img>
-              </v-avatar>
+              <v-layout row wrap>
+                <v-flex xs3></v-flex>
+                <v-flex xs8>
+                  <v-avatar size="150" class="pl-1">
+                    <v-img :src="avatarUrl"></v-img>
+                  </v-avatar>
+                </v-flex>
+              </v-layout>
 
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
@@ -345,14 +368,18 @@
                 {{ request.responsible.email }}
               </v-card-text>
             </v-card>
-            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">
-              {{ $t("Beneficiary") }}
-            </h4>
+            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">{{ $t("Beneficiary") }}</h4>
             <v-card class="pt-2">
               <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
-              <v-avatar size="150" tile="false">
-                <v-img :src="request.beneficiary.image"></v-img>
-              </v-avatar>
+              <v-layout row wrap>
+                <v-flex xs3></v-flex>
+                <v-flex xs8>
+                  <v-avatar size="150" title="false">
+                    <v-img :src="request.beneficiary.image"></v-img>
+                  </v-avatar>
+                </v-flex>
+              </v-layout>
+
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
                 {{ request.beneficiary.contact }}
@@ -438,6 +465,8 @@ export default {
   name: "app",
   data() {
     return {
+      selectedEditor: "wysiwyg",
+      privateComment: "",
       panel: [true, true],
       comments: [],
       request: {},
@@ -462,7 +491,16 @@ export default {
   },
   mounted() {
     this.$http.getTicketById(this.$route.params.id).then(response => (this.request = response.data));
-    this.$refs.editor.focus();
+    //this.$refs.editor.focus();
+
+    var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
+    for (let index = 0; index < progressBars.length; index++) {
+      var element = progressBars[index];
+      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+      newValueRegion[0].innerHTML = value;
+      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+    }
   },
   computed: {
     ...mapGetters({
@@ -483,40 +521,62 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.action-links
+.action-links {
   text-decoration: none;
   color: grey;
-.progress-arrow
+}
+
+.progress-arrow {
   font-size: 3.5em;
   display: block;
-.information
+}
+
+.information {
   padding: 0px;
-.subject-text
+}
+
+.subject-text {
   white-space: pre-line;
-.container
+}
+
+.container {
   max-width: 100% !important;
   padding: 0px;
-.flex.xs8.pr-5
+}
+
+.flex.xs8.pr-5 {
   padding-right: 10px !important;
-.container.grid-list-md .layout .flex
+}
+
+.container.grid-list-md .layout .flex {
   padding: 15px;
-.quillWrapper, .ql-editor
+}
+
+.quillWrapper, .ql-editor {
   width: 100%;
-.arrow-down
+}
+
+.arrow-down {
   transform: rotate(90deg);
   position: absolute;
   left: 45%;
   width: 10%;
-.v-image
-  left: 50%;
-#crumbs
+}
+
+#crumbs {
   text-align: center;
-#crumbs ul
+}
+
+#crumbs ul {
   list-style: none;
   display: inline-table;
-#crumbs ul li
+}
+
+#crumbs ul li {
   display: inline;
-#crumbs ul li a
+}
+
+#crumbs ul li a {
   display: block;
   float: left;
   height: 50px;
@@ -528,7 +588,9 @@ export default {
   font-size: 20px;
   text-decoration: none;
   color: #fff;
-#crumbs ul li a:after
+}
+
+#crumbs ul li a:after {
   content: '';
   border-top: 40px solid transparent;
   border-bottom: 40px solid transparent;
@@ -537,7 +599,9 @@ export default {
   right: -40px;
   top: 0;
   z-index: 1;
-#crumbs ul li a:before
+}
+
+#crumbs ul li a:before {
   content: '';
   border-top: 40px solid transparent;
   border-bottom: 40px solid transparent;
@@ -545,52 +609,92 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-#crumbs ul li:first-child a
+}
+
+#crumbs ul li:first-child a {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-#crumbs ul li:first-child a:before
+}
+
+#crumbs ul li:first-child a:before {
   display: none;
-#crumbs ul li:last-child a
+}
+
+#crumbs ul li:last-child a {
   padding-right: 80px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-#crumbs ul li:last-child a:after
+}
+
+#crumbs ul li:last-child a:after {
   display: none;
-#crumbs ul li a:hover
+}
+
+#crumbs ul li a:hover {
   background: #fa5ba5;
-#crumbs ul li a:hover:after
+}
+
+#crumbs ul li a:hover:after {
   border-left-color: #fa5ba5;
-.v-expansion-panel.theme--light,
-.v-expansion-panel__container
-  border:none !important;
+}
+
+.v-expansion-panel.theme--light, .v-expansion-panel__container {
+  border: none !important;
   box-shadow: none !important;
-.comment-mine
+}
+
+.comment-mine {
   background-color: #eaf6ff !important;
   border-radius: 20px !important;
   padding: 10px !important;
   margin: 10px !important;
   width: 90% !important;
   float: left !important;
-.comment-not-mine
+}
+
+.comment-not-mine {
   background-color: #f5f5f5 !important;
   border-radius: 20px !important;
   padding: 10px !important;
   margin: 10px !important;
   width: 90% !important;
   float: right !important;
-.custom-comment-box
+}
+
+.custom-comment-box {
   width: 100% !important;
-.comment-not-mine div
+}
+
+.comment-not-mine div {
   background-color: #f5f5f5 !important;
-.comment-mine div
+}
+
+.comment-mine div {
   background-color: #eaf6ff !important;
-.v-expansion-panel__body .flex.xs2
+}
+
+.v-expansion-panel__body .flex.xs2 {
   width: auto;
   float: left;
-.v-expansion-panel__body .flex.xs2
+}
+
+.v-expansion-panel__body .flex.xs2 {
   width: 80%;
   float: left;
-.v-expansion-panel__body .v-card__text.grey--text.font-italic
+}
+
+.v-expansion-panel__body .v-card__text.grey--text.font-italic {
   float: right;
   width: 100%;
+}
+
+.noshadow {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.nobottomshadow {
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.2), 0px 0px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+}
 </style>

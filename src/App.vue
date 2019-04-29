@@ -129,6 +129,10 @@ button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light
 button.v-btn.v-btn--flat.v-btn--icon.theme--light
   background-color: #2196f3;
   color: #fff;
+
+th
+  background-color: #ffffff;
+
 tr:nth-child(even)
   background-color: #ffffff;
 tr:nth-child(odd)
