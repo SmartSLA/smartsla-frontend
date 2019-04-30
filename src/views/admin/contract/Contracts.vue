@@ -43,10 +43,10 @@
           class="contracts-search-commercial"
         ></v-select>
         <div class="contracts-operations">
-          <a href="#" class="contracts-actions">
+          <router-link class="contracts-actions" :to="{ name: 'NewContract' }">
             <v-icon>add_circle</v-icon>
             <span>{{ $t("Add Contract") }}</span>
-          </a>
+          </router-link>
           <a href="#" class="contracts-actions">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $t("Export") }}</span>

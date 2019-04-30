@@ -346,12 +346,12 @@
               {{ $t("interlocutor in charge of the request") }}
             </h4>
             <v-card class="pt-2 nobottomshadow">
-              <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
+              <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <br />
               <v-layout row wrap>
                 <v-flex xs3></v-flex>
                 <v-flex xs8>
-                  <v-avatar size="150" class="pl-1">
+                  <v-avatar size="100%" class="pl-1 avatar-width">
                     <v-img :src="avatarUrl"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -370,11 +370,11 @@
             </v-card>
             <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">{{ $t("Beneficiary") }}</h4>
             <v-card class="pt-2">
-              <v-icon large color="blue" class="arrow-down pr-5 pt-2">play_arrow</v-icon>
+              <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <v-layout row wrap>
                 <v-flex xs3></v-flex>
                 <v-flex xs8>
-                  <v-avatar size="150" title="false">
+                  <v-avatar size="150" title="false" class="avatar-width">
                     <v-img :src="request.beneficiary.image"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -696,5 +696,9 @@ export default {
 
 .nobottomshadow {
   box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.2), 0px 0px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+}
+
+.avatar-width {
+  width: 70% !important;
 }
 </style>

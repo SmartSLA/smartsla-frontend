@@ -64,6 +64,7 @@ export const routeNames = Object.freeze({
   EDITCONTRIBUTION: "EditContribution",
   NEWCONTRIBUTION: "NewContribution",
   EDITCONTRACT: "Edit Contract",
+  NEWCONTRACT: "NewContract",
   TEAMS: "Teams",
   USER: "User",
   CLIENT: "Client",
@@ -367,6 +368,14 @@ export default new Router({
           path: "contracts",
           name: routeNames.CONTRACTS,
           component: Contracts,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "contracts/new",
+          name: routeNames.NEWCONTRACT,
+          component: EditContract,
           meta: {
             auth: true
           }
