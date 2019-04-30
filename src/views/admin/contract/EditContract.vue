@@ -37,8 +37,8 @@ export default {
       case "engagements":
         this.editSectionComponent = "edit-contract-engagements";
         break;
-
       default:
+        this.editSectionComponent = "edit-contract-information";
         break;
     }
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");

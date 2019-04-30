@@ -180,7 +180,6 @@ export default {
       techRefs: ["Sacha Méline", "Gilberte Marcellette", "Jérome HERLEDAN", "Maximilienne Priscille", "César Tristan"]
     };
   },
-  created() {},
   methods: {
     parseDate(date) {
       if (!date) return null;
