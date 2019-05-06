@@ -146,9 +146,8 @@ tr:nth-child(odd)
   margin-bottom: 0px;
   margin-left: 0px;
 
-.ql-container {
+.ql-container
   background: #FAFAFA;
-}
 
 form #app .flex.pa-3.xs12.md6
   margin: 0px !important;

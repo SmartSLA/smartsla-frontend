@@ -4,7 +4,7 @@
       >&lt; {{ $t("Return to users list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
@@ -13,55 +13,55 @@
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Type") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-radio-group v-model="user.type" row color="primary">
                 <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                 <v-radio :label="$t('Expert')" value="expert"></v-radio>
               </v-radio-group>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Name") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="user.name"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Position") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="user.title"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Email") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="user.email"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Phone") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="user.phone"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Identifier") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="user.identifier"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Role") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-radio-group v-model="user.role" row color="primary">
                 <v-radio :label="$t('Customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
                 <v-radio :label="$t('Viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
@@ -69,18 +69,18 @@
                 <v-radio :label="$t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
               </v-radio-group>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4" v-if="user.type != 'expert'">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4" v-if="user.type != 'expert'">
               <strong>{{ $t("Client") }} :</strong>
             </v-flex>
-            <v-flex xs6 v-if="user.type != 'expert'">
+            <v-flex xs8 v-if="user.type != 'expert'">
               <v-select :items="clients" item-value="name" item-text="name" v-model="user.client"></v-select>
             </v-flex>
-            <v-flex xs4 v-if="user.type != 'expert'"></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("contracts") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-select
                 :items="contracts"
                 item-value="name"
@@ -89,9 +89,9 @@
                 v-model="user.contracts"
               ></v-select>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs3></v-flex>
-            <v-flex xs8>
+            <v-flex xs1></v-flex>
+            <v-flex xs5></v-flex>
+            <v-flex xs2>
               <v-btn class="success">
                 {{ $t("validate") }}
               </v-btn>
@@ -143,4 +143,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+div.flex.pt-4.xs2 strong
+  word-wrap: break-word;
+</style>
