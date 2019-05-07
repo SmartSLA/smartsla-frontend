@@ -4,7 +4,7 @@
       >&lt; {{ $t("Return to clients list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4">
           <v-card-title primary-title class="px-2">
             <v-layout row wrap>

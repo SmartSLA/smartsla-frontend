@@ -146,4 +146,9 @@ export default {
 <style lang="stylus" scoped>
 div.flex.pt-4.xs2 strong
   word-wrap: break-word;
+.action-links
+  text-decoration: none;
+  color: grey;
+  cursor: pointer;
+
 </style>

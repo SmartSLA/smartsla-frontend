@@ -4,7 +4,7 @@
       >&lt; {{ $t("Return to contributions list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
@@ -15,35 +15,35 @@
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Name") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field v-model="contribution.name"></v-text-field>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Software") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="software"></v-select>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Engineer") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="users"></v-select>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Request Number") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field v-model="contribution.requestNumber"></v-text-field>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Patch") }} :</strong>
             </v-flex>
             <v-flex xs8>
@@ -55,43 +55,43 @@
                 btn-uploading-label="Uploading file"
               ></file-upload>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Contribution Type") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="types"></v-select>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Version") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="version"></v-select>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Patched in version") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="version"></v-select>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Status") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="statusList"></v-select>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Communication link") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field v-model="contribution.link"></v-text-field>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Deposed on") }} :</strong>
             </v-flex>
             <v-flex xs8>
@@ -122,8 +122,8 @@
                 ></v-date-picker>
               </v-menu>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("closed on") }} :</strong>
             </v-flex>
             <v-flex xs8>
@@ -150,25 +150,24 @@
                 <v-date-picker v-model="contribution.endDate" no-title @input="endDateModel = false"></v-date-picker>
               </v-menu>
             </v-flex>
-            <v-flex xs2></v-flex>
+            <v-flex xs1></v-flex>
 
-            <v-flex xs2 class="pt-4">
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Synthesis") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field v-model="contribution.synthesis"></v-text-field>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Description") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-textarea v-model="contribution.synthesis"></v-textarea>
             </v-flex>
-            <v-flex xs2></v-flex>
-
-            <v-flex xs3></v-flex>
-            <v-flex xs8>
+            <v-flex xs1></v-flex>
+            <v-flex xs5></v-flex>
+            <v-flex xs2>
               <v-btn class="success">{{ $t("validate") }}</v-btn>
             </v-flex>
           </v-layout>

@@ -27,7 +27,7 @@
     </v-btn>
     <v-layout row wrap align-center>
       <v-flex xs1></v-flex>
-      <v-flex xs8>
+      <v-flex xs12>
         <form v-if="addCommitment" class="pt-4 px-4 mr-4 grey lighten-3">
           <h3 class="title mb-0">{{ $t("Add commitment") }}</h3>
           <v-layout row wrap align-center>

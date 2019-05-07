@@ -1,11 +1,11 @@
 <template>
-  <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
+  <v-container grid-list-md class="pt-0 pl-0 mx-0 mt-4 mb-4">
     <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
       >&lt; {{ $t("Return to contributions list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
-        <v-card class="px-1 mt-4 pb-4 pl-4">
+        <v-card class="mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <v-layout>
               <v-flex xs6>

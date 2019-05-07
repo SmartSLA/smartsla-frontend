@@ -19,7 +19,7 @@
         <v-card light color="white">
           <v-layout row wrap>
             <v-flex xs1 class="mt-4">
-              <strong class="pt-4">{{ $t("Status") }} :</strong>
+              <strong class="pt-4">{{ $t("Status") }}:</strong>
             </v-flex>
             <v-flex xs11>
               <v-stepper class="noshadow" non-linear>
@@ -66,7 +66,7 @@
           </v-layout>
           <v-divider />
           <v-layout justify-center row fill-height wrap ml-3>
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs3 class="pt-0 pb-1">
               <strong>{{ $t("Type") }} :</strong>
               {{ request.gravity }}
             </v-flex>
@@ -75,11 +75,11 @@
               <strong>{{ $t("severity") }} :</strong>
               {{ request.gravity }}
             </v-flex>
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs5 class="pt-0 pb-1">
               <strong>{{ $t("Created at") }} :</strong>
               {{ request.ticketDate }}
             </v-flex>
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs3 class="pt-0 pb-1">
               <strong>{{ $t("Created by") }} :</strong>
               {{ request.ticketAuthor }}
             </v-flex>
@@ -88,11 +88,11 @@
               <strong>{{ $t("Assigned to") }} :</strong>
               {{ request.responsible.name }}
             </v-flex>
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs5 class="pt-0 pb-1">
               <strong>{{ $t("Last update") }} :</strong>
               {{ request.lastUpdate }}
             </v-flex>
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs3 class="pt-0 pb-1">
               <strong>{{ $t("Software") }} :</strong>
               {{ request.software }}
             </v-flex>
@@ -100,7 +100,7 @@
               <strong>{{ $t("Version") }} :</strong>
               {{ request.softwareVersion }}
             </v-flex>
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs5 class="pt-0 pb-1">
               <strong>{{ $t("OS") }} :</strong>
               {{ request.softwareOs }}
             </v-flex>
@@ -136,10 +136,10 @@
                 </v-flex>
                 <v-flex xs11>
                   <v-layout row wrap>
-                    <v-flex xs2>
-                      <strong>{{ $t("Related requests") }} :</strong>
+                    <v-flex xs4>
+                      <strong>{{ $t("Related requests") }}:</strong>
                     </v-flex>
-                    <v-flex xs7>
+                    <v-flex xs8>
                       <ul>
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
                           <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
@@ -396,7 +396,7 @@
           </v-flex>
           <v-flex xs12>
             <v-card light color="white">
-              <v-card light color="white px-4 pb-2">
+              <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
                   <div>
                     <h3 class="headline mb-0">{{ $t("Community contribution progress") }}</h3>
@@ -404,13 +404,13 @@
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-layout class="mb-1">
-                  <v-flex class="green--text font-weight-bold">
+                  <v-flex xs3 class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Dev") }}</small>
                   </v-flex>
-                  <v-flex>
+                  <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
@@ -418,7 +418,7 @@
                     >
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
-                  <v-flex>
+                  <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
@@ -426,7 +426,7 @@
                     >
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
-                  <v-flex>
+                  <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
@@ -434,7 +434,7 @@
                     >
                     <small>{{ $t("published") }}</small>
                   </v-flex>
-                  <v-flex>
+                  <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"

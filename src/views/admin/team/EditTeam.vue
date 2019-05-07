@@ -4,7 +4,7 @@
       >&lt; {{ $t("Return to teams list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
@@ -13,38 +13,38 @@
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Name") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="team.name"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Motto") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="team.motto"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Email") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-text-field v-model="team.email"></v-text-field>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Manager") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-select :items="expertUsers" item-text="name" item-value="name"></v-select>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Members") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-autocomplete
                 :items="users"
                 item-text="name"
@@ -54,34 +54,34 @@
                 multiple
               ></v-autocomplete>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Alert system active") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-switch v-model="team.alertActive"></v-switch>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Hash") }} :</strong>
             </v-flex>
             <v-flex xs6>
               <v-text-field v-model="team.hash"></v-text-field>
             </v-flex>
-            <v-flex xs4>
+            <v-flex xs3>
               <v-btn class="primary" @click.native="generateHash">{{ $t("Generate Hash") }}</v-btn>
             </v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Test alert system active") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-switch v-model="team.testAlertActive"></v-switch>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Automatic Alert : Starting hour") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-menu
                 ref="menu1"
                 v-model="startTime"
@@ -112,11 +112,11 @@
                 ></v-time-picker>
               </v-menu>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Automatic Alert : Automatic starting hour") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-menu
                 ref="menu2"
                 v-model="endTime"
@@ -147,11 +147,11 @@
                 ></v-time-picker>
               </v-menu>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs2 class="pt-4">
+            <v-flex xs1></v-flex>
+            <v-flex xs3 class="pt-4">
               <strong>{{ $t("Team contracts") }} :</strong>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs8>
               <v-autocomplete
                 :items="team.contracts"
                 item-text="name"
@@ -161,9 +161,9 @@
                 multiple
               ></v-autocomplete>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs8>
+            <v-flex xs1></v-flex>
+            <v-flex xs5></v-flex>
+            <v-flex xs5>
               <v-btn class="success">{{ $t("validate") }}</v-btn>
             </v-flex>
           </v-layout>

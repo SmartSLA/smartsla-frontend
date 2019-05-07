@@ -4,7 +4,7 @@
       >&lt; {{ $t("Return to teams list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4">
           <v-layout row wrap>
             <v-flex xs10>
@@ -60,7 +60,6 @@
                 </v-flex>
               </v-layout>
             </v-flex>
-            <v-flex xs2></v-flex>
             <v-flex xs4>
               <v-layout row wrap>
                 <v-flex xs3>Contracts:</v-flex>
@@ -78,8 +77,7 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex xs4></v-flex>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4">
           <v-card-title primary-title class="px-2">
             <div>
