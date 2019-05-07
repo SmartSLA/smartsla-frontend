@@ -5,7 +5,7 @@
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
-        <v-card class="px-1 mt-4 pb-4 pl-4">
+        <v-card class="px-0 mt-4 pb-4 pl-4">
           <v-card-title primary-title>
             <v-layout row wrap>
               <v-flex xs10>
@@ -29,7 +29,8 @@
             <v-flex xs2>
               <img src="@/assets/angular.png" height="150" />
             </v-flex>
-            <v-flex xs8>
+            <v-flex xs1></v-flex>
+            <v-flex xs9>
               <v-layout row wrap>
                 <v-flex xs12>
                   <strong>{{ $t("Name") }} :</strong> {{ software.name }}
@@ -48,7 +49,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
-                    <v-flex xs2>
+                    <v-flex xs3>
                       <strong>{{ $t("Technologies") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
@@ -62,7 +63,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
-                    <v-flex xs2>
+                    <v-flex xs3>
                       <strong>{{ $t("Versions") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
