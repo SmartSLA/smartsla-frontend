@@ -92,7 +92,7 @@
             <v-flex xs1></v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs2>
-              <v-btn class="success">
+              <v-btn class="success" @click="createUser">
                 {{ $t("validate") }}
               </v-btn>
             </v-flex>
@@ -140,6 +140,21 @@ export default {
     this.$store.dispatch("sidebar/resetAdminMenu");
 
     next();
+  },
+  methods: {
+    createUser() {
+      this.$http
+        .createUser(this.user)
+        .then(response => {
+          if (response.data && response.statusText === "Created") {
+            this.$store.dispatch("ui/displaySnackbar", { message: this.$i18n.t("User created"), color: "success" });
+            this.user = {};
+          }
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", { message: error.response.data.error.details, color: "error" });
+        });
+    }
   }
 };
 </script>
@@ -150,5 +165,4 @@ div.flex.pt-4.xs2 strong
   text-decoration: none;
   color: grey;
   cursor: pointer;
-
 </style>
