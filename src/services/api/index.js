@@ -4,9 +4,10 @@ import store from "@/store";
 // Import your API functions here
 import ticketsFunctions from "./tickets-api";
 import contributionFunctions from "./contributions-api";
-import contractsFunctions from "./contracts-api";
+import contractsFunctions from "./contract-api";
 import softwareFunctions from "./software-api";
 import clientFunctions from "./client-api";
+import userFunctions from "./user-api";
 
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
@@ -20,6 +21,21 @@ function Api(config) {
   Object.assign(instance, contractsFunctions);
   Object.assign(instance, softwareFunctions);
   Object.assign(instance, clientFunctions);
+  Object.assign(instance, userFunctions);
+
+  instance.interceptors.request.use(
+    function(config) {
+      var token = store.state.session.jwtToken;
+      if (config.headers.Authorization && token !== "Unauthorized") {
+        config.headers.Authorization = `Bearer  ${token}`;
+      }
+      return config;
+    },
+    function(error) {
+      return Promise.reject(error);
+    }
+  );
+
   return instance;
 }
 
