@@ -231,7 +231,7 @@ export default {
     };
   },
   mounted() {
-    this.$http.getTickets(this.email).then(response => (this.requests = response.data));
+    this.$http.listUsers(this.email).then(response => {});
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }

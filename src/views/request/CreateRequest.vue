@@ -237,9 +237,7 @@ export default {
           this.count = count;
           this.entries = entries;
         })
-        .catch(err => {
-          console.log(err);
-        })
+        .catch(err => {})
         .finally(() => (this.isLoading = false));
     }
   }
