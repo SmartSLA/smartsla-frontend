@@ -1,14 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $t("Return to software list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Softwares' }"
+    >&lt; {{ $t("Return to software list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Software") : $t("New Software") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit Software") : $t("New Software") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -41,7 +44,7 @@
               <file-upload
                 prepend-icon="attach_file"
                 class="file pt-2"
-                url=""
+                url
                 btn-label="Attach file"
                 btn-uploading-label="Uploading file"
               ></file-upload>
@@ -77,7 +80,7 @@
             <v-flex xs1></v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs5>
-              <v-btn class="success">{{ $t("validate") }}</v-btn>
+              <v-btn class="success" @click="createSoftware">{{ $t("validate") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>
@@ -158,6 +161,27 @@ export default {
     this.$store.dispatch("sidebar/resetAdminMenu");
 
     next();
+  },
+  methods: {
+    createSoftware() {
+      this.$http
+        .createSoftware(this.software)
+        .then(response => {
+          if (response.data && response.status === 201) {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Software created"),
+              color: "success"
+            });
+            this.software = {};
+          }
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    }
   }
 };
 </script>

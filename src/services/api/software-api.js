@@ -1,21 +1,21 @@
 export default {
   getSoftwareById(softwareId) {
-    return this.get(`/ossa/software/${softwareId}`);
+    return this.get(`/ticketing/api/software/${softwareId}`);
   },
 
-  getSoftware() {
-    return this.get(`/ossa/software`);
+  listSoftware() {
+    return this.get(`/ticketing/api/software`);
   },
 
   createSoftware(options) {
-    return this.post(`/ossa/software`, options);
+    return this.post(`/ticketing/api/software`, options);
   },
 
   updateSoftware(softwareId, options) {
-    return this.update(`/ossa/software/${softwareId}`, options);
+    return this.update(`/ticketing/api/software/${softwareId}`, options);
   },
 
   deleteSoftware(softwareId) {
-    return this.delete(`/ossa/software/${softwareId}`);
+    return this.delete(`/ticketing/api/software/${softwareId}`);
   }
 };
