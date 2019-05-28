@@ -64,7 +64,6 @@
 </template>
 
 <script>
-var users = require("@/assets/data/users.json");
 export default {
   data() {
     return {
@@ -82,8 +81,24 @@ export default {
         { text: "E-mail", value: "email", sortable: false, class: "text-xs-center" },
         { text: "Phone", value: "phone", sortable: false, class: "text-xs-center" }
       ],
-      users
+      users: []
     };
+  },
+  mounted() {
+    this.$http
+      .listUsers()
+      .then(response => {
+        let users = response.data.map(user => {
+          if (user.user.accounts) {
+            user.email = user.user.accounts[0].emails[0] || "";
+          }
+          return user;
+        });
+        this.users = users;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", { message: this.$i18n.t("failed to fetch users"), color: "error" });
+      });
   },
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
