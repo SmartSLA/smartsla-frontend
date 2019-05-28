@@ -47,11 +47,10 @@
 </template>
 
 <script>
-var clients = require("@/assets/data/clients.json");
 export default {
   data() {
     return {
-      clients: {},
+      clients: [],
       search: "",
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
@@ -64,8 +63,20 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.$http
+      .listClients()
+      .then(response => {
+        this.clients = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch clients list"),
+          color: "error"
+        });
+      });
+  },
   created() {
-    this.clients = clients;
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
     this.$store.dispatch("sidebar/setActiveAdminMenu", "clients");
   },

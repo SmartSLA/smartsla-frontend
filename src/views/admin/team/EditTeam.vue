@@ -153,18 +153,17 @@
             </v-flex>
             <v-flex xs8>
               <v-autocomplete
-                :items="team.contracts"
+                :items="contracts"
                 item-text="name"
                 item-value="name"
                 background-color="white"
-                :search-input.sync="contract"
                 multiple
               ></v-autocomplete>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs5>
-              <v-btn class="success">{{ $t("validate") }}</v-btn>
+              <v-btn class="success" @click="createTeam">{{ $t("validate") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>
@@ -173,7 +172,6 @@
   </v-container>
 </template>
 <script>
-var hash = require("hash-sum");
 export default {
   data() {
     return {
@@ -193,7 +191,6 @@ export default {
         hash: "",
         name: "",
         email: "",
-        contracts: "",
         client: "",
         role: "",
         identifier: "",
@@ -210,6 +207,26 @@ export default {
   methods: {
     generateHash() {
       this.team.hash = (+new Date()).toString(36);
+    },
+
+    createTeam() {
+      this.$http
+        .createTeam(this.team)
+        .then(response => {
+          if (response.data && response.status === 201) {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Team created"),
+              color: "success"
+            });
+            this.team = {};
+          }
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   },
   created() {

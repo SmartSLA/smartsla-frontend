@@ -58,7 +58,6 @@
 </template>
 
 <script>
-var softwares = require("@/assets/data/softwares.json");
 export default {
   data() {
     return {
@@ -73,8 +72,21 @@ export default {
         { text: "Tehcnologies", value: "technologies", sortable: false, class: "text-xs-center" },
         { text: "Group", value: "group", sortable: false, class: "text-xs-center" }
       ],
-      softwares
+      softwares: []
     };
+  },
+  mounted() {
+    this.$http
+      .listSoftware()
+      .then(response => {
+        this.softwares = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch software list"),
+          color: "error"
+        });
+      });
   },
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");

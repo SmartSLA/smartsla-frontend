@@ -8,6 +8,7 @@ import contractsFunctions from "./contract-api";
 import softwareFunctions from "./software-api";
 import clientFunctions from "./client-api";
 import userFunctions from "./user-api";
+import teamFunctions from "./team-api";
 
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
@@ -22,6 +23,7 @@ function Api(config) {
   Object.assign(instance, softwareFunctions);
   Object.assign(instance, clientFunctions);
   Object.assign(instance, userFunctions);
+  Object.assign(instance, teamFunctions);
 
   instance.interceptors.request.use(
     function(config) {

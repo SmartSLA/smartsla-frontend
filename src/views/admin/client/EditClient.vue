@@ -63,7 +63,7 @@
 
             <v-flex xs5></v-flex>
             <v-flex xs5>
-              <v-btn class="success">{{ $t("validate") }}</v-btn>
+              <v-btn class="success" @click="createClient">{{ $t("validate") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>
@@ -77,6 +77,27 @@ export default {
     return {
       client: {}
     };
+  },
+  methods: {
+    createClient() {
+      this.$http
+        .createClient(this.client)
+        .then(response => {
+          if (response.data && response.status === 201) {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Client created"),
+              color: "success"
+            });
+            this.client = {};
+          }
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    }
   },
   computed: {
     isNew() {
