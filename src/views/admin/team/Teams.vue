@@ -15,10 +15,10 @@
           class="teams-search-name"
         ></v-text-field>
         <div class="teams-operations">
-          <a href="#" class="teams-actions">
+          <router-link :to="{ name: 'NewTeam' }" class="teams-actions">
             <v-icon>add_circle</v-icon>
             <span>Add Team</span>
-          </a>
+          </router-link>
           <a href="#" class="teams-actions">
             <v-icon>arrow_downward</v-icon>
             <span>Export</span>
@@ -56,12 +56,40 @@ export default {
       pagination: "10",
       devise: [],
       headers: [
-        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
-        { text: "Contact", value: "contact", sortable: false, class: "text-xs-center" },
-        { text: "Devise", value: "devise", sortable: false, class: "text-xs-center" }
+        {
+          text: "Name",
+          value: "name",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Contact",
+          value: "contact",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Devise",
+          value: "devise",
+          sortable: false,
+          class: "text-xs-center"
+        }
       ],
-      teams
+      teams: []
     };
+  },
+  mounted() {
+    this.$http
+      .listTeam()
+      .then(response => {
+        this.teams = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch teams"),
+          color: "error"
+        });
+      });
   },
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");

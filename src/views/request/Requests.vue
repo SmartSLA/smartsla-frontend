@@ -231,7 +231,6 @@ export default {
     };
   },
   mounted() {
-    this.$http.listUsers(this.email).then(response => {});
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
