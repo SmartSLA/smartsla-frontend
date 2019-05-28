@@ -146,7 +146,7 @@ export default {
       this.$http
         .createUser(this.user)
         .then(response => {
-          if (response.data && response.statusText === "Created") {
+          if (response.data && response.status === 201) {
             this.$store.dispatch("ui/displaySnackbar", { message: this.$i18n.t("User created"), color: "success" });
             this.user = {};
           }
