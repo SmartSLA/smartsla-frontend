@@ -235,4 +235,8 @@ form #app .v-text-field__slot {
 form #app .v-icon.v-icon--link.material-icons.theme--light {
   padding: 10px;
 }
+
+.v-btn.v-btn--floating.v-btn--router.v-btn--small.theme--dark.primary {
+  box-shadow: 0px 0px;
+}
 </style>
