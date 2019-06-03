@@ -2,14 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="contributions-list">
       <div class="page-title">
-        <span>
-          {{ $i18n.t("Contributions list") }}
-        </span>
+        <span>{{ $i18n.t("Contributions list") }}</span>
       </div>
       <div class="contributions-search">
-        <span class="contributions-search-span">
-          {{ $i18n.t("Search by:") }}
-        </span>
+        <span class="contributions-search-span">{{ $i18n.t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Name')"
@@ -56,9 +52,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.software }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }">
-              {{ props.item.name }}
-            </router-link>
+            <router-link
+              :to="{ name: 'AdminContribution', params: { id: 15 } }"
+            >{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.deposit }}</td>
@@ -82,13 +78,48 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: "Software", value: "software", sortable: false, class: "text-xs-center" },
-        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
-        { text: "Status", value: "status", sortable: false, class: "text-xs-center" },
-        { text: "Deposit at", value: "deposit", sortable: false, class: "text-xs-center" },
-        { text: "Closure at", value: "closure", sortable: false, class: "text-xs-center" },
-        { text: "Time limit", value: "time_limit", sortable: false, class: "text-xs-center" },
-        { text: "Updated at", value: "updated", sortable: false, class: "text-xs-center" }
+        {
+          text: "Software",
+          value: "software",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Name",
+          value: "name",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Status",
+          value: "status",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Deposit at",
+          value: "deposit",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Closure at",
+          value: "closure",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Time limit",
+          value: "time_limit",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Updated at",
+          value: "updated",
+          sortable: false,
+          class: "text-xs-center"
+        }
       ],
       admincontributions
     };
@@ -111,40 +142,69 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.elevation-1 th
+.elevation-1 th {
   color: #000000;
-.page-title
+}
+
+.page-title {
   color: #777777;
   margin-bottom: 20px;
-.contributions-list
+}
+
+.contributions-list {
   width: 100% !important;
-.container.fluid.fill-height
+}
+
+.container.fluid.fill-height {
   padding: 50px;
   width: 100%;
   max-width: 100%;
-.layout.justify-center.align-center > div
+}
+
+.layout.justify-center.align-center > div {
   width: 100%;
-.contributions-search-span
+}
+
+.contributions-search-span {
   padding-top: 15px;
   width: 150px;
   color: #777;
-.contributions-search-name,
-.contributions-search-software,
-.contributions-search-statuss
+}
+
+.contributions-search-name, .contributions-search-software, .contributions-search-statuss {
   width: 300px;
-.contributions-search
+}
+
+.contributions-search {
   display: inline-flex !important;
   margin-bottom: 20px;
-.v-input.contributions-search-name,
-.v-input.contributions-search-software
+}
+
+.v-input.contributions-search-name, .v-input.contributions-search-software {
   margin-right: 20px !important;
-.contributions-operations a
+}
+
+.contributions-operations a {
   margin-left: 20px;
-.contributions-operations
+}
+
+.contributions-operations {
   margin: 10px;
   margin-left: 100px !important;
-.contributions-actions
+  display: flex;
+}
+
+.contributions-actions {
   text-decoration: none !important;
-.contributions-search
+  display: flex;
+}
+
+.contributions-actions span {
+  margin-top: 3.75px;
+  margin-left: 2px;
+}
+
+.contributions-search {
   width: 100%;
+}
 </style>

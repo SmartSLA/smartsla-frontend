@@ -2,14 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="contracts-list">
       <div class="page-title">
-        <span>
-          {{ $i18n.t("Contracts list") }}
-        </span>
+        <span>{{ $i18n.t("Contracts list") }}</span>
       </div>
       <div class="contracts-search">
-        <span class="contracts-search-span">
-          {{ $i18n.t("Search by:") }}
-        </span>
+        <span class="contracts-search-span">{{ $i18n.t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$t('Name')"
@@ -65,16 +61,18 @@
           <td class="text-xs-center">
             <div v-if="props.item.isdisabled == 'yes'">
               <strike>
-                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
-                  {{ props.item.name }}
-                </router-link>
+                <router-link
+                  class="contracts-actions"
+                  :to="{ name: 'Contract', params: { id: props.item.id } }"
+                >{{ props.item.name }}</router-link>
               </strike>
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
-                {{ props.item.name }}
-              </router-link>
+              <router-link
+                class="contracts-actions"
+                :to="{ name: 'Contract', params: { id: props.item.id } }"
+              >{{ props.item.name }}</router-link>
             </div>
           </td>
           <td class="text-xs-center">{{ props.item.begin }}</td>
@@ -95,7 +93,11 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       roles: [],
-      headers: [{ text: "Name", value: "name" }, { text: "Begin", value: "begin" }, { text: "End", value: "end" }],
+      headers: [
+        { text: "Name", value: "name" },
+        { text: "Begin", value: "begin" },
+        { text: "End", value: "end" }
+      ],
       contracts: []
     };
   },
@@ -117,50 +119,81 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.page-title
+.page-title {
   color: #777777;
   margin-bottom: 20px;
-.elevation-1 th
+}
+
+.elevation-1 th {
   color: #000000;
-.contracts-list
+}
+
+.contracts-list {
   width: 100% !important;
-.container.fluid.fill-height
+}
+
+.container.fluid.fill-height {
   padding: 50px;
   width: 100%;
   max-width: 100%;
-.layout.justify-center.align-center > div
+}
+
+.layout.justify-center.align-center > div {
   width: 100%;
-.contracts-search-span
+}
+
+.contracts-search-span {
   padding-top: 15px;
   width: 100px;
   color: #777;
-.contracts-search-name,
-.contracts-search-status,
-.contracts-search-tam,
-.contracts-search-commercial,
-.contracts-search-team
+}
+
+.contracts-search-name, .contracts-search-status, .contracts-search-tam, .contracts-search-commercial, .contracts-search-team {
   width: 200px;
-.contracts-search
+}
+
+.contracts-search {
   display: inline-flex !important;
   margin-bottom: 20px;
-.v-input.contracts-search-name,
-.v-input.v-text-field
+}
+
+.v-input.contracts-search-name, .v-input.v-text-field {
   margin-right: 10px !important;
-.user-mail
+}
+
+.user-mail {
   color: #a20000;
   font-weight: bold !important;
-.contracts-operations a
+}
+
+.contracts-operations a {
   margin-left: 20px;
-.contracts-operations
+}
+
+.contracts-operations {
   margin: 10px;
-.expired-contracts
+  display: flex;
+}
+
+.expired-contracts {
   color: #fa4b4b;
   padding: 2px;
   border: #fa4b4b solid 1px;
   border-radius: 5px;
   margin-left: 5px;
-.contracts-actions
+}
+
+.contracts-actions {
   text-decoration: none !important;
-.contracts-search
+  display: flex;
+}
+
+.contracts-actions span {
+  margin-top: 3.75px;
+  margin-left: 2px;
+}
+
+.contracts-search {
   width: 100% !important;
+}
 </style>

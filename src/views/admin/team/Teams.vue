@@ -163,10 +163,17 @@ export default {
 .teams-operations {
   margin: 10px;
   margin-left: 100px !important;
+  display: flex;
 }
 
 .teams-actions {
   text-decoration: none !important;
+  display: flex;
+}
+
+.teams-actions span {
+  margin-top: 3.75px;
+  margin-left: 2px;
 }
 
 .teams-search {

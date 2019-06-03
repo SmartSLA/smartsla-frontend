@@ -22,7 +22,14 @@
           label="Client"
           class="users-search-client"
         ></v-select>
-        <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"></v-select>
+        <v-select
+          solo
+          :items="roles"
+          v-model="roles"
+          hide-details
+          label="Roles"
+          class="users-search-roles"
+        ></v-select>
         <div class="users-operations">
           <router-link :to="{ name: 'NewUser' }" class="users-actions">
             <v-icon>add_circle</v-icon>
@@ -74,12 +81,42 @@ export default {
       pagination: "10",
       headers: [
         { text: "Title", value: "title", class: "text-xs-center" },
-        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
-        { text: "Role", value: "role", sortable: false, class: "text-xs-center" },
-        { text: "Engineer", value: "engineer", sortable: false, class: "text-xs-center" },
-        { text: "Beneficiary", value: "beneficiary", sortable: false, class: "text-xs-center" },
-        { text: "E-mail", value: "email", sortable: false, class: "text-xs-center" },
-        { text: "Phone", value: "phone", sortable: false, class: "text-xs-center" }
+        {
+          text: "Name",
+          value: "name",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Role",
+          value: "role",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Engineer",
+          value: "engineer",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Beneficiary",
+          value: "beneficiary",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "E-mail",
+          value: "email",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Phone",
+          value: "phone",
+          sortable: false,
+          class: "text-xs-center"
+        }
       ],
       users: []
     };
@@ -97,7 +134,10 @@ export default {
         this.users = users;
       })
       .catch(error => {
-        this.$store.dispatch("ui/displaySnackbar", { message: this.$i18n.t("failed to fetch users"), color: "error" });
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch users"),
+          color: "error"
+        });
       });
   },
   created() {
@@ -172,10 +212,17 @@ export default {
 .users-operations {
   margin: 10px;
   margin-left: 100px !important;
+  display: flex;
 }
 
 .users-actions {
   text-decoration: none !important;
+  display: flex;
+}
+
+.users-actions span {
+  margin-top: 3.75px;
+  margin-left: 2px;
 }
 
 .users-search {
