@@ -6,21 +6,23 @@
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
-          <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
+          <router-link :to="{ path: 'requests' }">
+            <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png">
+          </router-link>
         </v-toolbar-title>
         <v-layout row justify-space-between>
           <v-flex grow>
-            <logged-main-navigation v-if="$auth.check()" />
+            <logged-main-navigation v-if="$auth.check()"/>
           </v-flex>
           <v-flex shrink>
-            <op-user-menu v-if="$auth.check()" />
+            <op-user-menu v-if="$auth.check()"/>
           </v-flex>
         </v-layout>
       </v-toolbar>
       <v-content>
         <v-container fluid fill-height>
           <v-layout justify-center align-center>
-            <router-view />
+            <router-view/>
           </v-layout>
         </v-container>
       </v-content>
@@ -28,7 +30,7 @@
     <div v-else>
       <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
     </div>
-    <op-snackbar />
+    <op-snackbar/>
   </v-app>
 </template>
 
@@ -68,107 +70,169 @@ export default {
 </script>
 
 <style lang="stylus">
-<style lang="stylus" scoped>
-.elevation-1
+<style lang='stylus'scoped>, .elevation-1 {
   width: 100% !important;
   padding-bottom: 50px;
   background-color: #ffffff;
-.v-list.logged-main-navigation.theme--light
+}
+
+.v-list.logged-main-navigation.theme--light {
   background-color: #EEEEEE;
   margin: -20px;
   padding: 0px;
-#header-logo
+}
+
+#header-logo {
   height: 34px;
   width: 138px;
   margin-top: 10px;
-.v-toolbar__title.ml-0.pl-3
+}
+
+.v-toolbar__title.ml-0.pl-3 {
   width: 230px !important;
-.v-toolbar__content
-    background-color: #eee;
-.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light
-  background-color : #2b303c;
+}
+
+.v-toolbar__content {
+  background-color: #eee;
+}
+
+.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light {
+  background-color: #2b303c;
   width: 280px !important;
-.v-list__tile
+}
+
+.v-list__tile {
   font-size: 14px !important;
-.v-navigation-drawer .v-icon,
-.v-toolbar.v-toolbar--clipped.v-toolbar--fixed.theme--light.primary .v-icon
+}
+
+.v-navigation-drawer .v-icon, .v-toolbar.v-toolbar--clipped.v-toolbar--fixed.theme--light.primary .v-icon {
   font-size: 21px !important;
-.v-list__tile__action, .v-list__tile__avatar
+}
+
+.v-list__tile__action, .v-list__tile__avatar {
   min-width: 40px !important;
-.v-list.v-list--subheader.v-list--three-line.theme--light .v-list__tile__content
-  padding-left : 15px !important;
-.v-icon.pl-4
+}
+
+.v-list.v-list--subheader.v-list--three-line.theme--light .v-list__tile__content {
   padding-left: 15px !important;
-.file-upload .input-wrapper
+}
+
+.v-icon.pl-4 {
+  padding-left: 15px !important;
+}
+
+.file-upload .input-wrapper {
   background-color: #eee !important;
   height: 45px !important;
   width: 150px !important;
-.file-upload .input-wrapper .file-upload-label
+}
+
+.file-upload .input-wrapper .file-upload-label {
   color: rgba(0, 0, 0, 0.54) !important;
-.file-upload .input-wrapper .file-upload-label .file-upload-icon
+}
+
+.file-upload .input-wrapper .file-upload-label .file-upload-icon {
   float: left !important;
-  font-size: 30px !important ;
-.file-upload .input-wrapper:hover
+  font-size: 30px !important;
+}
+
+.file-upload .input-wrapper:hover {
   background-color: #eee !important;
-.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text,
-.v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text
+}
+
+.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text, .v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text {
   font-size: 36px !important;
-.v-list--three-line .v-list__tile
+}
+
+.v-list--three-line .v-list__tile {
   margin-top: 10px !important;
-.user-menu-item
+}
+
+.user-menu-item {
   margin-left: 20%;
-th.column.sortable.text-xs-left
+}
+
+th.column.sortable.text-xs-left {
   padding: 6px !important;
   text-align: center !important;
-.active-menu-link a
+}
+
+.active-menu-link a {
   color: white !important;
-.login-bar .v-toolbar__content
+}
+
+.login-bar .v-toolbar__content {
   background-color: #2196f3;
-button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light
+}
+
+button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
   background-color: #2196f3;
-button.v-btn.v-btn--flat.v-btn--icon.theme--light
+}
+
+button.v-btn.v-btn--flat.v-btn--icon.theme--light {
   background-color: #2196f3;
   color: #fff;
+}
 
-th
+th {
   background-color: #ffffff;
+}
 
-tr:nth-child(even)
+tr:nth-child(even) {
   background-color: #ffffff;
-tr:nth-child(odd)
+}
+
+tr:nth-child(odd) {
   background-color: #F9F9F9;
-.layout.justify-center.align-center > div
-    width: 100%;
-#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(7) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer
+}
+
+.layout.justify-center.align-center > div {
+  width: 100%;
+}
+
+#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(7) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
   height: 48px;
   padding-top: 0px;
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
+}
 
-.ql-container
+.ql-container {
   background: #FAFAFA;
+}
 
-form #app .flex.pa-3.xs12.md6
+form #app .flex.pa-3.xs12.md6 {
   margin: 0px !important;
   padding: 0px !important;
   max-width: 100% !important;
   width: 100% !important;
   display: contents !important;
   clear: both !important;
-form #app .layout.row.wrap
+}
+
+form #app .layout.row.wrap {
   display: block !important;
-form #app
+}
+
+form #app {
   border: solid 1Px #ccc;
   min-height: 600px !important;
-form #app textarea
+}
+
+form #app textarea {
   min-height: 300px !important;
   border: solid 1Px #ccc;
   padding: 10px;
   margin: 0px;
-form #app .v-text-field__slot
+}
+
+form #app .v-text-field__slot {
   padding: 0px;
   margin: -5px;
-form #app .v-icon.v-icon--link.material-icons.theme--light
+}
+
+form #app .v-icon.v-icon--link.material-icons.theme--light {
   padding: 10px;
+}
 </style>
