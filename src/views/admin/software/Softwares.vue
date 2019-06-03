@@ -2,14 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="softwares-list">
       <div class="page-title">
-        <span>
-          {{ $i18n.t("Softwares list") }}
-        </span>
+        <span>{{ $i18n.t("Softwares list") }}</span>
       </div>
       <div class="softwares-search">
-        <span class="softwares-search-span">
-          {{ $i18n.t("Search by:") }}
-        </span>
+        <span class="softwares-search-span">{{ $i18n.t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$t('Search')"
@@ -21,15 +17,11 @@
         <div class="softwares-operations">
           <router-link :to="{ name: 'NewSoftware' }" class="softwares-actions">
             <v-icon>add_circle</v-icon>
-            <span>
-              {{ $i18n.t("Add Software") }}
-            </span>
+            <span>{{ $i18n.t("Add Software") }}</span>
           </router-link>
           <a href="#" class="softwares-actions">
             <v-icon>arrow_downward</v-icon>
-            <span>
-              {{ $i18n.t("Export") }}
-            </span>
+            <span>{{ $i18n.t("Export") }}</span>
           </a>
         </div>
       </div>
@@ -44,9 +36,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Software', params: { id: 15 } }">
-              {{ props.item.name }}
-            </router-link>
+            <router-link :to="{ name: 'Software', params: { id: 15 } }">{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.description }}</td>
           <td class="text-xs-center">{{ props.item.technologies }}</td>
@@ -66,11 +56,36 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: "Logo", value: "logo", sortable: false, class: "text-xs-center" },
-        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
-        { text: "Description", value: "description", sortable: false, class: "text-xs-center" },
-        { text: "Tehcnologies", value: "technologies", sortable: false, class: "text-xs-center" },
-        { text: "Group", value: "group", sortable: false, class: "text-xs-center" }
+        {
+          text: "Logo",
+          value: "logo",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Name",
+          value: "name",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Description",
+          value: "description",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Tehcnologies",
+          value: "technologies",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Group",
+          value: "group",
+          sortable: false,
+          class: "text-xs-center"
+        }
       ],
       softwares: []
     };
@@ -106,42 +121,74 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.page-title
+.page-title {
   color: #777777;
   margin-bottom: 20px;
-.elevation-1 th
+}
+
+.elevation-1 th {
   color: #000000;
-.softwares-list
+}
+
+.softwares-list {
   width: 100% !important;
-.container.fluid.fill-height
+}
+
+.container.fluid.fill-height {
   padding: 50px;
   width: 100%;
   max-width: 100%;
-.layout.justify-center.align-center > div
+}
+
+.layout.justify-center.align-center > div {
   width: 100%;
-.softwares-search-span
+}
+
+.softwares-search-span {
   padding-top: 15px;
   width: 150px;
   color: #777;
-.softwares-search-name,
-.softwares-search-contact
+}
+
+.softwares-search-name, .softwares-search-contact {
   width: 300px;
-.softwares-search
+}
+
+.softwares-search {
   display: inline-flex !important;
   margin-bottom: 20px;
-.v-input.softwares-search-name,
-.v-input.softwares-search-contact
+}
+
+.v-input.softwares-search-name, .v-input.softwares-search-contact {
   margin-right: 20px !important;
-.user-mail
+}
+
+.user-mail {
   color: #2196f3 !important;
   font-weight: bold !important;
-.softwares-operations a
+}
+
+.softwares-operations a {
   margin-left: 20px;
-.softwares-operations
+}
+
+.softwares-operations {
   margin: 10px;
   margin-left: 100px !important;
-.softwares-actions
+  display: flex;
+}
+
+.softwares-actions {
   text-decoration: none !important;
-.softwares-search
+  display: flex;
+}
+
+.softwares-actions span {
+  margin-top: 3.75px;
+  margin-left: 2px;
+}
+
+.softwares-search {
   width: 100% !important;
+}
 </style>

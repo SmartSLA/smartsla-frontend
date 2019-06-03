@@ -36,7 +36,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Client', params: { id: props.item.id } }">{{ props.item.name }}</router-link>
+            <router-link
+              :to="{ name: 'Client', params: { id: props.item.id } }"
+            >{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.contracts }}</td>
           <td class="text-xs-center">{{ props.item.access_code }}</td>
@@ -56,10 +58,30 @@ export default {
       pagination: "10",
       roles: [],
       headers: [
-        { text: "Logo", value: "logo", sortable: false, class: "text-xs-center" },
-        { text: "Name", value: "name", sortable: false, class: "text-xs-center" },
-        { text: "Contracts", value: "conttracts", sortable: false, class: "text-xs-center" },
-        { text: "Access code", value: "access_code", sortable: false, class: "text-xs-center" }
+        {
+          text: "Logo",
+          value: "logo",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Name",
+          value: "name",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Contracts",
+          value: "conttracts",
+          sortable: false,
+          class: "text-xs-center"
+        },
+        {
+          text: "Access code",
+          value: "access_code",
+          sortable: false,
+          class: "text-xs-center"
+        }
       ]
     };
   },
@@ -148,10 +170,17 @@ export default {
 .clients-operations {
   margin: 10px;
   margin-left: 100px !important;
+  display: flex;
 }
 
 .clients-actions {
   text-decoration: none !important;
+  display: flex;
+}
+
+.clients-actions span {
+  margin-top: 3.75px;
+  margin-left: 2px;
 }
 
 .clients-search {
