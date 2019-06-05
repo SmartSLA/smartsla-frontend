@@ -61,18 +61,16 @@
           <td class="text-xs-center">
             <div v-if="props.item.isdisabled == 'yes'">
               <strike>
-                <router-link
-                  class="contracts-actions"
-                  :to="{ name: 'Contract', params: { id: props.item.id } }"
-                >{{ props.item.name }}</router-link>
+                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">{{
+                  props.item.name
+                }}</router-link>
               </strike>
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link
-                class="contracts-actions"
-                :to="{ name: 'Contract', params: { id: props.item.id } }"
-              >{{ props.item.name }}</router-link>
+              <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">{{
+                props.item.name
+              }}</router-link>
             </div>
           </td>
           <td class="text-xs-center">{{ props.item.begin }}</td>
@@ -93,11 +91,7 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       roles: [],
-      headers: [
-        { text: "Name", value: "name" },
-        { text: "Begin", value: "begin" },
-        { text: "End", value: "end" }
-      ],
+      headers: [{ text: "Name", value: "name" }, { text: "Begin", value: "begin" }, { text: "End", value: "end" }],
       contracts: []
     };
   },

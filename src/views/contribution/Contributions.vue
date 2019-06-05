@@ -84,7 +84,7 @@
                 </v-flex>
                 <v-flex xs11>
                   <b>{{ $t("binary link of the software integrating the patch") }}</b> :
-                  <br />
+                  <br>
                   <a class="pr-2">{{ contribution.softwareLink }}</a>
                 </v-flex>
               </v-layout>
@@ -96,7 +96,7 @@
                 </v-flex>
                 <v-flex xs11>
                   <b>{{ $t("exchanges with communities about the contribution") }}</b> :
-                  <br />
+                  <br>
                   <a class="pr-2" :href="contribution.communityPatchLink">{{ $t("see here") }}</a>
                 </v-flex>
               </v-layout>
@@ -110,9 +110,9 @@
             <v-card light color="white" class="pb-3">
               <v-card-title primary-title class="px-4 text-capitalize">
                 <div>
-                  <h3 class="headline mb-0">
-                    {{ $t("otherSoftwareContributions.message", { software: contribution.software }) }}
-                  </h3>
+                  <h3
+                    class="headline mb-0"
+                  >{{ $t("otherSoftwareContributions.message", { software: contribution.software }) }}</h3>
                 </div>
               </v-card-title>
               <v-divider class="mx-4"></v-divider>
@@ -147,25 +147,25 @@
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Dev") }}</small>
-                    <br />
+                    <br>
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Reversed") }}</small>
-                    <br />
+                    <br>
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("Integrated") }}</small>
-                    <br />
+                    <br>
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
                     <small>{{ $t("published") }}</small>
-                    <br />
+                    <br>
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="font-weight-bold grey--text">
@@ -194,8 +194,13 @@ export default {
   },
   created() {
     this.latestContributions = contributions;
-    this.$store.dispatch("sidebar/setSidebarComponent", "contributions-side-bar");
-    this.currentContribution = this.$store.getters["sidebar/getActiveContribution"];
+    this.$store.dispatch(
+      "sidebar/setSidebarComponent",
+      "contributions-side-bar"
+    );
+    this.currentContribution = this.$store.getters[
+      "sidebar/getActiveContribution"
+    ];
   },
   mounted() {
     this.$store.watch(
@@ -208,7 +213,9 @@ export default {
   watch: {
     currentContribution: function(value) {
       this.contribution =
-        this.latestContributions.filter(contribution => contribution.contributionId == value).shift() || {};
+        this.latestContributions
+          .filter(contribution => contribution.contributionId == value)
+          .shift() || {};
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -219,23 +226,76 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.action-links
+.action-links {
   text-decoration: none;
   color: grey;
-.progress-arrow
+}
+
+.progress-arrow {
   font-size: 3.5em;
   display: block;
-.information
+}
+
+.information {
   padding: 0px;
-.subject-text
+}
+
+.subject-text {
   white-space: pre-line;
-.related-contributions-list
+}
+
+.related-contributions-list {
   height: 35px !important;
-.container
+}
+
+.container {
   max-width: 100% !important;
   padding: 0px;
-.flex.xs8.pr-5
+}
+
+.flex.xs8.pr-5 {
   padding-right: 10px !important;
-.container.grid-list-md .layout .flex
+}
+
+.container.grid-list-md .layout .flex {
   padding: 15px;
+}
+
+.grid-list-md > div:nth-child(1) {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.xs7 {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 24px !important;
+}
+
+div.wrap:nth-child(2) > div:nth-child(2) {
+  padding-left: 26px !important;
+  padding-right: 0px !important;
+  padding-top: 20px !important;
+  padding-bottom: 24px !important;
+}
+
+div.wrap:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 24px !important;
+}
+
+div.xs12:nth-child(2) {
+  padding-top: 2px !important;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+  padding-bottom: 24px !important;
+}
+
+div.wrap:nth-child(2), div.wrap:nth-child(2) > div:nth-child(2) > div:nth-child(1) {
+  margin: 0px !important;
+}
 </style>

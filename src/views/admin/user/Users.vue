@@ -211,7 +211,7 @@ export default {
 
 .users-operations {
   margin: 10px;
-  margin-left: 100px !important;
+  margin-left: 50px !important;
   display: flex;
 }
 

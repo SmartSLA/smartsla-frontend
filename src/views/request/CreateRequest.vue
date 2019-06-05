@@ -12,7 +12,12 @@
               <v-form>
                 <v-layout wrap row>
                   <v-flex xs6>
-                    <v-text-field prepend-icon="warning" name="Title" :label="$t('Title')" type="text"></v-text-field>
+                    <v-text-field
+                      prepend-icon="create"
+                      name="Title"
+                      :label="$t('Title')"
+                      type="text"
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs8>
@@ -93,7 +98,11 @@
                           class="pt-0"
                         >
                           <template v-slot:append-outer>
-                            <v-btn solo class="ml-0 white black--text mt-0 full-height" @click.native="addRelated">
+                            <v-btn
+                              solo
+                              class="ml-0 white black--text mt-0 full-height"
+                              @click.native="addRelated"
+                            >
                               <v-icon dark>add</v-icon>
                             </v-btn>
                           </template>
@@ -102,13 +111,16 @@
                       <v-flex xs2></v-flex>
                     </v-layout>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
+                      <v-chip
+                        v-model="linkedRequests[key]"
+                        close
+                      >{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs10 class="pl-4">
-                    <br />
+                    <br>
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
@@ -127,7 +139,11 @@
               <v-layout>
                 <v-flex xs6 text-xs-right align-end>
                   <v-spacer></v-spacer>
-                  <v-btn :disabled="submitRequest" :loading="submitRequest" @click="submit">{{ $t("Submit") }}</v-btn>
+                  <v-btn
+                    :disabled="submitRequest"
+                    :loading="submitRequest"
+                    @click="submit"
+                  >{{ $t("Submit") }}</v-btn>
                 </v-flex>
               </v-layout>
             </v-card-actions>
@@ -149,7 +165,15 @@ export default {
     return {
       linkedRequest: "",
       linkType: "",
-      linkTypes: ["lié à", "duplique", "dupliqué par", "bloque", "bloqué par", "précède", "suit"],
+      linkTypes: [
+        "lié à",
+        "duplique",
+        "dupliqué par",
+        "bloque",
+        "bloqué par",
+        "précède",
+        "suit"
+      ],
       linkedRequests: [],
       description: "",
       url: "http://your-post.url",
@@ -184,7 +208,14 @@ export default {
       ],
       osList: ["Linux", "Windows", "Mac OS"],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"]
+      relatedRequests: [
+        "#1 issue1",
+        "#3 issue3",
+        "#18 issue18",
+        "#41 issue41",
+        "#35 issue35",
+        "#70 issue70"
+      ]
     };
   },
   components: {
@@ -284,8 +315,6 @@ export default {
   padding: 10px;
 }
 
-
-
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
   background-color: #2196f3;
   color: #fff;
@@ -328,5 +357,31 @@ export default {
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
+}
+
+.container.fluid.fill-height {
+  margin: 0px;
+  padding: 0px !important;
+}
+
+div.container:nth-child(2) {
+  padding-top: 10px !important;
+}
+
+div.container:nth-child(2) {
+  padding-right: 0px !important;
+}
+
+main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+  padding-bottom: 4px;
+}
+
+main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+  display: inline-flex;
+}
+
+main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) {
+  margin-top: 2px;
+  margin-left: 2px;
 }
 </style>
