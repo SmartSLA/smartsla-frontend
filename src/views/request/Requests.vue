@@ -91,9 +91,11 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">{{
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
+              {{
               props.item.ticket_number
-            }}</router-link>
+              }}
+            </router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#5bc0de">
@@ -124,9 +126,11 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">
-                  {{ props.item.software }}
-                </span>
+                <span
+                  v-if="props.item.software == 'LibreOffice'"
+                  class="major-criticality"
+                  v-on="on"
+                >{{ props.item.software }}</span>
                 <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
@@ -146,15 +150,24 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="error" height="20" value="30">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
-            <v-progress-linear v-if="props.item.conf.color == 'warning'" color="warning" height="20" value="50">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
-            <v-progress-linear v-if="props.item.conf.color == 'info'" color="info" height="20" value="80">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
+            <v-progress-linear
+              v-if="props.item.conf.color == 'error'"
+              color="error"
+              height="20"
+              value="30"
+            >{{ props.item.remaining_time }}</v-progress-linear>
+            <v-progress-linear
+              v-if="props.item.conf.color == 'warning'"
+              color="warning"
+              height="20"
+              value="50"
+            >{{ props.item.remaining_time }}</v-progress-linear>
+            <v-progress-linear
+              v-if="props.item.conf.color == 'info'"
+              color="info"
+              height="20"
+              value="80"
+            >{{ props.item.remaining_time }}</v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -256,7 +269,9 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.teamsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.teamsFilter);
+        items = items.filter(
+          item => item.team.toLowerCase() == this.teamsFilter
+        );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
@@ -283,78 +298,147 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.view-request
+.view-request {
   color: #ffffff;
-.page-title
+}
+
+.page-title {
   color: #777777;
   margin-bottom: 20px;
-.elevation-1 th
+}
+
+.elevation-1 th {
   color: #000000;
-.requests-list
+}
+
+.requests-list {
   width: 100%;
-.v-btn-toggle .v-btn.v-btn--active
+}
+
+.v-btn-toggle .v-btn.v-btn--active {
   background-color: #2196f3;
   color: #fff;
-.v-item-group.transparent.theme--light.v-btn-toggle
+}
+
+.v-item-group.transparent.theme--light.v-btn-toggle {
   margin-top: 10px;
-.v-input.pa-0.v-text-field.v-select.v-select--is-menu-active.v-autocomplete.v-input--is-focused.primary--text,
-.v-input.pa-0.v-text-field.v-select
+}
+
+.v-input.pa-0.v-text-field.v-select.v-select--is-menu-active.v-autocomplete.v-input--is-focused.primary--text, .v-input.pa-0.v-text-field.v-select {
   width: 200px !important;
-.tickets-search
+}
+
+.tickets-search {
   display: inline-flex;
   margin-bottom: 20px;
-.v-item-group.transparent.theme--light.v-btn-toggle.v-btn-toggle--only-child.v-btn-toggle--selected
+}
+
+.v-item-group.transparent.theme--light.v-btn-toggle.v-btn-toggle--only-child.v-btn-toggle--selected {
   height: 48px;
-.v-btn-toggle .v-btn
+}
+
+.v-btn-toggle .v-btn {
   height: 48px;
-.v-text-field
+}
+
+.v-text-field {
   margin-top: 10px;
-.mobile
+}
+
+.mobile {
   color: #333;
-.flex-content
+}
+
+.flex-content {
   padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-.flex-item
+}
+
+.flex-item {
   padding: 5px;
   width: 50%;
   height: 40px;
   font-weight: bold;
-td
+}
+
+td {
   margin: 2px !important;
   padding: 2px !important;
   text-align: center;
-th.column.sortable.text-xs-left
+}
+
+th.column.sortable.text-xs-left {
   padding: 2px !important;
   text-align: center !important;
-.scoped-requests-search
+}
+
+.scoped-requests-search {
   padding-top: 10px !important;
-div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placeholder
-> div
-> div
-> div.v-input__append-inner
-> div,
-div.v-input.scoped-requests-searchv-text-field--enclosed.v-select
+}
+
+div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placeholder, > div, > div, > div.v-input__append-inner, > div, div.v-input.scoped-requests-searchv-text-field--enclosed.v-select {
   max-width: 250px;
-.major-criticality
+}
+
+.major-criticality {
   background-color: #d9534f;
   color: #ffffff;
   font-weight: bold;
   padding: 2px;
   border-radius: 5px;
-.action-links
+}
+
+.action-links {
   text-decoration: none;
   color: grey;
-.requests-filter-add
+}
+
+.requests-filter-add {
   margin-top: 10px;
   height: 48px;
   margin-left: 0px;
-.requests-filter-label
+}
+
+.requests-filter-label {
   padding-top: 25px;
   color: #777;
-.tickets-search
+}
+
+.tickets-search {
   width: 100% !important;
+}
+
+.v-card__text {
+  padding-left: 0px;
+  padding-bottom: 24px;
+  padding-right: 0px;
+  padding-top: 0px;
+}
+
+.v-card__text {
+  padding: 0px;
+  width: 100%;
+}
+
+.tickets-search {
+  margin-bottom: 0px;
+  padding-bottom: 24px;
+}
+
+span.v-chip:nth-child(3), span.v-chip:nth-child(4) {
+  padding-bottom: 0px;
+  margin-bottom: 24px;
+}
+
+.v-card__text {
+  padding-bottom: 24px;
+}
+
+div.v-input:nth-child(14) {
+  width: 320px;
+}
 </style>

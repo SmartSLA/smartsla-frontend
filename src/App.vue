@@ -239,4 +239,12 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .v-btn.v-btn--floating.v-btn--router.v-btn--small.theme--dark.primary {
   box-shadow: 0px 0px;
 }
+
+.fluid {
+  padding-right: 44px !important;
+}
+
+.v-card__actions {
+  padding-bottom: 24px !important;
+}
 </style>
