@@ -3,15 +3,15 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">format_line_spacing</v-icon>
-        {{ $t("CONTRIBUTIONS") }}
+        <span>{{ $t("CONTRIBUTIONS") }}</span>
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET (CSV)") }}
+        <span>{{ $t("EXPORT SHEET (CSV)") }}</span>
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
+        <span>{{ $t("PRINT SHEET") }}</span>
       </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>

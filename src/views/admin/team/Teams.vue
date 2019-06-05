@@ -111,7 +111,7 @@ export default {
 <style lang="stylus" scoped>
 .page-title {
   color: #777777;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .elevation-1 th {
@@ -144,7 +144,7 @@ export default {
 
 .teams-search {
   display: inline-flex !important;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .v-input.teams-search-name, .v-input.teams-search-contact {

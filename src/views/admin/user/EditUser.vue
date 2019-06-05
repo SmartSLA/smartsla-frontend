@@ -1,14 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Users' }"
-      >&lt; {{ $t("Return to users list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Users' }"
+    >&lt; {{ $t("Return to users list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -92,9 +95,7 @@
             <v-flex xs1></v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs2>
-              <v-btn class="success" @click="createUser">
-                {{ $t("validate") }}
-              </v-btn>
+              <v-btn class="success" @click="createUser">{{ $t("validate") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>
@@ -147,22 +148,48 @@ export default {
         .createUser(this.user)
         .then(response => {
           if (response.data && response.status === 201) {
-            this.$store.dispatch("ui/displaySnackbar", { message: this.$i18n.t("User created"), color: "success" });
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("User created"),
+              color: "success"
+            });
             this.user = {};
           }
         })
         .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", { message: error.response.data.error.details, color: "error" });
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
         });
     }
   }
 };
 </script>
 <style lang="stylus" scoped>
-div.flex.pt-4.xs2 strong
+div.flex.pt-4.xs2 strong {
   word-wrap: break-word;
-.action-links
+}
+
+.action-links {
   text-decoration: none;
   color: grey;
   cursor: pointer;
+}
+
+.pt-0 {
+  padding-right: 0px;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  margin-top: 0px !important;
+}
+
+@media only screen and (min-width: 1264px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: #2196f3 !important;
+}
 </style>
