@@ -1,14 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Teams' }"
-      >&lt; {{ $t("Return to teams list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Teams' }"
+    >&lt; {{ $t("Return to teams list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Team") : $t("New Team") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit Team") : $t("New Team") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -253,5 +256,20 @@ export default {
   text-decoration: none;
   color: grey;
   cursor: pointer;
+}
+
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: #2196f3 !important;
+}
+
+.container {
+  max-width: 100%;
+}
+
+.pt-0 {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  padding-right: 0px;
+  margin-top: 0px !important;
 }
 </style>

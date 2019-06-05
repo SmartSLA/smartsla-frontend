@@ -3,11 +3,11 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
-        {{ $i18n.t("Requests list (TICKETS)") }}
+        <span>{{ $i18n.t("Requests list (TICKETS)") }}</span>
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $i18n.t("EXPORT SHEET") }}
+        <span>{{ $i18n.t("EXPORT SHEET") }}</span>
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
@@ -440,5 +440,13 @@ span.v-chip:nth-child(3), span.v-chip:nth-child(4) {
 
 div.v-input:nth-child(14) {
   width: 320px;
+}
+
+.text-lg-left {
+  display: flex;
+}
+
+.text-lg-left > span:nth-child(2) {
+  margin-top: 2px;
 }
 </style>
