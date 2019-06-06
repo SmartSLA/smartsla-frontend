@@ -1,8 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $t("Return to software list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Softwares' }"
+    >&lt; {{ $t("Return to software list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="px-0 mt-4 pb-4 pl-4">
@@ -17,7 +18,13 @@
               </v-flex>
               <v-flex xs2>
                 <div class="text-xs-right grey--text pt-3">
-                  <v-btn color="primary" fab small dark :to="{ name: 'EditSoftware', params: { id: 15 } }">
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'EditSoftware', params: { id: 15 } }"
+                  >
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -27,25 +34,30 @@
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
             <v-flex xs2>
-              <img src="@/assets/angular.png" height="150" />
+              <img src="@/assets/angular.png" height="150">
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs9>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <strong>{{ $t("Name") }} :</strong> {{ software.name }}
+                  <strong>{{ $t("Name") }} :</strong>
+                  {{ software.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Summary") }} :</strong> {{ software.summary }}
+                  <strong>{{ $t("Summary") }} :</strong>
+                  {{ software.summary }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Description") }} :</strong> {{ software.description }}
+                  <strong>{{ $t("Description") }} :</strong>
+                  {{ software.description }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Licence") }} :</strong> {{ software.licence }}
+                  <strong>{{ $t("Licence") }} :</strong>
+                  {{ software.licence }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Private") }} :</strong> {{ software.private ? $t("Yes") : $t("No") }}
+                  <strong>{{ $t("Private") }} :</strong>
+                  {{ software.private ? $t("Yes") : $t("No") }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
@@ -54,9 +66,10 @@
                     </v-flex>
                     <v-flex xs8>
                       <ul>
-                        <li v-for="(techno, index) in software.technologies" :key="index">
-                          {{ techno }}
-                        </li>
+                        <li
+                          v-for="(techno, index) in software.technologies"
+                          :key="index"
+                        >{{ techno }}</li>
                       </ul>
                     </v-flex>
                   </v-layout>
@@ -69,16 +82,15 @@
                     <v-flex xs8>
                       <ul>
                         <li v-for="(version, index) in software.versions" :key="index">
-                          <router-link to="#">
-                            {{ version }}
-                          </router-link>
+                          <router-link to="#">{{ version }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
                   </v-layout>
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Groups") }} :</strong> {{ software.group }}
+                  <strong>{{ $t("Groups") }} :</strong>
+                  {{ software.group }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
@@ -88,9 +100,7 @@
                     <v-flex xs8>
                       <ul>
                         <li v-for="(link, index) in software.links" :key="index">
-                          <router-link to="#">
-                            {{ link }}
-                          </router-link>
+                          <router-link to="#">{{ link }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -108,18 +118,18 @@
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
 
-          <v-data-table :items="software.contributions" :headers="contributionsHeaders" hide-actions>
+          <v-data-table
+            :items="software.contributions"
+            :headers="contributionsHeaders"
+            hide-actions
+          >
             <template v-slot:items="props">
               <td class="text-xs-center">{{ props.item.date }}</td>
               <td class="text-xs-center text-capitalize">
-                <router-link to="#">
-                  {{ props.item.version }}
-                </router-link>
+                <router-link to="#">{{ props.item.version }}</router-link>
               </td>
               <td class="text-xs-center text-capitalize">
-                <router-link to="#">
-                  {{ props.item.summary }}
-                </router-link>
+                <router-link to="#">{{ props.item.summary }}</router-link>
               </td>
             </template>
           </v-data-table>
@@ -164,7 +174,14 @@ export default {
     return {
       software: {
         name: "Angular",
-        contracts: ["contract1", "contract2", "contract3", "contract4", "contract5", "contract6"],
+        contracts: [
+          "contract1",
+          "contract2",
+          "contract3",
+          "contract4",
+          "contract5",
+          "contract6"
+        ],
         requests: ["request1", "request2", "request3", "request4"],
         summary:
           "Angular is a TypeScript-based open-source web application framework led by the Angular Team at Google and by a community of individuals and corporations. Angular is a complete rewrite from the same team that built AngularJS.",
@@ -219,5 +236,34 @@ export default {
   text-decoration: none;
   color: grey;
   cursor: pointer;
+}
+
+.pt-0 {
+  margin: 0px !important;
+  padding-right: 0px;
+}
+
+div.xs8:nth-child(1) {
+  padding: 0px;
+}
+
+div.xs8:nth-child(1) > div:nth-child(1) {
+  padding-left: 0px !important;
+}
+
+div.px-1:nth-child(2) {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+div.xs4:nth-child(2) {
+  padding: 0px;
+}
+
+div.px-1:nth-child(1) {
+  margin-left: 24px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  margin-top: 24px;
 }
 </style>

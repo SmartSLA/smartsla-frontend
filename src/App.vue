@@ -247,4 +247,8 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .v-card__actions {
   padding-bottom: 24px !important;
 }
+
+.container {
+  max-width: 100% !important;
+}
 </style>

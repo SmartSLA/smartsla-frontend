@@ -1,16 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
-      >&lt; {{ $t("Return to contributions list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'AdminContributions' }"
+    >&lt; {{ $t("Return to contributions list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">
-                {{ isNew ? $t("Edit Contribution") : $t("New Contribution") }}
-              </h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit Contribution") : $t("New Contribution") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -147,7 +148,11 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="contribution.endDate" no-title @input="endDateModel = false"></v-date-picker>
+                <v-date-picker
+                  v-model="contribution.endDate"
+                  no-title
+                  @input="endDateModel = false"
+                ></v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs1></v-flex>
@@ -221,5 +226,14 @@ export default {
   text-decoration: none;
   color: grey;
   cursor: pointer;
+}
+
+.pt-0 {
+  margin: 0px !important;
+  padding-right: 0px;
+}
+
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: #2196f3 !important;
 }
 </style>

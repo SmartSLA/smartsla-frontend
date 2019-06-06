@@ -72,4 +72,8 @@ export default {
 .container {
   max-width: 100%;
 }
+
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: #2196f3 !important;
+}
 </style>

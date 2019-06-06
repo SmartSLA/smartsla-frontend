@@ -1,8 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-0 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
-      >&lt; {{ $t("Return to contributions list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'AdminContributions' }"
+    >&lt; {{ $t("Return to contributions list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="mt-4 pb-4 pl-4">
@@ -15,7 +16,13 @@
               </v-flex>
               <v-flex xs6>
                 <div class="text-xs-right grey--text">
-                  <v-btn color="primary" fab small dark :to="{ name: 'EditContribution', params: { id: 15 } }">
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'EditContribution', params: { id: 15 } }"
+                  >
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -37,7 +44,7 @@
       <v-flex xs4>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
-            <img src="@/assets/drupal_logo-blue.png" height="100" />
+            <img src="@/assets/drupal_logo-blue.png" height="100">
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
@@ -55,9 +62,11 @@
               <strong>{{ $t("Request Number") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }">{{
+              <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }">
+                {{
                 contribution.requestNumber
-              }}</router-link>
+                }}
+              </router-link>
             </v-flex>
             <v-flex xs4>
               <strong>{{ $t("Contribution type") }}:</strong>
@@ -136,5 +145,32 @@ export default {
   text-decoration: none;
   color: grey;
   cursor: pointer;
+}
+
+.pt-0 {
+  margin-top: 0px !important;
+  padding: 0px;
+}
+
+div.wrap:nth-child(2) {
+  margin: 0px;
+}
+
+div.xs8:nth-child(1) {
+  padding: 0px;
+}
+
+div.xs8:nth-child(1) > div:nth-child(1) {
+  padding-left: 16px !important;
+  margin-right: 24px;
+}
+
+div.xs4:nth-child(2) {
+  padding: 0px;
+}
+
+.px-1 {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 </style>
