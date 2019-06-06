@@ -20,6 +20,14 @@
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs6></v-flex>
+                  <v-flex xs12>
+                    <v-text-field
+                      prepend-icon="mail"
+                      name="Mail"
+                      :label="$t('Participants E-mails (separated by commas')"
+                      type="text"
+                    ></v-text-field>
+                  </v-flex>
                   <v-flex xs8>
                     <v-layout row wrap>
                       <v-flex xs3>
@@ -50,11 +58,13 @@
                       </v-flex>
                       <v-flex xs1></v-flex>
                       <v-flex xs3>
-                        <v-text-field
+                        <v-autocomplete
+                          :items="versionList"
                           :label="$t('Version')"
                           prepend-icon="mdi-counter"
                           background-color="white"
-                        ></v-text-field>
+                          :search-input.sync="version"
+                        ></v-autocomplete>
                       </v-flex>
                       <v-flex xs1></v-flex>
                       <v-flex xs3>
