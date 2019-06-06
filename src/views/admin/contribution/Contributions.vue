@@ -52,7 +52,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.software }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }">{{ props.item.name }}</router-link>
+            <router-link
+              :to="{ name: 'AdminContribution', params: { id: 15 } }"
+            >{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.deposit }}</td>
@@ -146,7 +148,7 @@ export default {
 
 .page-title {
   color: #777777;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .contributions-list {
@@ -175,7 +177,7 @@ export default {
 
 .contributions-search {
   display: inline-flex !important;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .v-input.contributions-search-name, .v-input.contributions-search-software {
