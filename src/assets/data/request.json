@@ -4,9 +4,9 @@
   "software": "GLPI",
   "softwareOs": "UNIX",
   "softwareVersion": "2.0",
-  "responsible":{
+  "responsible": {
     "name": "Dany QUAVAT",
-    "email":  "dquavat@linagora.com",
+    "email": "dquavat@linagora.com",
     "phone": "01.23.25.45.69 - 06.45.79.16.37"
   },
   "ticketAuthor": "Jane",
@@ -15,14 +15,15 @@
   "attachedFile": "log.zip",
   "lastUpdate": "30/10/2016 - 16:12",
   "subject": "bonjour,\nThe Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.?\nThe Woodman set to work at once, and so sharp was",
-  "linkedTickets": [
-    {
+  "linkedTickets": [{
       "id": "123",
-      "type": "duplicate"
+      "type": "duplicate",
+      "title": "Problème de droits"
     },
     {
       "id": "456",
-      "type": "closes"
+      "type": "closes",
+      "title": "problème de lock"
     }
   ],
   "requestStatus": {
