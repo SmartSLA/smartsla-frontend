@@ -36,7 +36,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Client', params: { id: props.item.id } }">{{ props.item.name }}</router-link>
+            <router-link
+              :to="{ name: 'Client', params: { id: props.item.id } }"
+            >{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.contracts }}</td>
           <td class="text-xs-center">{{ props.item.access_code }}</td>
@@ -116,7 +118,7 @@ export default {
 <style lang="stylus" scoped>
 .page-title {
   color: #777777;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .elevation-1 th {
@@ -149,7 +151,7 @@ export default {
 
 .clients-search {
   display: inline-flex !important;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .v-input.clients-search-name, .v-input.clients-search-client {
@@ -161,7 +163,7 @@ export default {
   font-weight: bold !important;
 }
 
-.clients-operations a {
+.clients-operations > a {
   margin-left: 20px;
 }
 
@@ -183,5 +185,10 @@ export default {
 
 .clients-search {
   width: 100%;
+}
+
+a.clients-actions:nth-child(1) > a:nth-child(2) {
+  padding-left: 3px;
+  padding-top: 3px;
 }
 </style>

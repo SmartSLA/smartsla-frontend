@@ -1,8 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Clients' }"
-      >&lt; {{ $t("Return to clients list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Clients' }"
+    >&lt; {{ $t("Return to clients list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4">
@@ -17,7 +18,13 @@
               </v-flex>
               <v-flex xs2>
                 <div class="text-xs-right grey--text pt-3">
-                  <v-btn color="primary" fab small dark :to="{ name: 'EditClient', params: { id: 15 } }">
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'EditClient', params: { id: 15 } }"
+                  >
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -29,22 +36,27 @@
             <v-flex xs6>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <img :src="client.image" height="100" />
+                  <img :src="client.image" height="100">
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Name") }} :</strong> {{ client.name }}
+                  <strong>{{ $t("Name") }} :</strong>
+                  {{ client.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Address") }} :</strong> {{ client.address }}
+                  <strong>{{ $t("Address") }} :</strong>
+                  {{ client.address }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Unique access code") }} :</strong> {{ client.accessCode }}
+                  <strong>{{ $t("Unique access code") }} :</strong>
+                  {{ client.accessCode }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Access code hint") }} :</strong> {{ client.codeHint }}
+                  <strong>{{ $t("Access code hint") }} :</strong>
+                  {{ client.codeHint }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Status") }} :</strong> {{ client.status }}
+                  <strong>{{ $t("Status") }} :</strong>
+                  {{ client.status }}
                 </v-flex>
               </v-layout>
             </v-flex>
@@ -86,5 +98,28 @@ export default {
 .container {
   max-width: 100% !important;
   padding: 0px;
+}
+
+.pt-0 {
+  margin-left: 0px !important;
+  margin-top: 0px !important;
+  margin-right: 0px !important;
+}
+
+div.wrap:nth-child(2) {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+div.wrap:nth-child(2) > div:nth-child(1) {
+  padding-top: 0px !important;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.px-1 {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 </style>
