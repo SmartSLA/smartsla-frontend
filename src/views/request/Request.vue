@@ -756,7 +756,66 @@ div.v-card:nth-child(7) {
 }
 
 .pb-2 {
-  padding-left: 24px;
+  padding-left: 24px !important;
   padding-bottom: 24px !important;
+}
+
+.grid-list-md > div:nth-child(1) {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.grid-list-md > div:nth-child(2) {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  margin-top: 0px !important;
+  padding-top: 24px !important;
+}
+
+div.xs8:nth-child(1) {
+  padding-top: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.grid-list-md > div:nth-child(2) > div:nth-child(2) {
+  padding-left: 24px !important;
+  padding-right: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.grid-list-md > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) {
+  margin: 0px !important;
+}
+
+.grid-list-md > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
+  padding: 0px !important;
+}
+
+.flex.xs12 {
+  padding: 0px 0px 24px 0px !important;
+}
+
+div.xs8:nth-child(1) {
+  padding-top: 0px !important;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.grid-list-md > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
+  padding-bottom: 24px !important;
+}
+
+div.xs8:nth-child(1) {
+  padding-right: 0px !important;
 }
 </style>
