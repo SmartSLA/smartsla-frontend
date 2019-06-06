@@ -62,4 +62,14 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.pt-0 {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  padding-right: 0px !important;
+}
+
+.container {
+  max-width: 100%;
+}
+</style>

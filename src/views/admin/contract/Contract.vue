@@ -48,13 +48,19 @@
                     <div class="subheading font-weight-medium">{{ $t("Commercial Contact") }} :</div>
                   </v-flex>
                   <v-flex xs8>
-                    <router-link to="#" class="font-weight-bold">{{ contract.contacts.commercial.name }}</router-link>
+                    <router-link
+                      to="#"
+                      class="font-weight-bold"
+                    >{{ contract.contacts.commercial.name }}</router-link>
                   </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("technical Contact") }} :</div>
                   </v-flex>
                   <v-flex xs8>
-                    <router-link to="#" class="font-weight-bold">{{ contract.contacts.technical.name }}</router-link>
+                    <router-link
+                      to="#"
+                      class="font-weight-bold"
+                    >{{ contract.contacts.technical.name }}</router-link>
                   </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Internal mailing list") }} :</div>
@@ -81,9 +87,9 @@
                   </v-flex>
                   <v-flex xs8>{{ contract.schedule }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">
-                      {{ $t("requests shared among the beneficiaries") }} :
-                    </div>
+                    <div
+                      class="subheading font-weight-medium"
+                    >{{ $t("requests shared among the beneficiaries") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
@@ -121,7 +127,11 @@
               </v-card-title>
               <v-card-text>
                 <v-divider class="ml-1 mr-1"></v-divider>
-                <v-data-table :items="contract.relatedSoftware" :headers="softwareHeaders" hide-actions>
+                <v-data-table
+                  :items="contract.relatedSoftware"
+                  :headers="softwareHeaders"
+                  hide-actions
+                >
                   <template v-slot:items="props">
                     <td class="text-xs-center">
                       <router-link to="#">{{ props.item.name }}</router-link>
@@ -130,11 +140,16 @@
                     <td class="text-xs-center">{{ props.item.os }}</td>
                     <td class="text-xs-center">
                       {{ $t("S") }}: {{ props.item.SupportDate.start }}
-                      <br />
+                      <br>
                       {{ $t("E") }}: {{ props.item.SupportDate.end }}
                     </td>
                     <td class="text-xs-center">
-                      <v-chip color="red" text-color="white" label v-if="props.item.critical">{{ $t("Yes") }}</v-chip>
+                      <v-chip
+                        color="red"
+                        text-color="white"
+                        label
+                        v-if="props.item.critical"
+                      >{{ $t("Yes") }}</v-chip>
                       <v-chip label v-else>{{ $t("No") }}</v-chip>
                     </td>
                     <td class="text-xs-center">
@@ -299,10 +314,65 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.action-links
+.action-links {
   text-decoration: none;
   color: grey;
-.container
+}
+
+.container {
   max-width: 100% !important;
   padding: 0px;
+}
+
+div.v-card__text:nth-child(1) {
+  padding-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 24px;
+}
+
+div.pt-0:nth-child(1) > div:nth-child(2) {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.xs7 {
+  padding-left: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+div.justify-space-between:nth-child(1) {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+}
+
+div.justify-space-between:nth-child(1) > div:nth-child(1) {
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-bottom: 0px;
+}
+
+div.pt-0:nth-child(2) {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+}
+
+div.xs12:nth-child(2) {
+  padding-top: 24px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+div.xs12:nth-child(3) {
+  padding-top: 24px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-bottom: 0px !important;
+}
 </style>

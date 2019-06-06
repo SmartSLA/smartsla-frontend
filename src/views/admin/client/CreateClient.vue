@@ -14,7 +14,7 @@
                   <v-text-field name="Name" :label="$t('Name')" v-model="clientName" type="text"></v-text-field>
                   <v-textarea name="adresse" label="Adresse"></v-textarea>
                 </div>
-                <v-divider vertical />
+                <v-divider vertical/>
                 <div class="float-right">
                   <v-checkbox :label="`Inactive`"></v-checkbox>
                   <file-upload
@@ -88,41 +88,88 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.float-left
+.float-left {
   float: left;
   width: 50%;
   padding: 20px;
-.float-right
+}
+
+.float-right {
   float: right;
   width: 50%;
   padding: 20px;
-.v-content
+}
+
+.v-content {
   padding: 0px 0px 0px 0px !important;
-.elevation-12
-  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
-    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14),
-    0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+}
+
+.elevation-12 {
+  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
   widows: 100%;
-.container.fluid.fill-height
+}
+
+.container.fluid.fill-height {
   margin: 0px;
   padding: 10px;
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat)
+}
+
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
   background-color: #2196f3;
   color: #fff;
-.file-upload .input-wrapper
+}
+
+.file-upload .input-wrapper {
   background-color: #eee !important;
   height: 50px !important;
   width: 150px !important;
-.file-upload .input-wrapper .file-upload-label
+}
+
+.file-upload .input-wrapper .file-upload-label {
   color: rgba(0, 0, 0, 0.54) !important;
-.file-upload .input-wrapper .file-upload-label .file-upload-icon
+}
+
+.file-upload .input-wrapper .file-upload-label .file-upload-icon {
   float: left !important;
-  font-size: 30px !important ;
-.file-upload .input-wrapper:hover
+  font-size: 30px !important;
+}
+
+.file-upload .input-wrapper:hover {
   background-color: #eee !important;
-.elevation-12.v-card.v-sheet.theme--light
+}
+
+.elevation-12.v-card.v-sheet.theme--light {
   height: 450px !important;
-.v-card__actions
+}
+
+.v-card__actions {
   padding-top: 80px;
+}
+
+.pt-0 {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  padding-right: 0px;
+  margin-top: 0px !important;
+}
+
+@media only screen and (min-width: 1264px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+div.wrap:nth-child(2) {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+div.wrap:nth-child(2) > div:nth-child(1) {
+  padding-top: 0px;
+  padding-left: 0px;
+  margin-right: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+}
 </style>
