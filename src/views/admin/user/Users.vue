@@ -201,7 +201,7 @@ export default {
 }
 
 .user-mail {
-  color: #2196f3 !important;
+  color: #2195f2 !important;
   font-weight: bold !important;
 }
 

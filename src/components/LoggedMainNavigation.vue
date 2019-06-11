@@ -136,30 +136,45 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.theme--light.v-icon
+.theme--light.v-icon {
   color: #000000 !important;
-.regular
+}
+
+.regular {
   float: left;
   color: #000000;
   background-color: #EEEEEE;
-.regular:hover
+}
+
+.regular:hover {
   background-color: #DDDDDD !important;
-.active
+}
+
+.active {
   background-color: #307dbf !important;
   color: #FFFFFF !important;
-.v-list.logged-main-navigation.theme--light
+}
+
+.v-list.logged-main-navigation.theme--light {
   padding: 0px;
   display: grid;
   margin: 0px;
-.main-menu.v-toolbar.theme--light
+}
+
+.main-menu.v-toolbar.theme--light {
   box-shadow: none;
   width: 60%;
   float: left;
   padding: 0px;
   margin: 0px;
-.v-list__tile__title
+}
+
+.v-list__tile__title {
   padding-top: 5px;
-.v-list__tile--active
-  background-color: #2196f3 !important;
-  border-color: #2196f3 !important;
+}
+
+.v-list__tile--active {
+  background-color: #2195f2 !important;
+  border-color: #2195f2 !important;
+}
 </style>

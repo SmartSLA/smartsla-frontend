@@ -162,15 +162,15 @@ th.column.sortable.text-xs-left {
 }
 
 .login-bar .v-toolbar__content {
-  background-color: #2196f3;
+  background-color: #2195f2;
 }
 
 button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
-  background-color: #2196f3;
+  background-color: #2195f2;
 }
 
 button.v-btn.v-btn--flat.v-btn--icon.theme--light {
-  background-color: #2196f3;
+  background-color: #2195f2;
   color: #fff;
 }
 

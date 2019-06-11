@@ -190,6 +190,6 @@ div.flex.pt-4.xs2 strong {
 }
 
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
-  background-color: #2196f3 !important;
+  background-color: #2195f2 !important;
 }
 </style>

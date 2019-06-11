@@ -337,7 +337,7 @@ export default {
 }
 
 .v-btn-toggle .v-btn.v-btn--active {
-  background-color: #2196f3;
+  background-color: #2195f2;
   color: #fff;
 }
 

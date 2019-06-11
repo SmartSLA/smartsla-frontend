@@ -326,7 +326,7 @@ export default {
 }
 
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
-  background-color: #2196f3;
+  background-color: #2195f2;
   color: #fff;
 }
 
