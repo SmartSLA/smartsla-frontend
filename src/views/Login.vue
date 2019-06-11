@@ -69,7 +69,9 @@ export default {
           return response.data;
         })
         .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", { message: "Login error, please retry" });
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: "Login error, please retry"
+          });
         })
         .finally(() => {
           setTimeout(() => (this.logMeIn = false), 300);
@@ -80,7 +82,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-button.v-btn.theme--light
-  background-color: #2196f3 !important;
+button.v-btn.theme--light {
+  background-color: #2195f2 !important;
   color: #fff;
+}
 </style>
