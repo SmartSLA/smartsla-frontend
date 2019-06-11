@@ -120,7 +120,23 @@
               <template v-slot:activator="{ on }">
                 <span v-on="on">{{ props.item.severity }}</span>
               </template>
-              <span>Demande à traiter dans un délais de 2 jours ouvrés</span>
+              <span>
+                <b>Engagements critiques:</b>
+                <ul>
+                  <li>
+                    Prise en charge:
+                    <b>4H</b>
+                  </li>
+                  <li>
+                    Contournement:
+                    <b>1JO</b>
+                  </li>
+                  <li>
+                    Résolution:
+                    <b>3JO</b>
+                  </li>
+                </ul>
+              </span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">
@@ -129,6 +145,11 @@
                 <span
                   v-if="props.item.software == 'LibreOffice'"
                   class="major-criticality"
+                  v-on="on"
+                >{{ props.item.software }}</span>
+                <span
+                  v-else-if="props.item.software == 'NPM'"
+                  class="medium-criticality"
                   v-on="on"
                 >{{ props.item.software }}</span>
                 <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
@@ -152,19 +173,19 @@
           <td class="text-xs-center">
             <v-progress-linear
               v-if="props.item.conf.color == 'error'"
-              color="error"
+              color="#d32f2f"
               height="20"
               value="30"
             >{{ props.item.remaining_time }}</v-progress-linear>
-            <v-progress-linear
+            <!-- <v-progress-linear
               v-if="props.item.conf.color == 'warning'"
               color="warning"
               height="20"
               value="50"
-            >{{ props.item.remaining_time }}</v-progress-linear>
+            >{{ props.item.remaining_time }}</v-progress-linear>-->
             <v-progress-linear
-              v-if="props.item.conf.color == 'info'"
-              color="info"
+              v-else
+              color="#76c43d"
               height="20"
               value="80"
             >{{ props.item.remaining_time }}</v-progress-linear>
@@ -385,11 +406,27 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .major-criticality {
-  background-color: #d9534f;
+  background-color: #d32f2f;
   color: #ffffff;
   font-weight: bold;
-  padding: 2px;
-  border-radius: 5px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.medium-criticality {
+  background-color: #ffa000;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.minor-criticality {
+  background-color: #e0e0e0;
+  color: #000000;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 2px;
 }
 
 .action-links {
