@@ -98,17 +98,17 @@
             </router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-badge v-if="props.item.id_ossa == 1" color="#5bc0de">
+            <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
               <template v-slot:badge>
                 <span>{{ props.item.id_ossa }}</span>
               </template>
             </v-badge>
-            <v-badge v-if="props.item.id_ossa == 2" color="#f0ad4e">
+            <v-badge v-if="props.item.id_ossa == 2" color="#8b60d8">
               <template v-slot:badge>
                 <span>{{ props.item.id_ossa }}</span>
               </template>
             </v-badge>
-            <v-badge v-if="props.item.id_ossa == 3" color="#d9534f">
+            <v-badge v-if="props.item.id_ossa == 3" color="#dbc1ff">
               <template v-slot:badge>
                 <span>{{ props.item.id_ossa }}</span>
               </template>
