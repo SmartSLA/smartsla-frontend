@@ -818,4 +818,9 @@ div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
 div.xs8:nth-child(1) {
   padding-right: 0px !important;
 }
+div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+ padding-left: 24px;
+ padding-right: 24px;
+}
+
 </style>
