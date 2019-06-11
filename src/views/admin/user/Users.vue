@@ -22,14 +22,7 @@
           label="Client"
           class="users-search-client"
         ></v-select>
-        <v-select
-          solo
-          :items="roles"
-          v-model="roles"
-          hide-details
-          label="Roles"
-          class="users-search-roles"
-        ></v-select>
+        <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"></v-select>
         <div class="users-operations">
           <router-link :to="{ name: 'NewUser' }" class="users-actions">
             <v-icon>add_circle</v-icon>

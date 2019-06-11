@@ -101,11 +101,7 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       roles: [],
-      headers: [
-        { text: "Name", value: "name" },
-        { text: "Begin", value: "begin" },
-        { text: "End", value: "end" }
-      ],
+      headers: [{ text: "Name", value: "name" }, { text: "Begin", value: "begin" }, { text: "End", value: "end" }],
       contracts: []
     };
   },
