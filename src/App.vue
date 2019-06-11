@@ -242,6 +242,7 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 
 .fluid {
   padding-right: 44px !important;
+  // padding-left: 44px !important;
 }
 
 .v-card__actions {
