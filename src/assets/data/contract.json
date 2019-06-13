@@ -42,8 +42,8 @@
         "start": "12/04/2020",
         "end": "12/04/2021"
       },
-      "critical": true,
-      "generic": true,
+      "critical": "critical",
+      "generic": "yes",
       "technicalReferent": "Ismaeil Abouljamal"
     },
     {
@@ -55,43 +55,72 @@
         "start": "24/12/2019",
         "end": "23/11/2022"
       },
-      "critical": false,
-      "generic": false,
+      "critical": "sensible",
+      "generic": {
+        "repo": "link"
+      },
+      "technicalReferent": "-"
+    },
+    {
+      "id": 54,
+      "name": "openpaas",
+      "version": "",
+      "os": "",
+      "SupportDate": {
+        "start": "24/12/2019",
+        "end": "23/11/2022"
+      },
+      "critical": "standard",
+      "generic": "yes",
       "technicalReferent": "-"
     }
   ],
   "contractualCommitments": [
     {
       "request": "Information",
+      "schedule": "7j/7",
       "severity": "none",
       "idOssa": "request inf.",
       "bypassed": "-",
-      "fix": "-",
-      "description": "-"
+      "supported": "1 JO",
+      "fix": "-"
     },
     {
       "request": "Software anomaly",
+      "schedule": "7j/7",
       "severity": "blocking",
       "idOssa": "blocking",
+      "supported": "5 JO",
       "bypassed": "1 JO",
-      "fix": "2 JO",
-      "description": "Cette demande est à traiter dans les 2 jours ouvrés, et le client doit être contacté."
+      "fix": "2 JO"
     },
     {
-      "request": "",
+      "request": "Information",
+      "schedule": "9h-18h",
       "severity": "major",
       "idOssa": "non-blocking",
       "bypassed": "5 JO",
-      "fix": "8 JO",
-      "description": "-"
+      "supported": "-",
+      "fix": "8 JO"
     },
     {
-      "request": "",
+      "request": "Software anomaly",
+      "schedule": "9h-18h",
       "severity": "minor",
       "idOssa": "non-blocking",
+      "supported": "2 JO",
+      "bypassed": "-",
+      "fix": "10 JO"
+    },
+    {
+      "request": "Software anomaly",
+      "schedule": "9h-18h",
+      "severity": "minor",
+      "idOssa": "non-blocking",
+      "supported": "2 JO",
       "bypassed": "-",
       "fix": "10 JO",
-      "description": "-"
+      "sensible": true
     }
   ],
   "beneficiaries": [

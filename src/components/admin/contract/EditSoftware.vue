@@ -20,7 +20,10 @@
           <v-chip label v-else>{{ $t("No") }}</v-chip>
         </td>
         <td class="text-xs-center">
-          <v-icon v-if="props.item.generic">check</v-icon>
+          <span v-if="props.item.generic == 'yes'">
+            {{ $t("yes") }}
+          </span>
+          <router-link v-else to="#">repo</router-link>
         </td>
         <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
         <td class="text-xs-center">
@@ -132,7 +135,16 @@
             </v-flex>
             <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
             <v-flex xs9>
-              <v-checkbox v-model="newSoftware.generic" color="primary" hide-details></v-checkbox>
+              <v-radio-group v-model="newSoftware.generic" row>
+                <v-radio :label="$t('yes')" value="yes"></v-radio>
+                <v-radio :label="$t('no')" value="repo"></v-radio>
+              </v-radio-group>
+            </v-flex>
+            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">{{
+              $t("repo link")
+            }}</v-flex>
+            <v-flex xs9 v-if="newSoftware.generic && newSoftware.generic != 'yes'">
+              <v-text-field v-model="newSoftware.generic.repo"></v-text-field>
             </v-flex>
             <v-flex xs12>
               <br />

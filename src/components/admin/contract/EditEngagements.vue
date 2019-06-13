@@ -10,9 +10,9 @@
         <td class="text-xs-left">{{ $t(props.item.request) }}</td>
         <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
         <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
+        <td class="text-xs-center">{{ $t(props.item.supported) }}</td>
         <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
         <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
-        <td class="text-xs-center">{{ props.item.description }}</td>
         <td class="text-xs-center">
           <v-btn color="error" flat small @click="removeCommitment(props.item)">
             <v-icon>remove_circle</v-icon>
@@ -56,6 +56,24 @@
               <v-select v-model="newCommitment.idOssa" :items="ossaIds" flat single-line></v-select>
             </v-flex>
             <v-flex xs5></v-flex>
+            <v-flex xs3>{{ $t("prise en charge") }}</v-flex>
+            <v-flex xs4>
+              <v-text-field v-model="newCommitment.supported" flat single-line></v-text-field>
+            </v-flex>
+            <v-flex xs5></v-flex>
+            <v-flex xs3>{{ $t("schedule") }}</v-flex>
+            <v-flex xs4>
+              <v-radio-group v-model="newCommitment.schedule" row>
+                <v-radio :label="$t('7j/7')" value="7j/7"></v-radio>
+                <v-radio :label="$t('9h-18h')" value="9h-18h"></v-radio>
+              </v-radio-group>
+            </v-flex>
+            <v-flex xs5></v-flex>
+            <v-flex xs3 v-if="newCommitment.schedule == '9h-18h'">{{ $t("sensible") }}</v-flex>
+            <v-flex xs4 v-if="newCommitment.schedule == '9h-18h'">
+              <v-switch v-model="newCommitment.sensible"></v-switch>
+            </v-flex>
+            <v-flex xs5 v-if="newCommitment.schedule == '9h-18h'"></v-flex>
             <v-flex xs3>{{ $t("Bypassed") }}</v-flex>
             <v-flex xs1>
               <v-text-field v-model="newCommitment.bypassed.days" mask="###"></v-text-field>
@@ -76,10 +94,6 @@
             </v-flex>
             <v-flex xs1>{{ $t("H") }}</v-flex>
             <v-flex xs5></v-flex>
-            <v-flex xs3>{{ $t("Description") }}</v-flex>
-            <v-flex xs9>
-              <v-textarea solo v-model="newCommitment.description"></v-textarea>
-            </v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9>
               <v-btn @click="appendCommitment" class="success">{{ $t("Add commitment") }}</v-btn>
@@ -170,12 +184,12 @@ export default {
         { text: this.$i18n.t("Request"), value: "request" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Id OSSA"), value: "idOssa" },
+        {
+          text: this.$i18n.t("prise en charge"),
+          value: "supported"
+        },
         { text: this.$i18n.t("Bypassed"), value: "bypassed" },
         { text: this.$i18n.t("Fix"), value: "fix" },
-        {
-          text: this.$i18n.t("Description"),
-          value: "description"
-        },
         { text: "", value: "delete" }
       ];
     }
