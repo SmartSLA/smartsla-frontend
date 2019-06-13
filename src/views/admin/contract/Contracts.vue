@@ -61,25 +61,15 @@
           <td class="text-xs-center">
             <div v-if="props.item.isdisabled == 'yes'">
               <strike>
-                <router-link
-                  class="contracts-actions"
-                  :to="{ name: 'Contract', params: { id: props.item.id } }"
-                >
-                  {{
-                  props.item.name
-                  }}
+                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
+                  {{ props.item.name }}
                 </router-link>
               </strike>
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link
-                class="contracts-actions"
-                :to="{ name: 'Contract', params: { id: props.item.id } }"
-              >
-                {{
-                props.item.name
-                }}
+              <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item._id } }">
+                {{ props.item.name }}
               </router-link>
             </div>
           </td>
@@ -107,6 +97,17 @@ export default {
   },
   created() {
     this.contracts = contracts;
+    this.$http
+      .getContracts()
+      .then(response => {
+        this.contracts = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch contracts list"),
+          color: "error"
+        });
+      });
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
     this.$store.dispatch("sidebar/setActiveAdminMenu", "contracts");
   },

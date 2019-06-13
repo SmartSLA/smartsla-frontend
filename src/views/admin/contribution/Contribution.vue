@@ -1,9 +1,8 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-0 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'AdminContributions' }"
-    >&lt; {{ $t("Return to contributions list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
+      >&lt; {{ $t("Return to contributions list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="mt-4 pb-4 pl-4">
@@ -16,13 +15,7 @@
               </v-flex>
               <v-flex xs6>
                 <div class="text-xs-right grey--text">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'EditContribution', params: { id: 15 } }"
-                  >
+                  <v-btn color="primary" fab small dark :to="{ name: 'EditContribution', params: { id: 15 } }">
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -44,7 +37,7 @@
       <v-flex xs4>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
-            <img src="@/assets/drupal_logo-blue.png" height="100">
+            <img src="@/assets/drupal_logo-blue.png" height="100" />
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
@@ -63,9 +56,7 @@
             </v-flex>
             <v-flex xs8>
               <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }">
-                {{
-                contribution.requestNumber
-                }}
+                {{ contribution.requestNumber }}
               </router-link>
             </v-flex>
             <v-flex xs4>
