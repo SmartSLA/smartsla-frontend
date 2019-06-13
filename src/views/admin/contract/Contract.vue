@@ -147,7 +147,7 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <v-flex xs12>
+          <!-- <v-flex xs12>
             <v-card>
               <v-card-title primary-title>
                 <v-layout>
@@ -290,7 +290,7 @@
                 </v-data-table>
               </v-card-text>
             </v-card>
-          </v-flex>
+          </v-flex>-->
         </v-layout>
       </v-flex>
       <v-flex xs5 pt-0>
@@ -329,6 +329,45 @@
                 <router-link to="#">{{ team.name }}</router-link>
               </li>
             </ul>
+          </v-card-text>
+        </v-card>
+        <v-card class="contractual-commitments">
+          <v-card-title primary-title>
+            <v-layout>
+              <v-flex xs6>
+                <h3 class="headline">{{ $t("Contractual commitments") }}</h3>
+              </v-flex>
+              <v-flex xs6>
+                <div class="text-xs-right grey--text">
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'Edit Contract', params: { id: 15, section: 'engagements' } }"
+                  >
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+                </div>
+              </v-flex>
+            </v-layout>
+          </v-card-title>
+          <v-card-text>
+            <v-divider class="ml-1 mr-1"></v-divider>
+            <v-data-table
+              :items="contract.contractualCommitments"
+              :headers="contractualCommitmentsHeaders"
+              hide-actions
+            >
+              <template v-slot:items="props">
+                <td class="text-xs-left">{{ $t(props.item.request) }}</td>
+                <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
+                <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
+                <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+                <td class="text-xs-center">{{ props.item.description }}</td>
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -518,5 +557,18 @@ div.xs12:nth-child(3) {
   padding-left: 0px !important;
   padding-right: 0px !important;
   padding-bottom: 0px !important;
+}
+
+.contractual-commitments {
+  margin-top: 24px;
+}
+
+.contractual-commitments th {
+  padding: 0px 5px !important;
+}
+
+.contractual-commitments .v-card__text {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 </style>
