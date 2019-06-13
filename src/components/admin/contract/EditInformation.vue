@@ -8,6 +8,10 @@
       </v-card-title>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-layout row wrap align-center>
+          <v-flex xs3>{{ $t("Name") }}</v-flex>
+          <v-flex xs8>
+            <v-text-field v-model="contract.name"></v-text-field>
+          </v-flex>
           <v-flex xs3>{{ $t("Client") }}</v-flex>
           <v-flex xs8>
             <v-select :items="clients" :value="contract.client"></v-select>
@@ -84,12 +88,12 @@
           <v-flex xs3>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
             <v-btn-toggle v-model="contract.contractStatus">
-              <v-btn value="active" flat :class="{ success: contract.contractStatus == 'active' }">{{
-                $t("Active")
-              }}</v-btn>
-              <v-btn value="inactive" flat :class="{ error: contract.contractStatus == 'inactive' }">{{
-                $t("Inactive")
-              }}</v-btn>
+              <v-btn value="active" flat :class="{ success: contract.contractStatus == 'active' }">
+                {{ $t("Active") }}
+              </v-btn>
+              <v-btn value="inactive" flat :class="{ error: contract.contractStatus == 'inactive' }">
+                {{ $t("Inactive") }}
+              </v-btn>
             </v-btn-toggle>
           </v-flex>
           <v-flex xs3>{{ $t("Schedule") }}</v-flex>
@@ -140,6 +144,7 @@ export default {
   data() {
     return {
       contract: {
+        name: "contract 1",
         client: "DGT - CLUB de paris",
         contact: {
           commercial: "André VASSILIF",
@@ -180,12 +185,42 @@ export default {
       techRefs: ["Sacha Méline", "Gilberte Marcellette", "Jérome HERLEDAN", "Maximilienne Priscille", "César Tristan"]
     };
   },
+  computed: {
+    isNew() {
+      return this.$route.params.id;
+    }
+  },
+  mounted() {
+    if (!this.$route.params.id) {
+      this.contract = {};
+    }
+  },
   methods: {
     parseDate(date) {
       if (!date) return null;
 
       const [month, day, year] = date.split("/");
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    },
+
+    validate() {
+      this.$http
+        .createContract(this.contract)
+        .then(response => {
+          if (response.data && response.status === 201) {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("contract saved"),
+              color: "success"
+            });
+            this.contract = {};
+          }
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   }
 };
