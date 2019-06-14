@@ -12,7 +12,7 @@ export default {
   },
 
   deleteTicket(ticketId) {
-    return this.delete(`/ossa/ticket/${ticketId}`);
+    return this.post(`/ossa/ticket/${ticketId}`);
   },
 
   getTickets(author) {

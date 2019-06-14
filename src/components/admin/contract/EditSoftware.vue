@@ -5,7 +5,7 @@
         <h3 class="title mb-0">{{ $t("Software") }}</h3>
       </div>
     </v-card-title>
-    <v-data-table :items="contract.relatedSoftware" :headers="softwareHeaders" hide-actions>
+    <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
       <template v-slot:items="props">
         <td class="text-xs-center">{{ props.item.name }}</td>
         <td class="text-xs-center">{{ props.item.version }}</td>
@@ -20,14 +20,12 @@
           <v-chip label v-else>{{ $t("No") }}</v-chip>
         </td>
         <td class="text-xs-center">
-          <span v-if="props.item.generic == 'yes'">
-            {{ $t("yes") }}
-          </span>
+          <span v-if="props.item.generic == 'yes'">{{ $t("yes") }}</span>
           <router-link v-else to="#">repo</router-link>
         </td>
         <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
         <td class="text-xs-center">
-          <v-btn color="error" flat small @click="removeSoftware(props.item.id)">
+          <v-btn color="error" flat small @click="removeSoftware(props.item)">
             <v-icon>remove_circle</v-icon>
             {{ $t("remove") }}
           </v-btn>
@@ -117,8 +115,15 @@
             <v-flex xs3>{{ $t("Critical") }}</v-flex>
             <v-flex xs9>
               <v-btn-toggle :value="newSoftware.critical" v-model="newSoftware.critical">
-                <v-btn :value="true" flat :class="{ error: newSoftware.critical }">{{ $t("Yes") }}</v-btn>
-                <v-btn :value="false" flat :class="{ white: newSoftware.critical }">{{ $t("No") }}</v-btn>
+                <v-btn value="critical" flat :class="{ error: newSoftware.critical == 'critical' }">{{
+                  $t("critical")
+                }}</v-btn>
+                <v-btn value="sensible" flat :class="{ warning: newSoftware.critical == 'sensible' }">{{
+                  $t("sensible")
+                }}</v-btn>
+                <v-btn value="standard" flat :class="{ white: newSoftware.critical == 'standard' }">{{
+                  $t("standard")
+                }}</v-btn>
               </v-btn-toggle>
             </v-flex>
             <v-flex xs3>{{ $t("Version") }}</v-flex>
@@ -140,9 +145,9 @@
                 <v-radio :label="$t('no')" value="repo"></v-radio>
               </v-radio-group>
             </v-flex>
-            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">{{
-              $t("repo link")
-            }}</v-flex>
+            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">
+              {{ $t("repo link") }}
+            </v-flex>
             <v-flex xs9 v-if="newSoftware.generic && newSoftware.generic != 'yes'">
               <v-text-field v-model="newSoftware.generic.repo"></v-text-field>
             </v-flex>
@@ -163,7 +168,7 @@
     <v-layout row wrap align-center>
       <v-flex xs4></v-flex>
       <v-flex xs3>
-        <v-btn @click="createAccount" class="success" :disabled="addSoftware">{{ $t("Validate changes") }}</v-btn>
+        <v-btn @click="validate" class="success" :disabled="addSoftware">{{ $t("Validate changes") }}</v-btn>
       </v-flex>
       <v-flex xs3></v-flex>
     </v-layout>
@@ -180,7 +185,7 @@ export default {
       endDateModel: "",
       newSoftware: {
         name: "",
-        critical: true,
+        critical: "standard",
         generic: false,
         technicalReferent: "",
         os: "",
@@ -198,22 +203,46 @@ export default {
   },
   methods: {
     appendSoftware() {
-      if (!this.contract.relatedSoftware.filter(software => software.id == this.newSoftwareName.id).length) {
+      if (
+        !this.contract.software.filter(software => JSON.stringify(software) == JSON.stringify(this.newSoftwareName))
+          .length
+      ) {
         this.newSoftware.name = this.newSoftwareName.name;
         this.newSoftware.id = this.newSoftwareName.id;
         this.newSoftwareName = {};
-        this.contract.relatedSoftware.push(Object.assign({}, this.newSoftware));
+        this.contract.software.push(Object.assign({}, this.newSoftware));
       }
+
+      this.addSoftware = false;
     },
 
-    removeSoftware(softwareId) {
-      this.contract.relatedSoftware = this.contract.relatedSoftware.filter(software => software.id != softwareId);
+    removeSoftware(selectedSoftware) {
+      this.contract.software = this.contract.software.filter(
+        software => JSON.stringify(software) != JSON.stringify(selectedSoftware)
+      );
     },
     parseDate(date) {
       if (!date) return null;
 
       const [month, day, year] = date.split("/");
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    },
+
+    validate() {
+      this.$http
+        .updateContract(this.contract._id, this.contract)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   },
   computed: {
@@ -236,9 +265,23 @@ export default {
       ];
     }
   },
+  mounted() {
+    if (this.$route.params.id) {
+      this.$http
+        .getContractById(this.$route.params.id)
+        .then(response => {
+          this.contract = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    }
+  },
   created() {
     this.softwareList = require("@/assets/data/software.json");
-    this.contract = require("@/assets/data/contract.json");
   }
 };
 </script>
