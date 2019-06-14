@@ -5,10 +5,10 @@
         <v-icon class="mr-2">bug_report</v-icon>
         <span>{{ $i18n.t("Requests list (TICKETS)") }}</span>
       </a>
-      <a href="#" class="action-links right">
+      <download-excel :data="requests" class="export-excel">
         <v-icon class="mr-2">backup</v-icon>
         <span>{{ $i18n.t("EXPORT SHEET") }}</span>
-      </a>
+      </download-excel>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
         {{ $i18n.t("PRINT SHEET") }}
@@ -91,9 +91,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
-              {{ props.item.ticket_number }}
-            </router-link>
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item.ticket_number } }"
+            >{{ props.item.ticket_number }}</router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
@@ -140,12 +140,20 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">{{
+                <span
+                  v-if="props.item.software == 'LibreOffice'"
+                  class="major-criticality"
+                  v-on="on"
+                >
+                  {{
                   props.item.software
-                }}</span>
-                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">{{
+                  }}
+                </span>
+                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">
+                  {{
                   props.item.software
-                }}</span>
+                  }}
+                </span>
                 <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
@@ -165,18 +173,27 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
+            <v-progress-linear
+              v-if="props.item.conf.color == 'error'"
+              color="#d32f2f"
+              height="20"
+              value="30"
+            >
+              {{
               props.item.remaining_time
-            }}</v-progress-linear>
+              }}
+            </v-progress-linear>
             <!-- <v-progress-linear
               v-if="props.item.conf.color == 'warning'"
               color="warning"
               height="20"
               value="50"
             >{{ props.item.remaining_time }}</v-progress-linear>-->
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">{{
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">
+              {{
               props.item.remaining_time
-            }}</v-progress-linear>
+              }}
+            </v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -187,6 +204,10 @@
 <script>
 var requests = require("@/assets/data/requests.json");
 import { mapGetters } from "vuex";
+import Vue from "vue";
+import JsonExcel from "vue-json-excel";
+
+Vue.component("downloadExcel", JsonExcel);
 export default {
   data() {
     return {
@@ -278,7 +299,9 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.teamsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.teamsFilter);
+        items = items.filter(
+          item => item.team.toLowerCase() == this.teamsFilter
+        );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
@@ -471,5 +494,9 @@ div.v-input:nth-child(14) {
 
 .text-lg-left > span:nth-child(2) {
   margin-top: 2px;
+}
+
+.export-excel {
+  float: right;
 }
 </style>
