@@ -1,9 +1,8 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'Teams' }"
-    >&lt; {{ $t("Return to teams list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'Teams' }"
+      >&lt; {{ $t("Return to teams list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4">
@@ -17,13 +16,7 @@
             </v-flex>
             <v-flex xs2>
               <div class="text-xs-right grey--text pt-3">
-                <v-btn
-                  color="primary"
-                  fab
-                  small
-                  dark
-                  :to="{ name: 'TeamEdit', params: { id: 15 } }"
-                >
+                <v-btn color="primary" fab small dark :to="{ name: 'TeamEdit', params: { id: 15 } }">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -39,9 +32,9 @@
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Contact") }} :</strong>
-                  <router-link
-                    :to="{ name: 'Contact', params: { id: team.contact.id } }"
-                  >{{ team.contact.name }}</router-link>
+                  <router-link :to="{ name: 'Contact', params: { id: team.contact.id } }">{{
+                    team.contact.name
+                  }}</router-link>
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Motto") }} :</strong>
@@ -59,9 +52,7 @@
                     <v-flex xs10>
                       <ul>
                         <li v-for="(member, key) in team.members" :key="key">
-                          <router-link
-                            :to="{ name: 'User', params: { id: member.id } }"
-                          >{{ member.name }}</router-link>
+                          <router-link :to="{ name: 'User', params: { id: member.id } }">{{ member.name }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -75,9 +66,9 @@
                 <v-flex xs9>
                   <ul>
                     <li v-for="(contract, key) in team.contracts" :key="key">
-                      <router-link
-                        :to="{ name: 'Contract', params: { id: contract.id } }"
-                      >{{ contract.name }}</router-link>
+                      <router-link :to="{ name: 'Contract', params: { id: contract.id } }">{{
+                        contract.name
+                      }}</router-link>
                     </li>
                   </ul>
                 </v-flex>
@@ -102,10 +93,7 @@
             <v-flex xs12>
               <strong>{{ $t("Link to alert page") }}:</strong>
               &nbsp;
-              <a
-                :href="team.alertSettings.url"
-                target="_blank"
-              >{{ team.alertSettings.urlPage }}</a>
+              <a :href="team.alertSettings.url" target="_blank">{{ team.alertSettings.urlPage }}</a>
             </v-flex>
             <v-flex xs12>
               <strong>{{ $t("Automatic alert system active") }}:</strong>
