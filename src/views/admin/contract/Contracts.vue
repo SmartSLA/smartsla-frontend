@@ -73,8 +73,8 @@
               </router-link>
             </div>
           </td>
-          <td class="text-xs-center">{{ props.item.begin }}</td>
-          <td class="text-xs-center">{{ props.item.end }}</td>
+          <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>
+          <td class="text-xs-center">{{ new Date(props.item.endDate).toDateString() }}</td>
         </template>
       </v-data-table>
     </div>

@@ -389,7 +389,7 @@ export default new Router({
           }
         },
         {
-          path: "contracts/:id/edit/:section",
+          path: "contracts/:id/edit/:section/:type",
           name: routeNames.EDITCONTRACT,
           component: EditContract,
           meta: {

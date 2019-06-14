@@ -2,10 +2,30 @@
   <v-card class="mt-4 px-4">
     <v-card-title primary-title class="pl-0">
       <div>
-        <h3 class="title mb-0">{{ $t("Contractual commitments") }}</h3>
+        <h3 class="title mb-0">
+          {{ $t("Contractual commitments") }}
+          <v-chip :color="critColor(engagementType)" :text-color="critTextColor(engagementType)" label>{{
+            $t(engagementType)
+          }}</v-chip>
+        </h3>
       </div>
     </v-card-title>
-    <v-data-table :items="contract.contractualCommitments" :headers="contractualCommitmentsHeaders" hide-actions>
+    <v-layout row wrap align-center>
+      <v-flex xs2>{{ $t("Treatment time range") }}</v-flex>
+      <v-flex xs1>
+        <v-text-field v-model="engagementList.schedule.start" mask="###"></v-text-field>
+      </v-flex>
+      <v-flex xs1>{{ $t("H") }}</v-flex>
+      <v-flex xs1>
+        <v-text-field v-model="engagementList.schedule.end" mask="##"></v-text-field>
+      </v-flex>
+      <v-flex xs1>{{ $t("H") }}</v-flex>
+      <v-flex xs1>{{ $t("or") }}</v-flex>
+      <v-flex xs3>
+        <v-checkbox v-model="allweek" color="primary" :value="true" :label="$t('7d/7d')" hide-details></v-checkbox>
+      </v-flex>
+    </v-layout>
+    <v-data-table :items="engagementList.engagements" :headers="contractualCommitmentsHeaders" hide-actions>
       <template v-slot:items="props">
         <td class="text-xs-left">{{ $t(props.item.request) }}</td>
         <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
@@ -57,23 +77,15 @@
             </v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs3>{{ $t("prise en charge") }}</v-flex>
-            <v-flex xs4>
-              <v-text-field v-model="newCommitment.supported" flat single-line></v-text-field>
+            <v-flex xs1>
+              <v-text-field v-model="newCommitment.supported.days" mask="###"></v-text-field>
             </v-flex>
+            <v-flex xs1>{{ $t("D") }}</v-flex>
+            <v-flex xs1>
+              <v-text-field v-model="newCommitment.supported.hours" mask="##"></v-text-field>
+            </v-flex>
+            <v-flex xs1>{{ $t("H") }}</v-flex>
             <v-flex xs5></v-flex>
-            <v-flex xs3>{{ $t("schedule") }}</v-flex>
-            <v-flex xs4>
-              <v-radio-group v-model="newCommitment.schedule" row>
-                <v-radio :label="$t('7j/7')" value="7j/7"></v-radio>
-                <v-radio :label="$t('9h-18h')" value="9h-18h"></v-radio>
-              </v-radio-group>
-            </v-flex>
-            <v-flex xs5></v-flex>
-            <v-flex xs3 v-if="newCommitment.schedule == '9h-18h'">{{ $t("sensible") }}</v-flex>
-            <v-flex xs4 v-if="newCommitment.schedule == '9h-18h'">
-              <v-switch v-model="newCommitment.sensible"></v-switch>
-            </v-flex>
-            <v-flex xs5 v-if="newCommitment.schedule == '9h-18h'"></v-flex>
             <v-flex xs3>{{ $t("Bypassed") }}</v-flex>
             <v-flex xs1>
               <v-text-field v-model="newCommitment.bypassed.days" mask="###"></v-text-field>
@@ -108,7 +120,7 @@
     <v-layout row wrap align-center>
       <v-flex xs4></v-flex>
       <v-flex xs3>
-        <v-btn class="success" :disabled="addCommitment">{{ $t("Validate changes") }}</v-btn>
+        <v-btn class="success" :disabled="addCommitment" @click="validate">{{ $t("Validate changes") }}</v-btn>
       </v-flex>
       <v-flex xs3></v-flex>
     </v-layout>
@@ -122,7 +134,17 @@ export default {
     return {
       newRequest: "",
       newSeverity: "",
+      allweek: false,
+      engagementList: {
+        schedule: {},
+        engagements: []
+      },
+      engagementListObject: {
+        schedule: {},
+        engagements: []
+      },
       newCommitment: {
+        supported: {},
         request: "",
         severity: "",
         idOssa: "",
@@ -145,7 +167,7 @@ export default {
   },
   methods: {
     removeCommitment(commitment) {
-      this.contract.contractualCommitments = this.contract.contractualCommitments.filter(
+      this.engagementList.engagements = this.engagementList.engagements.filter(
         item => JSON.stringify(item) != JSON.stringify(commitment)
       );
     },
@@ -165,20 +187,121 @@ export default {
       newCommitment.fix = `${this.newCommitment.fix.days} ${this.$i18n.t("D")} ${
         this.newCommitment.fix.hours
       } ${this.$i18n.t("H")}`;
+      newCommitment.supported = `${this.newCommitment.supported.days} ${this.$i18n.t("D")} ${
+        this.newCommitment.supported.hours
+      } ${this.$i18n.t("H")}`;
 
       if (
-        !this.contract.contractualCommitments.filter(
+        !this.engagementList.engagements.filter(
           commitment => JSON.stringify(commitment) === JSON.stringify(newCommitment)
         ).length
       ) {
-        this.contract.contractualCommitments.push(newCommitment);
+        this.engagementList.engagements.push(newCommitment);
+        this.addCommitment = false;
       }
+    },
+    critColor(critLevel) {
+      switch (critLevel) {
+        case "critical":
+          return "#f44336";
+          break;
+        case "sensible":
+          return "#f4b336";
+          break;
+        case "standard":
+          return "#e0e0e0";
+          break;
+
+        default:
+          return "";
+      }
+    },
+
+    critTextColor(critLevel) {
+      switch (critLevel) {
+        case "critical":
+        case "sensible":
+          return "white";
+          break;
+        default:
+          return "black";
+      }
+    },
+
+    validate() {
+      if (this.allweek) {
+        this.engagementList.schedule.start = "7d/7d";
+        this.engagementList.schedule.end = "-";
+      }
+      switch (this.$route.params.type) {
+        case "critical":
+          this.contract.Engagements.critical = this.engagementList;
+          break;
+        case "sensible":
+          this.contract.Engagements.sensible = this.engagementList;
+          break;
+        case "standard":
+          this.contract.Engagements.standard = this.engagementList;
+          break;
+
+        default:
+          break;
+      }
+      this.$http
+        .updateContract(this.contract._id, this.contract)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   },
-  created() {
-    this.contract = require("@/assets/data/contract.json");
+  mounted() {
+    if (this.$route.params.id) {
+      this.$http
+        .getContractById(this.$route.params.id)
+        .then(response => {
+          this.contract = response.data;
+          switch (this.$route.params.type) {
+            case "critical":
+              this.engagementList = this.contract.Engagements.critical || this.engagementListObject;
+              break;
+            case "sensible":
+              this.engagementList = this.contract.Engagements.sensible || this.engagementListObject;
+              break;
+            case "standard":
+              this.engagementList = this.contract.Engagements.standard || this.engagementListObject;
+              break;
+
+            default:
+              break;
+          }
+          if (!this.engagementList.schedule) {
+            this.engagementList.schedule = {};
+          }
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    }
   },
   computed: {
+    engagementType() {
+      return this.$route.params.type;
+    },
+    currentEngagement() {
+      return this.engagementList;
+    },
     contractualCommitmentsHeaders() {
       return [
         { text: this.$i18n.t("Request"), value: "request" },

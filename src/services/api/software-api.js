@@ -12,7 +12,7 @@ export default {
   },
 
   updateSoftware(softwareId, options) {
-    return this.update(`/ticketing/api/software/${softwareId}`, options);
+    return this.post(`/ticketing/api/software/${softwareId}`, options);
   },
 
   deleteSoftware(softwareId) {

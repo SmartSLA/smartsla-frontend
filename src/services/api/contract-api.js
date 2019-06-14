@@ -12,7 +12,7 @@ export default {
   },
 
   updateContract(contractId, options) {
-    return this.update(`/ticketing/api/contracts/${contractId}`, options);
+    return this.post(`/ticketing/api/contracts/${contractId}`, options);
   },
 
   deleteContract(contractId) {
