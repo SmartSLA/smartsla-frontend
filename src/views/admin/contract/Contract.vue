@@ -80,9 +80,9 @@
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $t("requests shared among the beneficiaries") }} :</div>
+                    <div class="subheading font-weight-medium">
+                      {{ $t("requests shared among the beneficiaries") }} :
+                    </div>
                   </v-flex>
                   <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
@@ -132,7 +132,7 @@
                     <td class="text-xs-center">{{ props.item.os }}</td>
                     <td class="text-xs-center">
                       {{ $t("S") }}: {{ props.item.SupportDate.start }}
-                      <br>
+                      <br />
                       {{ $t("E") }}: {{ props.item.SupportDate.end }}
                     </td>
                     <td class="text-xs-center">
@@ -140,7 +140,8 @@
                         :color="critColor(props.item.critical)"
                         :text-color="critTextColor(props.item.critical)"
                         label
-                      >{{ $t(props.item.critical) }}</v-chip>
+                        >{{ $t(props.item.critical) }}</v-chip
+                      >
                     </td>
                     <td class="text-xs-center">
                       <span v-if="props.item.generic == 'yes'">{{ $t(props.item.generic) }}</span>
@@ -153,16 +154,15 @@
             </v-card>
           </v-flex>
           <v-flex xs12>
-            <v-card>
+            <v-card class="contractual-commitments">
               <v-card-title primary-title>
                 <v-layout>
                   <v-flex xs9>
                     <h4 class="headline">
                       {{ $t("Contractual commitments") }}
-                      <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>{{
-                        $t("critical")
-                      }}</v-chip>
-                      :
+                      <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>
+                        {{ $t("critical") }} </v-chip
+                      >:
                       <span v-if="contract.Engagements.critical.schedule">
                         {{
                           contract.Engagements.critical.schedule.end == "-"
@@ -212,16 +212,15 @@
             </v-card>
           </v-flex>
           <v-flex xs12>
-            <v-card>
+            <v-card class="contractual-commitments">
               <v-card-title primary-title>
                 <v-layout>
                   <v-flex xs9>
                     <h4 class="headline">
                       {{ $t("Contractual commitments") }}
-                      <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>{{
-                        $t("sensible")
-                      }}</v-chip>
-                      :
+                      <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>
+                        {{ $t("sensible") }} </v-chip
+                      >:
                       <span v-if="contract.Engagements.sensible.schedule">
                         {{
                           contract.Engagements.sensible.schedule.end == "-"
@@ -271,16 +270,15 @@
             </v-card>
           </v-flex>
           <v-flex xs12>
-            <v-card>
+            <v-card class="contractual-commitments">
               <v-card-title primary-title>
                 <v-layout>
                   <v-flex xs9>
                     <h4 class="headline">
                       {{ $t("Contractual commitments") }}
-                      <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>{{
-                        $t("standard")
-                      }}</v-chip>
-                      :
+                      <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>
+                        {{ $t("standard") }} </v-chip
+                      >:
                       <span v-if="contract.Engagements.standard.schedule">
                         {{
                           contract.Engagements.standard.schedule.end == "-"
@@ -367,158 +365,6 @@
                 <router-link to="#">{{ team.name }}</router-link>
               </li>
             </ul>
-          </v-card-text>
-        </v-card>
-        <v-card class="contractual-commitments">
-          <v-card-title primary-title>
-            <v-layout>
-              <v-flex xs11>
-                <h4 class="headline">
-                  {{ $t("Contractual commitments") }}
-                  <v-chip
-                    :color="critColor('critical')"
-                    :text-color="critTextColor('critical')"
-                    label
-                  >{{ $t("critical") }}</v-chip>
-                  :
-                  {{ $t("7d/7") }}
-                </h4>
-              </v-flex>
-              <v-flex xs1>
-                <div class="text-xs-right grey--text">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'Edit Contract', params: { id: 15, section: 'engagements' } }"
-                  >
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                </div>
-              </v-flex>
-            </v-layout>
-          </v-card-title>
-          <v-card-text>
-            <v-divider class="ml-1 mr-1"></v-divider>
-            <v-data-table
-              :items="criticalContractualCommitments()"
-              :headers="contractualCommitmentsHeaders"
-              hide-actions
-            >
-              <template v-slot:items="props">
-                <td class="text-xs-left">{{ $t(props.item.request) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
-                <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-        <v-card class="contractual-commitments">
-          <v-card-title primary-title>
-            <v-layout>
-              <v-flex xs11>
-                <h4 class="headline">
-                  {{ $t("Contractual commitments") }}
-                  <v-chip
-                    :color="critColor('sensible')"
-                    :text-color="critTextColor('sensible')"
-                    label
-                  >
-                    {{
-                    $t("sensible")
-                    }}
-                  </v-chip>
-                  :
-                  {{ $t("9h-18h") }}
-                </h4>
-              </v-flex>
-              <v-flex xs1>
-                <div class="text-xs-right grey--text">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'Edit Contract', params: { id: 15, section: 'engagements' } }"
-                  >
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                </div>
-              </v-flex>
-            </v-layout>
-          </v-card-title>
-          <v-card-text>
-            <v-divider class="ml-1 mr-1"></v-divider>
-            <v-data-table
-              :items="sensibleContractualCommitments()"
-              :headers="contractualCommitmentsHeaders"
-              hide-actions
-            >
-              <template v-slot:items="props">
-                <td class="text-xs-left">{{ $t(props.item.request) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
-                <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-        <v-card class="contractual-commitments">
-          <v-card-title primary-title>
-            <v-layout>
-              <v-flex xs11>
-                <h4 class="headline">
-                  {{ $t("Contractual commitments") }}
-                  <v-chip
-                    :color="critColor('standard')"
-                    :text-color="critTextColor('standard')"
-                    label
-                  >
-                    {{
-                    $t("standard")
-                    }}
-                  </v-chip>
-                  :
-                  {{ $t("9h-18h") }}
-                </h4>
-              </v-flex>
-              <v-flex xs1>
-                <div class="text-xs-right grey--text">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'Edit Contract', params: { id: 15, section: 'engagements' } }"
-                  >
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                </div>
-              </v-flex>
-            </v-layout>
-          </v-card-title>
-          <v-card-text>
-            <v-divider class="ml-1 mr-1"></v-divider>
-            <v-data-table
-              :items="standardContractualCommitment()"
-              :headers="contractualCommitmentsHeaders"
-              hide-actions
-            >
-              <template v-slot:items="props">
-                <td class="text-xs-left">{{ $t(props.item.request) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
-                <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
-              </template>
-            </v-data-table>
           </v-card-text>
         </v-card>
       </v-flex>
