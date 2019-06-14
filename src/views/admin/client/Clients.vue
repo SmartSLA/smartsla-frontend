@@ -17,11 +17,11 @@
         <div class="clients-operations">
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
-            <router-link :to="{ name: 'NewClient' }">{{ $t("Add client") }}</router-link>
+            <router-link :to="{ name: 'NewClient' }">{{ $t("Add Client") }}</router-link>
           </a>
           <a href="#" class="clients-actions">
             <v-icon>arrow_downward</v-icon>
-            <span>Export</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>
@@ -36,7 +36,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Client', params: { id: props.item.id } }">{{ props.item.name }}</router-link>
+            <router-link
+              :to="{ name: 'Client', params: { id: props.item.id } }"
+            >{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.contracts }}</td>
           <td class="text-xs-center">{{ props.item.access_code }}</td>
@@ -57,25 +59,25 @@ export default {
       roles: [],
       headers: [
         {
-          text: "Logo",
+          text: $t("Logo"),
           value: "logo",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Name",
+          text: $t("Name"),
           value: "name",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Contracts",
+          text: $t("Contracts"),
           value: "conttracts",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Access code",
+          text: $t("Access code"),
           value: "access_code",
           sortable: false,
           class: "text-xs-center"
