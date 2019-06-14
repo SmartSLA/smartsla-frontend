@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>Create Client</span>
+      <span>{{$t("Create Client")}}</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>

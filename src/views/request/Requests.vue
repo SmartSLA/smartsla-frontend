@@ -26,7 +26,7 @@
         hide-details
         class="scoped-requests-search"
         id="first-combo"
-        label="Categories"
+        v-bind:label="$t('Categories')"
       ></v-select>
       <v-select
         solo
@@ -34,7 +34,7 @@
         v-model="valuesFilter"
         hide-details
         class="scoped-requests-search"
-        label="values"
+        v-bind:label="$t('Values')"
       ></v-select>
       <v-btn class="requests-filter-add">
         <v-icon dark>add</v-icon>
@@ -50,7 +50,7 @@
         v-model="storedSelectionsFilter"
         hide-details
         class="scoped-requests-search"
-        label="Stored selections"
+        v-bind:label="$t('Stored selections')"
         @input="$emit('input')"
       ></v-select>
       <v-btn class="requests-filter-add">
@@ -229,7 +229,7 @@ export default {
         { text: this.$i18n.t("Subject"), value: "incident_wording" },
         { text: this.$i18n.t("Assign To"), value: "assign_to" },
         { text: this.$i18n.t("Responsible"), value: "responsible" },
-        { text: this.$i18n.t("Transmitter"), value: "transmitter" },
+        { text: this.$i18n.t("Author"), value: "transmitter" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
         { text: this.$i18n.t("MAJ"), value: "maj" },
         { text: this.$i18n.t("Created"), value: "created" },
@@ -374,12 +374,12 @@ export default {
 
 td {
   margin: 2px !important;
-  padding: 2px !important;
+  padding: 0px 15px !important;
   text-align: center;
 }
 
 th.column.sortable.text-xs-left {
-  padding: 2px !important;
+  padding: 0px 15px !important;
   text-align: center !important;
 }
 
