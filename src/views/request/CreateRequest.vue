@@ -24,7 +24,7 @@
                     <v-text-field
                       prepend-icon="mail"
                       name="Mail"
-                      :label="$t('Participants E-mails (separated by commas')"
+                      :label="$t('Participants E-mails (separated by commas)')"
                       type="text"
                     ></v-text-field>
                   </v-flex>
@@ -39,7 +39,7 @@
                           prepend-icon="report"
                           :items="severityList"
                           v-model="severity"
-                          label="Severity"
+                          :label="$t('Severity')"
                         ></v-select>
                       </v-flex>
                     </v-layout>
@@ -138,7 +138,7 @@
                       :thumb-url="thumbUrl"
                       :headers="headers"
                       @change="onFileChange"
-                      btn-label="Attach file"
+                      :btn-label="$t('Attach file')"
                       btn-uploading-label="Uploading file"
                     ></file-upload>
                   </v-flex>
@@ -259,6 +259,9 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
+  },
+  updated() {
+    console.log(this.type);
   },
   watch: {
     search() {
