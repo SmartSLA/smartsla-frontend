@@ -7,22 +7,22 @@
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
           <router-link :to="{ path: 'requests' }">
-            <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png">
+            <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
           </router-link>
         </v-toolbar-title>
         <v-layout row justify-space-between>
           <v-flex grow>
-            <logged-main-navigation v-if="$auth.check()"/>
+            <logged-main-navigation v-if="$auth.check()" />
           </v-flex>
           <v-flex shrink>
-            <op-user-menu v-if="$auth.check()"/>
+            <op-user-menu v-if="$auth.check()" />
           </v-flex>
         </v-layout>
       </v-toolbar>
       <v-content>
         <v-container fluid fill-height>
           <v-layout justify-center align-center>
-            <router-view/>
+            <router-view />
           </v-layout>
         </v-container>
       </v-content>
@@ -30,7 +30,7 @@
     <div v-else>
       <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
     </div>
-    <op-snackbar/>
+    <op-snackbar />
   </v-app>
 </template>
 

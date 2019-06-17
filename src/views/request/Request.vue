@@ -262,7 +262,7 @@
                     </v-input>
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
-                        <v-flex xs3>
+                        <v-flex xs2>
                           <v-select :items="statusList" :label="$t('Status')"></v-select>
                         </v-flex>
                         <v-flex xs3>
@@ -275,7 +275,7 @@
                             :label="$t('private comment')"
                           ></v-checkbox>
                         </v-flex>
-                        <v-flex xs3>
+                        <v-flex xs4>
                           <file-upload
                             prepend-icon="attach_file"
                             class="file pt-2"

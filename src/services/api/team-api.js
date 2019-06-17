@@ -12,7 +12,7 @@ export default {
   },
 
   updateTeam(teamId, options) {
-    return this.update(`/ticketing/api/team/${teamId}`, options);
+    return this.post(`/ticketing/api/team/${teamId}`, options);
   },
 
   deleteTeam(teamId) {

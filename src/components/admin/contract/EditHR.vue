@@ -25,8 +25,8 @@
         <v-flex xs4></v-flex>
         <v-flex xs4></v-flex>
         <v-flex xs4>
-          <ul>
-            <li v-for="selectedTeam in contractTeams" :key="selectedTeam.id">
+          <ul v-if="contract.humanResources && contract.humanResources.teams">
+            <li v-for="selectedTeam in contract.humanResources.teams" :key="selectedTeam.id">
               <v-layout row wrap>
                 <v-flex xs6>{{ selectedTeam.name }}</v-flex>
                 <v-flex xs6>
@@ -67,8 +67,8 @@
         </v-flex>
         <v-flex xs4></v-flex>
         <v-flex xs4>
-          <ul>
-            <li v-for="selectedBeneficiary in contractBeneficiaries" :key="selectedBeneficiary.id">
+          <ul v-if="contract.humanResources && contract.humanResources.beneficiaries">
+            <li v-for="selectedBeneficiary in contract.humanResources.beneficiaries" :key="selectedBeneficiary.id">
               <v-layout row wrap>
                 <v-flex xs6>{{ selectedBeneficiary.name }}</v-flex>
                 <v-flex xs6>
@@ -76,7 +76,7 @@
                     flat
                     small
                     class="error--text mt-0"
-                    @click="removePerson(selectedBeneficiary.id)"
+                    @click="removePerson(selectedBeneficiary)"
                   >
                     <v-icon class="error--text">remove_circle</v-icon>
                     {{ $t("remove") }}
@@ -102,7 +102,7 @@
               <v-flex xs3>{{ $t("Contracts") }}</v-flex>
               <v-flex xs9>
                 <v-select
-                  v-model="Accountcontract"
+                  v-model="account.contract"
                   :items="contracts"
                   item-text="name"
                   flat
@@ -174,7 +174,7 @@
               </v-flex>
               <v-flex xs3></v-flex>
               <v-flex xs8>
-                <v-btn @click="createAccount" class="success">{{ $t("Create account") }}</v-btn>
+                <v-btn @click="addPerson(account)" class="success">{{ $t("Create account") }}</v-btn>
                 {{ $t("or") }}
                 <v-btn @click="clear" class="error">{{ $t("Cancel") }}</v-btn>
               </v-flex>
@@ -204,6 +204,7 @@ export default {
   name: "edit-contract-hr",
   data() {
     return {
+      contract: {},
       createAccount: false,
       account: {
         contracts: []
@@ -256,43 +257,48 @@ export default {
         { id: 12, name: "Cyril Hector" },
         { id: 13, name: "Clarisse Daniel" },
         { id: 14, name: "Cyprien René" }
-      ],
-      contractTeams: [
-        { id: 6, name: "Informatique Interne" },
-        { id: 7, name: "LinShare" },
-        { id: 8, name: "C3L" }
-      ],
-      contractBeneficiaries: [
-        { id: 8, name: "Killian Sybille" },
-        { id: 9, name: "David Héloïse" },
-        { id: 10, name: "Rose Daphné" }
       ]
     };
   },
+  mounted() {
+    if (this.$route.params.id) {
+      this.$http
+        .getContractById(this.$route.params.id)
+        .then(response => {
+          this.contract = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    }
+  },
   methods: {
     addTeam(team) {
-      if (!this.contractTeams.filter(item => item.id == team.id).length) {
-        this.contractTeams.push(team);
+      if (!this.contract.humanResources.teams.filter(item => item.id == team.id).length) {
+        this.contract.humanResources.teams.push(Object.assign({}, team));
         this.selectedTeam = "";
       }
     },
 
     removeTeam(teamId) {
-      this.contractTeams = this.contractTeams.filter(team => team.id != teamId);
+      this.contract.humanResources.teams = this.contract.humanResources.teams.filter(team => team.id != teamId);
     },
 
     addPerson(person) {
-      if (
-        !this.contractBeneficiaries.filter(item => item.id == person.id).length
-      ) {
-        this.contractBeneficiaries.push(person);
+      if (!this.contract.humanResources.beneficiaries.filter(item => item.id == person.id).length) {
+        this.contract.humanResources.beneficiaries.push(Object.assign({}, person));
         this.selectedPerson = "";
       }
+
+      this.createAccount = false;
     },
 
-    removePerson(personId) {
-      this.contractBeneficiaries = this.contractBeneficiaries.filter(
-        person => person.id != personId
+    removePerson(selectedPerson) {
+      this.contract.humanResources.beneficiaries = this.contract.humanResources.beneficiaries.filter(
+        person => JSON.stringify(selectedPerson) != JSON.stringify(person)
       );
     },
 
@@ -312,11 +318,26 @@ export default {
     },
 
     validate() {
-      return;
+      this.$http
+        .updateContract(this.contract._id, this.contract)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     },
 
     clear() {
-      return;
+      this.account = {
+        contracts: []
+      };
     }
   }
 };
