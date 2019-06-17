@@ -4,9 +4,9 @@
       <div>
         <h3 class="title mb-0">
           {{ $t("Contractual commitments") }}
-          <v-chip :color="critColor(engagementType)" :text-color="critTextColor(engagementType)" label>{{
-            $t(engagementType)
-          }}</v-chip>
+          <v-chip :color="critColor(engagementType)" :text-color="critTextColor(engagementType)" label>
+            {{ $t(engagementType) }}
+          </v-chip>
         </h3>
       </div>
     </v-card-title>
@@ -55,12 +55,14 @@
             <v-flex xs4>
               <v-select v-model="newCommitment.request" :items="requestTypes" flat single-line></v-select>
             </v-flex>
-            <v-flex xs1 pl1>
+            <v-flex xs1 pl1 v-if="newCommitment.request == 'other'">
               <span class="pl-1">{{ $t("or add") }}</span>
             </v-flex>
-            <v-flex xs4>
+            <v-flex xs1 pl1 v-else></v-flex>
+            <v-flex xs4 v-if="newCommitment.request == 'other'">
               <v-text-field v-model="newRequest" requried></v-text-field>
             </v-flex>
+            <v-flex xs4 v-else></v-flex>
             <v-flex xs3>{{ $t("Severity") }}</v-flex>
             <v-flex xs4>
               <v-select v-model="newCommitment.severity" :items="severityTypes" flat single-line></v-select>
@@ -160,7 +162,7 @@ export default {
       },
       addCommitment: false,
       contract: {},
-      requestTypes: ["Information", "Anomalie logiciel", "type c"],
+      requestTypes: ["Information", "Anomalie logiciel", "type c", "other"],
       severityTypes: ["Minor", "Major", "blocking", "None"],
       ossaIds: ["blocking", "non-blocking", "inf request"]
     };
@@ -181,15 +183,9 @@ export default {
         newCommitment.severity = this.newSeverity;
       }
 
-      newCommitment.bypassed = `${this.newCommitment.bypassed.days} ${this.$i18n.t("D")} ${
-        this.newCommitment.bypassed.hours
-      } ${this.$i18n.t("H")}`;
-      newCommitment.fix = `${this.newCommitment.fix.days} ${this.$i18n.t("D")} ${
-        this.newCommitment.fix.hours
-      } ${this.$i18n.t("H")}`;
-      newCommitment.supported = `${this.newCommitment.supported.days} ${this.$i18n.t("D")} ${
-        this.newCommitment.supported.hours
-      } ${this.$i18n.t("H")}`;
+      newCommitment.bypassed = this.getDaysAndHours(this.newCommitment.bypassed);
+      newCommitment.fix = this.getDaysAndHours(this.newCommitment.fix);
+      newCommitment.supported = this.getDaysAndHours(this.newCommitment.supported);
 
       if (
         !this.engagementList.engagements.filter(
@@ -226,6 +222,30 @@ export default {
         default:
           return "black";
       }
+    },
+
+    getDaysAndHours(schedule) {
+      var duration = "";
+      if (!schedule.days && !schedule.hours) {
+        return "-";
+      }
+
+      if (schedule.days && schedule.days.length) {
+        duration = `${schedule.days}${this.$i18n.t("D")}`;
+      }
+
+      if (schedule.hours && schedule.hours.length) {
+        if (schedule.days && schedule.days.length) {
+          duration = `${duration}-`;
+        }
+        duration = `${duration}${schedule.hours}${this.$i18n.t("H")}`;
+      }
+
+      if (!duration.length) {
+        duration = "-";
+      }
+
+      return duration;
     },
 
     validate() {

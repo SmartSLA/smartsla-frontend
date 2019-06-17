@@ -41,10 +41,10 @@
                     <div class="subheading font-weight-medium">{{ $t("Client") }} :</div>
                   </v-flex>
                   <v-flex xs8>
-                    <v-icon>help</v-icon>
+                    {{ contract.client }}
                   </v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $t("name") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Name") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.name }}</v-flex>
                   <v-flex xs4>
