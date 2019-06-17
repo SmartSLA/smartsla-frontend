@@ -67,12 +67,14 @@
             <v-flex xs4>
               <v-select v-model="newCommitment.severity" :items="severityTypes" flat single-line></v-select>
             </v-flex>
-            <v-flex xs1 pl1>
+            <v-flex xs1 pl1 v-if="newCommitment.severity == 'other'">
               <span class="pl-1">{{ $t("or add") }}</span>
             </v-flex>
-            <v-flex xs4>
+            <v-flex xs1 pl1 v-else></v-flex>
+            <v-flex xs4 v-if="newCommitment.severity == 'other'">
               <v-text-field v-model="newSeverity" requried></v-text-field>
             </v-flex>
+            <v-flex xs4 v-else></v-flex>
             <v-flex xs3>{{ $t("Ossa identifier") }}</v-flex>
             <v-flex xs4>
               <v-select v-model="newCommitment.idOssa" :items="ossaIds" flat single-line></v-select>
@@ -163,7 +165,7 @@ export default {
       addCommitment: false,
       contract: {},
       requestTypes: ["Information", "Anomalie logiciel", "type c", "other"],
-      severityTypes: ["Minor", "Major", "blocking", "None"],
+      severityTypes: ["Minor", "Major", "blocking", "None", "other"],
       ossaIds: ["blocking", "non-blocking", "inf request"]
     };
   },
@@ -231,14 +233,14 @@ export default {
       }
 
       if (schedule.days && schedule.days.length) {
-        duration = `${schedule.days}${this.$i18n.t("D")}`;
+        duration = `${schedule.days}${this.$i18n.t("JO")}`;
       }
 
       if (schedule.hours && schedule.hours.length) {
         if (schedule.days && schedule.days.length) {
           duration = `${duration}-`;
         }
-        duration = `${duration}${schedule.hours}${this.$i18n.t("H")}`;
+        duration = `${duration}${schedule.hours}${this.$i18n.t("HO")}`;
       }
 
       if (!duration.length) {

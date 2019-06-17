@@ -99,17 +99,13 @@
           </v-flex>
           <v-flex xs3>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
-            <v-btn-toggle v-model="contract.contractStatus">
-              <v-btn
-                value="active"
-                flat
-                :class="{ success: contract.contractStatus == 'active' }"
-              >{{ $t("Active") }}</v-btn>
-              <v-btn
-                value="inactive"
-                flat
-                :class="{ error: contract.contractStatus == 'inactive' }"
-              >{{ $t("Inactive") }}</v-btn>
+            <v-btn-toggle v-model="contract.status">
+              <v-btn :value="true" flat :class="{ success: contract.status }">
+                {{ $t("Active") }}
+              </v-btn>
+              <v-btn :value="false" flat :class="{ error: !contract.status }">
+                {{ $t("Inactive") }}
+              </v-btn>
             </v-btn-toggle>
           </v-flex>
           <v-flex xs3>{{ $t("Type") }}</v-flex>
@@ -166,7 +162,7 @@ export default {
         },
         startDate: "",
         endDate: "",
-        contractStatus: "active",
+        status: true,
         type: "",
         sharedRequests: true,
         govern: "",
@@ -247,29 +243,46 @@ export default {
 
     validate() {
       var contract = this.contract;
-      if (contract.mailingList.external.length) {
+      if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
         contract.mailingList.external = contract.mailingList.external.split(",");
       }
-      if (contract.mailingList.internal.length) {
+      if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
         contract.mailingList.internal = contract.mailingList.internal.split(",");
       }
-      this.$http
-        .createContract(contract)
-        .then(response => {
-          if (response.data && response.status === 201) {
+      if (!this.isNew) {
+        this.$http
+          .createContract(contract)
+          .then(response => {
+            if (response.data && response.status === 201) {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("contract saved"),
+                color: "success"
+              });
+              this.contract = {};
+            }
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
+          });
+      } else {
+        this.$http
+          .updateContract(contract._id, contract)
+          .then(response => {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("contract saved"),
               color: "success"
             });
-            this.contract = {};
-          }
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
           });
-        });
+      }
     }
   }
 };
