@@ -16,8 +16,9 @@
           {{ $t("E") }}: {{ props.item.SupportDate.end }}
         </td>
         <td class="text-xs-center">
-          <v-chip color="red" text-color="white" label v-if="props.item.critical">{{ $t("Yes") }}</v-chip>
-          <v-chip label v-else>{{ $t("No") }}</v-chip>
+          <v-chip :color="critColor(props.item.critical)" :text-color="critTextColor(props.item.critical)" label>{{
+            $t(props.item.critical)
+          }}</v-chip>
         </td>
         <td class="text-xs-center">
           <span v-if="props.item.generic == 'yes'">{{ $t("yes") }}</span>
@@ -176,6 +177,7 @@
 </template>
 
 <script>
+import { error } from "util";
 export default {
   name: "edit-contract-software",
   data() {
@@ -243,6 +245,33 @@ export default {
             color: "error"
           });
         });
+    },
+    critColor(critLevel) {
+      switch (critLevel) {
+        case "critical":
+          return "#f44336";
+          break;
+        case "sensible":
+          return "#f4b336";
+          break;
+        case "standard":
+          return "#e0e0e0";
+          break;
+
+        default:
+          return "";
+      }
+    },
+
+    critTextColor(critLevel) {
+      switch (critLevel) {
+        case "critical":
+        case "sensible":
+          return "white";
+          break;
+        default:
+          return "black";
+      }
     }
   },
   computed: {
@@ -281,7 +310,17 @@ export default {
     }
   },
   created() {
-    this.softwareList = require("@/assets/data/software.json");
+    this.$http
+      .listSoftware()
+      .then(response => {
+        this.softwareList = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: "cannot fetch software list",
+          color: "error"
+        });
+      });
   }
 };
 </script>

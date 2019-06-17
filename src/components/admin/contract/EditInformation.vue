@@ -14,7 +14,7 @@
           </v-flex>
           <v-flex xs3>{{ $t("Client") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="clients" v-model="contract.client"></v-select>
+            <v-select :items="clients" v-model="contract.client" item-text="name"></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
@@ -130,6 +130,7 @@
 </template>
 
 <script>
+import { error } from "util";
 export default {
   name: "edit-contract-information",
   data() {
@@ -169,7 +170,7 @@ export default {
       startDateModel: false,
       endDateModel: false,
       valid: false,
-      clients: ["DGT - CLUB de paris", "linagora", "GDT"],
+      clients: [],
       commercials: ["André VASSILIF", "Rosette Dorothée", "Denise Lucrèce", "Soraya Louisette", "Pétronille Priscille"],
       techRefs: ["Sacha Méline", "Gilberte Marcellette", "Jérome HERLEDAN", "Maximilienne Priscille", "César Tristan"]
     };
@@ -193,6 +194,18 @@ export default {
           });
         });
     }
+
+    this.$http
+      .listClients()
+      .then(response => {
+        this.clients = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: "cannot fetch clients",
+          color: "error"
+        });
+      });
   },
   methods: {
     parseDate(date) {
@@ -204,8 +217,12 @@ export default {
 
     validate() {
       var contract = this.contract;
-      contract.mailingList.external = contract.mailingList.external.split(",");
-      contract.mailingList.internal = contract.mailingList.internal.split(",");
+      if (contract.mailingList.external.length) {
+        contract.mailingList.external = contract.mailingList.external.split(",");
+      }
+      if (contract.mailingList.internal.length) {
+        contract.mailingList.internal = contract.mailingList.internal.split(",");
+      }
       this.$http
         .createContract(contract)
         .then(response => {
