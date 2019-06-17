@@ -8,13 +8,13 @@
       </v-card-title>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-layout row wrap align-center>
-          <v-flex xs3>{{ $t("Name") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Name") }}</v-flex>
           <v-flex xs8>
-            <v-text-field v-model="contract.name"></v-text-field>
+            <v-text-field v-model="contract.name" :rules="['required']" required></v-text-field>
           </v-flex>
-          <v-flex xs3>{{ $t("Client") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="clients" v-model="contract.client" item-text="name"></v-select>
+            <v-select :items="clients" v-model="contract.client" item-text="name" :rules="['required']" required></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
@@ -32,7 +32,7 @@
           <v-flex xs8>
             <v-text-field v-model="contract.mailingList.external" required></v-text-field>
           </v-flex>
-          <v-flex xs3>{{ $t("Start") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
           <v-flex xs8>
             <v-menu
               v-model="startDateModel"
@@ -54,10 +54,16 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="contract.startDate" no-title @input="startDateModel = false"></v-date-picker>
+              <v-date-picker
+                v-model="contract.startDate"
+                no-title
+                @input="startDateModel = false"
+                :rules="['required']"
+                required
+              ></v-date-picker>
             </v-menu>
           </v-flex>
-          <v-flex xs3>{{ $t("End") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $t("End") }}</v-flex>
           <v-flex xs8>
             <v-menu
               v-model="endDateModel"
@@ -79,21 +85,31 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="contract.endDate" no-title @input="endDateModel = false"></v-date-picker>
+              <v-date-picker
+                v-model="contract.endDate"
+                no-title
+                @input="endDateModel = false"
+                :rules="['required']"
+                required
+              ></v-date-picker>
             </v-menu>
           </v-flex>
           <v-flex xs12>
-            <br />
+            <br>
           </v-flex>
           <v-flex xs3>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
             <v-btn-toggle v-model="contract.contractStatus">
-              <v-btn value="active" flat :class="{ success: contract.contractStatus == 'active' }">{{
-                $t("Active")
-              }}</v-btn>
-              <v-btn value="inactive" flat :class="{ error: contract.contractStatus == 'inactive' }">{{
-                $t("Inactive")
-              }}</v-btn>
+              <v-btn
+                value="active"
+                flat
+                :class="{ success: contract.contractStatus == 'active' }"
+              >{{ $t("Active") }}</v-btn>
+              <v-btn
+                value="inactive"
+                flat
+                :class="{ error: contract.contractStatus == 'inactive' }"
+              >{{ $t("Inactive") }}</v-btn>
             </v-btn-toggle>
           </v-flex>
           <v-flex xs3>{{ $t("Type") }}</v-flex>
@@ -116,12 +132,14 @@
             <v-text-field></v-text-field>
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <br />
+            <br>
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn :disabled="!valid" color="success" @click="validate">{{
-              isNew ? $t("Validate the changes") : $t("Create")
-            }}</v-btn>
+            <v-btn
+              :disabled="!valid"
+              color="success"
+              @click="validate"
+            >{{ isNew ? $t("Validate the changes") : $t("Create") }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -171,8 +189,20 @@ export default {
       endDateModel: false,
       valid: false,
       clients: [],
-      commercials: ["André VASSILIF", "Rosette Dorothée", "Denise Lucrèce", "Soraya Louisette", "Pétronille Priscille"],
-      techRefs: ["Sacha Méline", "Gilberte Marcellette", "Jérome HERLEDAN", "Maximilienne Priscille", "César Tristan"]
+      commercials: [
+        "André VASSILIF",
+        "Rosette Dorothée",
+        "Denise Lucrèce",
+        "Soraya Louisette",
+        "Pétronille Priscille"
+      ],
+      techRefs: [
+        "Sacha Méline",
+        "Gilberte Marcellette",
+        "Jérome HERLEDAN",
+        "Maximilienne Priscille",
+        "César Tristan"
+      ]
     };
   },
   computed: {

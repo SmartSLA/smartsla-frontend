@@ -12,7 +12,15 @@
               <v-form>
                 <v-layout wrap row>
                   <v-flex xs6>
-                    <v-text-field prepend-icon="create" name="Title" :label="$t('Title')" type="text"></v-text-field>
+                    <v-text-field
+                      prepend-icon="create"
+                      name="Title"
+                      :label="$t('Title')"
+                      type="text"
+                      :rules="['required']"
+                      class="required-element"
+                      required
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs12>
@@ -26,7 +34,15 @@
                   <v-flex xs8>
                     <v-layout row wrap>
                       <v-flex xs3>
-                        <v-select prepend-icon="storage" :items="types" v-model="type" label="Type"></v-select>
+                        <v-select
+                          prepend-icon="storage"
+                          :items="types"
+                          v-model="type"
+                          label="Type"
+                          :rules="['required']"
+                          class="required-element"
+                          required
+                        ></v-select>
                       </v-flex>
                       <v-flex xs1></v-flex>
                       <v-flex xs3>
@@ -35,6 +51,9 @@
                           :items="severityList"
                           v-model="severity"
                           :label="$t('Severity')"
+                          :rules="['required']"
+                          class="required-element"
+                          required
                         ></v-select>
                       </v-flex>
                     </v-layout>
@@ -49,6 +68,9 @@
                           prepend-icon="laptop"
                           background-color="white"
                           :search-input.sync="software"
+                          :rules="['required']"
+                          class="required-element"
+                          required
                         ></v-autocomplete>
                       </v-flex>
                       <v-flex xs1></v-flex>
@@ -59,6 +81,9 @@
                           prepend-icon="mdi-counter"
                           background-color="white"
                           :search-input.sync="version"
+                          :rules="['required']"
+                          class="required-element"
+                          required
                         ></v-autocomplete>
                       </v-flex>
                       <v-flex xs1></v-flex>
@@ -76,7 +101,13 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-input prepend-icon="notes">
-                      <vue-editor placeholder="Description" v-model="description"></vue-editor>
+                      <vue-editor
+                        placeholder="Description"
+                        v-model="description"
+                        :rules="['required']"
+                        class="required-element"
+                        required
+                      ></vue-editor>
                     </v-input>
                   </v-flex>
 
@@ -103,7 +134,11 @@
                           class="pt-0"
                         >
                           <template v-slot:append-outer>
-                            <v-btn solo class="ml-0 white black--text mt-0 full-height" @click.native="addRelated">
+                            <v-btn
+                              solo
+                              class="ml-0 white black--text mt-0 full-height"
+                              @click.native="addRelated"
+                            >
                               <v-icon dark>add</v-icon>
                             </v-btn>
                           </template>
@@ -112,13 +147,16 @@
                       <v-flex xs2></v-flex>
                     </v-layout>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
+                      <v-chip
+                        v-model="linkedRequests[key]"
+                        close
+                      >{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs10 class="pl-4">
-                    <br />
+                    <br>
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
@@ -137,7 +175,11 @@
               <v-layout>
                 <v-flex xs6 text-xs-right align-end>
                   <v-spacer></v-spacer>
-                  <v-btn :disabled="submitRequest" :loading="submitRequest" @click="submit">{{ $t("Submit") }}</v-btn>
+                  <v-btn
+                    :disabled="submitRequest"
+                    :loading="submitRequest"
+                    @click="submit"
+                  >{{ $t("Submit") }}</v-btn>
                 </v-flex>
               </v-layout>
             </v-card-actions>
@@ -159,7 +201,15 @@ export default {
     return {
       linkedRequest: "",
       linkType: "",
-      linkTypes: ["lié à", "duplique", "dupliqué par", "bloque", "bloqué par", "précède", "suit"],
+      linkTypes: [
+        "lié à",
+        "duplique",
+        "dupliqué par",
+        "bloque",
+        "bloqué par",
+        "précède",
+        "suit"
+      ],
       linkedRequests: [],
       description: "",
       url: "http://your-post.url",
@@ -194,7 +244,14 @@ export default {
       ],
       osList: ["Linux", "Windows", "Mac OS"],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"]
+      relatedRequests: [
+        "#1 issue1",
+        "#3 issue3",
+        "#18 issue18",
+        "#41 issue41",
+        "#35 issue35",
+        "#70 issue70"
+      ]
     };
   },
   components: {
