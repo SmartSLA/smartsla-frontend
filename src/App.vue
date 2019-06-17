@@ -252,4 +252,9 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .container {
   max-width: 100% !important;
 }
+
+.required-element label::after, .required-label::after {
+  content: '*';
+  color: red;
+}
 </style>

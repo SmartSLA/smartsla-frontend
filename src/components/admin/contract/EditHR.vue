@@ -41,7 +41,7 @@
         </v-flex>
         <v-flex xs4></v-flex>
       </v-layout>
-      <br />
+      <br>
       <v-divider></v-divider>
       <v-layout row wrap align-center>
         <v-flex xs4>
@@ -72,7 +72,12 @@
               <v-layout row wrap>
                 <v-flex xs6>{{ selectedBeneficiary.name }}</v-flex>
                 <v-flex xs6>
-                  <v-btn flat small class="error--text mt-0" @click="removePerson(selectedBeneficiary.id)">
+                  <v-btn
+                    flat
+                    small
+                    class="error--text mt-0"
+                    @click="removePerson(selectedBeneficiary.id)"
+                  >
                     <v-icon class="error--text">remove_circle</v-icon>
                     {{ $t("remove") }}
                   </v-btn>
@@ -83,7 +88,7 @@
         </v-flex>
         <v-flex xs4></v-flex>
       </v-layout>
-      <br />
+      <br>
       <v-layout row wrap align-center>
         <v-flex xs1></v-flex>
         <v-flex xs8>
@@ -114,7 +119,12 @@
                     <v-layout row wrap>
                       <v-flex xs6>{{ contract.name }}</v-flex>
                       <v-flex xs6>
-                        <v-btn flat small class="error--text mt-0" @click="removeContract(contract.id)">
+                        <v-btn
+                          flat
+                          small
+                          class="error--text mt-0"
+                          @click="removeContract(contract.id)"
+                        >
                           <v-icon class="error--text">remove_circle</v-icon>
                           {{ $t("remove") }}
                         </v-btn>
@@ -173,11 +183,15 @@
           </form>
         </v-flex>
       </v-layout>
-      <br />
+      <br>
       <v-layout row wrap align-center>
         <v-flex xs4></v-flex>
         <v-flex xs3>
-          <v-btn @click="validate" class="success" :disabled="createAccount">{{ $t("Validate changes") }}</v-btn>
+          <v-btn
+            @click="validate"
+            class="success"
+            :disabled="createAccount"
+          >{{ $t("Validate changes") }}</v-btn>
         </v-flex>
         <v-flex xs3></v-flex>
       </v-layout>
@@ -243,7 +257,11 @@ export default {
         { id: 13, name: "Clarisse Daniel" },
         { id: 14, name: "Cyprien René" }
       ],
-      contractTeams: [{ id: 6, name: "Informatique Interne" }, { id: 7, name: "LinShare" }, { id: 8, name: "C3L" }],
+      contractTeams: [
+        { id: 6, name: "Informatique Interne" },
+        { id: 7, name: "LinShare" },
+        { id: 8, name: "C3L" }
+      ],
       contractBeneficiaries: [
         { id: 8, name: "Killian Sybille" },
         { id: 9, name: "David Héloïse" },
@@ -264,25 +282,33 @@ export default {
     },
 
     addPerson(person) {
-      if (!this.contractBeneficiaries.filter(item => item.id == person.id).length) {
+      if (
+        !this.contractBeneficiaries.filter(item => item.id == person.id).length
+      ) {
         this.contractBeneficiaries.push(person);
         this.selectedPerson = "";
       }
     },
 
     removePerson(personId) {
-      this.contractBeneficiaries = this.contractBeneficiaries.filter(person => person.id != personId);
+      this.contractBeneficiaries = this.contractBeneficiaries.filter(
+        person => person.id != personId
+      );
     },
 
     addContract(contract) {
-      if (!this.account.contracts.filter(item => item.id == contract.id).length) {
+      if (
+        !this.account.contracts.filter(item => item.id == contract.id).length
+      ) {
         this.account.contracts.push(contract);
         this.selectedContract = "";
       }
     },
 
     removeContract(contractId) {
-      this.account.contracts = this.account.contracts.filter(contract => contract.id != contractId);
+      this.account.contracts = this.account.contracts.filter(
+        contract => contract.id != contractId
+      );
     },
 
     validate() {

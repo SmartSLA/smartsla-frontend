@@ -1,14 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Users' }"
-      >&lt; {{ $t("Return to users list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Users' }"
+    >&lt; {{ $t("Return to users list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -24,10 +27,10 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Name") }} :</strong>
+              <strong class="required-label">{{ $t("Name") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.name"></v-text-field>
+              <v-text-field v-model="user.name" :rules="['required']" required></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
@@ -38,31 +41,31 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Email") }} :</strong>
+              <strong class="required-label">{{ $t("Email") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.email"></v-text-field>
+              <v-text-field v-model="user.email" :rules="['required']" required></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Phone") }} :</strong>
+              <strong class="required-label">{{ $t("Phone") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.phone"></v-text-field>
+              <v-text-field v-model="user.phone" :rules="['required']" required></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Identifier") }} :</strong>
+              <strong class="required-label">{{ $t("Identifier") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.identifier"></v-text-field>
+              <v-text-field v-model="user.identifier" :rules="['required']" required></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Role") }} :</strong>
+              <strong class="required-label">{{ $t("Role") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-radio-group v-model="user.role" row color="primary">
+              <v-radio-group v-model="user.role" row color="primary" :rules="['required']" required>
                 <v-radio :label="$t('Customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
                 <v-radio :label="$t('Viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
                 <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
