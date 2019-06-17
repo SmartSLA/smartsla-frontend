@@ -139,7 +139,7 @@
               :disabled="!valid"
               color="success"
               @click="validate"
-            >{{ $t("Validate the changes") }}</v-btn>
+            >{{ isNew ? $t("Validate the changes") : $t("Create") }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
