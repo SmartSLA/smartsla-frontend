@@ -14,15 +14,15 @@
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="clients" :value="contract.client" :rules="['required']" required></v-select>
+            <v-select :items="clients" v-model="contract.client" item-text="name" :rules="['required']" required></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="commercials" :value="contract.contact.commercial"></v-select>
+            <v-select :items="commercials" v-model="contract.contact.commercial"></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("technical contact") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="techRefs" :value="contract.contact.technical"></v-select>
+            <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Internal mailing list") }}</v-flex>
           <v-flex xs8>
@@ -99,30 +99,15 @@
           </v-flex>
           <v-flex xs3>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
-            <v-btn-toggle v-model="contract.contractStatus">
-              <v-btn
-                value="active"
-                flat
-                :class="{ success: contract.contractStatus == 'active' }"
-              >{{ $t("Active") }}</v-btn>
-              <v-btn
-                value="inactive"
-                flat
-                :class="{ error: contract.contractStatus == 'inactive' }"
-              >{{ $t("Inactive") }}</v-btn>
+            <v-btn-toggle v-model="contract.status">
+              <v-btn :value="true" flat :class="{ success: contract.status }">
+                {{ $t("Active") }}
+              </v-btn>
+              <v-btn :value="false" flat :class="{ error: !contract.status }">
+                {{ $t("Inactive") }}
+              </v-btn>
             </v-btn-toggle>
           </v-flex>
-          <v-flex xs3>{{ $t("Schedule") }}</v-flex>
-          <v-flex xs1>
-            <v-text-field mask="##" v-model="contract.schedule.start"></v-text-field>
-          </v-flex>
-          <v-flex xs1>h</v-flex>
-          <v-flex xs1>-</v-flex>
-          <v-flex xs1>
-            <v-text-field mask="##" v-model="contract.schedule.end"></v-text-field>
-          </v-flex>
-          <v-flex xs1>h</v-flex>
-          <v-flex xs3></v-flex>
           <v-flex xs3>{{ $t("Type") }}</v-flex>
           <v-flex xs8>
             <v-radio-group v-model="contract.type" row>
@@ -150,7 +135,7 @@
               :disabled="!valid"
               color="success"
               @click="validate"
-            >{{ $t("Validate the changes") }}</v-btn>
+            >{{ isNew ? $t("Validate the changes") : $t("Create") }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -159,37 +144,36 @@
 </template>
 
 <script>
+import { error } from "util";
 export default {
   name: "edit-contract-information",
   data() {
     return {
       contract: {
-        name: "contract 1",
-        client: "DGT - CLUB de paris",
+        name: "",
+        client: "",
         contact: {
-          commercial: "André VASSILIF",
-          technical: "Jérome HERLEDAN"
+          commercial: "",
+          technical: ""
         },
         mailingList: {
-          internal: ["iabouljamal@linagora.com", "hgoguelin@linagora.com"],
-          external: [
-            "fchaillou@humanite.fr",
-            "souheila.boulkhodja@humanite.fr",
-            "webmaster@humanite.fr",
-            "info@humanite.fr"
-          ]
+          internal: [],
+          external: []
         },
-        startDate: "2019-03-26",
-        endDate: "2019-03-26",
-        contractStatus: "active",
-        schedule: {
-          start: "9",
-          end: "18"
-        },
-        type: "unlimited",
+        startDate: "",
+        endDate: "",
+        status: true,
+        type: "",
         sharedRequests: true,
-        govern: "forfait illimité",
-        domain: ""
+        govern: "",
+        domain: "",
+        humanResources: {},
+        Engagements: {
+          critical: {},
+          sensible: {},
+          standard: {}
+        },
+        software: []
       },
       startDateMenu: "",
       endDateMenu: "",
@@ -200,7 +184,7 @@ export default {
       startDateModel: false,
       endDateModel: false,
       valid: false,
-      clients: ["DGT - CLUB de paris", "linagora", "GDT"],
+      clients: [],
       commercials: [
         "André VASSILIF",
         "Rosette Dorothée",
@@ -223,9 +207,31 @@ export default {
     }
   },
   mounted() {
-    if (!this.$route.params.id) {
-      this.contract = {};
+    if (this.$route.params.id) {
+      this.$http
+        .getContractById(this.$route.params.id)
+        .then(response => {
+          this.contract = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
+
+    this.$http
+      .listClients()
+      .then(response => {
+        this.clients = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: "cannot fetch clients",
+          color: "error"
+        });
+      });
   },
   methods: {
     parseDate(date) {
@@ -236,23 +242,47 @@ export default {
     },
 
     validate() {
-      this.$http
-        .createContract(this.contract)
-        .then(response => {
-          if (response.data && response.status === 201) {
+      var contract = this.contract;
+      if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
+        contract.mailingList.external = contract.mailingList.external.split(",");
+      }
+      if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
+        contract.mailingList.internal = contract.mailingList.internal.split(",");
+      }
+      if (!this.isNew) {
+        this.$http
+          .createContract(contract)
+          .then(response => {
+            if (response.data && response.status === 201) {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("contract saved"),
+                color: "success"
+              });
+              this.contract = {};
+            }
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
+          });
+      } else {
+        this.$http
+          .updateContract(contract._id, contract)
+          .then(response => {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("contract saved"),
               color: "success"
             });
-            this.contract = {};
-          }
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
           });
-        });
+      }
     }
   }
 };

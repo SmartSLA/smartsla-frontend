@@ -245,17 +245,17 @@ export default new Router({
           }
         },
         {
-          path: "teams/:id",
-          name: routeNames.TEAM,
-          component: Team,
+          path: "teams/new",
+          name: routeNames.NEWTEAM,
+          component: EditTeam,
           meta: {
             auth: true
           }
         },
         {
-          path: "teams/new",
-          name: routeNames.NEWTEAM,
-          component: EditTeam,
+          path: "teams/:id",
+          name: routeNames.TEAM,
+          component: Team,
           meta: {
             auth: true
           }
@@ -389,7 +389,7 @@ export default new Router({
           }
         },
         {
-          path: "contracts/:id/edit/:section",
+          path: "contracts/:id/edit/:section/:type",
           name: routeNames.EDITCONTRACT,
           component: EditContract,
           meta: {

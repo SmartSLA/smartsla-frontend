@@ -115,6 +115,7 @@
   </v-container>
 </template>
 <script>
+import { error } from "util";
 export default {
   name: "team-detail",
   data() {
@@ -123,7 +124,17 @@ export default {
     };
   },
   created() {
-    this.team = require("@/assets/data/team.json");
+    this.$http
+      .getTeamById(this.$route.params.id)
+      .then(response => {
+        this.team = response.data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: "failed to fetch team",
+          color: "error"
+        });
+      });
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
     this.$store.dispatch("sidebar/setActiveAdminMenu", "teams");
   },
