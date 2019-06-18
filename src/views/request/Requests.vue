@@ -272,6 +272,9 @@ export default {
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
+    this.$http.listSoftware().then(response => {
+      this.softwareList = response.data;
+    });
   },
   computed: {
     ...mapGetters({
@@ -301,19 +304,25 @@ export default {
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     requestFilterByGroup(item, search) {
-      console.log(this.searchCriteria);
-      switch (this.searchCriteria) {
-        case "Ticket":
-          return item.incident_wording.toLowerCase().includes(search);
-        case "Client / Contract":
-          return item.client_contract.toLowerCase().includes(search);
-        case "Responsable":
-          return item.responsable.toLowerCase().includes(search);
-        case "Software":
-          return item.software.toLowerCase().includes(search);
-        default:
-          return false;
-      }
+      // switch (this.searchCriteria) {
+      //   case "Ticket":
+      //     return item.incident_wording.toLowerCase().includes(search);
+      //   case "Client / Contract":
+      //     return item.client_contract.toLowerCase().includes(search);
+      //   case "Responsable":
+      //     return item.responsable.toLowerCase().includes(search);
+      //   case "Software":
+      //     console.log("test");
+      //     return item.software.toLowerCase().includes(search);
+      //   default:
+      //     return false;
+      // }
+      return (
+        item.software.toLowerCase().includes(search) ||
+        item.incident_wording.toLowerCase().includes(search) ||
+        item.client_contrat.client.toLowerCase().includes(search) ||
+        item.client_contrat.contract.toLowerCase().includes(search)
+      );
     },
     addNewFilter() {},
     categoriesFilter() {},
