@@ -91,9 +91,11 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">{{
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
+              {{
               props.item.ticket_number
-            }}</router-link>
+              }}
+            </router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
@@ -140,12 +142,16 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">
-                  {{ props.item.software }}
-                </span>
-                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">
-                  {{ props.item.software }}
-                </span>
+                <span
+                  v-if="props.item.software == 'LibreOffice'"
+                  class="major-criticality"
+                  v-on="on"
+                >{{ props.item.software }}</span>
+                <span
+                  v-else-if="props.item.software == 'NPM'"
+                  class="medium-criticality"
+                  v-on="on"
+                >{{ props.item.software }}</span>
                 <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
@@ -165,18 +171,24 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
+            <v-progress-linear
+              v-if="props.item.conf.color == 'error'"
+              color="#d32f2f"
+              height="20"
+              value="30"
+            >{{ props.item.remaining_time }}</v-progress-linear>
             <!-- <v-progress-linear
               v-if="props.item.conf.color == 'warning'"
               color="warning"
               height="20"
               value="50"
             >{{ props.item.remaining_time }}</v-progress-linear>-->
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
+            <v-progress-linear
+              v-else
+              color="#76c43d"
+              height="20"
+              value="80"
+            >{{ props.item.remaining_time }}</v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -194,7 +206,7 @@ Vue.component("downloadExcel", JsonExcel);
 export default {
   data() {
     return {
-      filterGroups: ["Ticket", "Client / Contract", "Responsable", "Software"],
+      filterGroups: ["Ticket", "Client / Contract", "Software"],
       teams: [
         {
           text: "All Teams",
@@ -282,11 +294,14 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.teamsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.teamsFilter);
+        items = items.filter(
+          item => item.team.toLowerCase() == this.teamsFilter
+        );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     requestFilterByGroup(item, search) {
+      console.log(this.searchCriteria);
       switch (this.searchCriteria) {
         case "Ticket":
           return item.incident_wording.toLowerCase().includes(search);
