@@ -211,7 +211,7 @@ Vue.component("downloadExcel", JsonExcel);
 export default {
   data() {
     return {
-      filterGroups: ["Ticket", "Client / Contract", "Responsible", "Software"],
+      filterGroups: ["Ticket", "Client / Contract", "Responsable", "Software"],
       teams: [
         {
           text: "All Teams",
@@ -249,7 +249,7 @@ export default {
         { text: this.$i18n.t("Software"), value: "software" },
         { text: this.$i18n.t("Subject"), value: "incident_wording" },
         { text: this.$i18n.t("Assign To"), value: "assign_to" },
-        { text: this.$i18n.t("Responsible"), value: "responsible" },
+        { text: this.$i18n.t("Responsable"), value: "responsable" },
         { text: this.$i18n.t("Author"), value: "transmitter" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
         { text: this.$i18n.t("MAJ"), value: "maj" },
@@ -311,8 +311,8 @@ export default {
           return item.incident_wording.toLowerCase().includes(search);
         case "Client / Contract":
           return item.client_contract.toLowerCase().includes(search);
-        case "Responsible":
-          return item.incident_wording.toLowerCase().includes(search);
+        case "Responsable":
+          return item.responsable.toLowerCase().includes(search);
         case "Software":
           return item.software.toLowerCase().includes(search);
         default:
