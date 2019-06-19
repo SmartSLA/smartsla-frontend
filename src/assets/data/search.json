@@ -6,19 +6,7 @@
     "type": "client"
   },
   {
-    "name": "Ali Connors",
-    "type": "client"
-  },
-  {
-    "name": "Trevor Hansen",
-    "type": "client"
-  },
-  {
     "name": "linagora",
-    "type": "client"
-  },
-  {
-    "name": "Tucker Smith",
     "type": "client"
   },
   {
@@ -28,23 +16,11 @@
     "header": "contracts"
   },
   {
-    "name": "SNCF - Maintenance et support linux",
-    "type": "contract"
-  },
-  {
-    "name": "Jane Smith ",
-    "type": "contract"
-  },
-  {
     "name": "linagora openpaas",
     "type": "contract"
   },
   {
-    "name": "John Smith",
-    "type": "contract"
-  },
-  {
-    "name": "Sandra Williams",
+    "name": "SNCF - Maintenance et support linux",
     "type": "contract"
   },
   {
@@ -59,18 +35,10 @@
   },
   {
     "name": "[024873] RHEL 5.8 en kernel panic sur insmod qla2xxx",
-    "type": "tickete"
+    "type": "ticket"
   },
   {
     "name": "[024829] Besoin d'un rpm openssl récent",
-    "type": "ticket"
-  },
-  {
-    "name": "John22 Smith",
-    "type": "ticket"
-  },
-  {
-    "name": "Sandra2 Williams",
     "type": "ticket"
   }
 ]

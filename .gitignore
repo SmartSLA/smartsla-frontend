@@ -4,6 +4,7 @@
 src/_drafts
 node_modules
 dist
+localenv
 # local env files
 .env.local
 .env.*.local

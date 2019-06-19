@@ -12,7 +12,7 @@ export default {
   },
 
   updateClient(clientId, client) {
-    return this.update(`/ticketing/api/client/${clientId}`, client);
+    return this.post(`/ticketing/api/client/${clientId}`, client);
   },
 
   deleteClient(clientId) {
