@@ -629,6 +629,14 @@
     "@babel/helper-regex" "^7.0.0"
     regexpu-core "^4.1.3"
 
+"@babel/polyfill@7.2.5":
+  version "7.2.5"
+  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.2.5.tgz#6c54b964f71ad27edddc567d065e57e87ed7fa7d"
+  integrity sha512-8Y/t3MWThtMLYr0YNC/Q76tqN1w30+b0uQMeFUYauG2UGTR19zyUtFrAzT23zNtBxPp+LbE5E/nwV/q/r3y6ug==
+  dependencies:
+    core-js "^2.5.7"
+    regenerator-runtime "^0.12.0"
+
 "@babel/preset-env@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.0.0.tgz#f450f200c14e713f98cb14d113bf0c2cfbb89ca9"
@@ -742,6 +750,13 @@
   integrity sha512-YpO13776h3e6Wy8dl2J8T9Qwlvopr+b4trCEhHE+yek6yIqV8sx6g3KozdHMbXeBpjosbPi+Ii5Z7X9oXFHUKA==
   dependencies:
     core-js "^2.5.7"
+    regenerator-runtime "^0.12.0"
+
+"@babel/runtime@7.3.4":
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
+  integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
+  dependencies:
     regenerator-runtime "^0.12.0"
 
 "@babel/runtime@^7.0.0":
@@ -3762,12 +3777,14 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emoji-mart-vue@^2.6.6:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/emoji-mart-vue/-/emoji-mart-vue-2.6.6.tgz#afd60da47ff0b59938b3d3cd90dacab6ab0f531e"
-  integrity sha512-844CI/Sa99G6goiZN6u+zT5XxB4wUhpYYTK8s3FrU2fl9y0ckbqe0uw7EuY0R53hb4bo9uJHVOPywE+C4vu4fg==
+emoji-mart-vue-fast@^5.4.14:
+  version "5.4.14"
+  resolved "https://registry.yarnpkg.com/emoji-mart-vue-fast/-/emoji-mart-vue-fast-5.4.14.tgz#fcacf95dc7ac523b1e4d051c49f395df041f5bd4"
+  integrity sha512-22iXzQDG/hJtq7sIsbxvrYztSIkT/0zRVji4VGpoEw3kCvFbYrxptj9jkrHFaHVfrlifO3pa0pMT+MtmQCRu4A==
   dependencies:
-    postcss-loader "^3.0.0"
+    "@babel/polyfill" "7.2.5"
+    "@babel/runtime" "7.3.4"
+    vue-virtual-scroller "^1.0.0-rc.2"
 
 emojis-list@^2.0.0:
   version "2.1.0"
@@ -8834,6 +8851,11 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
+scrollparent@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-2.0.1.tgz#715d5b9cc57760fb22bdccc3befb5bfe06b1a317"
+  integrity sha1-cV1bnMV3YPsivczDvvtb/gaxoxc=
+
 select-hose@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
@@ -10095,10 +10117,10 @@ vue-md-editor@^1.3.3:
     highlight.js "^9.10.0"
     marked "^0.3.6"
 
-vue-no-ssr@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
-  integrity sha512-ZMjqRpWabMPqPc7gIrG0Nw6vRf1+itwf0Itft7LbMXs2g3Zs/NFmevjZGN1x7K3Q95GmIjWbQZTVerxiBxI+0g==
+vue-observe-visibility@^0.4.3:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/vue-observe-visibility/-/vue-observe-visibility-0.4.4.tgz#cf3e945bf80c1317a1c32bc516d6cfd4dda8f8fd"
+  integrity sha512-2eDYHgL2MJ2wkkNZnus56D0CG8m80BFLuvEcGnD7rQ9jxFogpXMsM9aM5Md+XT8AmYGYCqVfOVBaWFtVvwbpmw==
 
 "vue-openpaas-components@github:linagora/vue-openpaas-components":
   version "0.1.0"
@@ -10107,6 +10129,11 @@ vue-no-ssr@^1.1.1:
     vue "^2.5.17"
     vue-router "^3.0.1"
     vuex "^3.0.1"
+
+vue-resize@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/vue-resize/-/vue-resize-0.4.5.tgz#4777a23042e3c05620d9cbda01c0b3cc5e32dcea"
+  integrity sha512-bhP7MlgJQ8TIkZJXAfDf78uJO+mEI3CaLABLjv0WNzr4CcGRGPIAItyWYnP6LsPA4Oq0WE+suidNs6dgpO4RHg==
 
 vue-router@^3.0.1:
   version "3.0.6"
@@ -10134,6 +10161,15 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.8.2:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.8.2.tgz#dd73e80ba58bb65dd7a8aa2aeef6089cf6116f2a"
   integrity sha512-cliV19VHLJqFUYbz/XeWXe5CO6guzwd0yrrqqp0bmjlMP3ZZULY7fu8RTC4+3lmHwo6ESVDHFDsvjB15hcR5IA==
 
+vue-virtual-scroller@^1.0.0-rc.2:
+  version "1.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/vue-virtual-scroller/-/vue-virtual-scroller-1.0.0-rc.2.tgz#b03828496c87889641bdacc75510e5b1bf5bda7f"
+  integrity sha512-4YFx1a+QDP4f6HW/HBI/qHcmSTlh7BMH6IjEH8WC3ylt499cErl0LpvLLAx9yo3c6NtuK/XvjYXi0vvdxFB5dw==
+  dependencies:
+    scrollparent "^2.0.1"
+    vue-observe-visibility "^0.4.3"
+    vue-resize "^0.4.5"
+
 vue2-editor@^2.6.6:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/vue2-editor/-/vue2-editor-2.6.6.tgz#567f7c2aabdd10d465756da7aebf568ee34ebbc5"
@@ -10147,28 +10183,27 @@ vue@^2.5.17, vue@^2.6.6:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
-vuetify-markdown-editor@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/vuetify-markdown-editor/-/vuetify-markdown-editor-0.3.5.tgz#c8212ca8586e6179c0c94a8ec20bf6e89936c488"
-  integrity sha512-UDJrMKlvop/wAAIrw7+AUt+AXHk5G6rdNs4unYhYK7kV5pZXV4OlQKYYtAHkC6TXAtlTAEGaOMUbRY2pPpqmzg==
+vuetify-markdown-editor@^0.3.11:
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/vuetify-markdown-editor/-/vuetify-markdown-editor-0.3.11.tgz#94d0db0eb49c666bf78ae81b463dfeea457fbd8a"
+  integrity sha512-WwKx16Ds2A9gh8VaUNrkFJjBI9qolrWOhINBWa0AGrN1bJXTM1ubXGP5WqoiFy6ybBrDwzYy3URtHXp5lhphCg==
   dependencies:
-    emoji-mart-vue "^2.6.6"
+    emoji-mart-vue-fast "^5.4.14"
     highlight.js "^9.15.6"
     marked "^0.6.2"
     v-click-outside "^2.1.1"
     vue "^2.6.6"
-    vue-no-ssr "^1.1.1"
-    vuetify "^1.5.11"
+    vuetify "^1.5.14"
 
 vuetify@^1.3.4:
   version "1.5.12"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.12.tgz#77d18fc7ea5d6297bac40880df83fc241ba840a2"
   integrity sha512-NxYNPiqEEgprTzNft0x0oiyOgbclbARgOJMKWRfeu3qx8pE0JG3XMgljVv1Ttq0ErKf1lvNLFRuajDgRdQxR/Q==
 
-vuetify@^1.5.11:
-  version "1.5.13"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.13.tgz#b2e406ebdc59723c5ecbd2d0595d3d2ae0cac812"
-  integrity sha512-mUOs9znDmMO/A2I117B/ZHyFlwSqkKplhSL8G2EnS+m0rvZv2Uqjo9idOBbdhaJ3A9sJWT6wDUFywEYuuIcu+g==
+vuetify@^1.5.14:
+  version "1.5.14"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.14.tgz#ff67d0b8a398be5297da159b6cd1b31f4d2898b8"
+  integrity sha512-7iM+TfghR/wu/Gl+k37lKr0N8Ddr6SxzqHtoK1dIyHgCH6SJRkpaXPw2MC5/FsAg9aUDJbYNWrzSeu5eHw+Q/w==
 
 vuex@^3.0.1:
   version "3.1.0"
