@@ -36,7 +36,7 @@
         class="scoped-requests-search"
         v-bind:label="$t('Values')"
       ></v-select>
-      <v-btn class="requests-filter-add">
+      <v-btn @click="addNewFilter" class="requests-filter-add">
         <v-icon dark>add</v-icon>
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
@@ -72,9 +72,8 @@
         <v-icon @click="addNewFilter" outline class="pl-2">add</v-icon>
       </v-text-field>
     </div>
-    <v-chip v-model="categories" close>{{ $i18n.t("Example filter") }}</v-chip>
+    <div id="filter-chips"></div>
 
-    <v-chip v-model="categories" close>{{ $i18n.t("Example filter") }}</v-chip>
     <v-layout>
       <v-data-table
         :headers="headers"
@@ -275,7 +274,8 @@ export default {
         "Circumvention",
         "Fenced",
         "Resolution"
-      ]
+      ],
+      customFilters: []
     };
   },
   mounted() {
@@ -385,6 +385,7 @@ export default {
       //   default:
       //     return false;
       // }
+      console.log(customFilters);
       return (
         item.software.toLowerCase().includes(search) ||
         item.incident_wording.toLowerCase().includes(search) ||
@@ -392,7 +393,17 @@ export default {
         item.client_contrat.contract.toLowerCase().includes(search)
       );
     },
-    addNewFilter() {},
+    addNewFilter(categoriesFilter, valuesFilter) {
+      var parent = document.getElementById("filter-chips");
+      var newChild =
+        '<v-chip v-model="categories" close>' +
+        this.categoriesFilter +
+        " : " +
+        this.valuesFilter +
+        "</v-chip>";
+      parent.insertAdjacentHTML("beforeend", newChild);
+      this.customFilters.push({ categoriesFilter, valuesFilter });
+    },
     categoriesFilter() {},
     valuesFilter() {},
     storedSelectionsFilter() {}
