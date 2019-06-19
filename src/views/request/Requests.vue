@@ -244,7 +244,7 @@ export default {
         { text: this.$i18n.t("Software"), value: "software" },
         { text: this.$i18n.t("Subject"), value: "incident_wording" },
         { text: this.$i18n.t("Assign To"), value: "assign_to" },
-        { text: this.$i18n.t("Responsable"), value: "responsable" },
+        { text: this.$i18n.t("Responsible"), value: "responsible" },
         { text: this.$i18n.t("Author"), value: "transmitter" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
         { text: this.$i18n.t("MAJ"), value: "maj" },
@@ -263,9 +263,19 @@ export default {
         "Client / Contract",
         "Status"
       ],
+      categoriesFilter: "",
       values: [],
       selections: [],
-      chip1: true
+      chip1: true,
+      types: ["Anomalie", "Evolution"],
+      severities: ["Bloquant", "Non Bloquant"],
+      status: [
+        "New",
+        "Taken into contact",
+        "Circumvention",
+        "Fenced",
+        "Resolution"
+      ]
     };
   },
   mounted() {
@@ -289,6 +299,64 @@ export default {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
   },
+  updated() {
+    switch (this.categoriesFilter) {
+      case "Type":
+        // this.types.forEach(type => {
+        //   this.values.push(type);
+        // });
+        this.values = this.types;
+        return;
+      case "Severity":
+        this.values = this.severities;
+        return;
+      case "Software":
+        this.values.length = 0;
+        this.$http.listSoftware().then(response => {
+          response.data.forEach(software => {
+            this.values.push(software.name);
+          });
+        });
+        return;
+      case "Assign To":
+        this.values.length = 0;
+        this.$http.listUsers().then(response => {
+          response.data.forEach(user => {
+            this.values.push(user.name);
+          });
+        });
+        return;
+      case "Responsible":
+        this.values.length = 0;
+        this.$http.listUsers().then(response => {
+          response.data.forEach(user => {
+            this.values.push(user.name);
+          });
+        });
+        return;
+      case "Transmitter":
+        this.values.length = 0;
+        this.$http.listUsers().then(response => {
+          response.data.forEach(user => {
+            this.values.push(user.name);
+          });
+        });
+        return;
+      case "Client / Contract":
+        this.values.length = 0;
+        this.$http.getContracts().then(response => {
+          response.data.forEach(contract => {
+            this.values.push(contract.client + " / " + contract.name);
+          });
+        });
+        return;
+      case "Status":
+        this.values = this.status;
+        return;
+      default:
+        return false;
+    }
+  },
   methods: {
     resetRequestSearch() {
       this.search = null;
@@ -309,8 +377,8 @@ export default {
       //     return item.incident_wording.toLowerCase().includes(search);
       //   case "Client / Contract":
       //     return item.client_contract.toLowerCase().includes(search);
-      //   case "Responsable":
-      //     return item.responsable.toLowerCase().includes(search);
+      //   case "Responsible":
+      //     return item.responsible.toLowerCase().includes(search);
       //   case "Software":
       //     console.log("test");
       //     return item.software.toLowerCase().includes(search);
