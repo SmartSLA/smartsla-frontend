@@ -36,9 +36,11 @@
 
                   <v-divider color="primary"></v-divider>
 
-                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">{{
+                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">
+                    {{
                     $t("Solution")
-                  }}</v-stepper-step>
+                    }}
+                  </v-stepper-step>
 
                   <v-divider></v-divider>
 
@@ -47,7 +49,7 @@
               </v-stepper>
             </v-flex>
           </v-layout>
-          <v-divider />
+          <v-divider/>
           <v-layout row wrap>
             <v-flex xs10 class="pt-0 pb-0">
               <v-card-title primary-title>
@@ -64,7 +66,7 @@
               </div>
             </v-flex>
           </v-layout>
-          <v-divider />
+          <v-divider/>
           <v-layout justify-center row fill-height wrap ml-3>
             <v-flex xs3 class="pt-0 pb-1">
               <strong>{{ $t("Type") }} :</strong>
@@ -113,7 +115,7 @@
                   <v-icon>subject</v-icon>
                 </v-flex>
                 <v-flex xs11 class="pt-0 pl-0">
-                  <div class="subject-text">{{ request.subject }}</div>
+                  <div class="subject-text" v-html="request.subject"></div>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -128,7 +130,7 @@
                       <b>{{ $t("Attachments") }}:</b>
                     </v-flex>
                     <v-flex xs10 pl-0>
-                      <ul>
+                      <ul v-if="request.attachedFile.length">
                         <li>
                           <router-link to="#">{{ request.attachedFile }}</router-link>
                         </li>
@@ -149,13 +151,15 @@
                       <strong>{{ $t("Related requests") }}:</strong>
                     </v-flex>
                     <v-flex xs10 pl-0>
-                      <ul>
+                      <ul v-if="request.linkedTickets.length">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
+                          <span
+                            v-if="link.type == 'duplicate'"
+                          >{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'Request', params: { id: link.id } }"
-                            >#{{ link.id }} - {{ link.title }}</router-link
-                          >
+                          <router-link
+                            :to="{ name: 'Request', params: { id: link.id } }"
+                          >#{{ link.id }} - {{ link.title }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -200,7 +204,7 @@
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
                                   {{ action.action }}
-                                  <br />
+                                  <br>
                                 </span>
                               </v-card-text>
                             </v-flex>
@@ -234,7 +238,7 @@
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
                                   {{ action.action }}
-                                  <br />
+                                  <br>
                                 </span>
                               </v-card-text>
                             </v-flex>
@@ -258,7 +262,7 @@
                         v-if="selectedEditor == 'markdown'"
                       />
                       <vue-editor v-model="comment" v-else></vue-editor>
-                      <br />
+                      <br>
                     </v-input>
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
@@ -297,9 +301,7 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>
-                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
-                  </v-card-text>
+                  <v-card-text>{{ $t("the satisfaction survey will be available once the ticket is closed") }}</v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -317,9 +319,12 @@
               {{ $t("Supported") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="error" height="18" value="100" class="mt-0 white--text font-weight-bold"
-                    >8 HO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="error"
+                    height="18"
+                    value="100"
+                    class="mt-0 white--text font-weight-bold"
+                  >8 HO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 H</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -329,9 +334,12 @@
               {{ $t("Bypass") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="success" height="18" value="40" class="mt-0 white--text font-weight-bold"
-                    >1.75 JO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="success"
+                    height="18"
+                    value="40"
+                    class="mt-0 white--text font-weight-bold"
+                  >1.75 JO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -341,9 +349,12 @@
               {{ $t("Solution") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="success" height="18" value="60" class="mt-0 white--text font-weight-bold"
-                    >2.5 JO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="success"
+                    height="18"
+                    value="60"
+                    class="mt-0 white--text font-weight-bold"
+                  >2.5 JO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>5 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -353,12 +364,12 @@
             </v-card>
           </v-flex>
           <v-flex xs12 align-center justify-center>
-            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">
-              {{ $t("interlocutor in charge of the request") }}
-            </h4>
+            <h4
+              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+            >{{ $t("interlocutor in charge of the request") }}</h4>
             <v-card class="pt-2 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
-              <br />
+              <br>
               <v-layout row wrap>
                 <v-flex xs3></v-flex>
                 <v-flex xs8>
@@ -371,15 +382,17 @@
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
                 {{ request.responsible.name }}
-                <br />
+                <br>
                 <strong>{{ $t("Phone") }} :</strong>
                 {{ request.responsible.phone }}
-                <br />
+                <br>
                 <strong>{{ $t("eMail") }} :</strong>
                 {{ request.responsible.email }}
               </v-card-text>
             </v-card>
-            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">{{ $t("Beneficiary") }}</h4>
+            <h4
+              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+            >{{ $t("Beneficiary") }}</h4>
             <v-card class="pt-2">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <v-layout row wrap>
@@ -394,13 +407,12 @@
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
                 {{ request.beneficiary.contact }}
-                <br />
+                <br>
                 <strong>{{ $t("Phone") }} :</strong>
                 {{ request.beneficiary.phone }}
-                <br />
+                <br>
                 <span class="body-2">{{ $t("client") }} / {{ $t("contract") }} :&nbsp;</span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
-                >/
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link>/
                 <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
             </v-card>
@@ -416,48 +428,45 @@
                 <v-divider></v-divider>
                 <v-layout class="mb-1">
                   <v-flex xs3 class="green--text font-weight-bold">
-                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
-                      >label_important</v-icon
-                    >
+                    <v-icon
+                      class="progress-arrow"
+                      :class="{ 'green--text': request.communityContribution.status.dev }"
+                    >label_important</v-icon>
                     <small>{{ $t("Dev") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("published") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">
-                  {{ request.communityContribution.communityIssueLink }}
-                </a>
+                <a
+                  :href="request.communityContribution.communityIssueLink"
+                >{{ request.communityContribution.communityIssueLink }}</a>
               </v-card>
             </v-card>
           </v-flex>
@@ -492,7 +501,13 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      statusList: ["in progress", "bypassed", "resolved", "closed", "suspended"],
+      statusList: [
+        "in progress",
+        "bypassed",
+        "resolved",
+        "closed",
+        "suspended"
+      ],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
       text: ""
     };
@@ -502,13 +517,21 @@ export default {
     Editor
   },
   mounted() {
-    var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
+    var progressBars = Array.prototype.slice.call(
+      document.getElementsByClassName("v-progress-linear")
+    );
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
-      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+      var value = element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName(
+        "v-progress-linear__bar__determinate"
+      );
       newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+      element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML = "";
     }
   },
   computed: {
@@ -517,7 +540,7 @@ export default {
       avatarUrl: "user/getAvatarUrl"
     })
   },
-  mounted() {
+  created() {
     this.comments = require("@/assets/data/comments.json");
     this.request = request;
     if (this.$route.params.id.length > 6) {
@@ -529,11 +552,40 @@ export default {
         })
         .catch(err => {});
     }
-    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+    this.$store.dispatch(
+      "sidebar/setSidebarComponent",
+      "issue-detail-side-bar"
+    );
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
+  },
+  methods: {
+    setRequestData(request) {
+      console.log(request);
+      this.request.ticketTitle = request.title;
+      this.request.ticketNumber = request._id;
+      this.request.ticketNumber = request._id;
+      if (request.software.name) {
+        this.request.software = request.software.name;
+        this.request.softwareOs = request.software.os;
+        this.request.softwareVersion = request.software.version;
+      }
+      this.request.attachedFile = "";
+      this.request.lastUpdate = "";
+      this.request.ticketDate = new Date(
+        request.timestamps.creation
+      ).toDateString();
+      this.request.subject = request.description;
+      this.request.responsible = {};
+      this.request.ticketAuthor = "";
+      this.comments = request.comments;
+      this.request.linkedTickets = request.relatedRequests;
+      this.request.ticketAuthor = this.$store.getters["user/getDisplayName"];
+      this.request.serviceLevel = {};
+      this.request.beneficiary = {};
+    }
   }
 };
 </script>

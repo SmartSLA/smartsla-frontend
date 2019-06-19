@@ -10,17 +10,11 @@
         <v-layout row wrap align-center>
           <v-flex xs3 class="required-label">{{ $t("Name") }}</v-flex>
           <v-flex xs8>
-            <v-text-field v-model="contract.name" :rules="['required']" required></v-text-field>
+            <v-text-field v-model="contract.name"></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
           <v-flex xs8>
-            <v-select
-              :items="clients"
-              v-model="contract.client"
-              item-text="name"
-              :rules="['required']"
-              required
-            ></v-select>
+            <v-select :items="clients" v-model="contract.client" item-text="name"></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>

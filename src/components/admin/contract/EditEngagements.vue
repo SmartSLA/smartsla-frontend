@@ -307,6 +307,11 @@ export default {
           }
           if (!this.engagementList.schedule) {
             this.engagementList.schedule = {};
+          } else {
+            if (this.engagementList.schedule.end == "-") {
+              this.engagementList.schedule = {};
+              this.allweek = true;
+            }
           }
         })
         .catch(error => {
