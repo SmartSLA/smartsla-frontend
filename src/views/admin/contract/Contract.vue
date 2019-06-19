@@ -17,7 +17,7 @@
                     <h3 class="headline">{{ contract.name }}</h3>
                   </v-flex>
                   <v-flex xs6>
-                    <div class="text-xs-right grey--text">
+                    <div class="text-xs-center grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -88,7 +88,7 @@
                 </v-layout>
               </v-card-text>
               <v-layout row wrap align-end>
-                <v-flex xs12 text-xs-right align-end>
+                <v-flex xs12 text-xs-center align-end>
                   <div>
                     <v-btn primary color="primary">{{ $t("renew this contract") }}</v-btn>
                   </div>
@@ -104,7 +104,7 @@
                     <h3 class="headline">{{ $t("Supported software") }}</h3>
                   </v-flex>
                   <v-flex xs6>
-                    <div class="text-xs-right grey--text">
+                    <div class="text-xs-center grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -181,7 +181,7 @@
                     </h4>
                   </v-flex>
                   <v-flex xs3>
-                    <div class="text-xs-right grey--text">
+                    <div class="text-xs-center grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -206,10 +206,10 @@
                   hide-actions
                 >
                   <template v-slot:items="props">
-                    <td class="text-xs-right">{{ $t(props.item.request) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
+                    <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
                   </template>
@@ -239,7 +239,7 @@
                     </h4>
                   </v-flex>
                   <v-flex xs3>
-                    <div class="text-xs-right grey--text">
+                    <div class="text-xs-center grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -264,10 +264,10 @@
                   hide-actions
                 >
                   <template v-slot:items="props">
-                    <td class="text-xs-right">{{ $t(props.item.request) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
+                    <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
                   </template>
@@ -297,7 +297,7 @@
                     </h4>
                   </v-flex>
                   <v-flex xs3>
-                    <div class="text-xs-right grey--text">
+                    <div class="text-xs-center grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -322,10 +322,10 @@
                   hide-actions
                 >
                   <template v-slot:items="props">
-                    <td class="text-xs-right">{{ $t(props.item.request) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
+                    <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
                   </template>
@@ -343,7 +343,7 @@
                 <h3 class="headline">{{ $t("Human resources") }}</h3>
               </v-flex>
               <v-flex xs6>
-                <div class="text-xs-right grey--text">
+                <div class="text-xs-center grey--text">
                   <v-btn
                     color="primary"
                     fab
@@ -569,7 +569,7 @@ div.xs12:nth-child(3) {
   margin-top: 24px;
 }
 
-td, th.column.text-xs-left {
+td, th.column.text-xs-center {
   padding: 0px 5px !important;
 }
 
