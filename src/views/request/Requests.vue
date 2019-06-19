@@ -244,7 +244,7 @@ export default {
         { text: this.$i18n.t("Software"), value: "software" },
         { text: this.$i18n.t("Subject"), value: "incident_wording" },
         { text: this.$i18n.t("Assign To"), value: "assign_to" },
-        { text: this.$i18n.t("Responsable"), value: "responsable" },
+        { text: this.$i18n.t("Responsible"), value: "responsible" },
         { text: this.$i18n.t("Author"), value: "transmitter" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
         { text: this.$i18n.t("MAJ"), value: "maj" },
@@ -263,15 +263,28 @@ export default {
         "Client / Contract",
         "Status"
       ],
+      categoriesFilter: "",
       values: [],
       selections: [],
-      chip1: true
+      chip1: true,
+      types: ["Anomalie", "Evolution"],
+      severities: ["Bloquant", "Non Bloquant"],
+      status: [
+        "New",
+        "Taken into contact",
+        "Circumvention",
+        "Fenced",
+        "Resolution"
+      ]
     };
   },
   mounted() {
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
+    this.$http.listSoftware().then(response => {
+      this.softwareList = response.data;
+    });
   },
   computed: {
     ...mapGetters({
@@ -285,6 +298,64 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
+  },
+  updated() {
+    switch (this.categoriesFilter) {
+      case "Type":
+        // this.types.forEach(type => {
+        //   this.values.push(type);
+        // });
+        this.values = this.types;
+        return;
+      case "Severity":
+        this.values = this.severities;
+        return;
+      case "Software":
+        this.values.length = 0;
+        this.$http.listSoftware().then(response => {
+          response.data.forEach(software => {
+            this.values.push(software.name);
+          });
+        });
+        return;
+      case "Assign To":
+        this.values.length = 0;
+        this.$http.listUsers().then(response => {
+          response.data.forEach(user => {
+            this.values.push(user.name);
+          });
+        });
+        return;
+      case "Responsible":
+        this.values.length = 0;
+        this.$http.listUsers().then(response => {
+          response.data.forEach(user => {
+            this.values.push(user.name);
+          });
+        });
+        return;
+      case "Transmitter":
+        this.values.length = 0;
+        this.$http.listUsers().then(response => {
+          response.data.forEach(user => {
+            this.values.push(user.name);
+          });
+        });
+        return;
+      case "Client / Contract":
+        this.values.length = 0;
+        this.$http.getContracts().then(response => {
+          response.data.forEach(contract => {
+            this.values.push(contract.client + " / " + contract.name);
+          });
+        });
+        return;
+      case "Status":
+        this.values = this.status;
+        return;
+      default:
+        return false;
+    }
   },
   methods: {
     resetRequestSearch() {
@@ -301,19 +372,25 @@ export default {
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     requestFilterByGroup(item, search) {
-      console.log(this.searchCriteria);
-      switch (this.searchCriteria) {
-        case "Ticket":
-          return item.incident_wording.toLowerCase().includes(search);
-        case "Client / Contract":
-          return item.client_contract.toLowerCase().includes(search);
-        case "Responsable":
-          return item.responsable.toLowerCase().includes(search);
-        case "Software":
-          return item.software.toLowerCase().includes(search);
-        default:
-          return false;
-      }
+      // switch (this.searchCriteria) {
+      //   case "Ticket":
+      //     return item.incident_wording.toLowerCase().includes(search);
+      //   case "Client / Contract":
+      //     return item.client_contract.toLowerCase().includes(search);
+      //   case "Responsible":
+      //     return item.responsible.toLowerCase().includes(search);
+      //   case "Software":
+      //     console.log("test");
+      //     return item.software.toLowerCase().includes(search);
+      //   default:
+      //     return false;
+      // }
+      return (
+        item.software.toLowerCase().includes(search) ||
+        item.incident_wording.toLowerCase().includes(search) ||
+        item.client_contrat.client.toLowerCase().includes(search) ||
+        item.client_contrat.contract.toLowerCase().includes(search)
+      );
     },
     addNewFilter() {},
     categoriesFilter() {},

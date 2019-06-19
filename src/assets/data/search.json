@@ -1,9 +1,8 @@
-[
-  {
+[{
     "header": "clients"
   },
   {
-    "name": "Sandra Adams",
+    "name": "SNCF",
     "type": "client"
   },
   {
@@ -29,7 +28,7 @@
     "header": "contracts"
   },
   {
-    "name": "Britta Holt",
+    "name": "SNCF - Maintenance et support linux",
     "type": "contract"
   },
   {
@@ -55,15 +54,15 @@
     "header": "Tickets"
   },
   {
-    "name": "Britta2 Holt",
+    "name": "[025011] Soucis d'import de zpool sur cluster Veritas et Solaris",
     "type": "ticket"
   },
   {
-    "name": "Jane2 Smith ",
+    "name": "[024873] RHEL 5.8 en kernel panic sur insmod qla2xxx",
     "type": "tickete"
   },
   {
-    "name": "linagora2 openpaas",
+    "name": "[024829] Besoin d'un rpm openssl récent",
     "type": "ticket"
   },
   {
