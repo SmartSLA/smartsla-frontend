@@ -12,7 +12,7 @@ export default {
   },
 
   updateContribution(contributionId, options) {
-    return this.update(`/ossa/contributions/${contributionId}`, options);
+    return this.post(`/ossa/contributions/${contributionId}`, options);
   },
 
   deleteContribution(contributionId) {

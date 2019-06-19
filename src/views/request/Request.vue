@@ -36,9 +36,9 @@
 
                   <v-divider color="primary"></v-divider>
 
-                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">
-                    {{ $t("Solution") }}
-                  </v-stepper-step>
+                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">{{
+                    $t("Solution")
+                  }}</v-stepper-step>
 
                   <v-divider></v-divider>
 
@@ -297,9 +297,9 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>{{
-                    $t("the satisfaction survey will be available once the ticket is closed")
-                  }}</v-card-text>
+                  <v-card-text>
+                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
+                  </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -347,7 +347,7 @@
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>5 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
-                  <v-icon class="success--text">check</v-icon>
+                  <v-icon>access_time</v-icon>
                 </v-flex>
               </v-layout>
             </v-card>
@@ -455,9 +455,9 @@
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">{{
-                  request.communityContribution.communityIssueLink
-                }}</a>
+                <a :href="request.communityContribution.communityIssueLink">
+                  {{ request.communityContribution.communityIssueLink }}
+                </a>
               </v-card>
             </v-card>
           </v-flex>
@@ -476,6 +476,7 @@ export default {
   name: "app",
   data() {
     return {
+      ticket: {},
       selectedEditor: "wysiwyg",
       privateComment: "",
       panel: [true, true],
@@ -501,9 +502,6 @@ export default {
     Editor
   },
   mounted() {
-    this.$http.getTicketById(this.$route.params.id).then(response => (this.request = response.data));
-    //this.$refs.editor.focus();
-
     var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
@@ -519,9 +517,18 @@ export default {
       avatarUrl: "user/getAvatarUrl"
     })
   },
-  created() {
+  mounted() {
     this.comments = require("@/assets/data/comments.json");
     this.request = request;
+    if (this.$route.params.id.length > 6) {
+      this.$http
+        .getTicketById(this.$route.params.id)
+        .then(response => {
+          this.ticket = response.data;
+          this.setRequestData(response.data);
+        })
+        .catch(err => {});
+    }
     this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
   },
   beforeRouteLeave(to, from, next) {
@@ -790,8 +797,9 @@ div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
 div.xs8:nth-child(1) {
   padding-right: 0px !important;
 }
+
 div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
- padding-left: 24px;
- padding-right: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 </style>

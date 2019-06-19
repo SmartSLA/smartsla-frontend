@@ -130,10 +130,16 @@
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
                     <td class="text-xs-center">{{ props.item.os }}</td>
-                    <td class="text-xs-center">
+                    <td
+                      class="text-xs-center"
+                      v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length"
+                    >
                       {{ $t("S") }}: {{ props.item.SupportDate.start }}
                       <br />
                       {{ $t("E") }}: {{ props.item.SupportDate.end }}
+                    </td>
+                    <td v-else class="text-xs-center">
+                      {{ $t("contract in progress") }}
                     </td>
                     <td class="text-xs-center">
                       <v-chip
@@ -200,7 +206,7 @@
                   hide-actions
                 >
                   <template v-slot:items="props">
-                    <td class="text-xs-left">{{ $t(props.item.request) }}</td>
+                    <td class="text-xs-right">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
@@ -258,7 +264,7 @@
                   hide-actions
                 >
                   <template v-slot:items="props">
-                    <td class="text-xs-left">{{ $t(props.item.request) }}</td>
+                    <td class="text-xs-right">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>
@@ -316,7 +322,7 @@
                   hide-actions
                 >
                   <template v-slot:items="props">
-                    <td class="text-xs-left">{{ $t(props.item.request) }}</td>
+                    <td class="text-xs-right">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-left text-capitalize">{{ $t(props.item.supported) }}</td>

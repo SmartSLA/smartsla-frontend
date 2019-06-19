@@ -14,7 +14,13 @@
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="clients" v-model="contract.client" item-text="name" :rules="['required']" required></v-select>
+            <v-select
+              :items="clients"
+              v-model="contract.client"
+              item-text="name"
+              :rules="['required']"
+              required
+            ></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
@@ -95,7 +101,7 @@
             </v-menu>
           </v-flex>
           <v-flex xs12>
-            <br>
+            <br />
           </v-flex>
           <v-flex xs3>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
@@ -128,14 +134,12 @@
             <v-text-field></v-text-field>
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <br>
+            <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn
-              :disabled="!valid"
-              color="success"
-              @click="validate"
-            >{{ isNew ? $t("Validate the changes") : $t("Create") }}</v-btn>
+            <v-btn :disabled="!valid" color="success" @click="validate">{{
+              isNew ? $t("Validate the changes") : $t("Create")
+            }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -190,6 +194,7 @@ export default {
         "Rosette Dorothée",
         "Denise Lucrèce",
         "Soraya Louisette",
+        "Yassin BENHADDOU",
         "Pétronille Priscille"
       ],
       techRefs: [
@@ -197,6 +202,7 @@ export default {
         "Gilberte Marcellette",
         "Jérome HERLEDAN",
         "Maximilienne Priscille",
+        "Nicolas CHAUVET",
         "César Tristan"
       ]
     };
