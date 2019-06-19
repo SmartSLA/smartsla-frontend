@@ -1,21 +1,21 @@
 export default {
   getTicketById(ticketId) {
-    return this.get(`/ossa/ticket/${ticketId}`);
+    return this.get(`/ticketing/api/tickets/${ticketId}`);
   },
 
   createTicket(options) {
-    return this.post(`/ossa/ticket/create`, { options });
+    return this.post(`/ticketing/api/tickets`, options);
   },
 
   updateTicket(ticketId, options) {
-    return this.put(`/ossa/ticket/${ticketId}`, { Id: ticketId, options: options });
+    return this.put(`/ticketing/api/tickets/${ticketId}`, options);
   },
 
   deleteTicket(ticketId) {
-    return this.post(`/ossa/ticket/${ticketId}`);
+    return this.post(`/ticketing/api/tickets/${ticketId}`);
   },
 
-  getTickets(author) {
-    return this.get(`/ossa/ticket/author/${author}`);
+  listTickets() {
+    return this.get(`/ticketing/api/tickets`);
   }
 };

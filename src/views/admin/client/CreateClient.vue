@@ -22,7 +22,7 @@
                   ></v-text-field>
                   <v-textarea name="adresse" label="Adresse"></v-textarea>
                 </div>
-                <v-divider vertical/>
+                <v-divider vertical />
                 <div class="float-right">
                   <v-checkbox :label="`Inactive`"></v-checkbox>
                   <file-upload
