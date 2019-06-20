@@ -74,7 +74,7 @@
     </div>
     <ul id="filter-chips">
       <li v-for="filter in customFilters" :key="filter.id" class="chips-elements">
-        <v-chip v-model="customFiltersCategories" close>{{ filter.categorie }} : {{filter.value}}</v-chip>
+        <v-chip v-model="filter.isOpen" close>{{ filter.categorie }} : {{filter.value}}</v-chip>
       </li>
     </ul>
 
@@ -280,7 +280,8 @@ export default {
         "Resolution"
       ],
       customFilters: [],
-      customFiltersCategories: []
+      customFiltersCategories: [],
+      softwareList: []
     };
   },
   mounted() {
@@ -288,7 +289,19 @@ export default {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
     this.$http.listSoftware().then(response => {
-      this.softwareList = response.data;
+      response.data.forEach(software => {
+        this.softwareList.push(software.name);
+      });
+    });
+    this.$http.listUsers().then(response => {
+      response.data.forEach(user => {
+        this.userList.push(user.name);
+      });
+    });
+    this.$http.getContracts().then(response => {
+      response.data.forEach(contract => {
+        this.contractClientList.push(contract.client + " / " + contract.name);
+      });
     });
   },
   computed: {
@@ -304,67 +317,47 @@ export default {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
   },
-  updated() {
-    switch (this.categoriesFilter) {
-      case "Type":
-        // this.types.forEach(type => {
-        //   this.values.push(type);
-        // });
-        this.values.length = 0;
-        this.values = this.types;
-        return;
-      case "Severity":
-        this.values.length = 0;
-        this.values = this.severities;
-        return;
-      case "Software":
-        this.values.length = 0;
-        this.$http.listSoftware().then(response => {
-          response.data.forEach(software => {
-            this.values.push(software.name);
-          });
-        });
-        return;
-      case "Assign To":
-        this.values.length = 0;
-        this.$http.listUsers().then(response => {
-          response.data.forEach(user => {
-            this.values.push(user.name);
-          });
-        });
-        return;
-      case "Responsible":
-        this.values.length = 0;
-        this.$http.listUsers().then(response => {
-          response.data.forEach(user => {
-            this.values.push(user.name);
-          });
-        });
-        return;
-      case "Transmitter":
-        this.values.length = 0;
-        this.$http.listUsers().then(response => {
-          response.data.forEach(user => {
-            this.values.push(user.name);
-          });
-        });
-        return;
-      case "Client / Contract":
-        this.values.length = 0;
-        this.$http.getContracts().then(response => {
-          response.data.forEach(contract => {
-            this.values.push(contract.client + " / " + contract.name);
-          });
-        });
-        return;
-      case "Status":
-        this.values.length = 0;
-        this.values = this.status;
-        return;
-      default:
-        return false;
+  watch: {
+    categoriesFilter: function(newCategory, oldCategory) {
+      switch (this.categoriesFilter) {
+        case "Type":
+          this.values.length = 0;
+          this.values = this.types;
+          return;
+        case "Severity":
+          this.values.length = 0;
+          this.values = this.severities;
+          return;
+        case "Software":
+          this.values.length = 0;
+          this.values = this.softwareList;
+          return;
+        case "Assign To":
+          this.values.length = 0;
+          this.values = this.userList;
+          return;
+        case "Responsible":
+          this.values.length = 0;
+          this.values = this.userList;
+          return;
+        case "Transmitter":
+          this.values.length = 0;
+          this.values = this.userList;
+          return;
+        case "Client / Contract":
+          this.values.length = 0;
+          this.values = this.contractClientList;
+          return;
+        case "Status":
+          this.values.length = 0;
+          this.values = this.status;
+          return;
+        default:
+          return false;
+      }
     }
   },
+  updated() {},
   methods: {
     resetRequestSearch() {
       this.search = null;
