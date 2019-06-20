@@ -72,7 +72,11 @@
         <v-icon @click="addNewFilter" outline class="pl-2">add</v-icon>
       </v-text-field>
     </div>
-    <div id="filter-chips"></div>
+    <ul id="filter-chips">
+      <li v-for="filter in customFilters" :key="filter.id" class="chips-elements">
+        <v-chip v-model="customFiltersCategories" close>{{ filter.categorie }} : {{filter.value}}</v-chip>
+      </li>
+    </ul>
 
     <v-layout>
       <v-data-table
@@ -275,7 +279,8 @@ export default {
         "Fenced",
         "Resolution"
       ],
-      customFilters: []
+      customFilters: [],
+      customFiltersCategories: []
     };
   },
   mounted() {
@@ -305,9 +310,11 @@ export default {
         // this.types.forEach(type => {
         //   this.values.push(type);
         // });
+        this.values.length = 0;
         this.values = this.types;
         return;
       case "Severity":
+        this.values.length = 0;
         this.values = this.severities;
         return;
       case "Software":
@@ -351,6 +358,7 @@ export default {
         });
         return;
       case "Status":
+        this.values.length = 0;
         this.values = this.status;
         return;
       default:
@@ -385,7 +393,6 @@ export default {
       //   default:
       //     return false;
       // }
-      console.log(customFilters);
       return (
         item.software.toLowerCase().includes(search) ||
         item.incident_wording.toLowerCase().includes(search) ||
@@ -394,15 +401,22 @@ export default {
       );
     },
     addNewFilter(categoriesFilter, valuesFilter) {
-      var parent = document.getElementById("filter-chips");
-      var newChild =
-        '<v-chip v-model="categories" close>' +
-        this.categoriesFilter +
-        " : " +
-        this.valuesFilter +
-        "</v-chip>";
-      parent.insertAdjacentHTML("beforeend", newChild);
-      this.customFilters.push({ categoriesFilter, valuesFilter });
+      if (this.categoriesFilter && this.valuesFilter) {
+        // var parent = document.getElementById("filter-chips");
+        // var newChild =
+        //   '<v-chip v-model="categories" close>' +
+        //   this.categoriesFilter +
+        //   " : " +
+        //   this.valuesFilter +
+        //   "</v-chip>";
+        // parent.insertAdjacentHTML("beforeend", newChild);
+        var filter = {
+          categorie: this.categoriesFilter,
+          value: this.valuesFilter
+        };
+        this.customFilters.push(filter);
+      }
+      return;
     },
     categoriesFilter() {},
     valuesFilter() {},
@@ -582,5 +596,14 @@ div.v-input:nth-child(14) {
 
 .export-excel {
   float: right;
+}
+
+.chips-elements {
+  list-style: none;
+}
+
+#filter-chips {
+  display: inline-flex;
+  padding-bottom: 24px;
 }
 </style>
