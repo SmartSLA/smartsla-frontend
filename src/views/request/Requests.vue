@@ -77,7 +77,30 @@
         <v-chip v-model="filter.isOpen" close>{{ filter.categorie }} : {{filter.value}}</v-chip>
       </li>
     </ul>
+    <div v-if="customFilters.length > 0" class="filter-save">
+      <v-dialog v-model="dialog" width="500">
+        <template v-slot:activator="{ on }">
+          <v-btn color="blue darken-1" dark v-on="on">{{$t("Save current filter")}}</v-btn>
+        </template>
 
+        <v-card>
+          <v-card-title class="headline grey lighten-2" primary-title>Save filter</v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field label="Filter name"></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
     <v-layout>
       <v-data-table
         :headers="headers"
@@ -180,12 +203,6 @@
               height="20"
               value="30"
             >{{ props.item.remaining_time }}</v-progress-linear>
-            <!-- <v-progress-linear
-              v-if="props.item.conf.color == 'warning'"
-              color="warning"
-              height="20"
-              value="50"
-            >{{ props.item.remaining_time }}</v-progress-linear>-->
             <v-progress-linear
               v-else
               color="#76c43d"
@@ -209,6 +226,7 @@ Vue.component("downloadExcel", JsonExcel);
 export default {
   data() {
     return {
+      dialog: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
       teams: [
         {
@@ -281,7 +299,9 @@ export default {
       ],
       customFilters: [],
       customFiltersCategories: [],
-      softwareList: []
+      softwareList: [],
+      userList: [],
+      contractClientList: []
     };
   },
   mounted() {
@@ -322,35 +342,35 @@ export default {
       switch (this.categoriesFilter) {
         case "Type":
           this.values.length = 0;
-          this.values = this.types;
+          this.values = [...this.types];
           return;
         case "Severity":
           this.values.length = 0;
-          this.values = this.severities;
+          this.values = [...this.severities];
           return;
         case "Software":
           this.values.length = 0;
-          this.values = this.softwareList;
+          this.values = [...this.softwareList];
           return;
         case "Assign To":
           this.values.length = 0;
-          this.values = this.userList;
+          this.values = [...this.userList];
           return;
         case "Responsible":
           this.values.length = 0;
-          this.values = this.userList;
+          this.values = [...this.userList];
           return;
         case "Transmitter":
           this.values.length = 0;
-          this.values = this.userList;
+          this.values = [...this.userList];
           return;
         case "Client / Contract":
           this.values.length = 0;
-          this.values = this.contractClientList;
+          this.values = [...this.contractClientList];
           return;
         case "Status":
           this.values.length = 0;
-          this.values = this.status;
+          this.values = [...this.status];
           return;
         default:
           return false;
@@ -373,19 +393,6 @@ export default {
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     requestFilterByGroup(item, search) {
-      // switch (this.searchCriteria) {
-      //   case "Ticket":
-      //     return item.incident_wording.toLowerCase().includes(search);
-      //   case "Client / Contract":
-      //     return item.client_contract.toLowerCase().includes(search);
-      //   case "Responsible":
-      //     return item.responsible.toLowerCase().includes(search);
-      //   case "Software":
-      //     console.log("test");
-      //     return item.software.toLowerCase().includes(search);
-      //   default:
-      //     return false;
-      // }
       return (
         item.software.toLowerCase().includes(search) ||
         item.incident_wording.toLowerCase().includes(search) ||
@@ -395,14 +402,6 @@ export default {
     },
     addNewFilter(categoriesFilter, valuesFilter) {
       if (this.categoriesFilter && this.valuesFilter) {
-        // var parent = document.getElementById("filter-chips");
-        // var newChild =
-        //   '<v-chip v-model="categories" close>' +
-        //   this.categoriesFilter +
-        //   " : " +
-        //   this.valuesFilter +
-        //   "</v-chip>";
-        // parent.insertAdjacentHTML("beforeend", newChild);
         var filter = {
           categorie: this.categoriesFilter,
           value: this.valuesFilter
@@ -593,10 +592,17 @@ div.v-input:nth-child(14) {
 
 .chips-elements {
   list-style: none;
+  float: left;
 }
 
 #filter-chips {
-  display: inline-flex;
-  padding-bottom: 24px;
+  display: block;
+  clear: both;
+  max-width: 100%;
+}
+
+div.layout:nth-child(5) {
+  clear: both;
+  padding-top: 24px;
 }
 </style>
