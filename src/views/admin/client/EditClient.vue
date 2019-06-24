@@ -1,14 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Clients' }"
-      >&lt; {{ $t("Return to clients list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Clients' }"
+    >&lt; {{ $t("Return to clients list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit client") : $t("New client") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit client") : $t("New client") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -17,7 +20,10 @@
               <strong class="required-label">{{ $t("Name") }} :</strong>
             </v-flex>
             <v-flex xs6>
-              <v-text-field v-model="client.name" :rules="['required']" required></v-text-field>
+              <v-text-field
+                v-model="client.name"
+                :rules="[() => client.name.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">

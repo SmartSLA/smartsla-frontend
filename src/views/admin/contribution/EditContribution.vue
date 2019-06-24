@@ -1,16 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
-      >&lt; {{ $t("Return to contributions list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'AdminContributions' }"
+    >&lt; {{ $t("Return to contributions list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">
-                {{ isNew ? $t("Edit Contribution") : $t("New Contribution") }}
-              </h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit Contribution") : $t("New Contribution") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -19,7 +20,10 @@
               <strong class="required-label">{{ $t("Name") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="contribution.name" :rules="['required']" required></v-text-field>
+              <v-text-field
+                v-model="contribution.name"
+                :rules="[() => contribution.name.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
@@ -119,8 +123,7 @@
                   v-model="contribution.startDate"
                   no-title
                   @input="startDateModel = false"
-                  :rules="['required']"
-                  required
+                  :rules="[() => contribution.startDate.length > 0 || $i18n.t('Required field')]"
                 ></v-date-picker>
               </v-menu>
             </v-flex>
@@ -149,7 +152,12 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="contribution.endDate" no-title @input="endDateModel = false"></v-date-picker>
+                <v-date-picker
+                  v-model="contribution.endDate"
+                  no-title
+                  @input="endDateModel = false"
+                  :rules="[() => contribution.endDate.length > 0 || $i18n.t('Required field')]"
+                ></v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs1></v-flex>
@@ -165,7 +173,10 @@
               <strong class="required-label">{{ $t("Description") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-textarea v-model="contribution.synthesis" :rules="['required']" required></v-textarea>
+              <v-textarea
+                v-model="contribution.synthesis"
+                :rules="[() => contribution.synthesis.length > 0 || $i18n.t('Required field')]"
+              ></v-textarea>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs5></v-flex>

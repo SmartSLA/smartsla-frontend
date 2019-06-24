@@ -10,16 +10,21 @@
         <td class="text-xs-center">{{ props.item.name }}</td>
         <td class="text-xs-center">{{ props.item.version }}</td>
         <td class="text-xs-center">{{ props.item.os }}</td>
-        <td class="text-xs-center" v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length">
+        <td
+          class="text-xs-center"
+          v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length"
+        >
           {{ $t("S") }}: {{ props.item.SupportDate.start }}
-          <br />
+          <br>
           {{ $t("E") }}: {{ props.item.SupportDate.end }}
         </td>
         <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
         <td class="text-xs-center">
-          <v-chip :color="critColor(props.item.critical)" :text-color="critTextColor(props.item.critical)" label>
-            {{ $t(props.item.critical) }}
-          </v-chip>
+          <v-chip
+            :color="critColor(props.item.critical)"
+            :text-color="critTextColor(props.item.critical)"
+            label
+          >{{ $t(props.item.critical) }}</v-chip>
         </td>
         <td class="text-xs-center">
           <span v-if="props.item.generic == 'yes'">{{ $t("yes") }}</span>
@@ -117,28 +122,41 @@
             <v-flex xs3>{{ $t("Critical") }}</v-flex>
             <v-flex xs9>
               <v-btn-toggle :value="newSoftware.critical" v-model="newSoftware.critical">
-                <v-btn value="critical" flat :class="{ error: newSoftware.critical == 'critical' }">
-                  {{ $t("critical") }}
-                </v-btn>
-                <v-btn value="sensible" flat :class="{ warning: newSoftware.critical == 'sensible' }">
-                  {{ $t("sensible") }}
-                </v-btn>
-                <v-btn value="standard" flat :class="{ white: newSoftware.critical == 'standard' }">
-                  {{ $t("standard") }}
-                </v-btn>
+                <v-btn
+                  value="critical"
+                  flat
+                  :class="{ error: newSoftware.critical == 'critical' }"
+                >{{ $t("critical") }}</v-btn>
+                <v-btn
+                  value="sensible"
+                  flat
+                  :class="{ warning: newSoftware.critical == 'sensible' }"
+                >{{ $t("sensible") }}</v-btn>
+                <v-btn
+                  value="standard"
+                  flat
+                  :class="{ white: newSoftware.critical == 'standard' }"
+                >{{ $t("standard") }}</v-btn>
               </v-btn-toggle>
             </v-flex>
             <v-flex xs3>{{ $t("Version") }}</v-flex>
             <v-flex xs9>
               <v-text-field v-model="newSoftware.version" required></v-text-field>
             </v-flex>
-            <v-flex xs3>{{ $t("OS") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("OS") }}</v-flex>
             <v-flex xs9>
-              <v-text-field v-model="newSoftware.os" required></v-text-field>
+              <v-text-field
+                v-model="newSoftware.os"
+                :rules="[() => newSoftware.os.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
-            <v-flex xs3>{{ $t("Referent") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Referent") }}</v-flex>
             <v-flex xs9>
-              <v-select v-model="newSoftware.technicalReferent" :items="refs" required></v-select>
+              <v-select
+                v-model="newSoftware.technicalReferent"
+                :items="refs"
+                :rules="[() => newSoftware.technicalReferent.length > 0 || $i18n.t('Required field')]"
+              ></v-select>
             </v-flex>
             <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
             <v-flex xs9>
@@ -147,14 +165,16 @@
                 <v-radio :label="$t('no')" value="repo"></v-radio>
               </v-radio-group>
             </v-flex>
-            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">{{
+            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">
+              {{
               $t("repo link")
-            }}</v-flex>
+              }}
+            </v-flex>
             <v-flex xs9 v-if="newSoftware.generic && newSoftware.generic != 'yes'">
               <v-text-field v-model="newSoftware.generic.repo"></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <br />
+              <br>
             </v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9>
@@ -166,11 +186,15 @@
         </form>
       </v-flex>
     </v-layout>
-    <br />
+    <br>
     <v-layout row wrap align-center>
       <v-flex xs4></v-flex>
       <v-flex xs3>
-        <v-btn @click="validate" class="success" :disabled="addSoftware">{{ $t("Validate changes") }}</v-btn>
+        <v-btn
+          @click="validate"
+          class="success"
+          :disabled="addSoftware"
+        >{{ $t("Validate changes") }}</v-btn>
       </v-flex>
       <v-flex xs3></v-flex>
     </v-layout>
@@ -201,14 +225,22 @@ export default {
       addSoftware: false,
       softwareList: [],
       contract: {},
-      refs: ["Florentin Roatta", "Jean-Michel Boutin", "Ismaeil Abouljamal", "Laurent Joguet", "Guillaume Boudreaux"]
+      refs: [
+        "Florentin Roatta",
+        "Jean-Michel Boutin",
+        "Ismaeil Abouljamal",
+        "Laurent Joguet",
+        "Guillaume Boudreaux"
+      ]
     };
   },
   methods: {
     appendSoftware() {
       if (
-        !this.contract.software.filter(software => JSON.stringify(software) == JSON.stringify(this.newSoftwareName))
-          .length
+        !this.contract.software.filter(
+          software =>
+            JSON.stringify(software) == JSON.stringify(this.newSoftwareName)
+        ).length
       ) {
         this.newSoftware.name = this.newSoftwareName.name;
         this.newSoftware.id = this.newSoftwareName.id;
