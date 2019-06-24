@@ -12,7 +12,7 @@
           <v-flex xs8>
             <v-text-field
               v-model="contract.name"
-              :rules="[() => contarct.name.length > 0 || $i18n.t('Required field')]"
+              :rules="[() => contract.name.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
@@ -66,6 +66,7 @@
                   prepend-icon="event"
                   @blur="contract.startDate = parseDate(contract.startDate)"
                   v-on="on"
+                  :rules="[() => contract.startDate.length > 0 || $i18n.t('Required field')]"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -96,6 +97,7 @@
                   prepend-icon="event"
                   @blur="contract.endDate = parseDate(contract.endDate)"
                   v-on="on"
+                  :rules="[() => contract.endDate.length > 0 || $i18n.t('Required field')]"
                 ></v-text-field>
               </template>
               <v-date-picker

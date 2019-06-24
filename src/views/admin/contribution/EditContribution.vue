@@ -30,14 +30,22 @@
               <strong class="required-label">{{ $t("Software") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-select :items="software" :rules="['required']" required></v-select>
+              <v-select
+                :items="software"
+                v-model="contribution.software"
+                :rules="[() => contribution.software.length > 0 || $i18n.t('Required field')]"
+              ></v-select>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
               <strong class="required-label">{{ $t("Engineer") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-select :items="users" :rules="['required']" required></v-select>
+              <v-select
+                :items="users"
+                v-model="contribution.engineer"
+                :rules="[() => contribution.engineer.length > 0 || $i18n.t('Required field')]"
+              ></v-select>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
@@ -71,7 +79,11 @@
               <strong class="required-label">{{ $t("Version") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-select :items="version" :rules="['required']" required></v-select>
+              <v-select
+                :items="version"
+                v-model="contribution.version"
+                :rules="[() => contribution.version.length > 0 || $i18n.t('Required field')]"
+              ></v-select>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
@@ -117,6 +129,7 @@
                     prepend-icon="event"
                     @blur="contribution.startDate = parseDate(contribution.startDate)"
                     v-on="on"
+                    :rules="[() => contribution.startDate.length > 0 || $i18n.t('Required field')]"
                   ></v-text-field>
                 </template>
                 <v-date-picker
@@ -129,7 +142,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("closed on") }} :</strong>
+              <strong class="required-label">{{ $t("closed on") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-menu
@@ -150,6 +163,7 @@
                     prepend-icon="event"
                     @blur="contribution.endDate = parseDate(contribution.endDate)"
                     v-on="on"
+                    :rules="[() => contribution.endDate.length > 0 || $i18n.t('Required field')]"
                   ></v-text-field>
                 </template>
                 <v-date-picker
