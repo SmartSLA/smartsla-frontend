@@ -78,9 +78,9 @@
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $t("requests shared among the beneficiaries") }} :</div>
+                    <div class="subheading font-weight-medium">
+                      {{ $t("requests shared among the beneficiaries") }} :
+                    </div>
                   </v-flex>
                   <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
@@ -133,7 +133,7 @@
                       v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length"
                     >
                       {{ $t("S") }}: {{ props.item.SupportDate.start }}
-                      <br>
+                      <br />
                       {{ $t("E") }}: {{ props.item.SupportDate.end }}
                     </td>
                     <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
@@ -142,7 +142,8 @@
                         :color="critColor(props.item.critical)"
                         :text-color="critTextColor(props.item.critical)"
                         label
-                      >{{ $t(props.item.critical) }}</v-chip>
+                        >{{ $t(props.item.critical) }}</v-chip
+                      >
                     </td>
                     <td class="text-xs-center">
                       <span v-if="props.item.generic == 'yes'">{{ $t(props.item.generic) }}</span>
@@ -154,7 +155,6 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          
         </v-layout>
       </v-flex>
       <v-flex xs5 pt-0>
@@ -182,10 +182,7 @@
           <v-card-text>
             <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
             <ul class="pb-2 grey--text">
-              <li
-                v-for="beneficiary in contract.humanResources.beneficiaries"
-                :key="beneficiary.id"
-              >
+              <li v-for="beneficiary in contract.humanResources.beneficiaries" :key="beneficiary.id">
                 <router-link to="#">{{ beneficiary.name }}</router-link>
               </li>
             </ul>
@@ -199,187 +196,183 @@
           </v-card-text>
         </v-card>
         <v-flex xs12>
-            <v-card class="contractual-commitments">
-              <v-card-title primary-title>
-                <v-layout>
-                  <v-flex xs9>
-                    <h4 class="headline">
-                      {{ $t("Contractual commitments") }}
-                      <v-chip
-                        :color="critColor('critical')"
-                        :text-color="critTextColor('critical')"
-                        label
-                      >{{ $t("critical") }}</v-chip>:
-                      <span v-if="contract.Engagements.critical.schedule">
-                        {{
+          <v-card class="contractual-commitments">
+            <v-card-title primary-title>
+              <v-layout>
+                <v-flex xs9>
+                  <h4 class="headline">
+                    {{ $t("Contractual commitments") }}
+                    <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>{{
+                      $t("critical")
+                    }}</v-chip
+                    >:
+                    <span v-if="contract.Engagements.critical.schedule">
+                      {{
                         contract.Engagements.critical.schedule.end == "-"
-                        ? $t("7d/7")
-                        : `${contract.Engagements.critical.schedule.start}H - ${
-                        contract.Engagements.critical.schedule.end
-                        }H`
-                        }}
-                      </span>
-                    </h4>
-                  </v-flex>
-                  <v-flex xs3>
-                    <div class="text-xs-center grey--text">
-                      <v-btn
-                        color="primary"
-                        fab
-                        small
-                        dark
-                        :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'critical' }
-                        }"
-                      >
-                        <v-icon>edit</v-icon>
-                      </v-btn>
-                    </div>
-                  </v-flex>
-                </v-layout>
-              </v-card-title>
-              <v-card-text>
-                <v-divider class="ml-1 mr-1"></v-divider>
-                <v-data-table
-                  :items="criticalContractualCommitments()"
-                  :headers="contractualCommitmentsHeaders"
-                  hide-actions
-                >
-                  <template v-slot:items="props">
-                    <td class="text-xs-center">{{ $t(props.item.request) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
-                  </template>
-                </v-data-table>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex xs12>
-            <v-card class="contractual-commitments">
-              <v-card-title primary-title>
-                <v-layout>
-                  <v-flex xs9>
-                    <h4 class="headline">
-                      {{ $t("Contractual commitments") }}
-                      <v-chip
-                        :color="critColor('sensible')"
-                        :text-color="critTextColor('sensible')"
-                        label
-                      >{{ $t("sensible") }}</v-chip>:
-                      <span v-if="contract.Engagements.sensible.schedule">
-                        {{
+                          ? $t("7d/7")
+                          : `${contract.Engagements.critical.schedule.start}H - ${
+                              contract.Engagements.critical.schedule.end
+                            }H`
+                      }}
+                    </span>
+                  </h4>
+                </v-flex>
+                <v-flex xs3>
+                  <div class="text-xs-center grey--text">
+                    <v-btn
+                      color="primary"
+                      fab
+                      small
+                      dark
+                      :to="{
+                        name: 'Edit Contract',
+                        params: { id: contract._id, section: 'engagements', type: 'critical' }
+                      }"
+                    >
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-card-title>
+            <v-card-text>
+              <v-divider class="ml-1 mr-1"></v-divider>
+              <v-data-table
+                :items="criticalContractualCommitments()"
+                :headers="contractualCommitmentsHeaders"
+                hide-actions
+              >
+                <template v-slot:items="props">
+                  <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs12>
+          <v-card class="contractual-commitments">
+            <v-card-title primary-title>
+              <v-layout>
+                <v-flex xs9>
+                  <h4 class="headline">
+                    {{ $t("Contractual commitments") }}
+                    <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>{{
+                      $t("sensible")
+                    }}</v-chip
+                    >:
+                    <span v-if="contract.Engagements.sensible.schedule">
+                      {{
                         contract.Engagements.sensible.schedule.end == "-"
-                        ? $t("7d/7")
-                        : `${contract.Engagements.sensible.schedule.start}H - ${
-                        contract.Engagements.sensible.schedule.end
-                        }H`
-                        }}
-                      </span>
-                    </h4>
-                  </v-flex>
-                  <v-flex xs3>
-                    <div class="text-xs-center grey--text">
-                      <v-btn
-                        color="primary"
-                        fab
-                        small
-                        dark
-                        :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'sensible' }
-                        }"
-                      >
-                        <v-icon>edit</v-icon>
-                      </v-btn>
-                    </div>
-                  </v-flex>
-                </v-layout>
-              </v-card-title>
-              <v-card-text>
-                <v-divider class="ml-1 mr-1"></v-divider>
-                <v-data-table
-                  :items="sensibleContractualCommitments()"
-                  :headers="contractualCommitmentsHeaders"
-                  hide-actions
-                >
-                  <template v-slot:items="props">
-                    <td class="text-xs-center">{{ $t(props.item.request) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
-                  </template>
-                </v-data-table>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex xs12>
-            <v-card class="contractual-commitments">
-              <v-card-title primary-title>
-                <v-layout>
-                  <v-flex xs9>
-                    <h4 class="headline">
-                      {{ $t("Contractual commitments") }}
-                      <v-chip
-                        :color="critColor('standard')"
-                        :text-color="critTextColor('standard')"
-                        label
-                      >{{ $t("standard") }}</v-chip>:
-                      <span v-if="contract.Engagements.standard.schedule">
-                        {{
+                          ? $t("7d/7")
+                          : `${contract.Engagements.sensible.schedule.start}H - ${
+                              contract.Engagements.sensible.schedule.end
+                            }H`
+                      }}
+                    </span>
+                  </h4>
+                </v-flex>
+                <v-flex xs3>
+                  <div class="text-xs-center grey--text">
+                    <v-btn
+                      color="primary"
+                      fab
+                      small
+                      dark
+                      :to="{
+                        name: 'Edit Contract',
+                        params: { id: contract._id, section: 'engagements', type: 'sensible' }
+                      }"
+                    >
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-card-title>
+            <v-card-text>
+              <v-divider class="ml-1 mr-1"></v-divider>
+              <v-data-table
+                :items="sensibleContractualCommitments()"
+                :headers="contractualCommitmentsHeaders"
+                hide-actions
+              >
+                <template v-slot:items="props">
+                  <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs12>
+          <v-card class="contractual-commitments">
+            <v-card-title primary-title>
+              <v-layout>
+                <v-flex xs9>
+                  <h4 class="headline">
+                    {{ $t("Contractual commitments") }}
+                    <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>{{
+                      $t("standard")
+                    }}</v-chip
+                    >:
+                    <span v-if="contract.Engagements.standard.schedule">
+                      {{
                         contract.Engagements.standard.schedule.end == "-"
-                        ? $t("7d/7")
-                        : `${contract.Engagements.standard.schedule.start}H - ${
-                        contract.Engagements.standard.schedule.end
-                        }H`
-                        }}
-                      </span>
-                    </h4>
-                  </v-flex>
-                  <v-flex xs3>
-                    <div class="text-xs-center grey--text">
-                      <v-btn
-                        color="primary"
-                        fab
-                        small
-                        dark
-                        :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'standard' }
-                        }"
-                      >
-                        <v-icon>edit</v-icon>
-                      </v-btn>
-                    </div>
-                  </v-flex>
-                </v-layout>
-              </v-card-title>
-              <v-card-text>
-                <v-divider class="ml-1 mr-1"></v-divider>
-                <v-data-table
-                  :items="standardContractualCommitment()"
-                  :headers="contractualCommitmentsHeaders"
-                  hide-actions
-                >
-                  <template v-slot:items="props">
-                    <td class="text-xs-center">{{ $t(props.item.request) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
-                  </template>
-                </v-data-table>
-              </v-card-text>
-            </v-card>
-          </v-flex>
+                          ? $t("7d/7")
+                          : `${contract.Engagements.standard.schedule.start}H - ${
+                              contract.Engagements.standard.schedule.end
+                            }H`
+                      }}
+                    </span>
+                  </h4>
+                </v-flex>
+                <v-flex xs3>
+                  <div class="text-xs-center grey--text">
+                    <v-btn
+                      color="primary"
+                      fab
+                      small
+                      dark
+                      :to="{
+                        name: 'Edit Contract',
+                        params: { id: contract._id, section: 'engagements', type: 'standard' }
+                      }"
+                    >
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-card-title>
+            <v-card-text>
+              <v-divider class="ml-1 mr-1"></v-divider>
+              <v-data-table
+                :items="standardContractualCommitment()"
+                :headers="contractualCommitmentsHeaders"
+                hide-actions
+              >
+                <template v-slot:items="props">
+                  <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
       </v-flex>
-      
     </v-layout>
   </v-container>
 </template>

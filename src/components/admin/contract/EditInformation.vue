@@ -109,7 +109,7 @@
             </v-menu>
           </v-flex>
           <v-flex xs12>
-            <br>
+            <br />
           </v-flex>
           <v-flex xs3>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
@@ -138,13 +138,11 @@
             <v-text-field></v-text-field>
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <br>
+            <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
             <v-btn :disabled="!valid" color="success" @click="validate">
-              {{
-              isNew ? $t("Validate the changes") : $t("Create")
-              }}
+              {{ isNew ? $t("Validate the changes") : $t("Create") }}
             </v-btn>
           </v-flex>
         </v-layout>
@@ -255,21 +253,11 @@ export default {
 
     validate() {
       var contract = this.contract;
-      if (
-        contract.mailingList.external.length &&
-        !(contract.mailingList.external instanceof Array)
-      ) {
-        contract.mailingList.external = contract.mailingList.external.split(
-          ","
-        );
+      if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
+        contract.mailingList.external = contract.mailingList.external.split(",");
       }
-      if (
-        contract.mailingList.internal.length &&
-        !(contract.mailingList.internal instanceof Array)
-      ) {
-        contract.mailingList.internal = contract.mailingList.internal.split(
-          ","
-        );
+      if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
+        contract.mailingList.internal = contract.mailingList.internal.split(",");
       }
       if (!this.isNew) {
         this.$http

@@ -41,7 +41,7 @@
         </v-flex>
         <v-flex xs4></v-flex>
       </v-layout>
-      <br>
+      <br />
       <v-divider></v-divider>
       <v-layout row wrap align-center>
         <v-flex xs4>
@@ -68,19 +68,11 @@
         <v-flex xs4></v-flex>
         <v-flex xs4>
           <ul v-if="contract.humanResources && contract.humanResources.beneficiaries">
-            <li
-              v-for="selectedBeneficiary in contract.humanResources.beneficiaries"
-              :key="selectedBeneficiary.id"
-            >
+            <li v-for="selectedBeneficiary in contract.humanResources.beneficiaries" :key="selectedBeneficiary.id">
               <v-layout row wrap>
                 <v-flex xs6>{{ selectedBeneficiary.name }}</v-flex>
                 <v-flex xs6>
-                  <v-btn
-                    flat
-                    small
-                    class="error--text mt-0"
-                    @click="removePerson(selectedBeneficiary)"
-                  >
+                  <v-btn flat small class="error--text mt-0" @click="removePerson(selectedBeneficiary)">
                     <v-icon class="error--text">remove_circle</v-icon>
                     {{ $t("remove") }}
                   </v-btn>
@@ -91,7 +83,7 @@
         </v-flex>
         <v-flex xs4></v-flex>
       </v-layout>
-      <br>
+      <br />
       <v-layout row wrap align-center>
         <v-flex xs1></v-flex>
         <v-flex xs8>
@@ -122,12 +114,7 @@
                     <v-layout row wrap>
                       <v-flex xs6>{{ contract.name }}</v-flex>
                       <v-flex xs6>
-                        <v-btn
-                          flat
-                          small
-                          class="error--text mt-0"
-                          @click="removeContract(contract.id)"
-                        >
+                        <v-btn flat small class="error--text mt-0" @click="removeContract(contract.id)">
                           <v-icon class="error--text">remove_circle</v-icon>
                           {{ $t("remove") }}
                         </v-btn>
@@ -214,15 +201,11 @@
           </form>
         </v-flex>
       </v-layout>
-      <br>
+      <br />
       <v-layout row wrap align-center>
         <v-flex xs4></v-flex>
         <v-flex xs3>
-          <v-btn
-            @click="validate"
-            class="success"
-            :disabled="createAccount"
-          >{{ $t("Validate changes") }}</v-btn>
+          <v-btn @click="validate" class="success" :disabled="createAccount">{{ $t("Validate changes") }}</v-btn>
         </v-flex>
         <v-flex xs3></v-flex>
       </v-layout>
@@ -309,30 +292,19 @@ export default {
   },
   methods: {
     addTeam(team) {
-      if (
-        !this.contract.humanResources.teams.filter(item => item.id == team.id)
-          .length
-      ) {
+      if (!this.contract.humanResources.teams.filter(item => item.id == team.id).length) {
         this.contract.humanResources.teams.push(Object.assign({}, team));
         this.selectedTeam = "";
       }
     },
 
     removeTeam(teamId) {
-      this.contract.humanResources.teams = this.contract.humanResources.teams.filter(
-        team => team.id != teamId
-      );
+      this.contract.humanResources.teams = this.contract.humanResources.teams.filter(team => team.id != teamId);
     },
 
     addPerson(person) {
-      if (
-        !this.contract.humanResources.beneficiaries.filter(
-          item => item.id == person.id
-        ).length
-      ) {
-        this.contract.humanResources.beneficiaries.push(
-          Object.assign({}, person)
-        );
+      if (!this.contract.humanResources.beneficiaries.filter(item => item.id == person.id).length) {
+        this.contract.humanResources.beneficiaries.push(Object.assign({}, person));
         this.selectedPerson = "";
       }
 
@@ -346,18 +318,14 @@ export default {
     },
 
     addContract(contract) {
-      if (
-        !this.account.contracts.filter(item => item.id == contract.id).length
-      ) {
+      if (!this.account.contracts.filter(item => item.id == contract.id).length) {
         this.account.contracts.push(contract);
         this.selectedContract = "";
       }
     },
 
     removeContract(contractId) {
-      this.account.contracts = this.account.contracts.filter(
-        contract => contract.id != contractId
-      );
+      this.account.contracts = this.account.contracts.filter(contract => contract.id != contractId);
     },
 
     validate() {
