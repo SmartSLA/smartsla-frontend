@@ -46,14 +46,16 @@
       <v-spacer class="mx-2"></v-spacer>
       <v-select
         solo
-        :items="selections"
+        :items="savedFilters"
+        item-text="name"
         v-model="storedSelectionsFilter"
         hide-details
         class="scoped-requests-search"
         v-bind:label="$t('Stored selections')"
         @input="$emit('input')"
+        return-object
       ></v-select>
-      <v-btn class="requests-filter-add">
+      <v-btn class="requests-filter-add" @click="loadFilter">
         <v-icon dark>add</v-icon>
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
@@ -74,7 +76,7 @@
     </div>
     <ul id="filter-chips">
       <li v-for="filter in customFilters" :key="filter.id" class="chips-elements">
-        <v-chip v-model="filter.isOpen" close>{{ filter.categorie }} : {{ filter.value }}</v-chip>
+        <v-chip v-model="filter.isOpen" close>{{ filter.category }} : {{ filter.value }}</v-chip>
       </li>
     </ul>
     <div v-if="customFilters.length > 0" class="filter-save">
@@ -89,14 +91,14 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field label="Filter name"></v-text-field>
+                  <v-text-field label="Filter name" v-model="newFilterName"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
+            <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{$t("Save")}}</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -117,9 +119,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
-              {{ props.item.ticket_number }}
-            </router-link>
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item.ticket_number } }"
+            >{{ props.item.ticket_number }}</router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
@@ -166,12 +168,20 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">{{
+                <span
+                  v-if="props.item.software == 'LibreOffice'"
+                  class="major-criticality"
+                  v-on="on"
+                >
+                  {{
                   props.item.software
-                }}</span>
-                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">{{
+                  }}
+                </span>
+                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">
+                  {{
                   props.item.software
-                }}</span>
+                  }}
+                </span>
                 <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
@@ -191,12 +201,21 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
+            <v-progress-linear
+              v-if="props.item.conf.color == 'error'"
+              color="#d32f2f"
+              height="20"
+              value="30"
+            >
+              {{
               props.item.remaining_time
-            }}</v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">{{
+              }}
+            </v-progress-linear>
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">
+              {{
               props.item.remaining_time
-            }}</v-progress-linear>
+              }}
+            </v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -278,12 +297,21 @@ export default {
       chip1: true,
       types: ["Anomalie", "Evolution"],
       severities: ["Bloquant", "Non Bloquant"],
-      status: ["New", "Taken into contact", "Circumvention", "Fenced", "Resolution"],
+      status: [
+        "New",
+        "Taken into contact",
+        "Circumvention",
+        "Fenced",
+        "Resolution"
+      ],
       customFilters: [],
       customFiltersCategories: [],
       softwareList: [],
       userList: [],
-      contractClientList: []
+      contractClientList: [],
+      newFilterName: "",
+      savedFilters: [],
+      storedSelectionsFilter: {}
     };
   },
   mounted() {
@@ -304,6 +332,9 @@ export default {
       response.data.forEach(contract => {
         this.contractClientList.push(contract.client + " / " + contract.name);
       });
+    });
+    this.$http.listFilters().then(response => {
+      this.savedFilters = response.data;
     });
   },
   computed: {
@@ -368,7 +399,9 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.teamsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.teamsFilter);
+        items = items.filter(
+          item => item.team.toLowerCase() == this.teamsFilter
+        );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
@@ -383,16 +416,40 @@ export default {
     addNewFilter(categoriesFilter, valuesFilter) {
       if (this.categoriesFilter && this.valuesFilter) {
         var filter = {
-          categorie: this.categoriesFilter,
+          category: this.categoriesFilter,
           value: this.valuesFilter
         };
         this.customFilters.push(filter);
       }
       return;
     },
+    saveCurrentFilter() {
+      var filterToSave = {
+        name: this.newFilterName,
+        items: this.customFilters,
+        user: this.$store.state.user.user._id
+      };
+      this.$http
+        .createFilters(filterToSave)
+        .then(response => {
+          this.dialog = false;
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Filter saved"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    },
     categoriesFilter() {},
     valuesFilter() {},
-    storedSelectionsFilter() {}
+    loadFilter() {
+      this.customFilters = this.storedSelectionsFilter.items;
+    }
   }
 };
 </script>

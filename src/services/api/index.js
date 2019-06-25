@@ -9,6 +9,7 @@ import softwareFunctions from "./software-api";
 import clientFunctions from "./client-api";
 import userFunctions from "./user-api";
 import teamFunctions from "./team-api";
+import filterFunctions from "./filter-api";
 
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
@@ -24,16 +25,17 @@ function Api(config) {
   Object.assign(instance, clientFunctions);
   Object.assign(instance, userFunctions);
   Object.assign(instance, teamFunctions);
+  Object.assign(instance, filterFunctions);
 
   instance.interceptors.request.use(
-    function(config) {
+    function (config) {
       var token = store.state.session.jwtToken;
       if (config.headers.Authorization && token !== "Unauthorized") {
         config.headers.Authorization = `Bearer  ${token}`;
       }
       return config;
     },
-    function(error) {
+    function (error) {
       return Promise.reject(error);
     }
   );
@@ -41,5 +43,7 @@ function Api(config) {
   return instance;
 }
 
-export { Api };
+export {
+  Api
+};
 export default new Api();
