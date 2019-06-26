@@ -537,7 +537,6 @@ export default {
   },
   methods: {
     setRequestData(request) {
-      console.log(request);
       this.request.ticketTitle = request.title;
       this.request.ticketNumber = request._id;
       this.request.ticketNumber = request._id;
