@@ -18,9 +18,8 @@
                       v-model="ticket.title"
                       :label="$t('Title')"
                       type="text"
-                      :rules="['required']"
+                      :rules="[() => ticket.title.length > 0 || $i18n.t('Required field')]"
                       class="required-element"
-                      required
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs6></v-flex>
@@ -32,9 +31,8 @@
                       background-color="white"
                       v-model="ticket.contract"
                       item-text="name"
-                      :rules="['required']"
+                      :rules="[() => ticket.contract.length > 0 || $i18n.t('Required field')]"
                       class="required-element"
-                      required
                       return-object
                     ></v-autocomplete>
                   </v-flex>
@@ -59,9 +57,8 @@
                           background-color="white"
                           v-model="ticket.software"
                           :search-input.sync="software"
-                          :rules="['required']"
+                          :rules="[() => ticket.software.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
-                          required
                           return-object
                         >
                           <template v-slot:item="data">
@@ -94,9 +91,8 @@
                           :items="[...typeList]"
                           v-model="ticket.type"
                           label="Type"
-                          :rules="['required']"
+                          :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
-                          required
                           return-object
                         ></v-select>
                       </v-flex>
@@ -108,9 +104,8 @@
                           :disabled="!ticket.type"
                           v-model="ticket.severity"
                           :label="$t('Severity')"
-                          :rules="['required']"
+                          :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
-                          required
                           return-object
                         ></v-select>
                       </v-flex>
@@ -133,9 +128,8 @@
                       <vue-editor
                         placeholder="Description"
                         v-model="ticket.description"
-                        :rules="['required']"
+                        :rules="[() => ticket.description.length > 0 || $i18n.t('Required field')]"
                         class="required-element"
-                        required
                       ></vue-editor>
                     </v-input>
                   </v-flex>
@@ -507,5 +501,25 @@ main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
 main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) {
   margin-top: 2px;
   margin-left: 2px;
+}
+
+.v-btn {
+  margin: 0px !important;
+}
+
+.v-text-field.v-text-field--enclosed.v-input__prepend-outer, .v-text-field.v-text-field--enclosed .v-input__prepend-inner, .v-text-field.v-text-field--enclosed .v-input__append-inner, .v-text-field.v-text-field--enclosed .v-input__append-outer {
+  margin: 0px !important;
+}
+
+button.ml-0 {
+  min-height: 48px;
+}
+
+.v-text-field.v-text-field--solo .v-input__prepend-outer, .v-text-field.v-text-field--solo .v-input__append-outer {
+  margin-top: 0px !important;
+}
+
+.v-input__append-outer {
+  margin-left: 0px !important;
 }
 </style>

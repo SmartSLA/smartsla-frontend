@@ -10,11 +10,19 @@
         <v-layout row wrap align-center>
           <v-flex xs3 class="required-label">{{ $t("Name") }}</v-flex>
           <v-flex xs8>
-            <v-text-field v-model="contract.name"></v-text-field>
+            <v-text-field
+              v-model="contract.name"
+              :rules="[() => contract.name.length > 0 || $i18n.t('Required field')]"
+            ></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="clients" v-model="contract.client" item-text="name"></v-select>
+            <v-select
+              :items="clients"
+              v-model="contract.client"
+              item-text="name"
+              :rules="[() => contract.client.length > 0 || $i18n.t('Required field')]"
+            ></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
@@ -24,13 +32,19 @@
           <v-flex xs8>
             <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
           </v-flex>
-          <v-flex xs3>{{ $t("Internal mailing list") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Internal mailing list") }}</v-flex>
           <v-flex xs8>
-            <v-text-field v-model="contract.mailingList.internal" required></v-text-field>
+            <v-text-field
+              v-model="contract.mailingList.internal"
+              :rules="[() => contract.mailingList.internal.length > 0 || $i18n.t('Required field')]"
+            ></v-text-field>
           </v-flex>
-          <v-flex xs3>{{ $t("client mailing list") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $t("client mailing list") }}</v-flex>
           <v-flex xs8>
-            <v-text-field v-model="contract.mailingList.external" required></v-text-field>
+            <v-text-field
+              v-model="contract.mailingList.external"
+              :rules="[() => contract.mailingList.external.length > 0 || $i18n.t('Required field')]"
+            ></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
           <v-flex xs8>
@@ -52,14 +66,14 @@
                   prepend-icon="event"
                   @blur="contract.startDate = parseDate(contract.startDate)"
                   v-on="on"
+                  :rules="[() => contract.startDate.length > 0 || $i18n.t('Required field')]"
                 ></v-text-field>
               </template>
               <v-date-picker
                 v-model="contract.startDate"
                 no-title
                 @input="startDateModel = false"
-                :rules="['required']"
-                required
+                :rules="[() => contract.startDate.length > 0 || $i18n.t('Required field')]"
               ></v-date-picker>
             </v-menu>
           </v-flex>
@@ -83,14 +97,14 @@
                   prepend-icon="event"
                   @blur="contract.endDate = parseDate(contract.endDate)"
                   v-on="on"
+                  :rules="[() => contract.endDate.length > 0 || $i18n.t('Required field')]"
                 ></v-text-field>
               </template>
               <v-date-picker
                 v-model="contract.endDate"
                 no-title
                 @input="endDateModel = false"
-                :rules="['required']"
-                required
+                :rules="[() => contract.endDate.length > 0 || $i18n.t('Required field')]"
               ></v-date-picker>
             </v-menu>
           </v-flex>
@@ -100,12 +114,8 @@
           <v-flex xs3>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
             <v-btn-toggle v-model="contract.status">
-              <v-btn :value="true" flat :class="{ success: contract.status }">
-                {{ $t("Active") }}
-              </v-btn>
-              <v-btn :value="false" flat :class="{ error: !contract.status }">
-                {{ $t("Inactive") }}
-              </v-btn>
+              <v-btn :value="true" flat :class="{ success: contract.status }">{{ $t("Active") }}</v-btn>
+              <v-btn :value="false" flat :class="{ error: !contract.status }">{{ $t("Inactive") }}</v-btn>
             </v-btn-toggle>
           </v-flex>
           <v-flex xs3>{{ $t("Type") }}</v-flex>
@@ -131,9 +141,9 @@
             <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn :disabled="!valid" color="success" @click="validate">{{
-              isNew ? $t("Validate the changes") : $t("Create")
-            }}</v-btn>
+            <v-btn :disabled="!valid" color="success" @click="validate">
+              {{ isNew ? $t("Validate the changes") : $t("Create") }}
+            </v-btn>
           </v-flex>
         </v-layout>
       </v-form>

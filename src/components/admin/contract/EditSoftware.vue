@@ -17,9 +17,9 @@
         </td>
         <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
         <td class="text-xs-center">
-          <v-chip :color="critColor(props.item.critical)" :text-color="critTextColor(props.item.critical)" label>
-            {{ $t(props.item.critical) }}
-          </v-chip>
+          <v-chip :color="critColor(props.item.critical)" :text-color="critTextColor(props.item.critical)" label>{{
+            $t(props.item.critical)
+          }}</v-chip>
         </td>
         <td class="text-xs-center">
           <span v-if="props.item.generic == 'yes'">{{ $t("yes") }}</span>
@@ -117,28 +117,35 @@
             <v-flex xs3>{{ $t("Critical") }}</v-flex>
             <v-flex xs9>
               <v-btn-toggle :value="newSoftware.critical" v-model="newSoftware.critical">
-                <v-btn value="critical" flat :class="{ error: newSoftware.critical == 'critical' }">
-                  {{ $t("critical") }}
-                </v-btn>
-                <v-btn value="sensible" flat :class="{ warning: newSoftware.critical == 'sensible' }">
-                  {{ $t("sensible") }}
-                </v-btn>
-                <v-btn value="standard" flat :class="{ white: newSoftware.critical == 'standard' }">
-                  {{ $t("standard") }}
-                </v-btn>
+                <v-btn value="critical" flat :class="{ error: newSoftware.critical == 'critical' }">{{
+                  $t("critical")
+                }}</v-btn>
+                <v-btn value="sensible" flat :class="{ warning: newSoftware.critical == 'sensible' }">{{
+                  $t("sensible")
+                }}</v-btn>
+                <v-btn value="standard" flat :class="{ white: newSoftware.critical == 'standard' }">{{
+                  $t("standard")
+                }}</v-btn>
               </v-btn-toggle>
             </v-flex>
             <v-flex xs3>{{ $t("Version") }}</v-flex>
             <v-flex xs9>
               <v-text-field v-model="newSoftware.version" required></v-text-field>
             </v-flex>
-            <v-flex xs3>{{ $t("OS") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("OS") }}</v-flex>
             <v-flex xs9>
-              <v-text-field v-model="newSoftware.os" required></v-text-field>
+              <v-text-field
+                v-model="newSoftware.os"
+                :rules="[() => newSoftware.os.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
-            <v-flex xs3>{{ $t("Referent") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Referent") }}</v-flex>
             <v-flex xs9>
-              <v-select v-model="newSoftware.technicalReferent" :items="refs" required></v-select>
+              <v-select
+                v-model="newSoftware.technicalReferent"
+                :items="refs"
+                :rules="[() => newSoftware.technicalReferent.length > 0 || $i18n.t('Required field')]"
+              ></v-select>
             </v-flex>
             <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
             <v-flex xs9>
@@ -147,9 +154,9 @@
                 <v-radio :label="$t('no')" value="repo"></v-radio>
               </v-radio-group>
             </v-flex>
-            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">{{
-              $t("repo link")
-            }}</v-flex>
+            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">
+              {{ $t("repo link") }}
+            </v-flex>
             <v-flex xs9 v-if="newSoftware.generic && newSoftware.generic != 'yes'">
               <v-text-field v-model="newSoftware.generic.repo"></v-text-field>
             </v-flex>

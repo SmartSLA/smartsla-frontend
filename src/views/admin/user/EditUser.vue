@@ -27,7 +27,10 @@
               <strong class="required-label">{{ $t("Name") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.name" :rules="['required']" required></v-text-field>
+              <v-text-field
+                v-model="user.name"
+                :rules="[() => user.name.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
@@ -41,28 +44,42 @@
               <strong class="required-label">{{ $t("Email") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.email" :rules="['required']" required></v-text-field>
+              <v-text-field
+                v-model="user.email"
+                :rules="[() => user.email.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
               <strong class="required-label">{{ $t("Phone") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.phone" :rules="['required']" required></v-text-field>
+              <v-text-field
+                v-model="user.phone"
+                :rules="[() => user.phone.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
               <strong class="required-label">{{ $t("Identifier") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="user.identifier" :rules="['required']" required></v-text-field>
+              <v-text-field
+                v-model="user.identifier"
+                :rules="[() => user.identifier.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
               <strong class="required-label">{{ $t("Role") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-radio-group v-model="user.role" row color="primary" :rules="['required']" required>
+              <v-radio-group
+                v-model="user.role"
+                row
+                color="primary"
+                :rules="[() => user.role.length > 0 || $i18n.t('Required field')]"
+              >
                 <v-radio :label="$t('Customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
                 <v-radio :label="$t('Viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
                 <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>

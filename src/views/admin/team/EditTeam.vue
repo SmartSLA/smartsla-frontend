@@ -17,7 +17,10 @@
               <strong class="required-label">{{ $t("Name") }} :</strong>
             </v-flex>
             <v-flex xs8>
-              <v-text-field v-model="team.name" :rules="['required']" required></v-text-field>
+              <v-text-field
+                v-model="team.name"
+                :rules="[() => team.name.length > 0 || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">

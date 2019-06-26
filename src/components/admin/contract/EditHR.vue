@@ -133,31 +133,59 @@
               </v-flex>
               <v-flex xs3>{{ $t("Name") }}</v-flex>
               <v-flex xs9>
-                <v-text-field required v-model="account.name" flat></v-text-field>
+                <v-text-field
+                  :rules="[() => account.name.length > 0 || $i18n.t('Required field')]"
+                  v-model="account.name"
+                  flat
+                ></v-text-field>
               </v-flex>
               <v-flex xs3>{{ $t("Title") }}</v-flex>
               <v-flex xs9>
-                <v-text-field required v-model="account.title" flat></v-text-field>
+                <v-text-field
+                  :rules="[() => account.title.length > 0 || $i18n.t('Required field')]"
+                  v-model="account.title"
+                  flat
+                ></v-text-field>
               </v-flex>
               <v-flex xs3>{{ $t("Email") }}</v-flex>
               <v-flex xs9>
-                <v-text-field required v-model="account.email" flat></v-text-field>
+                <v-text-field
+                  :rules="[() => account.email.length > 0 || $i18n.t('Required field')]"
+                  v-model="account.email"
+                  flat
+                ></v-text-field>
               </v-flex>
               <v-flex xs3>{{ $t("phone") }}</v-flex>
               <v-flex xs9>
-                <v-text-field required v-model="account.phone" flat></v-text-field>
+                <v-text-field
+                  :rules="[() => account.phone.length > 0 || $i18n.t('Required field')]"
+                  v-model="account.phone"
+                  flat
+                ></v-text-field>
               </v-flex>
               <v-flex xs3>{{ $t("Team") }}</v-flex>
               <v-flex xs9>
-                <v-text-field required v-model="account.team" flat></v-text-field>
+                <v-text-field
+                  :rules="[() => account.team.length > 0 || $i18n.t('Required field')]"
+                  v-model="account.team"
+                  flat
+                ></v-text-field>
               </v-flex>
               <v-flex xs3>{{ $t("Identifier") }}</v-flex>
               <v-flex xs9>
-                <v-text-field required v-model="account.identifier" flat></v-text-field>
+                <v-text-field
+                  :rules="[() => account.identifier.length > 0 || $i18n.t('Required field')]"
+                  v-model="account.identifier"
+                  flat
+                ></v-text-field>
               </v-flex>
               <v-flex xs3>{{ $t("Role") }}</v-flex>
               <v-flex xs9>
-                <v-radio-group required v-model="account.role" row>
+                <v-radio-group
+                  :rules="[() => account.role.length > 0 || $i18n.t('Required field')]"
+                  v-model="account.role"
+                  row
+                >
                   <v-radio :label="$t('Customer')" value="customer"></v-radio>
                   <v-radio :label="$t('Viewer')" value="viewer"></v-radio>
                 </v-radio-group>
