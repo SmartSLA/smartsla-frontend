@@ -57,9 +57,9 @@
                           background-color="white"
                           v-model="ticket.software"
                           :search-input.sync="software"
-                          :rules="[() => ticket.software.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
                           return-object
+                          required
                         >
                           <template v-slot:item="data">
                             <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
