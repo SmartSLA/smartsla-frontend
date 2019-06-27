@@ -190,7 +190,7 @@ tr:nth-child(odd) {
   width: 100%;
 }
 
-#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(7) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
+#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
   height: 48px;
   padding-top: 0px;
   margin-top: 0px;

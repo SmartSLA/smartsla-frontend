@@ -88,33 +88,40 @@
                         <v-select
                           prepend-icon="storage"
                           :disabled="!ticket.software.critical"
-                          :items="typeList"
+                          :items="[...typeList]"
                           v-model="ticket.type"
                           label="Type"
                           :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
+                          return-object
                         ></v-select>
                       </v-flex>
                       <v-flex xs1></v-flex>
                       <v-flex xs3>
                         <v-select
                           prepend-icon="report"
-                          :items="severityList"
+                          :items="[...severityList]"
                           :disabled="!ticket.type"
                           v-model="ticket.severity"
                           :label="$t('Severity')"
                           :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
+                          return-object
                         ></v-select>
                       </v-flex>
                     </v-layout>
                   </v-flex>
-                  <v-flex xs12 v-if="selectedEngagement.supported">
-                    <v-icon>assignment_turned_in</v-icon>
-                    {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
-                    {{ $t(selectedEngagement.supported) }}, {{ $t("bypass in") }} {{ $t(selectedEngagement.bypassed) }},
-                    {{ $t("and resolution in") }} {{ $t(selectedEngagement.fix) }}
-                    <br>
+                  <v-flex
+                    class="pt-4 pb-4 px-0 body-2 grey--text"
+                    xs12
+                    v-if="Object.keys(selectedEngagement).length"
+                  >
+                    <span>
+                      <v-icon>mdi-file-document-edit-outline</v-icon>
+                      {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
+                      {{ $t(selectedEngagement.supported) }}, {{ $t("bypass in") }} {{ $t(selectedEngagement.bypassed) }},
+                      {{ $t("and resolution in") }} {{ $t(selectedEngagement.fix) }}
+                    </span>
                   </v-flex>
                   <v-flex xs12>
                     <v-input prepend-icon="notes">
@@ -176,9 +183,7 @@
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
-                      :url="url"
-                      :thumb-url="thumbUrl"
-                      @change="onFileChange"
+                      url="undefined"
                       :btn-label="$t('Attach file')"
                       btn-uploading-label="Uploading file"
                     ></file-upload>
@@ -309,6 +314,9 @@ export default {
       var types = [];
       if (this.ticket.contract) {
         if (this.ticket.software) {
+          if (this.selectedTypes.length) {
+            return this.selectedTypes.map(engagement => engagement.request);
+          }
           if (this.ticket.software.critical) {
             switch (this.ticket.software.critical) {
               case "critical":
@@ -326,37 +334,50 @@ export default {
 
                 break;
             }
+            
 
             types = engagements.map(engagement => engagement.request);
-            this.selectedTypes = [...engagements];
-            return [...new Set(types)];
+            this.selectedTypes = engagements.slice();
+            return types;
           }
         }
       }
-      this.selectedTypes = [];
-      return [];
+        this.selectedTypes = [];
+        return [];
     },
     severityList() {
-      var engagements = [...this.selectedTypes];
-      var severities = [];
-      severities = engagements
-        .filter(engagement => engagement.request == this.ticket.type)
-        .slice();
-      this.engagementsCategory = severities.slice();
-      severities = severities.map(engagement => engagement.severity);
-      return [...new Set(severities)];
+      if (this.ticket.type.length) {
+        return this.selectedTypes.filter(
+          engagement => engagement.request == this.ticket.type
+        )
+        .map(
+          item => item.severity
+        );
+      }
+      return [];
     },
     selectedEngagement() {
       if (this.ticket.severity.length) {
         var engagements = [];
-        engagements = this.engagementsCategory.filter(
+        engagements = [...this.engagementsCategory].filter(
           engagement =>
             engagement.request == this.ticket.type &&
-            (engagement.severity = this.ticket.severity)
+            (engagement.severity == this.ticket.severity)
         );
         return engagements[0];
       }
       return {};
+    }
+  },
+  watch: {
+    "ticket.contract": function(newContract, oldContract) {
+      this.ticket.software = {};
+      this.ticket.severity = {};
+      this.ticket.type = {};
+    },
+    "ticket.software": function(newSoftware, oldSoftware) {
+      this.ticket.severity = {};
+      this.ticket.type = {};
     }
   },
   created() {
