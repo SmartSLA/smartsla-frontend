@@ -255,10 +255,10 @@ export default {
       ],
       searchCriteria: "Ticket",
       rowsPerPageItems: [10, 25, 50],
-      pagination: "10",
+      pagination: { p: "10" },
       search: null,
       toggle_multiple: "2",
-      teamsFilter: {
+      ticketsFilter: {
         text: "All Teams",
         value: ""
       },
@@ -336,6 +336,7 @@ export default {
     this.$http.listFilters().then(response => {
       this.savedFilters = response.data;
     });
+    console.log(this.$http.user);
   },
   computed: {
     ...mapGetters({
@@ -345,6 +346,9 @@ export default {
   created() {
     this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
+    this.$auth.ready(() => {
+      this.$store.dispatch("user/fetchUser");
+    });
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -394,13 +398,13 @@ export default {
   methods: {
     resetRequestSearch() {
       this.search = null;
-      this.teamsFilter = "";
+      this.ticketsFilter = "";
       this.searchCriteria = this.filterGroups[0];
     },
     requestsFilter(items, search, Filter) {
-      if (this.teamsFilter.length) {
+      if (this.ticketsFilter.length) {
         items = items.filter(
-          item => item.team.toLowerCase() == this.teamsFilter
+          item => item.team.toLowerCase() == this.ticketsFilter
         );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
@@ -409,23 +413,21 @@ export default {
       this.customFilters.forEach(filter => {
         switch (this.filter.category) {
           case "Type":
-            return item.type.toLowerCase().includes(this.filter.value);
+            return item.type.toLowerCase().includes(search);
           case "Severity":
-            return item.severity.toLowerCase().includes(this.filter.value);
+            return item.severity.toLowerCase().includes(search);
           case "Software":
-            return item.software.toLowerCase().includes(this.filter.value);
+            return item.software.toLowerCase().includes(search);
           case "Assign To":
-            return item.assign_to.toLowerCase().includes(this.filter.value);
+            return item.assign_to.toLowerCase().includes(search);
           case "Responsible":
-            return item.responsible.toLowerCase().includes(this.filter.value);
+            return item.responsible.toLowerCase().includes(search);
           case "Transmitter":
-            return item.transmitter.toLowerCase().includes(this.filter.value);
+            return item.transmitter.toLowerCase().includes(search);
           case "Client / Contract":
-            return item.client_contract
-              .toLowerCase()
-              .includes(this.filter.value);
+            return item.client_contract.toLowerCase().includes(search);
           case "Status":
-            return item.status.toLowerCase().includes(this.filter.value);
+            return item.status.toLowerCase().includes(search);
           default:
             return false;
         }
@@ -469,7 +471,7 @@ export default {
           });
         });
     },
-    categoriesFilter() {},
+    //categoriesFilter() {},
     valuesFilter() {},
     loadFilter() {
       this.customFilters = this.storedSelectionsFilter.items;
