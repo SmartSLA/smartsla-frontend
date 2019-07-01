@@ -405,7 +405,7 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <v-flex xs12>
+          <v-flex xs12 v-if="request.communityContribution.status">
             <v-card light color="white">
               <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
@@ -539,7 +539,6 @@ export default {
     setRequestData(request) {
       this.request.ticketTitle = request.title;
       this.request.ticketNumber = request._id;
-      this.request.ticketNumber = request._id;
       if (request.software.name) {
         this.request.software = request.software.name;
         this.request.softwareOs = request.software.os;
@@ -555,7 +554,10 @@ export default {
       this.request.linkedTickets = request.relatedRequests;
       this.request.ticketAuthor = this.$store.getters["user/getDisplayName"];
       this.request.serviceLevel = {};
-      this.request.beneficiary = {};
+      this.request.beneficiary = {
+        client_contract: {}
+      };
+      this.request.communityContribution = {}
     }
   }
 };
