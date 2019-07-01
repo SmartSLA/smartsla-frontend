@@ -31,7 +31,7 @@
                       background-color="white"
                       v-model="ticket.contract"
                       item-text="name"
-                      :rules="[() => ticket.contract.length > 0 || $i18n.t('Required field')]"
+                      :rules="[() => ticket.contract.length || $i18n.t('Required field')]"
                       class="required-element"
                       return-object
                     ></v-autocomplete>
@@ -59,7 +59,7 @@
                           :search-input.sync="software"
                           class="required-element"
                           return-object
-                          required
+                          :rules="[() => ticket.software.length || $i18n.t('Required field')]"
                         >
                           <template v-slot:item="data">
                             <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
@@ -334,7 +334,6 @@ export default {
 
                 break;
             }
-            
 
             types = engagements.map(engagement => engagement.request);
             this.selectedTypes = engagements.slice();
@@ -342,17 +341,14 @@ export default {
           }
         }
       }
-        this.selectedTypes = [];
-        return [];
+      this.selectedTypes = [];
+      return [];
     },
     severityList() {
       if (this.ticket.type.length) {
-        return this.selectedTypes.filter(
-          engagement => engagement.request == this.ticket.type
-        )
-        .map(
-          item => item.severity
-        );
+        return this.selectedTypes
+          .filter(engagement => engagement.request == this.ticket.type)
+          .map(item => item.severity);
       }
       return [];
     },
@@ -362,7 +358,7 @@ export default {
         engagements = [...this.engagementsCategory].filter(
           engagement =>
             engagement.request == this.ticket.type &&
-            (engagement.severity == this.ticket.severity)
+            engagement.severity == this.ticket.severity
         );
         return engagements[0];
       }

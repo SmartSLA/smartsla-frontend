@@ -406,6 +406,30 @@ export default {
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     requestFilterByGroup(item, search) {
+      this.customFilters.forEach(filter => {
+        switch (this.filter.category) {
+          case "Type":
+            return item.type.toLowerCase().includes(this.filter.value);
+          case "Severity":
+            return item.severity.toLowerCase().includes(this.filter.value);
+          case "Software":
+            return item.software.toLowerCase().includes(this.filter.value);
+          case "Assign To":
+            return item.assign_to.toLowerCase().includes(this.filter.value);
+          case "Responsible":
+            return item.responsible.toLowerCase().includes(this.filter.value);
+          case "Transmitter":
+            return item.transmitter.toLowerCase().includes(this.filter.value);
+          case "Client / Contract":
+            return item.client_contract
+              .toLowerCase()
+              .includes(this.filter.value);
+          case "Status":
+            return item.status.toLowerCase().includes(this.filter.value);
+          default:
+            return false;
+        }
+      });
       return (
         item.software.toLowerCase().includes(search) ||
         item.incident_wording.toLowerCase().includes(search) ||
