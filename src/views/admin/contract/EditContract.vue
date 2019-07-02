@@ -1,6 +1,8 @@
 <template>
   <v-container class="pt-0 pl-0 pr-4">
-    <span class="title grey--text">{{ isNew ? $t("Edit contract") : $t("Create a new contract") }}</span>
+    <span
+      class="title grey--text"
+    >{{ isNew ? $i18n.t("Edit contract") : $i18n.t("Create a new contract") }}</span>
     <component :is="editSectionComponent"></component>
   </v-container>
 </template>

@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>{{ $t("Create Client") }}</span>
+      <span>{{ $i18n.t("Create Client") }}</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
@@ -13,7 +13,7 @@
                 <div class="float-left">
                   <v-text-field
                     name="Name"
-                    :label="$t('Name')"
+                    :label="$i18n.t('Name')"
                     v-model="clientName"
                     type="text"
                     :rules="['required']"
@@ -24,7 +24,7 @@
                 </div>
                 <v-divider vertical />
                 <div class="float-right">
-                  <v-checkbox :label="`Inactive`"></v-checkbox>
+                  <v-checkbox :label="$i18n.t('Inactive')"></v-checkbox>
                   <file-upload
                     class="file"
                     :url="url"
@@ -34,14 +34,14 @@
                     btn-label="Logo"
                     btn-uploading-label="Logo"
                   ></file-upload>
-                  <v-text-field name="access-code" :label="$t('Access Code')" type="text"></v-text-field>
-                  <v-text-field name="help-access" :label="$t('Help access')" type="text"></v-text-field>
+                  <v-text-field name="access-code" :label="$i18n.t('Access Code')" type="text"></v-text-field>
+                  <v-text-field name="help-access" :label="$i18n.t('Help access')" type="text"></v-text-field>
                 </div>
               </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="submit">{{ $t("Validate") }}</v-btn>
+              <v-btn @click="submit">{{ $i18n.t("Validate") }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
