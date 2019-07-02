@@ -336,7 +336,6 @@ export default {
     this.$http.listFilters().then(response => {
       this.savedFilters = response.data;
     });
-    console.log(this.$http.user);
   },
   computed: {
     ...mapGetters({
