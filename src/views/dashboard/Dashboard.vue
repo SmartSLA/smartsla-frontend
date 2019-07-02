@@ -3,15 +3,15 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">dashboard</v-icon>
-        {{ $t("DASHBOARD") }}
+        {{ $i18n.t("DASHBOARD") }}
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET (CSV)") }}
+        {{ $i18n.t("EXPORT SHEET (CSV)") }}
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
+        {{ $i18n.t("PRINT SHEET") }}
       </a>
     </v-card-text>
     <img class="dashboard-image" src="@/assets/dashboard.png" />
@@ -31,9 +31,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.dashboard-image
+.dashboard-image {
   width: 100% !important;
-.action-links
+}
+
+.action-links {
   text-decoration: none;
   color: grey;
+}
 </style>

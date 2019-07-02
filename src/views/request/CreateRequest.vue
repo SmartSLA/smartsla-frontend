@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>{{ $t("New issue") }}</span>
+      <span>{{ $i18n.t("New issue") }}</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
@@ -16,7 +16,7 @@
                       prepend-icon="create"
                       name="Title"
                       v-model="ticket.title"
-                      :label="$t('Title')"
+                      :label="$i18n.t('Title')"
                       type="text"
                       :rules="[() => ticket.title.length > 0 || $i18n.t('Required field')]"
                       class="required-element"
@@ -26,7 +26,7 @@
                   <v-flex xs6>
                     <v-autocomplete
                       :items="contractList"
-                      :label="$t('Contract')"
+                      :label="$i18n.t('Contract')"
                       prepend-icon="note"
                       background-color="white"
                       v-model="ticket.contract"
@@ -42,7 +42,7 @@
                       prepend-icon="mail"
                       v-model="ticket.participants"
                       name="Mail"
-                      :label="$t('Participants E-mails (separated by commas)')"
+                      :label="$i18n.t('Participants E-mails (separated by commas)')"
                       type="text"
                     ></v-text-field>
                   </v-flex>
@@ -52,7 +52,7 @@
                         <v-autocomplete
                           :disabled="!ticket.contract.software"
                           :items="ticket.contract.software"
-                          :label="$t('Software')"
+                          :label="$i18n.t('Software')"
                           prepend-icon="laptop"
                           background-color="white"
                           v-model="ticket.software"
@@ -90,7 +90,7 @@
                           :disabled="!ticket.software.critical"
                           :items="[...typeList]"
                           v-model="ticket.type"
-                          label="Type"
+                          :label="$i18n.t('Type')"
                           :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
                           return-object
@@ -103,7 +103,7 @@
                           :items="[...severityList]"
                           :disabled="!ticket.type"
                           v-model="ticket.severity"
-                          :label="$t('Severity')"
+                          :label="$i18n.t('Severity')"
                           :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
                           class="required-element"
                           return-object
@@ -118,9 +118,9 @@
                   >
                     <span>
                       <v-icon>mdi-file-document-edit-outline</v-icon>
-                      {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
-                      {{ $t(selectedEngagement.supported) }}, {{ $t("bypass in") }} {{ $t(selectedEngagement.bypassed) }},
-                      {{ $t("and resolution in") }} {{ $t(selectedEngagement.fix) }}
+                      {{ $i18n.t("ticket contractual engagements") }} : {{ $i18n.t("Supported in") }}
+                      {{ $i18n.t(selectedEngagement.supported) }}, {{ $i18n.t("bypass in") }} {{ $i18n.t(selectedEngagement.bypassed) }},
+                      {{ $i18n.t("and resolution in") }} {{ $i18n.t(selectedEngagement.fix) }}
                     </span>
                   </v-flex>
                   <v-flex xs12>
@@ -141,7 +141,7 @@
                           prepend-icon="link"
                           class="mr-0"
                           :items="linkTypes"
-                          :label="$t('linking types')"
+                          :label="$i18n.t('linking types')"
                           v-model="linkType"
                           single-line
                           hide-details
@@ -152,7 +152,7 @@
                         <v-select
                           v-model="linkedRequest"
                           :items="relatedRequests"
-                          :label="$t('Related requests')"
+                          :label="$i18n.t('Related requests')"
                           solo
                           class="pt-0"
                         >
@@ -179,12 +179,12 @@
                   <v-flex xs6></v-flex>
                   <v-flex xs6></v-flex>
                   <v-flex xs10 class="pl-4">
-                    <br>
+                    <br />
                     <file-upload
                       prepend-icon="attach_file"
                       class="file"
                       url="undefined"
-                      :btn-label="$t('Attach file')"
+                      :btn-label="$i18n.t('Attach file')"
                       btn-uploading-label="Uploading file"
                     ></file-upload>
                   </v-flex>
@@ -199,7 +199,7 @@
                     :disabled="submitRequest"
                     :loading="submitRequest"
                     @click="submit"
-                  >{{ $t("Submit") }}</v-btn>
+                  >{{ $i18n.t("Submit") }}</v-btn>
                 </v-flex>
               </v-layout>
             </v-card-actions>
@@ -239,13 +239,13 @@ export default {
       linkedRequest: "",
       linkType: "",
       linkTypes: [
-        "lié à",
-        "duplique",
-        "dupliqué par",
-        "bloque",
-        "bloqué par",
-        "précède",
-        "suit"
+        this.$i18n.t("Linked at"),
+        this.$i18n.t("Duplicated"),
+        this.$i18n.t("Duplicated by"),
+        this.$i18n.t("Blocked"),
+        this.$i18n.t("Blocked by"),
+        this.$i18n.t("Previous"),
+        this.$i18n.t("Next")
       ],
       linkedRequests: [],
       submitRequest: false,

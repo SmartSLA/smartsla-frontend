@@ -237,19 +237,19 @@ export default {
       filterGroups: ["Ticket", "Client / Contract", "Software"],
       tickets: [
         {
-          text: "All Tickets",
+          text: this.$i18n.t("All Tickets"),
           value: ""
         },
         {
-          text: "ossa",
+          text: this.$i18n.t("ossa"),
           value: "ossa"
         },
         {
-          text: "support",
+          text: this.$i18n.t("Support"),
           value: "support"
         },
         {
-          text: "hosting",
+          text: this.$i18n.t("Hosting"),
           value: "hosting"
         }
       ],
@@ -259,7 +259,7 @@ export default {
       search: null,
       toggle_multiple: "2",
       ticketsFilter: {
-        text: "All Tickets",
+        text: this.$i18n.t("All Tickets"),
         value: ""
       },
       isMobile: false,
@@ -282,27 +282,27 @@ export default {
       ],
       requests: [],
       categories: [
-        "Type",
-        "Severity",
-        "Software",
-        "Assign To",
-        "Responsible",
-        "Transmitter",
-        "Client / Contract",
-        "Status"
+        this.$i18n.t("Type"),
+        this.$i18n.t("Severity"),
+        this.$i18n.t("Software"),
+        this.$i18n.t("Assign To"),
+        this.$i18n.t("Responsible"),
+        this.$i18n.t("Transmitter"),
+        this.$i18n.t("Client / Contract"),
+        this.$i18n.t("Status")
       ],
       categoriesFilter: "",
       values: [],
       selections: [],
       chip1: true,
-      types: ["Anomalie", "Evolution"],
-      severities: ["Bloquant", "Non Bloquant"],
+      types: [this.$i18n.t("Anomalie"), this.$i18n.t("Evolution")],
+      severities: [this.$i18n.t("Bloquant"), this.$i18n.t("Non Bloquant")],
       status: [
-        "New",
-        "Taken into contact",
-        "Circumvention",
-        "Fenced",
-        "Resolution"
+        this.$i18n.t("New"),
+        this.$i18n.t("Taken into contact"),
+        this.$i18n.t("Circumvention"),
+        this.$i18n.t("Fenced"),
+        this.$i18n.t("Resolution")
       ],
       customFilters: [],
       customFiltersCategories: [],
