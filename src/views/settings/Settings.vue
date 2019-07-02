@@ -6,7 +6,7 @@
 export default {
   data() {
     return {
-      msg: "Welcome to Settings Page!!"
+      msg: $i18n.t("Welcome to Settings Page!!")
     };
   }
 };

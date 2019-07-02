@@ -12,7 +12,7 @@
                 class="login-user-input"
                 prepend-icon="person"
                 name="login"
-                :label="$t('E-mail')"
+                :label="$i18n.t('E-mail')"
                 type="text"
                 v-model="email"
                 autofocus
@@ -21,7 +21,7 @@
                 class="login-password-input"
                 prepend-icon="lock"
                 name="password"
-                :label="$t('Password')"
+                :label="$i18n.t('Password')"
                 id="password"
                 type="password"
                 v-model="password"
