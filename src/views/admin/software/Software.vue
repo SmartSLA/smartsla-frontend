@@ -1,8 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $t("Return to software list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Softwares' }"
+    >&lt; {{ $i18n.t("Return to software list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="px-0 mt-4 pb-4 pl-4">
@@ -17,7 +18,13 @@
               </v-flex>
               <v-flex xs2>
                 <div class="text-xs-right grey--text pt-3">
-                  <v-btn color="primary" fab small dark :to="{ name: 'EditSoftware', params: { id: 15 } }">
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'EditSoftware', params: { id: 15 } }"
+                  >
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -33,33 +40,36 @@
             <v-flex xs9>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <strong>{{ $t("Name") }} :</strong>
+                  <strong>{{ $i18n.t("Name") }} :</strong>
                   {{ software.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Summary") }} :</strong>
+                  <strong>{{ $i18n.t("Summary") }} :</strong>
                   {{ software.summary }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Description") }} :</strong>
+                  <strong>{{ $i18n.t("Description") }} :</strong>
                   {{ software.description }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Licence") }} :</strong>
+                  <strong>{{ $i18n.t("Licence") }} :</strong>
                   {{ software.licence }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Private") }} :</strong>
-                  {{ software.private ? $t("Yes") : $t("No") }}
+                  <strong>{{ $i18n.t("Private") }} :</strong>
+                  {{ software.private ? $i18n.t("Yes") : $i18n.t("No") }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs3>
-                      <strong>{{ $t("Technologies") }} :</strong>
+                      <strong>{{ $i18n.t("Technologies") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>
-                        <li v-for="(techno, index) in software.technologies" :key="index">{{ techno }}</li>
+                        <li
+                          v-for="(techno, index) in software.technologies"
+                          :key="index"
+                        >{{ techno }}</li>
                       </ul>
                     </v-flex>
                   </v-layout>
@@ -67,7 +77,7 @@
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs3>
-                      <strong>{{ $t("Versions") }} :</strong>
+                      <strong>{{ $i18n.t("Versions") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>
@@ -79,13 +89,13 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Groups") }} :</strong>
+                  <strong>{{ $i18n.t("Groups") }} :</strong>
                   {{ software.group }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs2>
-                      <strong>{{ $t("Links") }} :</strong>
+                      <strong>{{ $i18n.t("Links") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>
@@ -103,12 +113,16 @@
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="title font-weight-medium mb-0">{{ $t("Contributions") }}</h3>
+              <h3 class="title font-weight-medium mb-0">{{ $i18n.t("Contributions") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
 
-          <v-data-table :items="software.contributions" :headers="contributionsHeaders" hide-actions>
+          <v-data-table
+            :items="software.contributions"
+            :headers="contributionsHeaders"
+            hide-actions
+          >
             <template v-slot:items="props">
               <td class="text-xs-center">{{ props.item.date }}</td>
               <td class="text-xs-center text-capitalize">
@@ -124,12 +138,12 @@
       <v-flex xs4>
         <v-card class="px-1 ml-3 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
-            <h3 class="title">{{ $t("Contractual informations") }}</h3>
+            <h3 class="title">{{ $i18n.t("Contractual informations") }}</h3>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
             <v-flex xs4>
-              <strong>{{ $t("Contracts") }}:</strong>
+              <strong>{{ $i18n.t("Contracts") }}:</strong>
             </v-flex>
             <v-flex xs8>
               <ul>
@@ -139,7 +153,7 @@
               </ul>
             </v-flex>
             <v-flex xs4>
-              <strong>{{ $t("Requests") }}:</strong>
+              <strong>{{ $i18n.t("Requests") }}:</strong>
             </v-flex>
             <v-flex xs8>
               <ul>
@@ -160,7 +174,14 @@ export default {
     return {
       software: {
         name: "Angular",
-        contracts: ["contract1", "contract2", "contract3", "contract4", "contract5", "contract6"],
+        contracts: [
+          "contract1",
+          "contract2",
+          "contract3",
+          "contract4",
+          "contract5",
+          "contract6"
+        ],
         requests: ["request1", "request2", "request3", "request4"],
         summary:
           "Angular is a TypeScript-based open-source web application framework led by the Angular Team at Google and by a community of individuals and corporations. Angular is a complete rewrite from the same team that built AngularJS.",

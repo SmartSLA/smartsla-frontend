@@ -26,7 +26,7 @@
         hide-details
         class="scoped-requests-search"
         id="first-combo"
-        v-bind:label="$t('Categories')"
+        v-bind:label="$i18n.t('Categories')"
       ></v-select>
       <v-select
         solo
@@ -34,14 +34,14 @@
         v-model="valuesFilter"
         hide-details
         class="scoped-requests-search"
-        v-bind:label="$t('Values')"
+        v-bind:label="$i18n.t('Values')"
       ></v-select>
       <v-btn @click="addNewFilter" class="requests-filter-add">
         <v-icon dark>add</v-icon>
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And / Or") }}</span>
+        <span>{{ $i18n.t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -51,7 +51,7 @@
         v-model="storedSelectionsFilter"
         hide-details
         class="scoped-requests-search"
-        v-bind:label="$t('Stored selections')"
+        v-bind:label="$i18n.t('Stored selections')"
         @input="$emit('input')"
         return-object
       ></v-select>
@@ -60,7 +60,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And / Or") }}</span>
+        <span>{{ $i18n.t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-text-field
@@ -82,23 +82,23 @@
     <div v-if="customFilters.length > 0" class="filter-save">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="blue darken-1" dark v-on="on">{{ $t("Save current filter") }}</v-btn>
+          <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Save current filter") }}</v-btn>
         </template>
 
         <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>Save filter</v-card-title>
+          <v-card-title class="headline grey lighten-2" primary-title>{{$i18n.t("Save filter")}}</v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field label="Filter name" v-model="newFilterName"></v-text-field>
+                  <v-text-field :label="$i18n.t('Filter name')" v-model="newFilterName"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{$t("Save")}}</v-btn>
+            <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{$i18n.t("Save")}}</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -235,21 +235,21 @@ export default {
     return {
       dialog: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
-      teams: [
+      tickets: [
         {
-          text: "All Teams",
+          text: this.$i18n.t("All Tickets"),
           value: ""
         },
         {
-          text: "ossa",
+          text: this.$i18n.t("ossa"),
           value: "ossa"
         },
         {
-          text: "support",
+          text: this.$i18n.t("Support"),
           value: "support"
         },
         {
-          text: "hosting",
+          text: this.$i18n.t("Hosting"),
           value: "hosting"
         }
       ],
@@ -259,7 +259,7 @@ export default {
       search: null,
       toggle_multiple: "2",
       ticketsFilter: {
-        text: "All Teams",
+        text: this.$i18n.t("All Tickets"),
         value: ""
       },
       isMobile: false,
@@ -282,27 +282,27 @@ export default {
       ],
       requests: [],
       categories: [
-        "Type",
-        "Severity",
-        "Software",
-        "Assign To",
-        "Responsible",
-        "Transmitter",
-        "Client / Contract",
-        "Status"
+        this.$i18n.t("Type"),
+        this.$i18n.t("Severity"),
+        this.$i18n.t("Software"),
+        this.$i18n.t("Assign To"),
+        this.$i18n.t("Responsible"),
+        this.$i18n.t("Transmitter"),
+        this.$i18n.t("Client / Contract"),
+        this.$i18n.t("Status")
       ],
       categoriesFilter: "",
       values: [],
       selections: [],
       chip1: true,
-      types: ["Anomalie", "Evolution"],
-      severities: ["Bloquant", "Non Bloquant"],
+      types: [this.$i18n.t("Anomalie"), this.$i18n.t("Evolution")],
+      severities: [this.$i18n.t("Bloquant"), this.$i18n.t("Non Bloquant")],
       status: [
-        "New",
-        "Taken into contact",
-        "Circumvention",
-        "Fenced",
-        "Resolution"
+        this.$i18n.t("New"),
+        this.$i18n.t("Taken into contact"),
+        this.$i18n.t("Circumvention"),
+        this.$i18n.t("Fenced"),
+        this.$i18n.t("Resolution")
       ],
       customFilters: [],
       customFiltersCategories: [],

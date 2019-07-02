@@ -8,7 +8,7 @@
         <span class="softwares-search-span">{{ $i18n.t("Search by:") }}</span>
         <v-text-field
           v-model="search"
-          :placeholder="$t('Search')"
+          :placeholder="$i18n.t('Search')"
           single-line
           hide-details
           solo
@@ -57,31 +57,31 @@ export default {
       pagination: "10",
       headers: [
         {
-          text: "Logo",
+          text: this.$i18n.t("Logo"),
           value: "logo",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Name",
+          text: this.$i18n.t("Name"),
           value: "name",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Description",
+          text: this.$i18n.t("Description"),
           value: "description",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Tehcnologies",
+          text: this.$i18n.t("Tehcnologies"),
           value: "technologies",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Group",
+          text: this.$i18n.t("Group"),
           value: "group",
           sortable: false,
           class: "text-xs-center"

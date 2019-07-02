@@ -35,7 +35,9 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Team', params: { id: props.item._id } }">{{ props.item.name }}</router-link>
+            <router-link
+              :to="{ name: 'Team', params: { id: props.item._id } }"
+            >{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.contact }}</td>
           <td class="text-xs-center">{{ props.item.devise }}</td>
@@ -56,19 +58,19 @@ export default {
       devise: [],
       headers: [
         {
-          text: "Name",
+          text: this.$i18n.t("Name"),
           value: "name",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Contact",
+          text: this.$i18n.t("Contact"),
           value: "contact",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Devise",
+          text: this.$i18n.t("Devise"),
           value: "devise",
           sortable: false,
           class: "text-xs-center"

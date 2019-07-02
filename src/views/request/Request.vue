@@ -3,15 +3,15 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
-        {{ $t("REQUEST VIEW") }}
+        {{ $i18n.t("REQUEST VIEW") }}
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET (CSV)") }}
+        {{ $i18n.t("EXPORT SHEET (CSV)") }}
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
+        {{ $i18n.t("PRINT SHEET") }}
       </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
@@ -19,30 +19,33 @@
         <v-card light color="white">
           <v-layout row wrap>
             <v-flex xs1 class="mt-4">
-              <strong class="pt-4">{{ $t("Status") }}:</strong>
+              <strong class="pt-4">{{ $i18n.t("Status") }}:</strong>
             </v-flex>
             <v-flex xs11>
               <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
-                  <v-stepper-step step="3" complete color="success">{{ $t("New") }}</v-stepper-step>
+                  <v-stepper-step step="3" complete color="success">{{ $i18n.t("New") }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
 
-                  <v-stepper-step step="4" complete color="success">{{ $t("In progress") }}</v-stepper-step>
+                  <v-stepper-step step="4" complete color="success">{{ $i18n.t("In progress") }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
 
-                  <v-stepper-step step="4" complete color="success">{{ $t("Bypass") }}</v-stepper-step>
+                  <v-stepper-step step="4" complete color="success">{{ $i18n.t("Bypass") }}</v-stepper-step>
 
                   <v-divider color="primary"></v-divider>
 
-                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">
-                    {{ $t("Solution") }}
-                  </v-stepper-step>
+                  <v-stepper-step
+                    step="5"
+                    color="primary"
+                    complete
+                    complete-icon="access_time"
+                  >{{ $i18n.t("Solution") }}</v-stepper-step>
 
                   <v-divider></v-divider>
 
-                  <v-stepper-step step>{{ $t("Closing") }}</v-stepper-step>
+                  <v-stepper-step step>{{ $i18n.t("Closing") }}</v-stepper-step>
                 </v-stepper-header>
               </v-stepper>
             </v-flex>
@@ -67,41 +70,41 @@
           <v-divider />
           <v-layout justify-center row fill-height wrap ml-3>
             <v-flex xs3 class="pt-0 pb-1">
-              <strong>{{ $t("Type") }} :</strong>
+              <strong>{{ $i18n.t("Type") }} :</strong>
               {{ request.gravity }}
             </v-flex>
 
             <v-flex xs4 class="pt-0 pb-1">
-              <strong>{{ $t("severity") }} :</strong>
+              <strong>{{ $i18n.t("severity") }} :</strong>
               {{ request.gravity }}
             </v-flex>
             <v-flex xs5 class="pt-0 pb-1">
-              <strong>{{ $t("Created at") }} :</strong>
+              <strong>{{ $i18n.t("Created at") }} :</strong>
               {{ request.ticketDate }}
             </v-flex>
             <v-flex xs3 class="pt-0 pb-1">
-              <strong>{{ $t("Created by") }} :</strong>
+              <strong>{{ $i18n.t("Created by") }} :</strong>
               {{ request.ticketAuthor }}
             </v-flex>
 
             <v-flex xs4 class="pt-0 pb-1">
-              <strong>{{ $t("Assigned to") }} :</strong>
+              <strong>{{ $i18n.t("Assigned to") }} :</strong>
               {{ request.responsible.name }}
             </v-flex>
             <v-flex xs5 class="pt-0 pb-1">
-              <strong>{{ $t("Last update") }} :</strong>
+              <strong>{{ $i18n.t("Last update") }} :</strong>
               {{ request.lastUpdate }}
             </v-flex>
             <v-flex xs3 class="pt-0 pb-1">
-              <strong>{{ $t("Software") }} :</strong>
+              <strong>{{ $i18n.t("Software") }} :</strong>
               {{ request.software }}
             </v-flex>
             <v-flex xs4 class="pt-0 pb-1">
-              <strong>{{ $t("Version") }} :</strong>
+              <strong>{{ $i18n.t("Version") }} :</strong>
               {{ request.softwareVersion }}
             </v-flex>
             <v-flex xs5 class="pt-0 pb-1">
-              <strong>{{ $t("OS") }} :</strong>
+              <strong>{{ $i18n.t("OS") }} :</strong>
               {{ request.softwareOs }}
             </v-flex>
           </v-layout>
@@ -125,7 +128,7 @@
                 <v-flex xs11 pl-0>
                   <v-layout>
                     <v-flex xs2 pl-0>
-                      <b>{{ $t("Attachments") }}:</b>
+                      <b>{{ $i18n.t("Attachments") }}:</b>
                     </v-flex>
                     <v-flex xs10 pl-0>
                       <ul v-if="request.attachedFile.length">
@@ -146,16 +149,20 @@
                 <v-flex xs11 pl-0>
                   <v-layout row wrap>
                     <v-flex xs2 pl-0>
-                      <strong>{{ $t("Related requests") }}:</strong>
+                      <strong>{{ $i18n.t("Related requests") }}:</strong>
                     </v-flex>
                     <v-flex xs10 pl-0>
                       <ul v-if="request.linkedTickets.length">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
-                          <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'Request', params: { id: link.id } }"
-                            >#{{ link.id }} - {{ link.title }}</router-link
-                          >
+                          <span
+                            v-if="link.type == 'duplicate'"
+                          >{{ $i18n.t("is a copy of ticket") }}&nbsp;</span>
+                          <span
+                            v-else-if="link.type == 'closes'"
+                          >{{ $i18n.t("closes ticket") }}&nbsp;</span>
+                          <router-link
+                            :to="{ name: 'Request', params: { id: link.id } }"
+                          >#{{ link.id }} - {{ link.title }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -167,8 +174,8 @@
           <v-card>
             <v-tabs grow icons-and-text class="ml-3 mr-3">
               <v-tabs-slider color="primary"></v-tabs-slider>
-              <v-tab href="#comment">{{ $t("comments") }}</v-tab>
-              <v-tab href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
+              <v-tab href="#comment">{{ $i18n.t("comments") }}</v-tab>
+              <v-tab href="#satisfaction">{{ $i18n.t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
@@ -246,8 +253,8 @@
                   <v-divider></v-divider>
                   <v-form class="comment-form">
                     <v-btn-toggle v-model="selectedEditor">
-                      <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
-                      <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
+                      <v-btn flat value="wysiwyg">{{ $i18n.t("wysiwyg Editor") }}</v-btn>
+                      <v-btn flat value="markdown">{{ $i18n.t("Markdown Editor") }}</v-btn>
                     </v-btn-toggle>
                     <v-input prepend-icon="subject" class="pt-2">
                       <Editor
@@ -263,16 +270,16 @@
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
                         <v-flex xs2>
-                          <v-select :items="statusList" :label="$t('Status')"></v-select>
+                          <v-select :items="statusList" :label="$i18n.t('Status')"></v-select>
                         </v-flex>
                         <v-flex xs3>
-                          <v-select :items="assigneeList" :label="$t('Assigned to')"></v-select>
+                          <v-select :items="assigneeList" :label="$i18n.t('Assigned to')"></v-select>
                         </v-flex>
                         <v-flex xs3>
                           <v-checkbox
                             v-model="privateComment"
                             color="primary"
-                            :label="$t('private comment')"
+                            :label="$i18n.t('private comment')"
                           ></v-checkbox>
                         </v-flex>
                         <v-flex xs4>
@@ -289,7 +296,7 @@
                     <v-layout row wrap>
                       <v-flex xs5></v-flex>
                       <v-flex xs7>
-                        <v-btn color="info" class="pl-4">{{ $t("add comment") }}</v-btn>
+                        <v-btn color="info" class="pl-4">{{ $i18n.t("add comment") }}</v-btn>
                       </v-flex>
                     </v-layout>
                   </v-form>
@@ -297,9 +304,11 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>{{
-                    $t("the satisfaction survey will be available once the ticket is closed")
-                  }}</v-card-text>
+                  <v-card-text>
+                    {{
+                    $i18n.t("the satisfaction survey will be available once the ticket is closed")
+                    }}
+                  </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -311,39 +320,48 @@
           <v-flex xs12>
             <v-card light color="white" class="px-4 pb-3">
               <v-card-title primary-title>
-                <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
+                <h3 class="headline mb-0">{{ $i18n.t("Service deadlines") }}</h3>
               </v-card-title>
               <v-divider></v-divider>
-              {{ $t("Supported") }}
+              {{ $i18n.t("Supported") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="error" height="18" value="100" class="mt-0 white--text font-weight-bold"
-                    >8 HO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="error"
+                    height="18"
+                    value="100"
+                    class="mt-0 white--text font-weight-bold"
+                  >8 HO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 H</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
                   <v-icon class="error--text">close</v-icon>
                 </v-flex>
               </v-layout>
-              {{ $t("Bypass") }}
+              {{ $i18n.t("Bypass") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="success" height="18" value="40" class="mt-0 white--text font-weight-bold"
-                    >1.75 JO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="success"
+                    height="18"
+                    value="40"
+                    class="mt-0 white--text font-weight-bold"
+                  >1.75 JO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
                   <v-icon class="success--text">check</v-icon>
                 </v-flex>
               </v-layout>
-              {{ $t("Solution") }}
+              {{ $i18n.t("Solution") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="success" height="18" value="60" class="mt-0 white--text font-weight-bold"
-                    >2.5 JO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="success"
+                    height="18"
+                    value="60"
+                    class="mt-0 white--text font-weight-bold"
+                  >2.5 JO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>5 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -353,9 +371,9 @@
             </v-card>
           </v-flex>
           <v-flex xs12 align-center justify-center>
-            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">
-              {{ $t("interlocutor in charge of the request") }}
-            </h4>
+            <h4
+              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+            >{{ $i18n.t("interlocutor in charge of the request") }}</h4>
             <v-card class="pt-2 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <br />
@@ -369,17 +387,19 @@
               </v-layout>
 
               <v-card-text>
-                <strong>{{ $t("Contact") }} :</strong>
+                <strong>{{ $i18n.t("Contact") }} :</strong>
                 {{ request.responsible.name }}
                 <br />
-                <strong>{{ $t("Phone") }} :</strong>
+                <strong>{{ $i18n.t("Phone") }} :</strong>
                 {{ request.responsible.phone }}
                 <br />
-                <strong>{{ $t("eMail") }} :</strong>
+                <strong>{{ $i18n.t("eMail") }} :</strong>
                 {{ request.responsible.email }}
               </v-card-text>
             </v-card>
-            <h4 class="text-uppercase text-md-center blue white--text pt-2 pb-1">{{ $t("Beneficiary") }}</h4>
+            <h4
+              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+            >{{ $i18n.t("Beneficiary") }}</h4>
             <v-card class="pt-2">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <v-layout row wrap>
@@ -392,15 +412,14 @@
               </v-layout>
 
               <v-card-text>
-                <strong>{{ $t("Contact") }} :</strong>
+                <strong>{{ $i18n.t("Contact") }} :</strong>
                 {{ request.beneficiary.contact }}
                 <br />
-                <strong>{{ $t("Phone") }} :</strong>
+                <strong>{{ $i18n.t("Phone") }} :</strong>
                 {{ request.beneficiary.phone }}
                 <br />
-                <span class="body-2">{{ $t("client") }} / {{ $t("contract") }} :&nbsp;</span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
-                >/
+                <span class="body-2">{{ $i18n.t("client") }} / {{ $i18n.t("contract") }} :&nbsp;</span>
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link>/
                 <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
             </v-card>
@@ -410,54 +429,53 @@
               <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
                   <div>
-                    <h3 class="headline mb-0">{{ $t("Community contribution progress") }}</h3>
+                    <h3 class="headline mb-0">{{ $i18n.t("Community contribution progress") }}</h3>
                   </div>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-layout class="mb-1">
                   <v-flex xs3 class="green--text font-weight-bold">
-                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Dev") }}</small>
+                    <v-icon
+                      class="progress-arrow"
+                      :class="{ 'green--text': request.communityContribution.status.dev }"
+                    >label_important</v-icon>
+                    <small>{{ $i18n.t("Dev") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Reversed") }}</small>
+                    >label_important</v-icon>
+                    <small>{{ $i18n.t("Reversed") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Integrated") }}</small>
+                    >label_important</v-icon>
+                    <small>{{ $i18n.t("Integrated") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("published") }}</small>
+                    >label_important</v-icon>
+                    <small>{{ $i18n.t("published") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Rejected") }}</small>
+                    >label_important</v-icon>
+                    <small>{{ $i18n.t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
-                <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">{{
+                <h3>{{ $i18n.t("Community contribution form") }}:</h3>
+                <a :href="request.communityContribution.communityIssueLink">
+                  {{
                   request.communityContribution.communityIssueLink
-                }}</a>
+                  }}
+                </a>
               </v-card>
             </v-card>
           </v-flex>
@@ -492,7 +510,13 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      statusList: ["in progress", "bypassed", "resolved", "closed", "suspended"],
+      statusList: [
+        this.$i18n.t("in progress"),
+        this.$i18n.t("bypassed"),
+        this.$i18n.t("resolved"),
+        this.$i18n.t("closed"),
+        this.$i18n.t("suspended")
+      ],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
       text: ""
     };
@@ -502,13 +526,21 @@ export default {
     Editor
   },
   mounted() {
-    var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
+    var progressBars = Array.prototype.slice.call(
+      document.getElementsByClassName("v-progress-linear")
+    );
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
-      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+      var value = element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName(
+        "v-progress-linear__bar__determinate"
+      );
       newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+      element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML = "";
     }
   },
   computed: {
@@ -529,7 +561,10 @@ export default {
         })
         .catch(err => {});
     }
-    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+    this.$store.dispatch(
+      "sidebar/setSidebarComponent",
+      "issue-detail-side-bar"
+    );
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -547,7 +582,9 @@ export default {
       }
       this.request.attachedFile = "";
       this.request.lastUpdate = "";
-      this.request.ticketDate = new Date(request.timestamps.creation).toDateString();
+      this.request.ticketDate = new Date(
+        request.timestamps.creation
+      ).toDateString();
       this.request.subject = request.description;
       this.request.responsible = {};
       this.request.ticketAuthor = "";

@@ -1,20 +1,23 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $t("Return to software list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Softwares' }"
+    >&lt; {{ $i18n.t("Return to software list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Software") : $t("New Software") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $i18n.t("Edit Software") : $i18n.t("New Software") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
             <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Name") }} :</strong>
+              <strong class="required-label">{{ $i18n.t("Name") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field
@@ -24,21 +27,21 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Summary") }} :</strong>
+              <strong>{{ $i18n.t("Summary") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field v-model="software.summary"></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Description") }} :</strong>
+              <strong>{{ $i18n.t("Description") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-textarea name="description"></v-textarea>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Logo") }} :</strong>
+              <strong>{{ $i18n.t("Logo") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <file-upload
@@ -51,28 +54,28 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Licence") }} :</strong>
+              <strong>{{ $i18n.t("Licence") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="licenceList"></v-select>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Private") }} :</strong>
+              <strong>{{ $i18n.t("Private") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-switch v-model="software.private"></v-switch>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Technology") }} :</strong>
+              <strong>{{ $i18n.t("Technology") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="technologies"></v-select>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Groupes") }} :</strong>
+              <strong>{{ $i18n.t("Groupes") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="groups"></v-select>
@@ -80,7 +83,7 @@
             <v-flex xs1></v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs5>
-              <v-btn class="success" @click="createSoftware">{{ $t("validate") }}</v-btn>
+              <v-btn class="success" @click="createSoftware">{{ $i18n.t("validate") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>

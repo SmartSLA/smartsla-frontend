@@ -1,30 +1,33 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Users' }"
-      >&lt; {{ $t("Return to users list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Users' }"
+    >&lt; {{ $i18n.t("Return to users list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $i18n.t("Edit User") : $i18n.t("New user") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Type") }} :</strong>
+              <strong>{{ $i18n.t("Type") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-radio-group v-model="user.type" row color="primary">
-                <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
-                <v-radio :label="$t('Expert')" value="expert"></v-radio>
+                <v-radio :label="$i18n.t('Beneficiary')" value="beneficiary"></v-radio>
+                <v-radio :label="$i18n.t('Expert')" value="expert"></v-radio>
               </v-radio-group>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Name") }} :</strong>
+              <strong class="required-label">{{ $i18n.t("Name") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field
@@ -34,14 +37,14 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Position") }} :</strong>
+              <strong>{{ $i18n.t("Position") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field v-model="user.title"></v-text-field>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Email") }} :</strong>
+              <strong class="required-label">{{ $i18n.t("Email") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field
@@ -51,7 +54,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Phone") }} :</strong>
+              <strong class="required-label">{{ $i18n.t("Phone") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field
@@ -61,7 +64,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Identifier") }} :</strong>
+              <strong class="required-label">{{ $i18n.t("Identifier") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-text-field
@@ -71,7 +74,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Role") }} :</strong>
+              <strong class="required-label">{{ $i18n.t("Role") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-radio-group
@@ -80,22 +83,30 @@
                 color="primary"
                 :rules="[() => user.role.length > 0 || $i18n.t('Required field')]"
               >
-                <v-radio :label="$t('Customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
-                <v-radio :label="$t('Viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
-                <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
-                <v-radio :label="$t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
+                <v-radio
+                  :label="$i18n.t('Customer')"
+                  value="customer"
+                  v-if="user.type == 'beneficiary'"
+                ></v-radio>
+                <v-radio
+                  :label="$i18n.t('Viewer')"
+                  value="viewer"
+                  v-if="user.type == 'beneficiary'"
+                ></v-radio>
+                <v-radio :label="$i18n.t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
+                <v-radio :label="$i18n.t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
               </v-radio-group>
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4" v-if="user.type != 'expert'">
-              <strong>{{ $t("Client") }} :</strong>
+              <strong>{{ $i18n.t("Client") }} :</strong>
             </v-flex>
             <v-flex xs8 v-if="user.type != 'expert'">
               <v-select :items="clients" item-value="name" item-text="name" v-model="user.client"></v-select>
             </v-flex>
             <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("contracts") }} :</strong>
+              <strong>{{ $i18n.t("contracts") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select
@@ -109,7 +120,7 @@
             <v-flex xs1></v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs2>
-              <v-btn class="success" @click="createUser">{{ $t("validate") }}</v-btn>
+              <v-btn class="success" @click="createUser">{{ $i18n.t("validate") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>

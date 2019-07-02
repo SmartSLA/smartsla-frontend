@@ -6,7 +6,7 @@
 export default {
   data() {
     return {
-      msg: "Welcome to the historic!!"
+      msg: this.$i18n.t("Welcome to the historic!!")
     };
   },
   created() {
