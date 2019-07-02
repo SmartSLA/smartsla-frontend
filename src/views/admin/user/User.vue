@@ -1,8 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Users' }"
-      >&lt; {{ $t("Return to users list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Users' }"
+    >&lt; {{ $i18n.t("Return to users list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex 12>
         <v-card class="px-1 mt-4 pb-4">
@@ -16,7 +17,13 @@
             </v-flex>
             <v-flex xs2>
               <div class="text-xs-right grey--text pt-3">
-                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: 15 } }">
+                <v-btn
+                  color="primary"
+                  fab
+                  small
+                  dark
+                  :to="{ name: 'UserEdit', params: { id: 15 } }"
+                >
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -28,35 +35,35 @@
             <v-flex xs6>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <strong>{{ $t("Type") }} :</strong>
-                  {{ $t(user.type) }}
+                  <strong>{{ $i18n.t("Type") }} :</strong>
+                  {{ $i18n.t(user.type) }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Name") }} :</strong>
+                  <strong>{{ $i18n.t("Name") }} :</strong>
                   {{ user.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Position") }} :</strong>
+                  <strong>{{ $i18n.t("Position") }} :</strong>
                   {{ user.title }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Email") }} :</strong>
+                  <strong>{{ $i18n.t("Email") }} :</strong>
                   {{ user.email }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Phone") }} :</strong>
+                  <strong>{{ $i18n.t("Phone") }} :</strong>
                   {{ user.phone }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Team") }} :</strong>
+                  <strong>{{ $i18n.t("Team") }} :</strong>
                   {{ user.team }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Identifier") }} :</strong>
+                  <strong>{{ $i18n.t("Identifier") }} :</strong>
                   {{ user.identifier }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Role") }} :</strong>
+                  <strong>{{ $i18n.t("Role") }} :</strong>
                   {{ user.role }}
                 </v-flex>
               </v-layout>
@@ -68,18 +75,20 @@
                   <img :src="user.client.image" height="100" />
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Client") }} :</strong>
+                  <strong>{{ $i18n.t("Client") }} :</strong>
                   {{ user.client.name }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs4>
-                      <strong>{{ $t("Contracts") }} :</strong>
+                      <strong>{{ $i18n.t("Contracts") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>
                         <li v-for="(contract, key) in user.contracts" :key="key">
-                          <router-link :to="{ name: 'Contract', params: { id: 15 } }">{{ contract.name }}</router-link>
+                          <router-link
+                            :to="{ name: 'Contract', params: { id: 15 } }"
+                          >{{ contract.name }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
