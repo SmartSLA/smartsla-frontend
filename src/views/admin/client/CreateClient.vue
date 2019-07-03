@@ -9,7 +9,7 @@
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
             <v-card-text>
-              <v-form>
+              <v-form ref="form" v-model="valid" lazy-validation>
                 <div class="float-left">
                   <v-text-field
                     name="Name"

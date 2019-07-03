@@ -15,163 +15,165 @@
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
-          <v-layout row wrap>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $i18n.t("Name") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field
-                v-model="team.name"
-                :rules="[() => team.name.length > 0 || $i18n.t('Required field')]"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Motto") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field v-model="team.motto"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Email") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field v-model="team.email"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Manager") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select :items="expertUsers" item-text="name" item-value="name"></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Members") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-autocomplete
-                :items="users"
-                item-text="name"
-                item-value="name"
-                background-color="white"
-                :search-input.sync="member"
-                multiple
-              ></v-autocomplete>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Alert system active") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-switch v-model="team.alertActive"></v-switch>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Hash") }} :</strong>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field v-model="team.hash"></v-text-field>
-            </v-flex>
-            <v-flex xs3>
-              <v-btn class="primary" @click.native="generateHash">{{ $i18n.t("Generate Hash") }}</v-btn>
-            </v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Test alert system active") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-switch v-model="team.testAlertActive"></v-switch>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Automatic Alert : Starting hour") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-menu
-                ref="menu1"
-                v-model="startTime"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                :return-value.sync="time1"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-layout row wrap>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Name") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field
+                  v-model="team.name"
+                  :rules="[() => team.name.length > 0 || $i18n.t('Required field')]"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Motto") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field v-model="team.motto"></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Email") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field v-model="team.email"></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Manager") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-select :items="expertUsers" item-text="name" item-value="name"></v-select>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Members") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-autocomplete
+                  :items="users"
+                  item-text="name"
+                  item-value="name"
+                  background-color="white"
+                  :search-input.sync="member"
+                  multiple
+                ></v-autocomplete>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Alert system active") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-switch v-model="team.alertActive"></v-switch>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Hash") }} :</strong>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field v-model="team.hash"></v-text-field>
+              </v-flex>
+              <v-flex xs3>
+                <v-btn class="primary" @click.native="generateHash">{{ $t("Generate Hash") }}</v-btn>
+              </v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Test alert system active") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-switch v-model="team.testAlertActive"></v-switch>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Automatic Alert : Starting hour") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-menu
+                  ref="menu1"
+                  v-model="startTime"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  :return-value.sync="time1"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="time1"
+                      label="Picker in menu"
+                      prepend-icon="access_time"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                    v-if="startTime"
                     v-model="time1"
-                    label="Picker in menu"
-                    prepend-icon="access_time"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-time-picker
-                  v-if="startTime"
-                  v-model="time1"
+                    full-width
+                    @click:minute="$refs.menu1.save(time1)"
+                  ></v-time-picker>
+                </v-menu>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Automatic Alert : Automatic starting hour") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-menu
+                  ref="menu2"
+                  v-model="endTime"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  :return-value.sync="time2"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
                   full-width
-                  @click:minute="$refs.menu1.save(time1)"
-                ></v-time-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Automatic Alert : Automatic starting hour") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-menu
-                ref="menu2"
-                v-model="endTime"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                :return-value.sync="time2"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="time2"
+                      label="Picker in menu"
+                      prepend-icon="access_time"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                    v-if="endTime"
                     v-model="time2"
-                    label="Picker in menu"
-                    prepend-icon="access_time"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-time-picker
-                  v-if="endTime"
-                  v-model="time2"
-                  full-width
-                  @click:minute="$refs.menu2.save(time2)"
-                ></v-time-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $i18n.t("Team contracts") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-autocomplete
-                :items="contracts"
-                item-text="name"
-                item-value="name"
-                background-color="white"
-                multiple
-              ></v-autocomplete>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs5></v-flex>
-            <v-flex xs5>
-              <v-btn class="success" @click="createTeam">{{ $i18n.t("validate") }}</v-btn>
-            </v-flex>
-          </v-layout>
+                    full-width
+                    @click:minute="$refs.menu2.save(time2)"
+                  ></v-time-picker>
+                </v-menu>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Team contracts") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-autocomplete
+                  :items="contracts"
+                  item-text="name"
+                  item-value="name"
+                  background-color="white"
+                  multiple
+                ></v-autocomplete>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs5></v-flex>
+              <v-flex xs5>
+                <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-form>
         </v-card>
       </v-flex>
     </v-layout>
@@ -182,6 +184,7 @@ export default {
   data() {
     return {
       member: "",
+      valid: true,
       users: {},
       expertUsers: {},
       clients: {},
@@ -233,6 +236,17 @@ export default {
             color: "error"
           });
         });
+    },
+
+    validateFrom() {
+      if (this.$refs.form.validate()) {
+        this.createTeam();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
+      }
     }
   },
   created() {
