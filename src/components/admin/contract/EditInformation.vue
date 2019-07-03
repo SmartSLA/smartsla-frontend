@@ -3,19 +3,19 @@
     <v-card class="mt-4 px-4">
       <v-card-title primary-title class="pl-0">
         <div>
-          <h3 class="title mb-0">{{ $t("Information") }}</h3>
+          <h3 class="title mb-0">{{ $i18n.t("Information") }}</h3>
         </div>
       </v-card-title>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-layout row wrap align-center>
-          <v-flex xs3 class="required-label">{{ $t("Name") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $i18n.t("Name") }}</v-flex>
           <v-flex xs8>
             <v-text-field
               v-model="contract.name"
               :rules="[() => contract.name.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $i18n.t("Client") }}</v-flex>
           <v-flex xs8>
             <v-select
               :items="clients"
@@ -24,29 +24,29 @@
               :rules="[() => contract.client.length > 0 || $i18n.t('Required field')]"
             ></v-select>
           </v-flex>
-          <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
+          <v-flex xs3>{{ $i18n.t("Commercial contact") }}</v-flex>
           <v-flex xs8>
             <v-select :items="commercials" v-model="contract.contact.commercial"></v-select>
           </v-flex>
-          <v-flex xs3>{{ $t("technical contact") }}</v-flex>
+          <v-flex xs3>{{ $i18n.t("technical contact") }}</v-flex>
           <v-flex xs8>
             <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("Internal mailing list") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $i18n.t("Internal mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field
               v-model="contract.mailingList.internal"
               :rules="[() => contract.mailingList.internal.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("client mailing list") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $i18n.t("client mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field
               v-model="contract.mailingList.external"
               :rules="[() => contract.mailingList.external.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $i18n.t("Start") }}</v-flex>
           <v-flex xs8>
             <v-menu
               v-model="startDateModel"
@@ -77,7 +77,7 @@
               ></v-date-picker>
             </v-menu>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("End") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $i18n.t("End") }}</v-flex>
           <v-flex xs8>
             <v-menu
               v-model="endDateModel"
@@ -111,29 +111,37 @@
           <v-flex xs12>
             <br />
           </v-flex>
-          <v-flex xs3>{{ $t("Status") }}</v-flex>
+          <v-flex xs3>{{ $i18n.t("Status") }}</v-flex>
           <v-flex xs8>
             <v-btn-toggle v-model="contract.status">
-              <v-btn :value="true" flat :class="{ success: contract.status }">{{ $t("Active") }}</v-btn>
-              <v-btn :value="false" flat :class="{ error: !contract.status }">{{ $t("Inactive") }}</v-btn>
+              <v-btn
+                :value="true"
+                flat
+                :class="{ success: contract.status }"
+              >{{ $i18n.t("Active") }}</v-btn>
+              <v-btn
+                :value="false"
+                flat
+                :class="{ error: !contract.status }"
+              >{{ $i18n.t("Inactive") }}</v-btn>
             </v-btn-toggle>
           </v-flex>
-          <v-flex xs3>{{ $t("Type") }}</v-flex>
+          <v-flex xs3>{{ $i18n.t("Type") }}</v-flex>
           <v-flex xs8>
             <v-radio-group v-model="contract.type" row>
-              <v-radio :label="$t('Credit')" value="credit"></v-radio>
-              <v-radio :label="$t('Unlimited')" value="unlimited"></v-radio>
+              <v-radio :label="$i18n.t('Credit')" value="credit"></v-radio>
+              <v-radio :label="$i18n.t('Unlimited')" value="unlimited"></v-radio>
             </v-radio-group>
           </v-flex>
-          <v-flex xs3>{{ $t("Governed by") }}</v-flex>
+          <v-flex xs3>{{ $i18n.t("Governed by") }}</v-flex>
           <v-flex xs8>
             <v-text-field v-model="contract.govern"></v-text-field>
           </v-flex>
-          <v-flex xs3 class="pt-3">{{ $t("Requests shared among the beneficiaries") }}</v-flex>
+          <v-flex xs3 class="pt-3">{{ $i18n.t("Requests shared among the beneficiaries") }}</v-flex>
           <v-flex xs8>
             <v-checkbox v-model="contract.sharedRequests" color="primary" hide-details></v-checkbox>
           </v-flex>
-          <v-flex xs3>{{ $t("Domain") }}</v-flex>
+          <v-flex xs3>{{ $i18n.t("Domain") }}</v-flex>
           <v-flex xs8>
             <v-text-field></v-text-field>
           </v-flex>
@@ -141,9 +149,11 @@
             <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn :disabled="!valid" color="success" @click="validate">
-              {{ isNew ? $t("Validate the changes") : $t("Create") }}
-            </v-btn>
+            <v-btn
+              :disabled="!valid"
+              color="success"
+              @click="validate"
+            >{{ isNew ? $i18n.t("Validate the changes") : $i18n.t("Create") }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -253,11 +263,21 @@ export default {
 
     validate() {
       var contract = this.contract;
-      if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
-        contract.mailingList.external = contract.mailingList.external.split(",");
+      if (
+        contract.mailingList.external.length &&
+        !(contract.mailingList.external instanceof Array)
+      ) {
+        contract.mailingList.external = contract.mailingList.external.split(
+          ","
+        );
       }
-      if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
-        contract.mailingList.internal = contract.mailingList.internal.split(",");
+      if (
+        contract.mailingList.internal.length &&
+        !(contract.mailingList.internal instanceof Array)
+      ) {
+        contract.mailingList.internal = contract.mailingList.internal.split(
+          ","
+        );
       }
       if (!this.isNew) {
         this.$http

@@ -2,9 +2,11 @@
   <v-container class="pt-0 px-0 contributions-bar">
     <v-layout row wrap>
       <v-flex xs12>
-        <v-subheader inset class="text-uppercase blue white--text title ml-0">{{
-          $t("recently accepted contributions")
-        }}</v-subheader>
+        <v-subheader inset class="text-uppercase blue white--text title ml-0">
+          {{
+          $i18n.t("recently accepted contributions")
+          }}
+        </v-subheader>
         <v-icon large color="blue" class="arrow-down pr-4">play_arrow</v-icon>
 
         <v-list two-line>
@@ -16,15 +18,15 @@
             @click="switchContribution(contribution.contributionId)"
           >
             <v-list-tile-content>
-              <v-list-tile-title class="text-capitalize title"
-                >{{ contribution.software }} ({{ contribution.date }})</v-list-tile-title
-              >
+              <v-list-tile-title
+                class="text-capitalize title"
+              >{{ contribution.software }} ({{ contribution.date }})</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
         </v-list>
         <div class="see-all-link text-md-right pr-2">
-          <a href="#" class="white--text">{{ $t("See all") }}</a>
+          <a href="#" class="white--text">{{ $i18n.t("See all") }}</a>
         </div>
       </v-flex>
     </v-layout>
@@ -48,7 +50,10 @@ export default {
   },
   created() {
     this.recentContributions = latestContributionsList;
-    this.$store.dispatch("sidebar/setActiveContribution", this.currentActiveContributionId);
+    this.$store.dispatch(
+      "sidebar/setActiveContribution",
+      this.currentActiveContributionId
+    );
   },
   mounted() {
     this.$store.watch(
@@ -62,16 +67,23 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.contributions-bar
+.contributions-bar {
   background-color: #2b303c;
   height: 100%;
-.see-all-link
+}
+
+.see-all-link {
   width: 100%;
-.arrow-down
+}
+
+.arrow-down {
   transform: rotate(90deg);
   position: absolute;
   left: 45%;
   width: 10%;
-.v-list__tile__title.text-capitalize.title
+}
+
+.v-list__tile__title.text-capitalize.title {
   font-size: 16px !important;
+}
 </style>
