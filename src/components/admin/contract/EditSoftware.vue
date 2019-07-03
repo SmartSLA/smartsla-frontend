@@ -2,7 +2,7 @@
   <v-card class="mt-4 px-4">
     <v-card-title primary-title class="pl-0">
       <div>
-        <h3 class="title mb-0">{{ $t("Software") }}</h3>
+        <h3 class="title mb-0">{{ $i18n.t("Software") }}</h3>
       </div>
     </v-card-title>
     <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
@@ -11,40 +11,40 @@
         <td class="text-xs-center">{{ props.item.version }}</td>
         <td class="text-xs-center">{{ props.item.os }}</td>
         <td class="text-xs-center" v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length">
-          {{ $t("S") }}: {{ props.item.SupportDate.start }}
+          {{ $i18n.t("S") }}: {{ props.item.SupportDate.start }}
           <br />
-          {{ $t("E") }}: {{ props.item.SupportDate.end }}
+          {{ $i18n.t("E") }}: {{ props.item.SupportDate.end }}
         </td>
-        <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
+        <td v-else class="text-xs-center">{{ $i18n.t("contract in progress") }}</td>
         <td class="text-xs-center">
           <v-chip :color="critColor(props.item.critical)" :text-color="critTextColor(props.item.critical)" label>{{
-            $t(props.item.critical)
+            $i18n.t(props.item.critical)
           }}</v-chip>
         </td>
         <td class="text-xs-center">
-          <span v-if="props.item.generic == 'yes'">{{ $t("yes") }}</span>
+          <span v-if="props.item.generic == 'yes'">{{ $i18n.t("yes") }}</span>
           <router-link v-else to="#">repo</router-link>
         </td>
         <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
         <td class="text-xs-center">
           <v-btn color="error" flat small @click="removeSoftware(props.item)">
             <v-icon>remove_circle</v-icon>
-            {{ $t("remove") }}
+            {{ $i18n.t("remove") }}
           </v-btn>
         </td>
       </template>
     </v-data-table>
     <v-btn small flat class="pl-4 success--text" @click="addSoftware = !addSoftware">
       <v-icon class="success--text">add_circle</v-icon>
-      {{ $t("Add") }}
+      {{ $i18n.t("Add") }}
     </v-btn>
     <v-layout row wrap align-center>
       <v-flex xs1></v-flex>
       <v-flex xs8>
         <form v-if="addSoftware" class="pt-4 px-4 mr-4 grey lighten-3">
-          <h3 class="title mb-0">{{ $t("Add software") }}</h3>
+          <h3 class="title mb-0">{{ $i18n.t("Add software") }}</h3>
           <v-layout row wrap align-center>
-            <v-flex xs3>{{ $t("Software") }}</v-flex>
+            <v-flex xs3>{{ $i18n.t("Software") }}</v-flex>
             <v-flex xs9>
               <v-select
                 v-model="newSoftwareName"
@@ -56,7 +56,7 @@
                 single-line
               ></v-select>
             </v-flex>
-            <v-flex xs3>{{ $t("Start of support") }}</v-flex>
+            <v-flex xs3>{{ $i18n.t("Start of support") }}</v-flex>
             <v-flex xs9>
               <v-menu
                 v-model="startDateModel"
@@ -85,7 +85,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-flex>
-            <v-flex xs3>{{ $t("End of support") }}</v-flex>
+            <v-flex xs3>{{ $i18n.t("End of support") }}</v-flex>
             <v-flex xs9>
               <v-menu
                 v-model="endDateModel"
@@ -114,32 +114,32 @@
                 ></v-date-picker>
               </v-menu>
             </v-flex>
-            <v-flex xs3>{{ $t("Critical") }}</v-flex>
+            <v-flex xs3>{{ $i18n.t("Critical") }}</v-flex>
             <v-flex xs9>
               <v-btn-toggle :value="newSoftware.critical" v-model="newSoftware.critical">
                 <v-btn value="critical" flat :class="{ error: newSoftware.critical == 'critical' }">{{
-                  $t("critical")
+                  $i18n.t("critical")
                 }}</v-btn>
                 <v-btn value="sensible" flat :class="{ warning: newSoftware.critical == 'sensible' }">{{
-                  $t("sensible")
+                  $i18n.t("sensible")
                 }}</v-btn>
                 <v-btn value="standard" flat :class="{ white: newSoftware.critical == 'standard' }">{{
-                  $t("standard")
+                  $i18n.t("standard")
                 }}</v-btn>
               </v-btn-toggle>
             </v-flex>
-            <v-flex xs3>{{ $t("Version") }}</v-flex>
+            <v-flex xs3>{{ $i18n.t("Version") }}</v-flex>
             <v-flex xs9>
               <v-text-field v-model="newSoftware.version" required></v-text-field>
             </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("OS") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $i18n.t("OS") }}</v-flex>
             <v-flex xs9>
               <v-text-field
                 v-model="newSoftware.os"
                 :rules="[() => newSoftware.os.length > 0 || $i18n.t('Required field')]"
               ></v-text-field>
             </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("Referent") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $i18n.t("Referent") }}</v-flex>
             <v-flex xs9>
               <v-select
                 v-model="newSoftware.technicalReferent"
@@ -147,15 +147,15 @@
                 :rules="[() => newSoftware.technicalReferent.length > 0 || $i18n.t('Required field')]"
               ></v-select>
             </v-flex>
-            <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
+            <v-flex xs3 class="pt-3">{{ $i18n.t("Generic") }}</v-flex>
             <v-flex xs9>
               <v-radio-group v-model="newSoftware.generic" row>
-                <v-radio :label="$t('yes')" value="yes"></v-radio>
-                <v-radio :label="$t('no')" value="repo"></v-radio>
+                <v-radio :label="$i18n.t('yes')" value="yes"></v-radio>
+                <v-radio :label="$i18n.t('no')" value="repo"></v-radio>
               </v-radio-group>
             </v-flex>
             <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">
-              {{ $t("repo link") }}
+              {{ $i18n.t("repo link") }}
             </v-flex>
             <v-flex xs9 v-if="newSoftware.generic && newSoftware.generic != 'yes'">
               <v-text-field v-model="newSoftware.generic.repo"></v-text-field>
@@ -165,9 +165,9 @@
             </v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9>
-              <v-btn @click="appendSoftware" class="success">{{ $t("Add software") }}</v-btn>
-              {{ $t("or") }}
-              <v-btn @click="addSoftware = !addSoftware" class="error">{{ $t("Cancel") }}</v-btn>
+              <v-btn @click="appendSoftware" class="success">{{ $i18n.t("Add software") }}</v-btn>
+              {{ $i18n.t("or") }}
+              <v-btn @click="addSoftware = !addSoftware" class="error">{{ $i18n.t("Cancel") }}</v-btn>
             </v-flex>
           </v-layout>
         </form>
@@ -177,7 +177,7 @@
     <v-layout row wrap align-center>
       <v-flex xs4></v-flex>
       <v-flex xs3>
-        <v-btn @click="validate" class="success" :disabled="addSoftware">{{ $t("Validate changes") }}</v-btn>
+        <v-btn @click="validate" class="success" :disabled="addSoftware">{{ $i18n.t("Validate changes") }}</v-btn>
       </v-flex>
       <v-flex xs3></v-flex>
     </v-layout>

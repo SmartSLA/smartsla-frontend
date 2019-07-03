@@ -17,14 +17,14 @@
               </v-list-tile>
               <v-divider />
               <v-list-tile @click.prevent="profile">
-                <v-list-tile-title>{{ $t("Profile") }}</v-list-tile-title>
+                <v-list-tile-title>{{ $i18n.t("Profile") }}</v-list-tile-title>
               </v-list-tile>
               <v-divider />
               <v-list-tile @click.prevent="settings">
-                <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
+                <v-list-tile-title>{{ $i18n.t("Settings") }}</v-list-tile-title>
               </v-list-tile>
               <v-list-tile @click.prevent="logout">
-                <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
+                <v-list-tile-title>{{ $i18n.t("Logout") }}</v-list-tile-title>
               </v-list-tile>
             </v-list>
           </v-menu>
@@ -78,16 +78,25 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.user-menu-item
+.user-menu-item {
   float: right;
-.v-list.theme--light
+}
+
+.v-list.theme--light {
   background-color: #eee;
-.theme--light.v-icon
+}
+
+.theme--light.v-icon {
   color: #000000 !important;
-.v-menu.v-menu--inline
+}
+
+.v-menu.v-menu--inline {
   padding-left: 25px;
   padding-top: 8px;
-.pull-right
+}
+
+.pull-right {
   float: right;
   width: 75%;
+}
 </style>

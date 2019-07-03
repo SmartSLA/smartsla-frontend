@@ -1,7 +1,7 @@
 <template>
   <v-autocomplete
     :items="searchResults"
-    :label="$t('Search for a client, contract or a ticket')"
+    :label="$i18n.t('Search for a client, contract or a ticket')"
     class="pt-2 global-search-box"
     append-icon="search"
     background-color="white"
@@ -33,7 +33,11 @@ export default {
   },
   methods: {
     filterByGroup(item, queryText, itemText) {
-      return item.header || item.divider || itemText.toLowerCase().includes(queryText.toLowerCase());
+      return (
+        item.header ||
+        item.divider ||
+        itemText.toLowerCase().includes(queryText.toLowerCase())
+      );
     },
 
     selectedItem(item) {
@@ -53,15 +57,7 @@ export default {
 };
 </script>
 <style lang="stylus">
-.global-search-box .v-icon
+.global-search-box .v-icon {
   transform: rotate(0deg) !important;
-// .v-input.pt-2.global-search-box.v-select--is-menu-active.v-autocomplete.v-input--is-focused
-//   width: 300px;
-// .v-input.pt-2.global-search-box.v-autocomplete
-//   transition-duration: 0.5s;
-//   width: 50px;
-// .v-input.pt-2.global-search-box.v-autocomplete label
-//   display: none;
-// .v-input.pt-2.global-search-box.v-select--is-menu-active.v-autocomplete.v-input--is-focused label
-//   display: block;
+}
 </style>
