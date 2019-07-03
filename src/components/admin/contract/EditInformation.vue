@@ -149,11 +149,9 @@
             <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn
-              :disabled="!valid"
-              color="success"
-              @click="validate"
-            >{{ isNew ? $i18n.t("Validate the changes") : $i18n.t("Create") }}</v-btn>
+            <v-btn :disabled="!valid" color="success" @click="validateForm">
+              {{ isNew ? $t("Validate the changes") : $t("Create") }}
+            </v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -201,7 +199,7 @@ export default {
       mailingList: {},
       startDateModel: false,
       endDateModel: false,
-      valid: false,
+      valid: true,
       clients: [],
       commercials: [
         "André VASSILIF",
@@ -312,6 +310,17 @@ export default {
               color: "error"
             });
           });
+      }
+    },
+
+    validateForm() {
+      if (this.$refs.form.validate()) {
+        this.validate();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
       }
     }
   }

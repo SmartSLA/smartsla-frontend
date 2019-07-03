@@ -7,9 +7,9 @@
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12>
-          <v-card>
-            <v-card-text>
-              <v-form>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-card>
+              <v-card-text>
                 <v-layout wrap row>
                   <v-flex xs6>
                     <v-text-field
@@ -31,7 +31,7 @@
                       background-color="white"
                       v-model="ticket.contract"
                       item-text="name"
-                      :rules="[() => ticket.contract.length || $i18n.t('Required field')]"
+                      :rules="[() => Object.keys(ticket.contract).length || $i18n.t('Required field')]"
                       class="required-element"
                       return-object
                     ></v-autocomplete>
@@ -59,25 +59,17 @@
                           :search-input.sync="software"
                           class="required-element"
                           return-object
-                          :rules="[() => ticket.software.length || $i18n.t('Required field')]"
+                          :rules="[() => Object.keys(ticket.software).length || $i18n.t('Required field')]"
                         >
                           <template v-slot:item="data">
                             <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                            <v-chip
-                              label
-                              v-else-if="data.item.critical == 'sensible'"
-                              color="orange"
-                            >S</v-chip>
+                            <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                             <v-chip label v-else color="grey">S</v-chip>
                             {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
                           </template>
                           <template v-slot:selection="data">
                             <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                            <v-chip
-                              label
-                              v-else-if="data.item.critical == 'sensible'"
-                              color="orange"
-                            >S</v-chip>
+                            <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                             <v-chip label v-else color="grey">S</v-chip>
                             {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
                           </template>
@@ -111,24 +103,23 @@
                       </v-flex>
                     </v-layout>
                   </v-flex>
-                  <v-flex
-                    class="pt-4 pb-4 px-0 body-2 grey--text"
-                    xs12
-                    v-if="Object.keys(selectedEngagement).length"
-                  >
+                  <v-flex class="pt-4 pb-4 px-0 body-2 grey--text" xs12 v-if="Object.keys(selectedEngagement).length">
                     <span>
                       <v-icon>mdi-file-document-edit-outline</v-icon>
-                      {{ $i18n.t("ticket contractual engagements") }} : {{ $i18n.t("Supported in") }}
-                      {{ $i18n.t(selectedEngagement.supported) }}, {{ $i18n.t("bypass in") }} {{ $i18n.t(selectedEngagement.bypassed) }},
-                      {{ $i18n.t("and resolution in") }} {{ $i18n.t(selectedEngagement.fix) }}
+                      {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
+                      {{ $t(selectedEngagement.supported) }}, {{ $t("bypass in") }}
+                      {{ $t(selectedEngagement.bypassed) }}, {{ $t("and resolution in") }}
+                      {{ $t(selectedEngagement.fix) }}
                     </span>
                   </v-flex>
                   <v-flex xs12>
-                    <v-input prepend-icon="notes">
+                    <v-input
+                      prepend-icon="notes"
+                      :rules="[() => ticket.description.length > 0 || $i18n.t('Required field')]"
+                    >
                       <vue-editor
                         placeholder="Description"
                         v-model="ticket.description"
-                        :rules="[() => ticket.description.length > 0 || $i18n.t('Required field')]"
                         class="required-element"
                       ></vue-editor>
                     </v-input>
@@ -157,11 +148,7 @@
                           class="pt-0"
                         >
                           <template v-slot:append-outer>
-                            <v-btn
-                              solo
-                              class="ml-0 white black--text mt-0 full-height"
-                              @click.native="addRelated"
-                            >
+                            <v-btn solo class="ml-0 white black--text mt-0 full-height" @click.native="addRelated">
                               <v-icon dark>add</v-icon>
                             </v-btn>
                           </template>
@@ -170,10 +157,7 @@
                       <v-flex xs2></v-flex>
                     </v-layout>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip
-                        v-model="linkedRequests[key]"
-                        close
-                      >{{ link.link }} : {{ link.request }}</v-chip>
+                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
                   <v-flex xs6></v-flex>
@@ -189,21 +173,19 @@
                     ></file-upload>
                   </v-flex>
                 </v-layout>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-layout>
-                <v-flex xs6 text-xs-right align-end>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    :disabled="submitRequest"
-                    :loading="submitRequest"
-                    @click="submit"
-                  >{{ $i18n.t("Submit") }}</v-btn>
-                </v-flex>
-              </v-layout>
-            </v-card-actions>
-          </v-card>
+              </v-card-text>
+              <v-card-actions>
+                <v-layout>
+                  <v-flex xs6 text-xs-right align-end>
+                    <v-spacer></v-spacer>
+                    <v-btn :disabled="submitRequest" :loading="submitRequest" @click="validateFrom">{{
+                      $t("Submit")
+                    }}</v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-card-actions>
+            </v-card>
+          </v-form>
         </v-flex>
       </v-layout>
     </v-container>
@@ -221,6 +203,7 @@ Vue.use(FileUpload);
 export default {
   data() {
     return {
+      valid: true,
       ticket: {
         title: "",
         contract: {},
@@ -258,14 +241,7 @@ export default {
       softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: [
-        "#1 issue1",
-        "#3 issue3",
-        "#18 issue18",
-        "#41 issue41",
-        "#35 issue35",
-        "#70 issue70"
-      ],
+      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"],
       engagementsCategory: [],
       selectedTypes: []
     };
@@ -306,6 +282,16 @@ export default {
       });
 
       this.linkType = this.linkedRequest = "";
+    },
+    validateFrom() {
+      if (this.$refs.form.validate()) {
+        this.submit();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
+      }
     }
   },
   computed: {
@@ -320,17 +306,14 @@ export default {
           if (this.ticket.software.critical) {
             switch (this.ticket.software.critical) {
               case "critical":
-                engagements = this.ticket.contract.Engagements.critical
-                  .engagements;
+                engagements = this.ticket.contract.Engagements.critical.engagements;
                 break;
               case "sensible":
-                engagements = this.ticket.contract.Engagements.sensible
-                  .engagements;
+                engagements = this.ticket.contract.Engagements.sensible.engagements;
 
                 break;
               case "standard":
-                engagements = this.ticket.contract.Engagements.standard
-                  .engagements;
+                engagements = this.ticket.contract.Engagements.standard.engagements;
 
                 break;
             }
@@ -356,9 +339,7 @@ export default {
       if (this.ticket.severity.length) {
         var engagements = [];
         engagements = [...this.engagementsCategory].filter(
-          engagement =>
-            engagement.request == this.ticket.type &&
-            engagement.severity == this.ticket.severity
+          engagement => engagement.request == this.ticket.type && engagement.severity == this.ticket.severity
         );
         return engagements[0];
       }
