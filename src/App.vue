@@ -70,10 +70,14 @@ export default {
 </script>
 
 <style lang="stylus">
-<style lang='stylus'scoped>, .elevation-1 {
+.elevation-1 {
   width: 100% !important;
   padding-bottom: 50px;
   background-color: #ffffff;
+}
+
+td a {
+  color: #2195f2 !important;
 }
 
 .v-list.logged-main-navigation.theme--light {

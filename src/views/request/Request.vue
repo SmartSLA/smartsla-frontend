@@ -296,7 +296,7 @@
                     <v-layout row wrap>
                       <v-flex xs5></v-flex>
                       <v-flex xs7>
-                        <v-btn color="info" class="pl-4">{{ $i18n.t("add comment") }}</v-btn>
+                        <v-btn class="pl-4 blue-bg">{{ $i18n.t("add comment") }}</v-btn>
                       </v-flex>
                     </v-layout>
                   </v-form>
@@ -372,10 +372,10 @@
           </v-flex>
           <v-flex xs12 align-center justify-center>
             <h4
-              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+              class="text-uppercase text-md-center blue-bg white--text pt-2 pb-1"
             >{{ $i18n.t("interlocutor in charge of the request") }}</h4>
             <v-card class="pt-2 nobottomshadow">
-              <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
+              <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <br />
               <v-layout row wrap>
                 <v-flex xs3></v-flex>
@@ -398,10 +398,10 @@
               </v-card-text>
             </v-card>
             <h4
-              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+              class="text-uppercase text-md-center white--text pt-2 pb-1 blue-bg"
             >{{ $i18n.t("Beneficiary") }}</h4>
             <v-card class="pt-2">
-              <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
+              <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
                 <v-flex xs3></v-flex>
                 <v-flex xs8>
@@ -861,5 +861,14 @@ div.xs8:nth-child(1) {
 div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
   padding-left: 24px;
   padding-right: 24px;
+}
+
+.blue-bg {
+  background-color: #2195f2 !important;
+  color: #ffffff !important;
+}
+
+.blue-color {
+  color: #2195f2 !important;
 }
 </style>
