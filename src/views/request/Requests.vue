@@ -83,6 +83,12 @@
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
           <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Save current filter") }}</v-btn>
+          <v-btn
+            color="error"
+            flat
+            @click="deleteCurrentFilter"
+            v-if="deleteBtn"
+          >{{$i18n.t("Delete")}}</v-btn>
         </template>
 
         <v-card>
@@ -311,7 +317,8 @@ export default {
       contractClientList: [],
       newFilterName: "",
       savedFilters: [],
-      storedSelectionsFilter: {}
+      storedSelectionsFilter: {},
+      deleteBtn: false
     };
   },
   mounted() {
@@ -471,9 +478,26 @@ export default {
         });
     },
     //categoriesFilter() {},
-    valuesFilter() {},
+    deleteCurrentFilter() {
+      this.$http
+        .deleteFilters(this.storedSelectionsFilter._id)
+        .then(response => {
+          this.customFilters = [];
+          this.deleteBtn = false;
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Filter deleted")
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    },
     loadFilter() {
       this.customFilters = this.storedSelectionsFilter.items;
+      this.deleteBtn = true;
     }
   }
 };
