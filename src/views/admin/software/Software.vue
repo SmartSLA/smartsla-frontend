@@ -1,9 +1,8 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'Softwares' }"
-    >&lt; {{ $i18n.t("Return to software list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
+      >&lt; {{ $i18n.t("Return to software list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="px-0 mt-4 pb-4 pl-4">
@@ -18,13 +17,7 @@
               </v-flex>
               <v-flex xs2>
                 <div class="text-xs-right grey--text pt-3">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'EditSoftware', params: { id: 15 } }"
-                  >
+                  <v-btn color="primary" fab small dark :to="{ name: 'EditSoftware', params: { id: 15 } }">
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -66,10 +59,7 @@
                     </v-flex>
                     <v-flex xs8>
                       <ul>
-                        <li
-                          v-for="(techno, index) in software.technologies"
-                          :key="index"
-                        >{{ techno }}</li>
+                        <li v-for="(techno, index) in software.technologies" :key="index">{{ techno }}</li>
                       </ul>
                     </v-flex>
                   </v-layout>
@@ -118,11 +108,7 @@
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
 
-          <v-data-table
-            :items="software.contributions"
-            :headers="contributionsHeaders"
-            hide-actions
-          >
+          <v-data-table :items="software.contributions" :headers="contributionsHeaders" hide-actions>
             <template v-slot:items="props">
               <td class="text-xs-center">{{ props.item.date }}</td>
               <td class="text-xs-center text-capitalize">
@@ -174,14 +160,7 @@ export default {
     return {
       software: {
         name: "Angular",
-        contracts: [
-          "contract1",
-          "contract2",
-          "contract3",
-          "contract4",
-          "contract5",
-          "contract6"
-        ],
+        contracts: ["contract1", "contract2", "contract3", "contract4", "contract5", "contract6"],
         requests: ["request1", "request2", "request3", "request4"],
         summary:
           "Angular is a TypeScript-based open-source web application framework led by the Angular Team at Google and by a community of individuals and corporations. Angular is a complete rewrite from the same team that built AngularJS.",

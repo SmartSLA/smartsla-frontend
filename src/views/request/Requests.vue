@@ -83,16 +83,11 @@
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
           <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Save current filter") }}</v-btn>
-          <v-btn
-            color="error"
-            flat
-            @click="deleteCurrentFilter"
-            v-if="deleteBtn"
-          >{{$i18n.t("Delete")}}</v-btn>
+          <v-btn color="error" flat @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
         </template>
 
         <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>{{$i18n.t("Save filter")}}</v-card-title>
+          <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>

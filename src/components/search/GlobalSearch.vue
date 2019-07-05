@@ -33,11 +33,7 @@ export default {
   },
   methods: {
     filterByGroup(item, queryText, itemText) {
-      return (
-        item.header ||
-        item.divider ||
-        itemText.toLowerCase().includes(queryText.toLowerCase())
-      );
+      return item.header || item.divider || itemText.toLowerCase().includes(queryText.toLowerCase());
     },
 
     selectedItem(item) {

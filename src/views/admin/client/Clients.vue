@@ -36,9 +36,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link
-              :to="{ name: 'Client', params: { id: props.item.id } }"
-            >{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'Client', params: { id: props.item.id } }">{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.contracts }}</td>
           <td class="text-xs-center">{{ props.item.access_code }}</td>

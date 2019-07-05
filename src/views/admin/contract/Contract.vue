@@ -58,15 +58,11 @@
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.technical }}</router-link>
                   </v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $i18n.t("Internal mailing list") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $i18n.t("Internal mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.mailingList.internal.join(", ") }}</v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $i18n.t("External mailing list") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $i18n.t("External mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.mailingList.external.join(", ") }}</v-flex>
                   <v-flex xs4>
@@ -80,13 +76,11 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $i18n.t("Status") }} :</div>
                   </v-flex>
-                  <v-flex
-                    xs8
-                  >{{ $i18n.t(contract.status) ? $i18n.t("active") : $i18n.t("not active") }}</v-flex>
+                  <v-flex xs8>{{ $i18n.t(contract.status) ? $i18n.t("active") : $i18n.t("not active") }}</v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $i18n.t("requests shared among the beneficiaries") }} :</div>
+                    <div class="subheading font-weight-medium">
+                      {{ $i18n.t("requests shared among the beneficiaries") }} :
+                    </div>
                   </v-flex>
                   <v-flex xs8>{{ contract.sharedRequests ? $i18n.t("yes") : $i18n.t("no") }}</v-flex>
                 </v-layout>
@@ -148,7 +142,8 @@
                         :color="critColor(props.item.critical)"
                         :text-color="critTextColor(props.item.critical)"
                         label
-                      >{{ $i18n.t(props.item.critical) }}</v-chip>
+                        >{{ $i18n.t(props.item.critical) }}</v-chip
+                      >
                     </td>
                     <td class="text-xs-center">
                       <span v-if="props.item.generic == 'yes'">{{ $i18n.t(props.item.generic) }}</span>
@@ -187,10 +182,7 @@
           <v-card-text>
             <div class="subheading font-weight-regular pb-2">{{ $i18n.t("beneficiaries") }} :</div>
             <ul class="pb-2 grey--text">
-              <li
-                v-for="beneficiary in contract.humanResources.beneficiaries"
-                :key="beneficiary.id"
-              >
+              <li v-for="beneficiary in contract.humanResources.beneficiaries" :key="beneficiary.id">
                 <router-link to="#">{{ beneficiary.name }}</router-link>
               </li>
             </ul>
@@ -210,22 +202,16 @@
                 <v-flex xs9>
                   <h4 class="headline">
                     {{ $i18n.t("Contractual commitments") }}
-                    <v-chip
-                      :color="critColor('critical')"
-                      :text-color="critTextColor('critical')"
-                      label
-                    >
-                      {{
-                      $i18n.t("critical")
-                      }}
-                    </v-chip>:
+                    <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>
+                      {{ $i18n.t("critical") }} </v-chip
+                    >:
                     <span v-if="contract.Engagements.critical.schedule">
                       {{
-                      contract.Engagements.critical.schedule.end == "-"
-                      ? $i18n.t("7d/7")
-                      : `${contract.Engagements.critical.schedule.start}H - ${
-                      contract.Engagements.critical.schedule.end
-                      }H`
+                        contract.Engagements.critical.schedule.end == "-"
+                          ? $i18n.t("7d/7")
+                          : `${contract.Engagements.critical.schedule.start}H - ${
+                              contract.Engagements.critical.schedule.end
+                            }H`
                       }}
                     </span>
                   </h4>
@@ -274,22 +260,16 @@
                 <v-flex xs9>
                   <h4 class="headline">
                     {{ $i18n.t("Contractual commitments") }}
-                    <v-chip
-                      :color="critColor('sensible')"
-                      :text-color="critTextColor('sensible')"
-                      label
-                    >
-                      {{
-                      $i18n.t("sensible")
-                      }}
-                    </v-chip>:
+                    <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>
+                      {{ $i18n.t("sensible") }} </v-chip
+                    >:
                     <span v-if="contract.Engagements.sensible.schedule">
                       {{
-                      contract.Engagements.sensible.schedule.end == "-"
-                      ? $i18n.t("7d/7")
-                      : `${contract.Engagements.sensible.schedule.start}H - ${
-                      contract.Engagements.sensible.schedule.end
-                      }H`
+                        contract.Engagements.sensible.schedule.end == "-"
+                          ? $i18n.t("7d/7")
+                          : `${contract.Engagements.sensible.schedule.start}H - ${
+                              contract.Engagements.sensible.schedule.end
+                            }H`
                       }}
                     </span>
                   </h4>
@@ -338,22 +318,16 @@
                 <v-flex xs9>
                   <h4 class="headline">
                     {{ $i18n.t("Contractual commitments") }}
-                    <v-chip
-                      :color="critColor('standard')"
-                      :text-color="critTextColor('standard')"
-                      label
-                    >
-                      {{
-                      $i18n.t("standard")
-                      }}
-                    </v-chip>:
+                    <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>
+                      {{ $i18n.t("standard") }} </v-chip
+                    >:
                     <span v-if="contract.Engagements.standard.schedule">
                       {{
-                      contract.Engagements.standard.schedule.end == "-"
-                      ? $i18n.t("7d/7")
-                      : `${contract.Engagements.standard.schedule.start}H - ${
-                      contract.Engagements.standard.schedule.end
-                      }H`
+                        contract.Engagements.standard.schedule.end == "-"
+                          ? $i18n.t("7d/7")
+                          : `${contract.Engagements.standard.schedule.start}H - ${
+                              contract.Engagements.standard.schedule.end
+                            }H`
                       }}
                     </span>
                   </h4>
