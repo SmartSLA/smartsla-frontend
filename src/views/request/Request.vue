@@ -36,12 +36,9 @@
 
                   <v-divider color="primary"></v-divider>
 
-                  <v-stepper-step
-                    step="5"
-                    color="primary"
-                    complete
-                    complete-icon="access_time"
-                  >{{ $i18n.t("Solution") }}</v-stepper-step>
+                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">{{
+                    $i18n.t("Solution")
+                  }}</v-stepper-step>
 
                   <v-divider></v-divider>
 
@@ -154,15 +151,11 @@
                     <v-flex xs10 pl-0>
                       <ul v-if="request.linkedTickets.length">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span
-                            v-if="link.type == 'duplicate'"
-                          >{{ $i18n.t("is a copy of ticket") }}&nbsp;</span>
-                          <span
-                            v-else-if="link.type == 'closes'"
-                          >{{ $i18n.t("closes ticket") }}&nbsp;</span>
-                          <router-link
-                            :to="{ name: 'Request', params: { id: link.id } }"
-                          >#{{ link.id }} - {{ link.title }}</router-link>
+                          <span v-if="link.type == 'duplicate'">{{ $i18n.t("is a copy of ticket") }}&nbsp;</span>
+                          <span v-else-if="link.type == 'closes'">{{ $i18n.t("closes ticket") }}&nbsp;</span>
+                          <router-link :to="{ name: 'Request', params: { id: link.id } }"
+                            >#{{ link.id }} - {{ link.title }}</router-link
+                          >
                         </li>
                       </ul>
                     </v-flex>
@@ -305,9 +298,7 @@
               <v-tab-item value="satisfaction">
                 <v-card flat>
                   <v-card-text>
-                    {{
-                    $i18n.t("the satisfaction survey will be available once the ticket is closed")
-                    }}
+                    {{ $i18n.t("the satisfaction survey will be available once the ticket is closed") }}
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -326,12 +317,9 @@
               {{ $i18n.t("Supported") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="error"
-                    height="18"
-                    value="100"
-                    class="mt-0 white--text font-weight-bold"
-                  >8 HO</v-progress-linear>
+                  <v-progress-linear color="error" height="18" value="100" class="mt-0 white--text font-weight-bold"
+                    >8 HO</v-progress-linear
+                  >
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 H</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -341,12 +329,9 @@
               {{ $i18n.t("Bypass") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="success"
-                    height="18"
-                    value="40"
-                    class="mt-0 white--text font-weight-bold"
-                  >1.75 JO</v-progress-linear>
+                  <v-progress-linear color="success" height="18" value="40" class="mt-0 white--text font-weight-bold"
+                    >1.75 JO</v-progress-linear
+                  >
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -356,12 +341,9 @@
               {{ $i18n.t("Solution") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="success"
-                    height="18"
-                    value="60"
-                    class="mt-0 white--text font-weight-bold"
-                  >2.5 JO</v-progress-linear>
+                  <v-progress-linear color="success" height="18" value="60" class="mt-0 white--text font-weight-bold"
+                    >2.5 JO</v-progress-linear
+                  >
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>5 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -371,9 +353,9 @@
             </v-card>
           </v-flex>
           <v-flex xs12 align-center justify-center>
-            <h4
-              class="text-uppercase text-md-center blue-bg white--text pt-2 pb-1"
-            >{{ $i18n.t("interlocutor in charge of the request") }}</h4>
+            <h4 class="text-uppercase text-md-center blue-bg white--text pt-2 pb-1">
+              {{ $i18n.t("interlocutor in charge of the request") }}
+            </h4>
             <v-card class="pt-2 nobottomshadow">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <br />
@@ -397,9 +379,7 @@
                 {{ request.responsible.email }}
               </v-card-text>
             </v-card>
-            <h4
-              class="text-uppercase text-md-center white--text pt-2 pb-1 blue-bg"
-            >{{ $i18n.t("Beneficiary") }}</h4>
+            <h4 class="text-uppercase text-md-center white--text pt-2 pb-1 blue-bg">{{ $i18n.t("Beneficiary") }}</h4>
             <v-card class="pt-2">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
@@ -419,7 +399,8 @@
                 {{ request.beneficiary.phone }}
                 <br />
                 <span class="body-2">{{ $i18n.t("client") }} / {{ $i18n.t("contract") }} :&nbsp;</span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link>/
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
+                >/
                 <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
             </v-card>
@@ -435,46 +416,47 @@
                 <v-divider></v-divider>
                 <v-layout class="mb-1">
                   <v-flex xs3 class="green--text font-weight-bold">
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.dev }"
-                    >label_important</v-icon>
+                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
+                      >label_important</v-icon
+                    >
                     <small>{{ $i18n.t("Dev") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $i18n.t("Reversed") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $i18n.t("Integrated") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $i18n.t("published") }}</small>
                   </v-flex>
                   <v-flex xs3>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $i18n.t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
                 <h3>{{ $i18n.t("Community contribution form") }}:</h3>
                 <a :href="request.communityContribution.communityIssueLink">
-                  {{
-                  request.communityContribution.communityIssueLink
-                  }}
+                  {{ request.communityContribution.communityIssueLink }}
                 </a>
               </v-card>
             </v-card>
@@ -526,21 +508,13 @@ export default {
     Editor
   },
   mounted() {
-    var progressBars = Array.prototype.slice.call(
-      document.getElementsByClassName("v-progress-linear")
-    );
+    var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
-      var value = element.getElementsByClassName(
-        "v-progress-linear__content"
-      )[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName(
-        "v-progress-linear__bar__determinate"
-      );
+      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
       newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName(
-        "v-progress-linear__content"
-      )[0].innerHTML = "";
+      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
     }
   },
   computed: {
@@ -561,10 +535,7 @@ export default {
         })
         .catch(err => {});
     }
-    this.$store.dispatch(
-      "sidebar/setSidebarComponent",
-      "issue-detail-side-bar"
-    );
+    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -582,9 +553,7 @@ export default {
       }
       this.request.attachedFile = "";
       this.request.lastUpdate = "";
-      this.request.ticketDate = new Date(
-        request.timestamps.creation
-      ).toDateString();
+      this.request.ticketDate = new Date(request.timestamps.creation).toDateString();
       this.request.subject = request.description;
       this.request.responsible = {};
       this.request.ticketAuthor = "";

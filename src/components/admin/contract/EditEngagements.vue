@@ -4,11 +4,9 @@
       <div>
         <h3 class="title mb-0">
           {{ $i18n.t("Contractual commitments") }}
-          <v-chip
-            :color="critColor(engagementType)"
-            :text-color="critTextColor(engagementType)"
-            label
-          >{{ $i18n.t(engagementType) }}</v-chip>
+          <v-chip :color="critColor(engagementType)" :text-color="critTextColor(engagementType)" label>{{
+            $i18n.t(engagementType)
+          }}</v-chip>
         </h3>
       </div>
     </v-card-title>
@@ -24,20 +22,10 @@
       <v-flex xs1>{{ $i18n.t("H") }}</v-flex>
       <v-flex xs1>{{ $i18n.t("or") }}</v-flex>
       <v-flex xs3>
-        <v-checkbox
-          v-model="allweek"
-          color="primary"
-          :value="true"
-          :label="$i18n.t('7d/7d')"
-          hide-details
-        ></v-checkbox>
+        <v-checkbox v-model="allweek" color="primary" :value="true" :label="$i18n.t('7d/7d')" hide-details></v-checkbox>
       </v-flex>
     </v-layout>
-    <v-data-table
-      :items="engagementList.engagements"
-      :headers="contractualCommitmentsHeaders"
-      hide-actions
-    >
+    <v-data-table :items="engagementList.engagements" :headers="contractualCommitmentsHeaders" hide-actions>
       <template v-slot:items="props">
         <td class="text-xs-left">{{ $i18n.t(props.item.request) }}</td>
         <td class="text-xs-left text-capitalize">{{ $i18n.t(props.item.severity) }}</td>
@@ -136,11 +124,7 @@
     <v-layout row wrap align-center>
       <v-flex xs4></v-flex>
       <v-flex xs3>
-        <v-btn
-          class="success"
-          :disabled="addCommitment"
-          @click="validate"
-        >{{ $i18n.t("Validate changes") }}</v-btn>
+        <v-btn class="success" :disabled="addCommitment" @click="validate">{{ $i18n.t("Validate changes") }}</v-btn>
       </v-flex>
       <v-flex xs3></v-flex>
     </v-layout>
@@ -201,18 +185,13 @@ export default {
         newCommitment.severity = this.newSeverity;
       }
 
-      newCommitment.bypassed = this.getDaysAndHours(
-        this.newCommitment.bypassed
-      );
+      newCommitment.bypassed = this.getDaysAndHours(this.newCommitment.bypassed);
       newCommitment.fix = this.getDaysAndHours(this.newCommitment.fix);
-      newCommitment.supported = this.getDaysAndHours(
-        this.newCommitment.supported
-      );
+      newCommitment.supported = this.getDaysAndHours(this.newCommitment.supported);
 
       if (
         !this.engagementList.engagements.filter(
-          commitment =>
-            JSON.stringify(commitment) === JSON.stringify(newCommitment)
+          commitment => JSON.stringify(commitment) === JSON.stringify(newCommitment)
         ).length
       ) {
         this.engagementList.engagements.push(newCommitment);
@@ -314,16 +293,13 @@ export default {
           this.contract = response.data;
           switch (this.$route.params.type) {
             case "critical":
-              this.engagementList =
-                this.contract.Engagements.critical || this.engagementListObject;
+              this.engagementList = this.contract.Engagements.critical || this.engagementListObject;
               break;
             case "sensible":
-              this.engagementList =
-                this.contract.Engagements.sensible || this.engagementListObject;
+              this.engagementList = this.contract.Engagements.sensible || this.engagementListObject;
               break;
             case "standard":
-              this.engagementList =
-                this.contract.Engagements.standard || this.engagementListObject;
+              this.engagementList = this.contract.Engagements.standard || this.engagementListObject;
               break;
 
             default:

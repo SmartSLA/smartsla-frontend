@@ -110,9 +110,9 @@
             <v-card light color="white" class="pb-3">
               <v-card-title primary-title class="px-4 text-capitalize">
                 <div>
-                  <h3
-                    class="headline mb-0"
-                  >{{ $i18n.t("otherSoftwareContributions.message", { software: contribution.software }) }}</h3>
+                  <h3 class="headline mb-0">
+                    {{ $i18n.t("otherSoftwareContributions.message", { software: contribution.software }) }}
+                  </h3>
                 </div>
               </v-card-title>
               <v-divider class="mx-4"></v-divider>
@@ -194,13 +194,8 @@ export default {
   },
   created() {
     this.latestContributions = contributions;
-    this.$store.dispatch(
-      "sidebar/setSidebarComponent",
-      "contributions-side-bar"
-    );
-    this.currentContribution = this.$store.getters[
-      "sidebar/getActiveContribution"
-    ];
+    this.$store.dispatch("sidebar/setSidebarComponent", "contributions-side-bar");
+    this.currentContribution = this.$store.getters["sidebar/getActiveContribution"];
   },
   mounted() {
     this.$store.watch(
@@ -213,9 +208,7 @@ export default {
   watch: {
     currentContribution: function(value) {
       this.contribution =
-        this.latestContributions
-          .filter(contribution => contribution.contributionId == value)
-          .shift() || {};
+        this.latestContributions.filter(contribution => contribution.contributionId == value).shift() || {};
     }
   },
   beforeRouteLeave(to, from, next) {

@@ -1,9 +1,8 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-0 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'AdminContributions' }"
-    >&lt; {{ $i18n.t("Return to contributions list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
+      >&lt; {{ $i18n.t("Return to contributions list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
         <v-card class="mt-4 pb-4 pl-4">
@@ -16,13 +15,7 @@
               </v-flex>
               <v-flex xs6>
                 <div class="text-xs-right grey--text">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'EditContribution', params: { id: 15 } }"
-                  >
+                  <v-btn color="primary" fab small dark :to="{ name: 'EditContribution', params: { id: 15 } }">
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -62,9 +55,9 @@
               <strong>{{ $i18n.t("Request Number") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <router-link
-                :to="{ name: 'request', params: { id: contribution.requestNumber } }"
-              >{{ contribution.requestNumber }}</router-link>
+              <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }">{{
+                contribution.requestNumber
+              }}</router-link>
             </v-flex>
             <v-flex xs4>
               <strong>{{ $i18n.t("Contribution type") }}:</strong>

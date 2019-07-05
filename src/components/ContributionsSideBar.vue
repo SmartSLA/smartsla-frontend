@@ -3,9 +3,7 @@
     <v-layout row wrap>
       <v-flex xs12>
         <v-subheader inset class="text-uppercase blue white--text title ml-0">
-          {{
-          $i18n.t("recently accepted contributions")
-          }}
+          {{ $i18n.t("recently accepted contributions") }}
         </v-subheader>
         <v-icon large color="blue" class="arrow-down pr-4">play_arrow</v-icon>
 
@@ -18,9 +16,9 @@
             @click="switchContribution(contribution.contributionId)"
           >
             <v-list-tile-content>
-              <v-list-tile-title
-                class="text-capitalize title"
-              >{{ contribution.software }} ({{ contribution.date }})</v-list-tile-title>
+              <v-list-tile-title class="text-capitalize title"
+                >{{ contribution.software }} ({{ contribution.date }})</v-list-tile-title
+              >
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
@@ -50,10 +48,7 @@ export default {
   },
   created() {
     this.recentContributions = latestContributionsList;
-    this.$store.dispatch(
-      "sidebar/setActiveContribution",
-      this.currentActiveContributionId
-    );
+    this.$store.dispatch("sidebar/setActiveContribution", this.currentActiveContributionId);
   },
   mounted() {
     this.$store.watch(
