@@ -70,6 +70,46 @@ export default {
 </script>
 
 <style lang="stylus">
+.red-color {
+  color: #d32f2f;
+}
+
+.red-background-color {
+  background-color: #d32f2f;
+}
+
+.yellow-color {
+  color: #ffa000;
+}
+
+.yellow-background-color {
+  background-color: #ffa000;
+}
+
+.grey-color {
+  color: #e0e0e0;
+}
+
+.grey-background-color {
+  background-color: #e0e0e0;
+}
+
+.blue-color {
+  color: #2195f2;
+}
+
+.blue-background-color {
+  background-color: #2195f2;
+}
+
+.green-color {
+  color: #76c43d;
+}
+
+.green-background-color {
+  background-color: #76c43d;
+}
+
 .elevation-1 {
   width: 100% !important;
   padding-bottom: 50px;
