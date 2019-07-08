@@ -61,18 +61,16 @@
           <td class="text-xs-center">
             <div v-if="props.item.isdisabled == 'yes'">
               <strike>
-                <router-link
-                  class="contracts-actions"
-                  :to="{ name: 'Contract', params: { id: props.item.id } }"
-                >{{ props.item.name }}</router-link>
+                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">{{
+                  props.item.name
+                }}</router-link>
               </strike>
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link
-                class="contracts-actions"
-                :to="{ name: 'Contract', params: { id: props.item._id } }"
-              >{{ props.item.name }}</router-link>
+              <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item._id } }">{{
+                props.item.name
+              }}</router-link>
             </div>
           </td>
           <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>

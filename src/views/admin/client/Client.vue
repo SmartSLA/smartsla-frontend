@@ -1,9 +1,8 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'Clients' }"
-    >&lt; {{ $i18n.t("Return to clients list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'Clients' }"
+      >&lt; {{ $i18n.t("Return to clients list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4">
@@ -18,13 +17,7 @@
               </v-flex>
               <v-flex xs2>
                 <div class="text-xs-right grey--text pt-3">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'EditClient', params: { id: 15 } }"
-                  >
+                  <v-btn color="primary" fab small dark :to="{ name: 'EditClient', params: { id: 15 } }">
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>

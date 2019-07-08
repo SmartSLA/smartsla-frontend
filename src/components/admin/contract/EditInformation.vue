@@ -114,16 +114,8 @@
           <v-flex xs3>{{ $i18n.t("Status") }}</v-flex>
           <v-flex xs8>
             <v-btn-toggle v-model="contract.status">
-              <v-btn
-                :value="true"
-                flat
-                :class="{ success: contract.status }"
-              >{{ $i18n.t("Active") }}</v-btn>
-              <v-btn
-                :value="false"
-                flat
-                :class="{ error: !contract.status }"
-              >{{ $i18n.t("Inactive") }}</v-btn>
+              <v-btn :value="true" flat :class="{ success: contract.status }">{{ $i18n.t("Active") }}</v-btn>
+              <v-btn :value="false" flat :class="{ error: !contract.status }">{{ $i18n.t("Inactive") }}</v-btn>
             </v-btn-toggle>
           </v-flex>
           <v-flex xs3>{{ $i18n.t("Type") }}</v-flex>
@@ -261,21 +253,11 @@ export default {
 
     validate() {
       var contract = this.contract;
-      if (
-        contract.mailingList.external.length &&
-        !(contract.mailingList.external instanceof Array)
-      ) {
-        contract.mailingList.external = contract.mailingList.external.split(
-          ","
-        );
+      if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
+        contract.mailingList.external = contract.mailingList.external.split(",");
       }
-      if (
-        contract.mailingList.internal.length &&
-        !(contract.mailingList.internal instanceof Array)
-      ) {
-        contract.mailingList.internal = contract.mailingList.internal.split(
-          ","
-        );
+      if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
+        contract.mailingList.internal = contract.mailingList.internal.split(",");
       }
       if (!this.isNew) {
         this.$http

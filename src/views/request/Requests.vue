@@ -83,16 +83,14 @@
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
           <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
-          <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{$i18n.t("Delete")}}</v-btn>
-          <v-btn
-            color="warning"
-            @click="updateCurrectFilter"
-            v-if="updateBtn"
-          >{{$i18n.t("Save current filter")}}</v-btn>
+          <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
+          <v-btn color="warning" @click="updateCurrectFilter" v-if="updateBtn">{{
+            $i18n.t("Save current filter")
+          }}</v-btn>
         </template>
 
         <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>{{$i18n.t("Save filter")}}</v-card-title>
+          <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
@@ -126,9 +124,7 @@
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
-              {{
-              props.item.ticket_number
-              }}
+              {{ props.item.ticket_number }}
             </router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
@@ -176,16 +172,12 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span
-                  v-if="props.item.software == 'LibreOffice'"
-                  class="major-criticality"
-                  v-on="on"
-                >{{ props.item.software }}</span>
-                <span
-                  v-else-if="props.item.software == 'NPM'"
-                  class="medium-criticality"
-                  v-on="on"
-                >{{ props.item.software }}</span>
+                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">{{
+                  props.item.software
+                }}</span>
+                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">{{
+                  props.item.software
+                }}</span>
                 <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
@@ -205,18 +197,12 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear
-              v-if="props.item.conf.color == 'error'"
-              color="#d32f2f"
-              height="20"
-              value="30"
-            >{{ props.item.remaining_time }}</v-progress-linear>
-            <v-progress-linear
-              v-else
-              color="#76c43d"
-              height="20"
-              value="80"
-            >{{ props.item.remaining_time }}</v-progress-linear>
+            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
+              props.item.remaining_time
+            }}</v-progress-linear>
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">{{
+              props.item.remaining_time
+            }}</v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -411,9 +397,7 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
-        items = items.filter(
-          item => item.team.toLowerCase() == this.ticketsFilter
-        );
+        items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },

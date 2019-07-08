@@ -1,17 +1,16 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'Teams' }"
-    >&lt; {{ $i18n.t("Return to teams list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'Teams' }"
+      >&lt; {{ $i18n.t("Return to teams list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3
-                class="display-1 font-weight-medium mb-0"
-              >{{ isNew ? $i18n.t("Edit Team") : $i18n.t("New Team") }}</h3>
+              <h3 class="display-1 font-weight-medium mb-0">
+                {{ isNew ? $i18n.t("Edit Team") : $i18n.t("New Team") }}
+              </h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
