@@ -75,8 +75,8 @@
       </v-text-field>
     </div>
     <ul id="filter-chips">
-      <li v-for="filter in customFilters" :key="filter.id" class="chips-elements">
-        <v-chip v-model="filter.isOpen" close>{{ filter.category }} : {{ filter.value }}</v-chip>
+      <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
+        <v-chip @input="removeFilter(filter)" close>{{ filter.category }} : {{ filter.value }}</v-chip>
       </li>
     </ul>
     <div v-if="customFilters.length > 0" class="filter-save">
@@ -84,9 +84,9 @@
         <template v-slot:activator="{ on }">
           <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
           <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
-          <v-btn color="warning" @click="updateCurrectFilter" v-if="updateBtn">{{
-            $i18n.t("Save current filter")
-          }}</v-btn>
+          <v-btn color="warning" @click="updateCurrectFilter" v-if="updateBtn">
+            {{ $i18n.t("Save current filter") }}
+          </v-btn>
         </template>
 
         <v-card>
@@ -112,20 +112,21 @@
         :headers="headers"
         :items="requests"
         class="elevation-1"
-        :search="search"
+        :search="centralSearch"
         :custom-filter="requestsFilter"
         :filter="requestFilterByGroup"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
+        ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
-              {{ props.item.ticket_number }}
-            </router-link>
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">{{
+              props.item.ticket_number
+            }}</router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
@@ -172,12 +173,12 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">{{
-                  props.item.software
-                }}</span>
-                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">{{
-                  props.item.software
-                }}</span>
+                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">
+                  {{ props.item.software }}
+                </span>
+                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">
+                  {{ props.item.software }}
+                </span>
                 <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
@@ -197,12 +198,12 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
-              props.item.remaining_time
-            }}</v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">{{
-              props.item.remaining_time
-            }}</v-progress-linear>
+            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">
+              {{ props.item.remaining_time }}
+            </v-progress-linear>
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">
+              {{ props.item.remaining_time }}
+            </v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -244,11 +245,21 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: { p: "10" },
       search: null,
+      centralSearch: null,
       toggle_multiple: "2",
       ticketsFilter: {
         text: this.$i18n.t("All Tickets"),
         value: ""
       },
+      paginationObject: [
+        {
+          p: "10",
+          descending: false,
+          page: 1,
+          rowsPerPage: 10,
+          sortBy: "number"
+        }
+      ],
       isMobile: false,
       headers: [
         { text: "#", value: "number" },
@@ -282,7 +293,6 @@ export default {
       valuesFilter: "",
       values: [],
       selections: [],
-      chip1: true,
       types: [this.$i18n.t("Anomalie"), this.$i18n.t("Evolution")],
       severities: [this.$i18n.t("Bloquant"), this.$i18n.t("Non Bloquant")],
       status: [
@@ -386,12 +396,15 @@ export default {
       if (this.storedSelectionsFilter.items && newFilters.length) {
         this.updateBtn = oldFilters.length == newFilters.length;
       }
+    },
+    search: function(oldValue, newValue) {
+      this.centralSearch = newValue;
     }
   },
   updated() {},
   methods: {
     resetRequestSearch() {
-      this.search = null;
+      this.centralSearch = null;
       this.ticketsFilter = "";
       this.searchCriteria = this.filterGroups[0];
     },
@@ -402,29 +415,38 @@ export default {
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     requestFilterByGroup(item, search) {
-      this.customFilters.forEach(filter => {
-        switch (this.filter.category) {
+      let match = false;
+      for (let index = 0; index < this.customFilters.length; index++) {
+        let currentFilter = this.customFilters[index];
+        switch (currentFilter.category) {
           case "Type":
-            return item.type.toLowerCase().includes(search);
+            match = item.type.toLowerCase().includes(currentFilter.value);
+            break;
           case "Severity":
-            return item.severity.toLowerCase().includes(search);
+            match = item.severity.toLowerCase().includes(currentFilter.value);
+            break;
           case "Software":
-            return item.software.toLowerCase().includes(search);
+            match = item.software.toLowerCase().includes(currentFilter.value);
+            break;
           case "Assign To":
-            return item.assign_to.toLowerCase().includes(search);
+            match = item.assign_to.toLowerCase().includes(currentFilter.value);
+            break;
           case "Responsible":
-            return item.responsible.toLowerCase().includes(search);
+            match = item.responsible.toLowerCase().includes(currentFilter.value);
+            break;
           case "Transmitter":
-            return item.transmitter.toLowerCase().includes(search);
+            match = item.transmitter.toLowerCase().includes(currentFilter.value);
+            break;
           case "Client / Contract":
-            return item.client_contract.toLowerCase().includes(search);
+            match = item.client_contract.toLowerCase().includes(currentFilter.value);
+            break;
           case "Status":
-            return item.status.toLowerCase().includes(search);
-          default:
-            return false;
+            match = item.status.toLowerCase().includes(currentFilter.value);
+            break;
         }
-      });
+      }
       return (
+        match ||
         item.software.toLowerCase().includes(search) ||
         item.incident_wording.toLowerCase().includes(search) ||
         item.client_contrat.client.toLowerCase().includes(search) ||
@@ -438,8 +460,8 @@ export default {
           value: this.valuesFilter
         };
         this.customFilters.push(filter);
+        this.centralSearch = this.valuesFilter.toLowerCase();
       }
-      return;
     },
     saveCurrentFilter() {
       var filterToSave = {
@@ -481,7 +503,6 @@ export default {
           });
         });
     },
-    //categoriesFilter() {},
     deleteCurrentFilter() {
       this.$http
         .deleteFilters(this.storedSelectionsFilter._id)
@@ -502,6 +523,15 @@ export default {
     loadFilter() {
       this.customFilters = this.storedSelectionsFilter.items;
       this.deleteBtn = true;
+      if (this.customFilters.length) {
+        this.centralSearch = this.customFilters[0].value;
+      }
+    },
+    removeFilter(filter) {
+      this.customFilters = this.customFilters.filter(customFilter => {
+        return JSON.stringify(customFilter) != JSON.stringify(filter);
+      });
+      this.centralSearch = "";
     }
   }
 };
