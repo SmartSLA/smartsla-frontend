@@ -84,9 +84,10 @@
         <template v-slot:activator="{ on }">
           <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
           <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
-          <v-btn color="warning" @click="updateCurrectFilter" v-if="updateBtn">
+          <v-btn color="warning" @click="updateCurrectFilter" v-if="storedSelectionsFilter._id">
             {{ $i18n.t("Save current filter") }}
           </v-btn>
+          <v-btn class="right" color="grey darken-1" dark v-on="on" @click="resetFilters">{{ $i18n.t("reset") }}</v-btn>
         </template>
 
         <v-card>
@@ -531,6 +532,11 @@ export default {
       this.customFilters = this.customFilters.filter(customFilter => {
         return JSON.stringify(customFilter) != JSON.stringify(filter);
       });
+      this.centralSearch = "";
+    },
+
+    resetFilters() {
+      this.customFilters = [];
       this.centralSearch = "";
     }
   }
