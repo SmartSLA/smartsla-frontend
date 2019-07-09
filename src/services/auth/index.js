@@ -29,6 +29,7 @@ export default {
           this.watch.data.preferredEmail == "kferjani@linagora.com" ||
           this.watch.data.preferredEmail == "mmaudet@linagora.com" ||
           this.watch.data.preferredEmail == "iabouljamal@linagora.com" ||
+          this.watch.data.preferredEmail == "admin@qa.open-paas.org" ||
           this.watch.data[key || this.options.rolesVar]
         );
       }
