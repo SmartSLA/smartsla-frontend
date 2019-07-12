@@ -39,11 +39,11 @@
           class="contracts-search-commercial"
         ></v-select>
         <div class="contracts-operations">
-          <router-link class="contracts-actions" :to="{ name: 'NewContract' }">
+          <router-link class="contracts-actions blue-color" :to="{ name: 'NewContract' }">
             <v-icon>add_circle</v-icon>
             <span>{{ $i18n.t("Add Contract") }}</span>
           </router-link>
-          <a href="#" class="contracts-actions">
+          <a href="#" class="contracts-actions blue-color">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $i18n.t("Export") }}</span>
           </a>
@@ -68,7 +68,7 @@
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item._id } }">{{
+              <router-link class="contracts-actions blue-color" :to="{ name: 'Contract', params: { id: props.item._id } }" >{{
                 props.item.name
               }}</router-link>
             </div>

@@ -31,11 +31,11 @@
           class="contributions-search-statuss"
         ></v-select>
         <div class="contributions-operations">
-          <router-link :to="{ name: 'NewContribution' }" class="contributions-actions">
+          <router-link :to="{ name: 'NewContribution' }" class="contributions-actions blue-color">
             <v-icon>add_circle</v-icon>
             <span>{{ $i18n.t("Add contribution") }}</span>
           </router-link>
-          <a href="#" class="contributions-actions">
+          <a href="#" class="contributions-actions blue-color">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $i18n.t("Export") }}</span>
           </a>
@@ -52,7 +52,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.software }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }">{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }" class="blue-color">{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.deposit }}</td>

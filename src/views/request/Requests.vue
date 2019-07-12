@@ -125,7 +125,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }" class="blue-color">
               {{
               props.item.ticket_number
               }}
@@ -178,15 +178,15 @@
               <template v-slot:activator="{ on }">
                 <span
                   v-if="props.item.software == 'LibreOffice'"
-                  class="major-criticality"
+                  class="major-criticality red-background-color" 
                   v-on="on"
                 >{{ props.item.software }}</span>
                 <span
                   v-else-if="props.item.software == 'NPM'"
-                  class="medium-criticality"
+                  class="medium-criticality yellow-background-color"
                   v-on="on"
                 >{{ props.item.software }}</span>
-                <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
+                <span v-else class="minor-criticality grey-background-color" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
             </v-tooltip>
@@ -197,9 +197,9 @@
           <td class="text-xs-center">{{ props.item.transmitter }}</td>
 
           <td class="text-xs-center">
-            <a href="#">{{ props.item.client_contrat.client }}</a>
-            /
-            <a href="#">{{ props.item.client_contrat.contract }}</a>
+            <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
+            
+            <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
           <td class="text-xs-center">{{ props.item.created }}</td>
@@ -585,7 +585,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .major-criticality {
-  background-color: #d32f2f;
+ 
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -593,7 +593,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .medium-criticality {
-  background-color: #ffa000;
+
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -601,7 +601,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .minor-criticality {
-  background-color: #e0e0e0;
+  
   color: #000000;
   font-weight: bold;
   padding: 5px;

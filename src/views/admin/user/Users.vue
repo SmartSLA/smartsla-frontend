@@ -24,11 +24,11 @@
         ></v-select>
         <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"></v-select>
         <div class="users-operations">
-          <router-link :to="{ name: 'NewUser' }" class="users-actions">
+          <router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
             <v-icon>add_circle</v-icon>
             <span>{{ $i18n.t("Add user") }}</span>
           </router-link>
-          <a href="#" class="users-actions">
+          <a href="#" class="users-actions blue-color">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $i18n.t("Export") }}</span>
           </a>
@@ -45,7 +45,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.title }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'User', params: { id: props.item.id } }">
+            <router-link :to="{ name: 'User', params: { id: props.item.id } }" class="blue-color">
               <div v-if="props.item.isdisabled == 'yes'">
                 <strike>{{ props.item.name }}</strike>
               </div>
@@ -55,7 +55,7 @@
           <td class="text-xs-center">{{ props.item.role }}</td>
           <td class="text-xs-center">{{ props.item.engineer }}</td>
           <td class="text-xs-center">{{ props.item.beneficiary }}</td>
-          <td class="text-xs-center user-mail">{{ props.item.email }}</td>
+          <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
           <td class="text-xs-center">{{ props.item.phone }}</td>
         </template>
       </v-data-table>
@@ -194,7 +194,7 @@ export default {
 }
 
 .user-mail {
-  color: #2195f2 !important;
+  
   font-weight: bold !important;
 }
 

@@ -5,11 +5,11 @@
         <v-icon class="mr-2">format_line_spacing</v-icon>
         <span>{{ $i18n.t("CONTRIBUTIONS") }}</span>
       </a>
-      <a href="#" class="action-links right">
+      <a href="#" class="action-links right ">
         <v-icon class="mr-2">backup</v-icon>
         <span>{{ $i18n.t("EXPORT SHEET (CSV)") }}</span>
       </a>
-      <a href="#" class="action-links mr-5 right">
+      <a href="#" class="action-links mr-5 right ">
         <v-icon class="mr-2">print</v-icon>
         <span>{{ $i18n.t("PRINT SHEET") }}</span>
       </a>
@@ -73,7 +73,7 @@
                 </v-flex>
                 <v-flex xs11>
                   <b>{{ $i18n.t("Patch link") }}</b> :
-                  <a href="#" class="pr-2">{{ contribution.patchLink }}</a>
+                  <a href="#" class="pr-2 blue-color">{{ contribution.patchLink }}</a>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -85,7 +85,7 @@
                 <v-flex xs11>
                   <b>{{ $i18n.t("binary link of the software integrating the patch") }}</b> :
                   <br />
-                  <a class="pr-2">{{ contribution.softwareLink }}</a>
+                  <a class="pr-2 blue-color">{{ contribution.softwareLink }}</a>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -97,7 +97,7 @@
                 <v-flex xs11>
                   <b>{{ $i18n.t("exchanges with communities about the contribution") }}</b> :
                   <br />
-                  <a class="pr-2" :href="contribution.communityPatchLink">{{ $i18n.t("see here") }}</a>
+                  <a class="pr-2 blue-color" :href="contribution.communityPatchLink">{{ $i18n.t("see here") }}</a>
                 </v-flex>
               </v-layout>
             </v-card-text>

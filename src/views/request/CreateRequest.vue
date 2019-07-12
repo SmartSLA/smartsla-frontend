@@ -178,7 +178,7 @@
                 <v-layout>
                   <v-flex xs6 text-xs-right align-end>
                     <v-spacer></v-spacer>
-                    <v-btn :disabled="submitRequest" :loading="submitRequest" @click="validateFrom">{{
+                    <v-btn :disabled="submitRequest" :loading="submitRequest" @click="validateFrom" class="blue-background-color white-color" >{{
                       $t("Submit")
                     }}</v-btn>
                   </v-flex>
@@ -411,7 +411,6 @@ export default {
 }
 
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
-  background-color: #2195f2;
   color: #fff;
 }
 
