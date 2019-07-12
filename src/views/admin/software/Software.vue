@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
     <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $i18n.t("Return to software list") }}</router-link
+      >&lt; {{ $t("Return to software list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
@@ -33,29 +33,29 @@
             <v-flex xs9>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Name") }} :</strong>
+                  <strong>{{ $t("Name") }} :</strong>
                   {{ software.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Summary") }} :</strong>
+                  <strong>{{ $t("Summary") }} :</strong>
                   {{ software.summary }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Description") }} :</strong>
+                  <strong>{{ $t("Description") }} :</strong>
                   {{ software.description }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Licence") }} :</strong>
+                  <strong>{{ $t("Licence") }} :</strong>
                   {{ software.licence }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Private") }} :</strong>
-                  {{ software.private ? $i18n.t("Yes") : $i18n.t("No") }}
+                  <strong>{{ $t("Private") }} :</strong>
+                  {{ software.private ? $t("Yes") : $t("No") }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs3>
-                      <strong>{{ $i18n.t("Technologies") }} :</strong>
+                      <strong>{{ $t("Technologies") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>
@@ -67,7 +67,7 @@
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs3>
-                      <strong>{{ $i18n.t("Versions") }} :</strong>
+                      <strong>{{ $t("Versions") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>
@@ -79,13 +79,13 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Groups") }} :</strong>
+                  <strong>{{ $t("Groups") }} :</strong>
                   {{ software.group }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs2>
-                      <strong>{{ $i18n.t("Links") }} :</strong>
+                      <strong>{{ $t("Links") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>
@@ -103,7 +103,7 @@
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="title font-weight-medium mb-0">{{ $i18n.t("Contributions") }}</h3>
+              <h3 class="title font-weight-medium mb-0">{{ $t("Contributions") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -124,12 +124,12 @@
       <v-flex xs4>
         <v-card class="px-1 ml-3 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
-            <h3 class="title">{{ $i18n.t("Contractual informations") }}</h3>
+            <h3 class="title">{{ $t("Contractual informations") }}</h3>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Contracts") }}:</strong>
+              <strong>{{ $t("Contracts") }}:</strong>
             </v-flex>
             <v-flex xs8>
               <ul>
@@ -139,7 +139,7 @@
               </ul>
             </v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Requests") }}:</strong>
+              <strong>{{ $t("Requests") }}:</strong>
             </v-flex>
             <v-flex xs8>
               <ul>

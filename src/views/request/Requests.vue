@@ -3,20 +3,20 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
-        <span>{{ $i18n.t("Requests list (TICKETS)") }}</span>
+        <span>{{ $t("Requests list (TICKETS)") }}</span>
       </a>
       <download-excel :data="requests" class="export-excel">
         <v-icon class="mr-2">backup</v-icon>
-        <span>{{ $i18n.t("EXPORT SHEET") }}</span>
+        <span>{{ $t("EXPORT SHEET") }}</span>
       </download-excel>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $i18n.t("PRINT SHEET") }}
+        {{ $t("PRINT SHEET") }}
       </a>
     </v-card-text>
     <div class="tickets-search">
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("Filter by:") }}</span>
+        <span>{{ $t("Filter by:") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -41,7 +41,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And") }}</span>
+        <span>{{ $t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -60,7 +60,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And") }}</span>
+        <span>{{ $t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-text-field
@@ -82,17 +82,17 @@
     <div v-if="customFilters.length > 0" class="filter-save">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Save current filter") }}</v-btn>
+          <v-btn color="blue darken-1" dark v-on="on">{{ $t("Save current filter") }}</v-btn>
           <v-btn
             color="error"
             flat
             @click="deleteCurrentFilter"
             v-if="deleteBtn"
-          >{{ $i18n.t("Delete") }}</v-btn>
+          >{{ $t("Delete") }}</v-btn>
         </template>
 
         <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
+          <v-card-title class="headline grey lighten-2" primary-title>{{ $t("Save filter") }}</v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>

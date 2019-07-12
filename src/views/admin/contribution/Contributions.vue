@@ -2,10 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="contributions-list">
       <div class="page-title">
-        <span>{{ $i18n.t("Contributions list") }}</span>
+        <span>{{ $t("Contributions list") }}</span>
       </div>
       <div class="contributions-search">
-        <span class="contributions-search-span">{{ $i18n.t("Search by:") }}</span>
+        <span class="contributions-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Name')"
@@ -33,11 +33,11 @@
         <div class="contributions-operations">
           <router-link :to="{ name: 'NewContribution' }" class="contributions-actions blue-color">
             <v-icon>add_circle</v-icon>
-            <span>{{ $i18n.t("Add contribution") }}</span>
+            <span>{{ $t("Add contribution") }}</span>
           </router-link>
           <a href="#" class="contributions-actions blue-color">
             <v-icon>arrow_downward</v-icon>
-            <span>{{ $i18n.t("Export") }}</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>

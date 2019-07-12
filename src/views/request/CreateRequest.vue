@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>{{ $i18n.t("New issue") }}</span>
+      <span>{{ $t("New issue") }}</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>

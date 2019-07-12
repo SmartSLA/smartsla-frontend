@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
     <router-link class="text-lg-left action-links" :to="{ name: 'Clients' }"
-      >&lt; {{ $i18n.t("Return to clients list") }}</router-link
+      >&lt; {{ $t("Return to clients list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
@@ -32,23 +32,23 @@
                   <img :src="client.image" height="100" />
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Name") }} :</strong>
+                  <strong>{{ $t("Name") }} :</strong>
                   {{ client.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Address") }} :</strong>
+                  <strong>{{ $t("Address") }} :</strong>
                   {{ client.address }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Unique access code") }} :</strong>
+                  <strong>{{ $t("Unique access code") }} :</strong>
                   {{ client.accessCode }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Access code hint") }} :</strong>
+                  <strong>{{ $t("Access code hint") }} :</strong>
                   {{ client.codeHint }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Status") }} :</strong>
+                  <strong>{{ $t("Status") }} :</strong>
                   {{ client.status }}
                 </v-flex>
               </v-layout>

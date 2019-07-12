@@ -2,10 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="teams-list">
       <div class="page-title">
-        <span>{{ $i18n.t("Teams list") }}</span>
+        <span>{{ $t("Teams list") }}</span>
       </div>
       <div class="teams-search">
-        <span class="teams-search-span">{{ $i18n.t("Search by:") }}</span>
+        <span class="teams-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Search')"
@@ -17,11 +17,11 @@
         <div class="teams-operations">
           <router-link :to="{ name: 'NewTeam' }" class="teams-actions blue-color">
             <v-icon>add_circle</v-icon>
-            <span>{{ $i18n.t("Add Team") }}</span>
+            <span>{{ $t("Add Team") }}</span>
           </router-link>
           <a href="#" class="teams-actions blue-color">
             <v-icon>arrow_downward</v-icon>
-            <span>{{ $i18n.t("Export") }}</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>
