@@ -17,9 +17,9 @@
         <div class="clients-operations">
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
-            <router-link :to="{ name: 'NewClient' }">{{ $i18n.t("Add Client") }}</router-link>
+            <router-link :to="{ name: 'NewClient' }" class="blue-color">{{ $i18n.t("Add Client") }}</router-link>
           </a>
-          <a href="#" class="clients-actions">
+          <a href="#" class="clients-actions blue-color">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $i18n.t("Export") }}</span>
           </a>
@@ -36,7 +36,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Client', params: { id: props.item.id } }">{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'Client', params: { id: props.item.id } }" class="blue-color">{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.contracts }}</td>
           <td class="text-xs-center">{{ props.item.access_code }}</td>

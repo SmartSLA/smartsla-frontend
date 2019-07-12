@@ -72,7 +72,7 @@
                     <v-flex xs8>
                       <ul>
                         <li v-for="(version, index) in software.versions" :key="index">
-                          <router-link to="#">{{ version }}</router-link>
+                          <router-link to="#" class="blue-color">{{ version }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -90,7 +90,7 @@
                     <v-flex xs8>
                       <ul>
                         <li v-for="(link, index) in software.links" :key="index">
-                          <router-link to="#">{{ link }}</router-link>
+                          <router-link to="#" class="blue-color">{{ link }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -112,10 +112,10 @@
             <template v-slot:items="props">
               <td class="text-xs-center">{{ props.item.date }}</td>
               <td class="text-xs-center text-capitalize">
-                <router-link to="#">{{ props.item.version }}</router-link>
+                <router-link to="#" class="blue-color">{{ props.item.version }}</router-link>
               </td>
               <td class="text-xs-center text-capitalize">
-                <router-link to="#">{{ props.item.summary }}</router-link>
+                <router-link to="#" class="blue-color">{{ props.item.summary }}</router-link>
               </td>
             </template>
           </v-data-table>
@@ -134,7 +134,7 @@
             <v-flex xs8>
               <ul>
                 <li v-for="(contract, index) in software.contracts" :key="index">
-                  <router-link to="#">{{ contract }}</router-link>
+                  <router-link to="#" class="blue-color">{{ contract }}</router-link>
                 </li>
               </ul>
             </v-flex>
@@ -144,7 +144,7 @@
             <v-flex xs8>
               <ul>
                 <li v-for="(request, index) in software.requests" :key="index">
-                  <router-link to="#">{{ request }}</router-link>
+                  <router-link to="#" class="blue-color">{{ request }}</router-link>
                 </li>
               </ul>
             </v-flex>

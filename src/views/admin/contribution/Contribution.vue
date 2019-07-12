@@ -30,7 +30,7 @@
             {{ $i18n.t("this contribution has been filed on") }}
             {{ contribution.fileDate }}
             {{ $i18n.t("by") }}
-            <router-link :to="{ name: 'user' }">{{ contribution.engineer }}</router-link>
+            <router-link :to="{ name: 'user' }" class="blue-color">{{ contribution.engineer }}</router-link>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -49,13 +49,13 @@
               <strong>{{ $i18n.t("Engineer") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <router-link :to="{ name: '#' }">{{ contribution.engineer }}</router-link>
+              <router-link :to="{ name: '#' }" class="blue-color">{{ contribution.engineer }}</router-link>
             </v-flex>
             <v-flex xs4>
               <strong>{{ $i18n.t("Request Number") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }">{{
+              <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }" class="blue-color">{{
                 contribution.requestNumber
               }}</router-link>
             </v-flex>
@@ -79,7 +79,7 @@
               <strong>{{ $i18n.t("communication link") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <a :href="contribution.cummunicationLink">{{ contribution.cummunicationLink }}</a>
+              <a :href="contribution.cummunicationLink" class="blue-color">{{ contribution.cummunicationLink }}</a>
             </v-flex>
             <v-flex xs4>
               <strong>{{ $i18n.t("Filed on") }}:</strong>
@@ -91,7 +91,7 @@
             <v-flex xs8>{{ contribution.closeDate }}</v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9>
-              <v-btn class="primary">{{ $i18n.t("Download Patch") }}</v-btn>
+              <v-btn class="white-color blue-background-color" >{{ $i18n.t("Download Patch") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>

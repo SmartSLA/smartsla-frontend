@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Users' }"
+    <router-link class="text-lg-left action-links grey" :to="{ name: 'Users' }"
       >&lt; {{ $i18n.t("Return to users list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
@@ -79,7 +79,7 @@
                     <v-flex xs8>
                       <ul>
                         <li v-for="(contract, key) in user.contracts" :key="key">
-                          <router-link :to="{ name: 'Contract', params: { id: 15 } }">{{ contract.name }}</router-link>
+                          <router-link :to="{ name: 'Contract', params: { id: 15 } }" class="blue-color">{{ contract.name }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
