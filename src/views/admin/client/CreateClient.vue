@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>{{ $i18n.t("Create Client") }}</span>
+      <span>{{ $t("Create Client") }}</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
@@ -41,7 +41,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="submit">{{ $i18n.t("Validate") }}</v-btn>
+              <v-btn @click="submit">{{ $t("Validate") }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>

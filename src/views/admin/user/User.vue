@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
     <router-link class="text-lg-left action-links grey" :to="{ name: 'Users' }"
-      >&lt; {{ $i18n.t("Return to users list") }}</router-link
+      >&lt; {{ $t("Return to users list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex 12>
@@ -28,35 +28,35 @@
             <v-flex xs6>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Type") }} :</strong>
-                  {{ $i18n.t(user.type) }}
+                  <strong>{{ $t("Type") }} :</strong>
+                  {{ $t(user.type) }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Name") }} :</strong>
+                  <strong>{{ $t("Name") }} :</strong>
                   {{ user.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Position") }} :</strong>
+                  <strong>{{ $t("Position") }} :</strong>
                   {{ user.title }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Email") }} :</strong>
+                  <strong>{{ $t("Email") }} :</strong>
                   {{ user.email }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Phone") }} :</strong>
+                  <strong>{{ $t("Phone") }} :</strong>
                   {{ user.phone }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Team") }} :</strong>
+                  <strong>{{ $t("Team") }} :</strong>
                   {{ user.team }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Identifier") }} :</strong>
+                  <strong>{{ $t("Identifier") }} :</strong>
                   {{ user.identifier }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Role") }} :</strong>
+                  <strong>{{ $t("Role") }} :</strong>
                   {{ user.role }}
                 </v-flex>
               </v-layout>
@@ -68,13 +68,13 @@
                   <img :src="user.client.image" height="100" />
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Client") }} :</strong>
+                  <strong>{{ $t("Client") }} :</strong>
                   {{ user.client.name }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs4>
-                      <strong>{{ $i18n.t("Contracts") }} :</strong>
+                      <strong>{{ $t("Contracts") }} :</strong>
                     </v-flex>
                     <v-flex xs8>
                       <ul>

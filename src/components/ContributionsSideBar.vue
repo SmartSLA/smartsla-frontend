@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex xs12>
         <v-subheader inset class="text-uppercase blue white--text title ml-0">
-          {{ $i18n.t("recently accepted contributions") }}
+          {{ $t("recently accepted contributions") }}
         </v-subheader>
         <v-icon large color="blue" class="arrow-down pr-4">play_arrow</v-icon>
 
@@ -24,7 +24,7 @@
           <v-divider></v-divider>
         </v-list>
         <div class="see-all-link text-md-right pr-2">
-          <a href="#" class="white--text">{{ $i18n.t("See all") }}</a>
+          <a href="#" class="white--text">{{ $t("See all") }}</a>
         </div>
       </v-flex>
     </v-layout>

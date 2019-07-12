@@ -2,10 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="users-list">
       <div class="page-title">
-        <span>{{ $i18n.t("Users list") }}</span>
+        <span>{{ $t("Users list") }}</span>
       </div>
       <div class="users-search">
-        <span class="users-search-span">{{ $i18n.t("Search by:") }}</span>
+        <span class="users-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Name')"
@@ -26,11 +26,11 @@
         <div class="users-operations">
           <router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
             <v-icon>add_circle</v-icon>
-            <span>{{ $i18n.t("Add user") }}</span>
+            <span>{{ $t("Add user") }}</span>
           </router-link>
           <a href="#" class="users-actions blue-color">
             <v-icon>arrow_downward</v-icon>
-            <span>{{ $i18n.t("Export") }}</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>

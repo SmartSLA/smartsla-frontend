@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
     <router-link class="text-lg-left action-links" :to="{ name: 'Teams' }"
-      >&lt; {{ $i18n.t("Return to teams list") }}</router-link
+      >&lt; {{ $t("Return to teams list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
@@ -27,27 +27,27 @@
             <v-flex xs6>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Name") }} :</strong>
+                  <strong>{{ $t("Name") }} :</strong>
                   {{ team.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Contact") }} :</strong>
+                  <strong>{{ $t("Contact") }} :</strong>
                   <router-link :to="{ name: 'Contact', params: { id: team.contact.id } }">
                     {{ team.contact.name }}
                   </router-link>
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Motto") }} :</strong>
+                  <strong>{{ $t("Motto") }} :</strong>
                   {{ team.motto }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $i18n.t("Email") }} :</strong>
+                  <strong>{{ $t("Email") }} :</strong>
                   {{ team.email }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs2>
-                      <strong>{{ $i18n.t("Members") }} :</strong>
+                      <strong>{{ $t("Members") }} :</strong>
                     </v-flex>
                     <v-flex xs10>
                       <ul>
@@ -81,31 +81,31 @@
         <v-card class="px-1 mt-4 pb-4">
           <v-card-title primary-title class="px-2">
             <div>
-              <h3 class="title mb-0">{{ $i18n.t("Alerts settings") }}</h3>
+              <h3 class="title mb-0">{{ $t("Alerts settings") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap class="pt-4 px-4">
             <v-flex xs12>
-              <strong>{{ $i18n.t("Alert system active") }}:</strong>
-              {{ $i18n.t(team.alertSettings.active) }}
+              <strong>{{ $t("Alert system active") }}:</strong>
+              {{ $t(team.alertSettings.active) }}
             </v-flex>
             <v-flex xs12>
-              <strong>{{ $i18n.t("Link to alert page") }}:</strong>
+              <strong>{{ $t("Link to alert page") }}:</strong>
               &nbsp;
               <a :href="team.alertSettings.url" target="_blank">{{ team.alertSettings.urlPage }}</a>
             </v-flex>
             <v-flex xs12>
-              <strong>{{ $i18n.t("Automatic alert system active") }}:</strong>
-              {{ $i18n.t(team.alertSettings.autoAlertActive) }}
+              <strong>{{ $t("Automatic alert system active") }}:</strong>
+              {{ $t(team.alertSettings.autoAlertActive) }}
             </v-flex>
             <v-flex xs12>
-              <strong>{{ $i18n.t("Automatic alert") }}: {{ $i18n.t("Start hour") }}:</strong>
-              {{ $i18n.t(team.alertSettings.autoAlert.start) }}
+              <strong>{{ $t("Automatic alert") }}: {{ $t("Start hour") }}:</strong>
+              {{ $t(team.alertSettings.autoAlert.start) }}
             </v-flex>
             <v-flex xs12>
-              <strong>{{ $i18n.t("Automatic alert") }}: {{ $i18n.t("End hour") }}:</strong>
-              {{ $i18n.t(team.alertSettings.autoAlert.end) }}
+              <strong>{{ $t("Automatic alert") }}: {{ $t("End hour") }}:</strong>
+              {{ $t(team.alertSettings.autoAlert.end) }}
             </v-flex>
           </v-layout>
         </v-card>

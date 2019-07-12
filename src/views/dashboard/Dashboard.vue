@@ -3,15 +3,15 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">dashboard</v-icon>
-        {{ $i18n.t("DASHBOARD") }}
+        {{ $t("DASHBOARD") }}
       </a>
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
-        {{ $i18n.t("EXPORT SHEET (CSV)") }}
+        {{ $t("EXPORT SHEET (CSV)") }}
       </a>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $i18n.t("PRINT SHEET") }}
+        {{ $t("PRINT SHEET") }}
       </a>
     </v-card-text>
     <img class="dashboard-image" src="@/assets/dashboard.png" />
