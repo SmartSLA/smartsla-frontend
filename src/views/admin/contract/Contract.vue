@@ -187,10 +187,7 @@
           <v-card-text>
             <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
             <ul class="pb-2 grey--text">
-              <li
-                v-for="beneficiary in contract.humanResources.beneficiaries"
-                :key="beneficiary.id"
-              >
+              <li v-for="beneficiary in contract.humanResources.beneficiaries" :key="beneficiary.id">
                 <router-link to="#">{{ beneficiary.name }}</router-link>
               </li>
             </ul>
