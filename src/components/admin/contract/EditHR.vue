@@ -3,12 +3,12 @@
     <v-card class="mt-4 px-4">
       <v-card-title primary-title class="pl-0">
         <div>
-          <h3 class="title mb-0">{{ $i18n.t("Human resouces") }}</h3>
+          <h3 class="title mb-0">{{ $t("Human resouces") }}</h3>
         </div>
       </v-card-title>
       <v-layout row wrap align-center>
         <v-flex xs4>
-          <span class="subheading">{{ $i18n.t("Linagora Teams") }}</span>
+          <span class="subheading">{{ $t("Linagora Teams") }}</span>
         </v-flex>
         <v-flex xs4>
           <v-select
@@ -32,7 +32,7 @@
                 <v-flex xs6>
                   <v-btn flat small class="error--text mt-0" @click="removeTeam(selectedTeam.id)">
                     <v-icon class="error--text">remove_circle</v-icon>
-                    {{ $i18n.t("remove") }}
+                    {{ $t("remove") }}
                   </v-btn>
                 </v-flex>
               </v-layout>
@@ -45,7 +45,7 @@
       <v-divider></v-divider>
       <v-layout row wrap align-center>
         <v-flex xs4>
-          <span class="subheading">{{ $i18n.t("Beneficiaries") }}</span>
+          <span class="subheading">{{ $t("Beneficiaries") }}</span>
         </v-flex>
         <v-flex xs4>
           <v-select
@@ -62,7 +62,7 @@
         <v-flex xs4>
           <v-btn small flat class="pl-4 success--text" @click="createAccount = !createAccount">
             <v-icon class="success--text">add_circle</v-icon>
-            {{ $i18n.t("Add") }}
+            {{ $t("Add") }}
           </v-btn>
         </v-flex>
         <v-flex xs4></v-flex>
@@ -74,7 +74,7 @@
                 <v-flex xs6>
                   <v-btn flat small class="error--text mt-0" @click="removePerson(selectedBeneficiary)">
                     <v-icon class="error--text">remove_circle</v-icon>
-                    {{ $i18n.t("remove") }}
+                    {{ $t("remove") }}
                   </v-btn>
                 </v-flex>
               </v-layout>
@@ -88,13 +88,13 @@
         <v-flex xs1></v-flex>
         <v-flex xs8>
           <form v-if="createAccount" class="pt-4 px-4 mr-4 grey lighten-3">
-            <h3 class="title mb-0">{{ $i18n.t("Create account") }}</h3>
+            <h3 class="title mb-0">{{ $t("Create account") }}</h3>
             <v-layout row wrap align-center>
-              <v-flex xs3>{{ $i18n.t("Client") }}</v-flex>
+              <v-flex xs3>{{ $t("Client") }}</v-flex>
               <v-flex xs9>
                 <v-select v-model="client" :items="[client]" flat disabled></v-select>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("Contracts") }}</v-flex>
+              <v-flex xs3>{{ $t("Contracts") }}</v-flex>
               <v-flex xs9>
                 <v-select
                   v-model="account.contract"
@@ -116,7 +116,7 @@
                       <v-flex xs6>
                         <v-btn flat small class="error--text mt-0" @click="removeContract(contract.id)">
                           <v-icon class="error--text">remove_circle</v-icon>
-                          {{ $i18n.t("remove") }}
+                          {{ $t("remove") }}
                         </v-btn>
                       </v-flex>
                     </v-layout>
@@ -124,14 +124,14 @@
                 </ul>
               </v-flex>
 
-              <v-flex xs3>{{ $i18n.t("type") }}</v-flex>
+              <v-flex xs3>{{ $t("type") }}</v-flex>
               <v-flex xs9>
                 <v-radio-group v-model="account.type" row>
                   <v-radio :label="$i18n.t('Beneficiariy')" value="beneficiariy"></v-radio>
                   <v-radio :label="$i18n.t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("Name") }}</v-flex>
+              <v-flex xs3>{{ $t("Name") }}</v-flex>
               <v-flex xs9>
                 <v-text-field
                   :rules="[() => account.name.length > 0 || $i18n.t('Required field')]"
@@ -139,7 +139,7 @@
                   flat
                 ></v-text-field>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("Title") }}</v-flex>
+              <v-flex xs3>{{ $t("Title") }}</v-flex>
               <v-flex xs9>
                 <v-text-field
                   :rules="[() => account.title.length > 0 || $i18n.t('Required field')]"
@@ -147,7 +147,7 @@
                   flat
                 ></v-text-field>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("Email") }}</v-flex>
+              <v-flex xs3>{{ $t("Email") }}</v-flex>
               <v-flex xs9>
                 <v-text-field
                   :rules="[() => account.email.length > 0 || $i18n.t('Required field')]"
@@ -155,7 +155,7 @@
                   flat
                 ></v-text-field>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("phone") }}</v-flex>
+              <v-flex xs3>{{ $t("phone") }}</v-flex>
               <v-flex xs9>
                 <v-text-field
                   :rules="[() => account.phone.length > 0 || $i18n.t('Required field')]"
@@ -163,7 +163,7 @@
                   flat
                 ></v-text-field>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("Team") }}</v-flex>
+              <v-flex xs3>{{ $t("Team") }}</v-flex>
               <v-flex xs9>
                 <v-text-field
                   :rules="[() => account.team.length > 0 || $i18n.t('Required field')]"
@@ -171,7 +171,7 @@
                   flat
                 ></v-text-field>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("Identifier") }}</v-flex>
+              <v-flex xs3>{{ $t("Identifier") }}</v-flex>
               <v-flex xs9>
                 <v-text-field
                   :rules="[() => account.identifier.length > 0 || $i18n.t('Required field')]"
@@ -179,7 +179,7 @@
                   flat
                 ></v-text-field>
               </v-flex>
-              <v-flex xs3>{{ $i18n.t("Role") }}</v-flex>
+              <v-flex xs3>{{ $t("Role") }}</v-flex>
               <v-flex xs9>
                 <v-radio-group
                   :rules="[() => account.role.length > 0 || $i18n.t('Required field')]"
@@ -192,9 +192,9 @@
               </v-flex>
               <v-flex xs3></v-flex>
               <v-flex xs8>
-                <v-btn @click="addPerson(account)" class="success">{{ $i18n.t("Create account") }}</v-btn>
-                {{ $i18n.t("or") }}
-                <v-btn @click="clear" class="error">{{ $i18n.t("Cancel") }}</v-btn>
+                <v-btn @click="addPerson(account)" class="success">{{ $t("Create account") }}</v-btn>
+                {{ $t("or") }}
+                <v-btn @click="clear" class="error">{{ $t("Cancel") }}</v-btn>
               </v-flex>
               <v-flex xs1></v-flex>
             </v-layout>
@@ -205,7 +205,7 @@
       <v-layout row wrap align-center>
         <v-flex xs4></v-flex>
         <v-flex xs3>
-          <v-btn @click="validate" class="success" :disabled="createAccount">{{ $i18n.t("Validate changes") }}</v-btn>
+          <v-btn @click="validate" class="success" :disabled="createAccount">{{ $t("Validate changes") }}</v-btn>
         </v-flex>
         <v-flex xs3></v-flex>
       </v-layout>

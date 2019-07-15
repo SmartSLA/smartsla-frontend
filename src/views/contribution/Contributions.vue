@@ -3,15 +3,15 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">format_line_spacing</v-icon>
-        <span>{{ $i18n.t("CONTRIBUTIONS") }}</span>
+        <span>{{ $t("CONTRIBUTIONS") }}</span>
       </a>
-      <a href="#" class="action-links right">
+      <a href="#" class="action-links right ">
         <v-icon class="mr-2">backup</v-icon>
-        <span>{{ $i18n.t("EXPORT SHEET (CSV)") }}</span>
+        <span>{{ $t("EXPORT SHEET (CSV)") }}</span>
       </a>
-      <a href="#" class="action-links mr-5 right">
+      <a href="#" class="action-links mr-5 right ">
         <v-icon class="mr-2">print</v-icon>
-        <span>{{ $i18n.t("PRINT SHEET") }}</span>
+        <span>{{ $t("PRINT SHEET") }}</span>
       </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
@@ -20,31 +20,31 @@
           <v-layout justify-center row fill-height wrap ml-3>
             <v-flex xs6>
               <v-card-text class="px-0 information">
-                <strong>{{ $i18n.t("Contributor") }} :</strong>
+                <strong>{{ $t("Contributor") }} :</strong>
                 {{ contribution.contributor }}
               </v-card-text>
               <v-card-text class="px-0">
-                <strong>{{ $i18n.t("Software") }} :</strong>
+                <strong>{{ $t("Software") }} :</strong>
                 {{ contribution.software }}
               </v-card-text>
               <v-card-text class="px-0 information">
-                <strong>{{ $i18n.t("Client version") }} :</strong>
+                <strong>{{ $t("Client version") }} :</strong>
                 {{ contribution.clientVersion }}
               </v-card-text>
             </v-flex>
             <v-flex xs6>
               <v-card-text class="px-0 information">
                 <div>
-                  <strong>{{ $i18n.t("Ticket #") }} :</strong>
+                  <strong>{{ $t("Ticket #") }} :</strong>
                   {{ contribution.ticketNumber }}
                 </div>
               </v-card-text>
               <v-card-text class="px-0">
-                <strong>{{ $i18n.t("Proposition date") }} :</strong>
+                <strong>{{ $t("Proposition date") }} :</strong>
                 {{ contribution.patchDate }}
               </v-card-text>
               <v-card-text class="px-0 information">
-                <strong>{{ $i18n.t("patch integrated from version") }} :</strong>
+                <strong>{{ $t("patch integrated from version") }} :</strong>
                 {{ contribution.patchVersion }}
               </v-card-text>
             </v-flex>
@@ -72,8 +72,8 @@
                   <v-icon>insert_link</v-icon>
                 </v-flex>
                 <v-flex xs11>
-                  <b>{{ $i18n.t("Patch link") }}</b> :
-                  <a href="#" class="pr-2">{{ contribution.patchLink }}</a>
+                  <b>{{ $t("Patch link") }}</b> :
+                  <a href="#" class="pr-2 blue-color">{{ contribution.patchLink }}</a>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -83,9 +83,9 @@
                   <v-icon>insert_link</v-icon>
                 </v-flex>
                 <v-flex xs11>
-                  <b>{{ $i18n.t("binary link of the software integrating the patch") }}</b> :
+                  <b>{{ $t("binary link of the software integrating the patch") }}</b> :
                   <br />
-                  <a class="pr-2">{{ contribution.softwareLink }}</a>
+                  <a class="pr-2 blue-color">{{ contribution.softwareLink }}</a>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -95,9 +95,9 @@
                   <v-icon>insert_link</v-icon>
                 </v-flex>
                 <v-flex xs11>
-                  <b>{{ $i18n.t("exchanges with communities about the contribution") }}</b> :
+                  <b>{{ $t("exchanges with communities about the contribution") }}</b> :
                   <br />
-                  <a class="pr-2" :href="contribution.communityPatchLink">{{ $i18n.t("see here") }}</a>
+                  <a class="pr-2 blue-color" :href="contribution.communityPatchLink">{{ $t("see here") }}</a>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -111,7 +111,7 @@
               <v-card-title primary-title class="px-4 text-capitalize">
                 <div>
                   <h3 class="headline mb-0">
-                    {{ $i18n.t("otherSoftwareContributions.message", { software: contribution.software }) }}
+                    {{ $t("otherSoftwareContributions.message", { software: contribution.software }) }}
                   </h3>
                 </div>
               </v-card-title>
@@ -139,38 +139,38 @@
               <v-card light color="white pb-2">
                 <v-card-title primary-title class="px-4 text-capitalize">
                   <div>
-                    <h3 class="headline mb-0">{{ $i18n.t("Community contribution progress") }}</h3>
+                    <h3 class="headline mb-0">{{ $t("Community contribution progress") }}</h3>
                   </div>
                 </v-card-title>
                 <v-divider class="mx-4"></v-divider>
                 <v-layout class="mb-1 mx-4">
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
-                    <small>{{ $i18n.t("Dev") }}</small>
+                    <small>{{ $t("Dev") }}</small>
                     <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
-                    <small>{{ $i18n.t("Reversed") }}</small>
+                    <small>{{ $t("Reversed") }}</small>
                     <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
-                    <small>{{ $i18n.t("Integrated") }}</small>
+                    <small>{{ $t("Integrated") }}</small>
                     <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="green--text font-weight-bold">
                     <v-icon class="progress-arrow" color="green">label_important</v-icon>
-                    <small>{{ $i18n.t("published") }}</small>
+                    <small>{{ $t("published") }}</small>
                     <br />
                     <small class="grey--text">12/01/2018</small>
                   </v-flex>
                   <v-flex class="font-weight-bold grey--text">
                     <v-icon class="progress-arrow">label_important</v-icon>
-                    <small>{{ $i18n.t("Rejected") }}</small>
+                    <small>{{ $t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
               </v-card>

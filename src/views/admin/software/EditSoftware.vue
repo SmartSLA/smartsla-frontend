@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
     <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $i18n.t("Return to software list") }}</router-link
+      >&lt; {{ $t("Return to software list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
@@ -9,7 +9,7 @@
           <v-card-title primary-title class="px-4">
             <div>
               <h3 class="display-1 font-weight-medium mb-0">
-                {{ isNew ? $i18n.t("Edit Software") : $i18n.t("New Software") }}
+                {{ isNew ? $t("Edit Software") : $t("New Software") }}
               </h3>
             </div>
           </v-card-title>

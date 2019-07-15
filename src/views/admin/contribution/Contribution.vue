@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-0 mt-4 mb-4">
     <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
-      >&lt; {{ $i18n.t("Return to contributions list") }}</router-link
+      >&lt; {{ $t("Return to contributions list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs8>
@@ -27,10 +27,10 @@
             <code>{{ contribution.body }}</code>
           </blockquote>
           <v-card-text>
-            {{ $i18n.t("this contribution has been filed on") }}
+            {{ $t("this contribution has been filed on") }}
             {{ contribution.fileDate }}
-            {{ $i18n.t("by") }}
-            <router-link :to="{ name: 'user' }">{{ contribution.engineer }}</router-link>
+            {{ $t("by") }}
+            <router-link :to="{ name: 'user' }" class="blue-color">{{ contribution.engineer }}</router-link>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -42,56 +42,56 @@
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Software") }}:</strong>
+              <strong>{{ $t("Software") }}:</strong>
             </v-flex>
             <v-flex xs8>{{ contribution.software }}</v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Engineer") }}:</strong>
+              <strong>{{ $t("Engineer") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <router-link :to="{ name: '#' }">{{ contribution.engineer }}</router-link>
+              <router-link :to="{ name: '#' }" class="blue-color">{{ contribution.engineer }}</router-link>
             </v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Request Number") }}:</strong>
+              <strong>{{ $t("Request Number") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }">{{
+              <router-link :to="{ name: 'request', params: { id: contribution.requestNumber } }" class="blue-color">{{
                 contribution.requestNumber
               }}</router-link>
             </v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Contribution type") }}:</strong>
+              <strong>{{ $t("Contribution type") }}:</strong>
             </v-flex>
             <v-flex xs8>{{ contribution.type }}</v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("concerned version") }}:</strong>
+              <strong>{{ $t("concerned version") }}:</strong>
             </v-flex>
             <v-flex xs8>{{ contribution.version }}</v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("patched in version") }}:</strong>
+              <strong>{{ $t("patched in version") }}:</strong>
             </v-flex>
             <v-flex xs8>{{ contribution.patchVersion }}</v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Status") }}:</strong>
+              <strong>{{ $t("Status") }}:</strong>
             </v-flex>
             <v-flex xs8>{{ contribution.status }}</v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("communication link") }}:</strong>
+              <strong>{{ $t("communication link") }}:</strong>
             </v-flex>
             <v-flex xs8>
-              <a :href="contribution.cummunicationLink">{{ contribution.cummunicationLink }}</a>
+              <a :href="contribution.cummunicationLink" class="blue-color">{{ contribution.cummunicationLink }}</a>
             </v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Filed on") }}:</strong>
+              <strong>{{ $t("Filed on") }}:</strong>
             </v-flex>
             <v-flex xs8>{{ contribution.fileDate }}</v-flex>
             <v-flex xs4>
-              <strong>{{ $i18n.t("Closed on") }}:</strong>
+              <strong>{{ $t("Closed on") }}:</strong>
             </v-flex>
             <v-flex xs8>{{ contribution.closeDate }}</v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9>
-              <v-btn class="primary">{{ $i18n.t("Download Patch") }}</v-btn>
+              <v-btn class="white-color blue-background-color" >{{ $t("Download Patch") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>

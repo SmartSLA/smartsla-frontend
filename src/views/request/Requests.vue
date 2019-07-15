@@ -3,20 +3,20 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
-        <span>{{ $i18n.t("Requests list (TICKETS)") }}</span>
+        <span>{{ $t("Requests list (TICKETS)") }}</span>
       </a>
       <download-excel :data="requests" class="export-excel">
         <v-icon class="mr-2">backup</v-icon>
-        <span>{{ $i18n.t("EXPORT SHEET") }}</span>
+        <span>{{ $t("EXPORT SHEET") }}</span>
       </download-excel>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $i18n.t("PRINT SHEET") }}
+        {{ $t("PRINT SHEET") }}
       </a>
     </v-card-text>
     <div class="tickets-search">
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("Filter by:") }}</span>
+        <span>{{ $t("Filter by:") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -41,7 +41,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And") }}</span>
+        <span>{{ $t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -60,7 +60,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And") }}</span>
+        <span>{{ $t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-text-field
@@ -125,9 +125,11 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }">{{
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }" class="blue-color">
+              {{
               props.item.ticket_number
-            }}</router-link>
+              }}
+            </router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
@@ -174,13 +176,17 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-if="props.item.software == 'LibreOffice'" class="major-criticality" v-on="on">
-                  {{ props.item.software }}
-                </span>
-                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">
-                  {{ props.item.software }}
-                </span>
-                <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
+                <span
+                  v-if="props.item.software == 'LibreOffice'"
+                  class="major-criticality red-background-color" 
+                  v-on="on"
+                >{{ props.item.software }}</span>
+                <span
+                  v-else-if="props.item.software == 'NPM'"
+                  class="medium-criticality yellow-background-color"
+                  v-on="on"
+                >{{ props.item.software }}</span>
+                <span v-else class="minor-criticality grey-background-color" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
             </v-tooltip>
@@ -191,20 +197,26 @@
           <td class="text-xs-center">{{ props.item.transmitter }}</td>
 
           <td class="text-xs-center">
-            <a href="#">{{ props.item.client_contrat.client }}</a>
-            /
-            <a href="#">{{ props.item.client_contrat.contract }}</a>
+            <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
+            
+            <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">
-              {{ props.item.remaining_time }}
-            </v-progress-linear>
+            <v-progress-linear
+              v-if="props.item.conf.color == 'error'"
+              color="#d32f2f"
+              height="20"
+              value="30"
+            >{{ props.item.remaining_time }}</v-progress-linear>
+            <v-progress-linear
+              v-else
+              color="#76c43d"
+              height="20"
+              value="80"
+            >{{ props.item.remaining_time }}</v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -411,7 +423,9 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
+        items = items.filter(
+          item => item.team.toLowerCase() == this.ticketsFilter
+        );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
@@ -631,7 +645,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .major-criticality {
-  background-color: #d32f2f;
+ 
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -639,7 +653,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .medium-criticality {
-  background-color: #ffa000;
+
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -647,7 +661,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .minor-criticality {
-  background-color: #e0e0e0;
+  
   color: #000000;
   font-weight: bold;
   padding: 5px;

@@ -2,10 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="softwares-list">
       <div class="page-title">
-        <span>{{ $i18n.t("Softwares list") }}</span>
+        <span>{{ $t("Softwares list") }}</span>
       </div>
       <div class="softwares-search">
-        <span class="softwares-search-span">{{ $i18n.t("Search by:") }}</span>
+        <span class="softwares-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Search')"
@@ -15,13 +15,13 @@
           class="softwares-search-name"
         ></v-text-field>
         <div class="softwares-operations">
-          <router-link :to="{ name: 'NewSoftware' }" class="softwares-actions">
+          <router-link :to="{ name: 'NewSoftware' }" class="softwares-actions blue-color">
             <v-icon>add_circle</v-icon>
-            <span>{{ $i18n.t("Add Software") }}</span>
+            <span>{{ $t("Add Software") }}</span>
           </router-link>
-          <a href="#" class="softwares-actions">
+          <a href="#" class="softwares-actions blue-color">
             <v-icon>arrow_downward</v-icon>
-            <span>{{ $i18n.t("Export") }}</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>
@@ -36,7 +36,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Software', params: { id: 15 } }">{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'Software', params: { id: 15 } }" class="blue-color">{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.description }}</td>
           <td class="text-xs-center">{{ props.item.technologies }}</td>

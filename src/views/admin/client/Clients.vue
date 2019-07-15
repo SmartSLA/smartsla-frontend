@@ -2,10 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="clients-list">
       <div class="page-title">
-        <span>{{ $i18n.t("Clients list") }}</span>
+        <span>{{ $t("Clients list") }}</span>
       </div>
       <div class="clients-search">
-        <span class="clients-search-span">{{ $i18n.t("Search by:") }}</span>
+        <span class="clients-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Name')"
@@ -17,11 +17,11 @@
         <div class="clients-operations">
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
-            <router-link :to="{ name: 'NewClient' }">{{ $i18n.t("Add Client") }}</router-link>
+            <router-link :to="{ name: 'NewClient' }" class="blue-color">{{ $t("Add Client") }}</router-link>
           </a>
-          <a href="#" class="clients-actions">
+          <a href="#" class="clients-actions blue-color">
             <v-icon>arrow_downward</v-icon>
-            <span>{{ $i18n.t("Export") }}</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>
@@ -36,7 +36,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Client', params: { id: props.item.id } }">{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'Client', params: { id: props.item.id } }" class="blue-color">{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.contracts }}</td>
           <td class="text-xs-center">{{ props.item.access_code }}</td>

@@ -3,7 +3,7 @@
     <v-card-text>
       <router-link class="text-lg-left action-links" :to="{ name: 'Contracts' }">
         <v-icon class="mr-2">arrow_back_ios</v-icon>
-        {{ $i18n.t("Return to contracts list") }}
+        {{ $t("Return to contracts list") }}
       </router-link>
     </v-card-text>
     <v-layout row wrap justify-space-between>
@@ -38,57 +38,63 @@
                 <v-divider></v-divider>
                 <v-layout row wrap justify-space-between>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("Client") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Client") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.client }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("Name") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Name") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.name }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("Commercial Contact") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Commercial Contact") }} :</div>
                   </v-flex>
                   <v-flex xs8>
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.commercial }}</router-link>
                   </v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("technical Contact") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("technical Contact") }} :</div>
                   </v-flex>
                   <v-flex xs8>
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.technical }}</router-link>
                   </v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("Internal mailing list") }} :</div>
+                    <div
+                      class="subheading font-weight-medium"
+                    >{{ $t("Internal mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.mailingList.internal.join(", ") }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("External mailing list") }} :</div>
+                    <div
+                      class="subheading font-weight-medium"
+                    >{{ $t("External mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.mailingList.external.join(", ") }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("Start") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Start") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ new Date(contract.startDate).toString() }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("End") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("End") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ new Date(contract.endDate).toString() }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $i18n.t("Status") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ $i18n.t(contract.status) ? $i18n.t("active") : $i18n.t("not active") }}</v-flex>
+                  <v-flex
+                    xs8
+                  >{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">
-                      {{ $i18n.t("requests shared among the beneficiaries") }} :
-                    </div>
+                    <div
+                      class="subheading font-weight-medium"
+                    >{{ $t("requests shared among the beneficiaries") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ contract.sharedRequests ? $i18n.t("yes") : $i18n.t("no") }}</v-flex>
+                  <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
               </v-card-text>
               <v-layout row wrap align-end>
                 <v-flex xs12 text-xs-center align-end>
                   <div>
-                    <v-btn primary color="primary">{{ $i18n.t("renew this contract") }}</v-btn>
+                    <v-btn primary color="primary">{{ $t("renew this contract") }}</v-btn>
                   </div>
                 </v-flex>
               </v-layout>
@@ -99,7 +105,7 @@
               <v-card-title primary-title>
                 <v-layout>
                   <v-flex xs6>
-                    <h3 class="headline">{{ $i18n.t("Supported software") }}</h3>
+                    <h3 class="headline">{{ $t("Supported software") }}</h3>
                   </v-flex>
                   <v-flex xs6>
                     <div class="text-xs-center grey--text">
@@ -132,21 +138,20 @@
                       class="text-xs-center"
                       v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length"
                     >
-                      {{ $i18n.t("S") }}: {{ props.item.SupportDate.start }}
+                      {{ $t("S") }}: {{ props.item.SupportDate.start }}
                       <br />
-                      {{ $i18n.t("E") }}: {{ props.item.SupportDate.end }}
+                      {{ $t("E") }}: {{ props.item.SupportDate.end }}
                     </td>
-                    <td v-else class="text-xs-center">{{ $i18n.t("contract in progress") }}</td>
+                    <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
                     <td class="text-xs-center">
                       <v-chip
                         :color="critColor(props.item.critical)"
                         :text-color="critTextColor(props.item.critical)"
                         label
-                        >{{ $i18n.t(props.item.critical) }}</v-chip
-                      >
+                      >{{ $t(props.item.critical) }}</v-chip>
                     </td>
                     <td class="text-xs-center">
-                      <span v-if="props.item.generic == 'yes'">{{ $i18n.t(props.item.generic) }}</span>
+                      <span v-if="props.item.generic == 'yes'">{{ $t(props.item.generic) }}</span>
                       <router-link v-else to="#">repo</router-link>
                     </td>
                     <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
@@ -162,7 +167,7 @@
           <v-card-title primary-title>
             <v-layout>
               <v-flex xs6>
-                <h3 class="headline">{{ $i18n.t("Human resources") }}</h3>
+                <h3 class="headline">{{ $t("Human resources") }}</h3>
               </v-flex>
               <v-flex xs6>
                 <div class="text-xs-center grey--text">
@@ -180,14 +185,14 @@
             </v-layout>
           </v-card-title>
           <v-card-text>
-            <div class="subheading font-weight-regular pb-2">{{ $i18n.t("beneficiaries") }} :</div>
+            <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
             <ul class="pb-2 grey--text">
               <li v-for="beneficiary in contract.humanResources.beneficiaries" :key="beneficiary.id">
                 <router-link to="#">{{ beneficiary.name }}</router-link>
               </li>
             </ul>
             <v-divider class="ml-1 mr-1 pb-2"></v-divider>
-            <div class="subheading font-weight-regular">{{ $i18n.t("Teams") }} :</div>
+            <div class="subheading font-weight-regular">{{ $t("Teams") }} :</div>
             <ul ul class="pb-2 grey--text">
               <li v-for="team in contract.humanResources.teams" :key="team.id">
                 <router-link to="#">{{ team.name }}</router-link>
@@ -201,17 +206,19 @@
               <v-layout>
                 <v-flex xs9>
                   <h4 class="headline">
-                    {{ $i18n.t("Contractual commitments") }}
-                    <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>
-                      {{ $i18n.t("critical") }} </v-chip
-                    >:
+                    {{ $t("Contractual commitments") }}
+                    <v-chip
+                      :color="critColor('critical')"
+                      :text-color="critTextColor('critical')"
+                      label
+                    >{{ $t("critical") }}</v-chip>:
                     <span v-if="contract.Engagements.critical.schedule">
                       {{
-                        contract.Engagements.critical.schedule.end == "-"
-                          ? $i18n.t("7d/7")
-                          : `${contract.Engagements.critical.schedule.start}H - ${
-                              contract.Engagements.critical.schedule.end
-                            }H`
+                      contract.Engagements.critical.schedule.end == "-"
+                      ? $t("7d/7")
+                      : `${contract.Engagements.critical.schedule.start}H - ${
+                      contract.Engagements.critical.schedule.end
+                      }H`
                       }}
                     </span>
                   </h4>
@@ -242,12 +249,12 @@
                 hide-actions
               >
                 <template v-slot:items="props">
-                  <td class="text-xs-center">{{ $i18n.t(props.item.request) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.severity) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.idOssa) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.supported) }}</td>
-                  <td class="text-xs-center">{{ $i18n.t(props.item.bypassed) }}</td>
-                  <td class="text-xs-center">{{ $i18n.t(props.item.fix) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -259,17 +266,19 @@
               <v-layout>
                 <v-flex xs9>
                   <h4 class="headline">
-                    {{ $i18n.t("Contractual commitments") }}
-                    <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>
-                      {{ $i18n.t("sensible") }} </v-chip
-                    >:
+                    {{ $t("Contractual commitments") }}
+                    <v-chip
+                      :color="critColor('sensible')"
+                      :text-color="critTextColor('sensible')"
+                      label
+                    >{{ $t("sensible") }}</v-chip>:
                     <span v-if="contract.Engagements.sensible.schedule">
                       {{
-                        contract.Engagements.sensible.schedule.end == "-"
-                          ? $i18n.t("7d/7")
-                          : `${contract.Engagements.sensible.schedule.start}H - ${
-                              contract.Engagements.sensible.schedule.end
-                            }H`
+                      contract.Engagements.sensible.schedule.end == "-"
+                      ? $t("7d/7")
+                      : `${contract.Engagements.sensible.schedule.start}H - ${
+                      contract.Engagements.sensible.schedule.end
+                      }H`
                       }}
                     </span>
                   </h4>
@@ -300,12 +309,12 @@
                 hide-actions
               >
                 <template v-slot:items="props">
-                  <td class="text-xs-center">{{ $i18n.t(props.item.request) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.severity) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.idOssa) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.supported) }}</td>
-                  <td class="text-xs-center">{{ $i18n.t(props.item.bypassed) }}</td>
-                  <td class="text-xs-center">{{ $i18n.t(props.item.fix) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -317,17 +326,19 @@
               <v-layout>
                 <v-flex xs9>
                   <h4 class="headline">
-                    {{ $i18n.t("Contractual commitments") }}
-                    <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>
-                      {{ $i18n.t("standard") }} </v-chip
-                    >:
+                    {{ $t("Contractual commitments") }}
+                    <v-chip
+                      :color="critColor('standard')"
+                      :text-color="critTextColor('standard')"
+                      label
+                    >{{ $t("standard") }}</v-chip>:
                     <span v-if="contract.Engagements.standard.schedule">
                       {{
-                        contract.Engagements.standard.schedule.end == "-"
-                          ? $i18n.t("7d/7")
-                          : `${contract.Engagements.standard.schedule.start}H - ${
-                              contract.Engagements.standard.schedule.end
-                            }H`
+                      contract.Engagements.standard.schedule.end == "-"
+                      ? $t("7d/7")
+                      : `${contract.Engagements.standard.schedule.start}H - ${
+                      contract.Engagements.standard.schedule.end
+                      }H`
                       }}
                     </span>
                   </h4>
@@ -358,12 +369,12 @@
                 hide-actions
               >
                 <template v-slot:items="props">
-                  <td class="text-xs-center">{{ $i18n.t(props.item.request) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.severity) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.idOssa) }}</td>
-                  <td class="text-xs-center text-capitalize">{{ $i18n.t(props.item.supported) }}</td>
-                  <td class="text-xs-center">{{ $i18n.t(props.item.bypassed) }}</td>
-                  <td class="text-xs-center">{{ $i18n.t(props.item.fix) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.request) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                  <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
+                  <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -375,7 +386,6 @@
 </template>
 
 <script>
-var contract = require("@/assets/data/contract.json");
 export default {
   data() {
     return {

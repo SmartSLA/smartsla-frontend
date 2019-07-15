@@ -10,7 +10,7 @@
         <td class="text-xs-left">{{ props.item.date }}</td>
         <td class="text-xs-left">{{ props.item.status }}</td>
         <td class="text-xs-left">
-          <v-btn color="info" class="view-request">{{ $i18n.t("View") }}</v-btn>
+          <v-btn color="info" class="view-request">{{ $t("View") }}</v-btn>
         </td>
       </template>
     </v-data-table>

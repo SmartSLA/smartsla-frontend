@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
     <router-link class="text-lg-left action-links" :to="{ name: 'Clients' }"
-      >&lt; {{ $i18n.t("Return to clients list") }}</router-link
+      >&lt; {{ $t("Return to clients list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
@@ -9,7 +9,7 @@
           <v-card-title primary-title class="px-4">
             <div>
               <h3 class="display-1 font-weight-medium mb-0">
-                {{ isNew ? $i18n.t("Edit client") : $i18n.t("New client") }}
+                {{ isNew ? $t("Edit client") : $t("New client") }}
               </h3>
             </div>
           </v-card-title>
