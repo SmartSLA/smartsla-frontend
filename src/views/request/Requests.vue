@@ -435,28 +435,28 @@ export default {
         let currentFilter = this.customFilters[index];
         switch (currentFilter.category) {
           case "Type":
-            match = item.type.toLowerCase().includes(currentFilter.value);
+            match = item.type.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Severity":
-            match = item.severity.toLowerCase().includes(currentFilter.value);
+            match = item.severity.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Software":
-            match = item.software.toLowerCase().includes(currentFilter.value);
+            match = item.software.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Assign To":
-            match = item.assign_to.toLowerCase().includes(currentFilter.value);
+            match = item.assign_to.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Responsible":
-            match = item.responsible.toLowerCase().includes(currentFilter.value);
+            match = item.responsible.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Transmitter":
-            match = item.transmitter.toLowerCase().includes(currentFilter.value);
+            match = item.transmitter.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Client / Contract":
-            match = item.client_contract.toLowerCase().includes(currentFilter.value);
+            match = item.client_contract.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Status":
-            match = item.status.toLowerCase().includes(currentFilter.value);
+            match = item.status.toLowerCase() == currentFilter.value.toLowerCase();
             break;
         }
       }
