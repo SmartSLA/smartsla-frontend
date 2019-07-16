@@ -8,7 +8,7 @@ export default {
   },
 
   updateFilters(filterId, filter) {
-    return this.post(`/ticketing/api/filters/${filterId}`, filter);
+    return this.put(`/ticketing/api/filters/${filterId}`, filter);
   },
 
   deleteFilters(filterId) {
