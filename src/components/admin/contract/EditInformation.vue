@@ -141,12 +141,31 @@
             <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn :disabled="!valid" color="success" @click="validateForm">
-              {{ isNew ? $t("Validate the changes") : $t("Create") }}
-            </v-btn>
+            <v-btn
+              :disabled="!valid"
+              color="success"
+              @click="validateForm"
+            >{{ isNew ? $t("Validate the changes") : $t("Create") }}</v-btn>
+            <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
+      <v-dialog v-model="openDialog" persistent max-width="290">
+        <v-card>
+          <v-card-title class="body-2">{{ $t('You are about to delete:')}}</v-card-title>
+          <v-card-text>
+            <span class="pl-3">{{ $t('Contract') }} : {{ contract.name }}</span>
+            <br />
+            <br />
+            <span class="body-2">{{ $t('Are you sure?')}}</span>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
+            <v-btn color="red darken-1" flat @click="deleteContract">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </div>
 </template>
@@ -157,6 +176,7 @@ export default {
   name: "edit-contract-information",
   data() {
     return {
+      openDialog: false,
       contract: {
         name: "",
         client: "",
@@ -253,11 +273,21 @@ export default {
 
     validate() {
       var contract = this.contract;
-      if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
-        contract.mailingList.external = contract.mailingList.external.split(",");
+      if (
+        contract.mailingList.external.length &&
+        !(contract.mailingList.external instanceof Array)
+      ) {
+        contract.mailingList.external = contract.mailingList.external.split(
+          ","
+        );
       }
-      if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
-        contract.mailingList.internal = contract.mailingList.internal.split(",");
+      if (
+        contract.mailingList.internal.length &&
+        !(contract.mailingList.internal instanceof Array)
+      ) {
+        contract.mailingList.internal = contract.mailingList.internal.split(
+          ","
+        );
       }
       if (!this.isNew) {
         this.$http
@@ -304,6 +334,24 @@ export default {
           color: "error"
         });
       }
+    },
+
+    deleteContract() {
+      this.$http
+        .deleteContract(this.contract._id)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("contract deleted"),
+            color: "success"
+          });
+          this.$router.push({ name: routeNames.CONTRACTS });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   }
 };
