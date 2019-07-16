@@ -84,10 +84,18 @@
         <template v-slot:activator="{ on }">
           <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
           <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
-          <v-btn color="warning" @click="updateCurrectFilter" v-if="storedSelectionsFilter._id">
-            {{ $i18n.t("Save current filter") }}
-          </v-btn>
-          <v-btn class="right" color="grey darken-1" dark v-on="on" @click="resetFilters">{{ $i18n.t("reset") }}</v-btn>
+          <v-btn
+            color="warning"
+            @click="updateCurrectFilter"
+            v-if="storedSelectionsFilter._id"
+          >{{ $i18n.t("Save current filter") }}</v-btn>
+          <v-btn
+            class="right"
+            color="grey darken-1"
+            dark
+            v-on="on"
+            @click="resetFilters"
+          >{{ $i18n.t("reset") }}</v-btn>
         </template>
 
         <v-card>
@@ -125,7 +133,10 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }" class="blue-color">
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item.ticket_number } }"
+              class="blue-color"
+            >
               {{
               props.item.ticket_number
               }}
@@ -178,7 +189,7 @@
               <template v-slot:activator="{ on }">
                 <span
                   v-if="props.item.software == 'LibreOffice'"
-                  class="major-criticality red-background-color" 
+                  class="major-criticality red-background-color"
                   v-on="on"
                 >{{ props.item.software }}</span>
                 <span
@@ -186,9 +197,13 @@
                   class="medium-criticality yellow-background-color"
                   v-on="on"
                 >{{ props.item.software }}</span>
-                <span v-else class="minor-criticality grey-background-color" v-on="on">{{ props.item.software }}</span>
+                <span
+                  v-else
+                  class="minor-criticality grey-background-color"
+                  v-on="on"
+                >{{ props.item.software }}</span>
               </template>
-              <span>Version : 1.4.6 / Criticité : Haute</span>
+              <span>{{$t("Version : 1.3 / Criticité : Haute")}}</span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.incident_wording }}</td>
@@ -198,7 +213,7 @@
 
           <td class="text-xs-center">
             <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
-            
+
             <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
@@ -435,28 +450,39 @@ export default {
         let currentFilter = this.customFilters[index];
         switch (currentFilter.category) {
           case "Type":
-            match = item.type.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.type.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Severity":
-            match = item.severity.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.severity.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Software":
-            match = item.software.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.software.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Assign To":
-            match = item.assign_to.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.assign_to.toLowerCase() == currentFilter.value.toLowerCase();
             break;
           case "Responsible":
-            match = item.responsible.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.responsible.toLowerCase() ==
+              currentFilter.value.toLowerCase();
             break;
           case "Transmitter":
-            match = item.transmitter.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.transmitter.toLowerCase() ==
+              currentFilter.value.toLowerCase();
             break;
           case "Client / Contract":
-            match = item.client_contract.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.client_contract.toLowerCase() ==
+              currentFilter.value.toLowerCase();
             break;
           case "Status":
-            match = item.status.toLowerCase() == currentFilter.value.toLowerCase();
+            match =
+              item.status.toLowerCase() == currentFilter.value.toLowerCase();
             break;
         }
       }
@@ -645,7 +671,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .major-criticality {
- 
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -653,7 +678,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .medium-criticality {
-
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -661,7 +685,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .minor-criticality {
-  
   color: #000000;
   font-weight: bold;
   padding: 5px;
