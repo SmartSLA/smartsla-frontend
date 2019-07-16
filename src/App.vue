@@ -172,6 +172,7 @@ export default {
   background-color: #eee !important;
   height: 45px !important;
   width: 150px !important;
+  margin-left: 10px !important;
 }
 
 .file-upload .input-wrapper .file-upload-label {
@@ -239,10 +240,10 @@ tr:nth-child(odd) {
 
 #openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
   height: 48px;
-  padding-top: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-left: 0px;
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  margin-left: 0px !important;
 }
 
 .ql-container {
@@ -304,4 +305,16 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
   content: '*';
   color: red;
 }
+
+.v-input__append-outer {
+  height: 48px;
+  display: block !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.grid-list-md{
+  padding-left: 0px !important;
+}
+
 </style>
