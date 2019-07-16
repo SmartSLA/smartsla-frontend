@@ -127,8 +127,8 @@
               <v-flex xs3>{{ $t("type") }}</v-flex>
               <v-flex xs9>
                 <v-radio-group v-model="account.type" row>
-                  <v-radio :label="$t('Beneficiariy')" value="beneficiariy"></v-radio>
-                  <v-radio :label="$t('Expert')" value="expert"></v-radio>
+                  <v-radio :label="$i18n.t('Beneficiariy')" value="beneficiariy"></v-radio>
+                  <v-radio :label="$i18n.t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
               </v-flex>
               <v-flex xs3>{{ $t("Name") }}</v-flex>
@@ -186,8 +186,8 @@
                   v-model="account.role"
                   row
                 >
-                  <v-radio :label="$t('Customer')" value="customer"></v-radio>
-                  <v-radio :label="$t('Viewer')" value="viewer"></v-radio>
+                  <v-radio :label="$i18n.t('Customer')" value="customer"></v-radio>
+                  <v-radio :label="$i18n.t('Viewer')" value="viewer"></v-radio>
                 </v-radio-group>
               </v-flex>
               <v-flex xs3></v-flex>

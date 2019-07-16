@@ -121,8 +121,8 @@
           <v-flex xs3>{{ $t("Type") }}</v-flex>
           <v-flex xs8>
             <v-radio-group v-model="contract.type" row>
-              <v-radio :label="$t('Credit')" value="credit"></v-radio>
-              <v-radio :label="$t('Unlimited')" value="unlimited"></v-radio>
+              <v-radio :label="$i18n.t('Credit')" value="credit"></v-radio>
+              <v-radio :label="$i18n.t('Unlimited')" value="unlimited"></v-radio>
             </v-radio-group>
           </v-flex>
           <v-flex xs3>{{ $t("Governed by") }}</v-flex>
@@ -141,7 +141,7 @@
             <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn :disabled="!valid" color="success" @click="validate">
+            <v-btn :disabled="!valid" color="success" @click="validateForm">
               {{ isNew ? $t("Validate the changes") : $t("Create") }}
             </v-btn>
           </v-flex>
@@ -191,7 +191,7 @@ export default {
       mailingList: {},
       startDateModel: false,
       endDateModel: false,
-      valid: false,
+      valid: true,
       clients: [],
       commercials: [
         "André VASSILIF",
@@ -292,6 +292,17 @@ export default {
               color: "error"
             });
           });
+      }
+    },
+
+    validateForm() {
+      if (this.$refs.form.validate()) {
+        this.validate();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
       }
     }
   }

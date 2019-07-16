@@ -10,7 +10,7 @@
         <td class="text-xs-left">{{ props.item.date }}</td>
         <td class="text-xs-left">{{ props.item.status }}</td>
         <td class="text-xs-left">
-          <v-btn color="info" class="view-request">{{ $t("VOIR") }}</v-btn>
+          <v-btn color="info" class="view-request">{{ $t("View") }}</v-btn>
         </td>
       </template>
     </v-data-table>
@@ -23,11 +23,11 @@ export default {
   data() {
     return {
       headers: [
-        { text: "N°", value: "number" },
-        { text: "UO", value: "software" },
-        { text: "Validity Dates", value: "date" },
-        { text: "Status", value: "status" },
-        { text: "voir", value: "voir" }
+        { text: this.$i18n.t("N°"), value: "number" },
+        { text: this.$i18n.t("UO"), value: "software" },
+        { text: this.$i18n.t("Validity Dates"), value: "date" },
+        { text: this.$i18n.t("Status"), value: "status" },
+        { text: this.$i18n.t("View"), value: "voir" }
       ],
       requests: []
     };
@@ -44,11 +44,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.page-title
+.page-title {
   color: #777777;
   margin-bottom: 20px;
-.elevation-1 th
+}
+
+.elevation-1 th {
   color: #000000;
-.orders-list
+}
+
+.orders-list {
   width: 100% !important;
+}
 </style>

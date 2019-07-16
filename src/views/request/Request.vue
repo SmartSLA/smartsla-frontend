@@ -299,7 +299,7 @@
                           <v-checkbox
                             v-model="privateComment"
                             color="primary"
-                            :label="$t('private comment')"
+                            :label="$i18n.t('private comment')"
                           ></v-checkbox>
                         </v-flex>
                         <v-flex xs4>
@@ -472,7 +472,7 @@
               class="text-uppercase text-md-center blue white--text pt-2 pb-1"
             >{{ $t("Beneficiary") }}</h4>
             <v-card class="pt-2">
-              <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
+              <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
                 <v-flex xs3></v-flex>
                 <v-flex xs8>
@@ -966,5 +966,14 @@ div.xs8:nth-child(1) {
 div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
   padding-left: 24px;
   padding-right: 24px;
+}
+
+.blue-bg {
+  background-color: #2195f2 !important;
+  color: #ffffff !important;
+}
+
+.blue-color {
+  color: #2195f2 !important;
 }
 </style>

@@ -8,67 +8,71 @@
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit client") : $t("New client") }}</h3>
+              <h3 class="display-1 font-weight-medium mb-0">
+                {{ isNew ? $t("Edit client") : $t("New client") }}
+              </h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
-          <v-layout row wrap>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Name") }} :</strong>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field
-                v-model="client.name"
-                :rules="[() => client.name.length > 0 || $i18n.t('Required field')]"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Address") }} :</strong>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field v-model="client.address"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Active") }} :</strong>
-            </v-flex>
-            <v-flex xs6>
-              <v-switch v-model="client.status"></v-switch>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Logo") }} :</strong>
-            </v-flex>
-            <v-flex xs6>
-              <file-upload
-                prepend-icon="attach_file"
-                class="file pt-2"
-                btn-label="Attach file"
-                btn-uploading-label="Uploading file"
-              ></file-upload>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Access code") }} :</strong>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field v-model="client.accessCode"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Help access") }} :</strong>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field v-model="client.codeHint"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-layout row wrap>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Name") }} :</strong>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field
+                  v-model="client.name"
+                  :rules="[() => (client.name && client.name.length > 0) || $i18n.t('Required field')]"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Address") }} :</strong>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field v-model="client.address"></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Active") }} :</strong>
+              </v-flex>
+              <v-flex xs6>
+                <v-switch v-model="client.status"></v-switch>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Logo") }} :</strong>
+              </v-flex>
+              <v-flex xs6>
+                <file-upload
+                  prepend-icon="attach_file"
+                  class="file pt-2"
+                  btn-label="Attach file"
+                  btn-uploading-label="Uploading file"
+                ></file-upload>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Access code") }} :</strong>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field v-model="client.accessCode"></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Help access") }} :</strong>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field v-model="client.codeHint"></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
 
-            <v-flex xs5></v-flex>
-            <v-flex xs5>
-              <v-btn class="success" @click="createClient">{{ $t("validate") }}</v-btn>
-            </v-flex>
-          </v-layout>
+              <v-flex xs5></v-flex>
+              <v-flex xs5>
+                <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-form>
         </v-card>
       </v-flex>
     </v-layout>
@@ -100,6 +104,17 @@ export default {
             color: "error"
           });
         });
+    },
+
+    validateFrom() {
+      if (this.$refs.form.validate()) {
+        this.createClient();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
+      }
     }
   },
   computed: {

@@ -9,11 +9,11 @@
         <v-flex xs12 sm12 md12>
           <v-card class="elevation-12">
             <v-card-text>
-              <v-form>
+              <v-form ref="form" v-model="valid" lazy-validation>
                 <div class="float-left">
                   <v-text-field
                     name="Name"
-                    :label="$t('Name')"
+                    :label="$i18n.t('Name')"
                     v-model="clientName"
                     type="text"
                     :rules="['required']"
@@ -24,7 +24,7 @@
                 </div>
                 <v-divider vertical />
                 <div class="float-right">
-                  <v-checkbox :label="`Inactive`"></v-checkbox>
+                  <v-checkbox :label="$i18n.t('Inactive')"></v-checkbox>
                   <file-upload
                     class="file"
                     :url="url"
@@ -34,8 +34,8 @@
                     btn-label="Logo"
                     btn-uploading-label="Logo"
                   ></file-upload>
-                  <v-text-field name="access-code" :label="$t('Access Code')" type="text"></v-text-field>
-                  <v-text-field name="help-access" :label="$t('Help access')" type="text"></v-text-field>
+                  <v-text-field name="access-code" :label="$i18n.t('Access Code')" type="text"></v-text-field>
+                  <v-text-field name="help-access" :label="$i18n.t('Help access')" type="text"></v-text-field>
                 </div>
               </v-form>
             </v-card-text>

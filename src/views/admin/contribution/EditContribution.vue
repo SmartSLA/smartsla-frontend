@@ -209,9 +209,14 @@ export default {
       startDateModel: "",
       endDateModel: "",
       contribution: {},
-      types: ["Backport", "Correction", "Evolution"],
+      types: [this.$i18n.t("Backport"), this.$i18n.t("Correction"), this.$i18n.t("Evolution")],
       version: ["1.0", "2.1", "3.2", "4.0", "5.1"],
-      statusList: ["accepted", "non reversed", "proposed", "rejected"]
+      statusList: [
+        this.$i18n.t("accepted"),
+        this.$i18n.t("non reversed"),
+        this.$i18n.t("proposed"),
+        this.$i18n.t("rejected")
+      ]
     };
   },
   computed: {

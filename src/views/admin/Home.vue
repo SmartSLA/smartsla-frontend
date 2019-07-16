@@ -6,7 +6,7 @@
 export default {
   data() {
     return {
-      msg: "Administration"
+      msg: this.$i18n.t("Administration")
     };
   },
   created() {

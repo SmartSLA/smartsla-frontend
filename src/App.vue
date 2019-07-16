@@ -70,7 +70,54 @@ export default {
 </script>
 
 <style lang="stylus">
-<style lang='stylus'scoped>, .elevation-1 {
+.red-color {
+  color: #d32f2f !important;
+}
+
+.red-background-color {
+  background-color: #d32f2f !important;
+}
+.white-color {
+  color: #ffffff !important;
+}
+
+.white-background-color {
+  background-color: #ffffff !important;
+}
+
+.yellow-color {
+  color: #ffa000 !important;
+}
+
+.yellow-background-color {
+  background-color: #ffa000 !important;
+}
+
+.grey-color {
+  color: #e0e0e0 !important;
+}
+
+.grey-background-color {
+  background-color: #e0e0e0 !important;
+}
+
+.blue-color {
+  color: #2195f2 !important;
+}
+
+.blue-background-color {
+  background-color: #2195f2 !important;
+}
+
+.green-color {
+  color: #76c43d !important;
+}
+
+.green-background-color {
+  background-color: #76c43d !important;
+}
+
+.elevation-1 {
   width: 100% !important;
   padding-bottom: 50px;
   background-color: #ffffff;
@@ -171,7 +218,7 @@ button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
 
 button.v-btn.v-btn--flat.v-btn--icon.theme--light {
   background-color: #2195f2;
-  color: #fff;
+  
 }
 
 th {

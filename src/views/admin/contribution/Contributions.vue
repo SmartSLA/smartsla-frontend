@@ -2,10 +2,10 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="contributions-list">
       <div class="page-title">
-        <span>{{ $i18n.t("Contributions list") }}</span>
+        <span>{{ $t("Contributions list") }}</span>
       </div>
       <div class="contributions-search">
-        <span class="contributions-search-span">{{ $i18n.t("Search by:") }}</span>
+        <span class="contributions-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Name')"
@@ -31,13 +31,13 @@
           class="contributions-search-statuss"
         ></v-select>
         <div class="contributions-operations">
-          <router-link :to="{ name: 'NewContribution' }" class="contributions-actions">
+          <router-link :to="{ name: 'NewContribution' }" class="contributions-actions blue-color">
             <v-icon>add_circle</v-icon>
-            <span>{{ $i18n.t("Add contribution") }}</span>
+            <span>{{ $t("Add contribution") }}</span>
           </router-link>
-          <a href="#" class="contributions-actions">
+          <a href="#" class="contributions-actions blue-color">
             <v-icon>arrow_downward</v-icon>
-            <span>{{ $i18n.t("Export") }}</span>
+            <span>{{ $t("Export") }}</span>
           </a>
         </div>
       </div>
@@ -52,7 +52,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.software }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }">{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }" class="blue-color">{{ props.item.name }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.deposit }}</td>
@@ -77,43 +77,43 @@ export default {
       pagination: "10",
       headers: [
         {
-          text: "Software",
+          text: this.$i18n.t("Software"),
           value: "software",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Name",
+          text: this.$i18n.t("Name"),
           value: "name",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Status",
+          text: this.$i18n.t("Status"),
           value: "status",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Deposit at",
+          text: this.$i18n.t("Deposit at"),
           value: "deposit",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Closure at",
+          text: this.$i18n.t("Closure at"),
           value: "closure",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Time limit",
+          text: this.$i18n.t("Time limit"),
           value: "time_limit",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Updated at",
+          text: this.$i18n.t("Updated at"),
           value: "updated",
           sortable: false,
           class: "text-xs-center"

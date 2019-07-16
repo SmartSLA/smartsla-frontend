@@ -32,9 +32,9 @@
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Contact") }} :</strong>
-                  <router-link :to="{ name: 'Contact', params: { id: team.contact.id } }">{{
-                    team.contact.name
-                  }}</router-link>
+                  <router-link :to="{ name: 'Contact', params: { id: team.contact.id } }">
+                    {{ team.contact.name }}
+                  </router-link>
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Motto") }} :</strong>
@@ -66,9 +66,9 @@
                 <v-flex xs9>
                   <ul>
                     <li v-for="(contract, key) in team.contracts" :key="key">
-                      <router-link :to="{ name: 'Contract', params: { id: contract.id } }">{{
-                        contract.name
-                      }}</router-link>
+                      <router-link :to="{ name: 'Contract', params: { id: contract.id } }">
+                        {{ contract.name }}
+                      </router-link>
                     </li>
                   </ul>
                 </v-flex>

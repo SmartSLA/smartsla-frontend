@@ -5,7 +5,7 @@
 export default {
   data() {
     return {
-      msg: "Welcome to Profile!!"
+      msg: this.$i18n.t("Welcome to Profile!!")
     };
   }
 };

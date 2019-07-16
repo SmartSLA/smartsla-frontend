@@ -8,81 +8,85 @@
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Software") : $t("New Software") }}</h3>
+              <h3 class="display-1 font-weight-medium mb-0">
+                {{ isNew ? $t("Edit Software") : $t("New Software") }}
+              </h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
-          <v-layout row wrap>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Name") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field
-                v-model="software.name"
-                :rules="[() => software.name.length > 0 || $i18n.t('Required field')]"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Summary") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field v-model="software.summary"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Description") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-textarea name="description"></v-textarea>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Logo") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <file-upload
-                prepend-icon="attach_file"
-                class="file pt-2"
-                url
-                btn-label="Attach file"
-                btn-uploading-label="Uploading file"
-              ></file-upload>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Licence") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select :items="licenceList"></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Private") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-switch v-model="software.private"></v-switch>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Technology") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select :items="technologies"></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Groupes") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select :items="groups"></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs5></v-flex>
-            <v-flex xs5>
-              <v-btn class="success" @click="createSoftware">{{ $t("validate") }}</v-btn>
-            </v-flex>
-          </v-layout>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-layout row wrap>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Name") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field
+                  v-model="software.name"
+                  :rules="[() => software.name.length > 0 || $i18n.t('Required field')]"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Summary") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field v-model="software.summary"></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Description") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-textarea name="description"></v-textarea>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Logo") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <file-upload
+                  prepend-icon="attach_file"
+                  class="file pt-2"
+                  url
+                  btn-label="Attach file"
+                  btn-uploading-label="Uploading file"
+                ></file-upload>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Licence") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-select :items="licenceList"></v-select>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Private") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-switch v-model="software.private"></v-switch>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Technology") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-select :items="technologies"></v-select>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Groupes") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-select :items="groups"></v-select>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs5></v-flex>
+              <v-flex xs5>
+                <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-form>
         </v-card>
       </v-flex>
     </v-layout>
@@ -181,6 +185,17 @@ export default {
             color: "error"
           });
         });
+    },
+
+    validateFrom() {
+      if (this.$refs.form.validate()) {
+        this.createSoftware();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
+      }
     }
   }
 };
