@@ -11,7 +11,7 @@
             <v-card>
               <v-card-text>
                 <v-layout wrap row>
-                  <v-flex xs6>
+                  <v-flex xs6 md6 lg6 xl20 sm2>
                     <v-text-field
                       prepend-icon="create"
                       name="Title"
@@ -22,8 +22,8 @@
                       class="required-element"
                     ></v-text-field>
                   </v-flex>
-                  <v-flex xs6></v-flex>
-                  <v-flex xs6>
+                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
+                  <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
                       :items="contractList"
                       :label="$i18n.t('Contract')"
@@ -36,8 +36,8 @@
                       return-object
                     ></v-autocomplete>
                   </v-flex>
-                  <v-flex xs6></v-flex>
-                  <v-flex xs12>
+                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
+                  <v-flex xs12 md12 lg12 sm12 xl12>
                     <v-text-field
                       prepend-icon="mail"
                       v-model="ticket.participants"
@@ -46,9 +46,10 @@
                       type="text"
                     ></v-text-field>
                   </v-flex>
-                  <v-flex xs12>
-                    <v-layout row wrap>
-                      <v-flex xs3>
+                  <v-flex xs12 md12 lg12 sm12 xl12>
+                    <v-container grid-list-md>
+                      <v-layout row wrap>
+                      <v-flex xs12 md3 sm12 lg0 xl3>
                         <v-autocomplete
                           :disabled="!ticket.contract.software"
                           :items="ticket.contract.software"
@@ -76,7 +77,7 @@
                         </v-autocomplete>
                       </v-flex>
                       <v-flex xs1></v-flex>
-                      <v-flex xs3>
+                      <v-flex xs12 md3 sm12 lg0 xl3>
                         <v-select
                           prepend-icon="storage"
                           :disabled="!ticket.software.critical"
@@ -89,7 +90,7 @@
                         ></v-select>
                       </v-flex>
                       <v-flex xs1></v-flex>
-                      <v-flex xs3>
+                      <v-flex xs12 xs12 md3 sm12 lg0 xl3>
                         <v-select
                           prepend-icon="report"
                           :items="[...severityList]"
@@ -102,8 +103,9 @@
                         ></v-select>
                       </v-flex>
                     </v-layout>
+                    </v-container>
                   </v-flex>
-                  <v-flex class="pt-4 pb-4 px-0 body-2 grey--text" xs12 v-if="Object.keys(selectedEngagement).length">
+                  <v-flex class="pt-4 pb-4 px-0 body-2 grey--text" xs12 md12 lg5 sm12 xl12 v-if="Object.keys(selectedEngagement).length">
                     <span>
                       <v-icon>mdi-file-document-edit-outline</v-icon>
                       {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
@@ -112,7 +114,7 @@
                       {{ $t(selectedEngagement.fix) }}
                     </span>
                   </v-flex>
-                  <v-flex xs12>
+                  <v-flex xs12 md12 lg12 sm12 xl12>
                     <v-input
                       prepend-icon="notes"
                       :rules="[() => ticket.description.length > 0 || $i18n.t('Required field')]"
@@ -125,43 +127,45 @@
                     </v-input>
                   </v-flex>
 
-                  <v-flex xs6>
-                    <v-layout>
-                      <v-flex xs4>
-                        <v-select
-                          prepend-icon="link"
-                          class="mr-0"
-                          :items="linkTypes"
-                          :label="$i18n.t('linking types')"
-                          v-model="linkType"
-                          single-line
-                          hide-details
-                          solo
-                        ></v-select>
-                      </v-flex>
-                      <v-flex xs6 class="pl-0">
-                        <v-select
-                          v-model="linkedRequest"
-                          :items="relatedRequests"
-                          :label="$i18n.t('Related requests')"
-                          solo
-                          class="pt-0"
-                        >
-                          <template v-slot:append-outer>
-                            <v-btn solo class="ml-0 white black--text mt-0 full-height" @click.native="addRelated">
-                              <v-icon dark>add</v-icon>
-                            </v-btn>
-                          </template>
-                        </v-select>
-                      </v-flex>
-                      <v-flex xs2></v-flex>
-                    </v-layout>
+                  <v-flex xs12 md6 sm6 lg40 xl70 >
+                    <v-container grid-list-md>
+                      <v-layout row wrap>
+                        <v-flex xs12 md5 sm12 lg6 xl4>
+                          <v-select
+                            prepend-icon="link"
+                            class="mr-0"
+                            :items="linkTypes"
+                            :label="$i18n.t('linking types')"
+                            v-model="linkType"
+                            single-line
+                            hide-details
+                            solo
+                          ></v-select>
+                        </v-flex>
+                        <v-flex xs12 md6 sm12 lg6 xl5>
+                          <v-select
+                            v-model="linkedRequest"
+                            :items="relatedRequests"
+                            :label="$i18n.t('Related requests')"
+                            solo
+                            class="pt-0"
+                          >
+                            <template v-slot:append-outer class="custom-slot">
+                              <v-btn solo class="ml-0 white black--text mt-0 full-height" @click.native="addRelated">
+                                <v-icon dark>add</v-icon>
+                              </v-btn>
+                            </template>
+                          </v-select>
+                        </v-flex>
+                        <v-flex xs0 md5></v-flex>
+                      </v-layout>
+                    </v-container>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
                       <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
-                  <v-flex xs6></v-flex>
-                  <v-flex xs6></v-flex>
+                  <v-flex md6 xs0></v-flex>
+                  <v-flex md6 xs0></v-flex>
                   <v-flex xs10 class="pl-4">
                     <br />
                     <file-upload
@@ -414,12 +418,6 @@ export default {
   color: #fff;
 }
 
-.file-upload .input-wrapper {
-  background-color: #eee !important;
-  height: 50px !important;
-  width: 150px !important;
-}
-
 .file-upload .input-wrapper .file-upload-label {
   color: rgba(0, 0, 0, 0.54) !important;
 }
@@ -443,14 +441,6 @@ export default {
 
 .quillWrapper, .ql-editor {
   width: 100%;
-}
-
-#openpaas, > div.application--wrap, > div, > main, > div, > div, > div, > main, > div, > div.container.fluid.fill-height, > div, > div, > div, > div.v-card__text, > form, > div, > div:nth-child(7), > div, > div.flex.pl-0.xs6, > div, > div.v-input__append-outer {
-  height: 48px;
-  padding-top: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-left: 0px;
 }
 
 .container.fluid.fill-height {
@@ -483,19 +473,16 @@ main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-chi
   margin: 0px !important;
 }
 
-.v-text-field.v-text-field--enclosed.v-input__prepend-outer, .v-text-field.v-text-field--enclosed .v-input__prepend-inner, .v-text-field.v-text-field--enclosed .v-input__append-inner, .v-text-field.v-text-field--enclosed .v-input__append-outer {
-  margin: 0px !important;
-}
-
 button.ml-0 {
   min-height: 48px;
 }
+@media only screen and (max-width: 959px) {
 
-.v-text-field.v-text-field--solo .v-input__prepend-outer, .v-text-field.v-text-field--solo .v-input__append-outer {
-  margin-top: 0px !important;
+  .v-input.pt-0.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.theme--light{
+    padding-left: 33px !important;
+  }
 }
-
-.v-input__append-outer {
-  margin-left: 0px !important;
+.container.grid-list-md .layout .flex{
+  padding:0px !important;
 }
 </style>
