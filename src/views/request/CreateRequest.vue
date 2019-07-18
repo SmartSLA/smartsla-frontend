@@ -117,7 +117,7 @@
                     class="pt-4 pb-4 px-0 body-2 grey--text"
                     xs12
                     md12
-                    lg5
+                    lg12
                     sm12
                     xl12
                     v-if="Object.keys(selectedEngagement).length"
@@ -169,7 +169,7 @@
                             <template v-slot:append-outer class="custom-slot">
                               <v-btn
                                 solo
-                                class="ml-0 white black--text mt-0 full-height"
+                                class="ml-0 black--text mt-0 full-height"
                                 @click.native="addRelated"
                               >
                                 <v-icon dark>add</v-icon>
@@ -377,6 +377,7 @@ export default {
           .filter(engagement => engagement.request == this.ticket.type)
           .map(item => item.severity);
       }
+      this.engagementsCategory = this.selectedTypes.slice();
       return [];
     },
     selectedEngagement() {
@@ -401,6 +402,9 @@ export default {
     "ticket.software": function(newSoftware, oldSoftware) {
       this.ticket.severity = {};
       this.ticket.type = {};
+    },
+    "ticket.type": function(newType, oldType) {
+      this.ticket.severity = {};
     }
   },
   created() {

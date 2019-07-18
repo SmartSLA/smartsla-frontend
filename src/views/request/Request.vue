@@ -195,7 +195,11 @@
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
-                    <div v-for="(key,comment) in comments" :key="comment.id" class="custom-comment-box">
+                    <div
+                      v-for="(key,comment) in comments"
+                      :key="comment.id"
+                      class="custom-comment-box"
+                    >
                       <v-expansion-panel-content
                         v-if="comment.authorid == 1"
                         class="comment-mine"
@@ -476,7 +480,12 @@
               <v-layout row wrap>
                 <v-flex xs3></v-flex>
                 <v-flex xs8>
-                  <v-avatar size="150" title="false" class="avatar-width" v-if="request.beneficiary.image.length > 1">
+                  <v-avatar
+                    size="150"
+                    title="false"
+                    class="avatar-width"
+                    v-if="request.beneficiary.image.length > 1"
+                  >
                     <v-img :src="request.beneficiary.image"></v-img>
                   </v-avatar>
                 </v-flex>
