@@ -78,9 +78,9 @@
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $t("requests shared among the beneficiaries") }} :</div>
+                    <div class="subheading font-weight-medium">
+                      {{ $t("requests shared among the beneficiaries") }} :
+                    </div>
                   </v-flex>
                   <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
@@ -142,7 +142,8 @@
                         :color="critColor(props.item.critical)"
                         :text-color="critTextColor(props.item.critical)"
                         label
-                      >{{ $t(props.item.critical) }}</v-chip>
+                        >{{ $t(props.item.critical) }}</v-chip
+                      >
                     </td>
                     <td class="text-xs-center">
                       <span v-if="props.item.generic == 'yes'">{{ $t(props.item.generic) }}</span>
@@ -161,18 +162,17 @@
                 <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
-                    <v-chip
-                      :color="critColor('critical')"
-                      :text-color="critTextColor('critical')"
-                      label
-                    >{{ $t("critical") }}</v-chip>:
+                    <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>{{
+                      $t("critical")
+                    }}</v-chip
+                    >:
                     <span v-if="contract.Engagements.critical.schedule">
                       {{
-                      contract.Engagements.critical.schedule.end == "-"
-                      ? $t("7d/7")
-                      : `${contract.Engagements.critical.schedule.start}H - ${
-                      contract.Engagements.critical.schedule.end
-                      }H`
+                        contract.Engagements.critical.schedule.end == "-"
+                          ? $t("7d/7")
+                          : `${contract.Engagements.critical.schedule.start}H - ${
+                              contract.Engagements.critical.schedule.end
+                            }H`
                       }}
                     </span>
                   </h4>
@@ -221,18 +221,17 @@
                 <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
-                    <v-chip
-                      :color="critColor('sensible')"
-                      :text-color="critTextColor('sensible')"
-                      label
-                    >{{ $t("sensible") }}</v-chip>:
+                    <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>{{
+                      $t("sensible")
+                    }}</v-chip
+                    >:
                     <span v-if="contract.Engagements.sensible.schedule">
                       {{
-                      contract.Engagements.sensible.schedule.end == "-"
-                      ? $t("7d/7")
-                      : `${contract.Engagements.sensible.schedule.start}H - ${
-                      contract.Engagements.sensible.schedule.end
-                      }H`
+                        contract.Engagements.sensible.schedule.end == "-"
+                          ? $t("7d/7")
+                          : `${contract.Engagements.sensible.schedule.start}H - ${
+                              contract.Engagements.sensible.schedule.end
+                            }H`
                       }}
                     </span>
                   </h4>
@@ -281,18 +280,17 @@
                 <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
-                    <v-chip
-                      :color="critColor('standard')"
-                      :text-color="critTextColor('standard')"
-                      label
-                    >{{ $t("standard") }}</v-chip>:
+                    <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>{{
+                      $t("standard")
+                    }}</v-chip
+                    >:
                     <span v-if="contract.Engagements.standard.schedule">
                       {{
-                      contract.Engagements.standard.schedule.end == "-"
-                      ? $t("7d/7")
-                      : `${contract.Engagements.standard.schedule.start}H - ${
-                      contract.Engagements.standard.schedule.end
-                      }H`
+                        contract.Engagements.standard.schedule.end == "-"
+                          ? $t("7d/7")
+                          : `${contract.Engagements.standard.schedule.start}H - ${
+                              contract.Engagements.standard.schedule.end
+                            }H`
                       }}
                     </span>
                   </h4>

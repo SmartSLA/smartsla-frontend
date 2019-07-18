@@ -68,9 +68,11 @@
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link class="contracts-actions blue-color" :to="{ name: 'Contract', params: { id: props.item._id } }" >{{
-                props.item.name
-              }}</router-link>
+              <router-link
+                class="contracts-actions blue-color"
+                :to="{ name: 'Contract', params: { id: props.item._id } }"
+                >{{ props.item.name }}</router-link
+              >
             </div>
           </td>
           <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>
