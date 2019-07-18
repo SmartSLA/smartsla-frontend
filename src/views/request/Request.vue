@@ -24,42 +24,38 @@
             <v-flex xs11>
               <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
-                  <v-stepper-step
-                    step="3"
-                    complete
-                    color="success"
-                    v-if="request.statusId > 0"
-                  >{{ $t("New") }}</v-stepper-step>
+                  <v-stepper-step step="3" complete color="success" v-if="request.statusId > 0">
+                    {{
+                    $t("New")
+                    }}
+                  </v-stepper-step>
                   <v-stepper-step step="3" complete v-else>{{ $t("New") }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
 
-                  <v-stepper-step
-                    step="4"
-                    complete
-                    color="success"
-                    v-if="request.statusId > 1"
-                  >{{ $t("In progress") }}</v-stepper-step>
+                  <v-stepper-step step="4" complete color="success" v-if="request.statusId > 1">
+                    {{
+                    $t("In progress")
+                    }}
+                  </v-stepper-step>
                   <v-stepper-step step="4" complete v-else>{{ $t("In progress") }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
 
-                  <v-stepper-step
-                    step="4"
-                    complete
-                    color="success"
-                    v-if="request.statusId > 2"
-                  >{{ $t("Bypass") }}</v-stepper-step>
+                  <v-stepper-step step="4" complete color="success" v-if="request.statusId > 2">
+                    {{
+                    $t("Bypass")
+                    }}
+                  </v-stepper-step>
                   <v-stepper-step step="4" complete v-else>{{ $t("Bypass") }}</v-stepper-step>
 
                   <v-divider color="primary"></v-divider>
 
-                  <v-stepper-step
-                    step="5"
-                    color="primary"
-                    complete
-                    complete-icon="access_time"
-                  >{{ $t("Solution") }}</v-stepper-step>
+                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">
+                    {{
+                    $t("Solution")
+                    }}
+                  </v-stepper-step>
 
                   <v-divider></v-divider>
 
@@ -328,11 +324,7 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>
-                    {{
-                    $t("the satisfaction survey will be available once the ticket is closed")
-                    }}
-                  </v-card-text>
+                  <v-card-text>{{ $t("the satisfaction survey will be available once the ticket is closed") }}</v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -551,11 +543,9 @@
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">
-                  {{
-                  request.communityContribution.communityIssueLink
-                  }}
-                </a>
+                <a
+                  :href="request.communityContribution.communityIssueLink"
+                >{{ request.communityContribution.communityIssueLink }}</a>
               </v-card>
             </v-card>
           </v-flex>

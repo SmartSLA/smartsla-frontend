@@ -141,23 +141,21 @@
             <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn
-              :disabled="!valid"
-              color="success"
-              @click="validateForm"
-            >{{ isNew ? $t("Validate the changes") : $t("Create") }}</v-btn>
+            <v-btn :disabled="!valid" color="success" @click="validateForm">{{
+              isNew ? $t("Validate the changes") : $t("Create")
+            }}</v-btn>
             <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
       <v-dialog v-model="openDialog" persistent max-width="290">
         <v-card>
-          <v-card-title class="body-2">{{ $t('You are about to delete:')}}</v-card-title>
+          <v-card-title class="body-2">{{ $t("You are about to delete:") }}</v-card-title>
           <v-card-text>
-            <span class="pl-3">{{ $t('Contract') }} : {{ contract.name }}</span>
+            <span class="pl-3">{{ $t("Contract") }} : {{ contract.name }}</span>
             <br />
             <br />
-            <span class="body-2">{{ $t('Are you sure?')}}</span>
+            <span class="body-2">{{ $t("Are you sure?") }}</span>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -273,21 +271,11 @@ export default {
 
     validate() {
       var contract = this.contract;
-      if (
-        contract.mailingList.external.length &&
-        !(contract.mailingList.external instanceof Array)
-      ) {
-        contract.mailingList.external = contract.mailingList.external.split(
-          ","
-        );
+      if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
+        contract.mailingList.external = contract.mailingList.external.split(",");
       }
-      if (
-        contract.mailingList.internal.length &&
-        !(contract.mailingList.internal instanceof Array)
-      ) {
-        contract.mailingList.internal = contract.mailingList.internal.split(
-          ","
-        );
+      if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
+        contract.mailingList.internal = contract.mailingList.internal.split(",");
       }
       if (!this.isNew) {
         this.$http

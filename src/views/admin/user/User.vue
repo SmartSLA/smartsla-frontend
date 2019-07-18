@@ -79,7 +79,9 @@
                     <v-flex xs8>
                       <ul>
                         <li v-for="(contract, key) in user.contracts" :key="key">
-                          <router-link :to="{ name: 'Contract', params: { id: 15 } }" class="blue-color">{{ contract.name }}</router-link>
+                          <router-link :to="{ name: 'Contract', params: { id: 15 } }" class="blue-color">{{
+                            contract.name
+                          }}</router-link>
                         </li>
                       </ul>
                     </v-flex>

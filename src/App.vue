@@ -219,7 +219,7 @@ button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
 
 button.v-btn.v-btn--flat.v-btn--icon.theme--light {
   background-color: #2195f2;
-  
+
 }
 
 th {
@@ -316,5 +316,4 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .grid-list-md{
   padding-left: 0px !important;
 }
-
 </style>
