@@ -78,16 +78,25 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.user-menu-item
+.user-menu-item {
   float: right;
-.v-list.theme--light
+}
+
+.v-list.theme--light {
   background-color: #eee;
-.theme--light.v-icon
+}
+
+.theme--light.v-icon {
   color: #000000 !important;
-.v-menu.v-menu--inline
+}
+
+.v-menu.v-menu--inline {
   padding-left: 25px;
   padding-top: 8px;
-.pull-right
+}
+
+.pull-right {
   float: right;
   width: 75%;
+}
 </style>

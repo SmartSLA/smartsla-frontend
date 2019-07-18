@@ -4,7 +4,7 @@
       <v-flex xs12>
         <!-- <div class="pl-4 pr-4">
           <v-text-field :label="$t('Search')" solo prepend-inner-icon="search"></v-text-field>
-        </div> -->
+        </div>-->
         <v-list class="mini-side-bar">
           <v-list-tile @click="link" class="mini-side-bar-item">
             <v-list-tile-action>
@@ -56,7 +56,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.mini-side-bar, .mini-side-bar-item, .mini-side-bar-item .v-icon
-  background-color : 2b303c;
-  color : #FFFFFF;
+.mini-side-bar, .mini-side-bar-item, .mini-side-bar-item .v-icon {
+  background-color: 2b 303c;
+  color: #FFFFFF;
+}
 </style>

@@ -31,9 +31,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.dashboard-image
+.dashboard-image {
   width: 100% !important;
-.action-links
+}
+
+.action-links {
   text-decoration: none;
   color: grey;
+}
 </style>

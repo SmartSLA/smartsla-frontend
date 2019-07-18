@@ -5,5 +5,9 @@ export default {
 
   listUsers() {
     return this.get(`/ticketing/api/users`);
+  },
+
+  deleteUser(userId) {
+    return this.delete(`/ticketing/api/users/${userId}`);
   }
 };

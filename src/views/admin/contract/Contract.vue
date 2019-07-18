@@ -13,11 +13,11 @@
             <v-card>
               <v-card-title primary-title class="pb-0">
                 <v-layout>
-                  <v-flex xs6>
+                  <v-flex xs10>
                     <h3 class="headline">{{ contract.name }}</h3>
                   </v-flex>
-                  <v-flex xs6>
-                    <div class="text-xs-center grey--text">
+                  <v-flex xs2>
+                    <div class="text-xs-right grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -78,9 +78,9 @@
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">
-                      {{ $t("requests shared among the beneficiaries") }} :
-                    </div>
+                    <div
+                      class="subheading font-weight-medium"
+                    >{{ $t("requests shared among the beneficiaries") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
@@ -98,11 +98,11 @@
             <v-card>
               <v-card-title primary-title>
                 <v-layout>
-                  <v-flex xs6>
+                  <v-flex xs10>
                     <h3 class="headline">{{ $t("Supported software") }}</h3>
                   </v-flex>
-                  <v-flex xs6>
-                    <div class="text-xs-center grey--text">
+                  <v-flex xs2>
+                    <div class="text-xs-right grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -142,8 +142,7 @@
                         :color="critColor(props.item.critical)"
                         :text-color="critTextColor(props.item.critical)"
                         label
-                        >{{ $t(props.item.critical) }}</v-chip
-                      >
+                      >{{ $t(props.item.critical) }}</v-chip>
                     </td>
                     <td class="text-xs-center">
                       <span v-if="props.item.generic == 'yes'">{{ $t(props.item.generic) }}</span>
@@ -155,70 +154,31 @@
               </v-card-text>
             </v-card>
           </v-flex>
-        </v-layout>
-      </v-flex>
-      <v-flex xs5 pt-0>
-        <v-card>
-          <v-card-title primary-title>
-            <v-layout>
-              <v-flex xs6>
-                <h3 class="headline">{{ $t("Human resources") }}</h3>
-              </v-flex>
-              <v-flex xs6>
-                <div class="text-xs-center grey--text">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'Edit Contract', params: { id: contract._id, section: 'hr', type: 'hr' } }"
-                  >
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                </div>
-              </v-flex>
-            </v-layout>
-          </v-card-title>
-          <v-card-text>
-            <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
-            <ul class="pb-2 grey--text">
-              <li v-for="beneficiary in contract.humanResources.beneficiaries" :key="beneficiary.id">
-                <router-link to="#">{{ beneficiary.name }}</router-link>
-              </li>
-            </ul>
-            <v-divider class="ml-1 mr-1 pb-2"></v-divider>
-            <div class="subheading font-weight-regular">{{ $t("Teams") }} :</div>
-            <ul ul class="pb-2 grey--text">
-              <li v-for="team in contract.humanResources.teams" :key="team.id">
-                <router-link to="#">{{ team.name }}</router-link>
-              </li>
-            </ul>
-          </v-card-text>
-        </v-card>
-        <v-flex xs12>
+          <v-flex xs12>
           <v-card class="contractual-commitments">
             <v-card-title primary-title>
               <v-layout>
-                <v-flex xs9>
+                <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
-                    <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>{{
-                      $t("critical")
-                    }}</v-chip
-                    >:
+                    <v-chip
+                      :color="critColor('critical')"
+                      :text-color="critTextColor('critical')"
+                      label
+                    >{{ $t("critical") }}</v-chip>:
                     <span v-if="contract.Engagements.critical.schedule">
                       {{
-                        contract.Engagements.critical.schedule.end == "-"
-                          ? $t("7d/7")
-                          : `${contract.Engagements.critical.schedule.start}H - ${
-                              contract.Engagements.critical.schedule.end
-                            }H`
+                      contract.Engagements.critical.schedule.end == "-"
+                      ? $t("7d/7")
+                      : `${contract.Engagements.critical.schedule.start}H - ${
+                      contract.Engagements.critical.schedule.end
+                      }H`
                       }}
                     </span>
                   </h4>
                 </v-flex>
-                <v-flex xs3>
-                  <div class="text-xs-center grey--text">
+                <v-flex xs2>
+                  <div class="text-xs-right grey--text">
                     <v-btn
                       color="primary"
                       fab
@@ -258,26 +218,27 @@
           <v-card class="contractual-commitments">
             <v-card-title primary-title>
               <v-layout>
-                <v-flex xs9>
+                <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
-                    <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>{{
-                      $t("sensible")
-                    }}</v-chip
-                    >:
+                    <v-chip
+                      :color="critColor('sensible')"
+                      :text-color="critTextColor('sensible')"
+                      label
+                    >{{ $t("sensible") }}</v-chip>:
                     <span v-if="contract.Engagements.sensible.schedule">
                       {{
-                        contract.Engagements.sensible.schedule.end == "-"
-                          ? $t("7d/7")
-                          : `${contract.Engagements.sensible.schedule.start}H - ${
-                              contract.Engagements.sensible.schedule.end
-                            }H`
+                      contract.Engagements.sensible.schedule.end == "-"
+                      ? $t("7d/7")
+                      : `${contract.Engagements.sensible.schedule.start}H - ${
+                      contract.Engagements.sensible.schedule.end
+                      }H`
                       }}
                     </span>
                   </h4>
                 </v-flex>
-                <v-flex xs3>
-                  <div class="text-xs-center grey--text">
+                <v-flex xs2>
+                  <div class="text-xs-right grey--text">
                     <v-btn
                       color="primary"
                       fab
@@ -317,26 +278,27 @@
           <v-card class="contractual-commitments">
             <v-card-title primary-title>
               <v-layout>
-                <v-flex xs9>
+                <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
-                    <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>{{
-                      $t("standard")
-                    }}</v-chip
-                    >:
+                    <v-chip
+                      :color="critColor('standard')"
+                      :text-color="critTextColor('standard')"
+                      label
+                    >{{ $t("standard") }}</v-chip>:
                     <span v-if="contract.Engagements.standard.schedule">
                       {{
-                        contract.Engagements.standard.schedule.end == "-"
-                          ? $t("7d/7")
-                          : `${contract.Engagements.standard.schedule.start}H - ${
-                              contract.Engagements.standard.schedule.end
-                            }H`
+                      contract.Engagements.standard.schedule.end == "-"
+                      ? $t("7d/7")
+                      : `${contract.Engagements.standard.schedule.start}H - ${
+                      contract.Engagements.standard.schedule.end
+                      }H`
                       }}
                     </span>
                   </h4>
                 </v-flex>
-                <v-flex xs3>
-                  <div class="text-xs-center grey--text">
+                <v-flex xs2>
+                  <div class="text-xs-right grey--text">
                     <v-btn
                       color="primary"
                       fab
@@ -372,13 +334,56 @@
             </v-card-text>
           </v-card>
         </v-flex>
+        </v-layout>
+      </v-flex>
+      <v-flex xs5 pt-0>
+        <v-card>
+          <v-card-title primary-title>
+            <v-layout>
+              <v-flex xs10>
+                <h3 class="headline">{{ $t("Human resources") }}</h3>
+              </v-flex>
+              <v-flex xs2>
+                <div class="text-xs-right grey--text">
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'Edit Contract', params: { id: contract._id, section: 'hr', type: 'hr' } }"
+                  >
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+                </div>
+              </v-flex>
+            </v-layout>
+          </v-card-title>
+          <v-card-text>
+            <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
+            <ul class="pb-2 grey--text">
+              <li
+                v-for="beneficiary in contract.humanResources.beneficiaries"
+                :key="beneficiary.id"
+              >
+                <router-link to="#">{{ beneficiary.name }}</router-link>
+              </li>
+            </ul>
+            <v-divider class="ml-1 mr-1 pb-2"></v-divider>
+            <div class="subheading font-weight-regular">{{ $t("Teams") }} :</div>
+            <ul ul class="pb-2 grey--text">
+              <li v-for="team in contract.humanResources.teams" :key="team.id">
+                <router-link to="#">{{ team.name }}</router-link>
+              </li>
+            </ul>
+          </v-card-text>
+        </v-card>
+        
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-var contract = require("@/assets/data/contract.json");
 export default {
   data() {
     return {

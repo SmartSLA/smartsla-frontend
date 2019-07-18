@@ -70,7 +70,54 @@ export default {
 </script>
 
 <style lang="stylus">
-<style lang='stylus'scoped>, .elevation-1 {
+.red-color {
+  color: #d32f2f !important;
+}
+
+.red-background-color {
+  background-color: #d32f2f !important;
+}
+.white-color {
+  color: #ffffff !important;
+}
+
+.white-background-color {
+  background-color: #ffffff !important;
+}
+
+.yellow-color {
+  color: #ffa000 !important;
+}
+
+.yellow-background-color {
+  background-color: #ffa000 !important;
+}
+
+.grey-color {
+  color: #e0e0e0 !important;
+}
+
+.grey-background-color {
+  background-color: #e0e0e0 !important;
+}
+
+.blue-color {
+  color: #2195f2 !important;
+}
+
+.blue-background-color {
+  background-color: #2195f2 !important;
+}
+
+.green-color {
+  color: #76c43d !important;
+}
+
+.green-background-color {
+  background-color: #76c43d !important;
+}
+
+.elevation-1 {
   width: 100% !important;
   padding-bottom: 50px;
   background-color: #ffffff;
@@ -125,6 +172,7 @@ export default {
   background-color: #eee !important;
   height: 45px !important;
   width: 150px !important;
+  margin-left: 10px !important;
 }
 
 .file-upload .input-wrapper .file-upload-label {
@@ -171,7 +219,7 @@ button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
 
 button.v-btn.v-btn--flat.v-btn--icon.theme--light {
   background-color: #2195f2;
-  color: #fff;
+  
 }
 
 th {
@@ -192,10 +240,10 @@ tr:nth-child(odd) {
 
 #openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
   height: 48px;
-  padding-top: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-left: 0px;
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  margin-left: 0px !important;
 }
 
 .ql-container {
@@ -257,4 +305,16 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
   content: '*';
   color: red;
 }
+
+.v-input__append-outer {
+  height: 48px;
+  display: block !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.grid-list-md{
+  padding-left: 0px !important;
+}
+
 </style>

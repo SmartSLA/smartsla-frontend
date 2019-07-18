@@ -150,8 +150,8 @@
             <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
             <v-flex xs9>
               <v-radio-group v-model="newSoftware.generic" row>
-                <v-radio :label="$t('yes')" value="yes"></v-radio>
-                <v-radio :label="$t('no')" value="repo"></v-radio>
+                <v-radio :label="$i18n.t('yes')" value="yes"></v-radio>
+                <v-radio :label="$i18n.t('no')" value="repo"></v-radio>
               </v-radio-group>
             </v-flex>
             <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">

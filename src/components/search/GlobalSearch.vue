@@ -1,7 +1,7 @@
 <template>
   <v-autocomplete
     :items="searchResults"
-    :label="$t('Search for a client, contract or a ticket')"
+    :label="$i18n.t('Search for a client, contract or a ticket')"
     class="pt-2 global-search-box"
     append-icon="search"
     background-color="white"
@@ -28,8 +28,22 @@ export default {
   data() {
     return {
       search: null,
-      searchResults: []
+      searchResults: [],
+      clients: [],
+      contracts: [],
+      tickets: []
     };
+  },
+  mounted() {
+    this.$http.getContracts().then(response => {
+      this.contracts = response.data;
+    });
+    this.$http.listClients().then(response => {
+      this.clients = response.data;
+    });
+    this.$http.listTickets().then(response => {
+      this.tickets = response.data;
+    });
   },
   methods: {
     filterByGroup(item, queryText, itemText) {
@@ -38,13 +52,55 @@ export default {
 
     selectedItem(item) {
       this.search = null;
-      // go to client or contract page
+      switch (item.type) {
+        case "contract":
+          this.$router.push({ name: "Contract", params: { id: item.id } });
+          break;
+        case "client":
+          this.$router.push({ name: "Client", params: { id: item.id } });
+          break;
+        case "ticket":
+          this.$router.push({ name: "Request", params: { id: item.id } });
+          break;
+      }
+    },
+
+    buildSearchItems() {
+      var searchItems = [{ header: "clients" }];
+
+      this.clients.map(client => {
+        searchItems.push({
+          name: client.name,
+          type: "client",
+          id: client._id
+        });
+      });
+      searchItems.push({ divider: true });
+      searchItems.push({ header: "contracts" });
+      this.contracts.map(contract => {
+        searchItems.push({
+          name: contract.name,
+          type: "contract",
+          id: contract._id
+        });
+      });
+      searchItems.push({ divider: true });
+      searchItems.push({ header: "tickets" });
+      this.tickets.map(ticket => {
+        searchItems.push({
+          name: ticket.title,
+          type: "ticket",
+          id: ticket._id
+        });
+      });
+
+      return searchItems;
     }
   },
   watch: {
     search(val) {
       if (val && val.length > 1) {
-        this.searchResults = require("@/assets/data/search.json");
+        this.searchResults = [...this.buildSearchItems()];
       } else {
         this.searchResults = [];
       }
@@ -53,15 +109,7 @@ export default {
 };
 </script>
 <style lang="stylus">
-.global-search-box .v-icon
+.global-search-box .v-icon {
   transform: rotate(0deg) !important;
-// .v-input.pt-2.global-search-box.v-select--is-menu-active.v-autocomplete.v-input--is-focused
-//   width: 300px;
-// .v-input.pt-2.global-search-box.v-autocomplete
-//   transition-duration: 0.5s;
-//   width: 50px;
-// .v-input.pt-2.global-search-box.v-autocomplete label
-//   display: none;
-// .v-input.pt-2.global-search-box.v-select--is-menu-active.v-autocomplete.v-input--is-focused label
-//   display: block;
+}
 </style>

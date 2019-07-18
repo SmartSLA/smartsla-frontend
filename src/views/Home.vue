@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Home :msg="$t('Welcome to 08000')" />
+    <Home :msg="$i18n.t('Welcome to 08000')" />
   </div>
 </template>
 

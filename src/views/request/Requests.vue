@@ -3,20 +3,20 @@
     <v-card-text>
       <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
-        <span>{{ $i18n.t("Requests list (TICKETS)") }}</span>
+        <span>{{ $t("Requests list (TICKETS)") }}</span>
       </a>
       <download-excel :data="requests" class="export-excel">
         <v-icon class="mr-2">backup</v-icon>
-        <span>{{ $i18n.t("EXPORT SHEET") }}</span>
+        <span>{{ $t("EXPORT SHEET") }}</span>
       </download-excel>
       <a href="#" class="action-links mr-5 right">
         <v-icon class="mr-2">print</v-icon>
-        {{ $i18n.t("PRINT SHEET") }}
+        {{ $t("PRINT SHEET") }}
       </a>
     </v-card-text>
     <div class="tickets-search">
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("Filter by:") }}</span>
+        <span>{{ $t("Filter by:") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -26,7 +26,7 @@
         hide-details
         class="scoped-requests-search"
         id="first-combo"
-        v-bind:label="$t('Categories')"
+        v-bind:label="$i18n.t('Categories')"
       ></v-select>
       <v-select
         solo
@@ -34,14 +34,14 @@
         v-model="valuesFilter"
         hide-details
         class="scoped-requests-search"
-        v-bind:label="$t('Values')"
+        v-bind:label="$i18n.t('Values')"
       ></v-select>
       <v-btn @click="addNewFilter" class="requests-filter-add">
         <v-icon dark>add</v-icon>
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And / Or") }}</span>
+        <span>{{ $t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -51,7 +51,7 @@
         v-model="storedSelectionsFilter"
         hide-details
         class="scoped-requests-search"
-        v-bind:label="$t('Stored selections')"
+        v-bind:label="$i18n.t('Stored selections')"
         @input="$emit('input')"
         return-object
       ></v-select>
@@ -60,7 +60,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $i18n.t("And / Or") }}</span>
+        <span>{{ $t("And") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-text-field
@@ -75,30 +75,35 @@
       </v-text-field>
     </div>
     <ul id="filter-chips">
-      <li v-for="filter in customFilters" :key="filter.id" class="chips-elements">
-        <v-chip v-model="filter.isOpen" close>{{ filter.category }} : {{ filter.value }}</v-chip>
+      <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
+        <v-chip @input="removeFilter(filter)" close>{{ filter.category }} : {{ filter.value }}</v-chip>
       </li>
     </ul>
     <div v-if="customFilters.length > 0" class="filter-save">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="blue darken-1" dark v-on="on">{{ $t("Save current filter") }}</v-btn>
+          <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
+          <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
+          <v-btn color="warning" @click="updateCurrectFilter" v-if="storedSelectionsFilter._id">
+            {{ $i18n.t("Save current filter") }}
+          </v-btn>
+          <v-btn class="right" color="grey darken-1" dark v-on="on" @click="resetFilters">{{ $i18n.t("reset") }}</v-btn>
         </template>
 
         <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>Save filter</v-card-title>
+          <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field label="Filter name" v-model="newFilterName"></v-text-field>
+                  <v-text-field :label="$i18n.t('Filter name')" v-model="newFilterName"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{$t("Save")}}</v-btn>
+            <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("Save") }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -108,20 +113,23 @@
         :headers="headers"
         :items="requests"
         class="elevation-1"
-        :search="search"
+        :search="centralSearch"
         :custom-filter="requestsFilter"
         :filter="requestFilterByGroup"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
+        ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
-            <router-link
-              :to="{ name: 'Request', params: { id: props.item.ticket_number } }"
-            >{{ props.item.ticket_number }}</router-link>
+            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }" class="blue-color">
+              {{
+              props.item.ticket_number
+              }}
+            </router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
@@ -170,19 +178,15 @@
               <template v-slot:activator="{ on }">
                 <span
                   v-if="props.item.software == 'LibreOffice'"
-                  class="major-criticality"
+                  class="major-criticality red-background-color" 
                   v-on="on"
-                >
-                  {{
-                  props.item.software
-                  }}
-                </span>
-                <span v-else-if="props.item.software == 'NPM'" class="medium-criticality" v-on="on">
-                  {{
-                  props.item.software
-                  }}
-                </span>
-                <span v-else class="minor-criticality" v-on="on">{{ props.item.software }}</span>
+                >{{ props.item.software }}</span>
+                <span
+                  v-else-if="props.item.software == 'NPM'"
+                  class="medium-criticality yellow-background-color"
+                  v-on="on"
+                >{{ props.item.software }}</span>
+                <span v-else class="minor-criticality grey-background-color" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
             </v-tooltip>
@@ -193,9 +197,9 @@
           <td class="text-xs-center">{{ props.item.transmitter }}</td>
 
           <td class="text-xs-center">
-            <a href="#">{{ props.item.client_contrat.client }}</a>
-            /
-            <a href="#">{{ props.item.client_contrat.contract }}</a>
+            <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
+            
+            <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
           <td class="text-xs-center">{{ props.item.created }}</td>
@@ -206,16 +210,13 @@
               color="#d32f2f"
               height="20"
               value="30"
-            >
-              {{
-              props.item.remaining_time
-              }}
-            </v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">
-              {{
-              props.item.remaining_time
-              }}
-            </v-progress-linear>
+            >{{ props.item.remaining_time }}</v-progress-linear>
+            <v-progress-linear
+              v-else
+              color="#76c43d"
+              height="20"
+              value="80"
+            >{{ props.item.remaining_time }}</v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -235,33 +236,43 @@ export default {
     return {
       dialog: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
-      teams: [
+      tickets: [
         {
-          text: "All Teams",
+          text: this.$i18n.t("All Tickets"),
           value: ""
         },
         {
-          text: "ossa",
+          text: this.$i18n.t("ossa"),
           value: "ossa"
         },
         {
-          text: "support",
+          text: this.$i18n.t("Support"),
           value: "support"
         },
         {
-          text: "hosting",
+          text: this.$i18n.t("Hosting"),
           value: "hosting"
         }
       ],
       searchCriteria: "Ticket",
       rowsPerPageItems: [10, 25, 50],
-      pagination: "10",
+      pagination: { p: "10" },
       search: null,
+      centralSearch: null,
       toggle_multiple: "2",
-      teamsFilter: {
-        text: "All Teams",
+      ticketsFilter: {
+        text: this.$i18n.t("All Tickets"),
         value: ""
       },
+      paginationObject: [
+        {
+          p: "10",
+          descending: false,
+          page: 1,
+          rowsPerPage: 10,
+          sortBy: "number"
+        }
+      ],
       isMobile: false,
       headers: [
         { text: "#", value: "number" },
@@ -282,27 +293,27 @@ export default {
       ],
       requests: [],
       categories: [
-        "Type",
-        "Severity",
-        "Software",
-        "Assign To",
-        "Responsible",
-        "Transmitter",
-        "Client / Contract",
-        "Status"
+        this.$i18n.t("Type"),
+        this.$i18n.t("Severity"),
+        this.$i18n.t("Software"),
+        this.$i18n.t("Assign To"),
+        this.$i18n.t("Responsible"),
+        this.$i18n.t("Transmitter"),
+        this.$i18n.t("Client / Contract"),
+        this.$i18n.t("Status")
       ],
       categoriesFilter: "",
+      valuesFilter: "",
       values: [],
       selections: [],
-      chip1: true,
-      types: ["Anomalie", "Evolution"],
-      severities: ["Bloquant", "Non Bloquant"],
+      types: [this.$i18n.t("Anomalie"), this.$i18n.t("Evolution")],
+      severities: [this.$i18n.t("Bloquant"), this.$i18n.t("Non Bloquant")],
       status: [
-        "New",
-        "Taken into contact",
-        "Circumvention",
-        "Fenced",
-        "Resolution"
+        this.$i18n.t("New"),
+        this.$i18n.t("Taken into contact"),
+        this.$i18n.t("Circumvention"),
+        this.$i18n.t("Fenced"),
+        this.$i18n.t("Resolution")
       ],
       customFilters: [],
       customFiltersCategories: [],
@@ -311,7 +322,9 @@ export default {
       contractClientList: [],
       newFilterName: "",
       savedFilters: [],
-      storedSelectionsFilter: {}
+      storedSelectionsFilter: {},
+      deleteBtn: false,
+      updateBtn: false
     };
   },
   mounted() {
@@ -345,6 +358,9 @@ export default {
   created() {
     this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
+    this.$auth.ready(() => {
+      this.$store.dispatch("user/fetchUser");
+    });
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -388,40 +404,79 @@ export default {
         default:
           return false;
       }
+    },
+    customFilters: function(oldFilters, newFilters) {
+      if (this.storedSelectionsFilter.items && newFilters.length) {
+        this.updateBtn = oldFilters.length == newFilters.length;
+      }
+    },
+    search: function(oldValue, newValue) {
+      this.centralSearch = newValue;
     }
   },
   updated() {},
   methods: {
     resetRequestSearch() {
-      this.search = null;
-      this.teamsFilter = "";
+      this.centralSearch = null;
+      this.ticketsFilter = "";
       this.searchCriteria = this.filterGroups[0];
     },
     requestsFilter(items, search, Filter) {
-      if (this.teamsFilter.length) {
+      if (this.ticketsFilter.length) {
         items = items.filter(
-          item => item.team.toLowerCase() == this.teamsFilter
+          item => item.team.toLowerCase() == this.ticketsFilter
         );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     requestFilterByGroup(item, search) {
+      let match = false;
+      for (let index = 0; index < this.customFilters.length; index++) {
+        let currentFilter = this.customFilters[index];
+        switch (currentFilter.category) {
+          case "Type":
+            match = item.type.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+          case "Severity":
+            match = item.severity.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+          case "Software":
+            match = item.software.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+          case "Assign To":
+            match = item.assign_to.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+          case "Responsible":
+            match = item.responsible.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+          case "Transmitter":
+            match = item.transmitter.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+          case "Client / Contract":
+            match = item.client_contract.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+          case "Status":
+            match = item.status.toLowerCase() == currentFilter.value.toLowerCase();
+            break;
+        }
+      }
       return (
+        match ||
         item.software.toLowerCase().includes(search) ||
         item.incident_wording.toLowerCase().includes(search) ||
         item.client_contrat.client.toLowerCase().includes(search) ||
         item.client_contrat.contract.toLowerCase().includes(search)
       );
     },
-    addNewFilter(categoriesFilter, valuesFilter) {
+    addNewFilter() {
       if (this.categoriesFilter && this.valuesFilter) {
         var filter = {
           category: this.categoriesFilter,
           value: this.valuesFilter
         };
         this.customFilters.push(filter);
+        this.centralSearch = this.valuesFilter.toLowerCase();
       }
-      return;
     },
     saveCurrentFilter() {
       var filterToSave = {
@@ -445,10 +500,58 @@ export default {
           });
         });
     },
-    categoriesFilter() {},
-    valuesFilter() {},
+    updateCurrectFilter() {
+      var filterToUpdate = Object.assign({}, this.storedSelectionsFilter);
+      filterToUpdate.items = [...this.customFilters];
+      this.$http
+        .updateFilters(filterToUpdate._id, filterToUpdate)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            color: "success",
+            message: this.$i18n.t("Filter updated")
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    },
+    deleteCurrentFilter() {
+      this.$http
+        .deleteFilters(this.storedSelectionsFilter._id)
+        .then(response => {
+          this.customFilters = [];
+          this.deleteBtn = false;
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Filter deleted")
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    },
     loadFilter() {
       this.customFilters = this.storedSelectionsFilter.items;
+      this.deleteBtn = true;
+      if (this.customFilters.length) {
+        this.centralSearch = this.customFilters[0].value;
+      }
+    },
+    removeFilter(filter) {
+      this.customFilters = this.customFilters.filter(customFilter => {
+        return JSON.stringify(customFilter) != JSON.stringify(filter);
+      });
+      this.centralSearch = "";
+    },
+
+    resetFilters() {
+      this.customFilters = [];
+      this.centralSearch = "";
     }
   }
 };
@@ -542,7 +645,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .major-criticality {
-  background-color: #d32f2f;
+ 
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -550,7 +653,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .medium-criticality {
-  background-color: #ffa000;
+
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -558,7 +661,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .minor-criticality {
-  background-color: #e0e0e0;
+  
   color: #000000;
   font-weight: bold;
   padding: 5px;

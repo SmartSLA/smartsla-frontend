@@ -2,9 +2,9 @@
   <v-container class="pt-0 px-0 contributions-bar">
     <v-layout row wrap>
       <v-flex xs12>
-        <v-subheader inset class="text-uppercase blue white--text title ml-0">{{
-          $t("recently accepted contributions")
-        }}</v-subheader>
+        <v-subheader inset class="text-uppercase blue white--text title ml-0">
+          {{ $t("recently accepted contributions") }}
+        </v-subheader>
         <v-icon large color="blue" class="arrow-down pr-4">play_arrow</v-icon>
 
         <v-list two-line>
@@ -62,16 +62,23 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.contributions-bar
+.contributions-bar {
   background-color: #2b303c;
   height: 100%;
-.see-all-link
+}
+
+.see-all-link {
   width: 100%;
-.arrow-down
+}
+
+.arrow-down {
   transform: rotate(90deg);
   position: absolute;
   left: 45%;
   width: 10%;
-.v-list__tile__title.text-capitalize.title
+}
+
+.v-list__tile__title.text-capitalize.title {
   font-size: 16px !important;
+}
 </style>

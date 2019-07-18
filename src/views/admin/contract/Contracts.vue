@@ -2,13 +2,13 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="contracts-list">
       <div class="page-title">
-        <span>{{ $i18n.t("Contracts list") }}</span>
+        <span>{{ $t("Contracts list") }}</span>
       </div>
       <div class="contracts-search">
-        <span class="contracts-search-span">{{ $i18n.t("Search by:") }}</span>
+        <span class="contracts-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
-          :placeholder="$t('Name')"
+          :placeholder="$i18n.t('Name')"
           single-line
           hide-details
           solo
@@ -39,11 +39,11 @@
           class="contracts-search-commercial"
         ></v-select>
         <div class="contracts-operations">
-          <router-link class="contracts-actions" :to="{ name: 'NewContract' }">
+          <router-link class="contracts-actions blue-color" :to="{ name: 'NewContract' }">
             <v-icon>add_circle</v-icon>
             <span>{{ $t("Add Contract") }}</span>
           </router-link>
-          <a href="#" class="contracts-actions">
+          <a href="#" class="contracts-actions blue-color">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $t("Export") }}</span>
           </a>
@@ -61,16 +61,16 @@
           <td class="text-xs-center">
             <div v-if="props.item.isdisabled == 'yes'">
               <strike>
-                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">
-                  {{ props.item.name }}
-                </router-link>
+                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">{{
+                  props.item.name
+                }}</router-link>
               </strike>
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item._id } }">
-                {{ props.item.name }}
-              </router-link>
+              <router-link class="contracts-actions blue-color" :to="{ name: 'Contract', params: { id: props.item._id } }" >{{
+                props.item.name
+              }}</router-link>
             </div>
           </td>
           <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>
@@ -91,7 +91,11 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       roles: [],
-      headers: [{ text: "Name", value: "name" }, { text: "Begin", value: "begin" }, { text: "End", value: "end" }],
+      headers: [
+        { text: this.$i18n.t("Name"), value: "name" },
+        { text: this.$i18n.t("Begin"), value: "begin" },
+        { text: this.$i18n.t("End"), value: "end" }
+      ],
       contracts: []
     };
   },

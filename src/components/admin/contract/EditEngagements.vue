@@ -4,9 +4,9 @@
       <div>
         <h3 class="title mb-0">
           {{ $t("Contractual commitments") }}
-          <v-chip :color="critColor(engagementType)" :text-color="critTextColor(engagementType)" label>
-            {{ $t(engagementType) }}
-          </v-chip>
+          <v-chip :color="critColor(engagementType)" :text-color="critTextColor(engagementType)" label>{{
+            $t(engagementType)
+          }}</v-chip>
         </h3>
       </div>
     </v-card-title>
@@ -22,7 +22,7 @@
       <v-flex xs1>{{ $t("H") }}</v-flex>
       <v-flex xs1>{{ $t("or") }}</v-flex>
       <v-flex xs3>
-        <v-checkbox v-model="allweek" color="primary" :value="true" :label="$t('7d/7d')" hide-details></v-checkbox>
+        <v-checkbox v-model="allweek" color="primary" :value="true" :label="$i18n.t('7d/7d')" hide-details></v-checkbox>
       </v-flex>
     </v-layout>
     <v-data-table :items="engagementList.engagements" :headers="contractualCommitmentsHeaders" hide-actions>
