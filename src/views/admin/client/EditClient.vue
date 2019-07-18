@@ -1,16 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Clients' }"
-      >&lt; {{ $t("Return to clients list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Clients' }"
+    >&lt; {{ $t("Return to clients list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">
-                {{ isNew ? $t("Edit client") : $t("New client") }}
-              </h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit client") : $t("New client") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -70,9 +71,30 @@
               <v-flex xs5></v-flex>
               <v-flex xs5>
                 <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+                <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
               </v-flex>
             </v-layout>
           </v-form>
+          <v-dialog v-model="openDialog" persistent max-width="290">
+            <v-card>
+              <v-card-title class="body-2">{{ $t('You are about to delete:')}}</v-card-title>
+              <v-card-text>
+                <span class="pl-3">{{ $t('client') }} : {{ client.name }}</span>
+                <br />
+                <br />
+                            <span class="body-2">{{ $t('is linked to the following elements')}}</span>
+            <br />
+            -
+            <br />
+                <span class="body-2">{{ $t('Are you sure?')}}</span>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
+                <v-btn color="red darken-1" flat @click="deleteClient">Delete</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-flex>
     </v-layout>
@@ -82,6 +104,7 @@
 export default {
   data() {
     return {
+      openDialog: false,
       client: {}
     };
   },
@@ -115,6 +138,23 @@ export default {
           color: "error"
         });
       }
+    },
+
+    deleteClient() {
+      this.$http
+        .deleteClient(this.client._id)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("client deleted"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   },
   computed: {
