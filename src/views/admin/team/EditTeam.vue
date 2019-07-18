@@ -182,6 +182,9 @@
                 <span class="pl-3">{{ $t('Team') }} : {{ team.name }}</span>
                 <br />
                 <br />
+                <span class="body-2">{{ $t('is linked to the following elements')}}</span>
+                <br />-
+                <br />
                 <span class="body-2">{{ $t('Are you sure?')}}</span>
               </v-card-text>
               <v-card-actions>
