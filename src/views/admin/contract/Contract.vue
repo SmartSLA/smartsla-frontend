@@ -13,11 +13,11 @@
             <v-card>
               <v-card-title primary-title class="pb-0">
                 <v-layout>
-                  <v-flex xs6>
+                  <v-flex xs10>
                     <h3 class="headline">{{ contract.name }}</h3>
                   </v-flex>
-                  <v-flex xs6>
-                    <div class="text-xs-center grey--text">
+                  <v-flex xs2>
+                    <div class="text-xs-right grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -58,15 +58,11 @@
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.technical }}</router-link>
                   </v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $t("Internal mailing list") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Internal mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.mailingList.internal.join(", ") }}</v-flex>
                   <v-flex xs4>
-                    <div
-                      class="subheading font-weight-medium"
-                    >{{ $t("External mailing list") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("External mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.mailingList.external.join(", ") }}</v-flex>
                   <v-flex xs4>
@@ -80,9 +76,7 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
-                  <v-flex
-                    xs8
-                  >{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
+                  <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
                   <v-flex xs4>
                     <div
                       class="subheading font-weight-medium"
@@ -104,11 +98,11 @@
             <v-card>
               <v-card-title primary-title>
                 <v-layout>
-                  <v-flex xs6>
+                  <v-flex xs10>
                     <h3 class="headline">{{ $t("Supported software") }}</h3>
                   </v-flex>
-                  <v-flex xs6>
-                    <div class="text-xs-center grey--text">
+                  <v-flex xs2>
+                    <div class="text-xs-right grey--text">
                       <v-btn
                         color="primary"
                         fab
@@ -160,51 +154,11 @@
               </v-card-text>
             </v-card>
           </v-flex>
-        </v-layout>
-      </v-flex>
-      <v-flex xs5 pt-0>
-        <v-card>
-          <v-card-title primary-title>
-            <v-layout>
-              <v-flex xs6>
-                <h3 class="headline">{{ $t("Human resources") }}</h3>
-              </v-flex>
-              <v-flex xs6>
-                <div class="text-xs-center grey--text">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'Edit Contract', params: { id: contract._id, section: 'hr', type: 'hr' } }"
-                  >
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                </div>
-              </v-flex>
-            </v-layout>
-          </v-card-title>
-          <v-card-text>
-            <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
-            <ul class="pb-2 grey--text">
-              <li v-for="beneficiary in contract.humanResources.beneficiaries" :key="beneficiary.id">
-                <router-link to="#">{{ beneficiary.name }}</router-link>
-              </li>
-            </ul>
-            <v-divider class="ml-1 mr-1 pb-2"></v-divider>
-            <div class="subheading font-weight-regular">{{ $t("Teams") }} :</div>
-            <ul ul class="pb-2 grey--text">
-              <li v-for="team in contract.humanResources.teams" :key="team.id">
-                <router-link to="#">{{ team.name }}</router-link>
-              </li>
-            </ul>
-          </v-card-text>
-        </v-card>
-        <v-flex xs12>
+          <v-flex xs12>
           <v-card class="contractual-commitments">
             <v-card-title primary-title>
               <v-layout>
-                <v-flex xs9>
+                <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
                     <v-chip
@@ -223,8 +177,8 @@
                     </span>
                   </h4>
                 </v-flex>
-                <v-flex xs3>
-                  <div class="text-xs-center grey--text">
+                <v-flex xs2>
+                  <div class="text-xs-right grey--text">
                     <v-btn
                       color="primary"
                       fab
@@ -264,7 +218,7 @@
           <v-card class="contractual-commitments">
             <v-card-title primary-title>
               <v-layout>
-                <v-flex xs9>
+                <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
                     <v-chip
@@ -283,8 +237,8 @@
                     </span>
                   </h4>
                 </v-flex>
-                <v-flex xs3>
-                  <div class="text-xs-center grey--text">
+                <v-flex xs2>
+                  <div class="text-xs-right grey--text">
                     <v-btn
                       color="primary"
                       fab
@@ -324,7 +278,7 @@
           <v-card class="contractual-commitments">
             <v-card-title primary-title>
               <v-layout>
-                <v-flex xs9>
+                <v-flex xs10>
                   <h4 class="headline">
                     {{ $t("Contractual commitments") }}
                     <v-chip
@@ -343,8 +297,8 @@
                     </span>
                   </h4>
                 </v-flex>
-                <v-flex xs3>
-                  <div class="text-xs-center grey--text">
+                <v-flex xs2>
+                  <div class="text-xs-right grey--text">
                     <v-btn
                       color="primary"
                       fab
@@ -380,6 +334,50 @@
             </v-card-text>
           </v-card>
         </v-flex>
+        </v-layout>
+      </v-flex>
+      <v-flex xs5 pt-0>
+        <v-card>
+          <v-card-title primary-title>
+            <v-layout>
+              <v-flex xs10>
+                <h3 class="headline">{{ $t("Human resources") }}</h3>
+              </v-flex>
+              <v-flex xs2>
+                <div class="text-xs-right grey--text">
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    :to="{ name: 'Edit Contract', params: { id: contract._id, section: 'hr', type: 'hr' } }"
+                  >
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+                </div>
+              </v-flex>
+            </v-layout>
+          </v-card-title>
+          <v-card-text>
+            <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
+            <ul class="pb-2 grey--text">
+              <li
+                v-for="beneficiary in contract.humanResources.beneficiaries"
+                :key="beneficiary.id"
+              >
+                <router-link to="#">{{ beneficiary.name }}</router-link>
+              </li>
+            </ul>
+            <v-divider class="ml-1 mr-1 pb-2"></v-divider>
+            <div class="subheading font-weight-regular">{{ $t("Teams") }} :</div>
+            <ul ul class="pb-2 grey--text">
+              <li v-for="team in contract.humanResources.teams" :key="team.id">
+                <router-link to="#">{{ team.name }}</router-link>
+              </li>
+            </ul>
+          </v-card-text>
+        </v-card>
+        
       </v-flex>
     </v-layout>
   </v-container>
