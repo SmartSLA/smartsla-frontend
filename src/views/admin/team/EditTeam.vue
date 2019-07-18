@@ -1,17 +1,14 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'Teams' }"
-    >&lt; {{ $t("Return to teams list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'Teams' }"
+      >&lt; {{ $t("Return to teams list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3
-                class="display-1 font-weight-medium mb-0"
-              >{{ isNew ? $t("Edit Team") : $t("New Team") }}</h3>
+              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Team") : $t("New Team") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -177,15 +174,15 @@
           </v-form>
           <v-dialog v-model="openDialog" persistent max-width="290">
             <v-card>
-              <v-card-title class="body-2">{{ $t('You are about to delete:')}}</v-card-title>
+              <v-card-title class="body-2">{{ $t("You are about to delete:") }}</v-card-title>
               <v-card-text>
-                <span class="pl-3">{{ $t('Team') }} : {{ team.name }}</span>
+                <span class="pl-3">{{ $t("Team") }} : {{ team.name }}</span>
                 <br />
                 <br />
-                <span class="body-2">{{ $t('is linked to the following elements')}}</span>
+                <span class="body-2">{{ $t("is linked to the following elements") }}</span>
                 <br />-
                 <br />
-                <span class="body-2">{{ $t('Are you sure?')}}</span>
+                <span class="body-2">{{ $t("Are you sure?") }}</span>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>

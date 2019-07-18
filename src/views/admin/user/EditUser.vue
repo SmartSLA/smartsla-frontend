@@ -1,17 +1,14 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'Users' }"
-    >&lt; {{ $t("Return to users list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'Users' }"
+      >&lt; {{ $t("Return to users list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3
-                class="display-1 font-weight-medium mb-0"
-              >{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
+              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -84,11 +81,7 @@
                   color="primary"
                   :rules="[() => user.role.length > 0 || $i18n.t('Required field')]"
                 >
-                  <v-radio
-                    :label="$t('Customer')"
-                    value="customer"
-                    v-if="user.type == 'beneficiary'"
-                  ></v-radio>
+                  <v-radio :label="$t('Customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
                   <v-radio :label="$t('Viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
                   <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
@@ -124,14 +117,14 @@
           </v-form>
           <v-dialog v-model="openDialog" persistent max-width="290">
             <v-card>
-              <v-card-title class="body-2">{{ $t('You are about to delete:')}}</v-card-title>
+              <v-card-title class="body-2">{{ $t("You are about to delete:") }}</v-card-title>
               <v-card-text>
-              <span class="pl-3">{{ $t('User') }} : {{ user.name }}</span>
-              <br />
-              <br />
-              <span class="body-2">
-                {{ $t('Are you sure?')}}
-              </span>
+                <span class="pl-3">{{ $t("User") }} : {{ user.name }}</span>
+                <br />
+                <br />
+                <span class="body-2">
+                  {{ $t("Are you sure?") }}
+                </span>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -219,18 +212,20 @@ export default {
     },
 
     deleteUser() {
-      this.$http.deleteUser(this.user._id).then(response => {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("User deleted"),
-              color: "success"
-            });
-      })
-      .catch(error => {
-                  this.$store.dispatch("ui/displaySnackbar", {
+      this.$http
+        .deleteUser(this.user._id)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("User deleted"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
             message: error.response.data.error.details,
             color: "error"
           });
-      })
+        });
     }
   }
 };
