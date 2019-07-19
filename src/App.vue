@@ -219,7 +219,7 @@ button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
 
 button.v-btn.v-btn--flat.v-btn--icon.theme--light {
   background-color: #2195f2;
-  
+
 }
 
 th {

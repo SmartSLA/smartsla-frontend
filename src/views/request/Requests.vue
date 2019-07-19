@@ -84,9 +84,9 @@
         <template v-slot:activator="{ on }">
           <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
           <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
-          <v-btn color="warning" @click="updateCurrectFilter" v-if="storedSelectionsFilter._id">
-            {{ $i18n.t("Save current filter") }}
-          </v-btn>
+          <v-btn color="warning" @click="updateCurrectFilter" v-show="updateBtn">{{
+            $i18n.t("Save current filter")
+          }}</v-btn>
           <v-btn class="right" color="grey darken-1" dark v-on="on" @click="resetFilters">{{ $i18n.t("reset") }}</v-btn>
         </template>
 
@@ -126,9 +126,7 @@
           <td class="text-xs-center">{{ props.index }}</td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }" class="blue-color">
-              {{
-              props.item.ticket_number
-              }}
+              {{ props.item.ticket_number }}
             </router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
@@ -178,14 +176,16 @@
               <template v-slot:activator="{ on }">
                 <span
                   v-if="props.item.software == 'LibreOffice'"
-                  class="major-criticality red-background-color" 
+                  class="major-criticality red-background-color"
                   v-on="on"
-                >{{ props.item.software }}</span>
+                  >{{ props.item.software }}</span
+                >
                 <span
                   v-else-if="props.item.software == 'NPM'"
                   class="medium-criticality yellow-background-color"
                   v-on="on"
-                >{{ props.item.software }}</span>
+                  >{{ props.item.software }}</span
+                >
                 <span v-else class="minor-criticality grey-background-color" v-on="on">{{ props.item.software }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
@@ -198,25 +198,19 @@
 
           <td class="text-xs-center">
             <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
-            
+
             <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear
-              v-if="props.item.conf.color == 'error'"
-              color="#d32f2f"
-              height="20"
-              value="30"
-            >{{ props.item.remaining_time }}</v-progress-linear>
-            <v-progress-linear
-              v-else
-              color="#76c43d"
-              height="20"
-              value="80"
-            >{{ props.item.remaining_time }}</v-progress-linear>
+            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
+              props.item.remaining_time
+            }}</v-progress-linear>
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">{{
+              props.item.remaining_time
+            }}</v-progress-linear>
           </td>
         </template>
       </v-data-table>
@@ -235,6 +229,7 @@ export default {
   data() {
     return {
       dialog: false,
+      storedFilterUpdated: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
       tickets: [
         {
@@ -405,16 +400,10 @@ export default {
           return false;
       }
     },
-    customFilters: function(oldFilters, newFilters) {
-      if (this.storedSelectionsFilter.items && newFilters.length) {
-        this.updateBtn = oldFilters.length == newFilters.length;
-      }
-    },
     search: function(oldValue, newValue) {
       this.centralSearch = newValue;
     }
   },
-  updated() {},
   methods: {
     resetRequestSearch() {
       this.centralSearch = null;
@@ -423,43 +412,128 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
-        items = items.filter(
-          item => item.team.toLowerCase() == this.ticketsFilter
-        );
+        items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
-    requestFilterByGroup(item, search) {
-      let match = false;
-      for (let index = 0; index < this.customFilters.length; index++) {
-        let currentFilter = this.customFilters[index];
-        switch (currentFilter.category) {
-          case "Type":
-            match = item.type.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Severity":
-            match = item.severity.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Software":
-            match = item.software.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Assign To":
-            match = item.assign_to.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Responsible":
-            match = item.responsible.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Transmitter":
-            match = item.transmitter.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Client / Contract":
-            match = item.client_contract.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Status":
-            match = item.status.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
+    checkStoredFilterUpdate() {
+      if (this.storedSelectionsFilter.items) {
+        if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
+          this.updateBtn = true;
+        } else {
+          this.updateBtn = JSON.stringify(this.storedSelectionsFilter.items) !== JSON.stringify(this.customFilters);
         }
       }
+    },
+    requestFilterByGroup(item, search) {
+      let match = false;
+      let typesFilter = this.customFilters.filter(filter => filter.category == "Type");
+      let severityFilter = this.customFilters.filter(filter => filter.category == "Severity");
+      let softwareFilter = this.customFilters.filter(filter => filter.category == "Software");
+      let assignedFilter = this.customFilters.filter(filter => filter.category == "Assign To");
+      let responsibleFilter = this.customFilters.filter(filter => filter.category == "Responsible");
+      let transmitterFilter = this.customFilters.filter(filter => filter.category == "Transmitter");
+      let clientFilter = this.customFilters.filter(filter => filter.category == "Client / Contract");
+      let statusFilter = this.customFilters.filter(filter => filter.category == "Status");
+
+      let typesFilterMacth = true;
+      let severityFilterMacth = true;
+      let softwareFilterMacth = true;
+      let assignedFilterMacth = true;
+      let responsibleFilterMacth = true;
+      let transmitterFilterMacth = true;
+      let clientFilterMacth = true;
+      let statusFilterMacth = true;
+
+      if (typesFilter.length) {
+        typesFilterMacth = false;
+
+        typesFilter.forEach(currentFilter => {
+          if (item.type.toLowerCase() == currentFilter.value.toLowerCase()) {
+            typesFilterMacth = true;
+          }
+        });
+      }
+
+      if (severityFilter.length) {
+        severityFilterMacth = false;
+
+        severityFilter.forEach(currentFilter => {
+          if (item.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
+            severityFilterMacth = true;
+          }
+        });
+      }
+
+      if (softwareFilter.length) {
+        softwareFilterMacth = false;
+
+        softwareFilter.forEach(currentFilter => {
+          if (item.software.toLowerCase() == currentFilter.value.toLowerCase()) {
+            softwareFilterMacth = true;
+          }
+        });
+      }
+
+      if (assignedFilter.length) {
+        assignedFilterMacth = false;
+
+        assignedFilter.forEach(currentFilter => {
+          if (item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()) {
+            assignedFilterMacth = true;
+          }
+        });
+      }
+
+      if (responsibleFilter.length) {
+        responsibleFilterMacth = false;
+
+        responsibleFilter.forEach(currentFilter => {
+          if (item.responsible.toLowerCase() == currentFilter.value.toLowerCase()) {
+            responsibleFilterMacth = true;
+          }
+        });
+      }
+
+      if (transmitterFilter.length) {
+        transmitterFilterMacth = false;
+
+        transmitterFilter.forEach(currentFilter => {
+          if (item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()) {
+            transmitterFilterMacth = true;
+          }
+        });
+      }
+
+      if (clientFilter.length) {
+        clientFilterMacth = false;
+
+        clientFilter.forEach(currentFilter => {
+          if (item.client_contract && item.client_contract.toLowerCase() == currentFilter.value.toLowerCase()) {
+            clientFilterMacth = true;
+          }
+        });
+      }
+
+      if (statusFilter.length) {
+        statusFilterMacth = false;
+
+        statusFilter.forEach(currentFilter => {
+          if (item.status.toLowerCase() == currentFilter.value.toLowerCase()) {
+            statusFilterMacth = true;
+          }
+        });
+      }
+
+      match =
+        typesFilterMacth &&
+        severityFilterMacth &&
+        softwareFilterMacth &&
+        assignedFilterMacth &&
+        responsibleFilterMacth &&
+        transmitterFilterMacth &&
+        clientFilterMacth &&
+        statusFilterMacth;
       return (
         match ||
         item.software.toLowerCase().includes(search) ||
@@ -474,8 +548,11 @@ export default {
           category: this.categoriesFilter,
           value: this.valuesFilter
         };
-        this.customFilters.push(filter);
         this.centralSearch = this.valuesFilter.toLowerCase();
+        this.customFilters.push(filter);
+        this.categoriesFilter = "";
+        this.valuesFilter = "";
+        this.checkStoredFilterUpdate();
       }
     },
     saveCurrentFilter() {
@@ -536,7 +613,7 @@ export default {
         });
     },
     loadFilter() {
-      this.customFilters = this.storedSelectionsFilter.items;
+      this.customFilters = [...this.storedSelectionsFilter.items];
       this.deleteBtn = true;
       if (this.customFilters.length) {
         this.centralSearch = this.customFilters[0].value;
@@ -547,6 +624,7 @@ export default {
         return JSON.stringify(customFilter) != JSON.stringify(filter);
       });
       this.centralSearch = "";
+      this.checkStoredFilterUpdate();
     },
 
     resetFilters() {
@@ -645,7 +723,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .major-criticality {
- 
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -653,7 +730,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .medium-criticality {
-
   color: #ffffff;
   font-weight: bold;
   padding: 5px;
@@ -661,7 +737,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 }
 
 .minor-criticality {
-  
   color: #000000;
   font-weight: bold;
   padding: 5px;

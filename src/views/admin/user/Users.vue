@@ -194,7 +194,7 @@ export default {
 }
 
 .user-mail {
-  
+
   font-weight: bold !important;
 }
 

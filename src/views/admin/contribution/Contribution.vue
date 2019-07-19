@@ -91,7 +91,7 @@
             <v-flex xs8>{{ contribution.closeDate }}</v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9>
-              <v-btn class="white-color blue-background-color" >{{ $t("Download Patch") }}</v-btn>
+              <v-btn class="white-color blue-background-color">{{ $t("Download Patch") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-card>

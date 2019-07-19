@@ -49,63 +49,79 @@
                   <v-flex xs12 md12 lg12 sm12 xl12>
                     <v-container grid-list-md>
                       <v-layout row wrap>
-                      <v-flex xs12 md3 sm12 lg0 xl3>
-                        <v-autocomplete
-                          :disabled="!ticket.contract.software"
-                          :items="ticket.contract.software"
-                          :label="$i18n.t('Software')"
-                          prepend-icon="laptop"
-                          background-color="white"
-                          v-model="ticket.software"
-                          :search-input.sync="software"
-                          class="required-element"
-                          return-object
-                          :rules="[() => Object.keys(ticket.software).length || $i18n.t('Required field')]"
-                        >
-                          <template v-slot:item="data">
-                            <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                            <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
-                            <v-chip label v-else color="grey">S</v-chip>
-                            {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
-                          </template>
-                          <template v-slot:selection="data">
-                            <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                            <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
-                            <v-chip label v-else color="grey">S</v-chip>
-                            {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
-                          </template>
-                        </v-autocomplete>
-                      </v-flex>
-                      <v-flex xs1></v-flex>
-                      <v-flex xs12 md3 sm12 lg0 xl3>
-                        <v-select
-                          prepend-icon="storage"
-                          :disabled="!ticket.software.critical"
-                          :items="[...typeList]"
-                          v-model="ticket.type"
-                          :label="$i18n.t('Type')"
-                          :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
-                          class="required-element"
-                          return-object
-                        ></v-select>
-                      </v-flex>
-                      <v-flex xs1></v-flex>
-                      <v-flex xs12 xs12 md3 sm12 lg0 xl3>
-                        <v-select
-                          prepend-icon="report"
-                          :items="[...severityList]"
-                          :disabled="!ticket.type"
-                          v-model="ticket.severity"
-                          :label="$i18n.t('Severity')"
-                          :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
-                          class="required-element"
-                          return-object
-                        ></v-select>
-                      </v-flex>
-                    </v-layout>
+                        <v-flex xs12 md3 sm12 lg0 xl3>
+                          <v-autocomplete
+                            :disabled="!ticket.contract.software"
+                            :items="ticket.contract.software"
+                            :label="$i18n.t('Software')"
+                            prepend-icon="laptop"
+                            background-color="white"
+                            v-model="ticket.software"
+                            :search-input.sync="software"
+                            class="required-element"
+                            return-object
+                            :rules="[() => Object.keys(ticket.software).length || $i18n.t('Required field')]"
+                          >
+                            <template v-slot:item="data">
+                              <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
+                              <v-chip
+                                label
+                                v-else-if="data.item.critical == 'sensible'"
+                                color="orange"
+                              >S</v-chip>
+                              <v-chip label v-else color="grey">S</v-chip>
+                              {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
+                            </template>
+                            <template v-slot:selection="data">
+                              <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
+                              <v-chip
+                                label
+                                v-else-if="data.item.critical == 'sensible'"
+                                color="orange"
+                              >S</v-chip>
+                              <v-chip label v-else color="grey">S</v-chip>
+                              {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
+                            </template>
+                          </v-autocomplete>
+                        </v-flex>
+                        <v-flex xs1></v-flex>
+                        <v-flex xs12 md3 sm12 lg0 xl3>
+                          <v-select
+                            prepend-icon="storage"
+                            :disabled="!ticket.software.critical"
+                            :items="[...typeList]"
+                            v-model="ticket.type"
+                            :label="$i18n.t('Type')"
+                            :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
+                            class="required-element"
+                            return-object
+                          ></v-select>
+                        </v-flex>
+                        <v-flex xs1></v-flex>
+                        <v-flex xs12 md3 sm12 lg0 xl3>
+                          <v-select
+                            prepend-icon="report"
+                            :items="[...severityList]"
+                            :disabled="!ticket.type"
+                            v-model="ticket.severity"
+                            :label="$i18n.t('Severity')"
+                            :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
+                            class="required-element"
+                            return-object
+                          ></v-select>
+                        </v-flex>
+                      </v-layout>
                     </v-container>
                   </v-flex>
-                  <v-flex class="pt-4 pb-4 px-0 body-2 grey--text" xs12 md12 lg5 sm12 xl12 v-if="Object.keys(selectedEngagement).length">
+                  <v-flex
+                    class="pt-4 pb-4 px-0 body-2 grey--text"
+                    xs12
+                    md12
+                    lg12
+                    sm12
+                    xl12
+                    v-if="Object.keys(selectedEngagement).length"
+                  >
                     <span>
                       <v-icon>mdi-file-document-edit-outline</v-icon>
                       {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
@@ -127,7 +143,7 @@
                     </v-input>
                   </v-flex>
 
-                  <v-flex xs12 md6 sm6 lg40 xl70 >
+                  <v-flex xs12 md6 sm6 lg40 xl70>
                     <v-container grid-list-md>
                       <v-layout row wrap>
                         <v-flex xs12 md5 sm12 lg6 xl4>
@@ -151,7 +167,11 @@
                             class="pt-0"
                           >
                             <template v-slot:append-outer class="custom-slot">
-                              <v-btn solo class="ml-0 white black--text mt-0 full-height" @click.native="addRelated">
+                              <v-btn
+                                solo
+                                class="ml-0 black--text mt-0 full-height"
+                                @click.native="addRelated"
+                              >
                                 <v-icon dark>add</v-icon>
                               </v-btn>
                             </template>
@@ -161,7 +181,10 @@
                       </v-layout>
                     </v-container>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
+                      <v-chip
+                        v-model="linkedRequests[key]"
+                        close
+                      >{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
                   <v-flex md6 xs0></v-flex>
@@ -182,9 +205,16 @@
                 <v-layout>
                   <v-flex xs6 text-xs-right align-end>
                     <v-spacer></v-spacer>
-                    <v-btn :disabled="submitRequest" :loading="submitRequest" @click="validateFrom" class="blue-background-color white-color" >{{
+                    <v-btn
+                      :disabled="submitRequest"
+                      :loading="submitRequest"
+                      @click="validateFrom"
+                      class="blue-background-color white-color"
+                    >
+                      {{
                       $t("Submit")
-                    }}</v-btn>
+                      }}
+                    </v-btn>
                   </v-flex>
                 </v-layout>
               </v-card-actions>
@@ -245,7 +275,14 @@ export default {
       softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"],
+      relatedRequests: [
+        "#1 issue1",
+        "#3 issue3",
+        "#18 issue18",
+        "#41 issue41",
+        "#35 issue35",
+        "#70 issue70"
+      ],
       engagementsCategory: [],
       selectedTypes: []
     };
@@ -310,14 +347,17 @@ export default {
           if (this.ticket.software.critical) {
             switch (this.ticket.software.critical) {
               case "critical":
-                engagements = this.ticket.contract.Engagements.critical.engagements;
+                engagements = this.ticket.contract.Engagements.critical
+                  .engagements;
                 break;
               case "sensible":
-                engagements = this.ticket.contract.Engagements.sensible.engagements;
+                engagements = this.ticket.contract.Engagements.sensible
+                  .engagements;
 
                 break;
               case "standard":
-                engagements = this.ticket.contract.Engagements.standard.engagements;
+                engagements = this.ticket.contract.Engagements.standard
+                  .engagements;
 
                 break;
             }
@@ -337,13 +377,16 @@ export default {
           .filter(engagement => engagement.request == this.ticket.type)
           .map(item => item.severity);
       }
+      this.engagementsCategory = this.selectedTypes.slice();
       return [];
     },
     selectedEngagement() {
       if (this.ticket.severity.length) {
         var engagements = [];
         engagements = [...this.engagementsCategory].filter(
-          engagement => engagement.request == this.ticket.type && engagement.severity == this.ticket.severity
+          engagement =>
+            engagement.request == this.ticket.type &&
+            engagement.severity == this.ticket.severity
         );
         return engagements[0];
       }
@@ -359,6 +402,9 @@ export default {
     "ticket.software": function(newSoftware, oldSoftware) {
       this.ticket.severity = {};
       this.ticket.type = {};
+    },
+    "ticket.type": function(newType, oldType) {
+      this.ticket.severity = {};
     }
   },
   created() {
@@ -476,13 +522,14 @@ main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-chi
 button.ml-0 {
   min-height: 48px;
 }
-@media only screen and (max-width: 959px) {
 
-  .v-input.pt-0.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.theme--light{
+@media only screen and (max-width: 959px) {
+  .v-input.pt-0.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.theme--light {
     padding-left: 33px !important;
   }
 }
-.container.grid-list-md .layout .flex{
-  padding:0px !important;
+
+.container.grid-list-md .layout .flex {
+  padding: 0px !important;
 }
 </style>
