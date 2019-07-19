@@ -171,7 +171,7 @@ export default {
 .file-upload .input-wrapper {
   background-color: #eee !important;
   height: 45px !important;
-  width: 150px !important;
+  width: 130px !important;
   margin-left: 10px !important;
 }
 
@@ -236,6 +236,7 @@ tr:nth-child(odd) {
 
 .layout.justify-center.align-center > div {
   width: 100%;
+  padding: 0px !important;
 }
 
 #openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
@@ -289,7 +290,7 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 }
 
 .fluid {
-  padding-right: 44px !important;
+  padding-right: 16px !important;
   // padding-left: 44px !important;
 }
 
@@ -316,5 +317,43 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .grid-list-md{
   padding-left: 0px !important;
 }
+@media only screen and (max-width: 959px){
+.v-stepper:not(.v-stepper--vertical) .v-stepper__label {
 
+  display: block !important;
+}
+}
+@media only screen and (max-width: 1263px){
+.v-stepper__step.v-stepper__step--active.v-stepper__step--complete {
+
+  display: none !important;
+}
+.current_step.v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete{
+  display: flex !important;
+}
+.v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete{
+  display: none !important;
+}
+.v-stepper__step{
+  display: none !important;
+}
+
+hr.v-divider.theme--light{
+
+   display: none !important;
+}
+}
+@media only screen and (min-width: 1264px){
+.file-upload .input-wrapper{
+
+  width: 130px !important;
+}
+}
+.v-toolbar__content{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+.v-stepper__label{
+  padding-left: 9px !important;
+}
 </style>
