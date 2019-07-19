@@ -1,11 +1,11 @@
 <template>
   <v-layout row>
-    <v-flex x7>
+    <v-flex xs7>
       <global-search />
     </v-flex>
-    <v-flex xs5>
+    <v-flex xs3>
       <v-layout row justify-end>
-        <v-flex xs6>
+        <v-flex xs5>
           <v-menu offset-y class="pt-3 user-menu-item">
             <op-avatar slot="activator"></op-avatar>
             <v-list>
@@ -29,7 +29,7 @@
             </v-list>
           </v-menu>
         </v-flex>
-        <v-flex xs3></v-flex>
+        <v-flex xs1></v-flex>
         <v-flex xs2>
           <language-switcher />
         </v-flex>

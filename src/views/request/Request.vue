@@ -15,13 +15,13 @@
       </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
-      <v-flex xs8 pr-5>
+      <v-flex xs12 md12 sm12 xl8 lg8 >
         <v-card light color="white">
           <v-layout row wrap>
-            <v-flex xs1 class="mt-4">
+            <v-flex xs3 md3 sm2 lg2 xl2 class="mt-4">
               <strong class="pt-4">{{ $t("Status") }}:</strong>
             </v-flex>
-            <v-flex xs11>
+            <v-flex xs9 md9 sm10 xl12 lg12>
               <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
                   <v-stepper-step step="3" complete color="success" v-if="request.statusId > 0">
@@ -41,22 +41,23 @@
                   <v-stepper-step step="4" complete v-else>{{ $t("In progress") }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
-
-                  <v-stepper-step step="4" complete color="success" v-if="request.statusId > 2">
-                    {{
-                    $t("Bypass")
-                    }}
-                  </v-stepper-step>
-                  <v-stepper-step step="4" complete v-else>{{ $t("Bypass") }}</v-stepper-step>
+                  <v-stepper-step
+                    step="4"
+                    complete
+                    color="success"
+                    v-if="request.statusId > 2"
+                  >{{ $t("Bypass") }}</v-stepper-step>
+                  <v-stepper-step step="4" complete v-else >{{ $t("Bypass") }}</v-stepper-step>
 
                   <v-divider color="primary"></v-divider>
 
-                  <v-stepper-step step="5" color="primary" complete complete-icon="access_time">
-                    {{
-                    $t("Solution")
-                    }}
-                  </v-stepper-step>
-
+                  <v-stepper-step
+                    step="5"
+                    color="primary"
+                    complete
+                    complete-icon="access_time"
+                    class="current_step"
+                  >{{ $t("Solution") }}</v-stepper-step>
                   <v-divider></v-divider>
 
                   <v-stepper-step step>{{ $t("Closing") }}</v-stepper-step>
@@ -65,15 +66,15 @@
             </v-flex>
           </v-layout>
           <v-divider />
-          <v-layout row wrap>
-            <v-flex xs10 class="pt-0 pb-0">
+          <v-layout wrap>
+            <v-flex xs9 md6 sm9 lg8 xl6 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">#{{ request.ticketNumber }} - {{ request.ticketTitle }}</h3>
                 </div>
               </v-card-title>
             </v-flex>
-            <v-flex xs2 class="pt-0 pb-0">
+            <v-flex xs3 md4 sm1 xl4 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
                 <v-btn color="primary" fab small dark to="#">
                   <v-icon>edit</v-icon>
@@ -83,41 +84,41 @@
           </v-layout>
           <v-divider />
           <v-layout justify-center row fill-height wrap ml-3>
-            <v-flex xs3 class="pt-0 pb-1">
+            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("Type") }} :</strong>
               {{ request.gravity }}
             </v-flex>
 
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("severity") }} :</strong>
               {{ request.gravity }}
             </v-flex>
-            <v-flex xs5 class="pt-0 pb-1">
+            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("Created at") }} :</strong>
               {{ request.ticketDate }}
             </v-flex>
-            <v-flex xs3 class="pt-0 pb-1">
+            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("Created by") }} :</strong>
               {{ request.ticketAuthor }}
             </v-flex>
 
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("Assigned to") }} :</strong>
               {{ request.responsible.name }}
             </v-flex>
-            <v-flex xs5 class="pt-0 pb-1">
+            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("Last update") }} :</strong>
               {{ request.lastUpdate }}
             </v-flex>
-            <v-flex xs3 class="pt-0 pb-1">
+            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("Software") }} :</strong>
               {{ request.software }}
             </v-flex>
-            <v-flex xs4 class="pt-0 pb-1">
+            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("Version") }} :</strong>
               {{ request.softwareVersion }}
             </v-flex>
-            <v-flex xs5 class="pt-0 pb-1">
+            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0 pb-2">
               <strong>{{ $t("OS") }} :</strong>
               {{ request.softwareOs }}
             </v-flex>
@@ -126,25 +127,25 @@
           <v-card>
             <v-card-text>
               <v-layout>
-                <v-flex xs1>
+                <v-flex xs2 md1 sm2 lg2 xl1>
                   <v-icon>subject</v-icon>
                 </v-flex>
-                <v-flex xs11 class="pt-0 pl-0">
+                <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
                   <div class="subject-text" v-html="request.subject"></div>
                 </v-flex>
               </v-layout>
             </v-card-text>
             <v-card-text class="pb-0">
               <v-layout>
-                <v-flex xs1>
+                <v-flex xs2 md1 sm2 lg2 xl1>
                   <v-icon>attach_file</v-icon>
                 </v-flex>
-                <v-flex xs11 pl-0>
+                <v-flex xs9 md11 sm8 xl9 lg10 pl-0>
                   <v-layout>
-                    <v-flex xs2 pl-0>
+                    <v-flex xs10 md2 sm6 lg2 xl2 pl-0>
                       <b>{{ $t("Attachments") }}:</b>
                     </v-flex>
-                    <v-flex xs10 pl-0>
+                    <v-flex xs12 md8 sm6 lg10 xl8 pl-0>
                       <ul v-if="request.attachedFile.length">
                         <li>
                           <router-link to="#">{{ request.attachedFile }}</router-link>
@@ -157,15 +158,15 @@
             </v-card-text>
             <v-card-text>
               <v-layout>
-                <v-flex xs1>
+                <v-flex xs2 md1 sm2 lg2 xl1>
                   <v-icon>insert_link</v-icon>
                 </v-flex>
-                <v-flex xs11 pl-0>
+                <v-flex xs12 md11 sm8 xl10 lg10 pl-0>
                   <v-layout row wrap>
-                    <v-flex xs2 pl-0>
+                    <v-flex xs6 md2 sm6 lg2 xl2 pl-0>
                       <strong>{{ $t("Related requests") }}:</strong>
                     </v-flex>
-                    <v-flex xs10 pl-0>
+                    <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.linkedTickets.length">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
                           <span
@@ -209,12 +210,12 @@
                         </template>
                         <v-card class="ml-4">
                           <v-layout row wrap>
-                            <v-flex xs2>
+                            <v-flex xs2 md1 sm2 lg2 xl2>
                               <v-avatar size="60" :tile="false" v-if="comment.image">
                                 <v-img :src="comment.image"></v-img>
                               </v-avatar>
                             </v-flex>
-                            <v-flex xs10>
+                            <v-flex xs10 md11 sm6 lg2 xl2>
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
@@ -243,12 +244,12 @@
                         </template>
                         <v-card class="ml-4">
                           <v-layout row wrap>
-                            <v-flex xs2>
+                            <v-flex xs2 md1 sm2 lg2 xl2>
                               <v-avatar size="60" :tile="false" v-if="comment.image">
                                 <v-img :src="comment.image"></v-img>
                               </v-avatar>
                             </v-flex>
-                            <v-flex xs10>
+                            <v-flex xs10 md11 sm6 lg2 xl2>
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
@@ -285,24 +286,24 @@
                     </v-input>
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
-                        <v-flex xs2>
+                        <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select :items="statusList" v-model="newStatus" :label="$t('Status')"></v-select>
                         </v-flex>
-                        <v-flex xs3>
+                        <v-flex  xs10 md8 sm8 xl3 lg3>
                           <v-select
                             :items="assigneeList"
                             v-model="newResponsible"
                             :label="$t('Assigned to')"
                           ></v-select>
                         </v-flex>
-                        <v-flex xs3>
+                        <v-flex xs12 md8 sm8 xl3 lg3>
                           <v-checkbox
                             v-model="privateComment"
                             color="primary"
                             :label="$i18n.t('private comment')"
                           ></v-checkbox>
                         </v-flex>
-                        <v-flex xs4>
+                        <v-flex  xs12 md8 sm8 xl3 lg3>
                           <file-upload
                             prepend-icon="attach_file"
                             class="file pt-2"
@@ -314,8 +315,8 @@
                       </v-layout>
                     </v-input>
                     <v-layout row wrap>
-                      <v-flex xs5></v-flex>
-                      <v-flex xs7>
+                      <v-flex xs1 md1 sm1 lg8 xl6></v-flex>
+                      <v-flex xs12 md8 sm8 lg6 xl8>
                         <v-btn color="info" class="pl-4" @click="addComment">{{ $t("add comment") }}</v-btn>
                       </v-flex>
                     </v-layout>
@@ -331,9 +332,9 @@
           </v-card>
         </v-card>
       </v-flex>
-      <v-flex xs4 pt-0>
+      <v-flex xs12 md12 xl4 lg4 sm12 pt-0 pl-0>
         <v-layout row wrap>
-          <v-flex xs12>
+          <v-flex xs12 md12 sm12 xl12 lg12>
             <v-card light color="white" class="px-4 pb-3" v-if="request.status == 'new'">
               <v-card-title primary-title>
                 <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
@@ -341,7 +342,7 @@
               <v-divider></v-divider>
               {{ $t("Supported") }}
               <v-layout row wrap>
-                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm6 xl4 lg4 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
                     color="error"
                     height="18"
@@ -349,14 +350,14 @@
                     class="mt-0 white--text font-weight-bold"
                   >0</v-progress-linear>
                 </v-flex>
-                <v-flex xs2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs1 md1 sm2 lg2 xl2 px-1 pt-0 pb-0>
                   <v-icon class="error--text">close</v-icon>
                 </v-flex>
               </v-layout>
               {{ $t("Bypass") }}
               <v-layout row wrap>
-                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm6 xl4 lg4 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
                     color="success"
                     height="18"
@@ -364,14 +365,14 @@
                     class="mt-0 white--text font-weight-bold"
                   ></v-progress-linear>
                 </v-flex>
-                <v-flex xs2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs1 md1 sm2 lg2 xl2 px-1 pt-0 pb-0>
                   <v-icon class="success--text">check</v-icon>
                 </v-flex>
               </v-layout>
               {{ $t("Solution") }}
               <v-layout row wrap>
-                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm6 xl4 lg4 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
                     color="success"
                     height="18"
@@ -379,8 +380,8 @@
                     class="mt-0 white--text font-weight-bold"
                   ></v-progress-linear>
                 </v-flex>
-                <v-flex xs2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs1 md1 sm2 lg2 xl2 px-1 pt-0 pb-0>
                   <v-icon>access_time</v-icon>
                 </v-flex>
               </v-layout>
@@ -437,16 +438,16 @@
               </v-layout>
             </v-card>
           </v-flex>
-          <v-flex xs12 align-center justify-center>
+          <v-flex xs12 md12 sm12 xl12 lg12 align-center justify-center>
             <h4
-              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
             >{{ $t("interlocutor in charge of the request") }}</h4>
             <v-card class="pt-2 nobottomshadow" v-if="request.responsible.name">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <br />
               <v-layout row wrap>
-                <v-flex xs3></v-flex>
-                <v-flex xs8>
+                <v-flex xs3 md2 sm4 lg4 xl4></v-flex>
+                <v-flex xs8 md8 sm6 lg8 xl6>
                   <v-avatar size="100%" class="pl-1 avatar-width">
                     <v-img :src="avatarUrl"></v-img>
                   </v-avatar>
@@ -465,19 +466,14 @@
               </v-card-text>
             </v-card>
             <h4
-              class="text-uppercase text-md-center blue white--text pt-2 pb-1"
+              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
             >{{ $t("Beneficiary") }}</h4>
             <v-card class="pt-2">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
-                <v-flex xs3></v-flex>
-                <v-flex xs8>
-                  <v-avatar
-                    size="150"
-                    title="false"
-                    class="avatar-width"
-                    v-if="request.beneficiary.image.length > 1"
-                  >
+                <v-flex xs2 md4 xl3 sm2 lg2 xl2></v-flex>
+                <v-flex xs10 md8 sm10 xl8 lg4>
+                  <v-avatar size="150" title="false" class="avatar-width" v-if="request.beneficiary.image.length > 1">
                     <v-img :src="request.beneficiary.image"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -496,7 +492,7 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <v-flex xs12 v-if="request.communityContribution.status">
+          <v-flex xs12 md12 sm12 xl12 lg12 v-if="request.communityContribution.status">
             <v-card light color="white">
               <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
@@ -506,35 +502,35 @@
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-layout class="mb-1">
-                  <v-flex xs3 class="green--text font-weight-bold">
+                  <v-flex xs2 md2 sm2 lg1 xl1 class="green--text font-weight-bold">
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.dev }"
                     >label_important</v-icon>
                     <small>{{ $t("Dev") }}</small>
                   </v-flex>
-                  <v-flex xs3>
+                  <v-flex xs2 md2 sm2 lg1 xl1>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
                     >label_important</v-icon>
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
-                  <v-flex xs3>
+                  <v-flex xs2 md2 sm2 lg1 xl1>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
                     >label_important</v-icon>
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
-                  <v-flex xs3>
+                  <v-flex xs2 md2 sm2 lg1 xl1>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
                     >label_important</v-icon>
                     <small>{{ $t("published") }}</small>
                   </v-flex>
-                  <v-flex xs3>
+                  <v-flex xs2 md2 sm2 lg1 xl1>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
@@ -726,12 +722,8 @@ export default {
   padding: 0px;
 }
 
-.flex.xs8.pr-5 {
-  padding-right: 10px !important;
-}
-
 .container.grid-list-md .layout .flex {
-  padding: 15px;
+  padding: 6px;
 }
 
 .quillWrapper, .ql-editor {
@@ -884,87 +876,14 @@ export default {
   width: 70% !important;
 }
 
-div.justify-center:nth-child(5) {
-  padding: 20px 0px !important;
-  margin-bottom: auto;
-}
-
 .mx-3 {
   padding-bottom: 0px;
   margin-bottom: 0px;
 }
 
-div.v-card:nth-child(7) {
-  padding-top: 15px;
-}
-
 .pb-2 {
   padding-left: 24px !important;
   padding-bottom: 24px !important;
-}
-
-.grid-list-md > div:nth-child(1) {
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-}
-
-.grid-list-md > div:nth-child(2) {
-  margin-left: 0px !important;
-  margin-right: 0px !important;
-  margin-top: 0px !important;
-  padding-top: 24px !important;
-}
-
-div.xs8:nth-child(1) {
-  padding-top: 0px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-  padding-bottom: 0px !important;
-}
-
-.grid-list-md > div:nth-child(2) > div:nth-child(2) {
-  padding-left: 24px !important;
-  padding-right: 0px !important;
-  padding-bottom: 0px !important;
-}
-
-.grid-list-md > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) {
-  margin: 0px !important;
-}
-
-.grid-list-md > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
-  padding: 0px !important;
-}
-
-.flex.xs12 {
-  padding: 0px 0px 24px 0px !important;
-}
-
-div.xs8:nth-child(1) {
-  padding-top: 0px !important;
-  padding-right: 0px !important;
-  padding-left: 0px !important;
-}
-
-div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
-  margin-top: 0px !important;
-  margin-left: 0px !important;
-  margin-right: 0px !important;
-}
-
-.grid-list-md > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
-  padding-bottom: 24px !important;
-}
-
-div.xs8:nth-child(1) {
-  padding-right: 0px !important;
-}
-
-div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
-  padding-left: 24px;
-  padding-right: 24px;
 }
 
 .blue-bg {
@@ -975,4 +894,38 @@ div.xs8:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
 .blue-color {
   color: #2195f2 !important;
 }
+@media only screen and (max-width: 575px) {
+
+  .layout.row.wrap.justify-space-between{
+    margin: 0px !important;
+    min-width: 100% !important;
+  }
+}
+@media only screen and (max-width: 1263px) {
+
+  .layout.row.wrap.justify-space-between{
+    margin: 0px !important;
+    min-width: 100% !important;
+  }
+}
+.mr-5{
+  margin-right: 30px !important;
+}
+.v-input__icon.v-input__icon--prepend{
+  margin: 0px !important;
+}
+.v-card__text{
+  padding-top: 16px !important;
+}
+.layout.row.wrap{
+  margin-left: 0px !important;
+  padding-top: 10px !important;
+}
+.flex.mt-4.xs3.md3.sm2.lg2.xl2{
+  padding-left: 24px !important;
+}
+.flex.xs12.md8.sm8.lg6.xl8{
+  text-align: center;
+}
+
 </style>
