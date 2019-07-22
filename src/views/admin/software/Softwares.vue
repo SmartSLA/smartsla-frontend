@@ -77,7 +77,7 @@ export default {
           class: "text-xs-center"
         },
         {
-          text: this.$i18n.t("Tehcnologies"),
+          text: this.$i18n.t("Technologies"),
           value: "technologies",
           sortable: false,
           class: "text-xs-center"
