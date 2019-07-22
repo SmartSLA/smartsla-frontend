@@ -114,7 +114,7 @@
                     </v-container>
                   </v-flex>
                   <v-flex
-                    class="pt-4 pb-4 px-0 body-2 grey--text"
+                    class="pb-4 px-0 grey--text"
                     xs12
                     md12
                     lg12
