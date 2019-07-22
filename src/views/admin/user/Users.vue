@@ -22,7 +22,7 @@
           label="Client"
           class="users-search-client"
         ></v-select>
-        <v-select solo :items="roles" v-model="roles" hide-details label="Roles" class="users-search-roles"></v-select>
+        <v-select solo :items="roles" v-model="roles" hide-details :label='$i18n.t("Roles")' class="users-search-roles"></v-select>
         <div class="users-operations">
           <router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
             <v-icon>add_circle</v-icon>
@@ -73,39 +73,42 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: "Title", value: "title", class: "text-xs-center" },
+        { text: this.$i18n.t("Title"),
+          value: "title", 
+          class: "text-xs-center"
+        },
         {
-          text: "Name",
+          text: this.$i18n.t("Name"),
           value: "name",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Role",
+          text: this.$i18n.t("Role"),
           value: "role",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Engineer",
+          text: this.$i18n.t("Engineer"),
           value: "engineer",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Beneficiary",
+          text: this.$i18n.t("Beneficiary"),
           value: "beneficiary",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "E-mail",
+          text: this.$i18n.t("E-mail"),
           value: "email",
           sortable: false,
           class: "text-xs-center"
         },
         {
-          text: "Phone",
+          text: this.$i18n.t("Phone"),
           value: "phone",
           sortable: false,
           class: "text-xs-center"

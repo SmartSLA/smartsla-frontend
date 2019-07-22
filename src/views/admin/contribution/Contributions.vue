@@ -19,7 +19,7 @@
           :items="softwares"
           v-model="softwares"
           hide-details
-          label="software"
+          :label='$i18n.t("software" )'
           class="contributions-search-software"
         ></v-select>
         <v-select
@@ -27,7 +27,7 @@
           :items="statuss"
           v-model="statuss"
           hide-details
-          label="statuss"
+          :label='$i18n.t("status" )' 
           class="contributions-search-statuss"
         ></v-select>
         <div class="contributions-operations">
