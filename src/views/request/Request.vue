@@ -297,7 +297,7 @@
                           <file-upload
                             prepend-icon="attach_file"
                             class="file pt-2"
-                            btn-label="Attach file"
+                            :btn-label='$i18n.t("Attach file")'
                             url
                             btn-uploading-label="Uploading file"
                           ></file-upload>
@@ -305,10 +305,11 @@
                       </v-layout>
                     </v-input>
                     <v-layout row wrap>
-                      <v-flex xs1 md1 sm1 lg8 xl6></v-flex>
-                      <v-flex xs12 md8 sm8 lg6 xl8>
-                        <v-btn color="info" class="pl-4" @click="addComment">{{ $t("add comment") }}</v-btn>
+                      <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
+                      <v-flex xs4 md4 sm4 lg4 xl4>
+                        <v-btn color="info" class="custom-comment-btn" @click="addComment">{{ $t("add comment") }}</v-btn>
                       </v-flex>
+                      <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
                   </v-form>
                 </v-card>
@@ -454,8 +455,8 @@
             <v-card class="pt-2">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
-                <v-flex xs2 md4 xl3 sm2 lg2 xl2></v-flex>
-                <v-flex xs10 md8 sm10 xl8 lg4>
+                <v-flex xs2 md4 xl4 sm4 lg2 pl-0></v-flex>
+                <v-flex xs10 md5 sm5 xl5 lg10 pl-3>
                   <v-avatar size="150" title="false" class="avatar-width" v-if="request.beneficiary.image.length > 1">
                     <v-img :src="request.beneficiary.image"></v-img>
                   </v-avatar>
@@ -485,15 +486,15 @@
                   </div>
                 </v-card-title>
                 <v-divider></v-divider>
-                <v-layout class="mb-1">
-                  <v-flex xs2 md2 sm2 lg1 xl1 class="green--text font-weight-bold">
+                <v-layout class="mb-1 ml--1 mr-4">
+                  <v-flex xs2 md3 sm3 lg2 xl2 pl-0 class="green--text font-weight-bold">
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.dev }"
                     >label_important</v-icon>
                     <small>{{ $t("Dev") }}</small>
                   </v-flex>
-                  <v-flex xs2 md2 sm2 lg1 xl1>
+                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
@@ -501,7 +502,7 @@
                     >
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
-                  <v-flex xs2 md2 sm2 lg1 xl1>
+                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
@@ -509,7 +510,7 @@
                     >
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
-                  <v-flex xs2 md2 sm2 lg1 xl1>
+                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
@@ -517,7 +518,7 @@
                     >
                     <small>{{ $t("published") }}</small>
                   </v-flex>
-                  <v-flex xs2 md2 sm2 lg1 xl1>
+                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
@@ -896,5 +897,9 @@ export default {
 .flex.xs12.md8.sm8.lg6.xl8{
   text-align: center;
 }
-
+.custom-comment-btn {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
 </style>
