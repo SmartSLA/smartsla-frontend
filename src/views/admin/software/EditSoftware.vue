@@ -1,14 +1,17 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $t("Return to software list") }}</router-link
-    >
+    <router-link
+      class="text-lg-left action-links"
+      :to="{ name: 'Softwares' }"
+    >&lt; {{ $t("Return to software list") }}</router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Software") : $t("New Software") }}</h3>
+              <h3
+                class="display-1 font-weight-medium mb-0"
+              >{{ isNew ? $t("Edit Software") : $t("New Software") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -94,8 +97,7 @@
                 <br />
                 <br />
                 <span class="body-2">{{ $t("is linked to the following elements") }}</span>
-                <br />
-                -
+                <br />-
                 <br />
                 <span class="body-2">{{ $t("Are you sure?") }}</span>
               </v-card-text>
@@ -250,6 +252,6 @@ export default {
 }
 
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
-  background-color: #2196f3 !important;
+  background-color: #2195f2 !important;
 }
 </style>
