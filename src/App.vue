@@ -348,7 +348,7 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 
 @media only screen and (min-width: 1264px) {
   .file-upload .input-wrapper {
-    width: 130px !important;
+    width: 175px !important;
   }
 }
 

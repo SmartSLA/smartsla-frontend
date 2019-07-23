@@ -177,7 +177,7 @@
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
                           <router-link
                             :to="{ name: 'Request', params: { id: link.id } }"
-                          >#{{ link.id }} - {{ link.title }}</router-link>
+                          >{{ link.request }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -353,48 +353,44 @@
               <v-divider></v-divider>
               {{ $t("Supported") }}
               <v-layout row wrap>
-                <v-flex xs9 md9 sm6 xl4 lg4 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
-                    color="error"
+                    color="success"
                     height="18"
                     value="0"
                     class="mt-0 white--text font-weight-bold"
-                  >0</v-progress-linear>
+                  >0 HO</v-progress-linear>
                 </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 md1 sm2 lg2 xl2 px-1 pt-0 pb-0>
-                  <v-icon class="error--text">close</v-icon>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>1 HO</v-flex>
+                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
+                  <v-icon color="#249CC7">access_time</v-icon>
                 </v-flex>
               </v-layout>
               {{ $t("Bypass") }}
               <v-layout row wrap>
-                <v-flex xs9 md9 sm6 xl4 lg4 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
-                    color="success"
+                    color="#CFCFCF"
                     height="18"
                     value="0"
                     class="mt-0 white--text font-weight-bold"
                   ></v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 md1 sm2 lg2 xl2 px-1 pt-0 pb-0>
-                  <v-icon class="success--text">check</v-icon>
-                </v-flex>
+                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
               </v-layout>
               {{ $t("Solution") }}
               <v-layout row wrap>
-                <v-flex xs9 md9 sm6 xl4 lg4 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
-                    color="success"
+                    color="#CFCFCF"
                     height="18"
                     value="0"
                     class="mt-0 white--text font-weight-bold"
                   ></v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 md1 sm2 lg2 xl2 px-1 pt-0 pb-0>
-                  <v-icon>access_time</v-icon>
-                </v-flex>
+                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
               </v-layout>
             </v-card>
             <v-card light color="white" class="px-4 pb-3" v-else>
@@ -404,48 +400,44 @@
               <v-divider></v-divider>
               {{ $t("Supported") }}
               <v-layout row wrap>
-                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="error"
-                    height="18"
-                    value="100"
-                    class="mt-0 white--text font-weight-bold"
-                  >8 HO</v-progress-linear>
-                </v-flex>
-                <v-flex xs2 px-1 pt-0 pb-0>2 H</v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>
-                  <v-icon class="error--text">close</v-icon>
-                </v-flex>
-              </v-layout>
-              {{ $t("Bypass") }}
-              <v-layout row wrap>
-                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
                     color="success"
                     height="18"
+                    value="100"
+                    class="mt-0 white--text font-weight-bold"
+                  >0 HO</v-progress-linear>
+                </v-flex>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>2 H</v-flex>
+                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
+              </v-layout>
+              {{ $t("Bypass") }}
+              <v-layout row wrap>
+                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
+                  <v-progress-linear
+                    color="#CFCFCF"
+                    height="18"
                     value="40"
                     class="mt-0 white--text font-weight-bold"
-                  >1.75 JO</v-progress-linear>
+                  >0</v-progress-linear>
                 </v-flex>
-                <v-flex xs2 px-1 pt-0 pb-0>2 JO</v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
                   <v-icon class="success--text">check</v-icon>
                 </v-flex>
               </v-layout>
               {{ $t("Solution") }}
               <v-layout row wrap>
-                <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
+                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
-                    color="success"
+                    color="#CFCFCF"
                     height="18"
                     value="60"
                     class="mt-0 white--text font-weight-bold"
-                  >2.5 JO</v-progress-linear>
+                  >0</v-progress-linear>
                 </v-flex>
-                <v-flex xs2 px-1 pt-0 pb-0>5 JO</v-flex>
-                <v-flex xs1 px-1 pt-0 pb-0>
-                  <v-icon>access_time</v-icon>
-                </v-flex>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
               </v-layout>
             </v-card>
           </v-flex>
@@ -598,7 +590,12 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      statusList: ["Supported", "Bypassed", "Resolved", "Closed"],
+      statusList: [
+        this.$i18n.t("Supported"),
+        this.$i18n.t("Bypassed"),
+        this.$i18n.t("Resolved"),
+        this.$i18n.t("Closed")
+      ],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
       text: ""
     };
@@ -608,13 +605,21 @@ export default {
     Editor
   },
   mounted() {
-    var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
+    var progressBars = Array.prototype.slice.call(
+      document.getElementsByClassName("v-progress-linear")
+    );
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
-      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+      var value = element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName(
+        "v-progress-linear__bar__determinate"
+      );
       newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+      element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML = "";
     }
   },
   computed: {
@@ -635,7 +640,10 @@ export default {
         })
         .catch(err => {});
     }
-    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+    this.$store.dispatch(
+      "sidebar/setSidebarComponent",
+      "issue-detail-side-bar"
+    );
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -643,6 +651,9 @@ export default {
   },
   methods: {
     setRequestData(request) {
+      request.relatedRequests.forEach(function(link) {
+        console.log(link.request);
+      });
       this.request.ticketTitle = request.title;
       this.request.ticketNumber = request._id;
       if (request.software.name) {
@@ -654,7 +665,9 @@ export default {
       this.request.statusId = 1;
       this.request.attachedFile = "";
       this.request.lastUpdate = "";
-      this.request.ticketDate = new Date(request.timestamps.creation).toDateString();
+      this.request.ticketDate = new Date(
+        request.timestamps.creation
+      ).toDateString();
       this.request.subject = request.description;
       this.request.responsible = {};
       this.request.ticketAuthor = "";
