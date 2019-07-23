@@ -15,7 +15,7 @@
       </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
-      <v-flex xs12 md12 sm12 xl8 lg8 >
+      <v-flex xs12 md12 sm12 xl8 lg8>
         <v-card light color="white">
           <v-layout row wrap>
             <v-flex xs3 md3 sm2 lg2 xl2 class="mt-4">
@@ -24,43 +24,45 @@
             <v-flex xs9 md9 sm10 xl12 lg12>
               <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
-                  <v-stepper-step step="3" complete color="success" v-if="request.statusId > 0">
-                    {{
-                    $t("New")
-                    }}
-                  </v-stepper-step>
-                  <v-stepper-step step="3" complete v-else>{{ $t("New") }}</v-stepper-step>
+                  <v-stepper-step step="1" color="success" complete>{{$t("New")}}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
 
-                  <v-stepper-step step="4" complete color="success" v-if="request.statusId > 1">
+                  <v-stepper-step
+                    step="2"
+                    complete
+                    color="primary"
+                    complete-icon="access_time"
+                    class="current_step"
+                  >
                     {{
-                    $t("In progress")
+                    $t("Supported")
                     }}
                   </v-stepper-step>
-                  <v-stepper-step step="4" complete v-else>{{ $t("In progress") }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
                   <v-stepper-step
-                    step="4"
+                    step="3"
                     complete
-                    color="success"
+                    color="primary"
                     v-if="request.statusId > 2"
-                  >{{ $t("Bypass") }}</v-stepper-step>
-                  <v-stepper-step step="4" complete v-else >{{ $t("Bypass") }}</v-stepper-step>
+                  >{{ $t("Bypassed") }}</v-stepper-step>
+                  <v-stepper-step step v-else>{{ $t("Bypassed") }}</v-stepper-step>
 
                   <v-divider color="primary"></v-divider>
 
                   <v-stepper-step
-                    step="5"
+                    step="4"
                     color="primary"
                     complete
                     complete-icon="access_time"
                     class="current_step"
-                  >{{ $t("Solution") }}</v-stepper-step>
+                    v-if="request.statusId > 3"
+                  >{{ $t("Resolved") }}</v-stepper-step>
+                  <v-stepper-step step v-else>{{ $t("Resolved") }}</v-stepper-step>
                   <v-divider></v-divider>
 
-                  <v-stepper-step step>{{ $t("Closing") }}</v-stepper-step>
+                  <v-stepper-step step>{{ $t("Closed") }}</v-stepper-step>
                 </v-stepper-header>
               </v-stepper>
             </v-flex>
@@ -289,7 +291,7 @@
                         <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select :items="statusList" v-model="newStatus" :label="$t('Status')"></v-select>
                         </v-flex>
-                        <v-flex  xs10 md8 sm8 xl3 lg3>
+                        <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select
                             :items="assigneeList"
                             v-model="newResponsible"
@@ -303,7 +305,7 @@
                             :label="$i18n.t('private comment')"
                           ></v-checkbox>
                         </v-flex>
-                        <v-flex  xs12 md8 sm8 xl3 lg3>
+                        <v-flex xs12 md8 sm8 xl3 lg3>
                           <file-upload
                             prepend-icon="attach_file"
                             class="file pt-2"
@@ -473,7 +475,12 @@
               <v-layout row wrap>
                 <v-flex xs2 md4 xl3 sm2 lg2 xl2></v-flex>
                 <v-flex xs10 md8 sm10 xl8 lg4>
-                  <v-avatar size="150" title="false" class="avatar-width" v-if="request.beneficiary.image.length > 1">
+                  <v-avatar
+                    size="150"
+                    title="false"
+                    class="avatar-width"
+                    v-if="request.beneficiary.image.length > 1"
+                  >
                     <v-img :src="request.beneficiary.image"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -580,13 +587,7 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      statusList: [
-        "in progress",
-        "bypassed",
-        "resolved",
-        "closed",
-        "suspended"
-      ],
+      statusList: ["Supported", "Bypassed", "Resolved", "Closed"],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
       text: ""
     };
@@ -894,38 +895,43 @@ export default {
 .blue-color {
   color: #2195f2 !important;
 }
+
 @media only screen and (max-width: 575px) {
-
-  .layout.row.wrap.justify-space-between{
+  .layout.row.wrap.justify-space-between {
     margin: 0px !important;
     min-width: 100% !important;
   }
 }
+
 @media only screen and (max-width: 1263px) {
-
-  .layout.row.wrap.justify-space-between{
+  .layout.row.wrap.justify-space-between {
     margin: 0px !important;
     min-width: 100% !important;
   }
 }
-.mr-5{
+
+.mr-5 {
   margin-right: 30px !important;
 }
-.v-input__icon.v-input__icon--prepend{
+
+.v-input__icon.v-input__icon--prepend {
   margin: 0px !important;
 }
-.v-card__text{
+
+.v-card__text {
   padding-top: 16px !important;
 }
-.layout.row.wrap{
+
+.layout.row.wrap {
   margin-left: 0px !important;
   padding-top: 10px !important;
 }
-.flex.mt-4.xs3.md3.sm2.lg2.xl2{
+
+.flex.mt-4.xs3.md3.sm2.lg2.xl2 {
   padding-left: 24px !important;
 }
-.flex.xs12.md8.sm8.lg6.xl8{
+
+.flex.xs12.md8.sm8.lg6.xl8 {
   text-align: center;
 }
-
 </style>
