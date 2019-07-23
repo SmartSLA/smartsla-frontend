@@ -24,7 +24,6 @@
             <v-flex xs9 md9 sm10 xl12 lg12>
               <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
-<<<<<<< HEAD
                   <v-stepper-step step="1" color="success" complete>{{$t("New")}}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
@@ -39,17 +38,6 @@
                     {{
                     $t("Supported")
                     }}
-=======
-                  <v-stepper-step step="3" complete color="success" v-if="request.statusId > 0">
-                    {{ $t("New") }}
-                  </v-stepper-step>
-                  <v-stepper-step step="3" complete v-else>{{ $t("New") }}</v-stepper-step>
-
-                  <v-divider color="success"></v-divider>
-
-                  <v-stepper-step step="4" complete color="success" v-if="request.statusId > 1">
-                    {{ $t("In progress") }}
->>>>>>> ebdb723f84df5e152dd34cf32be3e49c88a123ca
                   </v-stepper-step>
 
                   <v-divider color="success"></v-divider>
