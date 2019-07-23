@@ -1,10 +1,22 @@
 <template>
   <div class="requests-list">
     <v-card-text>
-      <a href="#" disabled class="text-lg-left action-links">
-        <v-icon class="mr-2">bug_report</v-icon>
-        <span>{{ $t("Requests list (TICKETS)") }}</span>
-      </a>
+      <div class="text-lg-left">
+        <a href="#" disabled class="action-links">
+          <v-icon class="mr-2">format_list_numbered</v-icon>
+          <span>{{ pageTitle }}</span>
+        </a>
+        <a
+          href="#"
+          disabled
+          class="font-italic ml-2 mt-1 action-links red--text"
+          @click="deleteDialog = true"
+          v-show="showDeleteBtn"
+        >
+          <v-icon class="mr-2 error--text">delete_outline</v-icon>
+          <span>{{ $t("Delete filter") }}</span>
+        </a>
+      </div>
       <download-excel :data="requests" class="export-excel">
         <v-icon class="mr-2">backup</v-icon>
         <span>{{ $t("EXPORT SHEET") }}</span>
@@ -33,6 +45,7 @@
         :items="values"
         v-model="valuesFilter"
         hide-details
+        hide-selected
         class="scoped-requests-search"
         v-bind:label="$i18n.t('Values')"
       ></v-select>
@@ -48,8 +61,9 @@
         solo
         :items="savedFilters"
         item-text="name"
-        v-model="storedSelectionsFilter"
+        v-model="storedSelectionsFilterHolder"
         hide-details
+        hide-selected
         class="scoped-requests-search"
         v-bind:label="$i18n.t('Stored selections')"
         @input="$emit('input')"
@@ -79,18 +93,35 @@
         <v-chip @input="removeFilter(filter)" close>{{ filter.category }} : {{ filter.value }}</v-chip>
       </li>
     </ul>
-    <div v-if="customFilters.length > 0" class="filter-save">
+    <div v-if="customFilters.length > 0" class="filter-save mt-2">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
-          <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
-          <v-btn color="warning" @click="updateCurrectFilter" v-show="updateBtn">{{
-            $i18n.t("Save current filter")
-          }}</v-btn>
-          <v-btn class="right" color="grey darken-1" dark v-on="on" @click="resetFilters">{{ $i18n.t("reset") }}</v-btn>
+          <a href="#" class="font-italic blue--text action-links ml-2" v-on="on" v-show="isNewFilter">
+            <v-icon class="mr-2 blue--text">playlist_add</v-icon>
+            {{ $i18n.t("Create new filter") }}
+          </a>
+          <a
+            href="#"
+            @click="updateCurrectFilter"
+            v-show="updateBtn"
+            class="font-italic action-links warning--text ml-2"
+          >
+            <v-icon class="mr-2 warning--text">save_alt</v-icon>
+            {{ $i18n.t("save") }}</a
+          >
+          <a
+            class="font-italic grey--text action-links right"
+            href="#"
+            color="grey darken-1"
+            v-on="on"
+            @click="resetFilters"
+          >
+            <v-icon class="mr-2 grey--text">refresh</v-icon>
+            {{ $i18n.t("reset") }}</a
+          >
         </template>
 
-        <v-card>
+        <v-card class="px-4">
           <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
           <v-card-text>
             <v-container grid-list-md>
@@ -108,6 +139,21 @@
         </v-card>
       </v-dialog>
     </div>
+    <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
+      <v-card class="px-4 pt-2">
+        <v-card-text>
+          <span class="body-2"
+            >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span
+          >
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="deleteCurrentFilter">{{ $t("confirm") }}</v-btn>
+          <v-btn color="error" @click="deleteDialog = false">{{ $t("cancel") }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <br />
     <v-layout>
       <v-data-table
         :headers="headers"
@@ -229,6 +275,8 @@ export default {
   data() {
     return {
       dialog: false,
+      deleteDialog: false,
+      pageTitle: this.$i18n.t("ALL REQUESTS"),
       storedFilterUpdated: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
       tickets: [
@@ -318,6 +366,7 @@ export default {
       newFilterName: "",
       savedFilters: [],
       storedSelectionsFilter: {},
+      storedSelectionsFilterHolder: {},
       deleteBtn: false,
       updateBtn: false
     };
@@ -348,7 +397,15 @@ export default {
   computed: {
     ...mapGetters({
       email: "user/getEmail"
-    })
+    }),
+
+    isNewFilter() {
+      return Object.keys(this.storedSelectionsFilter).length === 0;
+    },
+
+    showDeleteBtn() {
+      return this.deleteBtn;
+    }
   },
   created() {
     this.requests = requests;
@@ -363,41 +420,47 @@ export default {
   },
   watch: {
     categoriesFilter: function(newCategory, oldCategory) {
-      switch (this.categoriesFilter) {
-        case "Type":
-          this.values.length = 0;
-          this.values = [...this.types];
-          return;
-        case "Severity":
-          this.values.length = 0;
-          this.values = [...this.severities];
-          return;
-        case "Software":
-          this.values.length = 0;
-          this.values = [...this.softwareList];
-          return;
-        case "Assign To":
-          this.values.length = 0;
-          this.values = [...this.userList];
-          return;
-        case "Responsible":
-          this.values.length = 0;
-          this.values = [...this.userList];
-          return;
-        case "Transmitter":
-          this.values.length = 0;
-          this.values = [...this.userList];
-          return;
-        case "Client / Contract":
-          this.values.length = 0;
-          this.values = [...this.contractClientList];
-          return;
-        case "Status":
-          this.values.length = 0;
-          this.values = [...this.status];
-          return;
-        default:
-          return false;
+      try {
+        switch (this.categoriesFilter) {
+          case "Type":
+            this.values.length = 0;
+            this.values = [...this.types];
+            break;
+          case "Severity":
+            this.values.length = 0;
+            this.values = [...this.severities];
+            break;
+          case "Software":
+            this.values.length = 0;
+            this.values = [...this.softwareList];
+            break;
+          case "Assign To":
+            this.values.length = 0;
+            this.values = [...this.userList];
+            break;
+          case "Responsible":
+            this.values.length = 0;
+            this.values = [...this.userList];
+            break;
+          case "Transmitter":
+            this.values.length = 0;
+            this.values = [...this.userList];
+            break;
+          case "Client / Contract":
+            this.values.length = 0;
+            this.values = [...this.contractClientList];
+            break;
+          case "Status":
+            this.values.length = 0;
+            this.values = [...this.status];
+            break;
+        }
+      } catch (err) {
+      } finally {
+        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
+        this.values = this.values.filter(value => {
+          return selectedValues.filter(filter => filter.value == value).length == 0;
+        });
       }
     },
     search: function(oldValue, newValue) {
@@ -552,6 +615,7 @@ export default {
         this.customFilters.push(filter);
         this.categoriesFilter = "";
         this.valuesFilter = "";
+        this.values = [];
         this.checkStoredFilterUpdate();
       }
     },
@@ -568,6 +632,9 @@ export default {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Filter saved"),
             color: "success"
+          });
+          this.$http.listFilters().then(response => {
+            this.savedFilters = response.data;
           });
         })
         .catch(error => {
@@ -611,13 +678,24 @@ export default {
             color: "error"
           });
         });
+      this.deleteDialog = false;
+      this.resetFilters();
+      this.$http.listFilters().then(response => {
+        this.savedFilters = response.data;
+      });
     },
     loadFilter() {
+      this.resetFilters();
+      this.storedSelectionsFilter = Object.assign({}, this.storedSelectionsFilterHolder);
+      this.storedSelectionsFilterHolder = {};
       this.customFilters = [...this.storedSelectionsFilter.items];
       this.deleteBtn = true;
       if (this.customFilters.length) {
         this.centralSearch = this.customFilters[0].value;
       }
+      this.categoriesFilter = "";
+      this.valuesFilter = "";
+      this.pageTitle = this.storedSelectionsFilter.name;
     },
     removeFilter(filter) {
       this.customFilters = this.customFilters.filter(customFilter => {
@@ -630,6 +708,8 @@ export default {
     resetFilters() {
       this.customFilters = [];
       this.centralSearch = "";
+      this.pageTitle = this.$i18n.t("ALL REQUESTS");
+      this.deleteBtn = false;
     }
   }
 };

@@ -64,21 +64,13 @@
                           >
                             <template v-slot:item="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                              <v-chip
-                                label
-                                v-else-if="data.item.critical == 'sensible'"
-                                color="orange"
-                              >S</v-chip>
+                              <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
                               {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
                             <template v-slot:selection="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                              <v-chip
-                                label
-                                v-else-if="data.item.critical == 'sensible'"
-                                color="orange"
-                              >S</v-chip>
+                              <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
                               {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
@@ -167,11 +159,7 @@
                             class="pt-0"
                           >
                             <template v-slot:append-outer class="custom-slot">
-                              <v-btn
-                                solo
-                                class="ml-0 black--text mt-0 full-height"
-                                @click.native="addRelated"
-                              >
+                              <v-btn solo class="ml-0 black--text mt-0 full-height" @click.native="addRelated">
                                 <v-icon dark>add</v-icon>
                               </v-btn>
                             </template>
@@ -181,10 +169,7 @@
                       </v-layout>
                     </v-container>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip
-                        v-model="linkedRequests[key]"
-                        close
-                      >{{ link.link }} : {{ link.request }}</v-chip>
+                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
                   <v-flex md6 xs0></v-flex>
@@ -211,9 +196,7 @@
                       @click="validateFrom"
                       class="blue-background-color white-color"
                     >
-                      {{
-                      $t("Submit")
-                      }}
+                      {{ $t("Submit") }}
                     </v-btn>
                   </v-flex>
                 </v-layout>
@@ -275,14 +258,7 @@ export default {
       softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: [
-        "#1 issue1",
-        "#3 issue3",
-        "#18 issue18",
-        "#41 issue41",
-        "#35 issue35",
-        "#70 issue70"
-      ],
+      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"],
       engagementsCategory: [],
       selectedTypes: []
     };
@@ -347,17 +323,14 @@ export default {
           if (this.ticket.software.critical) {
             switch (this.ticket.software.critical) {
               case "critical":
-                engagements = this.ticket.contract.Engagements.critical
-                  .engagements;
+                engagements = this.ticket.contract.Engagements.critical.engagements;
                 break;
               case "sensible":
-                engagements = this.ticket.contract.Engagements.sensible
-                  .engagements;
+                engagements = this.ticket.contract.Engagements.sensible.engagements;
 
                 break;
               case "standard":
-                engagements = this.ticket.contract.Engagements.standard
-                  .engagements;
+                engagements = this.ticket.contract.Engagements.standard.engagements;
 
                 break;
             }
@@ -384,9 +357,7 @@ export default {
       if (this.ticket.severity.length) {
         var engagements = [];
         engagements = [...this.engagementsCategory].filter(
-          engagement =>
-            engagement.request == this.ticket.type &&
-            engagement.severity == this.ticket.severity
+          engagement => engagement.request == this.ticket.type && engagement.severity == this.ticket.severity
         );
         return engagements[0];
       }
