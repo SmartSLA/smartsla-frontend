@@ -172,7 +172,7 @@ export default {
 .file-upload .input-wrapper {
   background-color: #eee !important;
   height: 45px !important;
-  width: 130px !important;
+  width: 175px !important;
   margin-left: 10px !important;
 }
 

@@ -45,7 +45,7 @@
                 <file-upload
                   prepend-icon="attach_file"
                   class="file pt-2"
-                  btn-label="Attach file"
+                  :btn-label='$i18n.t("Attach file")'
                   btn-uploading-label="Uploading file"
                 ></file-upload>
               </v-flex>
