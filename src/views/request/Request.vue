@@ -25,18 +25,14 @@
               <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
                   <v-stepper-step step="3" complete color="success" v-if="request.statusId > 0">
-                    {{
-                    $t("New")
-                    }}
+                    {{ $t("New") }}
                   </v-stepper-step>
                   <v-stepper-step step="3" complete v-else>{{ $t("New") }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
 
                   <v-stepper-step step="4" complete color="success" v-if="request.statusId > 1">
-                    {{
-                    $t("In progress")
-                    }}
+                    {{ $t("In progress") }}
                   </v-stepper-step>
                   <v-stepper-step step="4" complete v-else>{{ $t("In progress") }}</v-stepper-step>
 
@@ -169,13 +165,11 @@
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.linkedTickets.length">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span
-                            v-if="link.type == 'duplicate'"
-                          >{{ $t("is a copy of ticket") }}&nbsp;</span>
+                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link
-                            :to="{ name: 'Request', params: { id: link.id } }"
-                          >#{{ link.id }} - {{ link.title }}</router-link>
+                          <router-link :to="{ name: 'Request', params: { id: link.id } }"
+                            >#{{ link.id }} - {{ link.title }}</router-link
+                          >
                         </li>
                       </ul>
                     </v-flex>
@@ -192,11 +186,7 @@
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
-                    <div
-                      v-for="(key,comment) in comments"
-                      :key="comment.id"
-                      class="custom-comment-box"
-                    >
+                    <div v-for="(key, comment) in comments" :key="comment.id" class="custom-comment-box">
                       <v-expansion-panel-content
                         v-if="comment.authorid == 1"
                         class="comment-mine"
@@ -325,7 +315,9 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>{{ $t("the satisfaction survey will be available once the ticket is closed") }}</v-card-text>
+                  <v-card-text>{{
+                    $t("the satisfaction survey will be available once the ticket is closed")
+                  }}</v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -394,12 +386,9 @@
               {{ $t("Supported") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="error"
-                    height="18"
-                    value="100"
-                    class="mt-0 white--text font-weight-bold"
-                  >8 HO</v-progress-linear>
+                  <v-progress-linear color="error" height="18" value="100" class="mt-0 white--text font-weight-bold"
+                    >8 HO</v-progress-linear
+                  >
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 H</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -409,12 +398,9 @@
               {{ $t("Bypass") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="success"
-                    height="18"
-                    value="40"
-                    class="mt-0 white--text font-weight-bold"
-                  >1.75 JO</v-progress-linear>
+                  <v-progress-linear color="success" height="18" value="40" class="mt-0 white--text font-weight-bold"
+                    >1.75 JO</v-progress-linear
+                  >
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>2 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -424,12 +410,9 @@
               {{ $t("Solution") }}
               <v-layout row wrap>
                 <v-flex xs9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="success"
-                    height="18"
-                    value="60"
-                    class="mt-0 white--text font-weight-bold"
-                  >2.5 JO</v-progress-linear>
+                  <v-progress-linear color="success" height="18" value="60" class="mt-0 white--text font-weight-bold"
+                    >2.5 JO</v-progress-linear
+                  >
                 </v-flex>
                 <v-flex xs2 px-1 pt-0 pb-0>5 JO</v-flex>
                 <v-flex xs1 px-1 pt-0 pb-0>
@@ -487,7 +470,8 @@
                 {{ request.beneficiary.phone }}
                 <br />
                 <span class="body-2">{{ $t("client") }} / {{ $t("contract") }} :&nbsp;</span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link>/
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
+                >/
                 <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
             </v-card>
@@ -513,35 +497,39 @@
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
                   <v-flex xs2 md2 sm2 lg1 xl1>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
                   <v-flex xs2 md2 sm2 lg1 xl1>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("published") }}</small>
                   </v-flex>
                   <v-flex xs2 md2 sm2 lg1 xl1>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a
-                  :href="request.communityContribution.communityIssueLink"
-                >{{ request.communityContribution.communityIssueLink }}</a>
+                <a :href="request.communityContribution.communityIssueLink">{{
+                  request.communityContribution.communityIssueLink
+                }}</a>
               </v-card>
             </v-card>
           </v-flex>
@@ -580,13 +568,7 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      statusList: [
-        "in progress",
-        "bypassed",
-        "resolved",
-        "closed",
-        "suspended"
-      ],
+      statusList: ["in progress", "bypassed", "resolved", "closed", "suspended"],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
       text: ""
     };
@@ -596,21 +578,13 @@ export default {
     Editor
   },
   mounted() {
-    var progressBars = Array.prototype.slice.call(
-      document.getElementsByClassName("v-progress-linear")
-    );
+    var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
-      var value = element.getElementsByClassName(
-        "v-progress-linear__content"
-      )[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName(
-        "v-progress-linear__bar__determinate"
-      );
+      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
       newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName(
-        "v-progress-linear__content"
-      )[0].innerHTML = "";
+      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
     }
   },
   computed: {
@@ -631,10 +605,7 @@ export default {
         })
         .catch(err => {});
     }
-    this.$store.dispatch(
-      "sidebar/setSidebarComponent",
-      "issue-detail-side-bar"
-    );
+    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -653,9 +624,7 @@ export default {
       this.request.statusId = 1;
       this.request.attachedFile = "";
       this.request.lastUpdate = "";
-      this.request.ticketDate = new Date(
-        request.timestamps.creation
-      ).toDateString();
+      this.request.ticketDate = new Date(request.timestamps.creation).toDateString();
       this.request.subject = request.description;
       this.request.responsible = {};
       this.request.ticketAuthor = "";
