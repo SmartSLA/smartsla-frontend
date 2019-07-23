@@ -129,7 +129,7 @@
           <v-card>
             <v-card-text>
               <v-layout>
-                <v-flex xs2 md1 sm2 lg2 xl1>
+                <v-flex xs1 md1 sm1 lg1 xl1>
                   <v-icon>subject</v-icon>
                 </v-flex>
                 <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
@@ -139,7 +139,7 @@
             </v-card-text>
             <v-card-text class="pb-0">
               <v-layout>
-                <v-flex xs2 md1 sm2 lg2 xl1>
+                <v-flex xs1 md1 sm1 lg1 xl1>
                   <v-icon>attach_file</v-icon>
                 </v-flex>
                 <v-flex xs9 md11 sm8 xl9 lg10 pl-0>
@@ -160,7 +160,7 @@
             </v-card-text>
             <v-card-text>
               <v-layout>
-                <v-flex xs2 md1 sm2 lg2 xl1>
+                <v-flex xs1 md1 sm1 lg1 xl1>
                   <v-icon>insert_link</v-icon>
                 </v-flex>
                 <v-flex xs12 md11 sm8 xl10 lg10 pl-0>
