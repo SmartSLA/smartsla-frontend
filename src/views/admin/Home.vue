@@ -15,7 +15,9 @@
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color">{{ $t("Add user") }}</v-btn>
+            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewUser' }" class="users-actions white-color">
+            <span>{{ $t("Add user") }}</span>
+          </router-link></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -33,7 +35,9 @@
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color">{{ $t("Add team") }}</v-btn>
+            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewTeam' }" class="users-actions white-color">
+            <span>{{ $t("Add team") }}</span>
+          </router-link></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -51,7 +55,9 @@
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color">{{ $t("Add client") }}</v-btn>
+            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewClient' }" class="users-actions white-color">
+            <span>{{ $t("Add client") }}</span>
+          </router-link></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -69,7 +75,9 @@
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color">{{ $t("Add contract") }}</v-btn>
+            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewContract' }" class="users-actions white-color">
+            <span>{{ $t("Add contract") }}</span>
+          </router-link></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -87,7 +95,9 @@
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color">{{ $t("Add software") }}</v-btn>
+            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewSoftware' }" class="users-actions white-color">
+            <span>{{ $t("Add software") }}</span>
+          </router-link></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -105,7 +115,9 @@
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color">{{ $t("Add contribution") }}</v-btn>
+            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewContribution' }" class="users-actions white-color">
+            <span>{{ $t("Add contribution") }}</span>
+          </router-link></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -129,6 +141,7 @@ export default {
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
+      
       this.$router.push("/403");
     }
   }

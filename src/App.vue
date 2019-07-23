@@ -178,6 +178,7 @@ export default {
 
 .file-upload .input-wrapper .file-upload-label {
   color: rgba(0, 0, 0, 0.54) !important;
+  padding-left: 0px !important;
 }
 
 .file-upload .input-wrapper .file-upload-label .file-upload-icon {
@@ -239,13 +240,13 @@ tr:nth-child(odd) {
   padding: 0px !important;
 }
 
-#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
+/*#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
   height: 48px;
   padding-top: 0px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
   margin-left: 0px !important;
-}
+}*/
 
 .ql-container {
   background: #FAFAFA;
@@ -290,8 +291,8 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 }
 
 .fluid {
-  padding-right: 16px !important;
-  // padding-left: 44px !important;
+  padding-right: 24px !important;
+  padding-left: 0px !important;
 }
 
 .v-card__actions {

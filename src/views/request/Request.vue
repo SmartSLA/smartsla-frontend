@@ -15,7 +15,7 @@
       </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
-      <v-flex xs12 md12 sm12 xl8 lg8>
+      <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>
         <v-card light color="white">
           <v-layout row wrap>
             <v-flex xs3 md3 sm2 lg2 xl2 class="mt-4">
@@ -288,7 +288,7 @@
                     </v-input>
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
-                        <v-flex xs10 md8 sm8 xl3 lg3>
+                        <v-flex xs10 md8 sm8 xl3 lg2>
                           <v-select :items="statusList" v-model="newStatus" :label="$t('Status')"></v-select>
                         </v-flex>
                         <v-flex xs10 md8 sm8 xl3 lg3>
@@ -317,13 +317,9 @@
                       </v-layout>
                     </v-input>
                     <v-layout row wrap>
-                      <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
-                      <v-flex xs4 md4 sm4 lg4 xl4>
-                        <v-btn
-                          color="info"
-                          class="custom-comment-btn"
-                          @click="addComment"
-                        >{{ $t("add comment") }}</v-btn>
+                      <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
+                      <v-flex xs2 md4 sm4 lg4 xl4>
+                        <v-btn color="info" class="custom-comment-btn" @click="addComment">{{ $t("add comment") }}</v-btn>
                       </v-flex>
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
@@ -343,9 +339,9 @@
           </v-card>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 xl4 lg4 sm12 pt-0 pl-0>
-        <v-layout row wrap>
-          <v-flex xs12 md12 sm12 xl12 lg12>
+      <v-flex xs12 md12 xl4 lg4 sm12 pt-0 pl-2 pr-2 >
+        <v-layout row wrap pt-0>
+          <v-flex xs12 md12 sm12 xl12 lg12 pt-4>
             <v-card light color="white" class="px-4 pb-3" v-if="request.status == 'new'">
               <v-card-title primary-title>
                 <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
@@ -409,7 +405,9 @@
                   >0 HO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>2 H</v-flex>
-                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
+                  <v-icon color="#249CC7">access_time</v-icon>
+                </v-flex>
               </v-layout>
               {{ $t("Bypass") }}
               <v-layout row wrap>
@@ -422,9 +420,6 @@
                   >0</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
-                  <v-icon class="success--text">check</v-icon>
-                </v-flex>
               </v-layout>
               {{ $t("Solution") }}
               <v-layout row wrap>
@@ -441,7 +436,7 @@
               </v-layout>
             </v-card>
           </v-flex>
-          <v-flex xs12 md12 sm12 xl12 lg12 align-center justify-center>
+          <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
             <h4
               class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
             >{{ $t("interlocutor in charge of the request") }}</h4>
@@ -500,7 +495,7 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <v-flex xs12 md12 sm12 xl12 lg12 v-if="request.communityContribution.status">
+          <v-flex xs12 md12 sm12 xl12 lg12 pt-4 v-if="request.communityContribution.status">
             <v-card light color="white">
               <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
@@ -935,20 +930,16 @@ export default {
 
 .layout.row.wrap {
   margin-left: 0px !important;
-  padding-top: 10px !important;
-}
 
-.flex.mt-4.xs3.md3.sm2.lg2.xl2 {
-  padding-left: 24px !important;
-}
-
-.flex.xs12.md8.sm8.lg6.xl8 {
-  text-align: center;
+ /*padding-top: 10px !important;*/
 }
 
 .custom-comment-btn {
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+.label.file-upload-label{
+  padding-left: 0px !important;
 }
 </style>
