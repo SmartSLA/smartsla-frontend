@@ -4,7 +4,7 @@
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
           <v-toolbar class="login-bar">
-            <v-toolbar-title class="white--text">{{ $t("OpenPaaS Login") }}</v-toolbar-title>
+            <v-toolbar-title class="white--text login-header">{{ $t("OpenPaaS Login") }}</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-form class="login-form" @keydown.native.enter="login">
@@ -85,5 +85,9 @@ export default {
 button.v-btn.theme--light {
   background-color: #2195f2 !important;
   color: #fff;
+}
+
+.login-header {
+  padding-left: 18px;
 }
 </style>
