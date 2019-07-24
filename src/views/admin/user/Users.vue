@@ -22,7 +22,14 @@
           label="Client"
           class="users-search-client"
         ></v-select>
-        <v-select solo :items="roles" v-model="roles" hide-details :label='$i18n.t("Roles")' class="users-search-roles"></v-select>
+        <v-select
+          solo
+          :items="roles"
+          v-model="roles"
+          hide-details
+          :label="$i18n.t('Roles')"
+          class="users-search-roles"
+        ></v-select>
         <div class="users-operations">
           <router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
             <v-icon>add_circle</v-icon>
@@ -73,10 +80,7 @@ export default {
       rowsPerPageItems: [10, 25, 50],
       pagination: "10",
       headers: [
-        { text: this.$i18n.t("Title"),
-          value: "title", 
-          class: "text-xs-center"
-        },
+        { text: this.$i18n.t("Title"), value: "title", class: "text-xs-center" },
         {
           text: this.$i18n.t("Name"),
           value: "name",

@@ -102,7 +102,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="time1"
-                      :label='$i18n.t("Picker in menu")'  
+                      :label="$i18n.t('Picker in menu')"
                       prepend-icon="access_time"
                       readonly
                       v-on="on"
@@ -137,7 +137,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="time2"
-                      :label='$i18n.t("Picker in menu")'
+                      :label="$i18n.t('Picker in menu')"
                       prepend-icon="access_time"
                       readonly
                       v-on="on"
