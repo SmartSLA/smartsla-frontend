@@ -10,8 +10,8 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: 56") }}</li>
-              <li>{{ $t("Last created at: le 19 juin 2019") }}</li>
+              <li>{{ $t("Total number: ") }} {{usercount}}</li>
+              <li>{{ $t("Last created at: ") }}{{new Date(usercreationdate).toLocaleDateString()}}</li>
             </ul>
           </div>
           <v-card-actions>
@@ -30,8 +30,8 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: 7") }}</li>
-              <li>{{ $t("Last created at: le 12 avril 2019") }}</li>
+              <li>{{ $t("Total number: ") }}{{teamcount}}</li>
+              <li>{{ $t("Last created at: ") }}{{new Date(teamcreationdate).toLocaleDateString()}}</li>
             </ul>
           </div>
           <v-card-actions>
@@ -50,8 +50,8 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: 48") }}</li>
-              <li>{{ $t("Last created at: le 22 Mars 2019") }}</li>
+              <li>{{ $t("Total number: ") }}{{clientcount}}</li>
+              <li>{{ $t("Last created at: ") }}{{new Date(clientcreationdate).toLocaleDateString()}}</li>
             </ul>
           </div>
           <v-card-actions>
@@ -70,8 +70,8 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: 32") }}</li>
-              <li>{{ $t("Last created at: le 05 Janvier 2019") }}</li>
+              <li>{{ $t("Total number: ") }}{{contractcount}}</li>
+              <li>{{ $t("Last created at: ") }}{{new Date(contractcreationdate).toLocaleDateString()}}</li>
             </ul>
           </div>
           <v-card-actions>
@@ -90,8 +90,8 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: 7") }}</li>
-              <li>{{ $t("Last created at: le 12 avril 2019") }}</li>
+              <li>{{ $t("Total number: ") }}{{softwarecount}}</li>
+              <li>{{ $t("Last created at: ") }}{{new Date(softwarecreationdate).toLocaleDateString()}}</li>
             </ul>
           </div>
           <v-card-actions>
@@ -110,8 +110,8 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: 105") }}</li>
-              <li>{{ $t("Last created at: le 22 mars 2019") }}</li>
+              <li>{{ $t("Total number: ") }}{{contributioncount}}</li>
+              <li>{{ $t("Last created at: ") }}{{new Date(contributioncreationdate).toLocaleDateString()}}</li>
             </ul>
           </div>
           <v-card-actions>
@@ -129,9 +129,123 @@
 export default {
   data() {
     return {
-      msg: this.$i18n.t("Administration")
+      msg: this.$i18n.t("Administration"),
+      users: [],
+      teams:[],
+      contracts: [],
+      clients:[],
+      contributions:[],
+      softwares:[],
+      usercount:0,
+      teamcount:0,
+      softwarecount:0,
+      clientcount:0,
+      contractcount:0,
+      contributioncount:0,
+      usercreationdate:"",
+      teamcreationdate:"",
+      softwarecreationdate:"",
+      contractcreationdate:"",
+      clientcreationdate:"",
+      contributioncreationdate:"",
+
+
     };
   },
+  mounted() {
+    this.$http
+      .listUsers()
+      .then(response => {
+        this.users = response.data;
+        this.usercount=response.data.length;
+        this.usercreationdate=new Date();
+        this.usercreationdate=response.data.slice(-1)[0].timestamps.creation;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch users"),
+          color: "error"
+        });
+      });
+      
+  
+    this.$http
+      .listTeam()
+      .then(response => {
+        this.teams = response.data;
+        this.teamcount=response.data.length;
+        this.teamcreationdate=response.data.slice(-1)[0].timestamps.creation;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch teams"),
+          color: "error"
+        });
+      });
+      
+
+    this.$http
+      .listClients()
+      .then(response => {
+        this.clients = response.data;
+        this.clientcount=response.data.length;
+        this.clientcreationdate=response.data.slice(-1)[0].timestamps.creation;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch clients"),
+          color: "error"
+        });
+      });
+
+       this.$http
+      .getContracts()
+      .then(response => {
+        this.contracts = response.data;
+        this.contractcount=response.data.length;
+        this.contractcreationdate=response.data.slice(-1)[0].timestamps.creation;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch contracts"),
+          color: "error"
+        });
+      });
+
+
+
+      this.$http
+      .getContributions()
+      .then(response => {
+        this.contributions = response.data;
+        this.contributioncount=response.data.length;
+        this.contributioncreationdate=response.data.slice(-1)[0].timestamps.creation;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch contributions"),
+          color: "error"
+        });
+      });
+
+       this.$http
+      .listSoftware()
+      .then(response => {
+        this.softwares = response.data;
+        this.softwarecount=response.data.length;
+        this.softwarecreationdate=response.data.slice(-1)[0].timestamps.creation;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("failed to fetch softwares"),
+          color: "error"
+        });
+      });
+
+       
+      
+  },
+
   created() {
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
   },
@@ -141,7 +255,7 @@ export default {
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
-      
+
       this.$router.push("/403");
     }
   }
