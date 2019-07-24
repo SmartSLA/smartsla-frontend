@@ -10,14 +10,16 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: ") }} {{usercount}}</li>
-              <li>{{ $t("Last created at: ") }}{{new Date(usercreationdate).toLocaleDateString()}}</li>
+              <li>{{ $t("Total number: ") }} {{ userCount }}</li>
+              <li>{{ $t("Last created at: ") }}{{ new Date(userCreationDate).toLocaleDateString() }}</li>
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewUser' }" class="users-actions white-color">
-            <span>{{ $t("Add user") }}</span>
-          </router-link></v-btn>
+            <v-btn color="blue-background-color white-color"
+              ><router-link :to="{ name: 'NewUser' }" class="users-actions white-color">
+                <span>{{ $t("Add user") }}</span>
+              </router-link></v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -30,14 +32,16 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: ") }}{{teamcount}}</li>
-              <li>{{ $t("Last created at: ") }}{{new Date(teamcreationdate).toLocaleDateString()}}</li>
+              <li>{{ $t("Total number: ") }}{{ teamCount }}</li>
+              <li>{{ $t("Last created at: ") }}{{ new Date(teamCreationDate).toLocaleDateString() }}</li>
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewTeam' }" class="users-actions white-color">
-            <span>{{ $t("Add team") }}</span>
-          </router-link></v-btn>
+            <v-btn color="blue-background-color white-color"
+              ><router-link :to="{ name: 'NewTeam' }" class="users-actions white-color">
+                <span>{{ $t("Add team") }}</span>
+              </router-link></v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -50,14 +54,16 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: ") }}{{clientcount}}</li>
-              <li>{{ $t("Last created at: ") }}{{new Date(clientcreationdate).toLocaleDateString()}}</li>
+              <li>{{ $t("Total number: ") }}{{ clientCount }}</li>
+              <li>{{ $t("Last created at: ") }}{{ new Date(clientCreationDate).toLocaleDateString() }}</li>
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewClient' }" class="users-actions white-color">
-            <span>{{ $t("Add client") }}</span>
-          </router-link></v-btn>
+            <v-btn color="blue-background-color white-color"
+              ><router-link :to="{ name: 'NewClient' }" class="users-actions white-color">
+                <span>{{ $t("Add client") }}</span>
+              </router-link></v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -70,14 +76,16 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: ") }}{{contractcount}}</li>
-              <li>{{ $t("Last created at: ") }}{{new Date(contractcreationdate).toLocaleDateString()}}</li>
+              <li>{{ $t("Total number: ") }}{{ contractCount }}</li>
+              <li>{{ $t("Last created at: ") }}{{ new Date(contractCreationDate).toLocaleDateString() }}</li>
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewContract' }" class="users-actions white-color">
-            <span>{{ $t("Add contract") }}</span>
-          </router-link></v-btn>
+            <v-btn color="blue-background-color white-color"
+              ><router-link :to="{ name: 'NewContract' }" class="users-actions white-color">
+                <span>{{ $t("Add contract") }}</span>
+              </router-link></v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -90,14 +98,16 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: ") }}{{softwarecount}}</li>
-              <li>{{ $t("Last created at: ") }}{{new Date(softwarecreationdate).toLocaleDateString()}}</li>
+              <li>{{ $t("Total number: ") }}{{ softwareCount }}</li>
+              <li>{{ $t("Last created at: ") }}{{ new Date(softwareCreationDate).toLocaleDateString() }}</li>
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewSoftware' }" class="users-actions white-color">
-            <span>{{ $t("Add software") }}</span>
-          </router-link></v-btn>
+            <v-btn color="blue-background-color white-color"
+              ><router-link :to="{ name: 'NewSoftware' }" class="users-actions white-color">
+                <span>{{ $t("Add software") }}</span>
+              </router-link></v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -110,14 +120,16 @@
           </v-card-title>
           <div>
             <ul>
-              <li>{{ $t("Total number: ") }}{{contributioncount}}</li>
-              <li>{{ $t("Last created at: ") }}{{new Date(contributioncreationdate).toLocaleDateString()}}</li>
+              <li>{{ $t("Total number: ") }}{{ contributionCount }}</li>
+              <li>{{ $t("Last created at: ") }}{{ new Date(contributionCreationDate).toLocaleDateString() }}</li>
             </ul>
           </div>
           <v-card-actions>
-            <v-btn color="blue-background-color white-color"><router-link :to="{ name: 'NewContribution' }" class="users-actions white-color">
-            <span>{{ $t("Add contribution") }}</span>
-          </router-link></v-btn>
+            <v-btn color="blue-background-color white-color"
+              ><router-link :to="{ name: 'NewContribution' }" class="users-actions white-color">
+                <span>{{ $t("Add contribution") }}</span>
+              </router-link></v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -131,25 +143,23 @@ export default {
     return {
       msg: this.$i18n.t("Administration"),
       users: [],
-      teams:[],
+      teams: [],
       contracts: [],
-      clients:[],
-      contributions:[],
-      softwares:[],
-      usercount:0,
-      teamcount:0,
-      softwarecount:0,
-      clientcount:0,
-      contractcount:0,
-      contributioncount:0,
-      usercreationdate:"",
-      teamcreationdate:"",
-      softwarecreationdate:"",
-      contractcreationdate:"",
-      clientcreationdate:"",
-      contributioncreationdate:"",
-
-
+      clients: [],
+      contributions: [],
+      softwares: [],
+      userCount: 0,
+      teamCount: 0,
+      softwareCount: 0,
+      clientCount: 0,
+      contractCount: 0,
+      contributionCount: 0,
+      userCreationDate: "",
+      teamCreationDate: "",
+      softwareCreationDate: "",
+      contractCreationDate: "",
+      clientCreationDate: "",
+      contributionCreationDate: ""
     };
   },
   mounted() {
@@ -157,9 +167,8 @@ export default {
       .listUsers()
       .then(response => {
         this.users = response.data;
-        this.usercount=response.data.length;
-        this.usercreationdate=new Date();
-        this.usercreationdate=response.data.slice(-1)[0].timestamps.creation;
+        this.userCount = response.data.length;
+        this.userCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -167,14 +176,13 @@ export default {
           color: "error"
         });
       });
-      
-  
+
     this.$http
       .listTeam()
       .then(response => {
         this.teams = response.data;
-        this.teamcount=response.data.length;
-        this.teamcreationdate=response.data.slice(-1)[0].timestamps.creation;
+        this.teamCount = response.data.length;
+        this.teamCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -182,14 +190,13 @@ export default {
           color: "error"
         });
       });
-      
 
     this.$http
       .listClients()
       .then(response => {
         this.clients = response.data;
-        this.clientcount=response.data.length;
-        this.clientcreationdate=response.data.slice(-1)[0].timestamps.creation;
+        this.clientCount = response.data.length;
+        this.clientCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -198,12 +205,12 @@ export default {
         });
       });
 
-       this.$http
+    this.$http
       .getContracts()
       .then(response => {
         this.contracts = response.data;
-        this.contractcount=response.data.length;
-        this.contractcreationdate=response.data.slice(-1)[0].timestamps.creation;
+        this.contractCount = response.data.length;
+        this.contractCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -212,14 +219,12 @@ export default {
         });
       });
 
-
-
-      this.$http
+    this.$http
       .getContributions()
       .then(response => {
         this.contributions = response.data;
-        this.contributioncount=response.data.length;
-        this.contributioncreationdate=response.data.slice(-1)[0].timestamps.creation;
+        this.contributionCount = response.data.length;
+        this.contributionCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -228,12 +233,12 @@ export default {
         });
       });
 
-       this.$http
+    this.$http
       .listSoftware()
       .then(response => {
         this.softwares = response.data;
-        this.softwarecount=response.data.length;
-        this.softwarecreationdate=response.data.slice(-1)[0].timestamps.creation;
+        this.softwareCount = response.data.length;
+        this.softwareCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -241,9 +246,6 @@ export default {
           color: "error"
         });
       });
-
-       
-      
   },
 
   created() {
@@ -255,7 +257,6 @@ export default {
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
-
       this.$router.push("/403");
     }
   }

@@ -19,7 +19,7 @@
           :items="clients"
           v-model="clients"
           hide-details
-          :label='$i18n.t("Status" )'
+          :label="$i18n.t('Status')"
           class="contracts-search-status"
         ></v-select>
         <v-select
@@ -27,7 +27,7 @@
           :items="clients"
           v-model="clients"
           hide-details
-         :label='$i18n.t("Team" )'
+          :label="$i18n.t('Team')"
           class="contracts-search-team"
         ></v-select>
         <v-select
@@ -35,7 +35,7 @@
           :items="roles"
           v-model="roles"
           hide-details
-          :label= '$i18n.t("Commercial")'
+          :label="$i18n.t('Commercial')"
           class="contracts-search-commercial"
         ></v-select>
         <div class="contracts-operations">
