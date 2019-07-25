@@ -42,7 +42,7 @@
                       prepend-icon="mail"
                       v-model="ticket.participants"
                       name="Mail"
-                      :label="$t('Participants E-mails (separated by commas)')"
+                      :label='$t("Participants E-mails (separated by commas)")'
                       type="text"
                     ></v-text-field>
                   </v-flex>
