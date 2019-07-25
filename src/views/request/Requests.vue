@@ -54,7 +54,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $t("And") }}</span>
+        <span>{{ $t("And/Or") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-select
@@ -74,7 +74,7 @@
       </v-btn>
       <v-spacer class="mx-2"></v-spacer>
       <div class="requests-filter-label">
-        <span>{{ $t("And") }}</span>
+        <span>{{ $t("And/Or") }}</span>
       </div>
       <v-spacer class="mx-2"></v-spacer>
       <v-text-field
@@ -170,11 +170,18 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
+
+            <td class="text-xs-center" v-if="$auth.check('admin')">
+            
+            <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+            <v-chip v-else color="#174dc5" class="ma-2" label text-color="white">S</v-chip>
+          </td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }" class="blue-color">
               {{ props.item.ticket_number }}
             </router-link>
           </td>
+
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
               <template v-slot:badge>
@@ -251,6 +258,7 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
+
             <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
               props.item.remaining_time
             }}</v-progress-linear>
@@ -319,6 +327,7 @@ export default {
       isMobile: false,
       headers: [
         { text: "#", value: "number" },
+        { text: this.$i18n.t("Organization"), value: "organization" },
         { text: this.$i18n.t("Ticket N°"), value: "ticket_number" },
         { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
@@ -409,6 +418,8 @@ export default {
   },
   created() {
     this.requests = requests;
+
+        console.log(this.requests);
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
@@ -899,5 +910,8 @@ div.v-input:nth-child(14) {
 div.layout:nth-child(5) {
   clear: both;
   padding-top: 24px;
+}
+span.v-chip__content {
+  color: #fff !important;
 }
 </style>

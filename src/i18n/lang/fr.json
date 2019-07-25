@@ -173,7 +173,7 @@
 	"Created by" : "Créé par",
 	"linking types" : "Type de liaison",
 	"Assign To" : "Assigné à",
-	"And / Or" : "Et / Ou",
+	"And/Or" : "Et/Ou",
 	"Filter by" : "Filtrer par",
 	"Values" : "Valeurs",
 	"Stored selections" : "Filtrages sauvegardés",
@@ -218,7 +218,8 @@
 	"Subject": "Sujet",
 	"Transmitter": "Auteur",
 	"Created": "Créé le",
-	"Remaining time": "Traitement",
+	"Remaining time": "ticket en cours de",
+	"Organization":"Organisme",
 	"Rows per page:": "Nombre de résultats",
 	"Of": "Sur",
 	"Title": "Sujet",
@@ -450,7 +451,10 @@
     "Technologies" : "Technologies",
     "Group" : "Groupe",
     "software" : "Logiciel",
-    "status" : "Statut"
+    "status" : "Statut",
+    "Participants E-mails (separated by commas)" : "E-mails des participants (séparés par une virgule)",
+    "Total number: " : "Nombre Total: ",
+    "Last created at: " : "Dernier ajout: "
 
 
 }
