@@ -290,11 +290,6 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
   box-shadow: 0px 0px;
 }
 
-.fluid {
-  padding-right: 24px !important;
-  padding-left: 0px !important;
-}
-
 .v-card__actions {
   padding-bottom: 24px !important;
 }
@@ -313,10 +308,6 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
   display: block !important;
   padding: 0px !important;
   margin: 0px !important;
-}
-
-.grid-list-md {
-  padding-left: 0px !important;
 }
 
 @media only screen and (max-width: 959px) {
@@ -365,4 +356,5 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .v-card.v-sheet.theme--light p {
   margin-bottom: 0px;
 }
+
 </style>

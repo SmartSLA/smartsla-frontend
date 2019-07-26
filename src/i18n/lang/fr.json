@@ -454,7 +454,14 @@
     "status" : "Statut",
     "Participants E-mails (separated by commas)" : "E-mails des participants (séparés par une virgule)",
     "Total number: " : "Nombre Total: ",
-    "Last created at: " : "Dernier ajout: "
+    "Last created at: " : "Dernier ajout: ",
+    "Linked at" : "Lié à",
+    "Duplicated" : "Dupliqué",
+    "Duplicated by" : "Dupliqué par",
+    "Blocked" : "Bloqué",
+    "Blocked by" : "Bloqué par",
+    "Previous" : "Précédent",
+    "Next" : "Suivant"
 
 
 }

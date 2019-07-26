@@ -898,4 +898,11 @@ export default {
 .label.file-upload-label{
   padding-left: 0px !important;
 }
+.grid-list-md {
+  padding-left: 0px !important;
+}
+.fluid {
+  padding-right: 24px !important;
+  padding-left: 0px !important;
+}
 </style>
