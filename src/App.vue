@@ -356,5 +356,7 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .v-card.v-sheet.theme--light p {
   margin-bottom: 0px;
 }
-
+.v-btn__content{
+  width: 100% !important;
+}
 </style>

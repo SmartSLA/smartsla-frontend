@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap>
-      <v-flex xs12 md12 lg4>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
           <v-card-title primary-title>
             <div>
@@ -27,7 +27,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 lg4>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
           <v-card-title primary-title>
             <div>
@@ -54,7 +54,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 lg4>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
           <v-card-title primary-title>
             <div>
@@ -81,7 +81,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 lg4>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
           <v-card-title primary-title>
             <div>
@@ -110,7 +110,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 lg4>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
           <v-card-title primary-title>
             <div>
@@ -137,7 +137,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 lg4>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
           <v-card-title primary-title>
             <div>
@@ -152,13 +152,12 @@
           </div>
           <v-card-actions>
             <v-layout row wrap>
-                      <v-flex>
-            <v-btn color="blue-background-color white-color" :to="{ name: 'NewContribution' }" class="users-actions white-color custom-btn-action"
-              >
+             <v-flex>
+            <v-btn color="blue-background-color white-color" :to="{ name: 'NewContribution' }" class="users-actions white-color custom-btn-action">
                 <span>{{ $t("Add contribution") }}</span>
               </v-btn>
                </v-flex>
-                    </v-layout>
+               </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -298,14 +297,14 @@ li{
   padding-top: 24px !important;
 }
 .custom-btn-action{
- padding-top: 9px !important;
+  padding-top: 9px !important;
   margin-right: auto !important;
   margin-left: auto !important;
   display: block !important;
-  width: 75%;
+  width: 50%;
 }
 .v-card__actions{
-   padding-top: 30px !important;
+  padding-top: 30px !important;
 }
 
 </style>

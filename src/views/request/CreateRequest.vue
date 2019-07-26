@@ -186,18 +186,19 @@
                   </v-flex>
                 </v-layout>
               </v-card-text>
-              <v-card-actions>
-                <v-layout>
-                  <v-flex xs6 text-xs-right align-end>
-                    <v-spacer></v-spacer>
+              <v-card-actions>  
+                  <v-layout row wrap>
+                  <v-flex>
                     <v-btn
                       :disabled="submitRequest"
                       :loading="submitRequest"
                       @click="validateFrom"
-                      class="blue-background-color white-color"
+                      class="blue-background-color white-color custom-btn-action"
+
                     >
                       {{ $t("Submit") }}
                     </v-btn>
+                    
                   </v-flex>
                 </v-layout>
               </v-card-actions>
@@ -499,10 +500,19 @@ button.ml-0 {
     padding-left: 33px !important;
   }
 }
-
 .container.grid-list-md .layout .flex {
   padding: 0px !important;
 }
-
+.custom-btn-action{
+  padding-top: 3px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  display: block !important;
+  width: 150px;
+  height: 35px;
+}
+.v-card__actions{
+   padding-top: 30px !important;
+}
 
 </style>
