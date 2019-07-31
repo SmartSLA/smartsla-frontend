@@ -129,7 +129,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
-                <v-btn color="red darken-1" flat @click="deleteUser">Delete</v-btn>
+                <v-btn color="error darken-1" flat @click="deleteUser">Delete</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -254,7 +254,8 @@ div.flex.pt-4.xs2 strong {
   }
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   background-color: #2195f2 !important;
 }
+
 </style>

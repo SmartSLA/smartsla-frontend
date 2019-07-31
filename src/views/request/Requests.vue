@@ -96,7 +96,7 @@
     <div v-if="customFilters.length > 0" class="filter-save mt-2">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <a href="#" class="font-italic blue--text action-links ml-2" v-on="on" v-show="isNewFilter">
+          <a href="#" class="font-italic blue--text action-links ml-2" v-on="on" v-show="isNewFilter || updateBtn">
             <v-icon class="mr-2 blue--text">playlist_add</v-icon>
             {{ $i18n.t("Create new filter") }}
           </a>
@@ -419,7 +419,6 @@ export default {
   created() {
     this.requests = requests;
 
-        console.log(this.requests);
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
@@ -510,104 +509,108 @@ export default {
       let clientFilter = this.customFilters.filter(filter => filter.category == "Client / Contract");
       let statusFilter = this.customFilters.filter(filter => filter.category == "Status");
 
-      let typesFilterMacth = true;
-      let severityFilterMacth = true;
-      let softwareFilterMacth = true;
-      let assignedFilterMacth = true;
-      let responsibleFilterMacth = true;
-      let transmitterFilterMacth = true;
-      let clientFilterMacth = true;
-      let statusFilterMacth = true;
+      let typesFilterMatch = true;
+      let severityFilterMatch = true;
+      let softwareFilterMatch = true;
+      let assignedFilterMatch = true;
+      let responsibleFilterMatch = true;
+      let transmitterFilterMatch = true;
+      let clientFilterMatch = true;
+      let statusFilterMatch = true;
 
       if (typesFilter.length) {
-        typesFilterMacth = false;
+        typesFilterMatch = false;
 
         typesFilter.forEach(currentFilter => {
           if (item.type.toLowerCase() == currentFilter.value.toLowerCase()) {
-            typesFilterMacth = true;
+            typesFilterMatch = true;
           }
         });
       }
 
       if (severityFilter.length) {
-        severityFilterMacth = false;
+        severityFilterMatch = false;
 
         severityFilter.forEach(currentFilter => {
           if (item.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
-            severityFilterMacth = true;
+            severityFilterMatch = true;
           }
         });
       }
 
       if (softwareFilter.length) {
-        softwareFilterMacth = false;
+        softwareFilterMatch = false;
 
         softwareFilter.forEach(currentFilter => {
           if (item.software.toLowerCase() == currentFilter.value.toLowerCase()) {
-            softwareFilterMacth = true;
+            softwareFilterMatch = true;
           }
         });
       }
 
       if (assignedFilter.length) {
-        assignedFilterMacth = false;
+        assignedFilterMatch = false;
 
         assignedFilter.forEach(currentFilter => {
           if (item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()) {
-            assignedFilterMacth = true;
+            assignedFilterMatch = true;
           }
         });
       }
 
       if (responsibleFilter.length) {
-        responsibleFilterMacth = false;
+        responsibleFilterMatch = false;
 
         responsibleFilter.forEach(currentFilter => {
           if (item.responsible.toLowerCase() == currentFilter.value.toLowerCase()) {
-            responsibleFilterMacth = true;
+            responsibleFilterMatch = true;
           }
         });
       }
 
       if (transmitterFilter.length) {
-        transmitterFilterMacth = false;
+        transmitterFilterMatch = false;
 
         transmitterFilter.forEach(currentFilter => {
           if (item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()) {
-            transmitterFilterMacth = true;
+            transmitterFilterMatch = true;
           }
         });
       }
 
       if (clientFilter.length) {
-        clientFilterMacth = false;
+        clientFilterMatch = false;
 
         clientFilter.forEach(currentFilter => {
           if (item.client_contract && item.client_contract.toLowerCase() == currentFilter.value.toLowerCase()) {
-            clientFilterMacth = true;
+            clientFilterMatch = true;
           }
         });
       }
 
       if (statusFilter.length) {
-        statusFilterMacth = false;
+        statusFilterMatch = false;
 
         statusFilter.forEach(currentFilter => {
           if (item.status.toLowerCase() == currentFilter.value.toLowerCase()) {
-            statusFilterMacth = true;
+            statusFilterMatch = true;
           }
         });
       }
 
       match =
-        typesFilterMacth &&
-        severityFilterMacth &&
-        softwareFilterMacth &&
-        assignedFilterMacth &&
-        responsibleFilterMacth &&
-        transmitterFilterMacth &&
-        clientFilterMacth &&
-        statusFilterMacth;
+        typesFilterMatch &&
+        severityFilterMatch &&
+        softwareFilterMatch &&
+        assignedFilterMatch &&
+        responsibleFilterMatch &&
+        transmitterFilterMatch &&
+        clientFilterMatch &&
+        statusFilterMatch;
+
+      if (this.customFilters.length == 0) {
+        match = false;
+      }
       return (
         match ||
         item.software.toLowerCase().includes(search) ||
@@ -665,6 +668,7 @@ export default {
             color: "success",
             message: this.$i18n.t("Filter updated")
           });
+          this.updateBtn = false;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -712,6 +716,11 @@ export default {
       this.customFilters = this.customFilters.filter(customFilter => {
         return JSON.stringify(customFilter) != JSON.stringify(filter);
       });
+      if (this.customFilters.length == 0) {
+        this.pageTitle = this.$i18n.t("ALL REQUESTS");
+        this.deleteBtn = false;
+        this.storedSelectionsFilter = {}
+      }
       this.centralSearch = "";
       this.checkStoredFilterUpdate();
     },
