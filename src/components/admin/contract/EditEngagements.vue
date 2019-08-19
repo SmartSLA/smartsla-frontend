@@ -164,9 +164,9 @@ export default {
       },
       addCommitment: false,
       contract: {},
-      requestTypes: ["Information", "Anomalie logiciel", "type c", "other"],
-      severityTypes: ["Minor", "Major", "blocking", "None", "other"],
-      ossaIds: ["blocking", "non-blocking", "inf request"]
+      requestTypes: ["Information", "Anomalie logiciel", "type c", this.$i18n.t("other")],
+      severityTypes: [ this.$i18n.t("Minor"),  this.$i18n.t("Major"),  this.$i18n.t("Blocking"),  this.$i18n.t("None"),  this.$i18n.t("Other")],
+      ossaIds: [ this.$i18n.t("Blocking"),  this.$i18n.t("Non-blocking"),  this.$i18n.t("inf-request")]
     };
   },
   methods: {

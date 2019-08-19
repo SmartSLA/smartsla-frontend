@@ -461,7 +461,29 @@
     "Blocked" : "Bloqué",
     "Blocked by" : "Bloqué par",
     "Previous" : "Précédent",
-    "Next" : "Suivant"
+    "Next" : "Suivant",
+    "Deposit at" : " dépot à",
+    "Closure at" : "Fermeture à",
+    "Time limit" : "Limite de temps",
+    "Updated at" : "Mis à jour à",
+    "Required field" : "champs requis",
+    "Contract" : "Contrat",
+    "ticket created" : "ticket crée",
+    "the required fields must be filled" : "les champs obligatoires doivent être remplis",
+    "failed to fetch users" : "Impossible de récupérer les utilisateurs",
+    "Supported in" : "Pris en charge en",
+    "bypass in" : "contourner",
+    "and resolution in" : "et résolution en",
+    "renew this contract" : "Renouveler un contrat",
+    "Minor" : "Mineur",
+    "Major" : "Majeur",
+    "Blocking" : "Bloquant",
+    "None" : "Aucun",
+    "Other" : "Autre",
+    "Non-blocking" : "Non bloquant",
+    "inf-request" : "inf-demande",
+    "D" : "J"
+
 
 
 }
