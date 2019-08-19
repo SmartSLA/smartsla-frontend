@@ -160,7 +160,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
-            <v-btn color="red darken-1" flat @click="deleteContract">Delete</v-btn>
+            <v-btn color="error darken-1" flat @click="deleteContract">Delete</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

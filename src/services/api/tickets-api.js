@@ -8,7 +8,7 @@ export default {
   },
 
   updateTicket(ticketId, options) {
-    return this.put(`/ticketing/api/tickets/${ticketId}`, options);
+    return this.post(`/ticketing/api/tickets/${ticketId}`, options);
   },
 
   deleteTicket(ticketId) {

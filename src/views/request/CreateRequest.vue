@@ -432,7 +432,7 @@ export default {
   padding: 10px;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   color: #fff;
 }
 

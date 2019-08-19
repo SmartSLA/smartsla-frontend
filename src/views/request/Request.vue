@@ -182,7 +182,11 @@
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
-                    <div v-for="(key, comment) in comments" :key="comment.id" class="custom-comment-box">
+                    <div
+                      v-for="comment in comments"
+                      :key="comment._id"
+                      class="custom-comment-box"
+                    >
                       <v-expansion-panel-content
                         v-if="comment.authorid == 1"
                         class="comment-mine"
@@ -235,8 +239,8 @@
                                 <v-img :src="comment.image"></v-img>
                               </v-avatar>
                             </v-flex>
-                            <v-flex xs10 md11 sm6 lg2 xl2>
-                              <v-card-text>{{ comment.body }}</v-card-text>
+                            <v-flex xs10>
+                              <v-card-text v-html="comment.body"></v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
                                 <router-link to="#">{{ comment.attachedFile }}</router-link>
@@ -581,7 +585,8 @@ export default {
   computed: {
     ...mapGetters({
       email: "user/getEmail",
-      avatarUrl: "user/getAvatarUrl"
+      avatarUrl: "user/getAvatarUrl",
+      displayName: "user/getDisplayName"
     })
   },
   created() {
@@ -605,7 +610,6 @@ export default {
   methods: {
     setRequestData(request) {
       request.relatedRequests.forEach(function(link) {
-        console.log(link.request);
       });
       this.request.ticketTitle = request.title;
       this.request.ticketNumber = request._id;
@@ -640,7 +644,11 @@ export default {
 
     addComment() {
       this.ticket.comments.push({
-        body: comment
+        body: this.comment,
+        date: new Date().toDateString(),
+        name: this.displayName,
+        authorid: this.$store.state.user.user._id,
+        image: this.avatarUrl
       });
       this.$http
         .updateTicket(this.ticket._id, this.ticket)
