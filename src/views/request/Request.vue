@@ -643,6 +643,7 @@ export default {
     },
 
     addComment() {
+      
       this.ticket.comments.push({
         body: this.comment,
         date: new Date().toDateString(),
