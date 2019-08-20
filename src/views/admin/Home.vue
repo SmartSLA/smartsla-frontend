@@ -16,14 +16,16 @@
           </div>
           <v-card-actions>
             <v-layout row wrap>
-                      <v-flex >
-            <v-btn color="blue-background-color white-color" :to="{ name: 'NewUser' }" class="users-actions white-color custom-btn-action">
-                <span>{{ $t("Add user") }}</span>
-             </v-btn
-            >
-            </v-flex>
-                      
-           </v-layout>
+              <v-flex>
+                <v-btn
+                  color="blue-background-color white-color"
+                  :to="{ name: 'NewUser' }"
+                  class="users-actions white-color custom-btn-action"
+                >
+                  <span>{{ $t("Add user") }}</span>
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -42,15 +44,16 @@
           </div>
           <v-card-actions>
             <v-layout row wrap>
-                      <v-flex >
-                     
-            <v-btn color="blue-background-color white-color" :to="{ name: 'NewTeam' }" class="users-actions white-color custom-btn-action">
-                <span>{{ $t("Add team") }}</span>
-              </v-btn
-            >
-             </v-flex>
-                      
-                    </v-layout>
+              <v-flex>
+                <v-btn
+                  color="blue-background-color white-color"
+                  :to="{ name: 'NewTeam' }"
+                  class="users-actions white-color custom-btn-action"
+                >
+                  <span>{{ $t("Add team") }}</span>
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -69,15 +72,16 @@
           </div>
           <v-card-actions>
             <v-layout row wrap>
-                      <v-flex >
-                      
-            <v-btn color="blue-background-color white-color" :to="{ name: 'NewClient' }" class="users-actions white-color custom-btn-action"
-              >
-                <span>{{ $t("Add client") }}</span>
-              </v-btn>
+              <v-flex>
+                <v-btn
+                  color="blue-background-color white-color"
+                  :to="{ name: 'NewClient' }"
+                  class="users-actions white-color custom-btn-action"
+                >
+                  <span>{{ $t("Add client") }}</span>
+                </v-btn>
               </v-flex>
-                     
-                    </v-layout>
+            </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -95,18 +99,17 @@
             </ul>
           </div>
           <v-card-actions>
-            
-
             <v-layout row wrap>
-                      <v-flex>
-                         <v-btn   color="blue-background-color white-color" :to="{ name: 'NewContract' }" class="users-actions white-color custom-btn-action">
-                <span>{{ $t("Add contract") }}</span>
-              </v-btn>
-                      </v-flex>
-                      
-                    </v-layout>
-           
-          
+              <v-flex>
+                <v-btn
+                  color="blue-background-color white-color"
+                  :to="{ name: 'NewContract' }"
+                  class="users-actions white-color custom-btn-action"
+                >
+                  <span>{{ $t("Add contract") }}</span>
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -125,15 +128,16 @@
           </div>
           <v-card-actions>
             <v-layout row wrap>
-                      <v-flex >
-            <v-btn color="blue-background-color white-color" :to="{ name: 'NewSoftware' }" class="users-actions white-color custom-btn-action"
-              >
-                <span>{{ $t("Add software") }}</span>
-              </v-btn
-            >
-            </v-flex>
-                      
-                    </v-layout>
+              <v-flex>
+                <v-btn
+                  color="blue-background-color white-color"
+                  :to="{ name: 'NewSoftware' }"
+                  class="users-actions white-color custom-btn-action"
+                >
+                  <span>{{ $t("Add software") }}</span>
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -152,12 +156,16 @@
           </div>
           <v-card-actions>
             <v-layout row wrap>
-             <v-flex>
-            <v-btn color="blue-background-color white-color" :to="{ name: 'NewContribution' }" class="users-actions white-color custom-btn-action">
-                <span>{{ $t("Add contribution") }}</span>
-              </v-btn>
-               </v-flex>
-               </v-layout>
+              <v-flex>
+                <v-btn
+                  color="blue-background-color white-color"
+                  :to="{ name: 'NewContribution' }"
+                  class="users-actions white-color custom-btn-action"
+                >
+                  <span>{{ $t("Add contribution") }}</span>
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -292,7 +300,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  
+
 li{
   padding-top: 24px !important;
 }
@@ -306,5 +314,4 @@ li{
 .v-card__actions{
   padding-top: 30px !important;
 }
-
 </style>

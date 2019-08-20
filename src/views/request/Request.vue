@@ -28,14 +28,14 @@
 
                   <v-divider color="success"></v-divider>
 
-                  <v-stepper-step step="2" complete color="primary" complete-icon="access_time" class="current_step">
-                    {{ $t("Supported") }}
-                  </v-stepper-step>
+                  <v-stepper-step step="2" complete color="primary" complete-icon="access_time" class="current_step">{{
+                    $t("Supported")
+                  }}</v-stepper-step>
 
                   <v-divider color="success"></v-divider>
-                  <v-stepper-step step="3" complete color="primary" v-if="request.statusId > 2">{{
-                    $t("Bypassed")
-                  }}</v-stepper-step>
+                  <v-stepper-step step="3" complete color="primary" v-if="request.statusId > 2">
+                    {{ $t("Bypassed") }}
+                  </v-stepper-step>
                   <v-stepper-step step v-else>{{ $t("Bypassed") }}</v-stepper-step>
 
                   <v-divider color="primary"></v-divider>
@@ -163,9 +163,9 @@
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
                           <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'Request', params: { id: link.id } }">{{
-                            link.request
-                          }}</router-link>
+                          <router-link :to="{ name: 'Request', params: { id: link.id } }">
+                            {{ link.request }}
+                          </router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -182,11 +182,7 @@
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
-                    <div
-                      v-for="comment in comments"
-                      :key="comment._id"
-                      class="custom-comment-box"
-                    >
+                    <div v-for="comment in comments" :key="comment._id" class="custom-comment-box">
                       <v-expansion-panel-content
                         v-if="comment.authorid == 1"
                         class="comment-mine"
@@ -202,14 +198,16 @@
                           <v-layout row wrap>
                             <v-flex xs2 md1 sm2 lg2 xl2>
                               <v-avatar size="60" :tile="false" v-if="comment.image">
-                                <v-img :src="comment.image"></v-img>
+                                <v-img :src="comment.image ? comment.image : ''"></v-img>
                               </v-avatar>
                             </v-flex>
                             <v-flex xs10 md11 sm6 lg2 xl2>
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <router-link to="#">{{ comment.attachedFile }}</router-link>
+                                <router-link :to="`${apiUrl}/api/files/${comment.attachment}`" target="_blank">{{
+                                  comment.attachedFile
+                                }}</router-link>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -236,14 +234,16 @@
                           <v-layout row wrap>
                             <v-flex xs2 md1 sm2 lg2 xl2>
                               <v-avatar size="60" :tile="false" v-if="comment.image">
-                                <v-img :src="comment.image"></v-img>
+                                <v-img :src="comment.image ? comment.image : ''"></v-img>
                               </v-avatar>
                             </v-flex>
                             <v-flex xs10>
                               <v-card-text v-html="comment.body"></v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <router-link to="#">{{ comment.attachedFile }}</router-link>
+                                <a :href="`${apiUrl}/api/files/${comment.attachment}`" target="_blank">{{
+                                  comment.attachedFile
+                                }}</a>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -294,22 +294,16 @@
                           ></v-checkbox>
                         </v-flex>
                         <v-flex xs12 md8 sm8 xl3 lg3>
-                          <file-upload
-                            prepend-icon="attach_file"
-                            class="file pt-2"
-                            :btn-label="$i18n.t('Attach file')"
-                            url
-                            btn-uploading-label="Uploading file"
-                          ></file-upload>
+                          <v-upload :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
                         </v-flex>
                       </v-layout>
                     </v-input>
                     <v-layout row wrap>
                       <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
                       <v-flex xs2 md4 sm4 lg4 xl4>
-                        <v-btn color="info" class="custom-comment-btn" @click="addComment">{{
-                          $t("add comment")
-                        }}</v-btn>
+                        <v-btn color="info" class="custom-comment-btn" @click="addComment" :disabled="!commentBtn">
+                          {{ $t("add comment") }}
+                        </v-btn>
                       </v-flex>
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
@@ -318,9 +312,9 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>
-                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
-                  </v-card-text>
+                  <v-card-text>{{
+                    $t("the satisfaction survey will be available once the ticket is closed")
+                  }}</v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -423,7 +417,7 @@
                 <v-flex xs3 md2 sm4 lg4 xl4></v-flex>
                 <v-flex xs8 md8 sm6 lg8 xl6>
                   <v-avatar size="100%" class="pl-1 avatar-width">
-                    <v-img :src="avatarUrl"></v-img>
+                    <v-img :src="avatarUrl ? avatarUrl : ''"></v-img>
                   </v-avatar>
                 </v-flex>
               </v-layout>
@@ -517,9 +511,9 @@
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">
-                  {{ request.communityContribution.communityIssueLink }}
-                </a>
+                <a :href="request.communityContribution.communityIssueLink">{{
+                  request.communityContribution.communityIssueLink
+                }}</a>
               </v-card>
             </v-card>
           </v-flex>
@@ -533,12 +527,16 @@
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
 import { Editor } from "vuetify-markdown-editor";
+import VUpload from "vuetify-upload-component";
+import ApplicationSettings from "@/services/application-settings";
 var request = require("@/assets/data/request.json");
 export default {
   name: "app",
   data() {
     return {
       ticket: {},
+      applicationSettings: {},
+      commentBtn: true,
       selectedEditor: "wysiwyg",
       privateComment: "",
       panel: [true, true],
@@ -548,6 +546,7 @@ export default {
       request: {
         statusId: 2
       },
+      commentFile: [],
       comment: "",
       options: {
         lineNumbers: true,
@@ -570,7 +569,8 @@ export default {
   },
   components: {
     VueEditor,
-    Editor
+    Editor,
+    VUpload
   },
   mounted() {
     var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
@@ -593,15 +593,13 @@ export default {
     this.comments = require("@/assets/data/comments.json");
     this.request = request;
     if (this.$route.params.id.length > 6) {
-      this.$http
-        .getTicketById(this.$route.params.id)
-        .then(response => {
-          this.ticket = response.data;
-          this.setRequestData(response.data);
-        })
-        .catch(err => {});
+      this.$http.getTicketById(this.$route.params.id).then(response => {
+        this.ticket = response.data;
+        this.setRequestData(response.data);
+      });
     }
     this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+    this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
@@ -609,8 +607,6 @@ export default {
   },
   methods: {
     setRequestData(request) {
-      request.relatedRequests.forEach(function(link) {
-      });
       this.request.ticketTitle = request.title;
       this.request.ticketNumber = request._id;
       if (request.software.name) {
@@ -627,6 +623,7 @@ export default {
       this.request.responsible = {};
       this.request.ticketAuthor = "";
       this.comments = request.comments;
+      this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
       this.request.ticketAuthor = this.$store.getters["user/getDisplayName"];
       this.request.serviceLevel = {};
@@ -643,16 +640,45 @@ export default {
     },
 
     addComment() {
+      if (this.commentFile.length) {
+        this.commentBtn = false;
+        let commentFile = this.commentFile[0];
+        let fileSize = commentFile.size;
+        let mimeType = commentFile.type;
+        let formData = new FormData();
+        formData.append("file", commentFile);
+        this.$http
+          .uploadFile(formData, mimeType, fileSize, commentFile.name)
+          .then(response => {
+            this.postComment(response.data._id, commentFile.name);
+            this.commentBtn = true;
+            this.commentFile = [];
+            this.panel.push(true);
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
+            this.commentBtn = true;
+          });
+      } else {
+        this.postComment();
+      }
+    },
+    postComment(fileId = "", fileName = "") {
       this.ticket.comments.push({
         body: this.comment,
         date: new Date().toDateString(),
         name: this.displayName,
         authorid: this.$store.state.user.user._id,
-        image: this.avatarUrl
+        image: this.avatarUrl,
+        attachment: fileId,
+        attachedFile: fileName
       });
       this.$http
         .updateTicket(this.ticket._id, this.ticket)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("updated"),
             color: "success"
@@ -894,8 +920,7 @@ export default {
 
 .layout.row.wrap {
   margin-left: 0px !important;
-
- /*padding-top: 10px !important;*/
+  /* padding-top: 10px !important; */
 }
 
 .custom-comment-btn {
@@ -903,12 +928,15 @@ export default {
   margin-right: auto;
   display: block;
 }
-.label.file-upload-label{
+
+.label.file-upload-label {
   padding-left: 0px !important;
 }
+
 .grid-list-md {
   padding-left: 0px !important;
 }
+
 .fluid {
   padding-right: 24px !important;
   padding-left: 0px !important;
