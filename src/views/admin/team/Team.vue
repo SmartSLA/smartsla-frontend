@@ -102,7 +102,6 @@
   </v-container>
 </template>
 <script>
-import { error } from "util";
 export default {
   name: "team-detail",
   data() {

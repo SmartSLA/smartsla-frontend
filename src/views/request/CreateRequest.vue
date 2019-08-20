@@ -42,7 +42,7 @@
                       prepend-icon="mail"
                       v-model="ticket.participants"
                       name="Mail"
-                      :label='$t("Participants E-mails (separated by commas)")'
+                      :label="$t('Participants E-mails (separated by commas)')"
                       type="text"
                     ></v-text-field>
                   </v-flex>
@@ -214,7 +214,6 @@
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
-import { error } from "util";
 import { COPYFILE_EXCL } from "constants";
 
 Vue.use(FileUpload);
