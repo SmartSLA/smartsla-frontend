@@ -10,6 +10,7 @@ import clientFunctions from "./client-api";
 import userFunctions from "./user-api";
 import teamFunctions from "./team-api";
 import filterFunctions from "./filter-api";
+import filesFunctions from "./file-api";
 
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
@@ -26,6 +27,7 @@ function Api(config) {
   Object.assign(instance, userFunctions);
   Object.assign(instance, teamFunctions);
   Object.assign(instance, filterFunctions);
+  Object.assign(instance, filesFunctions);
 
   instance.interceptors.request.use(
     function(config) {

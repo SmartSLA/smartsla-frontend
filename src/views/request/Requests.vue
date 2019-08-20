@@ -171,9 +171,10 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
 
-            <td class="text-xs-center" v-if="$auth.check('admin')">
-            
-            <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+          <td class="text-xs-center" v-if="$auth.check('admin')">
+            <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white"
+              >L</v-chip
+            >
             <v-chip v-else color="#174dc5" class="ma-2" label text-color="white">S</v-chip>
           </td>
           <td>
@@ -258,7 +259,6 @@
           <td class="text-xs-center">{{ props.item.created }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-
             <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
               props.item.remaining_time
             }}</v-progress-linear>
@@ -466,6 +466,7 @@ export default {
             break;
         }
       } catch (err) {
+         // continue regardless of error
       } finally {
         let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
         this.values = this.values.filter(value => {
@@ -641,7 +642,7 @@ export default {
       };
       this.$http
         .createFilters(filterToSave)
-        .then(response => {
+        .then(() => {
           this.dialog = false;
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Filter saved"),
@@ -663,7 +664,7 @@ export default {
       filterToUpdate.items = [...this.customFilters];
       this.$http
         .updateFilters(filterToUpdate._id, filterToUpdate)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             color: "success",
             message: this.$i18n.t("Filter updated")
@@ -680,7 +681,7 @@ export default {
     deleteCurrentFilter() {
       this.$http
         .deleteFilters(this.storedSelectionsFilter._id)
-        .then(response => {
+        .then(() => {
           this.customFilters = [];
           this.deleteBtn = false;
           this.$store.dispatch("ui/displaySnackbar", {
@@ -719,7 +720,7 @@ export default {
       if (this.customFilters.length == 0) {
         this.pageTitle = this.$i18n.t("ALL REQUESTS");
         this.deleteBtn = false;
-        this.storedSelectionsFilter = {}
+        this.storedSelectionsFilter = {};
       }
       this.centralSearch = "";
       this.checkStoredFilterUpdate();

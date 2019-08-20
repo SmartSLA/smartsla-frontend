@@ -169,7 +169,6 @@
 </template>
 
 <script>
-import { error } from "util";
 export default {
   name: "edit-contract-information",
   data() {
