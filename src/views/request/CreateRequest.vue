@@ -175,14 +175,15 @@
                   <v-flex md6 xs0></v-flex>
                   <v-flex md6 xs0></v-flex>
                   <v-flex xs10 class="pl-4">
-                    <br />
-                    <file-upload
+                    <!-- <br /> -->
+                   <!--  <file-upload
                       prepend-icon="attach_file"
                       class="file"
                       url="undefined"
                       :btn-label="$i18n.t('Attach file')"
                       btn-uploading-label="Uploading file"
-                    ></file-upload>
+                    ></file-upload> -->
+                     <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
                   </v-flex>
                 </v-layout>
               </v-card-text>
@@ -190,8 +191,7 @@
                   <v-layout row wrap>
                   <v-flex>
                     <v-btn
-                      :disabled="submitRequest"
-                      :loading="submitRequest"
+                      
                       @click="validateFrom"
                       class="blue-background-color white-color custom-btn-action"
 
@@ -214,6 +214,7 @@
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
+import VUpload from "vuetify-upload-component";
 import { COPYFILE_EXCL } from "constants";
 
 Vue.use(FileUpload);
@@ -234,6 +235,7 @@ export default {
         responsible: {},
         author: {},
         comments: [],
+        requestFile: [],
         files: []
       },
       linkedRequest: "",
