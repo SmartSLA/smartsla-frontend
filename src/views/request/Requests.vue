@@ -386,6 +386,7 @@ export default {
     }
     this.$http.listSoftware().then(response => {
       response.data.forEach(software => {
+       // console.log(this.softwareList);
         this.softwareList.push(software.name);
       });
     });
