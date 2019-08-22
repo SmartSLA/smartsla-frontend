@@ -182,4 +182,10 @@ div.wrap:nth-child(2) {
   margin-left: 0px;
   margin-right: 0px;
 }
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
+}
 </style>

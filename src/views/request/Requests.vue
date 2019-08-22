@@ -68,7 +68,7 @@
         v-bind:label="$i18n.t('Stored selections')"
         @input="$emit('input')"
         return-object
-      ></v-select>
+        ></v-select>
       <v-btn class="requests-filter-add" @click="loadFilter">
         <v-icon dark>add</v-icon>
       </v-btn>
@@ -386,6 +386,7 @@ export default {
     }
     this.$http.listSoftware().then(response => {
       response.data.forEach(software => {
+       // console.log(this.softwareList);
         this.softwareList.push(software.name);
       });
     });

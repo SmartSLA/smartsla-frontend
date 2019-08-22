@@ -243,6 +243,10 @@ export default {
   cursor: pointer;
 }
 
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
 .pt-0 {
   margin: 0px !important;
   padding-right: 0px;
@@ -251,4 +255,11 @@ export default {
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   background-color: #2196f3 !important;
 }
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
+}
+
 </style>

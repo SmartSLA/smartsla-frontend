@@ -110,9 +110,16 @@ div.wrap:nth-child(2) > div:nth-child(1) {
   padding-left: 0px !important;
   padding-bottom: 0px !important;
 }
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
+}
 
 .px-1 {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
+
 </style>

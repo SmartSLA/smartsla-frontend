@@ -180,4 +180,10 @@ div.wrap:nth-child(2) {
 .mt-4 {
   margin-top: 0px !important;
 }
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
+}
 </style>

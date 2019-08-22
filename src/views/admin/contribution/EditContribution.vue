@@ -262,4 +262,14 @@ export default {
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   background-color: #2195f2 !important;
 }
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
+}
 </style>

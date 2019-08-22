@@ -326,7 +326,8 @@ export default {
 }
 
 .container {
-  max-width: 100%;
+  max-width: 100% !important;
+  padding: 0px;
 }
 
 .pt-0 {
@@ -335,4 +336,11 @@ export default {
   padding-right: 0px;
   margin-top: 0px !important;
 }
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
+}
+
 </style>
