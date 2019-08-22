@@ -180,4 +180,8 @@ div.wrap:nth-child(2) > div:nth-child(1) {
   padding-right: 0px;
   padding-bottom: 0px;
 }
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
 </style>

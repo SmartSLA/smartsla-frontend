@@ -4,18 +4,18 @@
       >&lt; {{ $t("Return to software list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs8>
+      <v-flex xs12 sm12 md12 xl6 lg6 pr-4>
         <v-card class="px-0 mt-4 pb-4 pl-4">
           <v-card-title primary-title>
             <v-layout row wrap>
-              <v-flex xs10>
-                <v-card-title primary-title class="px-4">
+              <v-flex xs7>
+                <v-card-title primary-title class="px-0">
                   <div>
                     <h3 class="title font-weight-medium mb-0">{{ software.name }}</h3>
                   </div>
                 </v-card-title>
               </v-flex>
-              <v-flex xs2>
+              <v-flex xs4>
                 <div class="text-xs-right grey--text pt-3">
                   <v-btn color="primary" fab small dark :to="{ name: 'EditSoftware', params: { id: 15 } }">
                     <v-icon>edit</v-icon>
@@ -26,11 +26,11 @@
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
-            <v-flex xs2>
+            <v-flex xs12>
               <img src="@/assets/angular.png" height="150" />
             </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs9>
+            <v-flex xs12></v-flex>
+            <v-flex xs12 pr-3>
               <v-layout row wrap>
                 <v-flex xs12>
                   <strong>{{ $t("Name") }} :</strong>
@@ -54,10 +54,10 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
-                    <v-flex xs3>
+                    <v-flex xs4>
                       <strong>{{ $t("Technologies") }} :</strong>
                     </v-flex>
-                    <v-flex xs8>
+                    <v-flex xs6>
                       <ul>
                         <li v-for="(techno, index) in software.technologies" :key="index">{{ techno }}</li>
                       </ul>
@@ -66,10 +66,10 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
-                    <v-flex xs3>
+                    <v-flex xs4>
                       <strong>{{ $t("Versions") }} :</strong>
                     </v-flex>
-                    <v-flex xs8>
+                    <v-flex xs6>
                       <ul>
                         <li v-for="(version, index) in software.versions" :key="index">
                           <router-link to="#" class="blue-color">{{ version }}</router-link>
@@ -84,10 +84,10 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
-                    <v-flex xs2>
+                    <v-flex xs4>
                       <strong>{{ $t("Links") }} :</strong>
                     </v-flex>
-                    <v-flex xs8>
+                    <v-flex xs6>
                       <ul>
                         <li v-for="(link, index) in software.links" :key="index">
                           <router-link to="#" class="blue-color">{{ link }}</router-link>
@@ -101,7 +101,7 @@
           </v-layout>
         </v-card>
         <v-card class="px-1 mt-4 pb-4 pl-4">
-          <v-card-title primary-title class="px-4">
+          <v-card-title primary-title class="px-0">
             <div>
               <h3 class="title font-weight-medium mb-0">{{ $t("Contributions") }}</h3>
             </div>
@@ -121,14 +121,14 @@
           </v-data-table>
         </v-card>
       </v-flex>
-      <v-flex xs4>
-        <v-card class="px-1 ml-3 mt-4 pb-4 pl-4">
-          <v-card-title primary-title class="px-4">
+      <v-flex xs12 md12 sm12 xl6 lg6 pl-4>
+        <v-card class="px-1 ml-0 mt-3 pb-3 pl-4">
+          <v-card-title primary-title class="px-0">
             <h3 class="title">{{ $t("Contractual informations") }}</h3>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
           <v-layout row wrap>
-            <v-flex xs4>
+            <v-flex xs8>
               <strong>{{ $t("Contracts") }}:</strong>
             </v-flex>
             <v-flex xs8>
@@ -138,10 +138,10 @@
                 </li>
               </ul>
             </v-flex>
-            <v-flex xs4>
+            <v-flex xs8>
               <strong>{{ $t("Requests") }}:</strong>
             </v-flex>
-            <v-flex xs8>
+            <v-flex xs6>
               <ul>
                 <li v-for="(request, index) in software.requests" :key="index">
                   <router-link to="#" class="blue-color">{{ request }}</router-link>
@@ -239,10 +239,20 @@ div.xs4:nth-child(2) {
   padding: 0px;
 }
 
-div.px-1:nth-child(1) {
+/*div.px-1:nth-child(1) {
   margin-left: 24px !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
   margin-top: 24px;
+}*/
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
 }
 </style>

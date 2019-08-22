@@ -247,11 +247,15 @@ div.flex.pt-4.xs2 strong {
   margin-left: 0px !important;
   margin-top: 0px !important;
 }
-
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
 @media only screen and (min-width: 1264px) {
   .container {
-    max-width: 100%;
-  }
+  max-width: 100% !important;
+  padding-right: 24px;
+}
 }
 
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
