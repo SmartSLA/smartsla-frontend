@@ -201,7 +201,7 @@
                                 <v-img :src="comment.image ? comment.image : ''"></v-img>
                               </v-avatar>
                             </v-flex>
-                            <v-flex xs10 md11 sm6 lg2 xl2>
+                            <v-flex xs10 md10 sm10 lg10 xl10>
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
