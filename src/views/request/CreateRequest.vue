@@ -288,12 +288,12 @@ VUpload
           .uploadFile(formData, mimeType, fileSize, requestFile.name)
           .then(response => {
             this.postRequest(response.data._id, requestFile.name);
-          
+          //console.log(this.ticket.requestFile);
             this.submitRequest = true;
-            
+            this.ticket.requestFile = [];
+            this.panel.push(true);
           })
           .catch(error => {
-            
             this.$store.dispatch("ui/displaySnackbar", {
               message: error.response.data.error.details,
               color: "error"
@@ -303,7 +303,24 @@ VUpload
       } else {
         this.postRequest();
       }
-      
+      this.$http
+        .createTicket(this.ticket)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("ticket created"),
+            color: "success"
+          });
+          this.$router.push({
+            name: "Request",
+            params: { id: response.data._id }
+          });
+        })
+        .catch(err => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: err.response.data.error.details,
+            color: "error"
+          });
+        });
     },
 
 
@@ -324,24 +341,20 @@ VUpload
           color: "error"
         });
       }
-    },
-  
-    postRequest(fileId = "", fileName = "") {
-      
-      if (variable.length !== 0) {
-    let myObject = {
-        key1: "value1",
-        key2: "value2",
-        key3: "value3"
     }
-} 
-   this.ticket.files.push(myObject) 
-
-     
-     // this.ticket.attachement = fileId;
-      //this.ticket.attachedFile = fileName;
+  },
+   postRequest(fileId = "", fileName = "") {
+      this.ticket.comments.push({
+        body: this.contenu,
+        date: new Date().toDateString(),
+        name: this.displayName,
+        authorid: this.$store.state.user.user._id,
+        image: this.avatarUrl,
+        attachment: fileId,
+        attachedFile: fileName
+      });
       this.$http
-        .createTicket(this.ticket._id, this.ticket)
+        .updateTicket(this.ticket._id, this.ticket)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("updated"),
@@ -354,8 +367,8 @@ VUpload
             color: "error"
           });
         });
-    }
-},
+    },
+
   computed: {
     typeList() {
       var engagements = [];
