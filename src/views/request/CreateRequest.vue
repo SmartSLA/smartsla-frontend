@@ -190,14 +190,6 @@
                   <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
                   <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
                   <v-flex xs12 md8 sm8 xl3 lg3>
-                    <!-- <br /> -->
-                    <!--  <file-upload
-                      prepend-icon="attach_file"
-                      class="file"
-                      url="undefined"
-                      :btn-label="$i18n.t('Attach file')"
-                      btn-uploading-label="Uploading file"
-                    ></file-upload>-->
                     <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
                   </v-flex>
                 </v-layout>
@@ -340,7 +332,7 @@ export default {
         });
       }
     },
-    
+
     postRequest(fileId = "", fileName = "") {
       if (fileId !== "") {
         let fileObject = {
