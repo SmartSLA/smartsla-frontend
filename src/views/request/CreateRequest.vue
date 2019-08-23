@@ -340,6 +340,7 @@ export default {
         });
       }
     },
+    
     postRequest(fileId = "", fileName = "") {
       if (fileId !== "") {
         let fileObject = {
