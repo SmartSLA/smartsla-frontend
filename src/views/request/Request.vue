@@ -645,6 +645,7 @@ export default {
   created() {
     //this.comments = require("@/assets/data/comments.json");
     //this.request = request;
+    
     if (this.$route.params.id.length > 6) {
       this.$http.getTicketById(this.$route.params.id).then(response => {
         this.ticket = response.data;
