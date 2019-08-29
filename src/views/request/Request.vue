@@ -179,11 +179,9 @@
                             v-if="link.type == 'duplicate'"
                           >{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'Request', params: { id: link.id } }">
-                            {{
-                            link.request
-                            }}
-                          </router-link>
+                          <router-link
+                            :to="{ name: 'Request', params: { id: link.id } }"
+                          >{{ link.request }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -226,7 +224,11 @@
                                 <router-link
                                   :to="`${apiUrl}/api/files/${comment.attachment}`"
                                   target="_blank"
-                                >{{ comment.attachedFile }}</router-link>
+                                >
+                                  {{
+                                  comment.attachedFile
+                                  }}
+                                </router-link>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -263,7 +265,11 @@
                                 <a
                                   :href="`${apiUrl}/api/files/${comment.attachment}`"
                                   target="_blank"
-                                >{{ comment.attachedFile }}</a>
+                                >
+                                  {{
+                                  comment.attachedFile
+                                  }}
+                                </a>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -297,7 +303,13 @@
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
                         <v-flex xs10 md8 sm8 xl3 lg2>
-                          <v-select :items="statusList" v-model="newStatus" :label="$t('Status')" item-text="value" item-value="key"></v-select>
+                          <v-select
+                            :items="statusList"
+                            v-model="newStatus"
+                            :label="$t('Status')"
+                            item-text="value"
+                            item-value="key"
+                          ></v-select>
                         </v-flex>
                         <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select
@@ -326,11 +338,7 @@
                           class="custom-comment-btn"
                           @click="addComment"
                           :disabled="!commentBtn"
-                        >
-                          {{
-                          $t("add comment")
-                          }}
-                        </v-btn>
+                        >{{ $t("add comment") }}</v-btn>
                       </v-flex>
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
@@ -339,7 +347,11 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>{{ $t("the satisfaction survey will be available once the ticket is closed") }}</v-card-text>
+                  <v-card-text>
+                    {{
+                    $t("the satisfaction survey will be available once the ticket is closed")
+                    }}
+                  </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -549,9 +561,11 @@
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a
-                  :href="request.communityContribution.communityIssueLink"
-                >{{ request.communityContribution.communityIssueLink }}</a>
+                <a :href="request.communityContribution.communityIssueLink">
+                  {{
+                  request.communityContribution.communityIssueLink
+                  }}
+                </a>
               </v-card>
             </v-card>
           </v-flex>
@@ -675,6 +689,8 @@ export default {
     }
   },
   created() {
+    //this.comments = require("@/assets/data/comments.json");
+    //this.request = request;
     if (this.$route.params.id.length > 6) {
       this.$http.getTicketById(this.$route.params.id).then(response => {
         this.ticket = Object.assign({}, response.data);
