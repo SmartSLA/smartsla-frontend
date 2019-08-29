@@ -68,7 +68,7 @@
         v-bind:label="$i18n.t('Stored selections')"
         @input="$emit('input')"
         return-object
-        ></v-select>
+      ></v-select>
       <v-btn class="requests-filter-add" @click="loadFilter">
         <v-icon dark>add</v-icon>
       </v-btn>
@@ -96,7 +96,12 @@
     <div v-if="customFilters.length > 0" class="filter-save mt-2">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <a href="#" class="font-italic blue--text action-links ml-2" v-on="on" v-show="isNewFilter || updateBtn">
+          <a
+            href="#"
+            class="font-italic blue--text action-links ml-2"
+            v-on="on"
+            v-show="isNewFilter || updateBtn"
+          >
             <v-icon class="mr-2 blue--text">playlist_add</v-icon>
             {{ $i18n.t("Create new filter") }}
           </a>
@@ -107,8 +112,8 @@
             class="font-italic action-links warning--text ml-2"
           >
             <v-icon class="mr-2 warning--text">save_alt</v-icon>
-            {{ $i18n.t("save") }}</a
-          >
+            {{ $i18n.t("save") }}
+          </a>
           <a
             class="font-italic grey--text action-links right"
             href="#"
@@ -117,8 +122,8 @@
             @click="resetFilters"
           >
             <v-icon class="mr-2 grey--text">refresh</v-icon>
-            {{ $i18n.t("reset") }}</a
-          >
+            {{ $i18n.t("reset") }}
+          </a>
         </template>
 
         <v-card class="px-4">
@@ -142,9 +147,9 @@
     <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
       <v-card class="px-4 pt-2">
         <v-card-text>
-          <span class="body-2"
-            >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span
-          >
+          <span
+            class="body-2"
+          >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -172,15 +177,20 @@
           <td class="text-xs-center">{{ props.index }}</td>
 
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white"
-              >L</v-chip
-            >
+            <v-chip
+              v-if="props.item.type == 'Anomalie'"
+              color="#d32f2f"
+              class="ma-2"
+              label
+              text-color="white"
+            >L</v-chip>
             <v-chip v-else color="#174dc5" class="ma-2" label text-color="white">S</v-chip>
           </td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item.ticket_number } }" class="blue-color">
-              {{ props.item.ticket_number }}
-            </router-link>
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item._id } }"
+              class="blue-color"
+            >{{ props.item._id }}</router-link>
           </td>
 
           <td class="text-xs-center" v-if="$auth.check('admin')">
@@ -229,42 +239,53 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <span
-                  v-if="props.item.software == 'LibreOffice'"
+                  v-if="props.item.software.name == 'LibreOffice'"
                   class="major-criticality red-background-color"
                   v-on="on"
-                  >{{ props.item.software }}</span
-                >
+                >{{ props.item.software.name }}</span>
                 <span
-                  v-else-if="props.item.software == 'NPM'"
+                  v-else-if="props.item.software.name == 'NPM'"
                   class="medium-criticality yellow-background-color"
                   v-on="on"
-                  >{{ props.item.software }}</span
-                >
-                <span v-else class="minor-criticality grey-background-color" v-on="on">{{ props.item.software }}</span>
+                >{{ props.item.software.name }}</span>
+                <span
+                  v-else
+                  class="minor-criticality grey-background-color"
+                  v-on="on"
+                >{{ props.item.software.name }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
             </v-tooltip>
           </td>
-          <td class="text-xs-center">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
           <td class="text-xs-center">{{ props.item.assign_to }}</td>
           <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.transmitter }}</td>
 
           <td class="text-xs-center">
-            <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
+            <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
 
-            <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
+            <a class="blue-color" href="#">{{ props.item.contract.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
-          <td class="text-xs-center">{{ props.item.created }}</td>
+          <td class="text-xs-center">{{ props.item.timestamps.creation | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear v-if="props.item.conf.color == 'error'" color="#d32f2f" height="20" value="30">{{
+            <!-- <v-progress-linear
+              v-if="props.item.conf.color == 'error'"
+              color="#d32f2f"
+              height="20"
+              value="30"
+            >
+              {{
               props.item.remaining_time
-            }}</v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">{{
+              }}
+            </v-progress-linear>
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">-->
+            <!-- {{
               props.item.remaining_time
-            }}</v-progress-linear>
+              }}
+            </v-progress-linear>-->
           </td>
         </template>
       </v-data-table>
@@ -273,7 +294,7 @@
 </template>
 
 <script>
-var requests = require("@/assets/data/requests.json");
+//var requests = require("@/assets/data/requests.json");
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
@@ -386,7 +407,6 @@ export default {
     }
     this.$http.listSoftware().then(response => {
       response.data.forEach(software => {
-       // console.log(this.softwareList);
         this.softwareList.push(software.name);
       });
     });
@@ -403,6 +423,11 @@ export default {
     this.$http.listFilters().then(response => {
       this.savedFilters = response.data;
     });
+
+    this.$http.listTickets().then(response => {
+      this.requests = response.data;
+      console.log([...this.requests]);
+    });
   },
   computed: {
     ...mapGetters({
@@ -418,8 +443,7 @@ export default {
     }
   },
   created() {
-    this.requests = requests;
-
+    //this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
@@ -467,11 +491,15 @@ export default {
             break;
         }
       } catch (err) {
-         // continue regardless of error
+        // continue regardless of error
       } finally {
-        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
+        let selectedValues = this.customFilters.filter(
+          filter => filter.category == this.categoriesFilter
+        );
         this.values = this.values.filter(value => {
-          return selectedValues.filter(filter => filter.value == value).length == 0;
+          return (
+            selectedValues.filter(filter => filter.value == value).length == 0
+          );
         });
       }
     },
@@ -487,29 +515,51 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
+        items = items.filter(
+          item => item.team.toLowerCase() == this.ticketsFilter
+        );
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     checkStoredFilterUpdate() {
       if (this.storedSelectionsFilter.items) {
-        if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
+        if (
+          this.storedSelectionsFilter.items.length !== this.customFilters.length
+        ) {
           this.updateBtn = true;
         } else {
-          this.updateBtn = JSON.stringify(this.storedSelectionsFilter.items) !== JSON.stringify(this.customFilters);
+          this.updateBtn =
+            JSON.stringify(this.storedSelectionsFilter.items) !==
+            JSON.stringify(this.customFilters);
         }
       }
     },
     requestFilterByGroup(item, search) {
       let match = false;
-      let typesFilter = this.customFilters.filter(filter => filter.category == "Type");
-      let severityFilter = this.customFilters.filter(filter => filter.category == "Severity");
-      let softwareFilter = this.customFilters.filter(filter => filter.category == "Software");
-      let assignedFilter = this.customFilters.filter(filter => filter.category == "Assign To");
-      let responsibleFilter = this.customFilters.filter(filter => filter.category == "Responsible");
-      let transmitterFilter = this.customFilters.filter(filter => filter.category == "Transmitter");
-      let clientFilter = this.customFilters.filter(filter => filter.category == "Client / Contract");
-      let statusFilter = this.customFilters.filter(filter => filter.category == "Status");
+      let typesFilter = this.customFilters.filter(
+        filter => filter.category == "Type"
+      );
+      let severityFilter = this.customFilters.filter(
+        filter => filter.category == "Severity"
+      );
+      let softwareFilter = this.customFilters.filter(
+        filter => filter.category == "Software"
+      );
+      let assignedFilter = this.customFilters.filter(
+        filter => filter.category == "Assign To"
+      );
+      let responsibleFilter = this.customFilters.filter(
+        filter => filter.category == "Responsible"
+      );
+      let transmitterFilter = this.customFilters.filter(
+        filter => filter.category == "Transmitter"
+      );
+      let clientFilter = this.customFilters.filter(
+        filter => filter.category == "Client / Contract"
+      );
+      let statusFilter = this.customFilters.filter(
+        filter => filter.category == "Status"
+      );
 
       let typesFilterMatch = true;
       let severityFilterMatch = true;
@@ -534,7 +584,9 @@ export default {
         severityFilterMatch = false;
 
         severityFilter.forEach(currentFilter => {
-          if (item.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.severity.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
             severityFilterMatch = true;
           }
         });
@@ -544,7 +596,9 @@ export default {
         softwareFilterMatch = false;
 
         softwareFilter.forEach(currentFilter => {
-          if (item.software.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.software.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
             softwareFilterMatch = true;
           }
         });
@@ -554,7 +608,9 @@ export default {
         assignedFilterMatch = false;
 
         assignedFilter.forEach(currentFilter => {
-          if (item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
             assignedFilterMatch = true;
           }
         });
@@ -564,7 +620,9 @@ export default {
         responsibleFilterMatch = false;
 
         responsibleFilter.forEach(currentFilter => {
-          if (item.responsible.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.responsible.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
             responsibleFilterMatch = true;
           }
         });
@@ -574,7 +632,9 @@ export default {
         transmitterFilterMatch = false;
 
         transmitterFilter.forEach(currentFilter => {
-          if (item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
             transmitterFilterMatch = true;
           }
         });
@@ -584,7 +644,11 @@ export default {
         clientFilterMatch = false;
 
         clientFilter.forEach(currentFilter => {
-          if (item.client_contract && item.client_contract.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.client_contract &&
+            item.client_contract.toLowerCase() ==
+              currentFilter.value.toLowerCase()
+          ) {
             clientFilterMatch = true;
           }
         });
@@ -703,7 +767,10 @@ export default {
     },
     loadFilter() {
       this.resetFilters();
-      this.storedSelectionsFilter = Object.assign({}, this.storedSelectionsFilterHolder);
+      this.storedSelectionsFilter = Object.assign(
+        {},
+        this.storedSelectionsFilterHolder
+      );
       this.storedSelectionsFilterHolder = {};
       this.customFilters = [...this.storedSelectionsFilter.items];
       this.deleteBtn = true;
@@ -922,6 +989,7 @@ div.layout:nth-child(5) {
   clear: both;
   padding-top: 24px;
 }
+
 span.v-chip__content {
   color: #fff !important;
 }
