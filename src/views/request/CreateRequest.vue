@@ -64,13 +64,21 @@
                           >
                             <template v-slot:item="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                              <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
+                              <v-chip
+                                label
+                                v-else-if="data.item.critical == 'sensible'"
+                                color="orange"
+                              >S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
                               {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
                             <template v-slot:selection="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                              <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
+                              <v-chip
+                                label
+                                v-else-if="data.item.critical == 'sensible'"
+                                color="orange"
+                              >S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
                               {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
@@ -159,7 +167,11 @@
                             class="pt-0"
                           >
                             <template v-slot:append-outer class="custom-slot">
-                              <v-btn solo class="ml-0 black--text mt-0 full-height" @click.native="addRelated">
+                              <v-btn
+                                solo
+                                class="ml-0 black--text mt-0 full-height"
+                                @click.native="addRelated"
+                              >
                                 <v-icon dark>add</v-icon>
                               </v-btn>
                             </template>
@@ -169,36 +181,28 @@
                       </v-layout>
                     </v-container>
                     <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
+                      <v-chip
+                        v-model="linkedRequests[key]"
+                        close
+                      >{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
                   <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
                   <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
-                  <v-flex xs12 md8 sm8 xl3 lg3 >
-                    <!-- <br /> -->
-                   <!--  <file-upload
-                      prepend-icon="attach_file"
-                      class="file"
-                      url="undefined"
-                      :btn-label="$i18n.t('Attach file')"
-                      btn-uploading-label="Uploading file"
-                    ></file-upload> -->
-                     <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
+                  <v-flex xs12 md8 sm8 xl3 lg3>
+                    <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
                   </v-flex>
                 </v-layout>
               </v-card-text>
-              <v-card-actions>  
-                  <v-layout row wrap>
+              <v-card-actions>
+                <v-layout row wrap>
                   <v-flex>
                     <v-btn
-                      
+                      :disabled="submitRequest"
+                      :loading="submitRequest"
                       @click="validateFrom"
                       class="blue-background-color white-color custom-btn-action"
-
-                    >
-                      {{ $t("Submit") }}
-                    </v-btn>
-                    
+                    >{{ $t("Submit") }}</v-btn>
                   </v-flex>
                 </v-layout>
               </v-card-actions>
@@ -261,14 +265,21 @@ export default {
       softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"],
+      relatedRequests: [
+        "#1 issue1",
+        "#3 issue3",
+        "#18 issue18",
+        "#41 issue41",
+        "#35 issue35",
+        "#70 issue70"
+      ],
       engagementsCategory: [],
       selectedTypes: []
     };
   },
-components: {
+  components: {
     VueEditor,
-VUpload
+    VUpload
   },
   methods: {
     submit() {
@@ -277,7 +288,7 @@ VUpload
         this.ticket.participants = this.ticket.participants.split(",");
       }
       this.ticket.relatedRequests = this.linkedRequests;
-         if (this.ticket.requestFile.length) {
+      if (this.ticket.requestFile.length) {
         this.submitRequest = false;
         let requestFile = this.ticket.requestFile[0];
         let fileSize = requestFile.size;
@@ -288,10 +299,8 @@ VUpload
           .uploadFile(formData, mimeType, fileSize, requestFile.name)
           .then(response => {
             this.postRequest(response.data._id, requestFile.name);
-          //console.log(this.ticket.requestFile);
+
             this.submitRequest = true;
-            this.ticket.requestFile = [];
-            this.panel.push(true);
           })
           .catch(error => {
             this.$store.dispatch("ui/displaySnackbar", {
@@ -303,26 +312,7 @@ VUpload
       } else {
         this.postRequest();
       }
-      this.$http
-        .createTicket(this.ticket)
-        .then(response => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("ticket created"),
-            color: "success"
-          });
-          this.$router.push({
-            name: "Request",
-            params: { id: response.data._id }
-          });
-        })
-        .catch(err => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: err.response.data.error.details,
-            color: "error"
-          });
-        });
     },
-
 
     addRelated() {
       this.linkedRequests.push({
@@ -341,23 +331,22 @@ VUpload
           color: "error"
         });
       }
-    }
-  },
-   postRequest(fileId = "", fileName = "") {
-      this.ticket.comments.push({
-        body: this.contenu,
-        date: new Date().toDateString(),
-        name: this.displayName,
-        authorid: this.$store.state.user.user._id,
-        image: this.avatarUrl,
-        attachment: fileId,
-        attachedFile: fileName
-      });
+    },
+
+    postRequest(fileId = "", fileName = "") {
+      if (fileId !== "") {
+        let fileObject = {
+          name: fileName,
+          id: fileId
+        };
+        this.ticket.files = [];
+        this.ticket.files.push(fileObject);
+      }
       this.$http
-        .updateTicket(this.ticket._id, this.ticket)
+        .createTicket(this.ticket)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("updated"),
+            message: this.$i18n.t("ticket created"),
             color: "success"
           });
         })
@@ -367,8 +356,8 @@ VUpload
             color: "error"
           });
         });
-    },
-
+    }
+  },
   computed: {
     typeList() {
       var engagements = [];
@@ -381,14 +370,17 @@ VUpload
           if (this.ticket.software.critical) {
             switch (this.ticket.software.critical) {
               case "critical":
-                engagements = this.ticket.contract.Engagements.critical.engagements;
+                engagements = this.ticket.contract.Engagements.critical
+                  .engagements;
                 break;
               case "sensible":
-                engagements = this.ticket.contract.Engagements.sensible.engagements;
+                engagements = this.ticket.contract.Engagements.sensible
+                  .engagements;
 
                 break;
               case "standard":
-                engagements = this.ticket.contract.Engagements.standard.engagements;
+                engagements = this.ticket.contract.Engagements.standard
+                  .engagements;
 
                 break;
             }
@@ -415,7 +407,9 @@ VUpload
       if (this.ticket.severity.length) {
         var engagements = [];
         engagements = [...this.engagementsCategory].filter(
-          engagement => engagement.request == this.ticket.type && engagement.severity == this.ticket.severity
+          engagement =>
+            engagement.request == this.ticket.type &&
+            engagement.severity == this.ticket.severity
         );
         return engagements[0];
       }
@@ -557,10 +551,12 @@ button.ml-0 {
     padding-left: 33px !important;
   }
 }
+
 .container.grid-list-md .layout .flex {
   padding: 0px !important;
 }
-.custom-btn-action{
+
+.custom-btn-action {
   padding-top: 3px !important;
   margin-right: auto !important;
   margin-left: auto !important;
@@ -568,8 +564,8 @@ button.ml-0 {
   width: 150px;
   height: 35px;
 }
-.v-card__actions{
-   padding-top: 30px !important;
-}
 
+.v-card__actions {
+  padding-top: 30px !important;
+}
 </style>

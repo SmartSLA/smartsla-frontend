@@ -588,6 +588,7 @@ export default {
       newStatus: "",
       newResponsible: "",
       request: {
+        comments: {},
         statusId: 2
       },
       commentFile: [],
@@ -662,6 +663,7 @@ export default {
   },
   methods: {
     setRequestData(request) {
+      this.currentStatus = request.status;
       this.request.ticketTitle = request.title;
       this.request.ticketNumber = request._id;
       if (request.software.name) {
@@ -733,6 +735,15 @@ export default {
         attachment: fileId,
         attachedFile: fileName
       });
+      if (this.currentStatus != this.newStatus) {
+        this.ticket.status = this.newStatus;
+        this.ticket.logs.push({
+          action: this.newStatus,
+          author: this.$store.state.user.user._id,
+          date: new Date(),
+          assignedTo: this.newResponsible
+        });
+      }
       this.$http
         .updateTicket(this.ticket._id, this.ticket)
         .then(() => {
@@ -976,7 +987,7 @@ export default {
 }
 
 .layout.row.wrap {
-  /*margin-left: 0px !important;*/
+  /* margin-left: 0px !important; */
   /* padding-top: 10px !important; */
 }
 
