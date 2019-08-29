@@ -18,10 +18,10 @@
       <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>
         <v-card light color="white">
           <v-layout row wrap>
-            <v-flex xs3 md3 sm2 lg2 xl2 class="mt-4">
+            <v-flex xs2 md1 sm1 lg1 xl1 class="mt-4">
               <strong class="pt-4">{{ $t("Status") }}:</strong>
             </v-flex>
-            <v-flex xs9 md9 sm10 xl12 lg12>
+            <v-flex xs10 md11 sm11 xl11 lg11>
               <v-stepper class="noshadow" non-linear>
                 <v-stepper-header>
                   <v-stepper-step step="1" color="success" complete>{{ $t("New") }}</v-stepper-step>
@@ -69,14 +69,14 @@
           </v-layout>
           <v-divider />
           <v-layout wrap>
-            <v-flex xs9 md6 sm9 lg8 xl6 class="pt-0 pb-0">
+            <v-flex xs11 md11 sm11 lg11 xl11 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">#{{ request.ticketNumber }} - {{ request.ticketTitle }}</h3>
                 </div>
               </v-card-title>
             </v-flex>
-            <v-flex xs3 md4 sm1 xl4 lg1 class="pt-0 pb-0">
+            <v-flex xs1 md1 sm1 xl1 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
                 <v-btn color="primary" fab small dark to="#">
                   <v-icon>edit</v-icon>
@@ -84,48 +84,48 @@
               </div>
             </v-flex>
           </v-layout>
-          <v-divider />
-          <v-layout justify-center row fill-height wrap ml-3>
-            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+          <v-divider class="pb-2" />
+          <v-layout justify-center row fill-height wrap ml-3 class="custom-ticket-bl">
+            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Type") }} :</strong>
               {{ request.gravity }}
             </v-flex>
 
-            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("severity") }} :</strong>
               {{ request.gravity }}
             </v-flex>
-            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
               {{ request.ticketDate }}
             </v-flex>
-            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created by") }} :</strong>
               {{ request.ticketAuthor }}
             </v-flex>
 
-            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Assigned to") }} :</strong>
               {{ request.responsible.name }}
             </v-flex>
-            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
               {{ request.lastUpdate }}
             </v-flex>
-            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
               {{ request.software }}
             </v-flex>
-            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>
               {{ request.softwareVersion }}
             </v-flex>
-            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0 pb-2">
+            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("OS") }} :</strong>
               {{ request.softwareOs }}
             </v-flex>
           </v-layout>
-          <v-divider class="mx-3"></v-divider>
+          <v-divider class="mt-2"></v-divider>
           <v-card>
             <v-card-text>
               <v-layout>
@@ -976,7 +976,7 @@ export default {
 }
 
 .layout.row.wrap {
-  margin-left: 0px !important;
+  /*margin-left: 0px !important;*/
   /* padding-top: 10px !important; */
 }
 
@@ -997,5 +997,9 @@ export default {
 .fluid {
   padding-right: 24px !important;
   padding-left: 0px !important;
+}
+
+.custom-ticket-bl {
+  margin-left: 16px !important;
 }
 </style>

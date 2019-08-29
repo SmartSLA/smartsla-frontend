@@ -188,9 +188,9 @@
           </td>
           <td>
             <router-link
-              :to="{ name: 'Request', params: { id: props.item.ticket_number } }"
+              :to="{ name: 'Request', params: { id: props.item._id } }"
               class="blue-color"
-            >{{ props.item.ticket_number }}</router-link>
+            >{{ props.item._id }}</router-link>
           </td>
 
           <td class="text-xs-center" v-if="$auth.check('admin')">
@@ -239,39 +239,39 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <span
-                  v-if="props.item.software == 'LibreOffice'"
+                  v-if="props.item.software.name == 'LibreOffice'"
                   class="major-criticality red-background-color"
                   v-on="on"
-                >{{ props.item.software }}</span>
+                >{{ props.item.software.name }}</span>
                 <span
-                  v-else-if="props.item.software == 'NPM'"
+                  v-else-if="props.item.software.name == 'NPM'"
                   class="medium-criticality yellow-background-color"
                   v-on="on"
-                >{{ props.item.software }}</span>
+                >{{ props.item.software.name }}</span>
                 <span
                   v-else
                   class="minor-criticality grey-background-color"
                   v-on="on"
-                >{{ props.item.software }}</span>
+                >{{ props.item.software.name }}</span>
               </template>
               <span>Version : 1.4.6 / Criticité : Haute</span>
             </v-tooltip>
           </td>
-          <td class="text-xs-center">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
           <td class="text-xs-center">{{ props.item.assign_to }}</td>
           <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.transmitter }}</td>
 
           <td class="text-xs-center">
-            <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
+            <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
 
-            <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
+            <a class="blue-color" href="#">{{ props.item.contract.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
-          <td class="text-xs-center">{{ props.item.created }}</td>
+          <td class="text-xs-center">{{ props.item.timestamps.creation | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear
+            <!-- <v-progress-linear
               v-if="props.item.conf.color == 'error'"
               color="#d32f2f"
               height="20"
@@ -281,11 +281,11 @@
               props.item.remaining_time
               }}
             </v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">
-              {{
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">-->
+            <!-- {{
               props.item.remaining_time
               }}
-            </v-progress-linear>
+            </v-progress-linear>-->
           </td>
         </template>
       </v-data-table>
@@ -294,7 +294,7 @@
 </template>
 
 <script>
-var requests = require("@/assets/data/requests.json");
+//var requests = require("@/assets/data/requests.json");
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
@@ -426,8 +426,8 @@ export default {
 
     this.$http.listTickets().then(response => {
       this.requests = response.data;
+      console.log([...this.requests]);
     });
-    console.log([...this.requests]);
   },
   computed: {
     ...mapGetters({
@@ -443,8 +443,7 @@ export default {
     }
   },
   created() {
-    this.requests = requests;
-    console.log(this.requests[1].status);
+    //this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");

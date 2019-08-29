@@ -172,17 +172,18 @@
                       <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
-                  <v-flex md6 xs0></v-flex>
-                  <v-flex md6 xs0></v-flex>
-                  <v-flex xs10 class="pl-4">
-                    <br />
-                    <file-upload
+                  <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
+                  <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
+                  <v-flex xs12 md8 sm8 xl3 lg3 >
+                    <!-- <br /> -->
+                   <!--  <file-upload
                       prepend-icon="attach_file"
                       class="file"
                       url="undefined"
                       :btn-label="$i18n.t('Attach file')"
                       btn-uploading-label="Uploading file"
-                    ></file-upload>
+                    ></file-upload> -->
+                     <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
                   </v-flex>
                 </v-layout>
               </v-card-text>
@@ -190,8 +191,7 @@
                   <v-layout row wrap>
                   <v-flex>
                     <v-btn
-                      :disabled="submitRequest"
-                      :loading="submitRequest"
+                      
                       @click="validateFrom"
                       class="blue-background-color white-color custom-btn-action"
 
@@ -214,6 +214,7 @@
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
+import VUpload from "vuetify-upload-component";
 import { COPYFILE_EXCL } from "constants";
 
 Vue.use(FileUpload);
@@ -234,6 +235,8 @@ export default {
         responsible: {},
         author: {},
         comments: [],
+        requestFile: [],
+        contenu: "",
         files: []
       },
       linkedRequest: "",
@@ -263,8 +266,9 @@ export default {
       selectedTypes: []
     };
   },
-  components: {
-    VueEditor
+components: {
+    VueEditor,
+VUpload
   },
   methods: {
     submit() {
@@ -273,6 +277,32 @@ export default {
         this.ticket.participants = this.ticket.participants.split(",");
       }
       this.ticket.relatedRequests = this.linkedRequests;
+         if (this.ticket.requestFile.length) {
+        this.submitRequest = false;
+        let requestFile = this.ticket.requestFile[0];
+        let fileSize = requestFile.size;
+        let mimeType = requestFile.type;
+        let formData = new FormData();
+        formData.append("file", requestFile);
+        this.$http
+          .uploadFile(formData, mimeType, fileSize, requestFile.name)
+          .then(response => {
+            this.postRequest(response.data._id, requestFile.name);
+          //console.log(this.ticket.requestFile);
+            this.submitRequest = true;
+            this.ticket.requestFile = [];
+            this.panel.push(true);
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
+            this.submitRequest = true;
+          });
+      } else {
+        this.postRequest();
+      }
       this.$http
         .createTicket(this.ticket)
         .then(response => {
@@ -292,6 +322,8 @@ export default {
           });
         });
     },
+
+
     addRelated() {
       this.linkedRequests.push({
         link: this.linkType,
@@ -311,6 +343,32 @@ export default {
       }
     }
   },
+   postRequest(fileId = "", fileName = "") {
+      this.ticket.comments.push({
+        body: this.contenu,
+        date: new Date().toDateString(),
+        name: this.displayName,
+        authorid: this.$store.state.user.user._id,
+        image: this.avatarUrl,
+        attachment: fileId,
+        attachedFile: fileName
+      });
+      this.$http
+        .updateTicket(this.ticket._id, this.ticket)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    },
+
   computed: {
     typeList() {
       var engagements = [];
