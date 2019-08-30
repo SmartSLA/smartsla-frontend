@@ -261,5 +261,4 @@ export default {
   padding-right: 24px;
 }
 }
-
 </style>

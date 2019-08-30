@@ -121,5 +121,4 @@ div.wrap:nth-child(2) > div:nth-child(1) {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
-
 </style>
