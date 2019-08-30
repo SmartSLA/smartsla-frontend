@@ -35,15 +35,9 @@
                     color="primary"
                     complete-icon="access_time"
                     class="current_step"
-                  >
-                    {{ $t("Supported") }}
-                  </v-stepper-step>
-                  <v-stepper-step v-else-if="ticketStatusId < 1" step>
-                    {{ $t("Supported") }}
-                  </v-stepper-step>
-                  <v-stepper-step v-else step complete color="success">
-                    {{ $t("Supported") }}
-                  </v-stepper-step>
+                  >{{ $t("Supported") }}</v-stepper-step>
+                  <v-stepper-step v-else-if="ticketStatusId < 1" step>{{ $t("Supported") }}</v-stepper-step>
+                  <v-stepper-step v-else step complete color="success">{{ $t("Supported") }}</v-stepper-step>
 
                   <v-divider v-if="ticketStatusId < 2"></v-divider>
                   <v-divider v-else color="success"></v-divider>
@@ -54,8 +48,7 @@
                     color="primary"
                     complete-icon="access_time"
                     class="current_step"
-                    >{{ $t("Bypassed") }}</v-stepper-step
-                  >
+                  >{{ $t("Bypassed") }}</v-stepper-step>
                   <v-stepper-step v-else-if="ticketStatusId < 2" step>{{ $t("Bypassed") }}</v-stepper-step>
                   <v-stepper-step v-else step complete color="success">{{ $t("Bypassed") }}</v-stepper-step>
                   <v-divider v-if="ticketStatusId < 3"></v-divider>
@@ -67,8 +60,7 @@
                     color="primary"
                     complete-icon="access_time"
                     class="current_step"
-                    >{{ $t("Resolved") }}</v-stepper-step
-                  >
+                  >{{ $t("Resolved") }}</v-stepper-step>
                   <v-stepper-step v-else-if="ticketStatusId < 3" step>{{ $t("Resolved") }}</v-stepper-step>
                   <v-stepper-step v-else step complete color="success">{{ $t("Resolved") }}</v-stepper-step>
                   <v-divider v-if="ticketStatusId < 4"></v-divider>
@@ -183,11 +175,15 @@
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.linkedTickets.length">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
+                          <span
+                            v-if="link.type == 'duplicate'"
+                          >{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'Request', params: { id: link.id } }">{{
+                          <router-link :to="{ name: 'Request', params: { id: link.id } }">
+                            {{
                             link.request
-                          }}</router-link>
+                            }}
+                          </router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -227,9 +223,10 @@
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <router-link :to="`${apiUrl}/api/files/${comment.attachment}`" target="_blank">
-                                  {{ comment.attachedFile }}
-                                </router-link>
+                                <router-link
+                                  :to="`${apiUrl}/api/files/${comment.attachment}`"
+                                  target="_blank"
+                                >{{ comment.attachedFile }}</router-link>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -263,9 +260,10 @@
                               <v-card-text v-html="comment.body"></v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <a :href="`${apiUrl}/api/files/${comment.attachment}`" target="_blank">
-                                  {{ comment.attachedFile }}
-                                </a>
+                                <a
+                                  :href="`${apiUrl}/api/files/${comment.attachment}`"
+                                  target="_blank"
+                                >{{ comment.attachedFile }}</a>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <span v-for="(action, keya) in comment.actions" :key="keya">
@@ -299,7 +297,7 @@
                     <v-input prepend-icon="no-icon" class="pt-2">
                       <v-layout row wrap>
                         <v-flex xs10 md8 sm8 xl3 lg2>
-                          <v-select :items="statusList" v-model="newStatus" :label="$t('Status')"></v-select>
+                          <v-select :items="statusList" v-model="newStatus" :label="$t('Status')" item-text="value" item-value="key"></v-select>
                         </v-flex>
                         <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select
@@ -323,9 +321,16 @@
                     <v-layout row wrap>
                       <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
                       <v-flex xs2 md4 sm4 lg4 xl4>
-                        <v-btn color="info" class="custom-comment-btn" @click="addComment" :disabled="!commentBtn">{{
+                        <v-btn
+                          color="info"
+                          class="custom-comment-btn"
+                          @click="addComment"
+                          :disabled="!commentBtn"
+                        >
+                          {{
                           $t("add comment")
-                        }}</v-btn>
+                          }}
+                        </v-btn>
                       </v-flex>
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
@@ -334,9 +339,7 @@
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
-                  <v-card-text>
-                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
-                  </v-card-text>
+                  <v-card-text>{{ $t("the satisfaction survey will be available once the ticket is closed") }}</v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -354,9 +357,12 @@
               {{ $t("Supported") }}
               <v-layout row wrap>
                 <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="success" height="18" value="0" class="mt-0 white--text font-weight-bold"
-                    >0 HO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="success"
+                    height="18"
+                    value="0"
+                    class="mt-0 white--text font-weight-bold"
+                  >0 HO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>1 HO</v-flex>
                 <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
@@ -398,9 +404,12 @@
               {{ $t("Supported") }}
               <v-layout row wrap>
                 <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="success" height="18" value="100" class="mt-0 white--text font-weight-bold"
-                    >0 HO</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="success"
+                    height="18"
+                    value="100"
+                    class="mt-0 white--text font-weight-bold"
+                  >0 HO</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>2 H</v-flex>
                 <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
@@ -410,18 +419,24 @@
               {{ $t("Bypass") }}
               <v-layout row wrap>
                 <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="#CFCFCF" height="18" value="40" class="mt-0 white--text font-weight-bold"
-                    >0</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="#CFCFCF"
+                    height="18"
+                    value="40"
+                    class="mt-0 white--text font-weight-bold"
+                  >0</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
               </v-layout>
               {{ $t("Solution") }}
               <v-layout row wrap>
                 <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear color="#CFCFCF" height="18" value="60" class="mt-0 white--text font-weight-bold"
-                    >0</v-progress-linear
-                  >
+                  <v-progress-linear
+                    color="#CFCFCF"
+                    height="18"
+                    value="60"
+                    class="mt-0 white--text font-weight-bold"
+                  >0</v-progress-linear>
                 </v-flex>
                 <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
                 <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
@@ -429,9 +444,9 @@
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
-            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
-              {{ $t("interlocutor in charge of the request") }}
-            </h4>
+            <h4
+              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
+            >{{ $t("interlocutor in charge of the request") }}</h4>
             <v-card class="pt-2 nobottomshadow" v-if="request.responsible.name">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <br />
@@ -455,15 +470,20 @@
                 {{ request.responsible.email }}
               </v-card-text>
             </v-card>
-            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
-              {{ $t("Beneficiary") }}
-            </h4>
+            <h4
+              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
+            >{{ $t("Beneficiary") }}</h4>
             <v-card class="pt-2">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
                 <v-flex xs2 md4 xl4 sm4 lg2 pl-0></v-flex>
                 <v-flex xs10 md5 sm5 xl5 lg10 pl-3>
-                  <v-avatar size="150" title="false" class="avatar-width" v-if="request.beneficiary.image.length > 1">
+                  <v-avatar
+                    size="150"
+                    title="false"
+                    class="avatar-width"
+                    v-if="request.beneficiary.image.length > 1"
+                  >
                     <v-img :src="request.beneficiary.image"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -477,8 +497,7 @@
                 {{ request.beneficiary.phone }}
                 <br />
                 <span class="body-2">{{ $t("client") }} / {{ $t("contract") }} :&nbsp;</span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
-                >/
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link>/
                 <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
             </v-card>
@@ -494,48 +513,45 @@
                 <v-divider></v-divider>
                 <v-layout class="mb-1 ml--1 mr-4">
                   <v-flex xs2 md3 sm3 lg2 xl2 pl-0 class="green--text font-weight-bold">
-                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
-                      >label_important</v-icon
-                    >
+                    <v-icon
+                      class="progress-arrow"
+                      :class="{ 'green--text': request.communityContribution.status.dev }"
+                    >label_important</v-icon>
                     <small>{{ $t("Dev") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("published") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
-                      >label_important</v-icon
-                    >
+                    >label_important</v-icon>
                     <small>{{ $t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">
-                  {{ request.communityContribution.communityIssueLink }}
-                </a>
+                <a
+                  :href="request.communityContribution.communityIssueLink"
+                >{{ request.communityContribution.communityIssueLink }}</a>
               </v-card>
             </v-card>
           </v-flex>
@@ -583,10 +599,22 @@ export default {
         indentUnit: 2
       },
       statusList: [
-        this.$i18n.t("Supported"),
-        this.$i18n.t("Bypassed"),
-        this.$i18n.t("Resolved"),
-        this.$i18n.t("Closed")
+        {
+          key: "supported",
+          value: this.$i18n.t("Supported")
+        },
+        {
+          key: "bypassed",
+          value: this.$i18n.t("Bypassed")
+        },
+        {
+          key: "resolved",
+          value: this.$i18n.t("Resolved")
+        },
+        {
+          key: "closed",
+          value: this.$i18n.t("Closed")
+        }
       ],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
       text: ""
@@ -598,13 +626,21 @@ export default {
     VUpload
   },
   mounted() {
-    var progressBars = Array.prototype.slice.call(document.getElementsByClassName("v-progress-linear"));
+    var progressBars = Array.prototype.slice.call(
+      document.getElementsByClassName("v-progress-linear")
+    );
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
-      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+      var value = element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName(
+        "v-progress-linear__bar__determinate"
+      );
       newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+      element.getElementsByClassName(
+        "v-progress-linear__content"
+      )[0].innerHTML = "";
     }
   },
   computed: {
@@ -646,7 +682,10 @@ export default {
         this.setRequestData(Object.assign({}, response.data));
       });
     }
-    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+    this.$store.dispatch(
+      "sidebar/setSidebarComponent",
+      "issue-detail-side-bar"
+    );
     this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
   },
   beforeRouteLeave(to, from, next) {
@@ -666,7 +705,9 @@ export default {
       this.request.statusId = 1;
       this.request.attachedFile = "";
       this.request.lastUpdate = "";
-      this.request.ticketDate = new Date(request.timestamps.creation).toDateString();
+      this.request.ticketDate = new Date(
+        request.timestamps.creation
+      ).toDateString();
       this.request.subject = request.description;
       this.request.responsible = {};
       this.request.ticketAuthor = "";
