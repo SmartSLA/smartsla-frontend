@@ -19,7 +19,7 @@
           :items="clients"
           v-model="clients"
           hide-details
-          label="Status"
+          :label="$i18n.t('Status')"
           class="contracts-search-status"
         ></v-select>
         <v-select
@@ -27,7 +27,7 @@
           :items="clients"
           v-model="clients"
           hide-details
-          label="Team"
+          :label="$i18n.t('Team')"
           class="contracts-search-team"
         ></v-select>
         <v-select
@@ -35,7 +35,7 @@
           :items="roles"
           v-model="roles"
           hide-details
-          label="Commercial"
+          :label="$i18n.t('Commercial')"
           class="contracts-search-commercial"
         ></v-select>
         <div class="contracts-operations">
@@ -68,9 +68,11 @@
               <span class="expired-contracts">Expired</span>
             </div>
             <div v-else>
-              <router-link class="contracts-actions blue-color" :to="{ name: 'Contract', params: { id: props.item._id } }" >{{
-                props.item.name
-              }}</router-link>
+              <router-link
+                class="contracts-actions blue-color"
+                :to="{ name: 'Contract', params: { id: props.item._id } }"
+                >{{ props.item.name }}</router-link
+              >
             </div>
           </td>
           <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>

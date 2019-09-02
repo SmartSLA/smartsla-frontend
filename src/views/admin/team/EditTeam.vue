@@ -1,17 +1,14 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link
-      class="text-lg-left action-links"
-      :to="{ name: 'Teams' }"
-    >&lt; {{ $t("Return to teams list") }}</router-link>
+    <router-link class="text-lg-left action-links" :to="{ name: 'Teams' }"
+      >&lt; {{ $t("Return to teams list") }}</router-link
+    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3
-                class="display-1 font-weight-medium mb-0"
-              >{{ isNew ? $t("Edit Team") : $t("New Team") }}</h3>
+              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Team") : $t("New Team") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -105,7 +102,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="time1"
-                      label="Picker in menu"
+                      :label="$i18n.t('Picker in menu')"
                       prepend-icon="access_time"
                       readonly
                       v-on="on"
@@ -140,7 +137,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="time2"
-                      label="Picker in menu"
+                      :label="$i18n.t('Picker in menu')"
                       prepend-icon="access_time"
                       readonly
                       v-on="on"
@@ -177,17 +174,20 @@
           </v-form>
           <v-dialog v-model="openDialog" persistent max-width="290">
             <v-card>
-              <v-card-title class="body-2">{{ $t('You are about to delete:')}}</v-card-title>
+              <v-card-title class="body-2">{{ $t("You are about to delete:") }}</v-card-title>
               <v-card-text>
-                <span class="pl-3">{{ $t('Team') }} : {{ team.name }}</span>
+                <span class="pl-3">{{ $t("Team") }} : {{ team.name }}</span>
                 <br />
                 <br />
-                <span class="body-2">{{ $t('Are you sure?')}}</span>
+                <span class="body-2">{{ $t("is linked to the following elements") }}</span>
+                <br />-
+                <br />
+                <span class="body-2">{{ $t("Are you sure?") }}</span>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
-                <v-btn color="red darken-1" flat @click="deleteTeam">Delete</v-btn>
+                <v-btn color="error darken-1" flat @click="deleteTeam">Delete</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -321,12 +321,13 @@ export default {
   cursor: pointer;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   background-color: #2195f2 !important;
 }
 
 .container {
-  max-width: 100%;
+  max-width: 100% !important;
+  padding: 0px;
 }
 
 .pt-0 {
@@ -334,5 +335,11 @@ export default {
   margin-left: 0px !important;
   padding-right: 0px;
   margin-top: 0px !important;
+}
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
 }
 </style>

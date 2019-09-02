@@ -123,7 +123,7 @@ export default {
   padding: 10px;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   background-color: #2195f2;
   color: #fff;
 }
@@ -179,5 +179,9 @@ div.wrap:nth-child(2) > div:nth-child(1) {
   margin-right: 0px;
   padding-right: 0px;
   padding-bottom: 0px;
+}
+.container {
+  max-width: 100% !important;
+  padding: 0px;
 }
 </style>

@@ -77,6 +77,7 @@ export default {
 .red-background-color {
   background-color: #d32f2f !important;
 }
+
 .white-color {
   color: #ffffff !important;
 }
@@ -171,12 +172,13 @@ export default {
 .file-upload .input-wrapper {
   background-color: #eee !important;
   height: 45px !important;
-  width: 150px !important;
+  width: 175px !important;
   margin-left: 10px !important;
 }
 
 .file-upload .input-wrapper .file-upload-label {
   color: rgba(0, 0, 0, 0.54) !important;
+  padding-left: 0px !important;
 }
 
 .file-upload .input-wrapper .file-upload-label .file-upload-icon {
@@ -219,7 +221,6 @@ button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
 
 button.v-btn.v-btn--flat.v-btn--icon.theme--light {
   background-color: #2195f2;
-  
 }
 
 th {
@@ -236,16 +237,16 @@ tr:nth-child(odd) {
 
 .layout.justify-center.align-center > div {
   width: 100%;
+  padding: 0px !important;
 }
 
-#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
+/* #openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
   height: 48px;
   padding-top: 0px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
   margin-left: 0px !important;
-}
-
+} */
 .ql-container {
   background: #FAFAFA;
 }
@@ -288,11 +289,6 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
   box-shadow: 0px 0px;
 }
 
-.fluid {
-  padding-right: 44px !important;
-  // padding-left: 44px !important;
-}
-
 .v-card__actions {
   padding-bottom: 24px !important;
 }
@@ -313,8 +309,58 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
   margin: 0px !important;
 }
 
-.grid-list-md{
-  padding-left: 0px !important;
+@media only screen and (max-width: 959px) {
+  .v-stepper:not(.v-stepper--vertical) .v-stepper__label {
+    display: block !important;
+  }
 }
 
+@media only screen and (max-width: 1263px) {
+  .v-stepper__step.v-stepper__step--active.v-stepper__step--complete {
+    display: none !important;
+  }
+
+  .current_step.v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete {
+    display: flex !important;
+  }
+
+  .v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete {
+    display: none !important;
+  }
+
+  .v-stepper__step {
+    display: none !important;
+  }
+
+  hr.v-divider.theme--light {
+    display: none !important;
+  }
+}
+
+@media only screen and (min-width: 1264px) {
+  .file-upload .input-wrapper {
+    width: 175px !important;
+  }
+}
+
+.v-toolbar__content {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.v-stepper__label {
+  padding-left: 9px !important;
+}
+
+.v-card.v-sheet.theme--light p {
+  margin-bottom: 0px;
+}
+
+.v-btn__content {
+  width: 100% !important;
+}
+
+.cust_uploader .v-list.theme--light {
+  padding: 0px !important;
+}
 </style>

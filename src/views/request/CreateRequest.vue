@@ -42,70 +42,78 @@
                       prepend-icon="mail"
                       v-model="ticket.participants"
                       name="Mail"
-                      :label="$i18n.t('Participants E-mails (separated by commas)')"
+                      :label="$t('Participants E-mails (separated by commas)')"
                       type="text"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 md12 lg12 sm12 xl12>
                     <v-container grid-list-md>
                       <v-layout row wrap>
-                      <v-flex xs12 md3 sm12 lg0 xl3>
-                        <v-autocomplete
-                          :disabled="!ticket.contract.software"
-                          :items="ticket.contract.software"
-                          :label="$i18n.t('Software')"
-                          prepend-icon="laptop"
-                          background-color="white"
-                          v-model="ticket.software"
-                          :search-input.sync="software"
-                          class="required-element"
-                          return-object
-                          :rules="[() => Object.keys(ticket.software).length || $i18n.t('Required field')]"
-                        >
-                          <template v-slot:item="data">
-                            <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                            <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
-                            <v-chip label v-else color="grey">S</v-chip>
-                            {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
-                          </template>
-                          <template v-slot:selection="data">
-                            <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
-                            <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
-                            <v-chip label v-else color="grey">S</v-chip>
-                            {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
-                          </template>
-                        </v-autocomplete>
-                      </v-flex>
-                      <v-flex xs1></v-flex>
-                      <v-flex xs12 md3 sm12 lg0 xl3>
-                        <v-select
-                          prepend-icon="storage"
-                          :disabled="!ticket.software.critical"
-                          :items="[...typeList]"
-                          v-model="ticket.type"
-                          :label="$i18n.t('Type')"
-                          :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
-                          class="required-element"
-                          return-object
-                        ></v-select>
-                      </v-flex>
-                      <v-flex xs1></v-flex>
-                      <v-flex xs12 xs12 md3 sm12 lg0 xl3>
-                        <v-select
-                          prepend-icon="report"
-                          :items="[...severityList]"
-                          :disabled="!ticket.type"
-                          v-model="ticket.severity"
-                          :label="$i18n.t('Severity')"
-                          :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
-                          class="required-element"
-                          return-object
-                        ></v-select>
-                      </v-flex>
-                    </v-layout>
+                        <v-flex xs12 md3 sm12 lg0 xl3>
+                          <v-autocomplete
+                            :disabled="!ticket.contract.software"
+                            :items="ticket.contract.software"
+                            :label="$i18n.t('Software')"
+                            prepend-icon="laptop"
+                            background-color="white"
+                            v-model="ticket.software"
+                            :search-input.sync="software"
+                            class="required-element"
+                            return-object
+                            :rules="[() => Object.keys(ticket.software).length || $i18n.t('Required field')]"
+                          >
+                            <template v-slot:item="data">
+                              <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
+                              <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
+                              <v-chip label v-else color="grey">S</v-chip>
+                              {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
+                            </template>
+                            <template v-slot:selection="data">
+                              <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
+                              <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
+                              <v-chip label v-else color="grey">S</v-chip>
+                              {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
+                            </template>
+                          </v-autocomplete>
+                        </v-flex>
+                        <v-flex xs1></v-flex>
+                        <v-flex xs12 md3 sm12 lg0 xl3>
+                          <v-select
+                            prepend-icon="storage"
+                            :disabled="!ticket.software.critical"
+                            :items="[...typeList]"
+                            v-model="ticket.type"
+                            :label="$i18n.t('Type')"
+                            :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
+                            class="required-element"
+                            return-object
+                          ></v-select>
+                        </v-flex>
+                        <v-flex xs1></v-flex>
+                        <v-flex xs12 md3 sm12 lg0 xl3>
+                          <v-select
+                            prepend-icon="report"
+                            :items="[...severityList]"
+                            :disabled="!ticket.type"
+                            v-model="ticket.severity"
+                            :label="$i18n.t('Severity')"
+                            :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
+                            class="required-element"
+                            return-object
+                          ></v-select>
+                        </v-flex>
+                      </v-layout>
                     </v-container>
                   </v-flex>
-                  <v-flex class="pt-4 pb-4 px-0 body-2 grey--text" xs12 md12 lg5 sm12 xl12 v-if="Object.keys(selectedEngagement).length">
+                  <v-flex
+                    class="pb-4 px-0 grey--text"
+                    xs12
+                    md12
+                    lg12
+                    sm12
+                    xl12
+                    v-if="Object.keys(selectedEngagement).length"
+                  >
                     <span>
                       <v-icon>mdi-file-document-edit-outline</v-icon>
                       {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
@@ -127,7 +135,7 @@
                     </v-input>
                   </v-flex>
 
-                  <v-flex xs12 md6 sm6 lg40 xl70 >
+                  <v-flex xs12 md6 sm6 lg40 xl70>
                     <v-container grid-list-md>
                       <v-layout row wrap>
                         <v-flex xs12 md5 sm12 lg6 xl4>
@@ -151,7 +159,7 @@
                             class="pt-0"
                           >
                             <template v-slot:append-outer class="custom-slot">
-                              <v-btn solo class="ml-0 white black--text mt-0 full-height" @click.native="addRelated">
+                              <v-btn solo class="ml-0 black--text mt-0 full-height" @click.native="addRelated">
                                 <v-icon dark>add</v-icon>
                               </v-btn>
                             </template>
@@ -164,27 +172,23 @@
                       <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
                     </div>
                   </v-flex>
-                  <v-flex md6 xs0></v-flex>
-                  <v-flex md6 xs0></v-flex>
-                  <v-flex xs10 class="pl-4">
-                    <br />
-                    <file-upload
-                      prepend-icon="attach_file"
-                      class="file"
-                      url="undefined"
-                      :btn-label="$i18n.t('Attach file')"
-                      btn-uploading-label="Uploading file"
-                    ></file-upload>
+                  <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
+                  <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
+                  <v-flex xs12 md8 sm8 xl3 lg3>
+                    <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
                   </v-flex>
                 </v-layout>
               </v-card-text>
               <v-card-actions>
-                <v-layout>
-                  <v-flex xs6 text-xs-right align-end>
-                    <v-spacer></v-spacer>
-                    <v-btn :disabled="submitRequest" :loading="submitRequest" @click="validateFrom" class="blue-background-color white-color" >{{
-                      $t("Submit")
-                    }}</v-btn>
+                <v-layout row wrap>
+                  <v-flex>
+                    <v-btn
+                      :disabled="submitRequest"
+                      :loading="submitRequest"
+                      @click="validateFrom"
+                      class="blue-background-color white-color custom-btn-action"
+                      >{{ $t("Submit") }}</v-btn
+                    >
                   </v-flex>
                 </v-layout>
               </v-card-actions>
@@ -200,7 +204,7 @@
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
-import { error } from "util";
+import VUpload from "vuetify-upload-component";
 import { COPYFILE_EXCL } from "constants";
 
 Vue.use(FileUpload);
@@ -221,6 +225,8 @@ export default {
         responsible: {},
         author: {},
         comments: [],
+        requestFile: [],
+        contenu: "",
         files: []
       },
       linkedRequest: "",
@@ -245,13 +251,14 @@ export default {
       softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"],
+      relatedRequests: [],
       engagementsCategory: [],
       selectedTypes: []
     };
   },
   components: {
-    VueEditor
+    VueEditor,
+    VUpload
   },
   methods: {
     submit() {
@@ -260,25 +267,32 @@ export default {
         this.ticket.participants = this.ticket.participants.split(",");
       }
       this.ticket.relatedRequests = this.linkedRequests;
-      this.$http
-        .createTicket(this.ticket)
-        .then(response => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("ticket created"),
-            color: "success"
+      if (this.ticket.requestFile.length) {
+        this.submitRequest = false;
+        let requestFile = this.ticket.requestFile[0];
+        let fileSize = requestFile.size;
+        let mimeType = requestFile.type;
+        let formData = new FormData();
+        formData.append("file", requestFile);
+        this.$http
+          .uploadFile(formData, mimeType, fileSize, requestFile.name)
+          .then(response => {
+            this.postRequest(response.data._id, requestFile.name);
+
+            this.submitRequest = true;
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
+            this.submitRequest = true;
           });
-          this.$router.push({
-            name: "Request",
-            params: { id: response.data._id }
-          });
-        })
-        .catch(err => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: err.response.data.error.details,
-            color: "error"
-          });
-        });
+      } else {
+        this.postRequest();
+      }
     },
+
     addRelated() {
       this.linkedRequests.push({
         link: this.linkType,
@@ -296,7 +310,40 @@ export default {
           color: "error"
         });
       }
+    },
+
+    postRequest(fileId = "", fileName = "") {
+      if (fileId !== "") {
+        let fileObject = {
+          name: fileName,
+          id: fileId
+        };
+        this.ticket.files = [];
+        this.ticket.files.push(fileObject);
+      }
+      this.$http
+        .createTicket(this.ticket)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("ticket created"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
+  },
+  mounted() {
+
+    this.$http.listTickets().then(response => {
+      response.data.forEach(ticket => {
+        this.relatedRequests.push(ticket._id);
+      });
+    });
   },
   computed: {
     typeList() {
@@ -337,6 +384,7 @@ export default {
           .filter(engagement => engagement.request == this.ticket.type)
           .map(item => item.severity);
       }
+      this.engagementsCategory = this.selectedTypes.slice();
       return [];
     },
     selectedEngagement() {
@@ -359,6 +407,9 @@ export default {
     "ticket.software": function(newSoftware, oldSoftware) {
       this.ticket.severity = {};
       this.ticket.type = {};
+    },
+    "ticket.type": function(newType, oldType) {
+      this.ticket.severity = {};
     }
   },
   created() {
@@ -414,7 +465,7 @@ export default {
   padding: 10px;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   color: #fff;
 }
 
@@ -476,13 +527,27 @@ main.v-content:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-chi
 button.ml-0 {
   min-height: 48px;
 }
-@media only screen and (max-width: 959px) {
 
-  .v-input.pt-0.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.theme--light{
+@media only screen and (max-width: 959px) {
+  .v-input.pt-0.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.theme--light {
     padding-left: 33px !important;
   }
 }
-.container.grid-list-md .layout .flex{
-  padding:0px !important;
+
+.container.grid-list-md .layout .flex {
+  padding: 0px !important;
+}
+
+.custom-btn-action {
+  padding-top: 3px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  display: block !important;
+  width: 150px;
+  height: 35px;
+}
+
+.v-card__actions {
+  padding-top: 30px !important;
 }
 </style>

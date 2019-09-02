@@ -36,7 +36,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Software', params: { id: 15 } }" class="blue-color">{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'Software', params: { id: 15 } }" class="blue-color">{{
+              props.item.name
+            }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.description }}</td>
           <td class="text-xs-center">{{ props.item.technologies }}</td>
@@ -75,7 +77,7 @@ export default {
           class: "text-xs-center"
         },
         {
-          text: this.$i18n.t("Tehcnologies"),
+          text: this.$i18n.t("Technologies"),
           value: "technologies",
           sortable: false,
           class: "text-xs-center"

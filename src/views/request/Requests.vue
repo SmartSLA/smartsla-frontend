@@ -1,10 +1,22 @@
 <template>
   <div class="requests-list">
     <v-card-text>
-      <a href="#" disabled class="text-lg-left action-links">
-        <v-icon class="mr-2">bug_report</v-icon>
-        <span>{{ $t("Requests list (TICKETS)") }}</span>
-      </a>
+      <div class="text-lg-left">
+        <a href="#" disabled class="action-links">
+          <v-icon class="mr-2">format_list_numbered</v-icon>
+          <span>{{ pageTitle }}</span>
+        </a>
+        <a
+          href="#"
+          disabled
+          class="font-italic ml-2 mt-1 action-links red--text"
+          @click="deleteDialog = true"
+          v-show="showDeleteBtn"
+        >
+          <v-icon class="mr-2 error--text">delete_outline</v-icon>
+          <span>{{ $t("Delete filter") }}</span>
+        </a>
+      </div>
       <download-excel :data="requests" class="export-excel">
         <v-icon class="mr-2">backup</v-icon>
         <span>{{ $t("EXPORT SHEET") }}</span>
@@ -33,6 +45,7 @@
         :items="values"
         v-model="valuesFilter"
         hide-details
+        hide-selected
         class="scoped-requests-search"
         v-bind:label="$i18n.t('Values')"
       ></v-select>
@@ -48,8 +61,9 @@
         solo
         :items="savedFilters"
         item-text="name"
-        v-model="storedSelectionsFilter"
+        v-model="storedSelectionsFilterHolder"
         hide-details
+        hide-selected
         class="scoped-requests-search"
         v-bind:label="$i18n.t('Stored selections')"
         @input="$emit('input')"
@@ -79,26 +93,40 @@
         <v-chip @input="removeFilter(filter)" close>{{ filter.category }} : {{ filter.value }}</v-chip>
       </li>
     </ul>
-    <div v-if="customFilters.length > 0" class="filter-save">
+    <div v-if="customFilters.length > 0" class="filter-save mt-2">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="blue darken-1" dark v-on="on">{{ $i18n.t("Create new filter") }}</v-btn>
-          <v-btn color="error" @click="deleteCurrentFilter" v-if="deleteBtn">{{ $i18n.t("Delete") }}</v-btn>
-          <v-btn
-            color="warning"
+          <a
+            href="#"
+            class="font-italic blue--text action-links ml-2"
+            v-on="on"
+            v-show="isNewFilter || updateBtn"
+          >
+            <v-icon class="mr-2 blue--text">playlist_add</v-icon>
+            {{ $i18n.t("Create new filter") }}
+          </a>
+          <a
+            href="#"
             @click="updateCurrectFilter"
-            v-if="storedSelectionsFilter._id"
-          >{{ $i18n.t("Save current filter") }}</v-btn>
-          <v-btn
-            class="right"
+            v-show="updateBtn"
+            class="font-italic action-links warning--text ml-2"
+          >
+            <v-icon class="mr-2 warning--text">save_alt</v-icon>
+            {{ $i18n.t("save") }}
+          </a>
+          <a
+            class="font-italic grey--text action-links right"
+            href="#"
             color="grey darken-1"
-            dark
             v-on="on"
             @click="resetFilters"
-          >{{ $i18n.t("reset") }}</v-btn>
+          >
+            <v-icon class="mr-2 grey--text">refresh</v-icon>
+            {{ $i18n.t("reset") }}
+          </a>
         </template>
 
-        <v-card>
+        <v-card class="px-4">
           <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
           <v-card-text>
             <v-container grid-list-md>
@@ -116,6 +144,21 @@
         </v-card>
       </v-dialog>
     </div>
+    <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
+      <v-card class="px-4 pt-2">
+        <v-card-text>
+          <span
+            class="body-2"
+          >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="deleteCurrentFilter">{{ $t("confirm") }}</v-btn>
+          <v-btn color="error" @click="deleteDialog = false">{{ $t("cancel") }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <br />
     <v-layout>
       <v-data-table
         :headers="headers"
@@ -132,16 +175,28 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index }}</td>
+
+          <td class="text-xs-center" v-if="$auth.check('admin')">
+            <v-chip
+              v-if="props.item.type == 'Anomalie'"
+              color="#d32f2f"
+              class="ma-2"
+              label
+              text-color="white"
+            >L</v-chip>
+            <v-chip v-else color="#174dc5" class="ma-2" label text-color="white">S</v-chip>
+          </td>
           <td>
             <router-link
-              :to="{ name: 'Request', params: { id: props.item.ticket_number } }"
+              :to="{ name: 'Request', params: { id: props.item._id } }"
               class="blue-color"
             >
               {{
-              props.item.ticket_number
+              props.item._id
               }}
             </router-link>
           </td>
+
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
               <template v-slot:badge>
@@ -188,50 +243,53 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <span
-                  v-if="props.item.software == 'LibreOffice'"
+                  v-if="props.item.software.name == 'LibreOffice'"
                   class="major-criticality red-background-color"
                   v-on="on"
-                >{{ props.item.software }}</span>
+                >{{ props.item.software.name }}</span>
                 <span
-                  v-else-if="props.item.software == 'NPM'"
+                  v-else-if="props.item.software.name == 'NPM'"
                   class="medium-criticality yellow-background-color"
                   v-on="on"
-                >{{ props.item.software }}</span>
-                <span
-                  v-else
-                  class="minor-criticality grey-background-color"
-                  v-on="on"
-                >{{ props.item.software }}</span>
+                >{{ props.item.software.name }}</span>
+                <span v-else class="minor-criticality grey-background-color" v-on="on">
+                  {{
+                  props.item.software.name
+                  }}
+                </span>
               </template>
               <span>{{$t("Version : 1.3 / Criticité : Haute")}}</span>
             </v-tooltip>
           </td>
-          <td class="text-xs-center">{{ props.item.incident_wording }}</td>
+          <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
           <td class="text-xs-center">{{ props.item.assign_to }}</td>
           <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.transmitter }}</td>
 
           <td class="text-xs-center">
-            <a class="blue-color" href="#">{{ props.item.client_contrat.client }}</a>
+            <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
 
-            <a class="blue-color" href="#">{{ props.item.client_contrat.contract }}</a>
+            <a class="blue-color" href="#">{{ props.item.contract.contract }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.maj }}</td>
-          <td class="text-xs-center">{{ props.item.created }}</td>
+          <td class="text-xs-center">{{ props.item.timestamps.creation | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <v-progress-linear
+            <!-- <v-progress-linear
               v-if="props.item.conf.color == 'error'"
               color="#d32f2f"
               height="20"
               value="30"
-            >{{ props.item.remaining_time }}</v-progress-linear>
-            <v-progress-linear
-              v-else
-              color="#76c43d"
-              height="20"
-              value="80"
-            >{{ props.item.remaining_time }}</v-progress-linear>
+            >
+              {{
+              props.item.remaining_time
+              }}
+            </v-progress-linear>
+            <v-progress-linear v-else color="#76c43d" height="20" value="80">-->
+            <!-- {{
+              props.item.remaining_time
+              }}
+            </v-progress-linear>-->
           </td>
         </template>
       </v-data-table>
@@ -240,7 +298,7 @@
 </template>
 
 <script>
-var requests = require("@/assets/data/requests.json");
+//var requests = require("@/assets/data/requests.json");
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
@@ -250,6 +308,9 @@ export default {
   data() {
     return {
       dialog: false,
+      deleteDialog: false,
+      pageTitle: this.$i18n.t("ALL REQUESTS"),
+      storedFilterUpdated: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
       tickets: [
         {
@@ -291,6 +352,7 @@ export default {
       isMobile: false,
       headers: [
         { text: "#", value: "number" },
+        { text: this.$i18n.t("Organization"), value: "organization" },
         { text: this.$i18n.t("Ticket N°"), value: "ticket_number" },
         { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
@@ -338,6 +400,7 @@ export default {
       newFilterName: "",
       savedFilters: [],
       storedSelectionsFilter: {},
+      storedSelectionsFilterHolder: {},
       deleteBtn: false,
       updateBtn: false
     };
@@ -364,14 +427,26 @@ export default {
     this.$http.listFilters().then(response => {
       this.savedFilters = response.data;
     });
+
+    this.$http.listTickets().then(response => {
+      this.requests = response.data;
+    });
   },
   computed: {
     ...mapGetters({
       email: "user/getEmail"
-    })
+    }),
+
+    isNewFilter() {
+      return Object.keys(this.storedSelectionsFilter).length === 0;
+    },
+
+    showDeleteBtn() {
+      return this.deleteBtn;
+    }
   },
   created() {
-    this.requests = requests;
+    //this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
@@ -383,53 +458,58 @@ export default {
   },
   watch: {
     categoriesFilter: function(newCategory, oldCategory) {
-      switch (this.categoriesFilter) {
-        case "Type":
-          this.values.length = 0;
-          this.values = [...this.types];
-          return;
-        case "Severity":
-          this.values.length = 0;
-          this.values = [...this.severities];
-          return;
-        case "Software":
-          this.values.length = 0;
-          this.values = [...this.softwareList];
-          return;
-        case "Assign To":
-          this.values.length = 0;
-          this.values = [...this.userList];
-          return;
-        case "Responsible":
-          this.values.length = 0;
-          this.values = [...this.userList];
-          return;
-        case "Transmitter":
-          this.values.length = 0;
-          this.values = [...this.userList];
-          return;
-        case "Client / Contract":
-          this.values.length = 0;
-          this.values = [...this.contractClientList];
-          return;
-        case "Status":
-          this.values.length = 0;
-          this.values = [...this.status];
-          return;
-        default:
-          return false;
-      }
-    },
-    customFilters: function(oldFilters, newFilters) {
-      if (this.storedSelectionsFilter.items && newFilters.length) {
-        this.updateBtn = oldFilters.length == newFilters.length;
+      try {
+        switch (this.categoriesFilter) {
+          case "Type":
+            this.values.length = 0;
+            this.values = [...this.types];
+            break;
+          case "Severity":
+            this.values.length = 0;
+            this.values = [...this.severities];
+            break;
+          case "Software":
+            this.values.length = 0;
+            this.values = [...this.softwareList];
+            break;
+          case "Assign To":
+            this.values.length = 0;
+            this.values = [...this.userList];
+            break;
+          case "Responsible":
+            this.values.length = 0;
+            this.values = [...this.userList];
+            break;
+          case "Transmitter":
+            this.values.length = 0;
+            this.values = [...this.userList];
+            break;
+          case "Client / Contract":
+            this.values.length = 0;
+            this.values = [...this.contractClientList];
+            break;
+          case "Status":
+            this.values.length = 0;
+            this.values = [...this.status];
+            break;
+        }
+      } catch (err) {
+        // continue regardless of error
+      } finally {
+        let selectedValues = this.customFilters.filter(
+          filter => filter.category == this.categoriesFilter
+        );
+        this.values = this.values.filter(value => {
+          return (
+            selectedValues.filter(filter => filter.value == value).length == 0
+          );
+        });
       }
     },
     search: function(oldValue, newValue) {
       this.centralSearch = newValue;
     }
   },
-  updated() {},
   methods: {
     resetRequestSearch() {
       this.centralSearch = null;
@@ -444,47 +524,161 @@ export default {
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
+    checkStoredFilterUpdate() {
+      if (this.storedSelectionsFilter.items) {
+        if (
+          this.storedSelectionsFilter.items.length !== this.customFilters.length
+        ) {
+          this.updateBtn = true;
+        } else {
+          this.updateBtn =
+            JSON.stringify(this.storedSelectionsFilter.items) !==
+            JSON.stringify(this.customFilters);
+        }
+      }
+    },
     requestFilterByGroup(item, search) {
       let match = false;
-      for (let index = 0; index < this.customFilters.length; index++) {
-        let currentFilter = this.customFilters[index];
-        switch (currentFilter.category) {
-          case "Type":
-            match =
-              item.type.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Severity":
-            match =
-              item.severity.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Software":
-            match =
-              item.software.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Assign To":
-            match =
-              item.assign_to.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-          case "Responsible":
-            match =
-              item.responsible.toLowerCase() ==
-              currentFilter.value.toLowerCase();
-            break;
-          case "Transmitter":
-            match =
-              item.transmitter.toLowerCase() ==
-              currentFilter.value.toLowerCase();
-            break;
-          case "Client / Contract":
-            match =
-              item.client_contract.toLowerCase() ==
-              currentFilter.value.toLowerCase();
-            break;
-          case "Status":
-            match =
-              item.status.toLowerCase() == currentFilter.value.toLowerCase();
-            break;
-        }
+      let typesFilter = this.customFilters.filter(
+        filter => filter.category == "Type"
+      );
+      let severityFilter = this.customFilters.filter(
+        filter => filter.category == "Severity"
+      );
+      let softwareFilter = this.customFilters.filter(
+        filter => filter.category == "Software"
+      );
+      let assignedFilter = this.customFilters.filter(
+        filter => filter.category == "Assign To"
+      );
+      let responsibleFilter = this.customFilters.filter(
+        filter => filter.category == "Responsible"
+      );
+      let transmitterFilter = this.customFilters.filter(
+        filter => filter.category == "Transmitter"
+      );
+      let clientFilter = this.customFilters.filter(
+        filter => filter.category == "Client / Contract"
+      );
+      let statusFilter = this.customFilters.filter(
+        filter => filter.category == "Status"
+      );
+
+      let typesFilterMatch = true;
+      let severityFilterMatch = true;
+      let softwareFilterMatch = true;
+      let assignedFilterMatch = true;
+      let responsibleFilterMatch = true;
+      let transmitterFilterMatch = true;
+      let clientFilterMatch = true;
+      let statusFilterMatch = true;
+
+      if (typesFilter.length) {
+        typesFilterMatch = false;
+
+        typesFilter.forEach(currentFilter => {
+          if (item.type.toLowerCase() == currentFilter.value.toLowerCase()) {
+            typesFilterMatch = true;
+          }
+        });
+      }
+
+      if (severityFilter.length) {
+        severityFilterMatch = false;
+
+        severityFilter.forEach(currentFilter => {
+          if (
+            item.severity.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
+            severityFilterMatch = true;
+          }
+        });
+      }
+
+      if (softwareFilter.length) {
+        softwareFilterMatch = false;
+
+        softwareFilter.forEach(currentFilter => {
+          if (
+            item.software.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
+            softwareFilterMatch = true;
+          }
+        });
+      }
+
+      if (assignedFilter.length) {
+        assignedFilterMatch = false;
+
+        assignedFilter.forEach(currentFilter => {
+          if (
+            item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
+            assignedFilterMatch = true;
+          }
+        });
+      }
+
+      if (responsibleFilter.length) {
+        responsibleFilterMatch = false;
+
+        responsibleFilter.forEach(currentFilter => {
+          if (
+            item.responsible.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
+            responsibleFilterMatch = true;
+          }
+        });
+      }
+
+      if (transmitterFilter.length) {
+        transmitterFilterMatch = false;
+
+        transmitterFilter.forEach(currentFilter => {
+          if (
+            item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
+            transmitterFilterMatch = true;
+          }
+        });
+      }
+
+      if (clientFilter.length) {
+        clientFilterMatch = false;
+
+        clientFilter.forEach(currentFilter => {
+          if (
+            item.client_contract &&
+            item.client_contract.toLowerCase() ==
+              currentFilter.value.toLowerCase()
+          ) {
+            clientFilterMatch = true;
+          }
+        });
+      }
+
+      if (statusFilter.length) {
+        statusFilterMatch = false;
+
+        statusFilter.forEach(currentFilter => {
+          if (item.status.toLowerCase() == currentFilter.value.toLowerCase()) {
+            statusFilterMatch = true;
+          }
+        });
+      }
+
+      match =
+        typesFilterMatch &&
+        severityFilterMatch &&
+        softwareFilterMatch &&
+        assignedFilterMatch &&
+        responsibleFilterMatch &&
+        transmitterFilterMatch &&
+        clientFilterMatch &&
+        statusFilterMatch;
+
+      if (this.customFilters.length == 0) {
+        match = false;
       }
       return (
         match ||
@@ -500,8 +694,12 @@ export default {
           category: this.categoriesFilter,
           value: this.valuesFilter
         };
-        this.customFilters.push(filter);
         this.centralSearch = this.valuesFilter.toLowerCase();
+        this.customFilters.push(filter);
+        this.categoriesFilter = "";
+        this.valuesFilter = "";
+        this.values = [];
+        this.checkStoredFilterUpdate();
       }
     },
     saveCurrentFilter() {
@@ -512,11 +710,14 @@ export default {
       };
       this.$http
         .createFilters(filterToSave)
-        .then(response => {
+        .then(() => {
           this.dialog = false;
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Filter saved"),
             color: "success"
+          });
+          this.$http.listFilters().then(response => {
+            this.savedFilters = response.data;
           });
         })
         .catch(error => {
@@ -531,11 +732,12 @@ export default {
       filterToUpdate.items = [...this.customFilters];
       this.$http
         .updateFilters(filterToUpdate._id, filterToUpdate)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             color: "success",
             message: this.$i18n.t("Filter updated")
           });
+          this.updateBtn = false;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -547,7 +749,7 @@ export default {
     deleteCurrentFilter() {
       this.$http
         .deleteFilters(this.storedSelectionsFilter._id)
-        .then(response => {
+        .then(() => {
           this.customFilters = [];
           this.deleteBtn = false;
           this.$store.dispatch("ui/displaySnackbar", {
@@ -560,24 +762,46 @@ export default {
             color: "error"
           });
         });
+      this.deleteDialog = false;
+      this.resetFilters();
+      this.$http.listFilters().then(response => {
+        this.savedFilters = response.data;
+      });
     },
     loadFilter() {
-      this.customFilters = this.storedSelectionsFilter.items;
+      this.resetFilters();
+      this.storedSelectionsFilter = Object.assign(
+        {},
+        this.storedSelectionsFilterHolder
+      );
+      this.storedSelectionsFilterHolder = {};
+      this.customFilters = [...this.storedSelectionsFilter.items];
       this.deleteBtn = true;
       if (this.customFilters.length) {
         this.centralSearch = this.customFilters[0].value;
       }
+      this.categoriesFilter = "";
+      this.valuesFilter = "";
+      this.pageTitle = this.storedSelectionsFilter.name;
     },
     removeFilter(filter) {
       this.customFilters = this.customFilters.filter(customFilter => {
         return JSON.stringify(customFilter) != JSON.stringify(filter);
       });
+      if (this.customFilters.length == 0) {
+        this.pageTitle = this.$i18n.t("ALL REQUESTS");
+        this.deleteBtn = false;
+        this.storedSelectionsFilter = {};
+      }
       this.centralSearch = "";
+      this.checkStoredFilterUpdate();
     },
 
     resetFilters() {
       this.customFilters = [];
       this.centralSearch = "";
+      this.pageTitle = this.$i18n.t("ALL REQUESTS");
+      this.deleteBtn = false;
     }
   }
 };
@@ -767,5 +991,9 @@ div.v-input:nth-child(14) {
 div.layout:nth-child(5) {
   clear: both;
   padding-top: 24px;
+}
+
+span.v-chip__content {
+  color: #fff !important;
 }
 </style>

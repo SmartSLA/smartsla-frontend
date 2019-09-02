@@ -8,9 +8,7 @@
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">
-                {{ isNew ? $t("Edit Software") : $t("New Software") }}
-              </h3>
+              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit Software") : $t("New Software") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -48,7 +46,7 @@
                   prepend-icon="attach_file"
                   class="file pt-2"
                   url
-                  btn-label="Attach file"
+                  :btn-label="$i18n.t('Attach file')"
                   btn-uploading-label="Uploading file"
                 ></file-upload>
               </v-flex>
@@ -84,9 +82,29 @@
               <v-flex xs5></v-flex>
               <v-flex xs5>
                 <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+                <v-btn color="error" dark @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
               </v-flex>
             </v-layout>
           </v-form>
+          <v-dialog v-model="openDialog" persistent max-width="290">
+            <v-card>
+              <v-card-title class="body-2">{{ $t("You are about to delete:") }}</v-card-title>
+              <v-card-text>
+                <span class="pl-3">{{ $t("Software") }} : {{ software.name }}</span>
+                <br />
+                <br />
+                <span class="body-2">{{ $t("is linked to the following elements") }}</span>
+                <br />-
+                <br />
+                <span class="body-2">{{ $t("Are you sure?") }}</span>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
+                <v-btn color="error darken-1" flat @click="deleteSoftware">Delete</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-flex>
     </v-layout>
@@ -96,6 +114,7 @@
 export default {
   data() {
     return {
+      openDialog: false,
       software: {},
       licenceList: [
         "Apache License 2.0",
@@ -196,6 +215,23 @@ export default {
           color: "error"
         });
       }
+    },
+
+    deleteSoftware() {
+      this.$http
+        .deleteSoftware(this.software._id)
+        .then(response => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Software deleted"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   }
 };
@@ -207,12 +243,22 @@ export default {
   cursor: pointer;
 }
 
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
 .pt-0 {
   margin: 0px !important;
   padding-right: 0px;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   background-color: #2196f3 !important;
+}
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
 }
 </style>

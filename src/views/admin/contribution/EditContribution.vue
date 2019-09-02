@@ -62,7 +62,7 @@
                 prepend-icon="attach_file"
                 class="file pt-2"
                 url
-                btn-label="Attach file"
+                :btn-label="$i18n.t('Attach file')"
                 btn-uploading-label="Uploading file"
               ></file-upload>
             </v-flex>
@@ -259,7 +259,17 @@ export default {
   padding-right: 0px;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
   background-color: #2195f2 !important;
+}
+.container {
+  max-width: 100% !important;
+  padding: 0px;
+}
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
 }
 </style>

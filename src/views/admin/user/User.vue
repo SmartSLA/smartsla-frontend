@@ -79,7 +79,9 @@
                     <v-flex xs8>
                       <ul>
                         <li v-for="(contract, key) in user.contracts" :key="key">
-                          <router-link :to="{ name: 'Contract', params: { id: 15 } }" class="blue-color">{{ contract.name }}</router-link>
+                          <router-link :to="{ name: 'Contract', params: { id: 15 } }" class="blue-color">{{
+                            contract.name
+                          }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -177,5 +179,11 @@ div.wrap:nth-child(2) {
 
 .mt-4 {
   margin-top: 0px !important;
+}
+@media only screen and (min-width: 1264px) {
+  .container {
+  max-width: 100% !important;
+  padding-right: 24px;
+}
 }
 </style>

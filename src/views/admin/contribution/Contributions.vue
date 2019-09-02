@@ -19,7 +19,7 @@
           :items="softwares"
           v-model="softwares"
           hide-details
-          label="software"
+          :label="$i18n.t('software')"
           class="contributions-search-software"
         ></v-select>
         <v-select
@@ -27,7 +27,7 @@
           :items="statuss"
           v-model="statuss"
           hide-details
-          label="statuss"
+          :label="$i18n.t('status')"
           class="contributions-search-statuss"
         ></v-select>
         <div class="contributions-operations">
@@ -52,7 +52,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.software }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }" class="blue-color">{{ props.item.name }}</router-link>
+            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }" class="blue-color">{{
+              props.item.name
+            }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">{{ props.item.deposit }}</td>
