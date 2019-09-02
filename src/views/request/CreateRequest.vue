@@ -251,7 +251,7 @@ export default {
       softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: ["#1 issue1", "#3 issue3", "#18 issue18", "#41 issue41", "#35 issue35", "#70 issue70"],
+      relatedRequests: [],
       engagementsCategory: [],
       selectedTypes: []
     };
@@ -336,6 +336,14 @@ export default {
           });
         });
     }
+  },
+  mounted() {
+
+    this.$http.listTickets().then(response => {
+      response.data.forEach(ticket => {
+        this.relatedRequests.push(ticket._id);
+      });
+    });
   },
   computed: {
     typeList() {
