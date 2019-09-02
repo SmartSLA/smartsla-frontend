@@ -240,14 +240,13 @@ tr:nth-child(odd) {
   padding: 0px !important;
 }
 
-/*#openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
+/* #openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
   height: 48px;
   padding-top: 0px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
   margin-left: 0px !important;
-}*/
-
+} */
 .ql-container {
   background: #FAFAFA;
 }
@@ -356,7 +355,12 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .v-card.v-sheet.theme--light p {
   margin-bottom: 0px;
 }
-.v-btn__content{
+
+.v-btn__content {
   width: 100% !important;
+}
+
+.cust_uploader .v-list.theme--light {
+  padding: 0px !important;
 }
 </style>
