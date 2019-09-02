@@ -5,5 +5,10 @@ export default {
         "Content-Type": "multipart/form-data"
       }
     });
+  },
+  downloadFile(fileId) {
+    return this.get(`/api/files/${fileId}`, {
+      responseType: 'blob'
+    });
   }
 };
