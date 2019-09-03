@@ -76,7 +76,7 @@
             <v-flex xs11 md11 sm11 lg11 xl11 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">#{{ request.ticketNumber }} - {{ request.ticketTitle }}</h3>
+                  <h3 class="headline mb-0">#{{ request.ticketNumber }} - {{ request.title }}</h3>
                 </div>
               </v-card-title>
             </v-flex>
@@ -92,12 +92,12 @@
           <v-layout justify-center row fill-height wrap ml-3 class="custom-ticket-bl">
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Type") }} :</strong>
-              {{ request.gravity }}
+              {{ request.type }}
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("severity") }} :</strong>
-              {{ request.gravity }}
+              {{ request.severity }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
@@ -118,15 +118,15 @@
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
-              {{ request.software }}
+              {{ request.software.name }}
             </v-flex>
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>
-              {{ request.softwareVersion }}
+              {{ request.software.version }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("OS") }} :</strong>
-              {{ request.softwareOs }}
+              {{ request.software.os }}
             </v-flex>
           </v-layout>
           <v-divider class="mt-2"></v-divider>
@@ -137,7 +137,7 @@
                   <v-icon>subject</v-icon>
                 </v-flex>
                 <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
-                  <div class="subject-text" v-html="request.subject"></div>
+                  <div class="subject-text" v-html="request.description"></div>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -717,30 +717,27 @@ export default {
   methods: {
     setRequestData(request) {
       this.currentStatus = request.status;
-      this.request.ticketTitle = request.title;
       this.request.ticketNumber = request._id;
-      if (request.software.name) {
-        this.request.software = request.software.name;
-        this.request.softwareOs = request.software.os;
-        this.request.softwareVersion = request.software.version;
-      }
       this.request.statusId = 1;
       this.request.files = [];
       this.request.lastUpdate = "";
       this.request.ticketDate = new Date(
         request.timestamps.creation
       ).toDateString();
-      this.request.subject = request.description;
       this.request.responsible = {};
-      this.request.ticketAuthor = "";
       this.comments = request.comments;
       this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
       this.request.ticketAuthor = this.$store.getters["user/getDisplayName"];
       this.request.serviceLevel = {};
+      let contact =
+        request.contract.humanResources &&
+        request.contract.humanResources.beneficiaries &&
+        request.contract.humanResources.beneficiaries[0] &&
+        request.contract.humanResources.beneficiaries[0].name;
       this.request.beneficiary = {
         image: "",
-        contact: request.contract.humanResources.beneficiaries[0].name,
+        contact: contact,
         phone: "",
         client_contract: {
           client: request.contract.client,

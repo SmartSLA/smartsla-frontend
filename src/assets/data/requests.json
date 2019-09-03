@@ -15,7 +15,9 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
+    "software": {
+      "name" : "LibreOffice"
+    },
     "incident_wording": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
     "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
@@ -38,8 +40,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "GLPI",
-    "incident_wording": "Infos manquantes Formulaire de création",
+    "software": {
+      "name" : "GLPI"
+    },
+    "description": "Infos manquantes Formulaire de création",
     "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
     "created": "07/03/2018 \n 15:00",
@@ -61,8 +65,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "problème de lock",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "problème de lock",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "02/11/2017 \n 14:00",
@@ -84,8 +90,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "Fuite mémoire",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "Fuite mémoire",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "20/05/2017 \n 10:00",
@@ -107,8 +115,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "NPM",
-    "incident_wording": "Problème de droits",
+    "software": {
+      "name" : "NPM"
+    },
+    "description": "Problème de droits",
     "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
     "created": "22/05/2015 \n 09:30",
@@ -130,8 +140,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "Les fichiers de logs ne contiennent plus des informations ",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "Les fichiers de logs ne contiennent plus des informations ",
     "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
     "created": "10/09/2018 \n 12:00",
@@ -153,8 +165,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "GLPI",
-    "incident_wording": "Infos manquantes Formulaire de création",
+    "software": {
+      "name" : "GLPI"
+    },
+    "description": "Infos manquantes Formulaire de création",
     "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
     "created": "21/07/2012 \n 17:00",
@@ -176,8 +190,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "problème de lock",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "problème de lock",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "14/12/2014 \n 10:00",
@@ -199,8 +215,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "Fuite mémoire",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "Fuite mémoire",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "20/05/2017 \n 10:00",
@@ -222,8 +240,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "NPM",
-    "incident_wording": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
+    "software": {
+      "name" : "NPM"
+    },
+    "description": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
     "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
     "created": "09/07/2011 \n 15:30",
@@ -245,8 +265,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "Dysfonctionnement facettes",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "Dysfonctionnement facettes",
     "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
     "created": "17/05/2017 \n 10:00",
@@ -268,8 +290,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "GLPI",
-    "incident_wording": "Infos manquantes Formulaire de création",
+    "software": {
+      "name" : "GLPI"
+    },
+    "description": "Infos manquantes Formulaire de création",
     "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
     "created": "20/05/2017 \n 10:00",
@@ -291,8 +315,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "J'ai regardé le fichier lemonldap-ng.ini afin de voir le niveau de logs et il est bien positionné à Debug.",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "20/05/2017 \n 12:00",
@@ -314,8 +340,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "Fuite mémoire",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "Fuite mémoire",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "20/05/2013 \n 10:00",
@@ -337,8 +365,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "NPM",
-    "incident_wording": "Problème de droits",
+    "software": {
+      "name" : "NPM"
+    },
+    "description": "Problème de droits",
     "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
     "created": "20/04/2014 \n 11:44",
@@ -360,8 +390,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "Dysfonctionnement facettes",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "Dysfonctionnement facettes",
     "assign_to": "Harold GOGUELIN",
     "maj": "22 hours ago",
     "created": "28/09/2018 \n 16:00",
@@ -383,8 +415,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "GLPI",
-    "incident_wording": "Infos manquantes Formulaire de création",
+    "software": {
+      "name" : "GLPI"
+    },
+    "description": "Infos manquantes Formulaire de création",
     "assign_to": "Harold GOGUELIN",
     "maj": "yesterday",
     "created": "25/02/2014 \n 18:00",
@@ -406,8 +440,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "problème de lock",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "problème de lock",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "13/05/2017 \n 14:00",
@@ -429,8 +465,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "LibreOffice",
-    "incident_wording": "Fuite mémoire",
+    "software": {
+      "name" : "LibreOffice"
+    },
+    "description": "Fuite mémoire",
     "assign_to": "Harold GOGUELIN",
     "maj": "6 days ago",
     "created": "20/05/2017 \n 10:00",
@@ -452,8 +490,10 @@
       "client": "ACIM",
       "contract": "Marché Inter-ministériel"
     },
-    "software": "NPM",
-    "incident_wording": "Problème de droits",
+    "software": {
+      "name": "NPM"
+    } ,
+    "description": "Problème de droits",
     "assign_to": "Harold GOGUELIN",
     "maj": "1 week ago",
     "created": "01/11/2018 \n 17:05",
