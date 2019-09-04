@@ -323,13 +323,15 @@ export default {
       }
       this.$http
         .createTicket(this.ticket)
-        .then(() => {
+        .then(response => {
+          const ticketId = response.data;
+
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("ticket created"),
             color: "success"
           });
 
-          this.$router.push('/requests');
+          this.$router.push(`/requests/${ticketId}`);
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
