@@ -600,7 +600,7 @@ export default {
 
         softwareFilter.forEach(currentFilter => {
           if (
-            item.software.toLowerCase() == currentFilter.value.toLowerCase()
+            item.software.name.toLowerCase() == currentFilter.value.toLowerCase()
           ) {
             softwareFilterMatch = true;
           }
@@ -682,7 +682,7 @@ export default {
       }
       return (
         match ||
-        item.software.toLowerCase().includes(search) ||
+        item.software.name.toLowerCase().includes(search) ||
         item.incident_wording.toLowerCase().includes(search) ||
         item.client_contrat.client.toLowerCase().includes(search) ||
         item.client_contrat.contract.toLowerCase().includes(search)
