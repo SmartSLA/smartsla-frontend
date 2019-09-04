@@ -328,6 +328,8 @@ export default {
             message: this.$i18n.t("ticket created"),
             color: "success"
           });
+
+          this.$router.push('/requests');
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
