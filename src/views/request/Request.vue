@@ -714,7 +714,6 @@ export default {
   methods: {
     setRequestData(request) {
       this.currentStatus = request.status;
-      this.request.ticketNumber = request._id;
       this.request.statusId = 1;
       this.request.files = [];
       this.request.lastUpdate = "";
