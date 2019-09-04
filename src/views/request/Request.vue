@@ -286,10 +286,10 @@
                   </v-expansion-panel>
                   <v-divider></v-divider>
                   <v-form class="comment-form">
-                    <v-btn-toggle v-model="selectedEditor">
+                    <!-- <v-btn-toggle v-model="selectedEditor">
                       <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
                       <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
-                    </v-btn-toggle>
+                    </v-btn-toggle>-->
                     <v-input prepend-icon="subject" class="pt-2">
                       <Editor
                         ref="editor"
@@ -697,8 +697,8 @@ export default {
         this.ticket = Object.assign({}, response.data);
         this.request = Object.assign({}, response.data);
         this.setRequestData(Object.assign({}, response.data));
-        console.log(this.ticket);
-        console.log(this.request);
+        //console.log(this.ticket);
+        //console.log(this.request);
       });
     }
     this.$store.dispatch(
@@ -805,11 +805,11 @@ export default {
         });
     },
     downloadFile(fileId, fileName) {
-      this.$http.downloadFile(fileId).then((response) => {
+      this.$http.downloadFile(fileId).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
-        link.setAttribute('download', fileName); //or any other extension
+        link.setAttribute("download", fileName); //or any other extension
         document.body.appendChild(link);
         link.click();
       });

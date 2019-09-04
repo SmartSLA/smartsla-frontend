@@ -258,7 +258,7 @@
                   }}
                 </span>
               </template>
-              <span>{{$t("Version : 1.3 / Criticité : Haute")}}</span>
+              <span>{{$t("Version : " + props.item.software.version + " / Criticité : " + props.item.software.critical)}}</span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
@@ -430,6 +430,7 @@ export default {
 
     this.$http.listTickets().then(response => {
       this.requests = response.data;
+      console.log(this.requests);
     });
   },
   computed: {
