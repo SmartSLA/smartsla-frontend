@@ -192,7 +192,7 @@
               class="blue-color"
             >
               {{
-              props.item._id
+              props.item.ticketNumber
               }}
             </router-link>
           </td>
