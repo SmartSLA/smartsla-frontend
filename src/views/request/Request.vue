@@ -154,7 +154,7 @@
                     <v-flex xs12 md8 sm6 lg10 xl8 pl-0>
                       <ul v-if="ticket.files.length">
                         <li v-for="(file, key) in ticket.files" :key="key">
-                          <a :href="`${apiUrl}/api/files/${file.id}`" target="_blank">
+                          <a href="#" @click="downloadFile(file.id, file.name)">
                             {{
                             file.name
                             }}
@@ -266,10 +266,7 @@
                               <v-card-text v-html="comment.body"></v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <a
-                                  :href="`${apiUrl}/api/files/${comment.attachment}`"
-                                  target="_blank"
-                                >
+                                <a href="#" @click="downloadFile(comment.attachment, attachedFile)">
                                   {{
                                   comment.attachedFile
                                   }}
@@ -806,6 +803,16 @@ export default {
             color: "error"
           });
         });
+    },
+    downloadFile(fileId, fileName) {
+      this.$http.downloadFile(fileId).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      });
     }
   }
 };
