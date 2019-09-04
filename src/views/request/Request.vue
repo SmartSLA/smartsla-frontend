@@ -1,10 +1,13 @@
 <template>
   <v-container grid-list-md>
     <v-card-text>
-      <a href="#" disabled class="text-lg-left action-links">
+      <router-link :to="{ name: 'Requests' }">
+        <button><v-icon>arrow_back</v-icon></button>
+      </router-link>
+      <!-- <a href="#" disabled class="text-lg-left action-links">
         <v-icon class="mr-2">bug_report</v-icon>
         {{ $t("REQUEST VIEW") }}
-      </a>
+      </a> -->
       <a href="#" class="action-links right">
         <v-icon class="mr-2">backup</v-icon>
         {{ $t("EXPORT SHEET (CSV)") }}
