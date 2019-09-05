@@ -600,7 +600,8 @@ export default {
 
         softwareFilter.forEach(currentFilter => {
           if (
-            item.software.name.toLowerCase() == currentFilter.value.toLowerCase()
+            item.software.name.toLowerCase() ==
+            currentFilter.value.toLowerCase()
           ) {
             softwareFilterMatch = true;
           }
@@ -648,9 +649,8 @@ export default {
 
         clientFilter.forEach(currentFilter => {
           if (
-            item.client_contract &&
-            item.client_contract.toLowerCase() ==
-              currentFilter.value.toLowerCase()
+            item.contract &&
+            item.contract.toLowerCase() == currentFilter.value.toLowerCase()
           ) {
             clientFilterMatch = true;
           }
@@ -683,9 +683,9 @@ export default {
       return (
         match ||
         item.software.name.toLowerCase().includes(search) ||
-        item.incident_wording.toLowerCase().includes(search) ||
-        item.client_contrat.client.toLowerCase().includes(search) ||
-        item.client_contrat.contract.toLowerCase().includes(search)
+        item.description.toLowerCase().includes(search) ||
+        item.contract.client.toLowerCase().includes(search) ||
+        item.contract.name.toLowerCase().includes(search)
       );
     },
     addNewFilter() {

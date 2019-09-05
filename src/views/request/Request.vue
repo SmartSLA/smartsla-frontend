@@ -613,16 +613,16 @@ export default {
     Editor,
     VUpload
   },
-  updated() {
-    var progressBars = document.getElementsByClassName("v-progress-linear");
-    for (let index = 0; index < progressBars.length; index++) {
-      var element = progressBars[index];
-      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
-      newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
-    }
-  },
+  // updated() {
+  //   var progressBars = document.getElementsByClassName("v-progress-linear");
+  //   for (let index = 0; index < progressBars.length; index++) {
+  //     var element = progressBars[index];
+  //     var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
+  //     var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+  //     newValueRegion[0].innerHTML = value;
+  //     element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+  //   }
+  // },
   computed: {
     ...mapGetters({
       email: "user/getEmail",
@@ -734,8 +734,8 @@ export default {
     },
     parseEngagementDuration(durationString, workHours = 9) {
       let duration = 0;
-      let days = durationString.match(/(\d+)JO/);
-      let hours = durationString.match(/(\d+)HO/);
+      let days = durationString.match(/(\d+)\s*(J|D|j|d)/);
+      let hours = durationString.match(/(\d+)\s*(H|h)/);
       if (hours) {
         duration += parseInt(hours[1]);
       }
