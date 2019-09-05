@@ -11,6 +11,7 @@ import userFunctions from "./user-api";
 import teamFunctions from "./team-api";
 import filterFunctions from "./filter-api";
 import filesFunctions from "./file-api";
+import holidaysFunctions from "./holidays-api";
 
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
@@ -28,12 +29,13 @@ function Api(config) {
   Object.assign(instance, teamFunctions);
   Object.assign(instance, filterFunctions);
   Object.assign(instance, filesFunctions);
+  Object.assign(instance, holidaysFunctions);
 
   instance.interceptors.request.use(
     function(config) {
       var token = store.state.session.jwtToken;
       if (config.headers.Authorization && token !== "Unauthorized") {
-        config.headers.Authorization = `Bearer  ${token}`;
+        config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },

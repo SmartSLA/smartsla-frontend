@@ -187,8 +187,9 @@
                       :loading="submitRequest"
                       @click="validateFrom"
                       class="blue-background-color white-color custom-btn-action"
-                      >{{ $t("Submit") }}</v-btn
                     >
+                      {{ $t("Submit") }}
+                    </v-btn>
                   </v-flex>
                 </v-layout>
               </v-card-actions>
