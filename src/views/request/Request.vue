@@ -38,7 +38,8 @@
                     color="primary"
                     complete-icon="access_time"
                     class="current_step"
-                  >{{ $t("Supported") }}</v-stepper-step>
+                    >{{ $t("Supported") }}</v-stepper-step
+                  >
                   <v-stepper-step v-else-if="ticketStatusId < 1" step>{{ $t("Supported") }}</v-stepper-step>
                   <v-stepper-step v-else step complete color="success">{{ $t("Supported") }}</v-stepper-step>
 
@@ -51,7 +52,8 @@
                     color="primary"
                     complete-icon="access_time"
                     class="current_step"
-                  >{{ $t("Bypassed") }}</v-stepper-step>
+                    >{{ $t("Bypassed") }}</v-stepper-step
+                  >
                   <v-stepper-step v-else-if="ticketStatusId < 2" step>{{ $t("Bypassed") }}</v-stepper-step>
                   <v-stepper-step v-else step complete color="success">{{ $t("Bypassed") }}</v-stepper-step>
                   <v-divider v-if="ticketStatusId < 3"></v-divider>
@@ -63,7 +65,8 @@
                     color="primary"
                     complete-icon="access_time"
                     class="current_step"
-                  >{{ $t("Resolved") }}</v-stepper-step>
+                    >{{ $t("Resolved") }}</v-stepper-step
+                  >
                   <v-stepper-step v-else-if="ticketStatusId < 3" step>{{ $t("Resolved") }}</v-stepper-step>
                   <v-stepper-step v-else step complete color="success">{{ $t("Resolved") }}</v-stepper-step>
                   <v-divider v-if="ticketStatusId < 4"></v-divider>
@@ -182,9 +185,7 @@
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.linkedTickets.length">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span
-                            v-if="link.type == 'duplicate'"
-                          >{{ $t("is a copy of ticket") }}&nbsp;</span>
+                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
                           <router-link
                             :to="{ name: 'Request', params: { id: link.id } }"
@@ -317,9 +318,11 @@
                         </v-flex>
                         <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select
-                            :items="assigneeList"
+                            :items="assignee"
+                            item-text="name"
                             v-model="newResponsible"
                             :label="$t('Assigned to')"
+                            return-object
                           ></v-select>
                         </v-flex>
                         <v-flex xs12 md8 sm8 xl3 lg3>
@@ -365,7 +368,7 @@
       <v-flex xs12 md12 xl4 lg4 sm12 pt-0 pl-2 pr-2>
         <v-layout row wrap pt-0>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4>
-            <v-card light color="white" class="px-4 pb-3" v-if="request.status == 'new'">
+            <v-card light color="white" class="px-4 pb-3">
               <v-card-title primary-title>
                 <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
               </v-card-title>
@@ -374,13 +377,15 @@
               <v-layout row wrap>
                 <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
-                    color="success"
+                    ref="supportedBar"
                     height="18"
-                    value="0"
+                    :value="percentage(cnsSupported, supportedDuration)"
+                    :color="getEngagementColor(cnsSupported, supportedDuration)"
                     class="mt-0 white--text font-weight-bold"
-                  >0 HO</v-progress-linear>
+                    >{{ cnsSupported }} HO</v-progress-linear
+                  >
                 </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>1 HO</v-flex>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>{{ supportedDuration }} HO</v-flex>
                 <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
                   <v-icon color="#249CC7">access_time</v-icon>
                 </v-flex>
@@ -389,80 +394,38 @@
               <v-layout row wrap>
                 <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
+                    ref="bypassedBar"
                     color="#CFCFCF"
                     height="18"
-                    value="0"
+                    :value="percentage(cnsBypassed, bypassedDuration)"
+                    :color="getEngagementColor(cnsBypassed, bypassedDuration)"
                     class="mt-0 white--text font-weight-bold"
-                  ></v-progress-linear>
+                    >{{ cnsBypassed }} HO</v-progress-linear
+                  >
                 </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>{{ bypassedDuration }} HO</v-flex>
               </v-layout>
               {{ $t("Solution") }}
               <v-layout row wrap>
                 <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
                   <v-progress-linear
-                    color="#CFCFCF"
                     height="18"
-                    value="0"
+                    ref="resolvedBar"
+                    :value="percentage(cnsResolved, resolvedDuration)"
+                    :color="getEngagementColor(cnsResolved, resolvedDuration)"
                     class="mt-0 white--text font-weight-bold"
-                  ></v-progress-linear>
+                    >{{ cnsResolved }} HO</v-progress-linear
+                  >
                 </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
-                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
-              </v-layout>
-            </v-card>
-            <v-card light color="white" class="px-4 pb-3" v-else>
-              <v-card-title primary-title>
-                <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
-              </v-card-title>
-              <v-divider></v-divider>
-              {{ $t("Supported") }}
-              <v-layout row wrap>
-                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="success"
-                    height="18"
-                    value="100"
-                    class="mt-0 white--text font-weight-bold"
-                  >0 HO</v-progress-linear>
-                </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>2 H</v-flex>
-                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
-                  <v-icon color="#249CC7">access_time</v-icon>
-                </v-flex>
-              </v-layout>
-              {{ $t("Bypass") }}
-              <v-layout row wrap>
-                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="#CFCFCF"
-                    height="18"
-                    value="40"
-                    class="mt-0 white--text font-weight-bold"
-                  >0</v-progress-linear>
-                </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
-              </v-layout>
-              {{ $t("Solution") }}
-              <v-layout row wrap>
-                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    color="#CFCFCF"
-                    height="18"
-                    value="60"
-                    class="mt-0 white--text font-weight-bold"
-                  >0</v-progress-linear>
-                </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0></v-flex>
+                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>{{ resolvedDuration }} HO</v-flex>
                 <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
               </v-layout>
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
-            <h4
-              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
-            >{{ $t("interlocutor in charge of the request") }}</h4>
+            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
+              {{ $t("interlocutor in charge of the request") }}
+            </h4>
             <v-card class="pt-2 nobottomshadow" v-if="request.responsible.name">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <br />
@@ -486,20 +449,15 @@
                 {{ request.responsible.email }}
               </v-card-text>
             </v-card>
-            <h4
-              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
-            >{{ $t("Beneficiary") }}</h4>
+            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
+              {{ $t("Beneficiary") }}
+            </h4>
             <v-card class="pt-2">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
                 <v-flex xs2 md4 xl4 sm4 lg2 pl-0></v-flex>
                 <v-flex xs10 md5 sm5 xl5 lg10 pl-3>
-                  <v-avatar
-                    size="150"
-                    title="false"
-                    class="avatar-width"
-                    v-if="request.beneficiary.image.length > 1"
-                  >
+                  <v-avatar size="150" title="false" class="avatar-width" v-if="request.beneficiary.image.length > 1">
                     <v-img :src="request.beneficiary.image"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -513,7 +471,8 @@
                 {{ request.beneficiary.phone }}
                 <br />
                 <span class="body-2">{{ $t("client") }} / {{ $t("contract") }} :&nbsp;</span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link>/
+                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
+                >/
                 <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
               </v-card-text>
             </v-card>
@@ -529,38 +488,41 @@
                 <v-divider></v-divider>
                 <v-layout class="mb-1 ml--1 mr-4">
                   <v-flex xs2 md3 sm3 lg2 xl2 pl-0 class="green--text font-weight-bold">
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.dev }"
-                    >label_important</v-icon>
+                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Dev") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.reversed }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Reversed") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.integrated }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Integrated") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.published }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("published") }}</small>
                   </v-flex>
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
                       :class="{ 'green--text': request.communityContribution.status.rejected }"
-                    >label_important</v-icon>
+                      >label_important</v-icon
+                    >
                     <small>{{ $t("Rejected") }}</small>
                   </v-flex>
                 </v-layout>
@@ -592,6 +554,13 @@ export default {
       ticket: {
         comments: []
       },
+      cnsSupported: 0,
+      cnsBypassed: 0,
+      cnsResolved: 0,
+      supportedDuration: 0,
+      resolvedDuration: 0,
+      bypassedDuration: 0,
+      currentStatus: "",
       applicationSettings: {},
       commentBtn: true,
       selectedEditor: "wysiwyg",
@@ -602,8 +571,8 @@ export default {
       currentStatus: "",
       newResponsible: "",
       request: {
-        comments: {},
-        statusId: 2
+        statusId: 2,
+        comments: []
       },
       commentFile: [],
       comment: "",
@@ -634,6 +603,7 @@ export default {
           value: this.$i18n.t("Closed")
         }
       ],
+      assignee: [],
       assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
       text: ""
     };
@@ -643,22 +613,14 @@ export default {
     Editor,
     VUpload
   },
-  mounted() {
-    var progressBars = Array.prototype.slice.call(
-      document.getElementsByClassName("v-progress-linear")
-    );
+  updated() {
+    var progressBars = document.getElementsByClassName("v-progress-linear");
     for (let index = 0; index < progressBars.length; index++) {
       var element = progressBars[index];
-      var value = element.getElementsByClassName(
-        "v-progress-linear__content"
-      )[0].innerHTML;
-      var newValueRegion = element.getElementsByClassName(
-        "v-progress-linear__bar__determinate"
-      );
+      var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
+      var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
       newValueRegion[0].innerHTML = value;
-      element.getElementsByClassName(
-        "v-progress-linear__content"
-      )[0].innerHTML = "";
+      element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
     }
   },
   computed: {
@@ -704,10 +666,11 @@ export default {
         //console.log(this.request);
       });
     }
-    this.$store.dispatch(
-      "sidebar/setSidebarComponent",
-      "issue-detail-side-bar"
-    );
+
+    this.$http.listUsers().then(response => {
+      this.assignee = response.data;
+    });
+    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
     this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
   },
   beforeRouteLeave(to, from, next) {
@@ -720,10 +683,12 @@ export default {
       this.request.statusId = 1;
       this.request.files = [];
       this.request.lastUpdate = "";
-      this.request.ticketDate = new Date(
-        request.timestamps.creation
-      ).toDateString();
-      this.request.responsible = {};
+      this.request.ticketDate = new Date(request.timestamps.createdAt).toDateString();
+      this.request.subject = request.description;
+      this.request.responsible = {
+        name: ""
+      };
+      this.request.ticketAuthor = "";
       this.comments = request.comments;
       this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
@@ -743,7 +708,54 @@ export default {
           contract: request.contract.name
         }
       };
+
+      if (request.contract.Engagements) {
+        let engagements = [];
+        if (request.software.critical == "critical") {
+          engagements = [...request.contract.Engagements.critical.engagements];
+        } else if (request.software.critical == "sensible") {
+          engagements = [...request.contract.Engagements.sensible.engagements];
+        } else if (request.software.critical == "standard") {
+          engagements = [...request.contract.Engagements.standard.engagements];
+        }
+
+        let currentEngagements = engagements.filter(
+          engagement => engagement.severity == request.severity && engagement.request == request.type
+        );
+        if (currentEngagements.length) {
+          let engagement = currentEngagements[0];
+          this.supportedDuration = this.parseEngagementDuration(engagement.supported);
+          this.bypassedDuration = this.parseEngagementDuration(engagement.bypassed);
+          this.resolvedDuration = this.parseEngagementDuration(engagement.fix);
+        }
+      }
       this.request.communityContribution = {};
+      this.calculateCNS();
+    },
+    parseEngagementDuration(durationString, workHours = 9) {
+      let duration = 0;
+      let days = durationString.match(/(\d+)JO/);
+      let hours = durationString.match(/(\d+)HO/);
+      if (hours) {
+        duration += parseInt(hours[1]);
+      }
+      if (days) {
+        duration += days[1] * workHours;
+      }
+      return duration;
+    },
+    percentage(partialValue, totalValue) {
+      let value = (100 * partialValue) / totalValue;
+      if (value < 100) {
+        return value;
+      }
+      return 100;
+    },
+    getEngagementColor(currentValue, totalValue) {
+      if (this.percentage(currentValue, totalValue) < 100) {
+        return "success";
+      }
+      return "error";
     },
     addComment() {
       if (this.commentFile.length) {
@@ -781,8 +793,23 @@ export default {
         attachment: fileId,
         attachedFile: fileName
       });
-      if (this.currentStatus != this.newStatus) {
-        this.ticket.status = this.newStatus;
+      this.ticket.status = this.newStatus;
+      if (this.ticket.logs && this.ticket.logs.length) {
+        let previousLog = this.ticket.logs[this.ticket.logs.length - 1];
+        if (
+          previousLog.assignedTo &&
+          previousLog.assignedTo.type == "beneficiary" &&
+          this.newResponsible.type == "beneficiary"
+        ) {
+        } else {
+          this.ticket.logs.push({
+            action: this.newStatus,
+            author: this.$store.state.user.user._id,
+            date: new Date(),
+            assignedTo: this.newResponsible
+          });
+        }
+      } else {
         this.ticket.logs.push({
           action: this.newStatus,
           author: this.$store.state.user.user._id,
@@ -805,6 +832,290 @@ export default {
             color: "error"
           });
         });
+    },
+    calculateCNS() {
+      let counter = 0;
+      let workingInterval = {
+        start: 9,
+        end: 18
+      };
+      let startDate = new Date(this.ticket.timestamps.createdAt);
+      let currentDate = new Date();
+      let criticalityLevel = this.ticket.software.critical;
+      if (criticalityLevel == "critical") {
+        workingInterval = this.ticket.contract.Engagements.critical.schedule;
+      } else if (criticalityLevel == "sensible") {
+        workingInterval = this.ticket.contract.Engagements.sensible.schedule;
+      } else if (criticalityLevel == "standard") {
+        workingInterval = this.ticket.contract.Engagements.standard.schedule;
+      }
+      let noStop = workingInterval.end == "-" || workingInterval.start == "7d/7d";
+
+      if (this.ticket.status == "new") {
+        let endDate = Date.now();
+        if (noStop) {
+          this.cnsSupported = this.HoursBetween(startDate, currentDate).toPrecision(3);
+        } else {
+          let weekendDayCount = this.calculateWeekendDays(startDate, new Date());
+          let holidaysCount = this.holidaysBetween(startDate, currentDate);
+          let startsDate = new Date(this.ticket.timestamps.createdAt);
+
+          let minutesCount = this.calculateWorkingMinutes(
+            startsDate,
+            new Date(),
+            workingInterval.start,
+            workingInterval.end
+          );
+          let hoursCount = minutesCount / 60;
+          hoursCount = hoursCount - holidaysCount * (18 - 9);
+          this.cnsSupported = hoursCount.toPrecision(3);
+        }
+      }
+
+      // Calculate time spent between creation and supported status.
+      let supportedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "supported");
+      if (supportedActions.length) {
+        let firstSupportedAction = supportedActions[0];
+        let supportedMinutesCount = 0;
+        if (noStop) {
+          supportedMinutesCount = this.HoursBetween(startDate, new Date(firstSupportedAction.date)) * 60;
+        } else {
+          supportedMinutesCount = this.calculateWorkingMinutes(
+            startDate,
+            new Date(firstSupportedAction.date),
+            workingInterval.start,
+            workingInterval.end
+          );
+          supportedMinutesCount =
+            supportedMinutesCount -
+            this.holidaysBetween(startDate, new Date(firstSupportedAction.date)) *
+              (workingInterval.end - workingInterval.start) *
+              60;
+          supportedMinutesCount =
+            supportedMinutesCount -
+            this.calculateTimeSuspended(this.ticket.logs, "new", workingInterval.start, workingInterval.end);
+        }
+        this.cnsSupported = (supportedMinutesCount / 60.0).toFixed(2);
+
+        // Calculate time spent between supported and bypassed
+        let bypassedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "bypassed");
+        if (bypassedActions.length) {
+          let firstBypassedAction = bypassedActions[0];
+          let bypassedMinutes = 0;
+          if (noStop) {
+            bypassedMinutes =
+              this.HoursBetween(new Date(firstSupportedAction.date), new Date(firstBypassedAction.date)) * 60;
+          } else {
+            bypassedMinutes = this.calculateWorkingMinutes(
+              new Date(firstSupportedAction.date),
+              new Date(firstBypassedAction.date),
+              workingInterval.start,
+              workingInterval.end
+            );
+            bypassedMinutes =
+              bypassedMinutes -
+              this.holidaysBetween(new Date(firstSupportedAction.date), new Date(firstBypassedAction.date)) *
+                (workingInterval.end - workingInterval.start) *
+                60;
+            bypassedMinutes =
+              bypassedMinutes -
+              this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
+          }
+          this.cnsBypassed = (bypassedMinutes / 60).toFixed(2);
+
+          let resolvedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "resolved");
+          if (resolvedActions.length) {
+            let firstResolvedAction = resolvedActions[0];
+            let resolvedMinutes = 0;
+            if (noStop) {
+              resolvedMinutes =
+                this.HoursBetween(new Date(firstBypassedAction.date), new Date(firstResolvedAction.date)) * 60;
+            } else {
+              resolvedMinutes = this.calculateWorkingMinutes(
+                new Date(firstBypassedAction.date),
+                new Date(firstResolvedAction.date),
+                workingInterval.start,
+                workingInterval.end
+              );
+              resolvedMinutes =
+                resolvedMinutes -
+                this.holidaysBetween(new Date(firstBypassedAction.date), new Date(firstResolvedAction.date)) *
+                  (workingInterval.end - workingInterval.start) *
+                  60;
+              resolvedMinutes =
+                resolvedMinutes -
+                this.calculateTimeSuspended(this.ticket.logs, "bypassed", workingInterval.start, workingInterval.end);
+            }
+            this.cnsResolved = (resolvedMinutes / 60).toFixed(2);
+          } else {
+            let resolvedMinutes = this.calculateWorkingMinutes(
+              new Date(firstBypassedAction.date),
+              new Date(),
+              workingInterval.start,
+              workingInterval.end
+            );
+            resolvedMinutes =
+              resolvedMinutes -
+              this.calculateTimeSuspended(this.ticket.logs, "bypassed", workingInterval.start, workingInterval.end);
+            this.cnsResolved = (resolvedMinutes / 60).toFixed(2);
+          }
+        } else {
+          let bypassedMinutes = this.calculateWorkingMinutes(
+            new Date(firstSupportedAction.date),
+            new Date(),
+            workingInterval.start,
+            workingInterval.end
+          );
+          bypassedMinutes =
+            bypassedMinutes -
+            this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
+          this.cnsBypassed = (bypassedMinutes / 60).toFixed(2);
+        }
+      } else {
+        let holidaysCount = this.holidaysBetween(startDate, currentDate);
+        let startsDate = new Date(this.ticket.timestamps.createdAt);
+
+        let minutesCount = this.calculateWorkingMinutes(
+          startsDate,
+          new Date(),
+          workingInterval.start,
+          workingInterval.end
+        );
+        let hoursCount = minutesCount / 60;
+        hoursCount = hoursCount - holidaysCount * (18 - 9);
+        this.cnsSupported = hoursCount.toFixed(2);
+      }
+    },
+
+    getPreviousAction(logs, date, action) {
+      let previousActions = [];
+      previousActions = logs.filter(log => {
+        let actionDate = new Date(log.date);
+        return actionDate.getTime() < date.getTime() && log.action != action;
+      });
+
+      return previousActions[previousActions.length - 1];
+    },
+
+    getNextAction(logs, date, action) {
+      let nextActions = [];
+      nextActions = logs.filter(log => {
+        let actionDate = new Date(log.date);
+        return actionDate.getTime() > date.getTime() && log.action != action;
+      });
+
+      return nextActions[0];
+    },
+
+    calculateWorkingMinutes(startDate, endDate, startingHour, endHour) {
+      let minutes = 0;
+      while (startDate.getTime() < endDate.getTime()) {
+        if (startDate.getDay() != 0 && startDate.getDay() != 6) {
+          if (startDate.getHours() >= startingHour && startDate.getHours() < endHour) {
+            minutes++;
+          }
+        }
+        startDate.setMinutes(startDate.getMinutes() + 1);
+      }
+
+      return minutes;
+    },
+
+    calculateTimeSuspended(logs, actionType, startingHour, endHour) {
+      let suspendedTime = 0;
+      let actions = logs.filter(log => log.action.toLowerCase() == actionType);
+      let suspendActions = actions.filter(log => {
+        let assignedTo = log.assignedTo;
+        if (assignedTo.type && assignedTo.type == "beneficiary") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      let resumeAction = {};
+      for (var i = 0; i < suspendActions.length; i++) {
+        for (var j = 0; j < actions.length; j++) {
+          if (new Date(actions[j].date).getTime() > new Date(suspendActions[i].date).getTime()) {
+            if (actions[j].assignedTo && actions[j].assignedTo.type !== "beneficiary") {
+              suspendedTime += this.calculateWorkingMinutes(
+                new Date(suspendActions[i].date),
+                new Date(actions[j].date),
+                startingHour,
+                endHour
+              );
+            }
+          }
+        }
+      }
+
+      return suspendedTime;
+    },
+    HoursBetween(start, end) {
+      let diff = end.getTime() - start.getTime();
+      let daysCount = diff / (1000 * 60 * 60 * 24);
+      let hoursCount = daysCount * 24;
+      return hoursCount.toFixed(2);
+    },
+
+    holidaysBetween(from, to) {
+      let allHolidays = [];
+      let startYear = from.getYear() + 1900;
+      let endYear = to.getYear() + 1900;
+      allHolidays = this.getHolidays(startYear);
+      if (startYear !== endYear) {
+        allHolidays.concat(this.getHolidays(endYear));
+      }
+
+      let holidaysDates = allHolidays.map(date => new Date(date));
+      let holidays = holidaysDates.filter(date => {
+        if (date.getTime() <= to.getTime() && date.getTime() >= from.getTime()) {
+          if (date.getDay() == 6 || date.getDay() == 0) {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return false;
+        }
+      });
+
+      return holidays.length;
+    },
+
+    parseDuration(duration) {
+      let remain = duration;
+
+      let days = Math.floor(remain / (1000 * 60 * 60 * 24));
+      remain = remain % (1000 * 60 * 60 * 24);
+
+      let hours = Math.floor(remain / (1000 * 60 * 60));
+      remain = remain % (1000 * 60 * 60);
+
+      let minutes = Math.floor(remain / (1000 * 60));
+      remain = remain % (1000 * 60);
+
+      let seconds = Math.floor(remain / 1000);
+      remain = remain % 1000;
+
+      let milliseconds = remain;
+
+      return {
+        days,
+        hours,
+        minutes,
+        seconds,
+        milliseconds
+      };
+    },
+
+    getHolidays(year) {
+      let holidays = [];
+      holidays = require("@/assets/data/holidays.json");
+      if (!holidays.length) {
+        holidays = this.$http.listHolidays();
+      }
+
+      return holidays;
     },
     downloadFile(fileId, fileName) {
       this.$http.downloadFile(fileId).then(response => {

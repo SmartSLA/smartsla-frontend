@@ -430,7 +430,6 @@ export default {
 
     this.$http.listTickets().then(response => {
       this.requests = response.data;
-      console.log(this.requests);
     });
   },
   computed: {

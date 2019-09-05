@@ -7,6 +7,10 @@ export default {
     return this.get(`/ticketing/api/users`);
   },
 
+  getUserById(userId) {
+    return this.get(`/ticketing/api/users/${userId}`);
+  },
+
   deleteUser(userId) {
     return this.delete(`/ticketing/api/users/${userId}`);
   }
