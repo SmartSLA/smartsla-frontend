@@ -8,7 +8,7 @@ export default {
   },
   downloadFile(fileId) {
     return this.get(`/api/files/${fileId}`, {
-      responseType: 'blob'
+      responseType: "blob"
     });
   }
 };

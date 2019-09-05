@@ -322,6 +322,7 @@ export default {
         this.ticket.files = [];
         this.ticket.files.push(fileObject);
       }
+      this.ticket.author = this.$store.state.user.user;
       this.$http
         .createTicket(this.ticket)
         .then(response => {
@@ -343,7 +344,6 @@ export default {
     }
   },
   mounted() {
-
     this.$http.listTickets().then(response => {
       response.data.forEach(ticket => {
         this.relatedRequests.push(ticket._id);

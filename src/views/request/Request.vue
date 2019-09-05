@@ -116,7 +116,7 @@
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Assigned to") }} :</strong>
-              {{ request.responsible.name }}
+              {{ request.responsible.name || request.responsible.displayName || $t("not assigned yet") }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
@@ -161,9 +161,7 @@
                       <ul v-if="ticket.files.length">
                         <li v-for="(file, key) in ticket.files" :key="key">
                           <a href="#" @click="downloadFile(file.id, file.name)">
-                            {{
-                            file.name
-                            }}
+                            {{ file.name }}
                           </a>
                         </li>
                       </ul>
@@ -187,9 +185,9 @@
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
                           <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link
-                            :to="{ name: 'Request', params: { id: link.id } }"
-                          >{{ link.request }}</router-link>
+                          <router-link :to="{ name: 'Request', params: { id: link.id } }">{{
+                            link.request
+                          }}</router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -229,13 +227,8 @@
                               <v-card-text>{{ comment.body }}</v-card-text>
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
-                                <router-link
-                                  :to="`${apiUrl}/api/files/${comment.attachment}`"
-                                  target="_blank"
-                                >
-                                  {{
-                                  comment.attachedFile
-                                  }}
+                                <router-link :to="`${apiUrl}/api/files/${comment.attachment}`" target="_blank">
+                                  {{ comment.attachedFile }}
                                 </router-link>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
@@ -271,9 +264,7 @@
                               <v-card-text v-if="comment.attachedFile">
                                 <v-icon>attach_file</v-icon>
                                 <a href="#" @click="downloadFile(comment.attachment, attachedFile)">
-                                  {{
-                                  comment.attachedFile
-                                  }}
+                                  {{ comment.attachedFile }}
                                 </a>
                               </v-card-text>
                               <v-card-text v-if="comment.actions" class="grey--text font-italic">
@@ -340,12 +331,9 @@
                     <v-layout row wrap>
                       <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
                       <v-flex xs2 md4 sm4 lg4 xl4>
-                        <v-btn
-                          color="info"
-                          class="custom-comment-btn"
-                          @click="addComment"
-                          :disabled="!commentBtn"
-                        >{{ $t("add comment") }}</v-btn>
+                        <v-btn color="info" class="custom-comment-btn" @click="addComment" :disabled="!commentBtn">{{
+                          $t("add comment")
+                        }}</v-btn>
                       </v-flex>
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
@@ -355,9 +343,7 @@
               <v-tab-item value="satisfaction">
                 <v-card flat>
                   <v-card-text>
-                    {{
-                    $t("the satisfaction survey will be available once the ticket is closed")
-                    }}
+                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -423,30 +409,34 @@
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
-            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
+            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1" v-if="request.inCharge">
               {{ $t("interlocutor in charge of the request") }}
             </h4>
-            <v-card class="pt-2 nobottomshadow" v-if="request.responsible.name">
+            <v-card class="pt-2 nobottomshadow" v-if="request.inCharge">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <br />
               <v-layout row wrap>
                 <v-flex xs3 md2 sm4 lg4 xl4></v-flex>
                 <v-flex xs8 md8 sm6 lg8 xl6>
                   <v-avatar size="100%" class="pl-1 avatar-width">
-                    <v-img :src="avatarUrl ? avatarUrl : ''"></v-img>
+                    <v-img
+                      :src="`${apiUrl}/api/users/${request.inCharge.user._id}/profile/avatar`"
+                      v-if="request.inCharge.user"
+                    ></v-img>
+                    <v-img :src="`${apiUrl}/api/users/${request.inCharge._id}/profile/avatar`" v-else></v-img>
                   </v-avatar>
                 </v-flex>
               </v-layout>
 
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
-                {{ request.responsible.name }}
+                {{ request.inCharge.displayName || request.inCharge.name }}
                 <br />
                 <strong>{{ $t("Phone") }} :</strong>
-                {{ request.responsible.phone }}
+                {{ request.inCharge.phone }}
                 <br />
                 <strong>{{ $t("eMail") }} :</strong>
-                {{ request.responsible.email }}
+                {{ request.inCharge.email }}
               </v-card-text>
             </v-card>
             <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
@@ -455,17 +445,17 @@
             <v-card class="pt-2">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row wrap>
-                <v-flex xs2 md4 xl4 sm4 lg2 pl-0></v-flex>
-                <v-flex xs10 md5 sm5 xl5 lg10 pl-3>
-                  <v-avatar size="150" title="false" class="avatar-width" v-if="request.beneficiary.image.length > 1">
-                    <v-img :src="request.beneficiary.image"></v-img>
+                <v-flex xs3 md2 sm4 lg4 xl4></v-flex>
+                <v-flex xs8 md8 sm6 lg8 xl6>
+                  <v-avatar size="100%" class="pl-1 avatar-width">
+                    <v-img :src="`${apiUrl}/api/users/${request.beneficiary._id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
               </v-layout>
 
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
-                {{ request.beneficiary.contact }}
+                {{ request.beneficiary.name || request.beneficiary.displayName }}
                 <br />
                 <strong>{{ $t("Phone") }} :</strong>
                 {{ request.beneficiary.phone }}
@@ -528,9 +518,7 @@
                 </v-layout>
                 <h3>{{ $t("Community contribution form") }}:</h3>
                 <a :href="request.communityContribution.communityIssueLink">
-                  {{
-                  request.communityContribution.communityIssueLink
-                  }}
+                  {{ request.communityContribution.communityIssueLink }}
                 </a>
               </v-card>
             </v-card>
@@ -603,9 +591,7 @@ export default {
           value: this.$i18n.t("Closed")
         }
       ],
-      assignee: [],
-      assigneeList: ["Dany QUAVAT", "Person 2", "Person 3"],
-      text: ""
+      assignee: []
     };
   },
   components: {
@@ -655,15 +641,11 @@ export default {
     }
   },
   created() {
-    //this.comments = require("@/assets/data/comments.json");
-    //this.request = request;
     if (this.$route.params.id.length > 6) {
       this.$http.getTicketById(this.$route.params.id).then(response => {
         this.ticket = Object.assign({}, response.data);
         this.request = Object.assign({}, response.data);
         this.setRequestData(Object.assign({}, response.data));
-        //console.log(this.ticket);
-        //console.log(this.request);
       });
     }
 
@@ -682,31 +664,47 @@ export default {
       this.currentStatus = request.status;
       this.request.statusId = 1;
       this.request.files = [];
-      this.request.lastUpdate = "";
+      this.request.lastUpdate = new Date(request.timestamps.updatedAt).toDateString();
       this.request.ticketDate = new Date(request.timestamps.createdAt).toDateString();
       this.request.subject = request.description;
-      this.request.responsible = {
-        name: ""
-      };
-      this.request.ticketAuthor = "";
+      this.request.inCharge = false;
+      if (request.logs && request.logs.length) {
+        this.request.responsible = request.logs[request.logs.length - 1].assignedTo;
+        let inChargeList = request.logs.filter(log => {
+          let assignedTo = log.assignedTo;
+          if (assignedTo.type && assignedTo.type != "beneficiary") {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        if (inChargeList.length) {
+          this.request.inCharge = inChargeList[inChargeList.length - 1].assignedTo;
+        }
+      } else {
+        this.request.responsible = {};
+      }
+
       this.comments = request.comments;
       this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
-      this.request.ticketAuthor = this.$store.getters["user/getDisplayName"];
-      this.request.serviceLevel = {};
-      let contact =
-        request.contract.humanResources &&
-        request.contract.humanResources.beneficiaries &&
-        request.contract.humanResources.beneficiaries[0] &&
-        request.contract.humanResources.beneficiaries[0].name;
-      this.request.beneficiary = {
-        image: "",
-        contact: contact,
-        phone: "",
-        client_contract: {
-          client: request.contract.client,
-          contract: request.contract.name
+      if (this.request.author && this.request.author._id) {
+        if (request.author.displayName) {
+          this.request.ticketAuthor = request.author.displayName;
+        } else {
+          this.request.ticketAuthor = request.author.name;
         }
+      } else {
+        this.request.ticketAuthor = this.$store.getters["user/getDisplayName"];
+      }
+      if (request.author && request.author._id) {
+        this.request.beneficiary = request.author;
+      } else {
+        this.request.beneficiary = this.$store.state.user.user;
+      }
+      this.request.beneficiary.client_contract = {
+        client: request.contract.client,
+        contract: request.contract.name
       };
 
       if (request.contract.Engagements) {
@@ -849,7 +847,15 @@ export default {
       } else if (criticalityLevel == "standard") {
         workingInterval = this.ticket.contract.Engagements.standard.schedule;
       }
-      let noStop = workingInterval.end == "-" || workingInterval.start == "7d/7d";
+      let noStop = false;
+      if (workingInterval) {
+        noStop = workingInterval.end == "-" || workingInterval.start == "7d/7d";
+      } else {
+        workingInterval = {
+          start: 9,
+          end: 18
+        };
+      }
 
       if (this.ticket.status == "new") {
         let endDate = Date.now();
