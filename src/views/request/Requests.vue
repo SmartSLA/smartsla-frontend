@@ -96,12 +96,7 @@
     <div v-if="customFilters.length > 0" class="filter-save mt-2">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <a
-            href="#"
-            class="font-italic blue--text action-links ml-2"
-            v-on="on"
-            v-show="isNewFilter || updateBtn"
-          >
+          <a href="#" class="font-italic blue--text action-links ml-2" v-on="on" v-show="isNewFilter || updateBtn">
             <v-icon class="mr-2 blue--text">playlist_add</v-icon>
             {{ $i18n.t("Create new filter") }}
           </a>
@@ -147,9 +142,9 @@
     <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
       <v-card class="px-4 pt-2">
         <v-card-text>
-          <span
-            class="body-2"
-          >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span>
+          <span class="body-2"
+            >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span
+          >
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -177,23 +172,14 @@
           <td class="text-xs-center">{{ props.index }}</td>
 
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-chip
-              v-if="props.item.type == 'Anomalie'"
-              color="#d32f2f"
-              class="ma-2"
-              label
-              text-color="white"
-            >L</v-chip>
+            <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white"
+              >L</v-chip
+            >
             <v-chip v-else color="#174dc5" class="ma-2" label text-color="white">S</v-chip>
           </td>
           <td>
-            <router-link
-              :to="{ name: 'Request', params: { id: props.item._id } }"
-              class="blue-color"
-            >
-              {{
-              props.item.ticketNumber
-              }}
+            <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
+              {{ props.item.ticketNumber }}
             </router-link>
           </td>
 
@@ -246,19 +232,21 @@
                   v-if="props.item.software.name == 'LibreOffice'"
                   class="major-criticality red-background-color"
                   v-on="on"
-                >{{ props.item.software.name }}</span>
+                  >{{ props.item.software.name }}</span
+                >
                 <span
                   v-else-if="props.item.software.name == 'NPM'"
                   class="medium-criticality yellow-background-color"
                   v-on="on"
-                >{{ props.item.software.name }}</span>
+                  >{{ props.item.software.name }}</span
+                >
                 <span v-else class="minor-criticality grey-background-color" v-on="on">
-                  {{
-                  props.item.software.name
-                  }}
+                  {{ props.item.software.name }}
                 </span>
               </template>
-              <span>{{$t("Version : " + props.item.software.version + " / Criticité : " + props.item.software.critical)}}</span>
+              <span>{{
+                $t("Version : " + props.item.software.version + " / Criticité : " + props.item.software.critical)
+              }}</span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
@@ -496,13 +484,9 @@ export default {
       } catch (err) {
         // continue regardless of error
       } finally {
-        let selectedValues = this.customFilters.filter(
-          filter => filter.category == this.categoriesFilter
-        );
+        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
         this.values = this.values.filter(value => {
-          return (
-            selectedValues.filter(filter => filter.value == value).length == 0
-          );
+          return selectedValues.filter(filter => filter.value == value).length == 0;
         });
       }
     },
@@ -518,51 +502,29 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
-        items = items.filter(
-          item => item.team.toLowerCase() == this.ticketsFilter
-        );
+        items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
     checkStoredFilterUpdate() {
       if (this.storedSelectionsFilter.items) {
-        if (
-          this.storedSelectionsFilter.items.length !== this.customFilters.length
-        ) {
+        if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
           this.updateBtn = true;
         } else {
-          this.updateBtn =
-            JSON.stringify(this.storedSelectionsFilter.items) !==
-            JSON.stringify(this.customFilters);
+          this.updateBtn = JSON.stringify(this.storedSelectionsFilter.items) !== JSON.stringify(this.customFilters);
         }
       }
     },
     requestFilterByGroup(item, search) {
       let match = false;
-      let typesFilter = this.customFilters.filter(
-        filter => filter.category == "Type"
-      );
-      let severityFilter = this.customFilters.filter(
-        filter => filter.category == "Severity"
-      );
-      let softwareFilter = this.customFilters.filter(
-        filter => filter.category == "Software"
-      );
-      let assignedFilter = this.customFilters.filter(
-        filter => filter.category == "Assign To"
-      );
-      let responsibleFilter = this.customFilters.filter(
-        filter => filter.category == "Responsible"
-      );
-      let transmitterFilter = this.customFilters.filter(
-        filter => filter.category == "Transmitter"
-      );
-      let clientFilter = this.customFilters.filter(
-        filter => filter.category == "Client / Contract"
-      );
-      let statusFilter = this.customFilters.filter(
-        filter => filter.category == "Status"
-      );
+      let typesFilter = this.customFilters.filter(filter => filter.category == "Type");
+      let severityFilter = this.customFilters.filter(filter => filter.category == "Severity");
+      let softwareFilter = this.customFilters.filter(filter => filter.category == "Software");
+      let assignedFilter = this.customFilters.filter(filter => filter.category == "Assign To");
+      let responsibleFilter = this.customFilters.filter(filter => filter.category == "Responsible");
+      let transmitterFilter = this.customFilters.filter(filter => filter.category == "Transmitter");
+      let clientFilter = this.customFilters.filter(filter => filter.category == "Client / Contract");
+      let statusFilter = this.customFilters.filter(filter => filter.category == "Status");
 
       let typesFilterMatch = true;
       let severityFilterMatch = true;
@@ -587,9 +549,7 @@ export default {
         severityFilterMatch = false;
 
         severityFilter.forEach(currentFilter => {
-          if (
-            item.severity.toLowerCase() == currentFilter.value.toLowerCase()
-          ) {
+          if (item.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
             severityFilterMatch = true;
           }
         });
@@ -612,9 +572,7 @@ export default {
         assignedFilterMatch = false;
 
         assignedFilter.forEach(currentFilter => {
-          if (
-            item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()
-          ) {
+          if (item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()) {
             assignedFilterMatch = true;
           }
         });
@@ -624,9 +582,7 @@ export default {
         responsibleFilterMatch = false;
 
         responsibleFilter.forEach(currentFilter => {
-          if (
-            item.responsible.toLowerCase() == currentFilter.value.toLowerCase()
-          ) {
+          if (item.responsible.toLowerCase() == currentFilter.value.toLowerCase()) {
             responsibleFilterMatch = true;
           }
         });
@@ -636,9 +592,7 @@ export default {
         transmitterFilterMatch = false;
 
         transmitterFilter.forEach(currentFilter => {
-          if (
-            item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()
-          ) {
+          if (item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()) {
             transmitterFilterMatch = true;
           }
         });
@@ -770,10 +724,7 @@ export default {
     },
     loadFilter() {
       this.resetFilters();
-      this.storedSelectionsFilter = Object.assign(
-        {},
-        this.storedSelectionsFilterHolder
-      );
+      this.storedSelectionsFilter = Object.assign({}, this.storedSelectionsFilterHolder);
       this.storedSelectionsFilterHolder = {};
       this.customFilters = [...this.storedSelectionsFilter.items];
       this.deleteBtn = true;
