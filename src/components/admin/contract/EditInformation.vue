@@ -18,10 +18,12 @@
           <v-flex xs3 class="required-label">{{ $t("Client") }}</v-flex>
           <v-flex xs8>
             <v-select
-              :items="clients"
               v-model="contract.client"
+              :items="clients"
               item-text="name"
-              :rules="[() => contract.client.length > 0 || $i18n.t('Required field')]"
+              item-value="name"
+              :rules="[() => Object.keys(contract.client).length > 0 || $i18n.t('Required field')]"
+              return-object
             ></v-select>
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
@@ -176,7 +178,10 @@ export default {
       openDialog: false,
       contract: {
         name: "",
-        client: "",
+        client: {
+          name: "",
+          clientId: ""
+        },
         contact: {
           commercial: "",
           technical: ""
@@ -251,7 +256,7 @@ export default {
     this.$http
       .listClients()
       .then(response => {
-        this.clients = response.data;
+        this.clients = response.data.map(client => ({ name: client.name, clientId: client._id }));
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {

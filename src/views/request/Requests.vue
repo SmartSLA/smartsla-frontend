@@ -252,15 +252,28 @@
           <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
           <td class="text-xs-center">{{ props.item.assign_to }}</td>
           <td class="text-xs-center">{{ props.item.responsible }}</td>
-          <td class="text-xs-center">{{ props.item.transmitter }}</td>
+          <td class="text-xs-center">{{ props.item.author.name }}</td>
 
           <td class="text-xs-center">
-            <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
+            <router-link
+              :to="{ name: 'Client', params: { id: props.item.contract.clientId } }"
+              v-if="$auth.check('admin')"
+            >
+              <a class="blue-color" href="#">{{ props.item.contract.name }}</a>
+            </router-link>
+            <a v-else>{{ props.item.contract.name }}</a>
+            /
+            <router-link
+              :to="{ name: 'Contract', params: { id: props.item.contract._id } }"
+              v-if="$auth.check('admin')"
+            >
+              <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
+            </router-link>
+            <a v-else>{{ props.item.contract.client }}</a>
 
-            <a class="blue-color" href="#">{{ props.item.contract.contract }}</a>
           </td>
-          <td class="text-xs-center">{{ props.item.maj }}</td>
-          <td class="text-xs-center">{{ props.item.timestamps.creation | formatDate }}</td>
+          <td class="text-xs-center">{{ props.item.timestamps.updatedAt | formatDate }}</td>
+          <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
             <!-- <v-progress-linear
