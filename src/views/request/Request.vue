@@ -111,7 +111,7 @@
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created by") }} :</strong>
-              {{ request.ticketAuthor }}
+              {{ request.author.name }}
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">

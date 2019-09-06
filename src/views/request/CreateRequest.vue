@@ -31,7 +31,7 @@
                       background-color="white"
                       v-model="ticket.contract"
                       item-text="name"
-                      :rules="[() => Object.keys(ticket.contract).length || $i18n.t('Required field')]"
+                      :rules="[() => Object.keys(ticket.contract).length > 0 || $i18n.t('Required field')]"
                       class="required-element"
                       return-object
                     ></v-autocomplete>
@@ -60,7 +60,7 @@
                             :search-input.sync="software"
                             class="required-element"
                             return-object
-                            :rules="[() => Object.keys(ticket.software).length || $i18n.t('Required field')]"
+                            :rules="[() => Object.keys(ticket.software).length > 0 || $i18n.t('Required field')]"
                           >
                             <template v-slot:item="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
@@ -202,6 +202,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
@@ -263,6 +264,8 @@ export default {
   },
   methods: {
     submit() {
+      this.ticket.author = this.getUser;
+
       this.submitRequest = false;
       if (!Array.isArray(this.ticket.participants)) {
         this.ticket.participants = this.ticket.participants.split(",");
@@ -322,7 +325,7 @@ export default {
         this.ticket.files = [];
         this.ticket.files.push(fileObject);
       }
-      this.ticket.author = this.$store.state.user.user;
+
       this.$http
         .createTicket(this.ticket)
         .then(response => {
@@ -343,14 +346,10 @@ export default {
         });
     }
   },
-  mounted() {
-    this.$http.listTickets().then(response => {
-      response.data.forEach(ticket => {
-        this.relatedRequests.push(ticket._id);
-      });
-    });
-  },
   computed: {
+    ...mapGetters({
+      getUser: "user/getUser"
+    }),
     typeList() {
       var engagements = [];
       var types = [];
@@ -422,6 +421,13 @@ export default {
       this.contractList = response.data;
     });
     this.$store.dispatch("sidebar/setSidebarComponent", "new-request-side-bar");
+  },
+  mounted() {
+    this.$http.listTickets().then(response => {
+      response.data.forEach(ticket => {
+        this.relatedRequests.push(ticket._id);
+      });
+    });
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
