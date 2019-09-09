@@ -259,8 +259,8 @@
 
             <a class="blue-color" href="#">{{ props.item.contract.contract }}</a>
           </td>
-          <td class="text-xs-center">{{ props.item.maj }}</td>
-          <td class="text-xs-center">{{ props.item.timestamps.creation | formatDate }}</td>
+          <td class="text-xs-center">{{ props.item.timestamps.updatedAt | relativeTime }}</td>
+          <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
             <!-- <v-progress-linear
@@ -559,10 +559,7 @@ export default {
         softwareFilterMatch = false;
 
         softwareFilter.forEach(currentFilter => {
-          if (
-            item.software.name.toLowerCase() ==
-            currentFilter.value.toLowerCase()
-          ) {
+          if (item.software.name.toLowerCase() == currentFilter.value.toLowerCase()) {
             softwareFilterMatch = true;
           }
         });
@@ -602,10 +599,7 @@ export default {
         clientFilterMatch = false;
 
         clientFilter.forEach(currentFilter => {
-          if (
-            item.contract &&
-            item.contract.toLowerCase() == currentFilter.value.toLowerCase()
-          ) {
+          if (item.contract && item.contract.toLowerCase() == currentFilter.value.toLowerCase()) {
             clientFilterMatch = true;
           }
         });
