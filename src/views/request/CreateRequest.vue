@@ -222,7 +222,7 @@ export default {
         description: "",
         software: {},
         relatedRequests: [],
-        status: "",
+        status: "new",
         responsible: {},
         author: {},
         comments: [],
