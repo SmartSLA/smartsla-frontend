@@ -264,18 +264,17 @@
               :to="{ name: 'Client', params: { id: props.item.contract.clientId } }"
               v-if="$auth.check('admin')"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.name }}</a>
+              <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.name }}</a>
+            <a v-else>{{ props.item.contract.client }}</a>
             /
             <router-link
               :to="{ name: 'Contract', params: { id: props.item.contract._id } }"
               v-if="$auth.check('admin')"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
+              <a class="blue-color" href="#">{{ props.item.contract.name }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.client }}</a>
-
+            <a v-else>{{ props.item.contract.name }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.timestamps.updatedAt | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
