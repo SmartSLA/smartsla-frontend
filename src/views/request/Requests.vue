@@ -171,11 +171,16 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index + 1 }}</td>
 
-          <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white"
-              >L</v-chip
+          <td class="text-xs-center">
+            <v-chip
+              v-if="props.item.assignedTo.type == 'beneficiary'"
+              color="#174dc5"
+              class="ma-2"
+              label
+              text-color="white"
+              >{{ props.item.contract.client[0] }}</v-chip
             >
-            <v-chip v-else color="#174dc5" class="ma-2" label text-color="white">S</v-chip>
+            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
