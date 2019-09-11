@@ -46,6 +46,14 @@ const getters = {
 
   getEmail(state) {
     return state.user && state.user.preferredEmail;
+  },
+
+  getUser(state) {
+    return {
+      id: state.user.id,
+      name: `${state.user.firstname} ${state.user.lastname}`,
+      email: state.user.preferredEmail
+    };
   }
 };
 
