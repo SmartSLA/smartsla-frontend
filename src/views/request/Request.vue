@@ -467,7 +467,7 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <v-flex xs12 md12 sm12 xl12 lg12 pt-4 v-if="request.communityContribution.status">
+          <!--<v-flex xs12 md12 sm12 xl12 lg12 pt-4 v-if="request.communityContribution.status">
             <v-card light color="white">
               <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
@@ -522,7 +522,7 @@
                 </a>
               </v-card>
             </v-card>
-          </v-flex>
+          </v-flex>-->
         </v-layout>
       </v-flex>
     </v-layout>
