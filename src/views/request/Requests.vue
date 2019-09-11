@@ -169,13 +169,18 @@
         ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.index }}</td>
+          <td class="text-xs-center">{{ props.index + 1 }}</td>
 
-          <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white"
-              >L</v-chip
+          <td class="text-xs-center">
+            <v-chip
+              v-if="props.item.assignedTo.type == 'beneficiary'"
+              color="#174dc5"
+              class="ma-2"
+              label
+              text-color="white"
+              >{{ props.item.contract.client[0] }}</v-chip
             >
-            <v-chip v-else color="#174dc5" class="ma-2" label text-color="white">S</v-chip>
+            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
@@ -184,19 +189,19 @@
           </td>
 
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
+            <v-badge v-if="props.item.idOssa.id == 1" color="#512da8">
               <template v-slot:badge>
-                <span>{{ props.item.id_ossa }}</span>
+                <span>{{ props.item.idOssa.id }}</span>
               </template>
             </v-badge>
-            <v-badge v-if="props.item.id_ossa == 2" color="#8b60d8">
+            <v-badge v-if="props.item.idOssa.id == 2" color="#8b60d8">
               <template v-slot:badge>
-                <span>{{ props.item.id_ossa }}</span>
+                <span>{{ props.item.idOssa.id }}</span>
               </template>
             </v-badge>
-            <v-badge v-if="props.item.id_ossa == 3" color="#dbc1ff">
+            <v-badge v-if="props.item.idOssa.id == 3" color="#dbc1ff">
               <template v-slot:badge>
-                <span>{{ props.item.id_ossa }}</span>
+                <span>{{ props.item.idOssa.id }}</span>
               </template>
             </v-badge>
           </td>
@@ -250,27 +255,26 @@
             </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
-          <td class="text-xs-center">{{ props.item.assign_to }}</td>
-          <td class="text-xs-center">{{ props.item.responsible }}</td>
-          <td class="text-xs-center">{{ props.item.author.name }}</td>
+          <td class="text-xs-center">{{ props.item.assignedTo && props.item.assignedTo.name }}</td>
+          <td class="text-xs-center">{{ props.item.responsible && props.item.responsible.name }}</td>
+          <td class="text-xs-center">{{ props.item.author && props.item.author.name }}</td>
 
           <td class="text-xs-center">
             <router-link
               :to="{ name: 'Client', params: { id: props.item.contract.clientId } }"
               v-if="$auth.check('admin')"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.name }}</a>
+              <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.name }}</a>
+            <a v-else>{{ props.item.contract.client }}</a>
             /
             <router-link
               :to="{ name: 'Contract', params: { id: props.item.contract._id } }"
               v-if="$auth.check('admin')"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
+              <a class="blue-color" href="#">{{ props.item.contract.name }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.client }}</a>
-
+            <a v-else>{{ props.item.contract.name }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.timestamps.updatedAt | relativeTime }}</td>
           <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
