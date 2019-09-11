@@ -169,7 +169,7 @@
         ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.index }}</td>
+          <td class="text-xs-center">{{ props.index + 1 }}</td>
 
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-chip v-if="props.item.type == 'Anomalie'" color="#d32f2f" class="ma-2" label text-color="white"
