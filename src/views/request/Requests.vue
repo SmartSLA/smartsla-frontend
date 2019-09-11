@@ -189,19 +189,19 @@
           </td>
 
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-badge v-if="props.item.id_ossa == 1" color="#512da8">
+            <v-badge v-if="props.item.idOssa.id == 1" color="#512da8">
               <template v-slot:badge>
-                <span>{{ props.item.id_ossa }}</span>
+                <span>{{ props.item.idOssa.id }}</span>
               </template>
             </v-badge>
-            <v-badge v-if="props.item.id_ossa == 2" color="#8b60d8">
+            <v-badge v-if="props.item.idOssa.id == 2" color="#8b60d8">
               <template v-slot:badge>
-                <span>{{ props.item.id_ossa }}</span>
+                <span>{{ props.item.idOssa.id }}</span>
               </template>
             </v-badge>
-            <v-badge v-if="props.item.id_ossa == 3" color="#dbc1ff">
+            <v-badge v-if="props.item.idOssa.id == 3" color="#dbc1ff">
               <template v-slot:badge>
-                <span>{{ props.item.id_ossa }}</span>
+                <span>{{ props.item.idOssa.id }}</span>
               </template>
             </v-badge>
           </td>
