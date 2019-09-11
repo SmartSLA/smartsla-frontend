@@ -173,7 +173,7 @@
 
           <td class="text-xs-center">
             <v-chip
-              v-if="props.item.assignedTo.type == 'beneficiary'"
+              v-if="props.item.assignedTo && props.item.assignedTo.type == 'beneficiary'"
               color="#174dc5"
               class="ma-2"
               label
