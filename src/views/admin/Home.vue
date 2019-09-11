@@ -3,10 +3,9 @@
     <v-layout row wrap>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{ $t("Users") }}</h3>
-            </div>
+          <v-card-title primary-title @click.prevent="goTusers">
+            <v-icon x-large>people</v-icon>
+            <h3 class="headline mb-0">{{ $t("Users") }}</h3>
           </v-card-title>
           <div>
             <ul>
@@ -31,10 +30,9 @@
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{ $t("Teams") }}</h3>
-            </div>
+          <v-card-title primary-title @click.prevent="goToteams">
+            <v-icon x-large>people_outline</v-icon>
+            <h3 class="headline mb-0">{{ $t("Teams") }}</h3>
           </v-card-title>
           <div>
             <ul>
@@ -59,10 +57,9 @@
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{ $t("Clients") }}</h3>
-            </div>
+          <v-card-title primary-title @click.prevent="goToclients">
+            <v-icon x-large>account_box</v-icon>
+            <h3 class="headline mb-0">{{ $t("Clients") }}</h3>
           </v-card-title>
           <div>
             <ul>
@@ -87,10 +84,9 @@
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{ $t("Contracts") }}</h3>
-            </div>
+          <v-card-title primary-title @click.prevent="goTocontracts">
+            <v-icon x-large>assignment</v-icon>
+            <h3 class="headline mb-0">{{ $t("Contracts") }}</h3>
           </v-card-title>
           <div>
             <ul>
@@ -115,10 +111,9 @@
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{ $t("Softwares") }}</h3>
-            </div>
+          <v-card-title primary-title @click.prevent="goTosoftwares">
+            <v-icon x-large>web</v-icon>
+            <h3 class="headline mb-0">{{ $t("Softwares") }}</h3>
           </v-card-title>
           <div>
             <ul>
@@ -143,10 +138,9 @@
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{ $t("Contributions") }}</h3>
-            </div>
+          <v-card-title primary-title @click.prevent="goTocontributions">
+            <v-icon x-large>library_add</v-icon>
+            <h3 class="headline mb-0">{{ $t("Contributions") }}</h3>
           </v-card-title>
           <div>
             <ul>
@@ -174,6 +168,7 @@
 </template>
 
 <script>
+import { routeNames } from "@/router";
 export default {
   data() {
     return {
@@ -295,11 +290,46 @@ export default {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
       this.$router.push("/403");
     }
+  },
+  methods: {
+    goTusers() {
+      return this.$router.push({ name: routeNames.USERS });
+    },
+    goTocontracts() {
+      return this.$router.push({ name: routeNames.CONTRACTS });
+    },
+    goToclients() {
+      return this.$router.push({ name: routeNames.CLIENTS });
+    },
+    goToteams() {
+      return this.$router.push({ name: routeNames.TEAMS });
+    },
+    goTosoftwares() {
+      return this.$router.push({ name: routeNames.SOFTWARELIST });
+    },
+    goTocontributions() {
+      return this.$router.push({ name: routeNames.ADMINCONTRIBUTIONS });
+    }
   }
 };
 </script>
 
 <style lang="stylus" scoped>
+
+.v-card__title--primary {
+  cursor pointer;
+
+  .v-icon {
+    padding-right: 10px;
+    color:rgba(0, 0, 0, 0.87);
+  }
+}
+
+.v-card {
+  ul {
+    margin-left: 30px;
+  }
+}
 
 li{
   padding-top: 24px !important;
