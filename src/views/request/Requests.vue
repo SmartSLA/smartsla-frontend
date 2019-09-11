@@ -255,9 +255,9 @@
             </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.description | striphtml }}</td>
-          <td class="text-xs-center">{{ props.item.assign_to }}</td>
-          <td class="text-xs-center">{{ props.item.responsible }}</td>
-          <td class="text-xs-center">{{ props.item.author.name }}</td>
+          <td class="text-xs-center">{{ props.item.assignedTo && props.item.assignedTo.name }}</td>
+          <td class="text-xs-center">{{ props.item.responsible && props.item.responsible.name }}</td>
+          <td class="text-xs-center">{{ props.item.author && props.item.author.name }}</td>
 
           <td class="text-xs-center">
             <router-link
