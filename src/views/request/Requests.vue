@@ -839,7 +839,7 @@ export default {
 
 td {
   margin: 2px !important;
-  padding: 0px 15px !important;
+  padding: 0px 5px !important;
   text-align: center;
 }
 
@@ -957,5 +957,9 @@ div.layout:nth-child(5) {
 
 span.v-chip__content {
   color: #fff !important;
+}
+
+table.v-table tbody td {
+  font-size: 12px;
 }
 </style>
