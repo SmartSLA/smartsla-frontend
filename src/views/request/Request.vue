@@ -472,13 +472,19 @@
               <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
                   <div>
-                    <h3 class="headline mb-0">{{ $t("Community contribution progress") }}</h3>
+                    <h3 class="headline mb-0">
+                      {{ $t("Community contribution progress") }}
+                    </h3>
                   </div>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-layout class="mb-1 ml--1 mr-4">
                   <v-flex xs2 md3 sm3 lg2 xl2 pl-0 class="green--text font-weight-bold">
-                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
+                    <v-icon
+                      class="progress-arrow"
+                      :class="{
+                        'green--text': request.communityContribution.status.dev
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Dev") }}</small>
@@ -486,7 +492,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.reversed }"
+                      :class="{
+                        'green--text': request.communityContribution.status.reversed
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Reversed") }}</small>
@@ -494,7 +502,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.integrated }"
+                      :class="{
+                        'green--text': request.communityContribution.status.integrated
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Integrated") }}</small>
@@ -502,7 +512,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.published }"
+                      :class="{
+                        'green--text': request.communityContribution.status.published
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("published") }}</small>
@@ -510,7 +522,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.rejected }"
+                      :class="{
+                        'green--text': request.communityContribution.status.rejected
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Rejected") }}</small>
@@ -556,7 +570,6 @@ export default {
       panel: [true, true],
       comments: [],
       newStatus: "",
-      currentStatus: "",
       newResponsible: "",
       request: {
         statusId: 2,
@@ -599,16 +612,6 @@ export default {
     Editor,
     VUpload
   },
-  // updated() {
-  //   var progressBars = document.getElementsByClassName("v-progress-linear");
-  //   for (let index = 0; index < progressBars.length; index++) {
-  //     var element = progressBars[index];
-  //     var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-  //     var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
-  //     newValueRegion[0].innerHTML = value;
-  //     element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
-  //   }
-  // },
   computed: {
     ...mapGetters({
       email: "user/getEmail",
@@ -621,43 +624,19 @@ export default {
         switch (this.ticket.status.toLowerCase()) {
           case "new":
             return 0;
-            break;
           case "supported":
             return 1;
-            break;
           case "bypassed":
             return 2;
-            break;
           case "resolved":
             return 3;
-            break;
           case "closed":
             return 4;
-            break;
         }
       } else {
         return 0;
       }
     }
-  },
-  created() {
-    if (this.$route.params.id.length > 6) {
-      this.$http.getTicketById(this.$route.params.id).then(response => {
-        this.ticket = Object.assign({}, response.data);
-        this.request = Object.assign({}, response.data);
-        this.setRequestData(Object.assign({}, response.data));
-      });
-    }
-
-    this.$http.listUsers().then(response => {
-      this.assignee = response.data;
-    });
-    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
-    this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   },
   methods: {
     setRequestData(request) {
@@ -799,6 +778,7 @@ export default {
           previousLog.assignedTo.type == "beneficiary" &&
           this.newResponsible.type == "beneficiary"
         ) {
+          // What is that for ?
         } else {
           this.ticket.logs.push({
             action: this.newStatus,
@@ -832,7 +812,7 @@ export default {
         });
     },
     calculateCNS() {
-      let counter = 0;
+      // let counter = 0; Never used
       let workingInterval = {
         start: 9,
         end: 18
@@ -858,11 +838,11 @@ export default {
       }
 
       if (this.ticket.status == "new") {
-        let endDate = Date.now();
+        // let endDate = Date.now(); Never used
         if (noStop) {
           this.cnsSupported = this.HoursBetween(startDate, currentDate).toPrecision(3);
         } else {
-          let weekendDayCount = this.calculateWeekendDays(startDate, new Date());
+          // let weekendDayCount = this.calculateWeekendDays(startDate, new Date()); Never used
           let holidaysCount = this.holidaysBetween(startDate, currentDate);
           let startsDate = new Date(this.ticket.timestamps.createdAt);
 
@@ -1038,7 +1018,8 @@ export default {
           return false;
         }
       });
-      let resumeAction = {};
+      // let resumeAction = {}; Never used
+
       for (var i = 0; i < suspendActions.length; i++) {
         for (var j = 0; j < actions.length; j++) {
           if (new Date(actions[j].date).getTime() > new Date(suspendActions[i].date).getTime()) {
@@ -1114,7 +1095,8 @@ export default {
       };
     },
 
-    getHolidays(year) {
+    // getHolidays(year) { 'year' is never used
+    getHolidays() {
       let holidays = [];
       holidays = require("@/assets/data/holidays.json");
       if (!holidays.length) {
@@ -1133,6 +1115,35 @@ export default {
         link.click();
       });
     }
+  },
+  // updated() {
+  //   var progressBars = document.getElementsByClassName("v-progress-linear");
+  //   for (let index = 0; index < progressBars.length; index++) {
+  //     var element = progressBars[index];
+  //     var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
+  //     var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+  //     newValueRegion[0].innerHTML = value;
+  //     element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+  //   }
+  // },
+  created() {
+    if (this.$route.params.id.length > 6) {
+      this.$http.getTicketById(this.$route.params.id).then(response => {
+        this.ticket = Object.assign({}, response.data);
+        this.request = Object.assign({}, response.data);
+        this.setRequestData(Object.assign({}, response.data));
+      });
+    }
+
+    this.$http.listUsers().then(response => {
+      this.assignee = response.data;
+    });
+    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+    this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
   }
 };
 </script>
