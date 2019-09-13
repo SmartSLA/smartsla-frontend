@@ -8,7 +8,7 @@
         <v-card class="px-1 mt-4 pb-4 pl-4">
           <v-card-title primary-title class="px-4">
             <div>
-              <h3 class="display-1 font-weight-medium mb-0">{{ isNew ? $t("Edit User") : $t("New user") }}</h3>
+              <h3 class="display-1 font-weight-medium mb-0">{{ isEdit ? $t("Edit User") : $t("New user") }}</h3>
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
@@ -18,7 +18,7 @@
                 <strong>{{ $t("Type") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-radio-group v-model="user.type" row color="primary">
+                <v-radio-group v-model="user.type" row color="primary" :disabled="isEdit">
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
@@ -31,6 +31,7 @@
                 <v-text-field
                   v-model="user.name"
                   :rules="[() => user.name.length > 0 || $i18n.t('Required field')]"
+                  :disabled="isEdit"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
@@ -38,7 +39,7 @@
                 <strong>{{ $t("Position") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field v-model="user.title"></v-text-field>
+                <v-text-field v-model="user.title" :disabled="isEdit"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -48,6 +49,7 @@
                 <v-text-field
                   v-model="user.email"
                   :rules="[() => /.+@.+/.test(user.email) || $i18n.t('email required')]"
+                  :disabled="isEdit"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
@@ -58,6 +60,7 @@
                 <v-text-field
                   v-model="user.phone"
                   :rules="[() => user.phone.length > 0 || $i18n.t('Required field')]"
+                  :disabled="isEdit"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
@@ -68,6 +71,7 @@
                 <v-text-field
                   v-model="user.identifier"
                   :rules="[() => user.identifier.length > 0 || $i18n.t('Required field')]"
+                  :disabled="isEdit"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
@@ -92,7 +96,13 @@
                 <strong>{{ $t("Client") }} :</strong>
               </v-flex>
               <v-flex xs8 v-if="user.type != 'expert'">
-                <v-select :items="clients" item-value="name" item-text="name" v-model="user.client"></v-select>
+                <v-select 
+                  :items="clients"
+                  item-value="name"
+                  item-text="name"
+                  v-model="user.client"
+                  :disabled="isEdit"
+                ></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
               <v-flex xs3 class="pt-4">
@@ -111,7 +121,7 @@
               <v-flex xs5></v-flex>
               <v-flex xs2>
                 <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
-                <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
+                <v-btn color="error" @click="openDialog = true" v-if="isEdit">{{ $t("Delete") }}</v-btn>
               </v-flex>
             </v-layout>
           </v-form>
@@ -160,7 +170,7 @@ export default {
     };
   },
   computed: {
-    isNew() {
+    isEdit() {
       return this.$route.params.id;
     }
   },
@@ -214,7 +224,7 @@ export default {
     deleteUser() {
       this.$http
         .deleteUser(this.user._id)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("User deleted"),
             color: "success"
