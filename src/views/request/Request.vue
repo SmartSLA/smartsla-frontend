@@ -116,7 +116,7 @@
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Assigned to") }} :</strong>
-              {{ request.responsible.name || request.responsible.displayName || $t("not assigned yet") }}
+              {{ (request.assignedTo && request.assignedTo.name) || $t("not assigned yet") }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
@@ -170,7 +170,7 @@
                 </v-flex>
               </v-layout>
             </v-card-text>
-            <v-card-text v-if="request.linkedTickets.length">
+            <v-card-text v-if="request.linkedTickets.length > 0">
               <v-layout>
                 <v-flex xs1 md1 sm1 lg1 xl1>
                   <v-icon>insert_link</v-icon>
@@ -181,7 +181,7 @@
                       <strong>{{ $t("Related requests") }}:</strong>
                     </v-flex>
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
-                      <ul v-if="request.linkedTickets.length">
+                      <ul v-if="request.linkedTickets.length > 0">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
                           <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
                           <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
@@ -409,34 +409,31 @@
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
-            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1" v-if="request.inCharge">
+            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
               {{ $t("interlocutor in charge of the request") }}
             </h4>
-            <v-card class="pt-2 nobottomshadow" v-if="request.inCharge">
+            <v-card class="pt-2 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <br />
-              <v-layout row wrap>
-                <v-flex xs3 md2 sm4 lg4 xl4></v-flex>
+              <v-layout row wrap v-if="request.responsible">
                 <v-flex xs8 md8 sm6 lg8 xl6>
                   <v-avatar size="100%" class="pl-1 avatar-width">
-                    <v-img
-                      :src="`${apiUrl}/api/users/${request.inCharge.user._id}/profile/avatar`"
-                      v-if="request.inCharge.user"
-                    ></v-img>
-                    <v-img :src="`${apiUrl}/api/users/${request.inCharge._id}/profile/avatar`" v-else></v-img>
+                    <v-img :src="`${apiUrl}/api/users/${request.responsible._id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
               </v-layout>
 
-              <v-card-text>
+              <v-card-text v-if="request.responsible">
                 <strong>{{ $t("Contact") }} :</strong>
-                {{ request.inCharge.displayName || request.inCharge.name }}
-                <br />
-                <strong>{{ $t("Phone") }} :</strong>
-                {{ request.inCharge.phone }}
+                {{ request.responsible && request.responsible.name }}
                 <br />
                 <strong>{{ $t("eMail") }} :</strong>
-                {{ request.inCharge.email }}
+                {{ request.responsible && request.responsible.email }}
+              </v-card-text>
+              <v-card-text v-else>
+                <h4>
+                  {{ $t("No interlocutor in charge of the request at the moment") }}
+                </h4>
               </v-card-text>
             </v-card>
             <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
@@ -448,22 +445,23 @@
                 <v-flex xs3 md2 sm4 lg4 xl4></v-flex>
                 <v-flex xs8 md8 sm6 lg8 xl6>
                   <v-avatar size="100%" class="pl-1 avatar-width">
-                    <v-img :src="`${apiUrl}/api/users/${request.beneficiary._id}/profile/avatar`"></v-img>
+                    <v-img v:src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
               </v-layout>
 
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
-                {{ request.beneficiary.name || request.beneficiary.displayName }}
+                {{ request.beneficiary.name }}
                 <br />
-                <strong>{{ $t("Phone") }} :</strong>
-                {{ request.beneficiary.phone }}
-                <br />
-                <span class="body-2">{{ $t("client") }} / {{ $t("contract") }} :&nbsp;</span>
-                <router-link to="#">{{ request.beneficiary.client_contract.client }}</router-link
-                >/
-                <router-link to="#">{{ request.beneficiary.client_contract.contract }}</router-link>
+                <span class="body-2">{{ $t("Client") }} / {{ $t("Contract") }} :&nbsp;</span>
+                <router-link :to="{ name: 'Client', params: { id: request.contract.clientId } }">
+                  <a class="blue-color" href="#">{{ request.contract.client }}</a>
+                </router-link>
+                /
+                <router-link :to="{ name: 'Contract', params: { id: request.contract._id } }">
+                  <a class="blue-color" href="#">{{ request.contract.name }}</a>
+                </router-link>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -472,13 +470,19 @@
               <v-card light color="white pb-2 pr-4">
                 <v-card-title primary-title>
                   <div>
-                    <h3 class="headline mb-0">{{ $t("Community contribution progress") }}</h3>
+                    <h3 class="headline mb-0">
+                      {{ $t("Community contribution progress") }}
+                    </h3>
                   </div>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-layout class="mb-1 ml--1 mr-4">
                   <v-flex xs2 md3 sm3 lg2 xl2 pl-0 class="green--text font-weight-bold">
-                    <v-icon class="progress-arrow" :class="{ 'green--text': request.communityContribution.status.dev }"
+                    <v-icon
+                      class="progress-arrow"
+                      :class="{
+                        'green--text': request.communityContribution.status.dev
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Dev") }}</small>
@@ -486,7 +490,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.reversed }"
+                      :class="{
+                        'green--text': request.communityContribution.status.reversed
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Reversed") }}</small>
@@ -494,7 +500,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.integrated }"
+                      :class="{
+                        'green--text': request.communityContribution.status.integrated
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Integrated") }}</small>
@@ -502,7 +510,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.published }"
+                      :class="{
+                        'green--text': request.communityContribution.status.published
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("published") }}</small>
@@ -510,7 +520,9 @@
                   <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
                     <v-icon
                       class="progress-arrow"
-                      :class="{ 'green--text': request.communityContribution.status.rejected }"
+                      :class="{
+                        'green--text': request.communityContribution.status.rejected
+                      }"
                       >label_important</v-icon
                     >
                     <small>{{ $t("Rejected") }}</small>
@@ -556,7 +568,6 @@ export default {
       panel: [true, true],
       comments: [],
       newStatus: "",
-      currentStatus: "",
       newResponsible: "",
       request: {
         statusId: 2,
@@ -599,21 +610,12 @@ export default {
     Editor,
     VUpload
   },
-  // updated() {
-  //   var progressBars = document.getElementsByClassName("v-progress-linear");
-  //   for (let index = 0; index < progressBars.length; index++) {
-  //     var element = progressBars[index];
-  //     var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-  //     var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
-  //     newValueRegion[0].innerHTML = value;
-  //     element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
-  //   }
-  // },
   computed: {
     ...mapGetters({
       email: "user/getEmail",
       avatarUrl: "user/getAvatarUrl",
-      displayName: "user/getDisplayName"
+      displayName: "user/getDisplayName",
+      getUser: "user/getUser"
     }),
 
     ticketStatusId() {
@@ -621,19 +623,14 @@ export default {
         switch (this.ticket.status.toLowerCase()) {
           case "new":
             return 0;
-            break;
           case "supported":
             return 1;
-            break;
           case "bypassed":
             return 2;
-            break;
           case "resolved":
             return 3;
-            break;
           case "closed":
             return 4;
-            break;
         }
       } else {
         return 0;
@@ -666,25 +663,6 @@ export default {
 
     }
   },
-  created() {
-    if (this.$route.params.id.length > 6) {
-      this.$http.getTicketById(this.$route.params.id).then(response => {
-        this.ticket = Object.assign({}, response.data);
-        this.request = Object.assign({}, response.data);
-        this.setRequestData(Object.assign({}, response.data));
-      });
-    }
-
-    this.$http.listUsers().then(response => {
-      this.assignee = response.data;
-    });
-    this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
-    this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
-  },
   methods: {
     setRequestData(request) {
       this.currentStatus = request.status;
@@ -693,45 +671,15 @@ export default {
       this.request.lastUpdate = new Date(request.timestamps.updatedAt).toDateString();
       this.request.ticketDate = new Date(request.timestamps.createdAt).toDateString();
       this.request.subject = request.description;
-      this.request.inCharge = false;
-      if (request.logs && request.logs.length) {
-        this.request.responsible = request.logs[request.logs.length - 1].assignedTo;
-        let inChargeList = request.logs.filter(log => {
-          let assignedTo = log.assignedTo;
-          if (assignedTo.type && assignedTo.type != "beneficiary") {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        if (inChargeList.length) {
-          this.request.inCharge = inChargeList[inChargeList.length - 1].assignedTo;
-        }
-      } else {
-        this.request.responsible = {};
-      }
-
       this.comments = request.comments;
       this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
-      if (this.request.author && this.request.author._id) {
-        if (request.author.displayName) {
-          this.request.ticketAuthor = request.author.displayName;
-        } else {
-          this.request.ticketAuthor = request.author.name;
-        }
-      } else {
-        this.request.ticketAuthor = this.$store.getters["user/getDisplayName"];
+      this.request.communityContribution = {};
+      this.calculateCNS();
+
+      if (!request.author) {
+        this.request.author = this.getUser;
       }
-      if (request.author && request.author._id) {
-        this.request.beneficiary = request.author;
-      } else {
-        this.request.beneficiary = this.$store.state.user.user;
-      }
-      this.request.beneficiary.client_contract = {
-        client: request.contract.client,
-        contract: request.contract.name
-      };
 
       if (request.contract.Engagements) {
         let engagements = [];
@@ -753,8 +701,6 @@ export default {
           this.resolvedDuration = this.parseEngagementDuration(engagement.fix);
         }
       }
-      this.request.communityContribution = {};
-      this.calculateCNS();
     },
     parseEngagementDuration(durationString, workHours = 9) {
       let duration = 0;
@@ -825,6 +771,7 @@ export default {
           previousLog.assignedTo.type == "beneficiary" &&
           this.newResponsible.type == "beneficiary"
         ) {
+          // What is that for ?
         } else {
           this.ticket.logs.push({
             action: this.newStatus,
@@ -849,6 +796,7 @@ export default {
             color: "success"
           });
           this.panel.push(true);
+          this.getData();
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -858,7 +806,6 @@ export default {
         });
     },
     calculateCNS() {
-      let counter = 0;
       let workingInterval = {
         start: 9,
         end: 18
@@ -884,11 +831,9 @@ export default {
       }
 
       if (this.ticket.status == "new") {
-        let endDate = Date.now();
         if (noStop) {
           this.cnsSupported = this.HoursBetween(startDate, currentDate).toPrecision(3);
         } else {
-          let weekendDayCount = this.calculateWeekendDays(startDate, new Date());
           let holidaysCount = this.holidaysBetween(startDate, currentDate);
           let startsDate = new Date(this.ticket.timestamps.createdAt);
 
@@ -1064,7 +1009,7 @@ export default {
           return false;
         }
       });
-      let resumeAction = {};
+
       for (var i = 0; i < suspendActions.length; i++) {
         for (var j = 0; j < actions.length; j++) {
           if (new Date(actions[j].date).getTime() > new Date(suspendActions[i].date).getTime()) {
@@ -1140,7 +1085,7 @@ export default {
       };
     },
 
-    getHolidays(year) {
+    getHolidays() {
       let holidays = [];
       holidays = require("@/assets/data/holidays.json");
       if (!holidays.length) {
@@ -1158,7 +1103,39 @@ export default {
         document.body.appendChild(link);
         link.click();
       });
+    },
+    getData() {
+      if (this.$route.params.id.length > 6) {
+        this.$http.getTicketById(this.$route.params.id).then(response => {
+          this.ticket = Object.assign({}, response.data);
+          this.request = Object.assign({}, response.data);
+          this.setRequestData(Object.assign({}, response.data));
+        });
+      }
+
+      this.$http.listUsers().then(response => {
+        this.assignee = response.data;
+      });
+      this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
+      this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
     }
+  },
+  // updated() {
+  //   var progressBars = document.getElementsByClassName("v-progress-linear");
+  //   for (let index = 0; index < progressBars.length; index++) {
+  //     var element = progressBars[index];
+  //     var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
+  //     var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
+  //     newValueRegion[0].innerHTML = value;
+  //     element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
+  //   }
+  // },
+  created() {
+    this.getData();
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
   }
 };
 </script>

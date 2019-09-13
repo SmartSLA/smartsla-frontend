@@ -492,8 +492,6 @@
 	"Other": "Autre",
 	"Non-blocking": "Non bloquant",
 	"inf-request": "inf-demande",
-	"D": "J"
-
-
-
+	"D": "J",
+	"No interlocutor in charge of the request at the moment": "Pas d'interlocuteur en charge de la demande pour le moment"
 }
