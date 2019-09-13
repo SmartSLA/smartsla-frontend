@@ -300,7 +300,7 @@
                       <v-layout row wrap>
                         <v-flex xs10 md8 sm8 xl3 lg2>
                           <v-select
-                            :items="statusList"
+                            :items="allowedStatusList"
                             v-model="newStatus"
                             :label="$t('Status')"
                             item-text="value"
@@ -638,6 +638,32 @@ export default {
       } else {
         return 0;
       }
+    },
+
+    allowedStatusList() {
+      switch(this.currentStatus.toLowerCase()) {
+        case "new":
+          return this.statusList;
+        case "supported":
+          return this.statusList.filter(statusCode => statusCode.key != "new");
+        case "bypassed":
+          return this.statusList.filter(statusCode =>
+            statusCode.key != "new" &&
+            statusCode.key != "supported"
+          );
+        case "resolved":
+          return this.statusList.filter(statusCode =>
+            statusCode.key != "new" &&
+            statusCode.key != "supported" &&
+            statusCode.key != "bypassed"
+          );
+        case "closed":
+          return this.statusList[this.statusList.length - 1];
+        default:
+          return [];
+      }
+
+
     }
   },
   created() {
