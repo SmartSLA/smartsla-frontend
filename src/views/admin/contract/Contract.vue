@@ -444,10 +444,10 @@ export default {
     critColor(critLevel) {
       switch (critLevel) {
         case "critical":
-          return "#f44336";
+          return "#d32f2f";
           break;
         case "sensible":
-          return "#f4b336";
+          return "#ffa000";
           break;
         case "standard":
           return "#e0e0e0";
