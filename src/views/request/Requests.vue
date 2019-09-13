@@ -34,6 +34,8 @@
       <v-select
         solo
         :items="categories"
+        item-text="value"
+        item-value="key"
         v-model="categoriesFilter"
         hide-details
         class="scoped-requests-search"
@@ -41,6 +43,19 @@
         v-bind:label="$i18n.t('Categories')"
       ></v-select>
       <v-select
+        v-if="isStatusFilter"
+        solo
+        :items="values"
+        item-text="value"
+        item-value="key"
+        v-model="valuesFilter"
+        hide-details
+        hide-selected
+        class="scoped-requests-search"
+        v-bind:label="$i18n.t('Values')"
+      ></v-select>
+      <v-select
+        v-else
         solo
         :items="values"
         v-model="valuesFilter"
@@ -303,7 +318,6 @@
 </template>
 
 <script>
-//var requests = require("@/assets/data/requests.json");
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
@@ -375,14 +389,38 @@ export default {
       ],
       requests: [],
       categories: [
-        this.$i18n.t("Type"),
-        this.$i18n.t("Severity"),
-        this.$i18n.t("Software"),
-        this.$i18n.t("Assign To"),
-        this.$i18n.t("Responsible"),
-        this.$i18n.t("Transmitter"),
-        this.$i18n.t("Client / Contract"),
-        this.$i18n.t("Status")
+        {
+          key: "Type",
+          value: this.$i18n.t("Type")
+        },
+        {
+          key: "Severity",
+          value: this.$i18n.t("Severity")
+        },
+        {
+          key: "Software",
+          value: this.$i18n.t("Software")
+        },
+        {
+          key: "Assign To",
+          value: this.$i18n.t("Assigned To")
+        },
+        {
+          key: "Responsible",
+          value: this.$i18n.t("Responsible")
+        },
+        {
+          key: "Transmitter",
+          value: this.$i18n.t("Author")
+        },
+        {
+          key: "Client / Contract",
+          value: this.$i18n.t("Client / Contract")
+        },
+        {
+          key: "Status",
+          value: this.$i18n.t("Status")
+        }
       ],
       categoriesFilter: "",
       valuesFilter: "",
@@ -391,12 +429,28 @@ export default {
       types: [this.$i18n.t("Anomalie"), this.$i18n.t("Evolution")],
       severities: [this.$i18n.t("Bloquant"), this.$i18n.t("Non Bloquant")],
       status: [
-        this.$i18n.t("New"),
-        this.$i18n.t("Taken into contact"),
-        this.$i18n.t("Circumvention"),
-        this.$i18n.t("Fenced"),
-        this.$i18n.t("Resolution")
+        {
+          key: "new",
+          value: this.$i18n.t("New")
+        },
+        {
+          key: "supported",
+          value: this.$i18n.t("Supported")
+        },
+        {
+          key: "bypassed",
+          value: this.$i18n.t("Bypassed")
+        },
+        {
+          key: "resolved",
+          value: this.$i18n.t("Resolved")
+        },
+        {
+          key: "closed",
+          value: this.$i18n.t("Closed")
+        }
       ],
+      isStatusFilter: false,
       customFilters: [],
       customFiltersCategories: [],
       softwareList: [],
@@ -421,12 +475,12 @@ export default {
     });
     this.$http.listUsers().then(response => {
       response.data.forEach(user => {
-        this.userList.push(user.name);
+        this.userList.push(user);
       });
     });
     this.$http.getContracts().then(response => {
       response.data.forEach(contract => {
-        this.contractClientList.push(contract.client + " / " + contract.name);
+        this.contractClientList.push(contract.name);
       });
     });
     this.$http.listFilters().then(response => {
@@ -451,7 +505,6 @@ export default {
     }
   },
   created() {
-    //this.requests = requests;
     this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
@@ -466,35 +519,35 @@ export default {
       try {
         switch (this.categoriesFilter) {
           case "Type":
-            this.values.length = 0;
+            this.isStatusFilter = false;
             this.values = [...this.types];
             break;
           case "Severity":
-            this.values.length = 0;
+            this.isStatusFilter = false;
             this.values = [...this.severities];
             break;
           case "Software":
-            this.values.length = 0;
+            this.isStatusFilter = false;
             this.values = [...this.softwareList];
             break;
           case "Assign To":
-            this.values.length = 0;
-            this.values = [...this.userList];
+            this.isStatusFilter = false;
+            this.values = [...this.userList].map(user => user.name);
             break;
           case "Responsible":
-            this.values.length = 0;
-            this.values = [...this.userList];
+            this.isStatusFilter = false;
+            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
             break;
           case "Transmitter":
-            this.values.length = 0;
-            this.values = [...this.userList];
+            this.isStatusFilter = false;
+            this.values = [...this.userList].map(user => user.name);
             break;
           case "Client / Contract":
-            this.values.length = 0;
+            this.isStatusFilter = false;
             this.values = [...this.contractClientList];
             break;
           case "Status":
-            this.values.length = 0;
+            this.isStatusFilter = true;
             this.values = [...this.status];
             break;
         }
@@ -534,14 +587,14 @@ export default {
     },
     requestFilterByGroup(item, search) {
       let match = false;
-      let typesFilter = this.customFilters.filter(filter => filter.category == "Type");
-      let severityFilter = this.customFilters.filter(filter => filter.category == "Severity");
-      let softwareFilter = this.customFilters.filter(filter => filter.category == "Software");
-      let assignedFilter = this.customFilters.filter(filter => filter.category == "Assign To");
-      let responsibleFilter = this.customFilters.filter(filter => filter.category == "Responsible");
-      let transmitterFilter = this.customFilters.filter(filter => filter.category == "Transmitter");
-      let clientFilter = this.customFilters.filter(filter => filter.category == "Client / Contract");
-      let statusFilter = this.customFilters.filter(filter => filter.category == "Status");
+      let typesFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "type");
+      let severityFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "severity");
+      let softwareFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "software");
+      let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assign to");
+      let responsibleFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "responsible");
+      let transmitterFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "transmitter");
+      let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "client / contract");
+      let statusFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "status");
 
       let typesFilterMatch = true;
       let severityFilterMatch = true;
@@ -576,18 +629,12 @@ export default {
         softwareFilterMatch = false;
 
         softwareFilter.forEach(currentFilter => {
-          if (item.software.name.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.software &&
+            item.software.name &&
+            item.software.name.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
             softwareFilterMatch = true;
-          }
-        });
-      }
-
-      if (assignedFilter.length) {
-        assignedFilterMatch = false;
-
-        assignedFilter.forEach(currentFilter => {
-          if (item.assign_to.toLowerCase() == currentFilter.value.toLowerCase()) {
-            assignedFilterMatch = true;
           }
         });
       }
@@ -596,8 +643,52 @@ export default {
         responsibleFilterMatch = false;
 
         responsibleFilter.forEach(currentFilter => {
-          if (item.responsible.toLowerCase() == currentFilter.value.toLowerCase()) {
-            responsibleFilterMatch = true;
+          if (item.logs && item.logs.length && item.logs[item.logs.length - 1].assignedTo) {
+            if (
+              typeof item.logs[item.logs.length - 1].assignedTo != "string" &&
+              item.logs[item.logs.length - 1].assignedTo.type &&
+              item.logs[item.logs.length - 1].assignedTo.type != "beneficiary"
+            ) {
+              if (
+                item.logs[item.logs.length - 1].assignedTo.name &&
+                item.logs[item.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
+              ) {
+                responsibleFilterMatch = true;
+              } else if (
+                item.logs[item.logs.length - 1].assignedTo.displayName &&
+                item.logs[item.logs.length - 1].assignedTo.displayName.toLowerCase() ==
+                  currentFilter.value.toLowerCase()
+              ) {
+                responsibleFilterMatch = true;
+              }
+            }
+          }
+        });
+      }
+
+      if (assignedFilter.length) {
+        assignedFilterMatch = false;
+
+        assignedFilter.forEach(currentFilter => {
+          if (item.logs && item.logs.length && item.logs[item.logs.length - 1].assignedTo) {
+            if (typeof item.logs[item.logs.length - 1].assignedTo != "string") {
+              if (
+                item.logs[item.logs.length - 1].assignedTo.name &&
+                item.logs[item.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
+              ) {
+                assignedFilterMatch = true;
+              } else if (
+                item.logs[item.logs.length - 1].assignedTo.displayName &&
+                item.logs[item.logs.length - 1].assignedTo.displayName.toLowerCase() ==
+                  currentFilter.value.toLowerCase()
+              ) {
+                assignedFilterMatch = true;
+              }
+            } else {
+              if (item.logs[item.logs.length - 1].assignedTo.toLowerCase() == currentFilter.value.toLowerCase()) {
+                assignedFilterMatch = true;
+              }
+            }
           }
         });
       }
@@ -606,8 +697,15 @@ export default {
         transmitterFilterMatch = false;
 
         transmitterFilter.forEach(currentFilter => {
-          if (item.transmitter.toLowerCase() == currentFilter.value.toLowerCase()) {
-            transmitterFilterMatch = true;
+          if (item.author) {
+            if (item.author.name && item.author.name.toLowerCase() == currentFilter.value.toLowerCase()) {
+              transmitterFilterMatch = true;
+            } else if (
+              item.author.displayName &&
+              item.author.displayName.toLowerCase() == currentFilter.value.toLowerCase()
+            ) {
+              transmitterFilterMatch = true;
+            }
           }
         });
       }
@@ -616,7 +714,11 @@ export default {
         clientFilterMatch = false;
 
         clientFilter.forEach(currentFilter => {
-          if (item.contract && item.contract.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (
+            item.contract &&
+            item.contract.name &&
+            item.contract.name.toLowerCase() == currentFilter.value.toLowerCase()
+          ) {
             clientFilterMatch = true;
           }
         });
@@ -647,7 +749,7 @@ export default {
       }
       return (
         match ||
-        item.software.name.toLowerCase().includes(search) ||
+        (item.software && item.software.name && item.software.name.toLowerCase().includes(search)) ||
         item.description.toLowerCase().includes(search) ||
         item.contract.client.toLowerCase().includes(search) ||
         item.contract.name.toLowerCase().includes(search)
@@ -762,7 +864,11 @@ export default {
     resetFilters() {
       this.customFilters = [];
       this.centralSearch = "";
+      this.categoriesFilter = "";
+      this.valuesFilter = "";
+      this.search = "";
       this.pageTitle = this.$i18n.t("ALL REQUESTS");
+      this.storedSelectionsFilterHolder = {};
       this.deleteBtn = false;
     }
   }
