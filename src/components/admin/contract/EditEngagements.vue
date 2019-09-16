@@ -172,7 +172,7 @@ export default {
         this.$i18n.t("None"),
         this.$i18n.t("Other")
       ],
-      ossaIds: [this.$i18n.t("Blocking"), this.$i18n.t("Non-blocking"), this.$i18n.t("inf-request")]
+      ossaIds: [this.$i18n.t("Blocking"), this.$i18n.t("Non-blocking"), this.$i18n.t("Information")]
     };
   },
   methods: {
