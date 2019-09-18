@@ -1,6 +1,6 @@
 {
   "severity": "bloquant",
-  "ticketNumber": 2031654656516,
+  "_id": 2031654656516,
   "software": {
     "name": "GLPI",
     "os": "UNIX",

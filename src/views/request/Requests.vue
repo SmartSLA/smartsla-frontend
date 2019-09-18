@@ -199,7 +199,7 @@
           </td>
           <td>
             <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
-              {{ props.item.ticketNumber }}
+              {{ props.item._id }}
             </router-link>
           </td>
 
