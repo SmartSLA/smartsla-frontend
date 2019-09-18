@@ -38,13 +38,26 @@
                   </v-flex>
                   <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
                   <v-flex xs12 md12 lg12 sm12 xl12>
-                    <v-text-field
+                    <v-combobox
                       prepend-icon="mail"
-                      v-model="ticket.participants"
-                      name="Mail"
-                      :label="$t('Participants E-mails (separated by commas)')"
-                      type="text"
-                    ></v-text-field>
+                      v-model="participants"
+                      :label="$t('Participants E-mails')"
+                      multiple
+                      chips
+                    >
+                      <template slot="selection" slot-scope="data">
+                        <v-chip
+                          :class="{ validMail: !emailVerfication[data.index][1] }"
+                          :color="emailVerfication[data.index][1] ? 'default' : 'red'"
+                          :text-color="emailVerfication[data.index][1] ? '' : 'white'"
+                          :selected="data.selected"
+                          close
+                          @input="remove(data.item)"
+                        >
+                          {{ data.item }}
+                        </v-chip>
+                      </template>
+                    </v-combobox>
                   </v-flex>
                   <v-flex xs12 md12 lg12 sm12 xl12>
                     <v-container grid-list-md>
@@ -231,6 +244,7 @@ export default {
         contenu: "",
         files: []
       },
+      participants: [],
       linkedRequest: "",
       linkType: "",
       linkTypes: [
@@ -255,7 +269,9 @@ export default {
       types: ["type1", "type2", "type3", "type4"],
       relatedRequests: [],
       engagementsCategory: [],
-      selectedTypes: []
+      selectedTypes: [],
+      reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+      emailVerfication: []
     };
   },
   components: {
@@ -267,9 +283,7 @@ export default {
       this.ticket.author = this.getUser;
 
       this.submitRequest = false;
-      if (!Array.isArray(this.ticket.participants)) {
-        this.ticket.participants = this.ticket.participants.split(",");
-      }
+      this.ticket.participants = this.participants;
       this.ticket.relatedRequests = this.linkedRequests;
       if (this.ticket.requestFile.length) {
         this.submitRequest = false;
@@ -344,6 +358,13 @@ export default {
             color: "error"
           });
         });
+    },
+    remove(item) {
+      this.participants.splice(this.participants.indexOf(item), 1);
+      this.participants = [...this.participants];
+    },
+    isValidEmail(email) {
+      return this.reg.test(email);
     }
   },
   computed: {
@@ -414,6 +435,9 @@ export default {
     },
     "ticket.type": function(newType, oldType) {
       this.ticket.severity = {};
+    },
+    participants(participants) {
+      this.emailVerfication = participants.map(participant => [participant, this.isValidEmail(participant)]);
     }
   },
   created() {
