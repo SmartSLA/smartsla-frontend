@@ -208,7 +208,7 @@
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -267,7 +267,7 @@
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -326,7 +326,7 @@
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -415,7 +415,7 @@ export default {
           sortable: false
         },
         { text: this.$i18n.t("Bypassed"), value: "bypassed", sortable: false },
-        { text: this.$i18n.t("Fix"), value: "fix", sortable: false }
+        { text: this.$i18n.t("Resolved"), value: "resolved", sortable: false }
       ];
     }
   },
