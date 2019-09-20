@@ -92,7 +92,6 @@ export default {
       .listClients()
       .then(response => {
         this.clients = response.data;
-        console.log('here', this.clients);
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
