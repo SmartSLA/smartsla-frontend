@@ -82,7 +82,7 @@
             <v-flex xs11 md11 sm11 lg11 xl11 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">#{{ request.ticketNumber }} - {{ request.title }}</h3>
+                  <h3 class="headline mb-0">#{{ request._id }} - {{ request.title }}</h3>
                 </div>
               </v-card-title>
             </v-flex>
@@ -1105,13 +1105,11 @@ export default {
       });
     },
     getData() {
-      if (this.$route.params.id.length > 6) {
-        this.$http.getTicketById(this.$route.params.id).then(response => {
-          this.ticket = Object.assign({}, response.data);
-          this.request = Object.assign({}, response.data);
-          this.setRequestData(Object.assign({}, response.data));
-        });
-      }
+      this.$http.getTicketById(this.$route.params.id).then(response => {
+        this.ticket = Object.assign({}, response.data);
+        this.request = Object.assign({}, response.data);
+        this.setRequestData(Object.assign({}, response.data));
+      });
 
       this.$http.listUsers().then(response => {
         this.assignee = response.data;
