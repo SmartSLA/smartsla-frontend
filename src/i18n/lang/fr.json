@@ -234,8 +234,10 @@
 	"the required fields must be filled": "les champs obligatoires doivent être remplis",
 	"The satisfaction survey will be available once the ticket is closed": "Le questionnaire de satisfaction sera disponible une fois le ticket clôturé",
 	"this contribution has been filed on": "cette contribution a été déposée le",
+	"Ticket assigned to": "Ticket assigné à",
 	"ticket created": "ticket crée",
 	"Ticket status": "Statut du ticket",
+	"Ticket passed in status": "Ticket passé en statut",
 	"Ticket #": "Ticket N°",
 	"Time limit": "Limite de temps",
 	"Tips and tricks / best practices": "Bonnes pratiques",
@@ -258,3 +260,4 @@
 	"Watches": "Veilles",
 	"Yes": "Oui"
 }
+

@@ -7,6 +7,10 @@ export default {
     return this.get(`/ticketing/api/users`);
   },
 
+  getConnectedUserId() {
+    return this.get(`/api/user`);
+  },
+
   getUserById(userId) {
     return this.get(`/ticketing/api/users/${userId}`);
   },
