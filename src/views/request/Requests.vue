@@ -295,21 +295,15 @@
           <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <!-- <v-progress-linear
-              v-if="props.item.conf.color == 'error'"
-              color="#d32f2f"
-              height="20"
-              value="30"
+            <span>{{ calculateCnsType(props.item.status) }}</span>
+            <cns-progress-bar
+              v-if="displayCnsProgressBar(props.item.status)"
+              :ticket="props.item"
+              :cnsType="calculateCnsType(props.item.status)"
+              :hideClock="true"
             >
-              {{
-              props.item.remaining_time
-              }}
-            </v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">-->
-            <!-- {{
-              props.item.remaining_time
-              }}
-            </v-progress-linear>-->
+            </cns-progress-bar>
+            <span v-else> {{ props.item.status }} </span>
           </td>
         </template>
       </v-data-table>
@@ -321,6 +315,7 @@
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
+import cnsProgressBar from "@/components/CnsProgressBar";
 
 Vue.component("downloadExcel", JsonExcel);
 export default {
@@ -385,7 +380,7 @@ export default {
         { text: this.$i18n.t("MAJ"), value: "maj" },
         { text: this.$i18n.t("Created"), value: "created" },
         { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("Remaining time"), value: "remaining_time" }
+        { text: this.$i18n.t("In process of being"), value: "in_process_of_being" }
       ],
       requests: [],
       categories: [
@@ -463,6 +458,9 @@ export default {
       deleteBtn: false,
       updateBtn: false
     };
+  },
+  components: {
+    "cns-progress-bar": cnsProgressBar
   },
   mounted() {
     if (this.$auth.ready() && !this.$auth.check("admin")) {
@@ -870,6 +868,16 @@ export default {
       this.pageTitle = this.$i18n.t("ALL REQUESTS");
       this.storedSelectionsFilterHolder = {};
       this.deleteBtn = false;
+    },
+    calculateCnsType(status) {
+      if (!status) return "new";
+      if (status === "new") return "supported";
+      if (status === "supported") return "bypassed";
+      if (status === "bypassed") return "resolved";
+      else return "";
+    },
+    displayCnsProgressBar(status) {
+      return !(status === "closed" || status === "resolved");
     }
   }
 };

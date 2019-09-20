@@ -360,52 +360,11 @@
               </v-card-title>
               <v-divider></v-divider>
               {{ $t("Supported") }}
-              <v-layout row wrap>
-                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    ref="supportedBar"
-                    height="18"
-                    :value="percentage(cnsSupported, supportedDuration)"
-                    :color="getEngagementColor(cnsSupported, supportedDuration)"
-                    class="mt-0 white--text font-weight-bold"
-                    >{{ cnsSupported }} HO</v-progress-linear
-                  >
-                </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>{{ supportedDuration }} HO</v-flex>
-                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0>
-                  <v-icon color="#249CC7">access_time</v-icon>
-                </v-flex>
-              </v-layout>
+              <cns-progress-bar :ticket="ticket" :cnsType="'supported'"></cns-progress-bar>
               {{ $t("Bypass") }}
-              <v-layout row wrap>
-                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    ref="bypassedBar"
-                    color="#CFCFCF"
-                    height="18"
-                    :value="percentage(cnsBypassed, bypassedDuration)"
-                    :color="getEngagementColor(cnsBypassed, bypassedDuration)"
-                    class="mt-0 white--text font-weight-bold"
-                    >{{ cnsBypassed }} HO</v-progress-linear
-                  >
-                </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>{{ bypassedDuration }} HO</v-flex>
-              </v-layout>
+              <cns-progress-bar :ticket="ticket" :cnsType="'bypassed'"></cns-progress-bar>
               {{ $t("Solution") }}
-              <v-layout row wrap>
-                <v-flex xs9 md9 sm9 xl9 lg9 class="px-1 pt-0 pb-0 text-xs-center">
-                  <v-progress-linear
-                    height="18"
-                    ref="resolvedBar"
-                    :value="percentage(cnsResolved, resolvedDuration)"
-                    :color="getEngagementColor(cnsResolved, resolvedDuration)"
-                    class="mt-0 white--text font-weight-bold"
-                    >{{ cnsResolved }} HO</v-progress-linear
-                  >
-                </v-flex>
-                <v-flex xs2 md2 sm2 lg2 xl2 px-1 pt-0 pb-0>{{ resolvedDuration }} HO</v-flex>
-                <v-flex xs1 md1 sm1 lg1 xl1 px-1 pt-0 pb-0></v-flex>
-              </v-layout>
+              <cns-progress-bar :ticket="ticket" :cnsType="'resolved'"></cns-progress-bar>
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
@@ -547,8 +506,9 @@ import { VueEditor } from "vue2-editor";
 import { Editor } from "vuetify-markdown-editor";
 import VUpload from "vuetify-upload-component";
 import ApplicationSettings from "@/services/application-settings";
+import cnsProgressBar from "@/components/CnsProgressBar";
+
 export default {
-  name: "app",
   data() {
     return {
       ticket: {
@@ -608,7 +568,8 @@ export default {
   components: {
     VueEditor,
     Editor,
-    VUpload
+    VUpload,
+    "cns-progress-bar": cnsProgressBar
   },
   computed: {
     ...mapGetters({
@@ -675,57 +636,10 @@ export default {
       this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
       this.request.communityContribution = {};
-      this.calculateCNS();
 
       if (!request.author) {
         this.request.author = this.getUser;
       }
-
-      if (request.contract.Engagements) {
-        let engagements = [];
-        if (request.software.critical == "critical") {
-          engagements = [...request.contract.Engagements.critical.engagements];
-        } else if (request.software.critical == "sensible") {
-          engagements = [...request.contract.Engagements.sensible.engagements];
-        } else if (request.software.critical == "standard") {
-          engagements = [...request.contract.Engagements.standard.engagements];
-        }
-
-        let currentEngagements = engagements.filter(
-          engagement => engagement.severity == request.severity && engagement.request == request.type
-        );
-        if (currentEngagements.length) {
-          let engagement = currentEngagements[0];
-          this.supportedDuration = this.parseEngagementDuration(engagement.supported);
-          this.bypassedDuration = this.parseEngagementDuration(engagement.bypassed);
-          this.resolvedDuration = this.parseEngagementDuration(engagement.fix);
-        }
-      }
-    },
-    parseEngagementDuration(durationString, workHours = 9) {
-      let duration = 0;
-      let days = durationString.match(/(\d+)\s*(J|D|j|d)/);
-      let hours = durationString.match(/(\d+)\s*(H|h)/);
-      if (hours) {
-        duration += parseInt(hours[1]);
-      }
-      if (days) {
-        duration += days[1] * workHours;
-      }
-      return duration;
-    },
-    percentage(partialValue, totalValue) {
-      let value = (100 * partialValue) / totalValue;
-      if (value < 100) {
-        return value;
-      }
-      return 100;
-    },
-    getEngagementColor(currentValue, totalValue) {
-      if (this.percentage(currentValue, totalValue) < 100) {
-        return "success";
-      }
-      return "error";
     },
     addComment() {
       if (this.commentFile.length) {
@@ -805,165 +719,6 @@ export default {
           });
         });
     },
-    calculateCNS() {
-      let workingInterval = {
-        start: 9,
-        end: 18
-      };
-      let startDate = new Date(this.ticket.timestamps.createdAt);
-      let currentDate = new Date();
-      let criticalityLevel = this.ticket.software.critical;
-      if (criticalityLevel == "critical") {
-        workingInterval = this.ticket.contract.Engagements.critical.schedule;
-      } else if (criticalityLevel == "sensible") {
-        workingInterval = this.ticket.contract.Engagements.sensible.schedule;
-      } else if (criticalityLevel == "standard") {
-        workingInterval = this.ticket.contract.Engagements.standard.schedule;
-      }
-      let noStop = false;
-      if (workingInterval) {
-        noStop = workingInterval.end == "-" || workingInterval.start == "7d/7d";
-      } else {
-        workingInterval = {
-          start: 9,
-          end: 18
-        };
-      }
-
-      if (this.ticket.status == "new") {
-        if (noStop) {
-          this.cnsSupported = this.HoursBetween(startDate, currentDate).toPrecision(3);
-        } else {
-          let holidaysCount = this.holidaysBetween(startDate, currentDate);
-          let startsDate = new Date(this.ticket.timestamps.createdAt);
-
-          let minutesCount = this.calculateWorkingMinutes(
-            startsDate,
-            new Date(),
-            workingInterval.start,
-            workingInterval.end
-          );
-          let hoursCount = minutesCount / 60;
-          hoursCount = hoursCount - holidaysCount * (18 - 9);
-          this.cnsSupported = hoursCount.toPrecision(3);
-        }
-      }
-
-      // Calculate time spent between creation and supported status.
-      let supportedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "supported");
-      if (supportedActions.length) {
-        let firstSupportedAction = supportedActions[0];
-        let supportedMinutesCount = 0;
-        if (noStop) {
-          supportedMinutesCount = this.HoursBetween(startDate, new Date(firstSupportedAction.date)) * 60;
-        } else {
-          supportedMinutesCount = this.calculateWorkingMinutes(
-            startDate,
-            new Date(firstSupportedAction.date),
-            workingInterval.start,
-            workingInterval.end
-          );
-          supportedMinutesCount =
-            supportedMinutesCount -
-            this.holidaysBetween(startDate, new Date(firstSupportedAction.date)) *
-              (workingInterval.end - workingInterval.start) *
-              60;
-          supportedMinutesCount =
-            supportedMinutesCount -
-            this.calculateTimeSuspended(this.ticket.logs, "new", workingInterval.start, workingInterval.end);
-        }
-        this.cnsSupported = (supportedMinutesCount / 60.0).toFixed(2);
-
-        // Calculate time spent between supported and bypassed
-        let bypassedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "bypassed");
-        if (bypassedActions.length) {
-          let firstBypassedAction = bypassedActions[0];
-          let bypassedMinutes = 0;
-          if (noStop) {
-            bypassedMinutes =
-              this.HoursBetween(new Date(firstSupportedAction.date), new Date(firstBypassedAction.date)) * 60;
-          } else {
-            bypassedMinutes = this.calculateWorkingMinutes(
-              new Date(firstSupportedAction.date),
-              new Date(firstBypassedAction.date),
-              workingInterval.start,
-              workingInterval.end
-            );
-            bypassedMinutes =
-              bypassedMinutes -
-              this.holidaysBetween(new Date(firstSupportedAction.date), new Date(firstBypassedAction.date)) *
-                (workingInterval.end - workingInterval.start) *
-                60;
-            bypassedMinutes =
-              bypassedMinutes -
-              this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
-          }
-          this.cnsBypassed = (bypassedMinutes / 60).toFixed(2);
-
-          let resolvedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "resolved");
-          if (resolvedActions.length) {
-            let firstResolvedAction = resolvedActions[0];
-            let resolvedMinutes = 0;
-            if (noStop) {
-              resolvedMinutes =
-                this.HoursBetween(new Date(firstBypassedAction.date), new Date(firstResolvedAction.date)) * 60;
-            } else {
-              resolvedMinutes = this.calculateWorkingMinutes(
-                new Date(firstBypassedAction.date),
-                new Date(firstResolvedAction.date),
-                workingInterval.start,
-                workingInterval.end
-              );
-              resolvedMinutes =
-                resolvedMinutes -
-                this.holidaysBetween(new Date(firstBypassedAction.date), new Date(firstResolvedAction.date)) *
-                  (workingInterval.end - workingInterval.start) *
-                  60;
-              resolvedMinutes =
-                resolvedMinutes -
-                this.calculateTimeSuspended(this.ticket.logs, "bypassed", workingInterval.start, workingInterval.end);
-            }
-            this.cnsResolved = (resolvedMinutes / 60).toFixed(2);
-          } else {
-            let resolvedMinutes = this.calculateWorkingMinutes(
-              new Date(firstBypassedAction.date),
-              new Date(),
-              workingInterval.start,
-              workingInterval.end
-            );
-            resolvedMinutes =
-              resolvedMinutes -
-              this.calculateTimeSuspended(this.ticket.logs, "bypassed", workingInterval.start, workingInterval.end);
-            this.cnsResolved = (resolvedMinutes / 60).toFixed(2);
-          }
-        } else {
-          let bypassedMinutes = this.calculateWorkingMinutes(
-            new Date(firstSupportedAction.date),
-            new Date(),
-            workingInterval.start,
-            workingInterval.end
-          );
-          bypassedMinutes =
-            bypassedMinutes -
-            this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
-          this.cnsBypassed = (bypassedMinutes / 60).toFixed(2);
-        }
-      } else {
-        let holidaysCount = this.holidaysBetween(startDate, currentDate);
-        let startsDate = new Date(this.ticket.timestamps.createdAt);
-
-        let minutesCount = this.calculateWorkingMinutes(
-          startsDate,
-          new Date(),
-          workingInterval.start,
-          workingInterval.end
-        );
-        let hoursCount = minutesCount / 60;
-        hoursCount = hoursCount - holidaysCount * (18 - 9);
-        this.cnsSupported = hoursCount.toFixed(2);
-      }
-    },
-
     getPreviousAction(logs, date, action) {
       let previousActions = [];
       previousActions = logs.filter(log => {
@@ -973,7 +728,6 @@ export default {
 
       return previousActions[previousActions.length - 1];
     },
-
     getNextAction(logs, date, action) {
       let nextActions = [];
       nextActions = logs.filter(log => {
@@ -983,82 +737,6 @@ export default {
 
       return nextActions[0];
     },
-
-    calculateWorkingMinutes(startDate, endDate, startingHour, endHour) {
-      let minutes = 0;
-      while (startDate.getTime() < endDate.getTime()) {
-        if (startDate.getDay() != 0 && startDate.getDay() != 6) {
-          if (startDate.getHours() >= startingHour && startDate.getHours() < endHour) {
-            minutes++;
-          }
-        }
-        startDate.setMinutes(startDate.getMinutes() + 1);
-      }
-
-      return minutes;
-    },
-
-    calculateTimeSuspended(logs, actionType, startingHour, endHour) {
-      let suspendedTime = 0;
-      let actions = logs.filter(log => log.action.toLowerCase() == actionType);
-      let suspendActions = actions.filter(log => {
-        let assignedTo = log.assignedTo;
-        if (assignedTo.type && assignedTo.type == "beneficiary") {
-          return true;
-        } else {
-          return false;
-        }
-      });
-
-      for (var i = 0; i < suspendActions.length; i++) {
-        for (var j = 0; j < actions.length; j++) {
-          if (new Date(actions[j].date).getTime() > new Date(suspendActions[i].date).getTime()) {
-            if (actions[j].assignedTo && actions[j].assignedTo.type !== "beneficiary") {
-              suspendedTime += this.calculateWorkingMinutes(
-                new Date(suspendActions[i].date),
-                new Date(actions[j].date),
-                startingHour,
-                endHour
-              );
-            }
-          }
-        }
-      }
-
-      return suspendedTime;
-    },
-    HoursBetween(start, end) {
-      let diff = end.getTime() - start.getTime();
-      let daysCount = diff / (1000 * 60 * 60 * 24);
-      let hoursCount = daysCount * 24;
-      return hoursCount.toFixed(2);
-    },
-
-    holidaysBetween(from, to) {
-      let allHolidays = [];
-      let startYear = from.getYear() + 1900;
-      let endYear = to.getYear() + 1900;
-      allHolidays = this.getHolidays(startYear);
-      if (startYear !== endYear) {
-        allHolidays.concat(this.getHolidays(endYear));
-      }
-
-      let holidaysDates = allHolidays.map(date => new Date(date));
-      let holidays = holidaysDates.filter(date => {
-        if (date.getTime() <= to.getTime() && date.getTime() >= from.getTime()) {
-          if (date.getDay() == 6 || date.getDay() == 0) {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return false;
-        }
-      });
-
-      return holidays.length;
-    },
-
     parseDuration(duration) {
       let remain = duration;
 
@@ -1083,16 +761,6 @@ export default {
         seconds,
         milliseconds
       };
-    },
-
-    getHolidays() {
-      let holidays = [];
-      holidays = require("@/assets/data/holidays.json");
-      if (!holidays.length) {
-        holidays = this.$http.listHolidays();
-      }
-
-      return holidays;
     },
     downloadFile(fileId, fileName) {
       this.$http.downloadFile(fileId).then(response => {
