@@ -462,33 +462,6 @@ export default {
   components: {
     "cns-progress-bar": cnsProgressBar
   },
-  mounted() {
-    if (this.$auth.ready() && !this.$auth.check("admin")) {
-      this.headers = this.headers.filter(header => header.value != "id_ossa");
-    }
-    this.$http.listSoftware().then(response => {
-      response.data.forEach(software => {
-        this.softwareList.push(software.name);
-      });
-    });
-    this.$http.listUsers().then(response => {
-      response.data.forEach(user => {
-        this.userList.push(user);
-      });
-    });
-    this.$http.getContracts().then(response => {
-      response.data.forEach(contract => {
-        this.contractClientList.push(contract.name);
-      });
-    });
-    this.$http.listFilters().then(response => {
-      this.savedFilters = response.data;
-    });
-
-    this.$http.listTickets().then(response => {
-      this.requests = response.data;
-    });
-  },
   computed: {
     ...mapGetters({
       email: "user/getEmail"
@@ -500,66 +473,6 @@ export default {
 
     showDeleteBtn() {
       return this.deleteBtn;
-    }
-  },
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-    this.$auth.ready(() => {
-      this.$store.dispatch("user/fetchUser");
-    });
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
-  },
-  watch: {
-    categoriesFilter: function(newCategory, oldCategory) {
-      try {
-        switch (this.categoriesFilter) {
-          case "Type":
-            this.isStatusFilter = false;
-            this.values = [...this.types];
-            break;
-          case "Severity":
-            this.isStatusFilter = false;
-            this.values = [...this.severities];
-            break;
-          case "Software":
-            this.isStatusFilter = false;
-            this.values = [...this.softwareList];
-            break;
-          case "Assign To":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].map(user => user.name);
-            break;
-          case "Responsible":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
-            break;
-          case "Transmitter":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].map(user => user.name);
-            break;
-          case "Client / Contract":
-            this.isStatusFilter = false;
-            this.values = [...this.contractClientList];
-            break;
-          case "Status":
-            this.isStatusFilter = true;
-            this.values = [...this.status];
-            break;
-        }
-      } catch (err) {
-        // continue regardless of error
-      } finally {
-        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
-        this.values = this.values.filter(value => {
-          return selectedValues.filter(filter => filter.value == value).length == 0;
-        });
-      }
-    },
-    search: function(oldValue, newValue) {
-      this.centralSearch = newValue;
     }
   },
   methods: {
@@ -858,7 +771,6 @@ export default {
       this.centralSearch = "";
       this.checkStoredFilterUpdate();
     },
-
     resetFilters() {
       this.customFilters = [];
       this.centralSearch = "";
@@ -879,6 +791,93 @@ export default {
     displayCnsProgressBar(status) {
       return !(status === "closed" || status === "resolved");
     }
+  },
+  watch: {
+    categoriesFilter: function(newCategory, oldCategory) {
+      try {
+        switch (this.categoriesFilter) {
+          case "Type":
+            this.isStatusFilter = false;
+            this.values = [...this.types];
+            break;
+          case "Severity":
+            this.isStatusFilter = false;
+            this.values = [...this.severities];
+            break;
+          case "Software":
+            this.isStatusFilter = false;
+            this.values = [...this.softwareList];
+            break;
+          case "Assign To":
+            this.isStatusFilter = false;
+            this.values = [...this.userList].map(user => user.name);
+            break;
+          case "Responsible":
+            this.isStatusFilter = false;
+            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
+            break;
+          case "Transmitter":
+            this.isStatusFilter = false;
+            this.values = [...this.userList].map(user => user.name);
+            break;
+          case "Client / Contract":
+            this.isStatusFilter = false;
+            this.values = [...this.contractClientList];
+            break;
+          case "Status":
+            this.isStatusFilter = true;
+            this.values = [...this.status];
+            break;
+        }
+      } catch (err) {
+        // continue regardless of error
+      } finally {
+        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
+        this.values = this.values.filter(value => {
+          return selectedValues.filter(filter => filter.value == value).length == 0;
+        });
+      }
+    },
+    search: function(oldValue, newValue) {
+      this.centralSearch = newValue;
+    }
+  },
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
+    this.$auth.ready(() => {
+      this.$store.dispatch("user/fetchUser");
+    });
+  },
+  mounted() {
+    if (this.$auth.ready() && !this.$auth.check("admin")) {
+      this.headers = this.headers.filter(header => header.value != "id_ossa");
+    }
+    this.$http.listSoftware().then(response => {
+      response.data.forEach(software => {
+        this.softwareList.push(software.name);
+      });
+    });
+    this.$http.listUsers().then(response => {
+      response.data.forEach(user => {
+        this.userList.push(user);
+      });
+    });
+    this.$http.getContracts().then(response => {
+      response.data.forEach(contract => {
+        this.contractClientList.push(contract.name);
+      });
+    });
+    this.$http.listFilters().then(response => {
+      this.savedFilters = response.data;
+    });
+
+    this.$http.listTickets().then(response => {
+      this.requests = response.data;
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
   }
 };
 </script>
