@@ -222,28 +222,7 @@
           </td>
           <td class="text-xs-center">{{ props.item.type }}</td>
           <td class="text-xs-center">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <span v-on="on">{{ props.item.severity }}</span>
-              </template>
-              <span>
-                <b>Engagements critiques:</b>
-                <ul>
-                  <li>
-                    Prise en charge:
-                    <b>4H</b>
-                  </li>
-                  <li>
-                    Contournement:
-                    <b>1JO</b>
-                  </li>
-                  <li>
-                    Résolution:
-                    <b>3JO</b>
-                  </li>
-                </ul>
-              </span>
-            </v-tooltip>
+            <software-list-detail :request="props.item"></software-list-detail>
           </td>
           <td class="text-xs-center">
             <v-tooltip top>
@@ -316,6 +295,7 @@ import { mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
 import cnsProgressBar from "@/components/CnsProgressBar";
+import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 
 Vue.component("downloadExcel", JsonExcel);
 export default {
@@ -460,7 +440,8 @@ export default {
     };
   },
   components: {
-    "cns-progress-bar": cnsProgressBar
+    "cns-progress-bar": cnsProgressBar,
+    SoftwareListDetail
   },
   computed: {
     ...mapGetters({
