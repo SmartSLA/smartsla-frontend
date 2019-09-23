@@ -227,19 +227,7 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span
-                  v-if="props.item.software.name == 'LibreOffice'"
-                  class="major-criticality red-background-color"
-                  v-on="on"
-                  >{{ props.item.software.name }}</span
-                >
-                <span
-                  v-else-if="props.item.software.name == 'NPM'"
-                  class="medium-criticality yellow-background-color"
-                  v-on="on"
-                  >{{ props.item.software.name }}</span
-                >
-                <span v-else class="minor-criticality grey-background-color" v-on="on">
+                <span v-bind:class="['criticality', props.item.software.critical]" v-on="on">
                   {{ props.item.software.name }}
                 </span>
               </template>
@@ -950,25 +938,25 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
   max-width: 250px;
 }
 
-.major-criticality {
-  color: #ffffff;
+.criticality {
   font-weight: bold;
   padding: 5px;
   border-radius: 2px;
 }
 
-.medium-criticality {
-  color: #ffffff;
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 2px;
+.criticality.standard {
+  background-color: #e0e0e0;
+  color black;
 }
 
-.minor-criticality {
-  color: #000000;
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 2px;
+.criticality.sensible {
+  background-color: #ffa000;
+  color: white;
+}
+
+.criticality.critical {
+  background-color: #d32f2f;
+  color: white;
 }
 
 .action-links {
