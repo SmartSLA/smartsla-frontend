@@ -30,7 +30,7 @@
           <v-flex xs8>
             <v-select :items="commercials" v-model="contract.contact.commercial"></v-select>
           </v-flex>
-          <v-flex xs3>{{ $t("technical contact") }}</v-flex>
+          <v-flex xs3>{{ $t("Technical contact") }}</v-flex>
           <v-flex xs8>
             <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
           </v-flex>
@@ -144,7 +144,7 @@
           </v-flex>
           <v-flex xs12 class="text-xs-center">
             <v-btn :disabled="!valid" color="success" @click="validateForm">{{
-              isNew ? $t("Validate the changes") : $t("Create")
+              isNew ? $t("Validate changes") : $t("Create")
             }}</v-btn>
             <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
           </v-flex>

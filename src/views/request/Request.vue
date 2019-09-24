@@ -102,7 +102,7 @@
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
-              <strong>{{ $t("severity") }} :</strong>
+              <strong>{{ $t("Severity") }} :</strong>
               {{ request.severity }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
@@ -199,7 +199,7 @@
           <v-card>
             <v-tabs grow icons-and-text class="ml-3 mr-3">
               <v-tabs-slider color="primary"></v-tabs-slider>
-              <v-tab href="#comment">{{ $t("comments") }}</v-tab>
+              <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
               <v-tab href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
@@ -332,7 +332,7 @@
                       <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
                       <v-flex xs2 md4 sm4 lg4 xl4>
                         <v-btn color="info" class="custom-comment-btn" @click="addComment" :disabled="!commentBtn">{{
-                          $t("add comment")
+                          $t("Add comment")
                         }}</v-btn>
                       </v-flex>
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>

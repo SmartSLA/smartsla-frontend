@@ -378,7 +378,7 @@ export default {
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "software" },
         { text: this.$i18n.t("Subject"), value: "incident_wording" },
-        { text: this.$i18n.t("Assign To"), value: "assign_to" },
+        { text: this.$i18n.t("Assigned to"), value: "assign_to" },
         { text: this.$i18n.t("Responsible"), value: "responsible" },
         { text: this.$i18n.t("Author"), value: "transmitter" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
@@ -403,7 +403,7 @@ export default {
         },
         {
           key: "Assign To",
-          value: this.$i18n.t("Assigned To")
+          value: this.$i18n.t("Assigned to")
         },
         {
           key: "Responsible",

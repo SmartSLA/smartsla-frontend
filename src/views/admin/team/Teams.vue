@@ -17,7 +17,7 @@
         <div class="teams-operations">
           <router-link :to="{ name: 'NewTeam' }" class="teams-actions blue-color">
             <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add Team") }}</span>
+            <span>{{ $t("Add team") }}</span>
           </router-link>
           <a href="#" class="teams-actions blue-color">
             <v-icon>arrow_downward</v-icon>

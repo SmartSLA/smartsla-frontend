@@ -17,7 +17,7 @@
         <div class="clients-operations">
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
-            <router-link :to="{ name: 'NewClient' }" class="blue-color">{{ $t("Add Client") }}</router-link>
+            <router-link :to="{ name: 'NewClient' }" class="blue-color">{{ $t("Add client") }}</router-link>
           </a>
           <a href="#" class="clients-actions blue-color">
             <v-icon>arrow_downward</v-icon>

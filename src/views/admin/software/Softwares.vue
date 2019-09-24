@@ -2,7 +2,7 @@
   <div v-if="$auth.ready() && $auth.check('admin')">
     <div class="softwares-list">
       <div class="page-title">
-        <span>{{ $t("Softwares list") }}</span>
+        <span>{{ $t("Software list") }}</span>
       </div>
       <div class="softwares-search">
         <span class="softwares-search-span">{{ $t("Search by:") }}</span>
@@ -17,7 +17,7 @@
         <div class="softwares-operations">
           <router-link :to="{ name: 'NewSoftware' }" class="softwares-actions blue-color">
             <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add Software") }}</span>
+            <span>{{ $t("Add new software") }}</span>
           </router-link>
           <a href="#" class="softwares-actions blue-color">
             <v-icon>arrow_downward</v-icon>
