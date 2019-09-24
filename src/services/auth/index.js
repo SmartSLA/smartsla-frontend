@@ -29,7 +29,12 @@ export default {
           this.watch.data.preferredEmail == "kferjani@linagora.com" ||
           this.watch.data.preferredEmail == "mmaudet@linagora.com" ||
           this.watch.data.preferredEmail == "iabouljamal@linagora.com" ||
-          this.watch.data.preferredEmail == "iboudhiba@linagora.com" ||
+          this.watch.data.preferredEmail == "fmoyon@linagora.com" ||
+          this.watch.data.preferredEmail == "arkyek@linagora.com" ||
+          this.watch.data.preferredEmail == "laublet@linagora.com" ||
+          this.watch.data.preferredEmail == "vbouiller@linagora.com" ||
+          this.watch.data.preferredEmail == "chamerling@linagora.com" ||
+          this.watch.data.preferredEmail == "nchadi@linagora.com" ||
           this.watch.data[key || this.options.rolesVar]
         );
       }
