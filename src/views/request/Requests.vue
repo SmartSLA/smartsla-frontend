@@ -178,6 +178,7 @@
         :filter="requestFilterByGroup"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
+        :rows-per-page-text="$t('Rows per page:')"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
         ref="requestsTable"
@@ -259,7 +260,7 @@
           </td>
           <td class="text-xs-center">{{ props.item.timestamps.updatedAt | relativeTime }}</td>
           <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
-          <td class="text-xs-center">{{ props.item.status }}</td>
+          <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
             <span>{{ calculateCnsType(props.item.status) }}</span>
             <cns-progress-bar

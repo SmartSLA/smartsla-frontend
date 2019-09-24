@@ -48,6 +48,7 @@
         :pagination.sync="pagination"
         class="elevation-1"
         :search="search"
+        :rows-per-page-text="$t('Rows per page:')"
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.title }}</td>
@@ -59,7 +60,7 @@
               <div v-else>{{ props.item.name }}</div>
             </router-link>
           </td>
-          <td class="text-xs-center">{{ props.item.role }}</td>
+          <td class="text-xs-center">{{ $t(props.item.role) }}</td>
           <td class="text-xs-center">{{ props.item.engineer }}</td>
           <td class="text-xs-center">{{ props.item.beneficiary }}</td>
           <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
