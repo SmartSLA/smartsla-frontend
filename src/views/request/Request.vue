@@ -32,7 +32,7 @@
                   <v-divider v-else color="success"></v-divider>
 
                   <v-stepper-step
-                    v-if="ticketStatusId == 1"
+                    v-if="ticketStatusId < 1"
                     step
                     complete
                     color="primary"
@@ -40,13 +40,12 @@
                     class="current_step"
                     >{{ $t("Supported") }}</v-stepper-step
                   >
-                  <v-stepper-step v-else-if="ticketStatusId < 1" step>{{ $t("Supported") }}</v-stepper-step>
                   <v-stepper-step v-else step complete color="success">{{ $t("Supported") }}</v-stepper-step>
 
                   <v-divider v-if="ticketStatusId < 2"></v-divider>
                   <v-divider v-else color="success"></v-divider>
                   <v-stepper-step
-                    v-if="ticketStatusId == 2"
+                    v-if="ticketStatusId == 1"
                     step
                     complete
                     color="primary"
@@ -59,7 +58,7 @@
                   <v-divider v-if="ticketStatusId < 3"></v-divider>
                   <v-divider v-else color="success"></v-divider>
                   <v-stepper-step
-                    v-if="ticketStatusId == 3"
+                    v-if="ticketStatusId == 2"
                     step
                     complete
                     color="primary"
@@ -71,7 +70,16 @@
                   <v-stepper-step v-else step complete color="success">{{ $t("Resolved") }}</v-stepper-step>
                   <v-divider v-if="ticketStatusId < 4"></v-divider>
                   <v-divider v-else color="success"></v-divider>
-                  <v-stepper-step v-if="ticketStatusId < 4" step>{{ $t("Closed") }}</v-stepper-step>
+                  <v-stepper-step
+                    v-if="ticketStatusId == 3"
+                    step
+                    complete
+                    color="primary"
+                    complete-icon="access_time"
+                    class="current_step"
+                    >{{ $t("Closed") }}</v-stepper-step
+                  >
+                  <v-stepper-step v-else-if="ticketStatusId < 4" step>{{ $t("Closed") }}</v-stepper-step>
                   <v-stepper-step v-else step complete color="success">{{ $t("Closed") }}</v-stepper-step>
                 </v-stepper-header>
               </v-stepper>
