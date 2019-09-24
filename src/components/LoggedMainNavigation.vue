@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
 export default {
   name: "logged-main-navigation",
@@ -65,6 +66,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      ticketsSize: "ticket/getNbOfTickets"
+    }),
+
     routeNames() {
       return routeNames;
     },
@@ -72,11 +77,6 @@ export default {
     currentActiveMenu() {
       return this.$route.matched[0].name || this.$route.name;
     },
-
-    requestsCount() {
-      var requests = require("@/assets/data/requests.json");
-      return requests.length;
-    }
   },
   created() {
     this.menuItems = [
@@ -91,7 +91,7 @@ export default {
         text: this.$i18n.t("Requests"),
         icon: "format_list_numbered",
         show: true,
-        count: this.requestsCount
+        count: this.ticketsSize
       },
       {
         name: routeNames.DASHBOARD,

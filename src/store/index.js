@@ -11,6 +11,7 @@ import session from "./modules/session";
 import ui from "./modules/ui";
 import user from "./modules/user";
 import sidebar from "./modules/sidebar";
+import ticket from "./modules/ticket";
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
     session,
     ui,
     user,
-    sidebar
+    sidebar,
+    ticket
   },
   actions,
   getters,
