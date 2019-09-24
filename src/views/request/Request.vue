@@ -616,7 +616,7 @@ export default {
             statusCode.key != "bypassed"
           );
         case "closed":
-          return this.statusList[this.statusList.length - 1];
+          return [this.statusList[this.statusList.length - 1]];
         default:
           return [];
       }
@@ -677,7 +677,9 @@ export default {
         attachment: fileId,
         attachedFile: fileName
       });
-      this.ticket.status = this.newStatus;
+      if (this.newStatus) {
+        this.ticket.status = this.newStatus;
+      }
       if (this.ticket.logs && this.ticket.logs.length) {
         let previousLog = this.ticket.logs[this.ticket.logs.length - 1];
         if (
@@ -709,6 +711,9 @@ export default {
             message: this.$i18n.t("updated"),
             color: "success"
           });
+          this.newStatus = "";
+          this.comment = "";
+          this.newResponsible = "";
           this.panel.push(true);
           this.getData();
         })
