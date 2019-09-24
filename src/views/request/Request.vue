@@ -214,72 +214,40 @@
                   <v-expansion-panel v-model="panel" expand>
                     <div v-for="comment in comments" :key="comment._id" class="custom-comment-box">
                       <v-expansion-panel-content
-                        v-if="comment.authorid == 1"
-                        class="comment-mine"
+                        :class="comment.isBeneficiary ? 'comment-not-mine' : 'comment-mine'"
                         color="grey lighten-4"
                       >
                         <template v-slot:header>
                           <div class="font-weight-bold">
-                            <span class="subheading">{{ comment.name }}</span>
-                            {{ comment.date }}
+                            {{ comment.author.name }}
+                            <span class="subheading"> {{ comment.date | calendarTimeFilter }} </span>
+                            <span v-if="comment.actions.isPrivateComment" class="red--text font-italic">
+                              {{ $t("private comment") }}
+                            </span>
                           </div>
                         </template>
                         <v-card class="ml-4">
                           <v-layout row wrap>
                             <v-flex xs2 md1 sm2 lg2 xl2>
-                              <v-avatar size="60" :tile="false" v-if="comment.image">
-                                <v-img :src="comment.image ? comment.image : ''"></v-img>
-                              </v-avatar>
-                            </v-flex>
-                            <v-flex xs10 md10 sm10 lg10 xl10>
-                              <v-card-text>{{ comment.body }}</v-card-text>
-                              <v-card-text v-if="comment.attachedFile">
-                                <v-icon>attach_file</v-icon>
-                                <router-link :to="`${apiUrl}/api/files/${comment.attachment}`" target="_blank">
-                                  {{ comment.attachedFile }}
-                                </router-link>
-                              </v-card-text>
-                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
-                                <span v-for="(action, keya) in comment.actions" :key="keya">
-                                  {{ action.action }}
-                                  <br />
-                                </span>
-                              </v-card-text>
-                            </v-flex>
-                          </v-layout>
-                        </v-card>
-                      </v-expansion-panel-content>
-                      <v-expansion-panel-content
-                        v-if="comment.authorid !== 1"
-                        class="comment-not-mine"
-                        color="grey lighten-4"
-                      >
-                        <template v-slot:header>
-                          <div class="font-weight-bold">
-                            <span class="subheading">{{ comment.name }}</span>
-                            {{ comment.date }}
-                          </div>
-                        </template>
-                        <v-card class="ml-4">
-                          <v-layout row wrap>
-                            <v-flex xs2 md1 sm2 lg2 xl2>
-                              <v-avatar size="60" :tile="false" v-if="comment.image">
-                                <v-img :src="comment.image ? comment.image : ''"></v-img>
+                              <v-avatar size="60" :tile="false" v-if="comment.author.image">
+                                <v-img :src="comment.author.image ? comment.author.image : ''"></v-img>
                               </v-avatar>
                             </v-flex>
                             <v-flex xs10>
                               <v-card-text v-html="comment.body"></v-card-text>
-                              <v-card-text v-if="comment.attachedFile">
-                                <v-icon>attach_file</v-icon>
-                                <a href="#" @click="downloadFile(comment.attachment, attachedFile)">
-                                  {{ comment.attachedFile }}
-                                </a>
+                              <v-card-text v-if="comment.actions.assignedTo.name" class="grey--text font-italic">
+                                {{ $t("Ticket assigned to ") }}
+                                <strong> {{ comment.actions.assignedTo.name }} </strong>
                               </v-card-text>
-                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
-                                <span v-for="(action, keya) in comment.actions" :key="keya">
-                                  {{ action.action }}
-                                  <br />
-                                </span>
+                              <v-card-text v-if="comment.actions.newStatus" class="grey--text font-italic">
+                                {{ $t("Ticket passed in status ") }}
+                                <strong> {{ comment.actions.newStatus }} </strong>
+                              </v-card-text>
+                              <v-card-text v-if="comment.attachedFile.name">
+                                <v-icon>attach_file</v-icon>
+                                <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
+                                  {{ comment.attachedFile.name }}
+                                </a>
                               </v-card-text>
                             </v-flex>
                           </v-layout>
@@ -532,7 +500,7 @@ export default {
       applicationSettings: {},
       commentBtn: true,
       selectedEditor: "wysiwyg",
-      privateComment: "",
+      privateComment: false,
       panel: [true, true],
       comments: [],
       newStatus: "",
@@ -570,7 +538,10 @@ export default {
           value: this.$i18n.t("Closed")
         }
       ],
-      assignee: []
+      assignee: [],
+      connectedUser: {
+        type: "expert"
+      }
     };
   },
   components: {
@@ -607,29 +578,22 @@ export default {
     },
 
     allowedStatusList() {
-      switch(this.currentStatus.toLowerCase()) {
+      switch (this.currentStatus.toLowerCase()) {
         case "new":
           return this.statusList;
         case "supported":
           return this.statusList.filter(statusCode => statusCode.key != "new");
         case "bypassed":
-          return this.statusList.filter(statusCode =>
-            statusCode.key != "new" &&
-            statusCode.key != "supported"
-          );
+          return this.statusList.filter(statusCode => statusCode.key != "new" && statusCode.key != "supported");
         case "resolved":
-          return this.statusList.filter(statusCode =>
-            statusCode.key != "new" &&
-            statusCode.key != "supported" &&
-            statusCode.key != "bypassed"
+          return this.statusList.filter(
+            statusCode => statusCode.key != "new" && statusCode.key != "supported" && statusCode.key != "bypassed"
           );
         case "closed":
           return [this.statusList[this.statusList.length - 1]];
         default:
           return [];
       }
-
-
     }
   },
   methods: {
@@ -677,13 +641,24 @@ export default {
     },
     postComment(fileId = "", fileName = "") {
       this.ticket.comments.push({
+        date: new Date(),
         body: this.comment,
-        date: new Date().toDateString(),
-        name: this.displayName,
-        authorid: this.$store.state.user.user._id,
-        image: this.avatarUrl,
-        attachment: fileId,
-        attachedFile: fileName
+        author: {
+          id: this.$store.state.user.user._id,
+          name: this.displayName,
+          image: this.avatarUrl
+        },
+        attachedFile: {
+          id: fileId,
+          name: fileName,
+          mimeType: this.commentFile.length ? this.commentFile[0].type : ""
+        },
+        actions: {
+          assignedTo: this.newResponsible,
+          newStatus: this.newStatus,
+          isPrivateComment: this.privateComment
+        },
+        isBeneficiary: this.connectedUser.type === "beneficiary"
       });
       if (this.newStatus) {
         this.ticket.status = this.newStatus;
@@ -795,6 +770,15 @@ export default {
       this.$http.listUsers().then(response => {
         this.assignee = response.data;
       });
+
+      this.$http.getConnectedUserId().then(res => {
+        this.$http.getUserById(res.data._id).then(user => {
+          if (user.data) {
+            this.connectedUser = user.data;
+          }
+        });
+      });
+
       this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
       this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
     }
