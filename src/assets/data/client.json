@@ -1,8 +1,6 @@
 {
-  "name": "SNCF",
-  "address": "21 rue bernard - 75001 Paris",
-  "accessCode": "1246",
-  "codeHint": "test",
-  "status": "active",
-  "image": "https://www.combodo.com/IMG/png/sncf.png"
+  "name": "Groupe EDF",
+  "address": "32 Avenue Pablo Picasso - 92014 Nanterre",
+  "phone": "01 78 66 65 13",
+  "status": "active"
 }

@@ -2,14 +2,14 @@
   "name": "Michel DUPONF",
   "type": "beneficiary",
   "title": "Responsable communication",
-  "email": "michelduponf@sncf.com",
+  "email": "michelduponf@edf.com",
   "phone": "01.25.63.78.45 - 06.45.78.25.36",
-  "team": "SNCF",
+  "team": "EDF",
   "identifier": "MDU",
   "role": "customer",
   "client": {
-    "name": "CNCF",
-    "image": "https://www.combodo.com/IMG/png/sncf.png"
+    "name": "GROUPE EDF",
+    "image": ""
   },
   "contracts": [
     {

@@ -34,14 +34,13 @@
         :search="search"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.logo }}</td>
+          <!-- <td class="text-xs-center">{{ props.item.logo }}</td> -->
           <td class="text-xs-center">
             <router-link :to="{ name: 'Client', params: { id: props.item._id } }" class="blue-color">
               {{ props.item.name }}
             </router-link>
           </td>
-          <td class="text-xs-center">{{ props.item.contracts }}</td>
-          <td class="text-xs-center">{{ props.item.access_code }}</td>
+          <td class="text-xs-center">{{ props.item.active }}</td>
         </template>
       </v-data-table>
     </div>
@@ -60,12 +59,12 @@ export default {
       },
       roles: [],
       headers: [
-        {
-          text: this.$i18n.t("Logo"),
-          value: "logo",
-          sortable: false,
-          class: "text-xs-center"
-        },
+        // {
+        //   text: this.$i18n.t("Logo"),
+        //   value: "logo",
+        //   sortable: false,
+        //   class: "text-xs-center"
+        // },
         {
           text: this.$i18n.t("Name"),
           value: "name",
@@ -73,14 +72,8 @@ export default {
           class: "text-xs-center"
         },
         {
-          text: this.$i18n.t("Contracts"),
-          value: "conttracts",
-          sortable: false,
-          class: "text-xs-center"
-        },
-        {
-          text: this.$i18n.t("Access code"),
-          value: "access_code",
+          text: this.$i18n.t("Active"),
+          value: "active",
           sortable: false,
           class: "text-xs-center"
         }
