@@ -74,7 +74,6 @@
     "client_contract": {
       "client": "ACIM",
       "contract": "Marché inter-Ministériel"
-    },
-    "image": "https://www.combodo.com/IMG/png/sncf.png"
+    }
   }
 }

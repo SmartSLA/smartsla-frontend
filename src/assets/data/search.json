@@ -1,10 +1,6 @@
 [{
     "header": "clients"
-  },
-  {
-    "name": "SNCF",
-    "type": "client"
-  },
+  }
   {
     "name": "linagora",
     "type": "client"
@@ -18,11 +14,7 @@
   {
     "name": "linagora openpaas",
     "type": "contract"
-  },
-  {
-    "name": "SNCF - Maintenance et support linux",
-    "type": "contract"
-  },
+  }
   {
     "divider": true
   },
