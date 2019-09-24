@@ -237,7 +237,7 @@
                               </v-card-text>
                               <v-card-text v-if="comment.attachedFile.name">
                                 <v-icon>attach_file</v-icon>
-                                <a href="#" @click="downloadFile(comment.attachedFile.id, attachedFile)">
+                                <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
                                   {{ comment.attachedFile.name }}
                                 </a>
                               </v-card-text>
@@ -570,29 +570,22 @@ export default {
     },
 
     allowedStatusList() {
-      switch(this.currentStatus.toLowerCase()) {
+      switch (this.currentStatus.toLowerCase()) {
         case "new":
           return this.statusList;
         case "supported":
           return this.statusList.filter(statusCode => statusCode.key != "new");
         case "bypassed":
-          return this.statusList.filter(statusCode =>
-            statusCode.key != "new" &&
-            statusCode.key != "supported"
-          );
+          return this.statusList.filter(statusCode => statusCode.key != "new" && statusCode.key != "supported");
         case "resolved":
-          return this.statusList.filter(statusCode =>
-            statusCode.key != "new" &&
-            statusCode.key != "supported" &&
-            statusCode.key != "bypassed"
+          return this.statusList.filter(
+            statusCode => statusCode.key != "new" && statusCode.key != "supported" && statusCode.key != "bypassed"
           );
         case "closed":
           return this.statusList[this.statusList.length - 1];
         default:
           return [];
       }
-
-
     }
   },
   methods: {
