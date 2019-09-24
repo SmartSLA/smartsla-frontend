@@ -295,21 +295,15 @@
           <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
           <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="text-xs-center">
-            <!-- <v-progress-linear
-              v-if="props.item.conf.color == 'error'"
-              color="#d32f2f"
-              height="20"
-              value="30"
+            <span>{{ calculateCnsType(props.item.status) }}</span>
+            <cns-progress-bar
+              v-if="displayCnsProgressBar(props.item.status)"
+              :ticket="props.item"
+              :cnsType="calculateCnsType(props.item.status)"
+              :hideClock="true"
             >
-              {{
-              props.item.remaining_time
-              }}
-            </v-progress-linear>
-            <v-progress-linear v-else color="#76c43d" height="20" value="80">-->
-            <!-- {{
-              props.item.remaining_time
-              }}
-            </v-progress-linear>-->
+            </cns-progress-bar>
+            <span v-else> {{ props.item.status }} </span>
           </td>
         </template>
       </v-data-table>
@@ -321,6 +315,7 @@
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
+import cnsProgressBar from "@/components/CnsProgressBar";
 
 Vue.component("downloadExcel", JsonExcel);
 export default {
@@ -385,7 +380,7 @@ export default {
         { text: this.$i18n.t("MAJ"), value: "maj" },
         { text: this.$i18n.t("Created"), value: "created" },
         { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("Remaining time"), value: "remaining_time" }
+        { text: this.$i18n.t("In process of being"), value: "in_process_of_being" }
       ],
       requests: [],
       categories: [
@@ -464,32 +459,8 @@ export default {
       updateBtn: false
     };
   },
-  mounted() {
-    if (this.$auth.ready() && !this.$auth.check("admin")) {
-      this.headers = this.headers.filter(header => header.value != "id_ossa");
-    }
-    this.$http.listSoftware().then(response => {
-      response.data.forEach(software => {
-        this.softwareList.push(software.name);
-      });
-    });
-    this.$http.listUsers().then(response => {
-      response.data.forEach(user => {
-        this.userList.push(user);
-      });
-    });
-    this.$http.getContracts().then(response => {
-      response.data.forEach(contract => {
-        this.contractClientList.push(contract.name);
-      });
-    });
-    this.$http.listFilters().then(response => {
-      this.savedFilters = response.data;
-    });
-
-    this.$http.listTickets().then(response => {
-      this.requests = response.data;
-    });
+  components: {
+    "cns-progress-bar": cnsProgressBar
   },
   computed: {
     ...mapGetters({
@@ -502,66 +473,6 @@ export default {
 
     showDeleteBtn() {
       return this.deleteBtn;
-    }
-  },
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-    this.$auth.ready(() => {
-      this.$store.dispatch("user/fetchUser");
-    });
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
-  },
-  watch: {
-    categoriesFilter: function(newCategory, oldCategory) {
-      try {
-        switch (this.categoriesFilter) {
-          case "Type":
-            this.isStatusFilter = false;
-            this.values = [...this.types];
-            break;
-          case "Severity":
-            this.isStatusFilter = false;
-            this.values = [...this.severities];
-            break;
-          case "Software":
-            this.isStatusFilter = false;
-            this.values = [...this.softwareList];
-            break;
-          case "Assign To":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].map(user => user.name);
-            break;
-          case "Responsible":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
-            break;
-          case "Transmitter":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].map(user => user.name);
-            break;
-          case "Client / Contract":
-            this.isStatusFilter = false;
-            this.values = [...this.contractClientList];
-            break;
-          case "Status":
-            this.isStatusFilter = true;
-            this.values = [...this.status];
-            break;
-        }
-      } catch (err) {
-        // continue regardless of error
-      } finally {
-        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
-        this.values = this.values.filter(value => {
-          return selectedValues.filter(filter => filter.value == value).length == 0;
-        });
-      }
-    },
-    search: function(oldValue, newValue) {
-      this.centralSearch = newValue;
     }
   },
   methods: {
@@ -860,7 +771,6 @@ export default {
       this.centralSearch = "";
       this.checkStoredFilterUpdate();
     },
-
     resetFilters() {
       this.customFilters = [];
       this.centralSearch = "";
@@ -870,7 +780,104 @@ export default {
       this.pageTitle = this.$i18n.t("ALL REQUESTS");
       this.storedSelectionsFilterHolder = {};
       this.deleteBtn = false;
+    },
+    calculateCnsType(status) {
+      if (!status) return "new";
+      if (status === "new") return "supported";
+      if (status === "supported") return "bypassed";
+      if (status === "bypassed") return "resolved";
+      else return "";
+    },
+    displayCnsProgressBar(status) {
+      return !(status === "closed" || status === "resolved");
     }
+  },
+  watch: {
+    categoriesFilter: function(newCategory, oldCategory) {
+      try {
+        switch (this.categoriesFilter) {
+          case "Type":
+            this.isStatusFilter = false;
+            this.values = [...this.types];
+            break;
+          case "Severity":
+            this.isStatusFilter = false;
+            this.values = [...this.severities];
+            break;
+          case "Software":
+            this.isStatusFilter = false;
+            this.values = [...this.softwareList];
+            break;
+          case "Assign To":
+            this.isStatusFilter = false;
+            this.values = [...this.userList].map(user => user.name);
+            break;
+          case "Responsible":
+            this.isStatusFilter = false;
+            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
+            break;
+          case "Transmitter":
+            this.isStatusFilter = false;
+            this.values = [...this.userList].map(user => user.name);
+            break;
+          case "Client / Contract":
+            this.isStatusFilter = false;
+            this.values = [...this.contractClientList];
+            break;
+          case "Status":
+            this.isStatusFilter = true;
+            this.values = [...this.status];
+            break;
+        }
+      } catch (err) {
+        // continue regardless of error
+      } finally {
+        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
+        this.values = this.values.filter(value => {
+          return selectedValues.filter(filter => filter.value == value).length == 0;
+        });
+      }
+    },
+    search: function(oldValue, newValue) {
+      this.centralSearch = newValue;
+    }
+  },
+  created() {
+    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
+    this.$auth.ready(() => {
+      this.$store.dispatch("user/fetchUser");
+    });
+  },
+  mounted() {
+    if (this.$auth.ready() && !this.$auth.check("admin")) {
+      this.headers = this.headers.filter(header => header.value != "id_ossa");
+    }
+    this.$http.listSoftware().then(response => {
+      response.data.forEach(software => {
+        this.softwareList.push(software.name);
+      });
+    });
+    this.$http.listUsers().then(response => {
+      response.data.forEach(user => {
+        this.userList.push(user);
+      });
+    });
+    this.$http.getContracts().then(response => {
+      response.data.forEach(contract => {
+        this.contractClientList.push(contract.name);
+      });
+    });
+    this.$http.listFilters().then(response => {
+      this.savedFilters = response.data;
+    });
+
+    this.$http.listTickets().then(response => {
+      this.requests = response.data;
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    next();
   }
 };
 </script>

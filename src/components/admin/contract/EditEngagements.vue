@@ -32,7 +32,7 @@
         <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
         <td class="text-xs-center">{{ $t(props.item.supported) }}</td>
         <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-        <td class="text-xs-center">{{ $t(props.item.fix) }}</td>
+        <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
         <td class="text-xs-center">
           <v-btn color="error" flat small @click="removeCommitment(props.item)">
             <v-icon>remove_circle</v-icon>
@@ -102,11 +102,11 @@
             <v-flex xs5></v-flex>
             <v-flex xs3>{{ $t("Fix") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.fix.days" mask="###"></v-text-field>
+              <v-text-field v-model="newCommitment.resolved.days" mask="###"></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("D") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.fix.hours" mask="##"></v-text-field>
+              <v-text-field v-model="newCommitment.resolved.hours" mask="##"></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("H") }}</v-flex>
             <v-flex xs5></v-flex>
@@ -156,7 +156,7 @@ export default {
           days: "",
           hours: ""
         },
-        fix: {
+        resolved: {
           days: "",
           hours: ""
         },
@@ -192,7 +192,7 @@ export default {
       }
 
       newCommitment.bypassed = this.getDaysAndHours(this.newCommitment.bypassed);
-      newCommitment.fix = this.getDaysAndHours(this.newCommitment.fix);
+      newCommitment.resolved = this.getDaysAndHours(this.newCommitment.resolved);
       newCommitment.supported = this.getDaysAndHours(this.newCommitment.supported);
 
       if (
@@ -345,7 +345,7 @@ export default {
           value: "supported"
         },
         { text: this.$i18n.t("Bypassed"), value: "bypassed" },
-        { text: this.$i18n.t("Fix"), value: "fix" },
+        { text: this.$i18n.t("Resolved"), value: "resolved" },
         { text: "", value: "delete" }
       ];
     }
