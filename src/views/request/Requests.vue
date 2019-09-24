@@ -81,7 +81,6 @@
         hide-selected
         class="scoped-requests-search"
         v-bind:label="$i18n.t('Stored selections')"
-        @input="$emit('input')"
         return-object
       ></v-select>
       <v-btn class="requests-filter-add" @click="loadFilter">
@@ -466,12 +465,57 @@ export default {
       return this.deleteBtn;
     }
   },
-  methods: {
-    resetRequestSearch() {
-      this.centralSearch = null;
-      this.ticketsFilter = "";
-      this.searchCriteria = this.filterGroups[0];
+  watch: {
+    categoriesFilter: function(newCategory, oldCategory) {
+      try {
+        switch (this.categoriesFilter) {
+          case "Type":
+            this.translatedFilter = true;
+            this.values = [...this.types];
+            break;
+          case "Severity":
+            this.translatedFilter = true;
+            this.values = [...this.severities];
+            break;
+          case "Software":
+            this.translatedFilter = false;
+            this.values = [...this.softwareList];
+            break;
+          case "Assign To":
+            this.translatedFilter = false;
+            this.values = [...this.userList].map(user => user.name);
+            break;
+          case "Responsible":
+            this.translatedFilter = false;
+            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
+            break;
+          case "Transmitter":
+            this.translatedFilter = false;
+            this.values = [...this.userList].map(user => user.name);
+            break;
+          case "Client / Contract":
+            this.translatedFilter = false;
+            this.values = [...this.contractClientList];
+            break;
+          case "Status":
+            this.translatedFilter = true;
+            this.values = [...this.status];
+            break;
+        }
+      } catch (err) {
+        // continue regardless of error
+      } finally {
+        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
+        this.values = this.values.filter(value => {
+          return selectedValues.filter(filter => filter.value == value).length == 0;
+        });
+      }
     },
+    search: function(newValue) {
+      this.centralSearch = newValue;
+    }
+  },
+  methods: {
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
         items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
@@ -646,16 +690,16 @@ export default {
         clientFilterMatch &&
         statusFilterMatch;
 
-      if (this.customFilters.length == 0) {
-        match = false;
+      if (match && this.search) {
+        return(
+          (item.software && item.software.name && item.software.name.toLowerCase().includes(this.search)) ||
+          item.description.toLowerCase().includes(this.search) ||
+          item.contract.client.toLowerCase().includes(this.search) ||
+          item.contract.name.toLowerCase().includes(this.search)
+        );
       }
-      return (
-        match ||
-        (item.software && item.software.name && item.software.name.toLowerCase().includes(search)) ||
-        item.description.toLowerCase().includes(search) ||
-        item.contract.client.toLowerCase().includes(search) ||
-        item.contract.name.toLowerCase().includes(search)
-      );
+
+      return match;
     },
     addNewFilter() {
       if (this.categoriesFilter && this.valuesFilter) {
@@ -738,7 +782,6 @@ export default {
       });
     },
     loadFilter() {
-      this.resetFilters();
       this.storedSelectionsFilter = Object.assign({}, this.storedSelectionsFilterHolder);
       this.storedSelectionsFilterHolder = {};
       this.customFilters = [...this.storedSelectionsFilter.items];
@@ -752,14 +795,16 @@ export default {
     },
     removeFilter(filter) {
       this.customFilters = this.customFilters.filter(customFilter => {
-        return JSON.stringify(customFilter) != JSON.stringify(filter);
+        return JSON.stringify(customFilter) !== JSON.stringify(filter);
       });
       if (this.customFilters.length == 0) {
         this.pageTitle = this.$i18n.t("ALL REQUESTS");
         this.deleteBtn = false;
         this.storedSelectionsFilter = {};
+        this.centralSearch = "";
+      } else {
+        this.centralSearch = this.customFilters[0].value;
       }
-      this.centralSearch = "";
       this.checkStoredFilterUpdate();
     },
     resetFilters() {
@@ -781,56 +826,6 @@ export default {
     },
     displayCnsProgressBar(status) {
       return !(status === "closed" || status === "resolved");
-    }
-  },
-  watch: {
-    categoriesFilter: function(newCategory, oldCategory) {
-      try {
-        switch (this.categoriesFilter) {
-          case "Type":
-            this.isStatusFilter = false;
-            this.values = [...this.types];
-            break;
-          case "Severity":
-            this.isStatusFilter = false;
-            this.values = [...this.severities];
-            break;
-          case "Software":
-            this.isStatusFilter = false;
-            this.values = [...this.softwareList];
-            break;
-          case "Assign To":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].map(user => user.name);
-            break;
-          case "Responsible":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
-            break;
-          case "Transmitter":
-            this.isStatusFilter = false;
-            this.values = [...this.userList].map(user => user.name);
-            break;
-          case "Client / Contract":
-            this.isStatusFilter = false;
-            this.values = [...this.contractClientList];
-            break;
-          case "Status":
-            this.isStatusFilter = true;
-            this.values = [...this.status];
-            break;
-        }
-      } catch (err) {
-        // continue regardless of error
-      } finally {
-        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
-        this.values = this.values.filter(value => {
-          return selectedValues.filter(filter => filter.value == value).length == 0;
-        });
-      }
-    },
-    search: function(oldValue, newValue) {
-      this.centralSearch = newValue;
     }
   },
   created() {
