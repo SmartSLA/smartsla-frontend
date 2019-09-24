@@ -350,7 +350,6 @@ export default {
         { text: this.$i18n.t("Status"), value: "status" },
         { text: this.$i18n.t("In process of being"), value: "in_process_of_being" }
       ],
-      requests: [],
       categories: [
         {
           key: "Type",
@@ -449,13 +448,35 @@ export default {
       updateBtn: false
     };
   },
-  components: {
-    "cns-progress-bar": cnsProgressBar,
-    SoftwareListDetail
+  mounted() {
+    if (this.$auth.ready() && !this.$auth.check("admin")) {
+      this.headers = this.headers.filter(header => header.value != "id_ossa");
+    }
+    this.$http.listSoftware().then(response => {
+      response.data.forEach(software => {
+        this.softwareList.push(software.name);
+      });
+    });
+    this.$http.listUsers().then(response => {
+      response.data.forEach(user => {
+        this.userList.push(user);
+      });
+    });
+    this.$http.getContracts().then(response => {
+      response.data.forEach(contract => {
+        this.contractClientList.push(contract.name);
+      });
+    });
+    this.$http.listFilters().then(response => {
+      this.savedFilters = response.data;
+    });
+
+    this.$store.dispatch("ticket/fetchTickets");
   },
   computed: {
     ...mapGetters({
-      email: "user/getEmail"
+      email: "user/getEmail",
+      requests: "ticket/getTickets"
     }),
 
     isNewFilter() {
@@ -865,6 +886,10 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
+  },
+  components: {
+    "cns-progress-bar": cnsProgressBar,
+    SoftwareListDetail
   }
 };
 </script>
