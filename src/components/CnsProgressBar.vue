@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "cns-progress-bar",
-  props: { ticket: Array, cnsType: String, hideClock: Boolean },
+  props: { ticket: Object, cnsType: String, hideClock: Boolean },
   data() {
     return {
       cns: {
