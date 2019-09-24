@@ -70,28 +70,12 @@ export default {
 </script>
 
 <style lang="stylus">
-.red-color {
-  color: #d32f2f !important;
-}
-
-.red-background-color {
-  background-color: #d32f2f !important;
-}
-
 .white-color {
   color: #ffffff !important;
 }
 
 .white-background-color {
   background-color: #ffffff !important;
-}
-
-.yellow-color {
-  color: #ffa000 !important;
-}
-
-.yellow-background-color {
-  background-color: #ffa000 !important;
 }
 
 .grey-color {
