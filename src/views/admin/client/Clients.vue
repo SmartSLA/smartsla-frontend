@@ -32,6 +32,7 @@
         :pagination.sync="pagination"
         class="elevation-1"
         :search="search"
+        :rows-per-page-text="$t('Rows per page:')"
       >
         <template slot="items" slot-scope="props">
           <!-- <td class="text-xs-center">{{ props.item.logo }}</td> -->
@@ -40,7 +41,7 @@
               {{ props.item.name }}
             </router-link>
           </td>
-          <td class="text-xs-center">{{ props.item.active }}</td>
+          <td class="text-xs-center">{{ props.item.active ? $t("Yes") : $t("No") }}</td>
         </template>
       </v-data-table>
     </div>

@@ -32,6 +32,7 @@
         :pagination.sync="pagination"
         class="elevation-1"
         :search="search"
+        :rows-per-page-text="$t('Rows per page:')"
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
@@ -56,7 +57,9 @@ export default {
       search: "",
       contact: [],
       rowsPerPageItems: [10, 25, 50],
-      pagination: "10",
+      pagination: {
+        rowsPerPage: 10
+      },
       headers: [
         {
           text: this.$i18n.t("Logo"),

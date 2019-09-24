@@ -32,6 +32,7 @@
         :pagination.sync="pagination"
         class="elevation-1"
         :search="search"
+        :rows-per-page-text="$t('Rows per page:')"
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
