@@ -41,7 +41,7 @@
         <div class="contracts-operations">
           <router-link class="contracts-actions blue-color" :to="{ name: 'NewContract' }">
             <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add Contract") }}</span>
+            <span>{{ $t("Add contract") }}</span>
           </router-link>
           <a href="#" class="contracts-actions blue-color">
             <v-icon>arrow_downward</v-icon>

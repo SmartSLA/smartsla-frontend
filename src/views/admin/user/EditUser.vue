@@ -96,7 +96,7 @@
                 <strong>{{ $t("Client") }} :</strong>
               </v-flex>
               <v-flex xs8 v-if="user.type != 'expert'">
-                <v-select 
+                <v-select
                   :items="clients"
                   item-value="name"
                   item-text="name"
@@ -106,7 +106,7 @@
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("contracts") }} :</strong>
+                <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
               <v-flex xs8>
                 <v-select

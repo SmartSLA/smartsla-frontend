@@ -68,7 +68,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Contribution Type") }} :</strong>
+              <strong>{{ $t("Contribution type") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-select :items="types"></v-select>
@@ -141,7 +141,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("closed on") }} :</strong>
+              <strong class="required-label">{{ $t("Closed on") }} :</strong>
             </v-flex>
             <v-flex xs8>
               <v-menu

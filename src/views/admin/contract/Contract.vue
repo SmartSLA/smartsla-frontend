@@ -46,7 +46,7 @@
                   </v-flex>
                   <v-flex xs8>{{ contract.name }}</v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $t("Commercial Contact") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Commercial contact") }} :</div>
                   </v-flex>
                   <v-flex xs8>
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.commercial }}</router-link>
@@ -88,7 +88,7 @@
               <v-layout row wrap align-end>
                 <v-flex xs12 text-xs-center align-end>
                   <div>
-                    <v-btn primary color="primary">{{ $t("renew this contract") }}</v-btn>
+                    <v-btn primary color="primary">{{ $t("Renew this contract") }}</v-btn>
                   </div>
                 </v-flex>
               </v-layout>
