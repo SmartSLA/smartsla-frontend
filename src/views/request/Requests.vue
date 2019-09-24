@@ -43,7 +43,7 @@
         v-bind:label="$i18n.t('Categories')"
       ></v-select>
       <v-select
-        v-if="isStatusFilter"
+        v-if="translatedFilter"
         solo
         :items="values"
         item-text="value"
@@ -389,8 +389,30 @@ export default {
       valuesFilter: "",
       values: [],
       selections: [],
-      types: [this.$i18n.t("Anomalie"), this.$i18n.t("Evolution")],
-      severities: [this.$i18n.t("Bloquant"), this.$i18n.t("Non Bloquant")],
+      types: [
+        {
+          key: "Information",
+          value: this.$i18n.t("Information")
+        },
+        {
+          key: "Anomaly",
+          value: this.$i18n.t("Software anomaly")
+        },
+        {
+          key: "Other",
+          value: this.$i18n.t("Other")
+        }
+      ],
+      severities: [
+        {
+          key: "Blocking",
+          value: this.$i18n.t("Blocking")
+        },
+        {
+          key: "Non-blocking",
+          value: this.$i18n.t("Non blocking")
+        }
+      ],
       status: [
         {
           key: "new",
@@ -413,7 +435,7 @@ export default {
           value: this.$i18n.t("Closed")
         }
       ],
-      isStatusFilter: false,
+      translatedFilter: false,
       customFilters: [],
       customFiltersCategories: [],
       softwareList: [],

@@ -53,7 +53,15 @@
           <v-layout row wrap align-center>
             <v-flex xs3>{{ $t("Request type") }}</v-flex>
             <v-flex xs4>
-              <v-select v-model="newCommitment.request" :items="requestTypes" flat single-line></v-select>
+              <v-select
+              v-model="newCommitment.request"
+              :items="requestTypes"
+              item-text="value"
+              item-value="key"
+              flat
+              single-line
+              >
+              </v-select>
             </v-flex>
             <v-flex xs1 pl1 v-if="newCommitment.request == 'other'">
               <span class="pl-1">{{ $t("or add") }}</span>
@@ -65,7 +73,15 @@
             <v-flex xs4 v-else></v-flex>
             <v-flex xs3>{{ $t("Severity") }}</v-flex>
             <v-flex xs4>
-              <v-select v-model="newCommitment.severity" :items="severityTypes" flat single-line></v-select>
+              <v-select
+                v-model="newCommitment.severity"
+                :items="severityTypes"
+                item-text="value"
+                item-value="key"
+                flat
+                single-line
+              >
+              </v-select>
             </v-flex>
             <v-flex xs1 pl1 v-if="newCommitment.severity == 'other'">
               <span class="pl-1">{{ $t("or add") }}</span>
@@ -77,7 +93,14 @@
             <v-flex xs4 v-else></v-flex>
             <v-flex xs3>{{ $t("Ossa identifier") }}</v-flex>
             <v-flex xs4>
-              <v-select v-model="newCommitment.idOssa" :items="ossaIds" flat single-line></v-select>
+              <v-select 
+                v-model="newCommitment.idOssa"
+                :items="ossaIds"
+                item-text="value"
+                item-value="key"
+                flat
+                single-line
+              ></v-select>
             </v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs3>{{ $t("prise en charge") }}</v-flex>
@@ -164,15 +187,52 @@ export default {
       },
       addCommitment: false,
       contract: {},
-      requestTypes: ["Information", "Anomalie logiciel", "type c", this.$i18n.t("other")],
-      severityTypes: [
-        this.$i18n.t("Minor"),
-        this.$i18n.t("Major"),
-        this.$i18n.t("Blocking"),
-        this.$i18n.t("None"),
-        this.$i18n.t("Other")
+      requestTypes: [
+        {
+          key: "Information",
+          value: this.$i18n.t("Information")
+        },
+        {
+          key: "Anomaly",
+          value: this.$i18n.t("Software anomaly")
+        },
+        {
+          key: "Other",
+          value: this.$i18n.t("Other")
+        }
       ],
-      ossaIds: [this.$i18n.t("Blocking"), this.$i18n.t("Non-blocking"), this.$i18n.t("Information")]
+      severityTypes: [
+        {
+          key: 'Minor',
+          value: this.$i18n.t("Minor")
+        },
+        {
+          key: 'Major',
+          value: this.$i18n.t("Major")
+        },
+        {
+          key: 'Blocking',
+          value: this.$i18n.t("Blocking")
+        },
+        {
+          key: 'None',
+          value: this.$i18n.t("None")
+        }
+      ],
+      ossaIds: [
+        {
+          key: "Blocking",
+          value: this.$i18n.t("Blocking")
+        },
+        {
+          key: "Non-blocking",
+          value: this.$i18n.t("Non-blocking")
+        },
+        {
+          key: "Information",
+          value: this.$i18n.t("Information")
+        }
+      ]
     };
   },
   methods: {
