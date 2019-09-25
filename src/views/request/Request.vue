@@ -694,9 +694,7 @@ export default {
             message: this.$i18n.t("updated"),
             color: "success"
           });
-          this.newStatus = "";
-          this.comment = "";
-          this.newResponsible = "";
+          this.resetComment();
           this.panel.push(true);
           this.getData();
         })
@@ -724,6 +722,12 @@ export default {
       });
 
       return nextActions[0];
+    },
+    resetComment() {
+      this.newStatus = "";
+      this.comment = "";
+      this.newResponsible = "";
+      this.privateComment = false;
     },
     parseDuration(duration) {
       let remain = duration;
