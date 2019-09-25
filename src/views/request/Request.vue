@@ -236,12 +236,22 @@
                             <v-flex xs10>
                               <v-card-text v-html="comment.body"></v-card-text>
                               <v-card-text v-if="comment.actions.assignedTo.name" class="grey--text font-italic">
-                                {{ $t("Ticket assigned to ") }}
-                                <strong> {{ comment.actions.assignedTo.name }} </strong>
+                                <p
+                                  v-html="
+                                    $t('Ticket assigned to {assignedTo}', {
+                                      assignedTo: comment.actions.assignedTo.name
+                                    })
+                                  "
+                                ></p>
                               </v-card-text>
                               <v-card-text v-if="comment.actions.newStatus" class="grey--text font-italic">
-                                {{ $t("Ticket passed in status ") }}
-                                <strong> {{ comment.actions.newStatus }} </strong>
+                                <p
+                                  v-html="
+                                    $t('Ticket passed in status {status}', {
+                                      status: comment.actions.newStatus
+                                    })
+                                  "
+                                ></p>
                               </v-card-text>
                               <v-card-text v-if="comment.attachedFile.name">
                                 <v-icon>attach_file</v-icon>
