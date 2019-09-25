@@ -12,10 +12,11 @@ import ui from "./modules/ui";
 import user from "./modules/user";
 import sidebar from "./modules/sidebar";
 import ticket from "./modules/ticket";
+import listeners from "./listeners";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
     applicationConfiguration,
     session,
@@ -31,3 +32,7 @@ export default new Vuex.Store({
   state,
   strict: ApplicationSettings.NODE_ENV !== "production"
 });
+
+listeners.configure(store);
+
+export default store;
