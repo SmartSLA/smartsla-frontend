@@ -1,8 +1,8 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links grey" :to="{ name: 'Users' }"
-      >&lt; {{ $t("Return to users list") }}</router-link
-    >
+    <router-link :to="{ name: 'Users' }">
+      <button><v-icon>arrow_back</v-icon></button>
+    </router-link>
     <v-layout row wrap justify-space-between>
       <v-flex 12>
         <v-card class="px-1 mt-4 pb-4">
