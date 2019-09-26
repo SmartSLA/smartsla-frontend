@@ -53,7 +53,6 @@
                 </v-flex>
               </v-layout>
             </v-flex>
-            <v-flex xs2></v-flex>
             <v-flex xs4>
               <!-- <v-layout row wrap>
                 <v-flex xs12>
@@ -81,7 +80,6 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex xs4></v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -185,10 +183,11 @@ div.wrap:nth-child(2) {
 .mt-4 {
   margin-top: 0px !important;
 }
+
 @media only screen and (min-width: 1264px) {
   .container {
-  max-width: 100% !important;
-  padding-right: 24px;
-}
+    max-width: 100% !important;
+    padding-right: 24px;
+  }
 }
 </style>
