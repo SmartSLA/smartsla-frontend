@@ -350,6 +350,9 @@ export default {
             color: "success"
           });
 
+          // TODO: Move to store once the store is used to create requests
+          this.$store.dispatch("ticket/countTickets")
+
           this.$router.push(`/requests/${ticketId}`);
         })
         .catch(error => {

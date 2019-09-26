@@ -13,14 +13,12 @@ const types = {
 };
 
 const actions = {
-  fetchTickets: ({ commit }, options) => {
+  fetchTickets: ({ commit, dispatch }, options) => {
     Vue.axios
       .listTickets(options)
-      .then(response => response.data || [])
-      .then(tickets => {
-        tickets.forEach(ticket => commit(types.ADD_TICKET, ticket));
-        // TODO: Set length from another action on login
-        commit(types.SET_TICKET_LENGTH, tickets.length);
+      .then(response => {
+        (response.data || []).forEach(ticket => commit(types.ADD_TICKET, ticket));
+        dispatch("ticket/countTickets");
       })
       .catch(err => {
         // TODO
@@ -30,12 +28,8 @@ const actions = {
 
   countTickets: ({ commit }) => {
     Vue.axios
-      // TODO: Implement API backend to count tickets
-      .listTickets()
-      .then(response => response.data || [])
-      .then(tickets => {
-        commit(types.SET_TICKET_LENGTH, tickets.length);
-      })
+      .countTickets()
+      .then(size => commit(types.SET_TICKET_LENGTH, size))
       .catch(err => {
         // TODO
         console.log(err);
