@@ -18,7 +18,7 @@ const actions = {
       .listTickets(options)
       .then(response => {
         (response.data || []).forEach(ticket => commit(types.ADD_TICKET, ticket));
-        dispatch("ticket/countTickets");
+        dispatch("countTickets");
       })
       .catch(err => {
         // TODO

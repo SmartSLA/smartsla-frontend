@@ -856,33 +856,6 @@ export default {
       this.$store.dispatch("user/fetchUser");
     });
   },
-  mounted() {
-    if (this.$auth.ready() && !this.$auth.check("admin")) {
-      this.headers = this.headers.filter(header => header.value != "id_ossa");
-    }
-    this.$http.listSoftware().then(response => {
-      response.data.forEach(software => {
-        this.softwareList.push(software.name);
-      });
-    });
-    this.$http.listUsers().then(response => {
-      response.data.forEach(user => {
-        this.userList.push(user);
-      });
-    });
-    this.$http.getContracts().then(response => {
-      response.data.forEach(contract => {
-        this.contractClientList.push(contract.name);
-      });
-    });
-    this.$http.listFilters().then(response => {
-      this.savedFilters = response.data;
-    });
-
-    this.$http.listTickets().then(response => {
-      this.requests = response.data;
-    });
-  },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("sidebar/resetCurrentSideBar");
     next();
