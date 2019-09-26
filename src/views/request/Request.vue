@@ -277,12 +277,17 @@
                       <v-layout row wrap>
                         <v-flex xs10 md8 sm8 xl3 lg2>
                           <v-select
-                            :items="allowedStatusList"
+                            :items="[allowedStatusList]"
                             v-model="newStatus"
                             :label="$t('Status')"
-                            item-text="value"
-                            item-value="key"
-                          ></v-select>
+                          >
+                            <template slot="item" slot-scope='{ item }'>
+                              {{ $t(item) }}
+                            </template>
+                            <template slot="selection" slot-scope='{ item }'>
+                              {{ $t(item) }}
+                            </template>
+                          </v-select>
                         </v-flex>
                         <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select
@@ -485,6 +490,13 @@ import VUpload from "vuetify-upload-component";
 import ApplicationSettings from "@/services/application-settings";
 import cnsProgressBar from "@/components/CnsProgressBar";
 
+const NEXT_STATUS = {
+  new: "supported",
+  supported: "bypassed",
+  bypassed: "resolved",
+  resolved: "closed"
+};
+
 export default {
   data() {
     return {
@@ -521,24 +533,6 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      statusList: [
-        {
-          key: "supported",
-          value: this.$i18n.t("Supported")
-        },
-        {
-          key: "bypassed",
-          value: this.$i18n.t("Bypassed")
-        },
-        {
-          key: "resolved",
-          value: this.$i18n.t("Resolved")
-        },
-        {
-          key: "closed",
-          value: this.$i18n.t("Closed")
-        }
-      ],
       assignee: [],
       connectedUser: {
         type: "expert"
@@ -579,22 +573,9 @@ export default {
     },
 
     allowedStatusList() {
-      switch (this.currentStatus.toLowerCase()) {
-        case "new":
-          return this.statusList;
-        case "supported":
-          return this.statusList.filter(statusCode => statusCode.key != "new");
-        case "bypassed":
-          return this.statusList.filter(statusCode => statusCode.key != "new" && statusCode.key != "supported");
-        case "resolved":
-          return this.statusList.filter(
-            statusCode => statusCode.key != "new" && statusCode.key != "supported" && statusCode.key != "bypassed"
-          );
-        case "closed":
-          return [this.statusList[this.statusList.length - 1]];
-        default:
-          return [];
-      }
+      const currentStatus = this.currentStatus.toLowerCase();
+
+      return NEXT_STATUS[currentStatus];
     }
   },
   methods: {
