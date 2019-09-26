@@ -16,7 +16,7 @@
             </v-flex>
             <v-flex xs2>
               <div class="text-xs-right grey--text pt-3">
-                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: 15 } }">
+                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: user._id } }">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -36,10 +36,6 @@
                   {{ user.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Position") }} :</strong>
-                  {{ user.title }}
-                </v-flex>
-                <v-flex xs12>
                   <strong>{{ $t("Email") }} :</strong>
                   {{ user.email }}
                 </v-flex>
@@ -52,10 +48,6 @@
                   {{ user.team }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Identifier") }} :</strong>
-                  {{ user.identifier }}
-                </v-flex>
-                <v-flex xs12>
                   <strong>{{ $t("Role") }} :</strong>
                   {{ user.role }}
                 </v-flex>
@@ -63,13 +55,10 @@
             </v-flex>
             <v-flex xs2></v-flex>
             <v-flex xs4>
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <img :src="user.client.image" height="100" />
-                </v-flex>
+              <!-- <v-layout row wrap>
                 <v-flex xs12>
                   <strong>{{ $t("Client") }} :</strong>
-                  {{ user.client.name }}
+                  {{ user.client }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
@@ -87,7 +76,7 @@
                     </v-flex>
                   </v-layout>
                 </v-flex>
-              </v-layout>
+              </v-layout> -->
             </v-flex>
           </v-layout>
         </v-card>
@@ -103,8 +92,24 @@ export default {
       user: {}
     };
   },
+  methods: {
+    getUser() {
+      this.$http
+        .getUserById(this.$route.params.id)
+        .then(response => {
+          this.user = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("failed to fetch the user"),
+            color: "error"
+          });
+        });
+    }
+  },
   created() {
-    this.user = require("@/assets/data/user.json");
+    this.getUser();
+
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
     this.$store.dispatch("sidebar/setActiveAdminMenu", "users");
   },
