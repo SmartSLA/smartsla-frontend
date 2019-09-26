@@ -118,8 +118,9 @@
               {{ request.ticketDate }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
-              <strong>{{ $t("Created by") }} :</strong>
-              {{ request.author.name }}
+              <strong>{{
+                $t("Created by : {authorName}", { authorName: request.author && request.author.name })
+              }}</strong>
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
@@ -132,15 +133,15 @@
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
-              {{ request.software.name }}
+              {{ request.software && request.software.name }}
             </v-flex>
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>
-              {{ request.software.version }}
+              {{ request.software && request.software.version }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("OS") }} :</strong>
-              {{ request.software.os }}
+              {{ request.software && request.software.os }}
             </v-flex>
           </v-layout>
           <v-divider class="mt-2"></v-divider>
@@ -387,15 +388,15 @@
 
               <v-card-text>
                 <strong>{{ $t("Contact") }} :</strong>
-                {{ request.beneficiary.name }}
+                {{ request.beneficiary && request.beneficiary.name }}
                 <br />
                 <span class="body-2">{{ $t("Client") }} / {{ $t("Contract") }} :&nbsp;</span>
                 <router-link :to="{ name: 'Client', params: { id: request.contract.clientId } }">
-                  <a class="blue-color" href="#">{{ request.contract.client }}</a>
+                  <a class="blue-color" href="#">{{ request.contract && request.contract.client }}</a>
                 </router-link>
                 /
                 <router-link :to="{ name: 'Contract', params: { id: request.contract._id } }">
-                  <a class="blue-color" href="#">{{ request.contract.name }}</a>
+                  <a class="blue-color" href="#">{{ request.contract && request.contract.name }}</a>
                 </router-link>
               </v-card-text>
             </v-card>
@@ -608,10 +609,6 @@ export default {
       this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
       this.request.communityContribution = {};
-
-      if (!request.author) {
-        this.request.author = this.getUser;
-      }
     },
     addComment() {
       if (this.commentFile.length) {
