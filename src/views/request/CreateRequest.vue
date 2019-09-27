@@ -143,10 +143,16 @@
                   >
                     <span>
                       <v-icon>mdi-file-document-edit-outline</v-icon>
-                      {{ $t("ticket contractual engagements") }} : {{ $t("Supported in") }}
-                      {{ $t(selectedEngagement.supported) }}, {{ $t("bypass in") }}
-                      {{ $t(selectedEngagement.bypassed) }}, {{ $t("and resolution in") }}
-                      {{ $t(selectedEngagement.resolved) }}
+                      {{
+                        $t(
+                          "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
+                          {
+                            supported: selectedEngagement.supported,
+                            bypassed: selectedEngagement.bypassed,
+                            resolved: selectedEngagement.resolved
+                          }
+                        )
+                      }}
                     </span>
                   </v-flex>
                   <v-flex xs12 md12 lg12 sm12 xl12>
