@@ -702,55 +702,6 @@ export default {
           });
         });
     },
-    getPreviousAction(logs, date, action) {
-      let previousActions = [];
-      previousActions = logs.filter(log => {
-        let actionDate = new Date(log.date);
-        return actionDate.getTime() < date.getTime() && log.action != action;
-      });
-
-      return previousActions[previousActions.length - 1];
-    },
-    getNextAction(logs, date, action) {
-      let nextActions = [];
-      nextActions = logs.filter(log => {
-        let actionDate = new Date(log.date);
-        return actionDate.getTime() > date.getTime() && log.action != action;
-      });
-
-      return nextActions[0];
-    },
-    resetComment() {
-      this.newStatus = "";
-      this.comment = "";
-      this.newResponsible = "";
-      this.privateComment = false;
-    },
-    parseDuration(duration) {
-      let remain = duration;
-
-      let days = Math.floor(remain / (1000 * 60 * 60 * 24));
-      remain = remain % (1000 * 60 * 60 * 24);
-
-      let hours = Math.floor(remain / (1000 * 60 * 60));
-      remain = remain % (1000 * 60 * 60);
-
-      let minutes = Math.floor(remain / (1000 * 60));
-      remain = remain % (1000 * 60);
-
-      let seconds = Math.floor(remain / 1000);
-      remain = remain % 1000;
-
-      let milliseconds = remain;
-
-      return {
-        days,
-        hours,
-        minutes,
-        seconds,
-        milliseconds
-      };
-    },
     downloadFile(fileId, fileName) {
       this.$http.downloadFile(fileId).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -784,16 +735,6 @@ export default {
       this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
     }
   },
-  // updated() {
-  //   var progressBars = document.getElementsByClassName("v-progress-linear");
-  //   for (let index = 0; index < progressBars.length; index++) {
-  //     var element = progressBars[index];
-  //     var value = element.getElementsByClassName("v-progress-linear__content")[0].innerHTML;
-  //     var newValueRegion = element.getElementsByClassName("v-progress-linear__bar__determinate");
-  //     newValueRegion[0].innerHTML = value;
-  //     element.getElementsByClassName("v-progress-linear__content")[0].innerHTML = "";
-  //   }
-  // },
   created() {
     this.getData();
   },
