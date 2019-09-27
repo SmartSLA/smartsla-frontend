@@ -1,9 +1,9 @@
 <template>
   <v-layout row>
-    <v-flex xs7>
+    <v-flex xs8>
       <global-search />
     </v-flex>
-    <v-flex xs3>
+    <v-flex xs4>
       <v-layout row justify-end>
         <v-flex xs5>
           <v-menu offset-y class="pt-3 user-menu-item">
@@ -29,11 +29,6 @@
             </v-list>
           </v-menu>
         </v-flex>
-        <v-flex xs1></v-flex>
-        <v-flex xs2>
-          <language-switcher />
-        </v-flex>
-        <v-flex xs1></v-flex>
       </v-layout>
     </v-flex>
   </v-layout>
@@ -44,13 +39,11 @@ import { mapGetters } from "vuex";
 import { OPAvatar } from "vue-openpaas-components";
 import { routeNames } from "@/router";
 import globalSearch from "@/components/search/GlobalSearch.vue";
-import languageSwitcher from "@/components/LocalSwitcher.vue";
 export default {
   name: "op-user-menu",
   components: {
     "op-avatar": OPAvatar,
-    "global-search": globalSearch,
-    "language-switcher": languageSwitcher
+    "global-search": globalSearch
   },
   methods: {
     logout() {
