@@ -97,13 +97,13 @@ export default {
         name: routeNames.DASHBOARD,
         text: this.$i18n.t("Dashboard"),
         icon: "dashboard",
-        show: true
+        show: false
       },
       {
         name: routeNames.SATISFACTION,
         text: this.$i18n.t("Satisfaction"),
         icon: "favorite",
-        show: true
+        show: false
       },
       /*{
         name: routeNames.HISTORIC,
@@ -115,7 +115,7 @@ export default {
         name: routeNames.CONTRIBUTIONS,
         text: this.$i18n.t("Contributions"),
         icon: "format_line_spacing",
-        show: true
+        show: false
       },
       /*{
         name: routeNames.ORDERS,
