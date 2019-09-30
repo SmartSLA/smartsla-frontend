@@ -100,7 +100,14 @@
                             :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
                             class="required-element"
                             return-object
-                          ></v-select>
+                          >
+                            <template slot='selection' slot-scope='{ item }'>
+                              {{ $t(item) }}
+                            </template>
+                            <template slot='item' slot-scope='{ item }'>
+                              {{ $t(item) }}
+                            </template>
+                          </v-select>
                         </v-flex>
                         <v-flex xs1></v-flex>
                         <v-flex xs12 md3 sm12 lg0 xl3>
@@ -113,7 +120,14 @@
                             :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
                             class="required-element"
                             return-object
-                          ></v-select>
+                          >
+                            <template slot='selection' slot-scope='{ item }'>
+                              {{ $t(item) }}
+                            </template>
+                            <template slot='item' slot-scope='{ item }'>
+                              {{ $t(item) }}
+                            </template>
+                          </v-select>
                         </v-flex>
                       </v-layout>
                     </v-container>
