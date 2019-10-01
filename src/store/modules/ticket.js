@@ -6,17 +6,20 @@ function initialState() {
     pagination: {
       page: 1,
       rowsPerPage: 10,
-      rowsPerPageItems: [10, 25, 50, 100]
+      rowsPerPageItems: [10, 25, 50, 100],
+      totalItems: null
     },
     length: 0,
-    tickets: {}
+    tickets: {},
+    search: null
   };
 }
 
 const types = {
   SET_TICKETS: "SET_TICKETS",
   SET_TICKET_LENGTH: "SET_TICKET_LENGTH",
-  SET_PAGINATION: "SET_PAGINATION"
+  SET_PAGINATION: "SET_PAGINATION",
+  SET_SEARCH: "SET_SEARCH"
 };
 
 const actions = {
@@ -44,6 +47,21 @@ const actions = {
 
   setPagination: ({ commit }, pagination) => {
     commit(types.SET_PAGINATION, pagination);
+  },
+
+  setTicketsLength: ({ commit }, length) => {
+    commit(types.SET_TICKET_LENGTH, length);
+  },
+
+  setSearch: ({ commit, dispatch }, search) => {
+    if (!search) {
+      return dispatch("fetchTickets");
+    }
+
+    commit(types.SET_SEARCH, search);
+    // set length to be able to display filtered list...
+    // if not, the list is not emptied
+    dispatch("setTicketsLength", 0);
   }
 };
 
@@ -54,15 +72,21 @@ const mutations = {
 
   [types.SET_TICKET_LENGTH](state, length) {
     state.length = length;
+    Vue.set(state.pagination, "totalItems", Number(length));
   },
 
   [types.SET_PAGINATION](state, pagination) {
-    state.pagination = pagination;
+    state.pagination = { ...state.pagination, ...pagination };
+  },
+
+  [types.SET_SEARCH](state, search) {
+    state.search = search;
   }
 };
 
 const getters = {
   getNbOfTickets: state => Number(state.length),
+  getSearch: state => state.search,
   getTickets: state => Object.values(state.tickets) || [],
   getCurrentPageRequests: state => {
     const { sortBy, descending, page, rowsPerPage } = state.pagination;

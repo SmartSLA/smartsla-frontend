@@ -187,7 +187,6 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index + 1 }}</td>
-
           <td class="text-xs-center">
             <v-chip
               v-if="props.item.assignedTo && props.item.assignedTo.type == 'beneficiary'"
@@ -204,7 +203,6 @@
               {{ props.item._id }}
             </router-link>
           </td>
-
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge :color="ossaColors[props.item.id_ossa]">
               <template v-slot:badge>
@@ -232,7 +230,6 @@
           <td class="text-xs-center">{{ props.item.assignedTo }}</td>
           <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.author }}</td>
-
           <td class="text-xs-center">
             <router-link
               v-if="$auth.check('admin')"
@@ -308,9 +305,7 @@ export default {
         }
       ],
       searchCriteria: "Ticket",
-      rowsPerPageItems: [10, 25, 50],
       search: null,
-      centralSearch: null,
       toggle_multiple: "2",
       ticketsFilter: {
         text: this.$i18n.t("All Tickets"),
@@ -492,7 +487,7 @@ export default {
     },
 
     ...mapState({
-      rowsPerPage: state => state.pagination.rowsPerPage
+      rowsPerPageItems: state => state.pagination.rowsPerPageItems
     }),
 
     pagination: {
@@ -502,6 +497,20 @@ export default {
       set: function(value) {
         this.$store.dispatch("ticket/setPagination", value);
       }
+    },
+
+    centralSearch: {
+      get: function() {
+        return this.$store.getters["ticket/getSearch"];
+      },
+
+      set: function(value) {
+        this.$store.dispatch("ticket/setSearch", value);
+      }
+    },
+
+    isSearching() {
+      return !!this.centralSearch;
     },
 
     isNewFilter() {
@@ -563,6 +572,9 @@ export default {
     },
     pagination: {
       handler() {
+        if (this.isSearching) {
+          return;
+        }
         this.loadTickets();
       },
       deep: true
