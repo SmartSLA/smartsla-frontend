@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { isString, isNumber } from "lodash";
 
 function initialState() {
   return {
@@ -64,10 +65,29 @@ const getters = {
   getNbOfTickets: state => Number(state.length),
   getTickets: state => Object.values(state.tickets) || [],
   getCurrentPageRequests: state => {
-    return Object.values(state.tickets).slice(
-      (state.pagination.page - 1) * state.pagination.rowsPerPage,
-      state.pagination.page * state.pagination.rowsPerPage
-    );
+    const { sortBy, descending, page, rowsPerPage } = state.pagination;
+    let result = Object.values(state.tickets);
+
+    if (sortBy) {
+      result = result.sort((a, b) => {
+        const valueA = a[sortBy];
+        const valueB = b[sortBy];
+
+        if (isString(valueA) && isString(valueB)) {
+          return descending
+            ? valueA.localeCompare(valueB, "fr", { ignorePunctuation: true })
+            : valueB.localeCompare(valueA, "fr", { ignorePunctuation: true });
+        }
+
+        if (isNumber(valueA) && isNumber(valueB)) {
+          return descending ? valueB - valueA : valueA - valueB;
+        }
+
+        return descending ? b - a : a - b;
+      });
+    }
+
+    return result.slice((page - 1) * rowsPerPage, page * rowsPerPage);
   },
   pagination: state => state.pagination
 };
