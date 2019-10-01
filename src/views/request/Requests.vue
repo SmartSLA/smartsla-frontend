@@ -173,7 +173,7 @@
         :loading="loading"
         :pagination.sync="pagination"
         :total-items="totalRequests"
-        :items="requests"
+        :items="requestsAsDataTable"
         :headers="headers"
         class="elevation-1"
         :search="centralSearch"
@@ -187,7 +187,6 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.index + 1 }}</td>
-
           <td class="text-xs-center">
             <v-chip
               v-if="props.item.assignedTo && props.item.assignedTo.type == 'beneficiary'"
@@ -204,71 +203,59 @@
               {{ props.item._id }}
             </router-link>
           </td>
-
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-badge v-if="props.item.idOssa.id == 1" color="#512da8">
+            <v-badge :color="ossaColors[props.item.id_ossa]">
               <template v-slot:badge>
-                <span>{{ props.item.idOssa.id }}</span>
-              </template>
-            </v-badge>
-            <v-badge v-if="props.item.idOssa.id == 2" color="#8b60d8">
-              <template v-slot:badge>
-                <span>{{ props.item.idOssa.id }}</span>
-              </template>
-            </v-badge>
-            <v-badge v-if="props.item.idOssa.id == 3" color="#dbc1ff">
-              <template v-slot:badge>
-                <span>{{ props.item.idOssa.id }}</span>
+                <span>{{ props.item.id_ossa }}</span>
               </template>
             </v-badge>
           </td>
           <td class="text-xs-center">{{ props.item.type }}</td>
           <td class="text-xs-center">
-            <software-list-detail :request="props.item"></software-list-detail>
+            <software-list-detail :request="props.item.request"></software-list-detail>
           </td>
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-bind:class="['criticality', props.item.software.critical]" v-on="on">
-                  {{ props.item.software.name }}
+                <span v-bind:class="['criticality', props.item.request.software.critical]" v-on="on">
+                  {{ props.item.softwareName }}
                 </span>
               </template>
               <span>{{
-                $t("Version : " + props.item.software.version + " / Criticité : " + props.item.software.critical)
+                $t("Version : " + props.item.request.software.version + " / Criticité : " + props.item.request.software.critical)
               }}</span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.title | striphtml }}</td>
-          <td class="text-xs-center">{{ props.item.assignedTo && props.item.assignedTo.name }}</td>
-          <td class="text-xs-center">{{ props.item.responsible && props.item.responsible.name }}</td>
-          <td class="text-xs-center">{{ props.item.author && props.item.author.name }}</td>
-
+          <td class="text-xs-center">{{ props.item.assignedTo }}</td>
+          <td class="text-xs-center">{{ props.item.responsible }}</td>
+          <td class="text-xs-center">{{ props.item.author }}</td>
           <td class="text-xs-center">
             <router-link
-              :to="{ name: 'Client', params: { id: props.item.contract.clientId } }"
               v-if="$auth.check('admin')"
+              :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
+              <a class="blue-color" href="#">{{ props.item.request.contract.client }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.client }}</a>
+            <a v-else>{{ props.item.request.contract.client }}</a>
             /
             <router-link
-              :to="{ name: 'Contract', params: { id: props.item.contract._id } }"
               v-if="$auth.check('admin')"
+              :to="{ name: 'Contract', params: { id: props.item.request.contract._id } }"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.name }}</a>
+              <a class="blue-color" href="#">{{ props.item.request.contract.name }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.name }}</a>
+            <a v-else>{{ props.item.request.contract.name }}</a>
           </td>
-          <td class="text-xs-center">{{ props.item.timestamps.updatedAt | relativeTime }}</td>
-          <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
+          <td class="text-xs-center">{{ props.item.updatedAt | relativeTime }}</td>
+          <td class="text-xs-center">{{ props.item.createdAt | formatDate }}</td>
           <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
-            <span>{{ calculateCnsType(props.item.status) }}</span>
+            <span>{{ props.item.cnsType }}</span>
             <cns-progress-bar
               v-if="displayCnsProgressBar(props.item.status)"
-              :ticket="props.item"
-              :cnsType="calculateCnsType(props.item.status)"
+              :ticket="props.item.request"
+              :cnsType="props.item.cnsType"
               :hideClock="true"
             >
             </cns-progress-bar>
@@ -318,32 +305,35 @@ export default {
         }
       ],
       searchCriteria: "Ticket",
-      rowsPerPageItems: [10, 25, 50],
       search: null,
-      centralSearch: null,
       toggle_multiple: "2",
       ticketsFilter: {
         text: this.$i18n.t("All Tickets"),
         value: ""
       },
       isMobile: false,
+      ossaColors: {
+        1: "#512da8",
+        2: "#8b60d8",
+        3: "#dbc1ff"
+      },
       headers: [
-        { text: "#", value: "number" },
+        { text: "#", value: "#", sortable: false },
         { text: this.$i18n.t("Organization"), value: "organization" },
-        { text: this.$i18n.t("Ticket N°"), value: "ticket_number" },
+        { text: this.$i18n.t("Ticket N°"), value: "_id" },
         { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
-        { text: this.$i18n.t("Severity"), value: "severity" },
-        { text: this.$i18n.t("Software"), value: "software" },
-        { text: this.$i18n.t("Subject"), value: "incident_wording" },
-        { text: this.$i18n.t("Assigned to"), value: "assign_to" },
+        { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
+        { text: this.$i18n.t("Software"), value: "softwareName" },
+        { text: this.$i18n.t("Title"), value: "title" },
+        { text: this.$i18n.t("Assigned to"), value: "assignedTo" },
         { text: this.$i18n.t("Responsible"), value: "responsible" },
-        { text: this.$i18n.t("Author"), value: "transmitter" },
-        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
-        { text: this.$i18n.t("MAJ"), value: "maj" },
-        { text: this.$i18n.t("Created"), value: "created" },
+        { text: this.$i18n.t("Author"), value: "author" },
+        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat", sortable: false },
+        { text: this.$i18n.t("MAJ"), value: "updatedAt" },
+        { text: this.$i18n.t("Created"), value: "createdAt" },
         { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("In process of being"), value: "in_process_of_being" }
+        { text: this.$i18n.t("In process of being"), value: "cns_type" }
       ],
       categories: [
         {
@@ -473,8 +463,31 @@ export default {
       totalRequests: "ticket/getNbOfTickets"
     }),
 
+    requestsAsDataTable() {
+      return this.requests.map(request => ({
+        _id: request._id,
+        id_ossa: request.idOssa.id,
+        organization: request.organization,
+        author: request.author && request.author.name,
+        type: request.type,
+        severity: request.severety,
+        software: request.software,
+        softwareName: request.software && request.software.name,
+        title: request.title,
+        assignedTo: request.assignedTo && request.assignedTo.name,
+        responsible: request.responsible && request.responsible.name,
+        author: request.author && request.author.name,
+        customer: request.customer,
+        updatedAt: request.timestamps.updatedAt,
+        createdAt: request.timestamps.createdAt,
+        status: request.status,
+        cnsType: this.calculateCnsType(request.status),
+        request
+      }));
+    },
+
     ...mapState({
-      rowsPerPage: state => state.pagination.rowsPerPage
+      rowsPerPageItems: state => state.pagination.rowsPerPageItems
     }),
 
     pagination: {
@@ -484,6 +497,20 @@ export default {
       set: function(value) {
         this.$store.dispatch("ticket/setPagination", value);
       }
+    },
+
+    centralSearch: {
+      get: function() {
+        return this.$store.getters["ticket/getSearch"];
+      },
+
+      set: function(value) {
+        this.$store.dispatch("ticket/setSearch", value);
+      }
+    },
+
+    isSearching() {
+      return !!this.centralSearch;
     },
 
     isNewFilter() {
@@ -545,6 +572,9 @@ export default {
     },
     pagination: {
       handler() {
+        if (this.isSearching) {
+          return;
+        }
         this.loadTickets();
       },
       deep: true
