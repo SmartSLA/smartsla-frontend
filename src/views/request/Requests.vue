@@ -170,14 +170,16 @@
     <br />
     <v-layout>
       <v-data-table
-        :headers="headers"
+        :loading="loading"
+        :pagination.sync="pagination"
+        :total-items="totalRequests"
         :items="requests"
+        :headers="headers"
         class="elevation-1"
         :search="centralSearch"
         :custom-filter="requestsFilter"
         :filter="requestFilterByGroup"
         :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
         :rows-per-page-text="$t('Rows per page:')"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
@@ -193,8 +195,8 @@
               class="ma-2"
               label
               text-color="white"
-              >{{ props.item.contract.client[0] }}</v-chip
-            >
+              >{{ props.item.contract.client[0] }}
+            </v-chip>
             <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
           <td>
@@ -279,16 +281,19 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, createNamespacedHelpers } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 
+const { mapState } = createNamespacedHelpers("ticket")
+
 Vue.component("downloadExcel", JsonExcel);
 export default {
   data() {
     return {
+      loading: true,
       dialog: false,
       deleteDialog: false,
       pageTitle: this.$i18n.t("ALL REQUESTS"),
@@ -314,7 +319,6 @@ export default {
       ],
       searchCriteria: "Ticket",
       rowsPerPageItems: [10, 25, 50],
-      pagination: { p: "10" },
       search: null,
       centralSearch: null,
       toggle_multiple: "2",
@@ -322,15 +326,6 @@ export default {
         text: this.$i18n.t("All Tickets"),
         value: ""
       },
-      paginationObject: [
-        {
-          p: "10",
-          descending: false,
-          page: 1,
-          rowsPerPage: 10,
-          sortBy: "number"
-        }
-      ],
       isMobile: false,
       headers: [
         { text: "#", value: "number" },
@@ -470,14 +465,26 @@ export default {
     this.$http.listFilters().then(response => {
       this.savedFilters = response.data;
     });
-
-    this.$store.dispatch("ticket/fetchTickets");
   },
   computed: {
     ...mapGetters({
       email: "user/getEmail",
-      requests: "ticket/getTickets"
+      requests: "ticket/getCurrentPageRequests",
+      totalRequests: "ticket/getNbOfTickets"
     }),
+
+    ...mapState({
+      rowsPerPage: state => state.pagination.rowsPerPage
+    }),
+
+    pagination: {
+      get: function() {
+        return this.$store.getters["ticket/pagination"];
+      },
+      set: function(value) {
+        this.$store.dispatch("ticket/setPagination", value);
+      }
+    },
 
     isNewFilter() {
       return Object.keys(this.storedSelectionsFilter).length === 0;
@@ -535,9 +542,29 @@ export default {
     },
     search: function(newValue) {
       this.centralSearch = newValue;
+    },
+    pagination: {
+      handler() {
+        this.loadTickets();
+      },
+      deep: true
     }
   },
   methods: {
+    loadTickets() {
+      this.loading = true;
+      this.$store
+        .dispatch("ticket/fetchTickets")
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Error while loading tickets"),
+            color: "error"
+          });
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
         items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
@@ -713,7 +740,7 @@ export default {
         statusFilterMatch;
 
       if (match && this.search) {
-        return(
+        return (
           (item.software && item.software.name && item.software.name.toLowerCase().includes(this.search)) ||
           item.description.toLowerCase().includes(this.search) ||
           item.contract.client.toLowerCase().includes(this.search) ||
