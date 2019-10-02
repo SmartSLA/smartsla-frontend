@@ -236,17 +236,17 @@
                             </v-flex>
                             <v-flex xs10>
                               <v-card-text v-html="comment.body"></v-card-text>
-                              <v-card-text v-if="comment.actions.assignedTo.name" class="grey--text font-italic">
+                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
                                 <p
+                                  v-if="comment.actions.assignedTo.name"
                                   v-html="
                                     $t('Ticket assigned to {assignedTo}', {
                                       assignedTo: comment.actions.assignedTo.name
                                     })
                                   "
                                 ></p>
-                              </v-card-text>
-                              <v-card-text v-if="comment.actions.newStatus" class="grey--text font-italic">
                                 <p
+                                v-if="comment.actions.newStatus"
                                   v-html="
                                     $t('Ticket passed in status {status}', {
                                       status: comment.actions.newStatus
@@ -289,6 +289,7 @@
                           <v-select
                             :items="[allowedStatusList]"
                             v-model="newStatus"
+                            :disabled="privateComment"
                             :label="$t('Status')"
                           >
                             <template slot="item" slot-scope='{ item }'>
@@ -302,6 +303,7 @@
                         <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select
                             :items="assignee"
+                            :disabled="privateComment"
                             item-text="name"
                             v-model="newResponsible"
                             :label="$t('Assigned to')"
@@ -724,6 +726,15 @@ export default {
 
       this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
       this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
+    }
+
+  },
+  watch: {
+    privateComment(value) {
+      if (value) {
+        this.newStatus = "";
+        this.newResponsible = "";
+      }
     }
   },
   created() {
