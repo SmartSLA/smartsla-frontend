@@ -41,7 +41,7 @@ stages:
     - npm install
     - npm run test:e2e -- --headless
 
-docker_build:
+.docker_build:
   stage: docker_build
   tags:
     - docker
