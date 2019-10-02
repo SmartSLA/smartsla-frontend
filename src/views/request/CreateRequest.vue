@@ -161,49 +161,59 @@
                       ></vue-editor>
                     </v-input>
                   </v-flex>
-
-                  <v-flex xs12 md6 sm6 lg40 xl70>
-                    <v-container grid-list-md>
-                      <v-layout row wrap>
-                        <v-flex xs12 md5 sm12 lg6 xl4>
-                          <v-select
-                            prepend-icon="link"
-                            class="mr-0"
-                            :items="linkTypes"
-                            :label="$i18n.t('linking types')"
-                            v-model="linkType"
-                            single-line
-                            hide-details
-                            solo
-                          ></v-select>
-                        </v-flex>
-                        <v-flex xs12 md6 sm12 lg6 xl5>
-                          <v-select
-                            v-model="linkedRequest"
-                            :items="relatedRequests"
-                            :label="$i18n.t('Related requests')"
-                            solo
-                            class="pt-0"
+                  <v-flex>
+                    <v-row class="d-flex flex-row">
+                      <v-select
+                        prepend-icon="link"
+                        :items="linkTypes"
+                        :label="$i18n.t('Link type')"
+                        v-model="linkType"
+                        single-line
+                        hide-details
+                        solo
+                      ></v-select>
+                      <v-autocomplete
+                        :label="$i18n.t('Related requests')"
+                        v-model="linkedRequest"
+                        :items="filtredRelated"
+                        :filter="searchRequest"
+                        solo
+                        hide-selected
+                        return-object
+                      >
+                        <template v-slot:selection="data">
+                          {{ `#${data.item.id} - ${data.item.title}` }}
+                        </template>
+                        <template v-slot:item="data">
+                          {{ `#${data.item.id} - ${data.item.title}` }}
+                        </template>
+                        <template v-slot:append-outer>
+                          <v-btn
+                            :disabled="!(linkType && linkedRequest)"
+                            class="black--text full-height"
+                            @click.native="addRelated"
                           >
-                            <template v-slot:append-outer class="custom-slot">
-                              <v-btn solo class="ml-0 black--text mt-0 full-height" @click.native="addRelated">
-                                <v-icon dark>add</v-icon>
-                              </v-btn>
-                            </template>
-                          </v-select>
-                        </v-flex>
-                        <v-flex xs0 md5></v-flex>
-                      </v-layout>
-                    </v-container>
-                    <div v-for="(link, key) in linkedRequests" :key="key" class="pl-4">
-                      <v-chip v-model="linkedRequests[key]" close>{{ link.link }} : {{ link.request }}</v-chip>
-                    </div>
+                            <v-icon dark>add</v-icon>
+                          </v-btn>
+                        </template>
+                      </v-autocomplete>
+                    </v-row>
+                    <v-row class="d-inline-flex ml-4">
+                      <div v-for="(link, key) in linkedRequests" :key="key">
+                        <v-chip close @input="resetRelatedRequest(link.request.id)">
+                          <v-avatar>
+                            <v-icon small @click="goToRelatedTicket(link.request.id)">open_in_new</v-icon>
+                          </v-avatar>
+                          {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
+                        </v-chip>
+                      </div>
+                    </v-row>
                   </v-flex>
-                  <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
-                  <v-flex xs12 md8 sm8 xl3 lg1></v-flex>
-                  <v-flex xs12 md8 sm8 xl3 lg3>
-                    <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
-                  </v-flex>
+                  <v-container>
+                    <v-flex xs12 md8 sm8 xl3 lg3>
+                      <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
+                    </v-flex>
+                  </v-container>
                 </v-layout>
               </v-card-text>
               <v-card-actions>
@@ -259,8 +269,8 @@ export default {
         files: []
       },
       participants: [],
-      linkedRequest: "",
-      linkType: "",
+      linkedRequest: null,
+      linkType: null,
       linkTypes: [
         this.$i18n.t("Linked at"),
         this.$i18n.t("Duplicated"),
@@ -331,7 +341,7 @@ export default {
         request: this.linkedRequest
       });
 
-      this.linkType = this.linkedRequest = "";
+      this.linkType = this.linkedRequest = null;
     },
     validateFrom() {
       if (this.$refs.form.validate()) {
@@ -382,6 +392,20 @@ export default {
     },
     isValidEmail(email) {
       return this.reg.test(email);
+    },
+    resetRelatedRequest(relatedRequestID) {
+      this.linkedRequests = this.linkedRequests.filter(item => item.request.id !== relatedRequestID);
+    },
+    searchRequest(item, queryText) {
+      const textOne = item.title.toLowerCase();
+      const textTwo = item.id.toLowerCase();
+      const searchText = queryText.toLowerCase();
+
+      return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
+    },
+    goToRelatedTicket(ticketID) {
+      const routeData = this.$router.resolve({ path: `/requests/${ticketID}` });
+      window.open(routeData.href, "_blank");
     }
   },
   computed: {
@@ -438,6 +462,17 @@ export default {
         return engagements[0];
       }
       return {};
+    },
+    filtredRelated: function() {
+      let filtredList = this.relatedRequests;
+      const store = [];
+      this.linkedRequests.forEach(storedItem => {
+        store.push(storedItem.request);
+      });
+
+      filtredList = filtredList.filter(item => !store.includes(item));
+
+      return filtredList;
     }
   },
   watch: {
@@ -466,7 +501,7 @@ export default {
   mounted() {
     this.$http.listTickets().then(response => {
       response.data.forEach(ticket => {
-        this.relatedRequests.push(ticket._id);
+        this.relatedRequests.push({ id: `${ticket._id}`, title: ticket.title });
       });
     });
   },
