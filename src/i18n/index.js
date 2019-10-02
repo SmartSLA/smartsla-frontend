@@ -13,6 +13,7 @@ export default function(VueInstance) {
   return new VueI18n({
     locale: locale,
     fallbackLocale: FALLBACK_LANGUAGE,
-    messages: { fr, en, vi }
+    messages: { fr, en, vi },
+    silentTranslationWarn: true
   });
 }
