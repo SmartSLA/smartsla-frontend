@@ -597,7 +597,7 @@ export default {
     },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
+        items = items.filter(item => item.request.team.toLowerCase() == this.ticketsFilter);
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
@@ -611,6 +611,7 @@ export default {
       }
     },
     requestFilterByGroup(item, search) {
+      const request = item.request;
       let match = false;
       let typesFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "type");
       let severityFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "severity");
@@ -634,7 +635,7 @@ export default {
         typesFilterMatch = false;
 
         typesFilter.forEach(currentFilter => {
-          if (item.type.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.type.toLowerCase() == currentFilter.value.toLowerCase()) {
             typesFilterMatch = true;
           }
         });
@@ -644,7 +645,7 @@ export default {
         severityFilterMatch = false;
 
         severityFilter.forEach(currentFilter => {
-          if (item.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
             severityFilterMatch = true;
           }
         });
@@ -655,9 +656,9 @@ export default {
 
         softwareFilter.forEach(currentFilter => {
           if (
-            item.software &&
-            item.software.name &&
-            item.software.name.toLowerCase() == currentFilter.value.toLowerCase()
+            request.software &&
+            request.software.name &&
+            request.software.name.toLowerCase() == currentFilter.value.toLowerCase()
           ) {
             softwareFilterMatch = true;
           }
@@ -668,20 +669,20 @@ export default {
         responsibleFilterMatch = false;
 
         responsibleFilter.forEach(currentFilter => {
-          if (item.logs && item.logs.length && item.logs[item.logs.length - 1].assignedTo) {
+          if (request.logs && request.logs.length && request.logs[request.logs.length - 1].assignedTo) {
             if (
-              typeof item.logs[item.logs.length - 1].assignedTo != "string" &&
-              item.logs[item.logs.length - 1].assignedTo.type &&
-              item.logs[item.logs.length - 1].assignedTo.type != "beneficiary"
+              typeof request.logs[request.logs.length - 1].assignedTo != "string" &&
+              request.logs[request.logs.length - 1].assignedTo.type &&
+              request.logs[request.logs.length - 1].assignedTo.type != "beneficiary"
             ) {
               if (
-                item.logs[item.logs.length - 1].assignedTo.name &&
-                item.logs[item.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
+                request.logs[request.logs.length - 1].assignedTo.name &&
+                request.logs[request.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
               ) {
                 responsibleFilterMatch = true;
               } else if (
-                item.logs[item.logs.length - 1].assignedTo.displayName &&
-                item.logs[item.logs.length - 1].assignedTo.displayName.toLowerCase() ==
+                request.logs[request.logs.length - 1].assignedTo.displayName &&
+                request.logs[request.logs.length - 1].assignedTo.displayName.toLowerCase() ==
                   currentFilter.value.toLowerCase()
               ) {
                 responsibleFilterMatch = true;
@@ -695,22 +696,22 @@ export default {
         assignedFilterMatch = false;
 
         assignedFilter.forEach(currentFilter => {
-          if (item.logs && item.logs.length && item.logs[item.logs.length - 1].assignedTo) {
-            if (typeof item.logs[item.logs.length - 1].assignedTo != "string") {
+          if (request.logs && request.logs.length && request.logs[request.logs.length - 1].assignedTo) {
+            if (typeof request.logs[request.logs.length - 1].assignedTo != "string") {
               if (
-                item.logs[item.logs.length - 1].assignedTo.name &&
-                item.logs[item.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
+                request.logs[request.logs.length - 1].assignedTo.name &&
+                request.logs[request.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
               ) {
                 assignedFilterMatch = true;
               } else if (
-                item.logs[item.logs.length - 1].assignedTo.displayName &&
-                item.logs[item.logs.length - 1].assignedTo.displayName.toLowerCase() ==
+                request.logs[request.logs.length - 1].assignedTo.displayName &&
+                request.logs[request.logs.length - 1].assignedTo.displayName.toLowerCase() ==
                   currentFilter.value.toLowerCase()
               ) {
                 assignedFilterMatch = true;
               }
             } else {
-              if (item.logs[item.logs.length - 1].assignedTo.toLowerCase() == currentFilter.value.toLowerCase()) {
+              if (request.logs[request.logs.length - 1].assignedTo.toLowerCase() == currentFilter.value.toLowerCase()) {
                 assignedFilterMatch = true;
               }
             }
@@ -722,12 +723,12 @@ export default {
         transmitterFilterMatch = false;
 
         transmitterFilter.forEach(currentFilter => {
-          if (item.author) {
-            if (item.author.name && item.author.name.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.author) {
+            if (request.author.name && request.author.name.toLowerCase() == currentFilter.value.toLowerCase()) {
               transmitterFilterMatch = true;
             } else if (
-              item.author.displayName &&
-              item.author.displayName.toLowerCase() == currentFilter.value.toLowerCase()
+              request.author.displayName &&
+              request.author.displayName.toLowerCase() == currentFilter.value.toLowerCase()
             ) {
               transmitterFilterMatch = true;
             }
@@ -740,9 +741,9 @@ export default {
 
         clientFilter.forEach(currentFilter => {
           if (
-            item.contract &&
-            item.contract.name &&
-            item.contract.name.toLowerCase() == currentFilter.value.toLowerCase()
+            request.contract &&
+            request.contract.name &&
+            request.contract.name.toLowerCase() == currentFilter.value.toLowerCase()
           ) {
             clientFilterMatch = true;
           }
@@ -753,7 +754,7 @@ export default {
         statusFilterMatch = false;
 
         statusFilter.forEach(currentFilter => {
-          if (item.status.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.status.toLowerCase() == currentFilter.value.toLowerCase()) {
             statusFilterMatch = true;
           }
         });
@@ -771,10 +772,11 @@ export default {
 
       if (match && this.search) {
         return (
-          (item.software && item.software.name && item.software.name.toLowerCase().includes(this.search)) ||
-          item.description.toLowerCase().includes(this.search) ||
-          item.contract.client.toLowerCase().includes(this.search) ||
-          item.contract.name.toLowerCase().includes(this.search)
+          (request.software && request.software.name && request.software.name.toLowerCase().includes(this.search)) ||
+          request.description.toLowerCase().includes(this.search) ||
+          request.title.toLowerCase().includes(this.search) ||
+          request.contract.client.toLowerCase().includes(this.search) ||
+          request.contract.name.toLowerCase().includes(this.search)
         );
       }
 
