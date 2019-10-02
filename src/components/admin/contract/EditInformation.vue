@@ -34,18 +34,16 @@
           <v-flex xs8>
             <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("Internal mailing list") }}</v-flex>
+          <v-flex xs3>{{ $t("Internal mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field
               v-model="contract.mailingList.internal"
-              :rules="[() => contract.mailingList.internal.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("client mailing list") }}</v-flex>
+          <v-flex xs3>{{ $t("client mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field
               v-model="contract.mailingList.external"
-              :rules="[() => contract.mailingList.external.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
