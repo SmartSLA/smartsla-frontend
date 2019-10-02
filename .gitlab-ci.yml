@@ -6,7 +6,7 @@ stages:
   - docker_build
   - deploy_dev
 
-lint:
+.lint:
   stage: lint
   except:
     - triggers
@@ -17,7 +17,7 @@ lint:
     - npm install
     - npm run lint -- --no-fix
 
-test_unit:
+.test_unit:
   stage: test
   except:
     - triggers
