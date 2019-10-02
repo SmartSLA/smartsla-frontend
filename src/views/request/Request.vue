@@ -726,6 +726,12 @@ export default {
 
       this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
       this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
+    },
+    resetComment() {
+      this.newStatus = "";
+      this.comment = "";
+      this.newResponsible = "";
+      this.privateComment = false;
     }
 
   },
