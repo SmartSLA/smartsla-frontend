@@ -71,7 +71,7 @@ deploy_dev:
     name: dev
     url: https://dev.open-paas.org
   only:
-    - master
+    - master@linagora/lps/studio/ticketing08000linux
   script:
     - cd /srv/${CI_PROJECT_NAME}
     - nvm use
