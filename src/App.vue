@@ -1,8 +1,8 @@
 <template>
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
-      <v-navigation-drawer clipped fixed app v-if="$auth.check()">
-        <component v-bind:is="componentName"></component>
+      <v-navigation-drawer clipped fixed app v-if="$auth.check() && showNavigation">
+        <router-view name="sidebar"/>
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
@@ -39,32 +39,22 @@ import { mapGetters } from "vuex";
 import UserMenu from "@/components/UserMenu.vue";
 import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
 import Snackbar from "@/components/Snackbar.vue";
-import NewRequestSideBar from "@/components/request/NewRequestSideBar.vue";
-import MainSideBar from "@/components/MainSideBar.vue";
-import ContributionsSideBar from "@/components/ContributionsSideBar.vue";
-import IssueDetailSideBar from "@/components/request/IssueDetailSideBar.vue";
-import AdminMainSideBar from "@/components/admin/AdminMainSideBar.vue";
 
 export default {
   components: {
     "op-user-menu": UserMenu,
     "logged-main-navigation": LoggedMainNavigation,
     "op-snackbar": Snackbar,
-    "new-request-side-bar": NewRequestSideBar,
-    "main-side-bar": MainSideBar,
-    "contributions-side-bar": ContributionsSideBar,
-    "issue-detail-side-bar": IssueDetailSideBar,
-    "admin-main-side-bar": AdminMainSideBar
-  },
-  computed: {
-    ...mapGetters({
-      componentName: "sidebar/getSideBarComponent"
-    })
   },
   created() {
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
     });
+  },
+  computed: {
+    showNavigation() {
+      return this.$route.matched.some(route => route.meta.showSideBar)
+    }
   }
 };
 </script>

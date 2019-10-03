@@ -190,19 +190,20 @@ export default new Router({
     },
     {
       path: "/administration",
-      component: Administration,
+      components: {
+        default: Administration,
+        sidebar: () => import("@/components/admin/AdminMainSideBar.vue")
+      },
       name: routeNames.ADMINISTRATION,
       meta: {
-        auth: true
+        auth: true,
+        showSideBar: true
       },
       children: [
         {
           path: "",
           name: routeNames.ADMINHOME,
-          component: AdministrationHome,
-          meta: {
-            auth: true
-          }
+          component: AdministrationHome
         },
         {
           path: "users",

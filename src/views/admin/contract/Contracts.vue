@@ -115,13 +115,6 @@ export default {
           color: "error"
         });
       });
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "contracts");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-    next();
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {

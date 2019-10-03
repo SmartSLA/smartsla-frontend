@@ -720,7 +720,6 @@ export default {
         });
       });
 
-      this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
       this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
     },
     resetComment() {
@@ -741,10 +740,6 @@ export default {
   },
   created() {
     this.getData();
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>
