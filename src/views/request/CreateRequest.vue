@@ -101,10 +101,10 @@
                             class="required-element"
                             return-object
                           >
-                            <template slot='selection' slot-scope='{ item }'>
+                            <template slot="selection" slot-scope="{ item }">
                               {{ $t(item) }}
                             </template>
-                            <template slot='item' slot-scope='{ item }'>
+                            <template slot="item" slot-scope="{ item }">
                               {{ $t(item) }}
                             </template>
                           </v-select>
@@ -121,10 +121,10 @@
                             class="required-element"
                             return-object
                           >
-                            <template slot='selection' slot-scope='{ item }'>
+                            <template slot="selection" slot-scope="{ item }">
                               {{ $t(item) }}
                             </template>
-                            <template slot='item' slot-scope='{ item }'>
+                            <template slot="item" slot-scope="{ item }">
                               {{ $t(item) }}
                             </template>
                           </v-select>
@@ -244,7 +244,6 @@ import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
 import VUpload from "vuetify-upload-component";
-import { COPYFILE_EXCL } from "constants";
 
 Vue.use(FileUpload);
 export default {
@@ -375,7 +374,7 @@ export default {
           });
 
           // TODO: Move to store once the store is used to create requests
-          this.$store.dispatch("ticket/countTickets")
+          this.$store.dispatch("ticket/countTickets");
 
           this.$router.push(`/requests/${ticketId}`);
         })
