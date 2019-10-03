@@ -172,19 +172,6 @@ export default {
       return this.$route.params.id;
     }
   },
-  created() {
-    if (this.$route.params.id) {
-      this.software = require("@/assets/data/softwares.json")[4];
-    }
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "software");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-
-    next();
-  },
   methods: {
     createSoftware() {
       this.$http

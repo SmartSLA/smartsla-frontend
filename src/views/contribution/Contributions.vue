@@ -190,7 +190,6 @@ export default {
   },
   created() {
     this.latestContributions = contributions;
-    this.$store.dispatch("sidebar/setSidebarComponent", "contributions-side-bar");
     this.currentContribution = this.$store.getters["sidebar/getActiveContribution"];
   },
   mounted() {
@@ -206,10 +205,6 @@ export default {
       this.contribution =
         this.latestContributions.filter(contribution => contribution.contributionId == value).shift() || {};
     }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>

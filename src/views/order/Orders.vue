@@ -31,14 +31,6 @@ export default {
       ],
       requests: []
     };
-  },
-  created() {
-    this.requests = requests;
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>

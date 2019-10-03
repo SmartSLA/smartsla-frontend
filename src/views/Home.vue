@@ -11,13 +11,6 @@ export default {
   name: "home",
   components: {
     Home
-  },
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>

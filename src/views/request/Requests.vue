@@ -904,14 +904,9 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
     });
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   },
   components: {
     "cns-progress-bar": cnsProgressBar,
