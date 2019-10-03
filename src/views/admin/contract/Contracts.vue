@@ -85,7 +85,6 @@
 </template>
 
 <script>
-var contracts = require("@/assets/data/contracts.json");
 export default {
   data() {
     return {
@@ -103,7 +102,6 @@ export default {
     };
   },
   created() {
-    this.contracts = contracts;
     this.$http
       .getContracts()
       .then(response => {
