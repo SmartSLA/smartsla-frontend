@@ -31,10 +31,10 @@
           class="users-search-roles"
         ></v-select>
         <div class="users-operations">
-          <!--<router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
+          <router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
             <v-icon>add_circle</v-icon>
             <span>{{ $t("Add user") }}</span>
-          </router-link>-->
+          </router-link>
           <a href="#" class="users-actions blue-color">
             <v-icon>arrow_downward</v-icon>
             <span>{{ $t("Export") }}</span>
