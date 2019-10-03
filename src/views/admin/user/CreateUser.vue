@@ -12,7 +12,7 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-layout row wrap>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Type") }}</strong>
+                <span class="title">{{ $t("Type") }}</span>
               </v-flex>
               <v-flex xs8>
                 <v-radio-group v-model="user.type" row color="primary">
@@ -22,7 +22,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Search users") }}</strong>
+                <span class="title">{{ $t("Search users") }}</span>
               </v-flex>
               <v-flex xs8>
                  <v-autocomplete
@@ -61,7 +61,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong class="required-label">{{ $t("Name") }}</strong>
+                <span class="title required-label">{{ $t("Name") }}</span>
               </v-flex>
               <v-flex xs8>
                 <v-text-field
@@ -71,7 +71,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong class="required-label">{{ $t("Email") }}</strong>
+                <span class="title required-label">{{ $t("Email") }}</span>
               </v-flex>
               <v-flex xs8>
                 <v-text-field
@@ -81,7 +81,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong class="required-label">{{ $t("Phone") }}</strong>
+                <span class="title required-label">{{ $t("Phone") }}</span>
               </v-flex>
               <v-flex xs8>
                 <v-text-field
@@ -91,7 +91,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong class="required-label">{{ $t("Role") }}</strong>
+                <span class="title required-label">{{ $t("Role") }}</span>
               </v-flex>
               <v-flex xs8>
                 <v-radio-group
@@ -108,7 +108,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4" v-if="user.type !== 'expert'">
-                <strong>{{ $t("Client") }}</strong>
+                <span class="title">{{ $t("Client") }}</span>
               </v-flex>
               <v-flex xs8 v-if="user.type !== 'expert'">
                 <v-select
@@ -120,7 +120,7 @@
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Contracts") }}</strong>
+                <span class="title">{{ $t("Contracts") }}</span>
               </v-flex>
               <v-flex xs8>
                 <v-select
@@ -263,37 +263,3 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scoped>
-div.flex.pt-4.xs2 strong {
-  word-wrap: break-word;
-}
-
-.action-links {
-  text-decoration: none;
-  color: grey;
-  cursor: pointer;
-}
-
-.pt-0 {
-  padding-right: 0px;
-  margin-right: 0px !important;
-  margin-left: 0px !important;
-  margin-top: 0px !important;
-}
-
-.container {
-  max-width: 100% !important;
-  padding: 0px;
-}
-
-@media only screen and (min-width: 1264px) {
-  .container {
-    max-width: 100% !important;
-    padding-right: 24px;
-  }
-}
-
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
-  background-color: #2195f2 !important;
-}
-</style>

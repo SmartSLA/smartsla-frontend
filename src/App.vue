@@ -282,6 +282,7 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 }
 
 .required-element label::after, .required-label::after {
+  margin-left: 0.5em;
   content: '*';
   color: red;
 }
