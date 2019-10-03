@@ -12,10 +12,6 @@
         <v-icon class="mr-2">backup</v-icon>
         {{ $t("EXPORT SHEET (CSV)") }}
       </a>
-      <a href="#" class="action-links mr-5 right">
-        <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
-      </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>

@@ -9,10 +9,6 @@
         <v-icon class="mr-2">backup</v-icon>
         {{ $t("EXPORT SHEET (CSV)") }}
       </a>
-      <a href="#" class="action-links mr-5 right">
-        <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
-      </a>
     </v-card-text>
     <img class="dashboard-image" src="@/assets/dashboard.png" />
   </v-container>
