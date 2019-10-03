@@ -207,61 +207,52 @@
               <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
               <v-tab disabled href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
-                <v-card flat pt2>
-                  <v-expansion-panel v-model="panel" expand>
-                    <div v-for="comment in comments" :key="comment._id" class="custom-comment-box">
-                      <v-expansion-panel-content
-                        :class="comment.isBeneficiary ? 'comment-not-mine' : 'comment-mine'"
-                        color="grey lighten-4"
-                      >
-                        <template v-slot:header>
-                          <div class="font-weight-bold">
-                            {{ comment.author.name }}
-                            <span class="subheading"> {{ comment.date | calendarTimeFilter }} </span>
-                            <span v-if="comment.actions.isPrivateComment" class="red--text font-italic">
-                              {{ $t("private comment") }}
-                            </span>
+                <v-timeline dense clipped>
+                  <v-timeline-item v-for="comment in comments" :key="comment._id" large>
+                    <template v-slot:icon>
+                      <v-avatar>
+                        <v-img :src="comment.author.image"></v-img>
+                        <!-- TODO else generate avatar from OP API -->
+                      </v-avatar>
+                    </template>
+                    <v-card flat class="elevation-2">
+                      <v-card-title primary-title>
+                        <div class="flex">
+                          <div class="title">{{ comment.author.name }}</div>
+                          <div class="subheading">{{ comment.date | calendarTimeFilter }}</div>
+                          <div v-if="comment.actions.isPrivateComment">
+                            <span class="red--text font-italic">{{ $t("private comment") }}</span>
                           </div>
-                        </template>
-                        <v-card class="ml-4">
-                          <v-layout row wrap>
-                            <v-flex xs2 md1 sm2 lg2 xl2>
-                              <v-avatar size="60" :tile="false" v-if="comment.author.image">
-                                <v-img :src="comment.author.image ? comment.author.image : ''"></v-img>
-                              </v-avatar>
-                            </v-flex>
-                            <v-flex xs10>
-                              <v-card-text v-html="comment.body"></v-card-text>
-                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
-                                <p
-                                  v-if="comment.actions.assignedTo.name"
-                                  v-html="
-                                    $t('Ticket assigned to {assignedTo}', {
-                                      assignedTo: comment.actions.assignedTo.name
-                                    })
-                                  "
-                                ></p>
-                                <p
-                                v-if="comment.actions.newStatus"
-                                  v-html="
-                                    $t('Ticket passed in status {status}', {
-                                      status: comment.actions.newStatus
-                                    })
-                                  "
-                                ></p>
-                              </v-card-text>
-                              <v-card-text v-if="comment.attachedFile.name">
-                                <v-icon>attach_file</v-icon>
-                                <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
-                                  {{ comment.attachedFile.name }}
-                                </a>
-                              </v-card-text>
-                            </v-flex>
-                          </v-layout>
-                        </v-card>
-                      </v-expansion-panel-content>
-                    </div>
-                  </v-expansion-panel>
+                        </div>
+                      </v-card-title>
+                      <v-card-text v-html="comment.body"></v-card-text>
+                      <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                        <p
+                          v-if="comment.actions.assignedTo.name"
+                          v-html="
+                            $t('Ticket assigned to {assignedTo}', {
+                              assignedTo: comment.actions.assignedTo.name
+                            })
+                          "
+                        ></p>
+                        <p
+                          v-if="comment.actions.newStatus"
+                          v-html="
+                            $t('Ticket passed in status {status}', {
+                              status: comment.actions.newStatus
+                            })
+                          "
+                        ></p>
+                      </v-card-text>
+                      <v-card-text v-if="comment.attachedFile.name">
+                        <v-icon>attach_file</v-icon>
+                        <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
+                          {{ comment.attachedFile.name }}
+                        </a>
+                      </v-card-text>
+                    </v-card>
+                  </v-timeline-item>
+                </v-timeline>
                   <v-divider></v-divider>
                   <v-form class="comment-form">
                     <!-- <v-btn-toggle v-model="selectedEditor">
@@ -328,7 +319,6 @@
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
                   </v-form>
-                </v-card>
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
