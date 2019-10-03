@@ -205,7 +205,7 @@
             <v-tabs grow icons-and-text class="ml-3 mr-3">
               <v-tabs-slider color="primary"></v-tabs-slider>
               <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
-              <v-tab href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
+              <v-tab disabled href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-card flat pt2>
                   <v-expansion-panel v-model="panel" expand>
