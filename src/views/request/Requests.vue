@@ -21,10 +21,6 @@
         <v-icon class="mr-2">backup</v-icon>
         <span>{{ $t("EXPORT SHEET") }}</span>
       </download-excel>
-      <a href="#" class="action-links mr-5 right">
-        <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
-      </a>
     </v-card-text>
     <div class="tickets-search">
       <div class="requests-filter-label">
