@@ -188,11 +188,9 @@
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.linkedTickets.length > 0">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
-                          <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'Request', params: { id: link.id } }">{{
-                            link.request
-                          }}</router-link>
+                          <router-link target="_blank" :to="{ name: 'Request', params: { id: link.request.id } }">
+                            {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
+                          </router-link>
                         </li>
                       </ul>
                     </v-flex>
