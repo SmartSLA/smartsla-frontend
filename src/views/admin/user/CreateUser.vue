@@ -81,16 +81,6 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <span class="title required-label">{{ $t("Phone") }}</span>
-              </v-flex>
-              <v-flex xs8>
-                <v-text-field
-                  v-model="user.phone"
-                  :rules="[() => user.phone.length > 0 || $i18n.t('Required field')]"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
                 <span class="title required-label">{{ $t("Role") }}</span>
               </v-flex>
               <v-flex xs8>
@@ -162,10 +152,7 @@ export default {
         email: "",
         contracts: "",
         client: "",
-        role: "",
-        identifier: "",
-        phone: "",
-        position: ""
+        role: ""
       },
       openDialog: false
     };
