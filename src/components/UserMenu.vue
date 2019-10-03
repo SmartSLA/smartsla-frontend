@@ -7,7 +7,7 @@
       <v-layout row justify-end>
         <v-flex xs5>
           <v-menu offset-y class="pt-3 user-menu-item">
-            <op-avatar slot="activator"></op-avatar>
+            <op-avatar slot="activator" class="mr-3"></op-avatar>
             <v-list>
               <v-list-tile>
                 <v-list-tile-content>
