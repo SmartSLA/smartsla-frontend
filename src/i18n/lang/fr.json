@@ -335,5 +335,8 @@
     "Welcome to Satistfaction Page!!": "Bienvenue dans la page de satisfaction!!",
     "Welcome to Settings Page!!": "Bienvenue dans la page des paramètres!!",
     "Yes": "Oui",
-    "Not assigned yet": "Non assigné"
+    "Not assigned yet": "Non assigné",
+    "Failed to fetch client": "Client introuvable!",
+    "Active": "Actif",
+    "Not active": "Inactif"
 }
