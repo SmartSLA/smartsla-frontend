@@ -182,7 +182,6 @@
         ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.index + 1 }}</td>
           <td class="text-xs-center">
             <v-chip
               v-if="props.item.assignedTo && props.item.assignedTo.type == 'beneficiary'"
@@ -314,7 +313,6 @@ export default {
         3: "#dbc1ff"
       },
       headers: [
-        { text: "#", value: "#", sortable: false },
         { text: this.$i18n.t("Organization"), value: "organization" },
         { text: this.$i18n.t("Ticket N°"), value: "_id" },
         { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
@@ -906,14 +904,9 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
     });
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   },
   components: {
     "cns-progress-bar": cnsProgressBar,

@@ -236,14 +236,6 @@ export default {
     if (this.$route.params.id) {
       this.contribution = require("@/assets/data/contributions.json");
     }
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "contributions");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-
-    next();
   }
 };
 </script>

@@ -188,11 +188,9 @@
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.linkedTickets.length > 0">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
-                          <span v-if="link.type == 'duplicate'">{{ $t("is a copy of ticket") }}&nbsp;</span>
-                          <span v-else-if="link.type == 'closes'">{{ $t("closes ticket") }}&nbsp;</span>
-                          <router-link :to="{ name: 'Request', params: { id: link.id } }">{{
-                            link.request
-                          }}</router-link>
+                          <router-link target="_blank" :to="{ name: 'Request', params: { id: link.request.id } }">
+                            {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
+                          </router-link>
                         </li>
                       </ul>
                     </v-flex>
@@ -207,61 +205,62 @@
               <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
               <v-tab disabled href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
-                <v-card flat pt2>
-                  <v-expansion-panel v-model="panel" expand>
-                    <div v-for="comment in comments" :key="comment._id" class="custom-comment-box">
-                      <v-expansion-panel-content
-                        :class="comment.isBeneficiary ? 'comment-not-mine' : 'comment-mine'"
-                        color="grey lighten-4"
-                      >
-                        <template v-slot:header>
-                          <div class="font-weight-bold">
-                            {{ comment.author.name }}
-                            <span class="subheading"> {{ comment.date | calendarTimeFilter }} </span>
-                            <span v-if="comment.actions.isPrivateComment" class="red--text font-italic">
-                              {{ $t("private comment") }}
-                            </span>
+                <v-timeline dense clipped>
+                  <v-timeline-item v-for="comment in comments" :key="comment._id" large>
+                    <template v-slot:icon>
+                      <v-avatar>
+                        <v-img :src="comment.author.image"></v-img>
+                        <!-- TODO else generate avatar from OP API -->
+                      </v-avatar>
+                    </template>
+                    <v-card flat class="elevation-2">
+                      <v-card-title primary-title class="pt-3">
+                        <div class="flex">
+                          <div class="subheading font-weight-medium">{{ comment.author.name }}</div>
+                          <div class="body-1">{{ comment.date | calendarTimeFilter }}</div>
+                          <div v-if="comment.actions.isPrivateComment">
+                            <span class="red--text">{{ $t("private comment") }}</span>
                           </div>
-                        </template>
-                        <v-card class="ml-4">
-                          <v-layout row wrap>
-                            <v-flex xs2 md1 sm2 lg2 xl2>
-                              <v-avatar size="60" :tile="false" v-if="comment.author.image">
-                                <v-img :src="comment.author.image ? comment.author.image : ''"></v-img>
-                              </v-avatar>
-                            </v-flex>
-                            <v-flex xs10>
-                              <v-card-text v-html="comment.body"></v-card-text>
-                              <v-card-text v-if="comment.actions" class="grey--text font-italic">
-                                <p
-                                  v-if="comment.actions.assignedTo.name"
-                                  v-html="
-                                    $t('Ticket assigned to {assignedTo}', {
-                                      assignedTo: comment.actions.assignedTo.name
-                                    })
-                                  "
-                                ></p>
-                                <p
-                                v-if="comment.actions.newStatus"
-                                  v-html="
-                                    $t('Ticket passed in status {status}', {
-                                      status: comment.actions.newStatus
-                                    })
-                                  "
-                                ></p>
-                              </v-card-text>
-                              <v-card-text v-if="comment.attachedFile.name">
-                                <v-icon>attach_file</v-icon>
-                                <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
-                                  {{ comment.attachedFile.name }}
-                                </a>
-                              </v-card-text>
-                            </v-flex>
-                          </v-layout>
-                        </v-card>
-                      </v-expansion-panel-content>
-                    </div>
-                  </v-expansion-panel>
+                        </div>
+                      </v-card-title>
+                      <v-card-text
+                        v-if="comment.body"
+                        v-html="comment.body"
+                        class="pt-0"
+                      />
+                      <v-card-text
+                        v-if="comment.actions && (comment.actions.assignedTo.name || comment.actions.newStatus)"
+                        class="grey--text pt-0"
+                      >
+                        <p
+                          v-if="comment.actions.assignedTo.name"
+                          v-html="
+                            $t('Ticket assigned to {assignedTo}', {
+                              assignedTo: comment.actions.assignedTo.name
+                            })
+                          "
+                        ></p>
+                        <p
+                          v-if="comment.actions.newStatus"
+                          v-html="
+                            $t('Ticket passed in status {status}', {
+                              status: comment.actions.newStatus
+                            })
+                          "
+                        ></p>
+                      </v-card-text>
+                      <v-card-text
+                        v-if="comment.attachedFile.name"
+                        class="pt-0"
+                      >
+                        <v-icon>attach_file</v-icon>
+                        <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
+                          {{ comment.attachedFile.name }}
+                        </a>
+                      </v-card-text>
+                    </v-card>
+                  </v-timeline-item>
+                </v-timeline>
                   <v-divider></v-divider>
                   <v-form class="comment-form">
                     <!-- <v-btn-toggle v-model="selectedEditor">
@@ -328,7 +327,6 @@
                       <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                     </v-layout>
                   </v-form>
-                </v-card>
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
@@ -497,6 +495,7 @@ import { Editor } from "vuetify-markdown-editor";
 import VUpload from "vuetify-upload-component";
 import ApplicationSettings from "@/services/application-settings";
 import cnsProgressBar from "@/components/CnsProgressBar";
+import moment from "moment";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -659,17 +658,17 @@ export default {
           // What is that for ?
         } else {
           this.ticket.logs.push({
-            action: this.newStatus,
+            action: this.newStatus || this.ticket.status,
             author: this.$store.state.user.user._id,
-            date: new Date(),
+            date: moment().toISOString(),
             assignedTo: this.newResponsible
           });
         }
       } else {
         this.ticket.logs.push({
-          action: this.newStatus,
+          action: this.newStatus || this.ticket.status,
           author: this.$store.state.user.user._id,
-          date: new Date(),
+          date: moment().toISOString(),
           assignedTo: this.newResponsible
         });
       }
@@ -720,7 +719,6 @@ export default {
         });
       });
 
-      this.$store.dispatch("sidebar/setSidebarComponent", "issue-detail-side-bar");
       this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
     },
     resetComment() {
@@ -741,10 +739,6 @@ export default {
   },
   created() {
     this.getData();
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>
@@ -966,10 +960,6 @@ export default {
 
 .v-input__icon.v-input__icon--prepend {
   margin: 0px !important;
-}
-
-.v-card__text {
-  padding-top: 16px !important;
 }
 
 .layout.row.wrap {
