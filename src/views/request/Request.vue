@@ -495,6 +495,7 @@ import { Editor } from "vuetify-markdown-editor";
 import VUpload from "vuetify-upload-component";
 import ApplicationSettings from "@/services/application-settings";
 import cnsProgressBar from "@/components/CnsProgressBar";
+import moment from "moment";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -657,17 +658,17 @@ export default {
           // What is that for ?
         } else {
           this.ticket.logs.push({
-            action: this.newStatus,
+            action: this.newStatus || this.ticket.status,
             author: this.$store.state.user.user._id,
-            date: new Date(),
+            date: moment().toISOString(),
             assignedTo: this.newResponsible
           });
         }
       } else {
         this.ticket.logs.push({
-          action: this.newStatus,
+          action: this.newStatus || this.ticket.status,
           author: this.$store.state.user.user._id,
-          date: new Date(),
+          date: moment().toISOString(),
           assignedTo: this.newResponsible
         });
       }
