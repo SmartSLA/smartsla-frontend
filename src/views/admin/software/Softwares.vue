@@ -37,7 +37,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Software', params: { id: 15 } }" class="blue-color">{{
+            <router-link :to="{ name: 'Software', params: { id: props.item._id } }" class="blue-color">{{
               props.item.name
             }}</router-link>
           </td>

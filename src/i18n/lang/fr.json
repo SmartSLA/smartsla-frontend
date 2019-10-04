@@ -309,5 +309,6 @@
     "Welcome to Profile!!": "Bienvenue dans le profil!!",
     "Welcome to Satistfaction Page!!": "Bienvenue dans la page de satisfaction!!",
     "Welcome to Settings Page!!": "Bienvenue dans la page des paramètres!!",
-    "Yes": "Oui"
+    "Yes": "Oui",
+    "Failed to fetch software": "Impossible de récupérer le logiciel"
 }
