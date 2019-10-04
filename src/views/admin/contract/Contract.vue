@@ -323,7 +323,14 @@
                   <template v-slot:items="props">
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                    <td class="text-xs-center text-capitalize">
+                      <span>
+                        <v-avatar :color="getOssaByKey(props.item.idOssa).color" size="25">
+                          <span class="white--text">{{ getOssaByKey(props.item.idOssa).id }}</span>
+                        </v-avatar>
+                        <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }}  </span>
+                      </span>
+                    </td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
@@ -378,6 +385,8 @@
 </template>
 
 <script>
+import { OSSA_IDS } from '@/constants.js';
+
 export default {
   data() {
     return {
@@ -435,6 +444,9 @@ export default {
       });
   },
   methods: {
+    getOssaByKey(key) {
+      return OSSA_IDS.find(ossaId => ossaId.key == key);
+    },
     edit() {
       return;
     },

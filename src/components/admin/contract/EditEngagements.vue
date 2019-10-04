@@ -29,7 +29,14 @@
       <template v-slot:items="props">
         <td class="text-xs-left">{{ $t(props.item.request) }}</td>
         <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-        <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
+        <td class="text-xs-left text-capitalize">
+          <span>
+            <v-avatar :color="getOssaByKey(props.item.idOssa).color" size="25">
+              <span class="white--text">{{ getOssaByKey(props.item.idOssa).id }}</span>
+            </v-avatar>
+            <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }}  </span>
+          </span>
+        </td>
         <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
         <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
         <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
@@ -95,12 +102,25 @@
             <v-flex xs4>
               <v-select 
                 v-model="newCommitment.idOssa"
-                :items="ossaIds"
+                :items="OSSA_IDS"
                 item-text="value"
                 item-value="key"
                 flat
                 single-line
-              ></v-select>
+              >
+                <template slot="item" slot-scope="data">
+                    <v-avatar :color="data.item.color" size="25">
+                      <span class="white--text">{{ data.item.id }}</span>
+                    </v-avatar>
+                    <span class="pl-2"> {{ $t(data.item.key) }} </span>
+                </template>
+                <template slot="selection" slot-scope="data">
+                   <v-avatar :color="data.item.color" size="25">
+                      <span class="white--text">{{ data.item.id }}</span>
+                    </v-avatar>
+                    <span class="pl-2"> {{ $t(data.item.key) }}  </span>
+                </template>
+              </v-select>
             </v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs3>{{ $t("Supported") }}</v-flex>
@@ -156,6 +176,7 @@
 
 <script>
 import moment from "moment";
+import { OSSA_IDS } from '@/constants.js';
 
 export default {
   name: "contract-edit-engagements",
@@ -221,23 +242,13 @@ export default {
           value: this.$i18n.t("None")
         }
       ],
-      ossaIds: [
-        {
-          key: "Blocking",
-          value: this.$i18n.t("Blocking")
-        },
-        {
-          key: "Non-blocking",
-          value: this.$i18n.t("Non-blocking")
-        },
-        {
-          key: "Information",
-          value: this.$i18n.t("Information")
-        }
-      ]
+      OSSA_IDS
     };
   },
   methods: {
+    getOssaByKey(key) {
+      return this.OSSA_IDS.find(ossaId => ossaId.key == key);
+    },
     removeCommitment(commitment) {
       this.engagementList.engagements = this.engagementList.engagements.filter(
         item => JSON.stringify(item) != JSON.stringify(commitment)
