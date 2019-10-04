@@ -30,7 +30,6 @@
   "startDate": "Tuesday 17 november 2015",
   "endDate": "Thursday 19 december 2019",
   "status": "active",
-  "sharedRequests": true,
   "relatedSoftware": [
     {
       "id": 55,

@@ -77,12 +77,6 @@
                     <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
-                  <v-flex xs4>
-                    <div class="subheading font-weight-medium">
-                      {{ $t("requests shared among the beneficiaries") }} :
-                    </div>
-                  </v-flex>
-                  <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
               </v-card-text>
               <v-layout row wrap align-end>
