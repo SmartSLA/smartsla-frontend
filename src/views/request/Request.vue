@@ -214,17 +214,24 @@
                       </v-avatar>
                     </template>
                     <v-card flat class="elevation-2">
-                      <v-card-title primary-title>
+                      <v-card-title primary-title class="pt-3">
                         <div class="flex">
-                          <div class="title">{{ comment.author.name }}</div>
-                          <div class="subheading">{{ comment.date | calendarTimeFilter }}</div>
+                          <div class="subheading font-weight-medium">{{ comment.author.name }}</div>
+                          <div class="body-1">{{ comment.date | calendarTimeFilter }}</div>
                           <div v-if="comment.actions.isPrivateComment">
-                            <span class="red--text font-italic">{{ $t("private comment") }}</span>
+                            <span class="red--text">{{ $t("private comment") }}</span>
                           </div>
                         </div>
                       </v-card-title>
-                      <v-card-text v-html="comment.body"></v-card-text>
-                      <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                      <v-card-text
+                        v-if="comment.body"
+                        v-html="comment.body"
+                        class="pt-0"
+                      />
+                      <v-card-text
+                        v-if="comment.actions && (comment.actions.assignedTo.name || comment.actions.newStatus)"
+                        class="grey--text pt-0"
+                      >
                         <p
                           v-if="comment.actions.assignedTo.name"
                           v-html="
@@ -242,7 +249,10 @@
                           "
                         ></p>
                       </v-card-text>
-                      <v-card-text v-if="comment.attachedFile.name">
+                      <v-card-text
+                        v-if="comment.attachedFile.name"
+                        class="pt-0"
+                      >
                         <v-icon>attach_file</v-icon>
                         <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
                           {{ comment.attachedFile.name }}
@@ -950,10 +960,6 @@ export default {
 
 .v-input__icon.v-input__icon--prepend {
   margin: 0px !important;
-}
-
-.v-card__text {
-  padding-top: 16px !important;
 }
 
 .layout.row.wrap {
