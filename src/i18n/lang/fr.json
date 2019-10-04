@@ -310,5 +310,12 @@
     "Welcome to Satistfaction Page!!": "Bienvenue dans la page de satisfaction!!",
     "Welcome to Settings Page!!": "Bienvenue dans la page des paramètres!!",
     "Yes": "Oui",
-    "Failed to fetch software": "Impossible de récupérer le logiciel"
+    "Failed to fetch software": "Impossible de récupérer le logiciel",
+    "Save filter": "Sauvegarder le filtre!",
+    "reset": "Réinitialiser les filtres",
+    "save": "Enregistrer",
+    "Create new filter": "Créer un nouveau filtre",
+    "Filter name": "Nom du filtre",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
 }
