@@ -501,7 +501,6 @@ export default {
     this.$http.getContracts().then(response => {
       this.contractList = response.data;
     });
-    this.$store.dispatch("sidebar/setSidebarComponent", "new-request-side-bar");
   },
   mounted() {
     this.$http.listTickets().then(response => {
@@ -509,10 +508,6 @@ export default {
         this.relatedRequests.push({ id: `${ticket._id}`, title: ticket.title });
       });
     });
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>

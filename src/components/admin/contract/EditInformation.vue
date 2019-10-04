@@ -125,14 +125,6 @@
               <v-radio :label="$i18n.t('Unlimited')" value="unlimited"></v-radio>
             </v-radio-group>
           </v-flex>
-          <v-flex xs3>{{ $t("Governed by") }}</v-flex>
-          <v-flex xs8>
-            <v-text-field v-model="contract.govern"></v-text-field>
-          </v-flex>
-          <v-flex xs3 class="pt-3">{{ $t("Requests shared among the beneficiaries") }}</v-flex>
-          <v-flex xs8>
-            <v-checkbox v-model="contract.sharedRequests" color="primary" hide-details></v-checkbox>
-          </v-flex>
           <v-flex xs3>{{ $t("Domain") }}</v-flex>
           <v-flex xs8>
             <v-text-field></v-text-field>
@@ -192,8 +184,6 @@ export default {
         endDate: "",
         status: true,
         type: "",
-        sharedRequests: true,
-        govern: "",
         domain: "",
         humanResources: {},
         Engagements: {

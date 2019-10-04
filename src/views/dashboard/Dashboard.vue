@@ -15,15 +15,7 @@
 </template>
 
 <script>
-export default {
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
-  }
-};
+export default {};
 </script>
 
 <style lang="stylus" scoped>

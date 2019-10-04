@@ -9,7 +9,7 @@ import UserMenu from "@/components/UserMenu";
 const mockLocalVue = createLocalVue();
 jest.doMock("vue", () => ({ default: mockLocalVue }));
 
-describe("The VideoConference component", () => {
+describe.skip("The VideoConference component", () => {
   test("logout", async function() {
     jest.spyOn(mockLocalVue.auth, "logout").mockImplementation(jest.noop);
 

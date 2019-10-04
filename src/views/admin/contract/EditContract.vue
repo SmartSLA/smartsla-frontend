@@ -41,8 +41,6 @@ export default {
         this.editSectionComponent = "edit-contract-information";
         break;
     }
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "contracts");
   },
   methods: {
     edit() {
@@ -53,11 +51,6 @@ export default {
     isNew() {
       return this.$route.params.id;
     }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-    next();
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {

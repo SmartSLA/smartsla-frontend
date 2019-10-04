@@ -77,12 +77,6 @@
                     <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
-                  <v-flex xs4>
-                    <div class="subheading font-weight-medium">
-                      {{ $t("requests shared among the beneficiaries") }} :
-                    </div>
-                  </v-flex>
-                  <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
               </v-card-text>
               <v-layout row wrap align-end>
@@ -433,8 +427,6 @@ export default {
           color: "error"
         });
       });
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "contracts");
   },
   methods: {
     edit() {
@@ -480,11 +472,6 @@ export default {
     standardContractualCommitment() {
       return this.contract.Engagements.standard.engagements || [];
     }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-    next();
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {

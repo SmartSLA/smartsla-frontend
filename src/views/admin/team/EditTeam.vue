@@ -303,14 +303,6 @@ export default {
     this.contracts = require("@/assets/data/contracts.json");
     this.users = require("@/assets/data/users.json");
     this.expertUsers = require("@/assets/data/users.json");
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "teams");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-
-    next();
   }
 };
 </script>
