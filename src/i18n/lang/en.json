@@ -1,5 +1,6 @@
 {
   "Close": "Close",
+  "{days}WD {hours}WH": "{days}WD {hours}WH",
   "OpenPaaS Login": "OpenPaaS Login",
   "Login": "Login",
   "Logout": "Logout",

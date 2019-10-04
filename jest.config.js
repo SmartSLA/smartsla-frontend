@@ -5,7 +5,9 @@ module.exports = {
     ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
     "^.+\\.jsx?$": "babel-jest"
   },
-  transformIgnorePatterns: ["<rootDir>/node_modules/(?!(vue-openpaas-components|vuetify/lib|vuetify/src/stylus)/)"],
+  transformIgnorePatterns: [
+    "<rootDir>/node_modules/(?!(vue-openpaas-components|vuetify-upload-component|vue-json-excel|vuetify/lib|vuetify/src/stylus)/)"
+  ],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
     "^%/(.*)$": "<rootDir>/tests/$1",

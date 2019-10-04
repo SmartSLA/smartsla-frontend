@@ -17,7 +17,7 @@ stages:
     - npm install
     - npm run lint -- --no-fix
 
-.test_unit:
+test_unit:
   stage: test
   except:
     - triggers
