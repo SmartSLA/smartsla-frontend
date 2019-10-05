@@ -7,7 +7,7 @@
     </v-card-title>
     <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
       <template v-slot:items="props">
-        <td class="text-xs-center">{{ props.item.name }}</td>
+        <td class="text-xs-center">{{ props.item.software.name }}</td>
         <td class="text-xs-center">{{ props.item.version }}</td>
         <td class="text-xs-center">{{ props.item.os }}</td>
         <td class="text-xs-center" v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length">
@@ -203,7 +203,7 @@ export default {
       startDateModel: "",
       endDateModel: "",
       newSoftware: {
-        name: "",
+        software: {},
         critical: "standard",
         generic: false,
         technicalReferent: "",
@@ -226,8 +226,7 @@ export default {
         !this.contract.software.filter(software => JSON.stringify(software) == JSON.stringify(this.newSoftwareName))
           .length
       ) {
-        this.newSoftware.name = this.newSoftwareName.name;
-        this.newSoftware.id = this.newSoftwareName.id;
+        this.newSoftware.software = this.newSoftwareName;
         this.newSoftwareName = {};
         this.contract.software.push(Object.assign({}, this.newSoftware));
       }

@@ -466,7 +466,7 @@ export default {
         type: request.type,
         severity: request.severety,
         software: request.software,
-        softwareName: request.software && request.software.name,
+        softwareName: request.software && request.software.software && request.software.software.name,
         title: request.title,
         assignedTo: request.assignedTo && request.assignedTo.name,
         responsible: request.responsible && request.responsible.name,
