@@ -297,7 +297,7 @@
                         </v-flex>
                         <v-flex xs10 md8 sm8 xl3 lg3>
                           <v-select
-                            :items="assignee"
+                            :items="allowedAssigneeList"
                             :disabled="privateComment"
                             item-text="name"
                             v-model="newResponsible"
@@ -583,6 +583,15 @@ export default {
       const currentStatus = this.currentStatus.toLowerCase();
 
       return NEXT_STATUS[currentStatus];
+    },
+
+    allowedAssigneeList() {
+      if (["resolved", "closed"].includes(this.currentStatus)) {
+        return this.assignee.filter(user => 
+          user.type === "beneficiary"
+        );
+      }
+      return this.assignee;
     }
   },
   methods: {
