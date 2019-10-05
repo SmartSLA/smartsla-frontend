@@ -1,110 +1,122 @@
 <template>
   <div class="requests-list">
-      <v-layout align-center justify-space-between row mb-2>
-        <v-flex xs6>
-          <v-layout align-center row>
-            <span class="action-links">
-              <v-icon class="mr-2">format_list_numbered</v-icon>
-              <span>{{ pageTitle }}</span>
-            </span>
-            <v-btn flat small
-              color="error" 
-              @click="deleteDialog = true"
-              v-show="showDeleteBtn"
-            >
-              <v-icon class="mr-2">delete_outline</v-icon> {{ $t("Delete filter") }}
-            </v-btn>
-          </v-layout>
-        </v-flex>
-        <v-flex xs6>
-          <v-layout justify-end row>
-            <div>
-              <download-excel :data="requests" >
-                <v-btn flat small color="default">
-                  <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
-                </v-btn>
-              </download-excel>
-            </div>
-          </v-layout>
-        </v-flex>
-      </v-layout>
-    <div class="tickets-search">
-      <div class="requests-filter-label">
-        <span>{{ $t("Filter by:") }}</span>
-      </div>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-select
-        solo
-        :items="categories"
-        item-text="value"
-        item-value="key"
-        v-model="categoriesFilter"
-        hide-details
-        class="scoped-requests-search"
-        id="first-combo"
-        v-bind:label="$i18n.t('Categories')"
-      ></v-select>
-      <v-select
-        v-if="translatedFilter"
-        solo
-        :items="values"
-        item-text="value"
-        item-value="key"
-        v-model="valuesFilter"
-        hide-details
-        hide-selected
-        class="scoped-requests-search"
-        v-bind:label="$i18n.t('Values')"
-      ></v-select>
-      <v-select
-        v-else
-        solo
-        :items="values"
-        v-model="valuesFilter"
-        hide-details
-        hide-selected
-        class="scoped-requests-search"
-        v-bind:label="$i18n.t('Values')"
-      ></v-select>
-      <v-btn @click="addNewFilter" class="requests-filter-add">
-        <v-icon dark>add</v-icon>
-      </v-btn>
-      <v-spacer class="mx-2"></v-spacer>
-      <div class="requests-filter-label">
-        <span>{{ $t("And") }}</span>
-      </div>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-select
-        solo
-        :items="savedFilters"
-        item-text="name"
-        v-model="storedSelectionsFilterHolder"
-        hide-details
-        hide-selected
-        class="scoped-requests-search"
-        v-bind:label="$i18n.t('Stored selections')"
-        return-object
-      ></v-select>
-      <v-btn class="requests-filter-add" @click="loadFilter">
-        <v-icon dark>add</v-icon>
-      </v-btn>
-      <v-spacer class="mx-2"></v-spacer>
-      <div class="requests-filter-label">
-        <span>{{ $t("And") }}</span>
-      </div>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-text-field
-        v-model="search"
-        :placeholder="$i18n.t('Search')"
-        single-line
-        hide-details
-        solo
-        class="scoped-requests-search"
-      >
-        <v-icon @click="addNewFilter" outline class="pl-2">add</v-icon>
-      </v-text-field>
-    </div>
+    <v-layout align-center justify-space-between row mb-2>
+      <v-flex xs6>
+        <v-layout align-center row>
+          <span class="action-links">
+            <v-icon class="mr-2">format_list_numbered</v-icon>
+            <span>{{ pageTitle }}</span>
+          </span>
+          <v-btn flat small
+            color="error" 
+            @click="deleteDialog = true"
+            v-show="showDeleteBtn"
+          >
+            <v-icon class="mr-2">delete_outline</v-icon> {{ $t("Delete filter") }}
+          </v-btn>
+        </v-layout>
+      </v-flex>
+      <v-flex xs6>
+        <v-layout justify-end row>
+          <div>
+            <download-excel :data="requests" >
+              <v-btn flat small color="default">
+                <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
+              </v-btn>
+            </download-excel>
+          </div>
+        </v-layout>
+      </v-flex>
+    </v-layout>
 
+  <v-layout align-center justify-space-between row mb-4 mt-4>
+    <v-flex xs5>
+      <v-toolbar dense>
+        <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("Filter by:") }}</v-toolbar-title>
+        <v-layout align-center justify-end>
+          <v-overflow-btn
+            :items="categories"
+            :label="$i18n.t('Categories')"
+            hide-details
+            class="pa-0"
+            solo
+            overflow
+            item-text="value"
+            item-value="key"
+            v-model="categoriesFilter"
+          ></v-overflow-btn>
+          <v-divider vertical></v-divider>
+          <v-overflow-btn
+            v-if="translatedFilter"
+            :items="values"
+            :label="$i18n.t('Values')"
+            v-model="valuesFilter"
+            class="pa-0"
+            overflow
+            solo
+            item-text="value"
+            item-value="key"
+            hide-details
+            hide-selected
+          ></v-overflow-btn>
+          <v-overflow-btn
+            v-else
+            :items="values"
+            :label="$i18n.t('Values')"
+            v-model="valuesFilter"
+            solo
+            hide-details
+            hide-selected
+            class="pa-0"
+            overflow
+          ></v-overflow-btn>
+          <v-toolbar-side-icon @click="addNewFilter">
+            <v-icon dark>add</v-icon>
+          </v-toolbar-side-icon>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+    <v-flex xs1></v-flex>
+    <v-flex xs3>
+      <v-toolbar dense>
+        <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("And") }}</v-toolbar-title>
+        <v-layout align-center justify-end>
+          <v-overflow-btn
+            :items="savedFilters"
+            :label="$i18n.t('Stored selections')"
+            v-model="storedSelectionsFilterHolder"
+            hide-selected
+            hide-details
+            class="pa-0"
+            overflow
+            solo
+            return-object
+            item-text="name"
+          ></v-overflow-btn>
+          <v-toolbar-side-icon @click="loadFilter">
+            <v-icon dark>add</v-icon>
+          </v-toolbar-side-icon>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+    <v-flex xs1></v-flex>
+    <v-flex xs3>
+      <v-toolbar dense>
+        <v-layout align-center justify-end>
+          <v-text-field
+            v-model="search"
+            :placeholder="$i18n.t('Search')"
+            prepend-inner-icon="search"
+            solo
+            clearable
+            hide-details
+            single-line
+          ></v-text-field>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+  </v-layout>
+  
     <v-layout justify-space-between row>
       <div>
         <ul>
