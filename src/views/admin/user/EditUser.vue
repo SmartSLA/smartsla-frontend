@@ -39,7 +39,7 @@
                 <strong>{{ $t("Position") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field v-model="user.title" :disabled="isEdit"></v-text-field>
+                <v-text-field v-model="user.position" :disabled="isEdit"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -97,8 +97,8 @@
               </v-flex>
               <v-flex xs8 v-if="user.type != 'expert'">
                 <v-select
-                  :items="clients"
-                  item-value="name"
+                  :items="clientsList"
+                  item-value="_id"
                   item-text="name"
                   v-model="user.client"
                   :disabled="isEdit"
@@ -110,8 +110,8 @@
               </v-flex>
               <v-flex xs8>
                 <v-select
-                  :items="contracts"
-                  item-value="name"
+                  :items="contractList"
+                  item-value="_id"
                   item-text="name"
                   multiple
                   v-model="user.contracts"
@@ -149,11 +149,13 @@
   </v-container>
 </template>
 <script>
+import { routeNames } from "@/router";
+
 export default {
   data() {
     return {
-      clients: {},
-      contracts: {},
+      clientsList: [],
+      contractList: [],
       valid: true,
       user: {
         type: "",
@@ -164,7 +166,7 @@ export default {
         role: "",
         identifier: "",
         phone: "",
-        title: ""
+        position: ""
       },
       openDialog: false
     };
@@ -178,16 +180,8 @@ export default {
     if (this.$route.params.id) {
       this.user = require("@/assets/data/user.json");
     }
-    this.clients = require("@/assets/data/clients.json");
-    this.contracts = require("@/assets/data/contracts.json");
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "users");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-
-    next();
+    this.getContracts();
+    this.getClients();
   },
   methods: {
     createUser() {
@@ -201,6 +195,7 @@ export default {
             });
             this.user = {};
           }
+          this.$router.push({ name: routeNames.USERS });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -236,6 +231,32 @@ export default {
             color: "error"
           });
         });
+    },
+    getContracts() {
+      this.$http
+        .getContracts()
+        .then(response => {
+          this.contractList = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("failed to fetch contracts list"),
+            color: "error"
+          });
+        });
+    },
+    getClients() {
+      this.$http
+        .listClients()
+        .then(response => {
+          this.clientsList = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: "cannot fetch clients",
+            color: "error"
+          });
+        });
     }
   }
 };
@@ -257,15 +278,17 @@ div.flex.pt-4.xs2 strong {
   margin-left: 0px !important;
   margin-top: 0px !important;
 }
+
 .container {
   max-width: 100% !important;
   padding: 0px;
 }
+
 @media only screen and (min-width: 1264px) {
   .container {
-  max-width: 100% !important;
-  padding-right: 24px;
-}
+    max-width: 100% !important;
+    padding-right: 24px;
+  }
 }
 
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {

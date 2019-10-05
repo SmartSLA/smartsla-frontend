@@ -37,7 +37,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.logo }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'Software', params: { id: 15 } }" class="blue-color">{{
+            <router-link :to="{ name: 'Software', params: { id: props.item._id } }" class="blue-color">{{
               props.item.name
             }}</router-link>
           </td>
@@ -107,15 +107,6 @@ export default {
           color: "error"
         });
       });
-  },
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "software");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-    next();
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {

@@ -19,11 +19,6 @@
         <v-flex xs6>
           <v-layout justify-end row>
             <div>
-              <v-btn flat small color="default" >
-                <v-icon class="mr-2">print</v-icon> {{ $t("Print sheet") }}
-              </v-btn>
-            </div>
-            <div>
               <download-excel :data="requests" >
                 <v-btn flat small color="default">
                   <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
@@ -181,22 +176,22 @@
     
     <v-layout>
       <v-data-table
+        :loading="loading"
+        :pagination.sync="pagination"
+        :total-items="totalRequests"
+        :items="requestsAsDataTable"
         :headers="headers"
-        :items="requests"
         class="elevation-1"
         :search="centralSearch"
         :custom-filter="requestsFilter"
         :filter="requestFilterByGroup"
         :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
         :rows-per-page-text="$t('Rows per page:')"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
         ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.index + 1 }}</td>
-
           <td class="text-xs-center">
             <v-chip
               v-if="props.item.assignedTo && props.item.assignedTo.type == 'beneficiary'"
@@ -204,8 +199,8 @@
               class="ma-2"
               label
               text-color="white"
-              >{{ props.item.contract.client[0] }}</v-chip
-            >
+              >{{ props.item.contract.client[0] }}
+            </v-chip>
             <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
           <td>
@@ -213,71 +208,59 @@
               {{ props.item._id }}
             </router-link>
           </td>
-
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-badge v-if="props.item.idOssa.id == 1" color="#512da8">
+            <v-badge :color="ossaColors[props.item.id_ossa]">
               <template v-slot:badge>
-                <span>{{ props.item.idOssa.id }}</span>
-              </template>
-            </v-badge>
-            <v-badge v-if="props.item.idOssa.id == 2" color="#8b60d8">
-              <template v-slot:badge>
-                <span>{{ props.item.idOssa.id }}</span>
-              </template>
-            </v-badge>
-            <v-badge v-if="props.item.idOssa.id == 3" color="#dbc1ff">
-              <template v-slot:badge>
-                <span>{{ props.item.idOssa.id }}</span>
+                <span>{{ props.item.id_ossa }}</span>
               </template>
             </v-badge>
           </td>
           <td class="text-xs-center">{{ props.item.type }}</td>
           <td class="text-xs-center">
-            <software-list-detail :request="props.item"></software-list-detail>
+            <software-list-detail :request="props.item.request"></software-list-detail>
           </td>
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-bind:class="['criticality', props.item.software.critical]" v-on="on">
-                  {{ props.item.software.name }}
+                <span v-bind:class="['criticality', props.item.request.software.critical]" v-on="on">
+                  {{ props.item.softwareName }}
                 </span>
               </template>
               <span>{{
-                $t("Version : " + props.item.software.version + " / Criticité : " + props.item.software.critical)
+                $t("Version : " + props.item.request.software.version + " / Criticité : " + props.item.request.software.critical)
               }}</span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.title | striphtml }}</td>
-          <td class="text-xs-center">{{ props.item.assignedTo && props.item.assignedTo.name }}</td>
-          <td class="text-xs-center">{{ props.item.responsible && props.item.responsible.name }}</td>
-          <td class="text-xs-center">{{ props.item.author && props.item.author.name }}</td>
-
+          <td class="text-xs-center">{{ props.item.assignedTo }}</td>
+          <td class="text-xs-center">{{ props.item.responsible }}</td>
+          <td class="text-xs-center">{{ props.item.author }}</td>
           <td class="text-xs-center">
             <router-link
-              :to="{ name: 'Client', params: { id: props.item.contract.clientId } }"
               v-if="$auth.check('admin')"
+              :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.client }}</a>
+              <a class="blue-color" href="#">{{ props.item.request.contract.client }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.client }}</a>
+            <a v-else>{{ props.item.request.contract.client }}</a>
             /
             <router-link
-              :to="{ name: 'Contract', params: { id: props.item.contract._id } }"
               v-if="$auth.check('admin')"
+              :to="{ name: 'Contract', params: { id: props.item.request.contract._id } }"
             >
-              <a class="blue-color" href="#">{{ props.item.contract.name }}</a>
+              <a class="blue-color" href="#">{{ props.item.request.contract.name }}</a>
             </router-link>
-            <a v-else>{{ props.item.contract.name }}</a>
+            <a v-else>{{ props.item.request.contract.name }}</a>
           </td>
-          <td class="text-xs-center">{{ props.item.timestamps.updatedAt | relativeTime }}</td>
-          <td class="text-xs-center">{{ props.item.timestamps.createdAt | formatDate }}</td>
+          <td class="text-xs-center">{{ props.item.updatedAt | relativeTime }}</td>
+          <td class="text-xs-center">{{ props.item.createdAt | formatDate }}</td>
           <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
-            <span>{{ calculateCnsType(props.item.status) }}</span>
+            <span>{{ props.item.cnsType }}</span>
             <cns-progress-bar
               v-if="displayCnsProgressBar(props.item.status)"
-              :ticket="props.item"
-              :cnsType="calculateCnsType(props.item.status)"
+              :ticket="props.item.request"
+              :cnsType="props.item.cnsType"
               :hideClock="true"
             >
             </cns-progress-bar>
@@ -290,16 +273,19 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, createNamespacedHelpers } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 
+const { mapState } = createNamespacedHelpers("ticket")
+
 Vue.component("downloadExcel", JsonExcel);
 export default {
   data() {
     return {
+      loading: true,
       dialog: false,
       deleteDialog: false,
       pageTitle: this.$i18n.t("All requests"),
@@ -324,44 +310,35 @@ export default {
         }
       ],
       searchCriteria: "Ticket",
-      rowsPerPageItems: [10, 25, 50],
-      pagination: { p: "10" },
       search: null,
-      centralSearch: null,
       toggle_multiple: "2",
       ticketsFilter: {
         text: this.$i18n.t("All tickets"),
         value: ""
       },
-      paginationObject: [
-        {
-          p: "10",
-          descending: false,
-          page: 1,
-          rowsPerPage: 10,
-          sortBy: "number"
-        }
-      ],
       isMobile: false,
+      ossaColors: {
+        1: "#512da8",
+        2: "#8b60d8",
+        3: "#dbc1ff"
+      },
       headers: [
-        { text: "#", value: "number" },
         { text: this.$i18n.t("Organization"), value: "organization" },
-        { text: this.$i18n.t("Ticket N°"), value: "ticket_number" },
+        { text: this.$i18n.t("Ticket N°"), value: "_id" },
         { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
-        { text: this.$i18n.t("Severity"), value: "severity" },
-        { text: this.$i18n.t("Software"), value: "software" },
-        { text: this.$i18n.t("Subject"), value: "incident_wording" },
-        { text: this.$i18n.t("Assigned to"), value: "assign_to" },
+        { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
+        { text: this.$i18n.t("Software"), value: "softwareName" },
+        { text: this.$i18n.t("Title"), value: "title" },
+        { text: this.$i18n.t("Assigned to"), value: "assignedTo" },
         { text: this.$i18n.t("Responsible"), value: "responsible" },
-        { text: this.$i18n.t("Author"), value: "transmitter" },
-        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat" },
-        { text: this.$i18n.t("MAJ"), value: "maj" },
-        { text: this.$i18n.t("Created"), value: "created" },
+        { text: this.$i18n.t("Author"), value: "author" },
+        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat", sortable: false },
+        { text: this.$i18n.t("MAJ"), value: "updatedAt" },
+        { text: this.$i18n.t("Created"), value: "createdAt" },
         { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("In process of being"), value: "in_process_of_being" }
+        { text: this.$i18n.t("In process of being"), value: "cns_type" }
       ],
-      requests: [],
       categories: [
         {
           key: "Type",
@@ -460,14 +437,85 @@ export default {
       updateBtn: false
     };
   },
-  components: {
-    "cns-progress-bar": cnsProgressBar,
-    SoftwareListDetail
+  mounted() {
+    if (this.$auth.ready() && !this.$auth.check("admin")) {
+      this.headers = this.headers.filter(header => header.value != "id_ossa");
+    }
+    this.$http.listSoftware().then(response => {
+      response.data.forEach(software => {
+        this.softwareList.push(software.name);
+      });
+    });
+    this.$http.listUsers().then(response => {
+      response.data.forEach(user => {
+        this.userList.push(user);
+      });
+    });
+    this.$http.getContracts().then(response => {
+      response.data.forEach(contract => {
+        this.contractClientList.push(contract.name);
+      });
+    });
+    this.$http.listFilters().then(response => {
+      this.savedFilters = response.data;
+    });
   },
   computed: {
     ...mapGetters({
-      email: "user/getEmail"
+      email: "user/getEmail",
+      requests: "ticket/getCurrentPageRequests",
+      totalRequests: "ticket/getNbOfTickets"
     }),
+
+    requestsAsDataTable() {
+      return this.requests.map(request => ({
+        _id: request._id,
+        id_ossa: request.idOssa.id,
+        organization: request.organization,
+        author: request.author && request.author.name,
+        type: request.type,
+        severity: request.severety,
+        software: request.software,
+        softwareName: request.software && request.software.name,
+        title: request.title,
+        assignedTo: request.assignedTo && request.assignedTo.name,
+        responsible: request.responsible && request.responsible.name,
+        author: request.author && request.author.name,
+        customer: request.customer,
+        updatedAt: request.timestamps.updatedAt,
+        createdAt: request.timestamps.createdAt,
+        status: request.status,
+        cnsType: this.calculateCnsType(request.status),
+        request
+      }));
+    },
+
+    ...mapState({
+      rowsPerPageItems: state => state.pagination.rowsPerPageItems
+    }),
+
+    pagination: {
+      get: function() {
+        return this.$store.getters["ticket/pagination"];
+      },
+      set: function(value) {
+        this.$store.dispatch("ticket/setPagination", value);
+      }
+    },
+
+    centralSearch: {
+      get: function() {
+        return this.$store.getters["ticket/getSearch"];
+      },
+
+      set: function(value) {
+        this.$store.dispatch("ticket/setSearch", value);
+      }
+    },
+
+    isSearching() {
+      return !!this.centralSearch;
+    },
 
     isNewFilter() {
       return Object.keys(this.storedSelectionsFilter).length === 0;
@@ -525,12 +573,35 @@ export default {
     },
     search: function(newValue) {
       this.centralSearch = newValue;
+    },
+    pagination: {
+      handler() {
+        if (this.isSearching) {
+          return;
+        }
+        this.loadTickets();
+      },
+      deep: true
     }
   },
   methods: {
+    loadTickets() {
+      this.loading = true;
+      this.$store
+        .dispatch("ticket/fetchTickets")
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Error while loading tickets"),
+            color: "error"
+          });
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
-        items = items.filter(item => item.team.toLowerCase() == this.ticketsFilter);
+        items = items.filter(item => item.request.team.toLowerCase() == this.ticketsFilter);
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
@@ -544,6 +615,7 @@ export default {
       }
     },
     requestFilterByGroup(item, search) {
+      const request = item.request;
       let match = false;
       let typesFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "type");
       let severityFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "severity");
@@ -567,7 +639,7 @@ export default {
         typesFilterMatch = false;
 
         typesFilter.forEach(currentFilter => {
-          if (item.type.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.type.toLowerCase() == currentFilter.value.toLowerCase()) {
             typesFilterMatch = true;
           }
         });
@@ -577,7 +649,7 @@ export default {
         severityFilterMatch = false;
 
         severityFilter.forEach(currentFilter => {
-          if (item.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
             severityFilterMatch = true;
           }
         });
@@ -588,9 +660,9 @@ export default {
 
         softwareFilter.forEach(currentFilter => {
           if (
-            item.software &&
-            item.software.name &&
-            item.software.name.toLowerCase() == currentFilter.value.toLowerCase()
+            request.software &&
+            request.software.name &&
+            request.software.name.toLowerCase() == currentFilter.value.toLowerCase()
           ) {
             softwareFilterMatch = true;
           }
@@ -601,20 +673,20 @@ export default {
         responsibleFilterMatch = false;
 
         responsibleFilter.forEach(currentFilter => {
-          if (item.logs && item.logs.length && item.logs[item.logs.length - 1].assignedTo) {
+          if (request.logs && request.logs.length && request.logs[request.logs.length - 1].assignedTo) {
             if (
-              typeof item.logs[item.logs.length - 1].assignedTo != "string" &&
-              item.logs[item.logs.length - 1].assignedTo.type &&
-              item.logs[item.logs.length - 1].assignedTo.type != "beneficiary"
+              typeof request.logs[request.logs.length - 1].assignedTo != "string" &&
+              request.logs[request.logs.length - 1].assignedTo.type &&
+              request.logs[request.logs.length - 1].assignedTo.type != "beneficiary"
             ) {
               if (
-                item.logs[item.logs.length - 1].assignedTo.name &&
-                item.logs[item.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
+                request.logs[request.logs.length - 1].assignedTo.name &&
+                request.logs[request.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
               ) {
                 responsibleFilterMatch = true;
               } else if (
-                item.logs[item.logs.length - 1].assignedTo.displayName &&
-                item.logs[item.logs.length - 1].assignedTo.displayName.toLowerCase() ==
+                request.logs[request.logs.length - 1].assignedTo.displayName &&
+                request.logs[request.logs.length - 1].assignedTo.displayName.toLowerCase() ==
                   currentFilter.value.toLowerCase()
               ) {
                 responsibleFilterMatch = true;
@@ -628,22 +700,22 @@ export default {
         assignedFilterMatch = false;
 
         assignedFilter.forEach(currentFilter => {
-          if (item.logs && item.logs.length && item.logs[item.logs.length - 1].assignedTo) {
-            if (typeof item.logs[item.logs.length - 1].assignedTo != "string") {
+          if (request.logs && request.logs.length && request.logs[request.logs.length - 1].assignedTo) {
+            if (typeof request.logs[request.logs.length - 1].assignedTo != "string") {
               if (
-                item.logs[item.logs.length - 1].assignedTo.name &&
-                item.logs[item.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
+                request.logs[request.logs.length - 1].assignedTo.name &&
+                request.logs[request.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
               ) {
                 assignedFilterMatch = true;
               } else if (
-                item.logs[item.logs.length - 1].assignedTo.displayName &&
-                item.logs[item.logs.length - 1].assignedTo.displayName.toLowerCase() ==
+                request.logs[request.logs.length - 1].assignedTo.displayName &&
+                request.logs[request.logs.length - 1].assignedTo.displayName.toLowerCase() ==
                   currentFilter.value.toLowerCase()
               ) {
                 assignedFilterMatch = true;
               }
             } else {
-              if (item.logs[item.logs.length - 1].assignedTo.toLowerCase() == currentFilter.value.toLowerCase()) {
+              if (request.logs[request.logs.length - 1].assignedTo.toLowerCase() == currentFilter.value.toLowerCase()) {
                 assignedFilterMatch = true;
               }
             }
@@ -655,12 +727,12 @@ export default {
         transmitterFilterMatch = false;
 
         transmitterFilter.forEach(currentFilter => {
-          if (item.author) {
-            if (item.author.name && item.author.name.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.author) {
+            if (request.author.name && request.author.name.toLowerCase() == currentFilter.value.toLowerCase()) {
               transmitterFilterMatch = true;
             } else if (
-              item.author.displayName &&
-              item.author.displayName.toLowerCase() == currentFilter.value.toLowerCase()
+              request.author.displayName &&
+              request.author.displayName.toLowerCase() == currentFilter.value.toLowerCase()
             ) {
               transmitterFilterMatch = true;
             }
@@ -673,9 +745,9 @@ export default {
 
         clientFilter.forEach(currentFilter => {
           if (
-            item.contract &&
-            item.contract.name &&
-            item.contract.name.toLowerCase() == currentFilter.value.toLowerCase()
+            request.contract &&
+            request.contract.name &&
+            request.contract.name.toLowerCase() == currentFilter.value.toLowerCase()
           ) {
             clientFilterMatch = true;
           }
@@ -686,7 +758,7 @@ export default {
         statusFilterMatch = false;
 
         statusFilter.forEach(currentFilter => {
-          if (item.status.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.status.toLowerCase() == currentFilter.value.toLowerCase()) {
             statusFilterMatch = true;
           }
         });
@@ -703,11 +775,12 @@ export default {
         statusFilterMatch;
 
       if (match && this.search) {
-        return(
-          (item.software && item.software.name && item.software.name.toLowerCase().includes(this.search)) ||
-          item.description.toLowerCase().includes(this.search) ||
-          item.contract.client.toLowerCase().includes(this.search) ||
-          item.contract.name.toLowerCase().includes(this.search)
+        return (
+          (request.software && request.software.name && request.software.name.toLowerCase().includes(this.search)) ||
+          request.description.toLowerCase().includes(this.search) ||
+          request.title.toLowerCase().includes(this.search) ||
+          request.contract.client.toLowerCase().includes(this.search) ||
+          request.contract.name.toLowerCase().includes(this.search)
         );
       }
 
@@ -841,41 +914,13 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
     });
   },
-  mounted() {
-    if (this.$auth.ready() && !this.$auth.check("admin")) {
-      this.headers = this.headers.filter(header => header.value != "id_ossa");
-    }
-    this.$http.listSoftware().then(response => {
-      response.data.forEach(software => {
-        this.softwareList.push(software.name);
-      });
-    });
-    this.$http.listUsers().then(response => {
-      response.data.forEach(user => {
-        this.userList.push(user);
-      });
-    });
-    this.$http.getContracts().then(response => {
-      response.data.forEach(contract => {
-        this.contractClientList.push(contract.name);
-      });
-    });
-    this.$http.listFilters().then(response => {
-      this.savedFilters = response.data;
-    });
-
-    this.$http.listTickets().then(response => {
-      this.requests = response.data;
-    });
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
+  components: {
+    "cns-progress-bar": cnsProgressBar,
+    SoftwareListDetail
   }
 };
 </script>

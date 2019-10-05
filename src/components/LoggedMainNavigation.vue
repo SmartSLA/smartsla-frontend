@@ -2,7 +2,7 @@
   <v-toolbar class="main-menu" v-if="$auth.ready()">
     <v-toolbar-items class="hidden-sm-and-down">
       <v-list-tile
-        v-for="menuItem in menuItems"
+        v-for="menuItem in filteredMenuItems"
         :key="menuItem.icon"
         :to="{ name: menuItem.path || menuItem.name }"
         :class="{
@@ -10,7 +10,6 @@
           regular: menuItem.name != currentActiveMenu
         }"
         :dark="menuItem.name == currentActiveMenu"
-        v-if="menuItem.show"
       >
         <v-badge color="red" v-if="menuItem.count">
           <span slot="badge">{{ menuItem.count }}</span>
@@ -29,7 +28,7 @@
       <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
       <v-list class="logged-main-navigation">
         <v-list-tile
-          v-for="menuItem in menuItems"
+          v-for="menuItem in filteredMenuItems"
           :key="menuItem.icon"
           :to="{ name: menuItem.name }"
           :class="{
@@ -56,6 +55,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
 export default {
   name: "logged-main-navigation",
@@ -65,20 +65,31 @@ export default {
     };
   },
   computed: {
-    routeNames() {
-      return routeNames;
-    },
+    ...mapGetters({
+      ticketsSize: "ticket/getNbOfTickets"
+    }),
 
     currentActiveMenu() {
       return this.$route.matched[0].name || this.$route.name;
     },
 
-    requestsCount() {
-      var requests = require("@/assets/data/requests.json");
-      return requests.length;
+    filteredMenuItems() {
+      return this.menuItems
+        .filter(item => item.show)
+        // this is the only way to make the menu reactive when building it from array like this is done below...
+        .map(item => {
+          if (item.name === routeNames.REQUESTS) {
+            item.count = this.ticketsSize
+          }
+
+          return item;
+        });
     }
   },
   created() {
+    this.$store.dispatch("ticket/countTickets");
+  },
+  mounted() {
     this.menuItems = [
       {
         name: routeNames.CREATEREQUEST,
@@ -90,39 +101,26 @@ export default {
         name: routeNames.REQUESTS,
         text: this.$i18n.t("Requests"),
         icon: "format_list_numbered",
-        show: true,
-        count: this.requestsCount
+        show: true
       },
       {
         name: routeNames.DASHBOARD,
         text: this.$i18n.t("Dashboard"),
         icon: "dashboard",
-        show: true
+        show: false
       },
       {
         name: routeNames.SATISFACTION,
         text: this.$i18n.t("Satisfaction"),
         icon: "favorite",
-        show: true
+        show: false
       },
-      /*{
-        name: routeNames.HISTORIC,
-        text: this.$i18n.t("Historic"),
-        icon: "restore",
-        show: true
-      },*/
       {
         name: routeNames.CONTRIBUTIONS,
         text: this.$i18n.t("Contributions"),
         icon: "format_line_spacing",
-        show: true
+        show: false
       },
-      /*{
-        name: routeNames.ORDERS,
-        text: this.$i18n.t("Orders"),
-        icon: "grid_on",
-        show: true
-      },*/
       {
         name: routeNames.ADMINISTRATION,
         path: routeNames.ADMINHOME,

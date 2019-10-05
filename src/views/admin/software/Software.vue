@@ -5,7 +5,7 @@
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs12 sm12 md12 xl6 lg6 pr-4>
-        <v-card class="px-0 mt-4 pb-4 pl-4">
+        <v-card class="px-0 mt-4 pb-4 pl-4 pr-2">
           <v-card-title primary-title>
             <v-layout row wrap>
               <v-flex xs7>
@@ -25,12 +25,8 @@
             </v-layout>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <img src="@/assets/angular.png" height="150" />
-            </v-flex>
-            <v-flex xs12></v-flex>
-            <v-flex xs12 pr-3>
+          <v-layout row wrap pt-2>
+            <v-flex xs8 pr-2>
               <v-layout row wrap>
                 <v-flex xs12>
                   <strong>{{ $t("Name") }} :</strong>
@@ -98,6 +94,9 @@
                 </v-flex>
               </v-layout>
             </v-flex>
+            <v-flex xs4 pr-2 v-if="software.logo">
+               <img :src="software.logo" height="150" />
+            </v-flex>
           </v-layout>
         </v-card>
         <v-card class="px-1 mt-4 pb-4 pl-4">
@@ -158,38 +157,23 @@
 export default {
   data() {
     return {
-      software: {
-        name: "Angular",
-        contracts: ["contract1", "contract2", "contract3", "contract4", "contract5", "contract6"],
-        requests: ["request1", "request2", "request3", "request4"],
-        summary:
-          "Angular is a TypeScript-based open-source web application framework led by the Angular Team at Google and by a community of individuals and corporations. Angular is a complete rewrite from the same team that built AngularJS.",
-        licence: "MIT",
-        technologies: ["JAVA", "WEB"],
-        versions: ["1.4", "1.5", "1.6", "1.7"],
-        group: "Developpment framework",
-        links: ["www.angular.com", "angular.org"],
-        contributions: [
-          {
-            date: "12/04/2020",
-            version: "1.4",
-            summary: "Amélioration du module angular"
-          },
-          {
-            date: "13/02/2019",
-            version: "1.7",
-            summary: "Amélioration du gestion de cache"
-          },
-          {
-            date: "24/03/2018",
-            version: "1.3",
-            summary: "Amélioration continues"
-          }
-        ]
-      }
+      software: {},
     };
   },
   created() {
+    if (this.$route.params.id) {
+      this.$http
+        .getSoftwareById(this.$route.params.id)
+        .then(response => {
+          this.software = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: "Failed to fetch software",
+            color: "error"
+          });
+        });
+    }
     this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
     this.$store.dispatch("sidebar/setActiveAdminMenu", "software");
   },

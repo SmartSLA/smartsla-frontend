@@ -15,7 +15,13 @@ export default {
     return this.post(`/ticketing/api/tickets/${ticketId}`);
   },
 
-  listTickets() {
-    return this.get(`/ticketing/api/tickets`);
+  listTickets({ limit = 50, offset = 0 }) {
+    return this.get("/ticketing/api/tickets", { params: { limit, offset } });
+  },
+
+  countTickets() {
+    return this.head("/ticketing/api/tickets", { params: { limit: 1 } }).then(response => {
+      return response.headers["x-esn-items-count"] || 0;
+    });
   }
 };

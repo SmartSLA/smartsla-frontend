@@ -1,13 +1,13 @@
 <template>
   <v-layout row>
-    <v-flex xs7>
+    <v-flex xs8>
       <global-search />
     </v-flex>
-    <v-flex xs3>
+    <v-flex xs4>
       <v-layout row justify-end>
         <v-flex xs5>
           <v-menu offset-y class="pt-3 user-menu-item">
-            <op-avatar slot="activator"></op-avatar>
+            <op-avatar slot="activator" class="mr-3"></op-avatar>
             <v-list>
               <v-list-tile>
                 <v-list-tile-content>
@@ -16,24 +16,12 @@
                 </v-list-tile-content>
               </v-list-tile>
               <v-divider />
-              <v-list-tile @click.prevent="profile">
-                <v-list-tile-title>{{ $t("Profile") }}</v-list-tile-title>
-              </v-list-tile>
-              <v-divider />
-              <v-list-tile @click.prevent="settings">
-                <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
-              </v-list-tile>
               <v-list-tile @click.prevent="logout">
                 <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
               </v-list-tile>
             </v-list>
           </v-menu>
         </v-flex>
-        <v-flex xs1></v-flex>
-        <v-flex xs2>
-          <language-switcher />
-        </v-flex>
-        <v-flex xs1></v-flex>
       </v-layout>
     </v-flex>
   </v-layout>
@@ -44,13 +32,11 @@ import { mapGetters } from "vuex";
 import { OPAvatar } from "vue-openpaas-components";
 import { routeNames } from "@/router";
 import globalSearch from "@/components/search/GlobalSearch.vue";
-import languageSwitcher from "@/components/LocalSwitcher.vue";
 export default {
   name: "op-user-menu",
   components: {
     "op-avatar": OPAvatar,
-    "global-search": globalSearch,
-    "language-switcher": languageSwitcher
+    "global-search": globalSearch
   },
   methods: {
     logout() {

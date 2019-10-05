@@ -8,13 +8,6 @@ export default {
     return {
       msg: this.$i18n.t("Welcome to satisfaction page!!")
     };
-  },
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>

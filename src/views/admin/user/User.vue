@@ -1,8 +1,8 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links grey" :to="{ name: 'Users' }"
-      >&lt; {{ $t("Return to users list") }}</router-link
-    >
+    <router-link :to="{ name: 'Users' }">
+      <button><v-icon>arrow_back</v-icon></button>
+    </router-link>
     <v-layout row wrap justify-space-between>
       <v-flex 12>
         <v-card class="px-1 mt-4 pb-4">
@@ -16,7 +16,7 @@
             </v-flex>
             <v-flex xs2>
               <div class="text-xs-right grey--text pt-3">
-                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: 15 } }">
+                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: user._id } }">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -36,10 +36,6 @@
                   {{ user.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Position") }} :</strong>
-                  {{ user.title }}
-                </v-flex>
-                <v-flex xs12>
                   <strong>{{ $t("Email") }} :</strong>
                   {{ user.email }}
                 </v-flex>
@@ -52,24 +48,16 @@
                   {{ user.team }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Identifier") }} :</strong>
-                  {{ user.identifier }}
-                </v-flex>
-                <v-flex xs12>
                   <strong>{{ $t("Role") }} :</strong>
                   {{ user.role }}
                 </v-flex>
               </v-layout>
             </v-flex>
-            <v-flex xs2></v-flex>
             <v-flex xs4>
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <img :src="user.client.image" height="100" />
-                </v-flex>
+              <!-- <v-layout row wrap>
                 <v-flex xs12>
                   <strong>{{ $t("Client") }} :</strong>
-                  {{ user.client.name }}
+                  {{ user.client }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>
@@ -87,12 +75,11 @@
                     </v-flex>
                   </v-layout>
                 </v-flex>
-              </v-layout>
+              </v-layout> -->
             </v-flex>
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex xs4></v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -103,16 +90,23 @@ export default {
       user: {}
     };
   },
-  created() {
-    this.user = require("@/assets/data/user.json");
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-    this.$store.dispatch("sidebar/setActiveAdminMenu", "users");
+  methods: {
+    getUser() {
+      this.$http
+        .getUserById(this.$route.params.id)
+        .then(response => {
+          this.user = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("failed to fetch the user"),
+            color: "error"
+          });
+        });
+    }
   },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-
-    next();
+  created() {
+    this.getUser();
   }
 };
 </script>
@@ -180,10 +174,11 @@ div.wrap:nth-child(2) {
 .mt-4 {
   margin-top: 0px !important;
 }
+
 @media only screen and (min-width: 1264px) {
   .container {
-  max-width: 100% !important;
-  padding-right: 24px;
-}
+    max-width: 100% !important;
+    padding-right: 24px;
+  }
 }
 </style>

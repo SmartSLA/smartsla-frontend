@@ -18,6 +18,7 @@ import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/user/Users.vue";
 import User from "@/views/admin/user/User.vue";
 import EditUser from "@/views/admin/user/EditUser.vue";
+import CreateUser from "@/views/admin/user/CreateUser.vue";
 import Clients from "@/views/admin/client/Clients.vue";
 import Client from "@/views/admin/client/Client.vue";
 import EditClient from "@/views/admin/client/EditClient.vue";
@@ -190,19 +191,20 @@ export default new Router({
     },
     {
       path: "/administration",
-      component: Administration,
+      components: {
+        default: Administration,
+        sidebar: () => import("@/components/admin/AdminMainSideBar.vue")
+      },
       name: routeNames.ADMINISTRATION,
       meta: {
-        auth: true
+        auth: true,
+        showSideBar: true
       },
       children: [
         {
           path: "",
           name: routeNames.ADMINHOME,
-          component: AdministrationHome,
-          meta: {
-            auth: true
-          }
+          component: AdministrationHome
         },
         {
           path: "users",
@@ -215,7 +217,7 @@ export default new Router({
         {
           path: "users/new",
           name: routeNames.NEWUSER,
-          component: EditUser,
+          component: CreateUser,
           meta: {
             auth: true
           }
