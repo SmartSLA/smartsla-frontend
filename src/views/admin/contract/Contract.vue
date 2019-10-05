@@ -345,6 +345,7 @@
                 <div class="text-xs-right grey--text">
                   <v-btn
                     color="primary"
+                    disabled
                     fab
                     small
                     dark
