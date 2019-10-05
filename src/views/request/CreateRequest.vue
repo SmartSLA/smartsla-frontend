@@ -147,9 +147,9 @@
                         $t(
                           "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
                           {
-                            supported: selectedEngagement.supported,
-                            bypassed: selectedEngagement.bypassed,
-                            resolved: selectedEngagement.resolved
+                            supported: cnsDurationDisplay(selectedEngagement.supported),
+                            bypassed: cnsDurationDisplay(selectedEngagement.bypassed),
+                            resolved: cnsDurationDisplay(selectedEngagement.resolved)
                           }
                         )
                       }}
@@ -246,6 +246,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import moment from "moment";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
@@ -411,7 +412,16 @@ export default {
     goToRelatedTicket(ticketID) {
       const routeData = this.$router.resolve({ path: `/requests/${ticketID}` });
       window.open(routeData.href, "_blank");
-    }
+    },
+
+    cnsDurationDisplay(durationString) {
+      const parsedDuration = moment.duration(durationString);
+
+      return this.$i18n.t("{days}WD {hours}WH", {
+        days: parsedDuration.days(),
+        hours: parsedDuration.hours()
+      })
+    },
   },
   computed: {
     ...mapGetters({
