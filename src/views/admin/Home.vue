@@ -251,20 +251,6 @@ export default {
       });
 
     this.$http
-      .getContributions()
-      .then(response => {
-        this.contributions = response.data;
-        this.contributionCount = response.data.length;
-        this.contributionCreationDate = response.data.slice(-1)[0].timestamps.creation;
-      })
-      .catch(error => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contributions"),
-          color: "error"
-        });
-      });
-
-    this.$http
       .listSoftware()
       .then(response => {
         this.softwares = response.data;
