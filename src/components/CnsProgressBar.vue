@@ -6,7 +6,8 @@
         :value="percentage(cns[cnsType], duration)"
         :color="getEngagementColor(cns[cnsType], duration)"
         class="mt-0 white--text font-weight-bold"
-      >{{ cns[cnsType] }} HO / {{ duration }} HO</v-progress-linear>
+        >{{ cns[cnsType] }} HO / {{ duration }} HO</v-progress-linear
+      >
     </v-flex>
     <v-flex v-if="clockDisplay && !hideClock" xs1 px-1 pt-0 pb-0>
       <v-icon color="#249CC7">access_time</v-icon>
@@ -56,14 +57,12 @@ export default {
       };
       const startDate = moment(this.ticket.timestamps.createdAt);
       let currentDate = moment();
-      let criticalityLevel = this.ticket.software.critical;
-      if (criticalityLevel == "critical") {
-        workingInterval = this.ticket.contract.Engagements.critical.schedule;
-      } else if (criticalityLevel == "sensible") {
-        workingInterval = this.ticket.contract.Engagements.sensible.schedule;
-      } else if (criticalityLevel == "standard") {
-        workingInterval = this.ticket.contract.Engagements.standard.schedule;
-      }
+      const criticalityLevel = this.ticket.software.critical;
+
+      workingInterval =
+        this.ticket.contract.Engagements[criticalityLevel] &&
+        this.ticket.contract.Engagements[criticalityLevel].schedule;
+
       let noStop = false;
       if (workingInterval) {
         noStop = workingInterval.end == "-" || workingInterval.start == "7d/7d";
@@ -73,7 +72,6 @@ export default {
           end: 18
         };
       }
-
 
       // Calculate time spent between creation and supported status.
       const supportedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "supported");
@@ -98,8 +96,11 @@ export default {
             supportedMinutesCount -
             this.calculateTimeSuspended(this.ticket.logs, "new", workingInterval.start, workingInterval.end);
         }
-        
-        this.cns.supported = +moment.duration({minutes: supportedMinutesCount}).asHours().toFixed(2);
+
+        this.cns.supported = +moment
+          .duration({ minutes: supportedMinutesCount })
+          .asHours()
+          .toFixed(2);
 
         // Calculate time spent between supported and bypassed
         const bypassedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "bypassed");
@@ -107,8 +108,7 @@ export default {
           const firstBypassedAction = bypassedActions[0];
           let bypassedMinutes = 0;
           if (noStop) {
-            bypassedMinutes =
-              this.hoursBetween(firstSupportedAction.date, firstBypassedAction.date) * 60;
+            bypassedMinutes = this.hoursBetween(firstSupportedAction.date, firstBypassedAction.date) * 60;
           } else {
             bypassedMinutes = this.calculateWorkingMinutes(
               firstSupportedAction.date,
@@ -118,20 +118,26 @@ export default {
             );
             bypassedMinutes -=
               this.holidaysBetween(firstSupportedAction.date, firstBypassedAction.date) *
-                (workingInterval.end - workingInterval.start) *
-                60;
-            bypassedMinutes -=
-              this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
+              (workingInterval.end - workingInterval.start) *
+              60;
+            bypassedMinutes -= this.calculateTimeSuspended(
+              this.ticket.logs,
+              "supported",
+              workingInterval.start,
+              workingInterval.end
+            );
           }
-          this.cns.bypassed = +moment.duration({minutes: bypassedMinutes}).asHours().toFixed(2);
+          this.cns.bypassed = +moment
+            .duration({ minutes: bypassedMinutes })
+            .asHours()
+            .toFixed(2);
 
           let resolvedActions = this.ticket.logs.filter(log => log.action.toLowerCase() == "resolved");
           if (resolvedActions.length) {
             let firstResolvedAction = resolvedActions[0];
             let resolvedMinutes = 0;
             if (noStop) {
-              resolvedMinutes =
-                this.hoursBetween(firstBypassedAction.date, firstResolvedAction.date) * 60;
+              resolvedMinutes = this.hoursBetween(firstBypassedAction.date, firstResolvedAction.date) * 60;
             } else {
               resolvedMinutes = this.calculateWorkingMinutes(
                 firstBypassedAction.date,
@@ -148,7 +154,10 @@ export default {
                 resolvedMinutes -
                 this.calculateTimeSuspended(this.ticket.logs, "bypassed", workingInterval.start, workingInterval.end);
             }
-            this.cns.resolved = +moment.duration({minutes: resolvedMinutes}).asHours().toFixed(2);
+            this.cns.resolved = +moment
+              .duration({ minutes: resolvedMinutes })
+              .asHours()
+              .toFixed(2);
           } else {
             let resolvedMinutes = this.calculateWorkingMinutes(
               firstBypassedAction.date,
@@ -159,25 +168,30 @@ export default {
             resolvedMinutes =
               resolvedMinutes -
               this.calculateTimeSuspended(this.ticket.logs, "bypassed", workingInterval.start, workingInterval.end);
-            this.cns.resolved = +moment.duration({minutes: resolvedMinutes}).asHours().toFixed(2);
+            this.cns.resolved = +moment
+              .duration({ minutes: resolvedMinutes })
+              .asHours()
+              .toFixed(2);
           }
         } else {
           let bypassedMinutes = 0;
           if (noStop) {
-            bypassedMinutes =
-              this.hoursBetween(firstSupportedAction.date, moment()) * 60;
+            bypassedMinutes = this.hoursBetween(firstSupportedAction.date, moment()) * 60;
           } else {
             bypassedMinutes = this.calculateWorkingMinutes(
-            firstSupportedAction.date,
-            moment(),
-            workingInterval.start,
-            workingInterval.end
-          );
-          bypassedMinutes =
-            bypassedMinutes -
-            this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
+              firstSupportedAction.date,
+              moment(),
+              workingInterval.start,
+              workingInterval.end
+            );
+            bypassedMinutes =
+              bypassedMinutes -
+              this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
           }
-          this.cns.bypassed = +moment.duration({minutes: bypassedMinutes}).asHours().toFixed(2);
+          this.cns.bypassed = +moment
+            .duration({ minutes: bypassedMinutes })
+            .asHours()
+            .toFixed(2);
         }
       } else {
         let startsDate = moment(this.ticket.timestamps.createdAt);
@@ -217,11 +231,7 @@ export default {
       let holidaysDates = allHolidays.map(date => moment(date));
       let holidays = holidaysDates.filter(date => {
         if (date.valueOf() <= to.valueOf() && date.valueOf() >= from.valueOf()) {
-          if (date.weekday() == 6 || date.weekday() == 0) {
-            return false;
-          } else {
-            return true;
-          }
+          return !(date.weekday() == 6 || date.weekday() == 0);
         } else {
           return false;
         }
@@ -251,7 +261,7 @@ export default {
         }
         startWrapper.add(1, "minutes");
       }
-  
+
       return minutes;
     },
 
@@ -262,15 +272,12 @@ export default {
       let nextActionDate = moment();
       let actions = logs.filter(log => log.action.toLowerCase() == actionType);
       let suspendActions = actions.filter(log => {
-        let assignedTo = log.assignedTo;
-        if (assignedTo.type && assignedTo.type === "beneficiary") {
-          return true;
-        } else {
-          return false;
-        }
+        const assignedTo = log.assignedTo;
+
+        return !!(assignedTo.type && assignedTo.type === "beneficiary");
       });
 
-      for (var i = 0; i < suspendActions.length; i++) {
+      for (let i = 0; i < suspendActions.length; i++) {
         expertActions = actions.filter(
           action =>
             moment(action.date).isAfter(moment(suspendActions[i].date)) &&
@@ -279,7 +286,7 @@ export default {
         );
 
         if (expertActions && expertActions.length) {
-          for (var j = 0; j < expertActions.length; j++) {
+          for (let j = 0; j < expertActions.length; j++) {
             suspendedTime += this.calculateWorkingMinutes(
               moment(suspendActions[i].date),
               moment(expertActions[j].date),
@@ -290,8 +297,7 @@ export default {
           }
         } else {
           nextStageActions = logs.filter(
-            log =>
-              log.action !== actionType && moment(log.date).isAfter(moment(suspendActions[i].date))
+            log => log.action !== actionType && moment(log.date).isAfter(moment(suspendActions[i].date))
           );
 
           if (nextStageActions && nextStageActions.length) {
@@ -300,12 +306,7 @@ export default {
             nextActionDate = moment();
           }
 
-          suspendedTime += this.calculateWorkingMinutes(
-            suspendActions[i].date,
-            nextActionDate,
-            startingHour,
-            endHour
-          );
+          suspendedTime += this.calculateWorkingMinutes(suspendActions[i].date, nextActionDate, startingHour, endHour);
           break;
         }
       }
@@ -314,7 +315,7 @@ export default {
     },
     parseEngagementDuration(durationString, workHours = 9) {
       const parsedDuration = moment.duration(durationString);
-      var duration = parsedDuration.hours();
+      let duration = parsedDuration.hours();
 
       duration += parsedDuration.days() * workHours;
 
