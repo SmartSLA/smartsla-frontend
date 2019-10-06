@@ -117,7 +117,8 @@ export default {
     },
     removeRole(id) {
       this.$http.deleteRole(id).then(() => {
-        // remove from list
+        const index = this.roles.findIndex(role => role._id === id);
+        if (index >= 0) this.roles.splice(index, 1);
       })
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -155,7 +156,7 @@ export default {
   },
   computed: {
     adminRoles() {
-      return this.roles ? this.roles.filter(role => role.role !== "administrator") : [];
+      return this.roles ? this.roles.filter(role => role.role === "administrator") : [];
     }
   },
   watch: {
