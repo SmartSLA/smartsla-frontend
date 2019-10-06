@@ -313,7 +313,7 @@
                           ></v-checkbox>
                         </v-flex>
                         <v-flex xs12 md8 sm8 xl3 lg3>
-                          <v-upload :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
+                          <v-upload ref="uploadBtn" :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
                         </v-flex>
                       </v-layout>
                     </v-input>
@@ -559,7 +559,6 @@ export default {
       displayName: "user/getDisplayName",
       getUser: "user/getUser"
     }),
-
     ticketStatusId() {
       if (this.ticket.status) {
         switch (this.ticket.status.toLowerCase()) {
@@ -735,6 +734,8 @@ export default {
       this.comment = "";
       this.newResponsible = "";
       this.privateComment = false;
+      this.commentFile = [];
+      this.commentFile.length = 0;
     }
 
   },
@@ -744,6 +745,10 @@ export default {
         this.newStatus = "";
         this.newResponsible = "";
       }
+    },
+    commentFile(val) {
+      let el = this.$refs.uploadBtn.$el.querySelector('.v-list');
+      val.length ? el.hidden = false : el.hidden = true;
     }
   },
   created() {
