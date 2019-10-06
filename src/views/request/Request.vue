@@ -530,7 +530,6 @@ export default {
       commentBtn: true,
       selectedEditor: "wysiwyg",
       privateComment: false,
-      panel: [true, true],
       comments: [],
       newStatus: "",
       newResponsible: "",
@@ -609,7 +608,6 @@ export default {
       this.request.ticketDate = new Date(request.timestamps.createdAt).toDateString();
       this.request.subject = request.description;
       this.comments = request.comments;
-      this.panel = request.comments.map(() => true);
       this.request.linkedTickets = request.relatedRequests;
       this.request.communityContribution = {};
     },
@@ -695,7 +693,6 @@ export default {
             color: "success"
           });
           this.resetComment();
-          this.panel.push(true);
           this.getData();
         })
         .catch(error => {
@@ -877,11 +874,6 @@ export default {
   border-left-color: #fa5ba5;
 }
 
-.v-expansion-panel.theme--light, .v-expansion-panel__container {
-  border: none !important;
-  box-shadow: none !important;
-}
-
 .comment-mine {
   background-color: #eaf6ff !important;
   border-radius: 20px !important;
@@ -910,21 +902,6 @@ export default {
 
 .comment-mine div {
   background-color: #eaf6ff !important;
-}
-
-.v-expansion-panel__body .flex.xs2 {
-  width: auto;
-  float: left;
-}
-
-.v-expansion-panel__body .flex.xs2 {
-  width: 80%;
-  float: left;
-}
-
-.v-expansion-panel__body .v-card__text.grey--text.font-italic {
-  float: right;
-  width: 100%;
 }
 
 .noshadow {
