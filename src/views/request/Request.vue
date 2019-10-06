@@ -239,13 +239,9 @@
                           </div>
                         </div>
                       </v-card-title>
+                      <v-card-text v-if="comment.body" v-html="comment.body" class="pt-0" />
                       <v-card-text
-                        v-if="comment.body"
-                        v-html="comment.body"
-                        class="pt-0"
-                      />
-                      <v-card-text
-                        v-if="comment.actions && (comment.actions.assignedTo.name || comment.actions.newStatus)"
+                        v-if="comment.actions && (comment.actions.assignedTo.name || comment.actions.newStatus)"
                         class="grey--text pt-0"
                       >
                         <p
@@ -265,10 +261,7 @@
                           "
                         ></p>
                       </v-card-text>
-                      <v-card-text
-                        v-if="comment.attachedFile.name"
-                        class="pt-0"
-                      >
+                      <v-card-text v-if="comment.attachedFile.name" class="pt-0">
                         <v-icon>attach_file</v-icon>
                         <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
                           {{ comment.attachedFile.name }}
@@ -277,72 +270,72 @@
                     </v-card>
                   </v-timeline-item>
                 </v-timeline>
-                  <v-divider></v-divider>
-                  <v-form class="comment-form">
-                    <!-- <v-btn-toggle v-model="selectedEditor">
-                      <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
-                      <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
-                    </v-btn-toggle>-->
-                    <v-input prepend-icon="subject" class="pt-2">
-                      <Editor
-                        ref="editor"
-                        :outline="true"
-                        :preview="true"
-                        v-model="comment"
-                        v-if="selectedEditor == 'markdown'"
-                      />
-                      <vue-editor v-model="comment" v-else></vue-editor>
-                      <br />
-                    </v-input>
-                    <v-input prepend-icon="no-icon" class="pt-2">
-                      <v-layout row wrap>
-                        <v-flex xs10 md8 sm8 xl3 lg2>
-                          <v-select
-                            :items="[allowedStatusList]"
-                            v-model="newStatus"
-                            :disabled="privateComment"
-                            :label="$t('Status')"
-                          >
-                            <template slot="item" slot-scope='{ item }'>
-                              {{ $t(item) }}
-                            </template>
-                            <template slot="selection" slot-scope='{ item }'>
-                              {{ $t(item) }}
-                            </template>
-                          </v-select>
-                        </v-flex>
-                        <v-flex xs10 md8 sm8 xl3 lg3>
-                          <v-select
-                            :items="allowedAssigneeList"
-                            :disabled="privateComment"
-                            item-text="name"
-                            v-model="newResponsible"
-                            :label="$t('Assigned to')"
-                            return-object
-                          ></v-select>
-                        </v-flex>
-                        <v-flex xs12 md8 sm8 xl3 lg3>
-                          <v-checkbox
-                            v-model="privateComment"
-                            color="primary"
-                            :label="$i18n.t('private comment')"
-                          ></v-checkbox>
-                        </v-flex>
-                        <v-flex xs12 md8 sm8 xl3 lg3>
-                          <v-upload ref="uploadBtn" :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
-                        </v-flex>
-                      </v-layout>
-                    </v-input>
+                <v-divider></v-divider>
+                <v-form class="comment-form">
+                  <!-- <v-btn-toggle v-model="selectedEditor">
+                    <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
+                    <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
+                  </v-btn-toggle>-->
+                  <v-input prepend-icon="subject" class="pt-2">
+                    <Editor
+                      ref="editor"
+                      :outline="true"
+                      :preview="true"
+                      v-model="comment"
+                      v-if="selectedEditor == 'markdown'"
+                    />
+                    <vue-editor v-model="comment" v-else></vue-editor>
+                    <br />
+                  </v-input>
+                  <v-input prepend-icon="no-icon" class="pt-2">
                     <v-layout row wrap>
-                      <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
-                      <v-flex xs2 md4 sm4 lg4 xl4>
-                        <v-btn color="info" class="custom-comment-btn" @click="addComment" :disabled="!commentBtn">{{
-                          $t("Add comment")
-                        }}</v-btn>
+                      <v-flex xs10 md8 sm8 xl3 lg2>
+                        <v-select
+                          :items="[allowedStatusList]"
+                          v-model="newStatus"
+                          :disabled="privateComment"
+                          :label="$t('Status')"
+                        >
+                          <template slot="item" slot-scope="{ item }">
+                            {{ $t(item) }}
+                          </template>
+                          <template slot="selection" slot-scope="{ item }">
+                            {{ $t(item) }}
+                          </template>
+                        </v-select>
                       </v-flex>
-                      <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
+                      <v-flex xs10 md8 sm8 xl3 lg3>
+                        <v-select
+                          :items="allowedAssigneeList"
+                          :disabled="privateComment"
+                          item-text="name"
+                          v-model="newResponsible"
+                          :label="$t('Assigned to')"
+                          return-object
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs12 md8 sm8 xl3 lg3>
+                        <v-checkbox
+                          v-model="privateComment"
+                          color="primary"
+                          :label="$i18n.t('private comment')"
+                        ></v-checkbox>
+                      </v-flex>
+                      <v-flex xs12 md8 sm8 xl3 lg3>
+                        <v-upload ref="uploadBtn" :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
+                      </v-flex>
                     </v-layout>
-                  </v-form>
+                  </v-input>
+                  <v-layout row wrap>
+                    <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
+                    <v-flex xs2 md4 sm4 lg4 xl4>
+                      <v-btn color="info" class="custom-comment-btn" @click="addComment" :disabled="!commentBtn">{{
+                        $t("Add comment")
+                      }}</v-btn>
+                    </v-flex>
+                    <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
+                  </v-layout>
+                </v-form>
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
@@ -602,9 +595,7 @@ export default {
 
     allowedAssigneeList() {
       if (["resolved", "closed"].includes(this.currentStatus)) {
-        return this.assignee.filter(user => 
-          user.type === "beneficiary"
-        );
+        return this.assignee.filter(user => user.type === "beneficiary");
       }
       return this.assignee;
     }
@@ -753,7 +744,6 @@ export default {
       this.commentFile = [];
       this.commentFile.length = 0;
     }
-
   },
   watch: {
     privateComment(value) {
@@ -944,7 +934,7 @@ export default {
 }
 
 .nobottomshadow {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 rgba(0, 0, 0, 0.2), 0px 0px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
 .avatar-width {
