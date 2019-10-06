@@ -129,7 +129,7 @@
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
-              {{ request.software && request.software.name }}
+              {{ request.software && request.software.software.name }}
             </v-flex>
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>

@@ -118,7 +118,7 @@
                 <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
                   <template v-slot:items="props">
                     <td class="text-xs-center">
-                      <router-link to="#">{{ props.item.name }}</router-link>
+                      <router-link to="#">{{ props.item.software.name }}</router-link>
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
                     <td class="text-xs-center">{{ props.item.os }}</td>
