@@ -100,7 +100,7 @@ export default {
         show: true
       },
       {
-        name: [routeNames.REQUESTS, routeNames.REQUEST],
+        name: [routeNames.REQUESTS, routeNames.REQUEST, routeNames.EDITREQUEST],
         path: routeNames.REQUESTS,
         text: this.$i18n.t("Requests"),
         icon: "format_list_numbered",
