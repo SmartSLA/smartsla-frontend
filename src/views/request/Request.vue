@@ -152,6 +152,22 @@
                 </v-flex>
               </v-layout>
             </v-card-text>
+            <v-card-text v-if="ticket.participants.length">
+              <v-layout>
+                <v-flex xs1 md1 sm1 lg1 xl1 pt-2>
+                  <v-icon class="pt-1">email</v-icon>
+                </v-flex>
+                <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
+                  <v-chip
+                    v-for="(participant, index) in ticket.participants"
+                    :key="index"
+                    class="ma-2"
+                  >
+                  <a :href="`mailto:${participant}`">{{ participant }}</a>
+                  </v-chip>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
             <v-card-text class="pb-0" v-if="ticket.files.length">
               <v-layout>
                 <v-flex xs1 md1 sm1 lg1 xl1>
