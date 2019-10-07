@@ -5,11 +5,6 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      msg: "Administration"
-    };
-  },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
       this.$router.push("/403");
