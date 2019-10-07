@@ -155,8 +155,6 @@
 </template>
 
 <script>
-import moment from "moment";
-
 export default {
   name: "contract-edit-engagements",
   data() {
@@ -290,7 +288,7 @@ export default {
     },
 
     getDuration(schedule) {
-      const duration = moment.duration({
+      const duration = this.moment.duration({
         hours: schedule.hours,
         days: schedule.days
       });
@@ -299,7 +297,7 @@ export default {
     },
 
     parseDuration(duration) {
-      const parsedDuration = moment.duration(duration);
+      const parsedDuration = this.moment.duration(duration);
 
       return {
         days: parsedDuration.days(),

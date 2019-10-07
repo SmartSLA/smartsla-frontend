@@ -12,8 +12,8 @@ const ticket = {
     critical: "critical"
   },
   timestamps: {
-    updatedAt: "2019-09-27T11:28:14.223Z",
-    createdAt: "2019-09-26T13:44:44.697Z"
+    updatedAt: "2019-09-27T11:28:14.223+02:00",
+    createdAt: "2019-09-26T13:44:44.697+02:00"
   },
   status: "bypassed",
   contract: {
@@ -77,7 +77,7 @@ describe("CNS calculation", () => {
       ticketCopy.events.push({
         status: "supported",
         timestamps: {
-          createdAt: "2019-09-26T14:44:44.697Z"
+          createdAt: "2019-09-26T14:44:44.697+02:00"
         }, // 1 Hour after ticket creation
         target: {
           type: "expert"
@@ -96,7 +96,7 @@ describe("CNS calculation", () => {
       ticketCopy.events.push({
         status: "supported",
         timestamps: {
-          createdAt: "2019-09-26T14:44:44.697Z" // 1 Hour after ticket creation
+          createdAt: "2019-09-26T14:44:44.697+02:00" // 1 Hour after ticket creation
         },
         target: {
           type: "beneficiary"
@@ -107,7 +107,7 @@ describe("CNS calculation", () => {
       ticketCopy.events.push({
         status: "supported",
         timestamps: {
-          createdAt: "2019-09-26T15:44:44.697Z"
+          createdAt: "2019-09-26T15:44:44.697+02:00"
         }, // 2 Hours after ticket creation
         target: {
           type: "expert"
@@ -118,7 +118,7 @@ describe("CNS calculation", () => {
       ticketCopy.events.push({
         status: "bypassed",
         timestamps: {
-          createdAt: "2019-09-26T16:44:44.697Z"
+          createdAt: "2019-09-26T16:44:44.697+02:00"
         }, // 3 Hours after ticket creation
         target: {
           type: "expert"
@@ -138,22 +138,22 @@ describe("CNS calculation", () => {
 
   describe("The hoursBetween function", () => {
     it("should calculate the hours between two dates correctly", () => {
-      const date1 = "2019-09-26T13:44:44.697Z";
-      const date2 = "2019-09-26T17:44:44.697Z";
+      const date1 = "2019-09-26T13:44:44.697+02:00";
+      const date2 = "2019-09-26T17:44:44.697+02:00";
       expect(hoursBetween(date1, date2)).toEqual(4);
     });
   });
 
   describe("The calculateWorkingMinutes function", () => {
     it("should calculate the minutes the ticket was spent in working hours correctly", () => {
-      const date1 = "2019-09-26T15:44:44.697Z";
-      const date2 = "2019-09-26T17:44:44.697Z";
+      const date1 = "2019-09-26T15:44:44.697+02:00";
+      const date2 = "2019-09-26T17:44:44.697+02:00";
       expect(calculateWorkingMinutes(date1, date2, 9, 18)).toEqual(120);
     });
   });
 
   describe("The computePeriods function", () => {
-    const ticketCreationDate = "2019-09-26T13:00:00.000Z";
+    const ticketCreationDate = "2019-09-26T13:00:00.000+02:00";
 
     describe("with empty events", () => {
       it("should compute new period only", () => {
@@ -178,7 +178,7 @@ describe("CNS calculation", () => {
     });
 
     describe("with supported status change event", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
       const events = [
         {
           status: "supported",
@@ -214,8 +214,8 @@ describe("CNS calculation", () => {
     });
 
     describe("with supported and bypassed status changes events", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
-      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000+02:00";
 
       const events = [
         {
@@ -266,9 +266,9 @@ describe("CNS calculation", () => {
     });
 
     describe("with supported, bypassed and resolved status changes events", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
-      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
-      const resolvedStatusChange = "2019-09-26T18:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000+02:00";
+      const resolvedStatusChange = "2019-09-26T18:00:00.000+02:00";
 
       const events = [
         {
@@ -325,10 +325,10 @@ describe("CNS calculation", () => {
     });
 
     describe("with supported and bypassed status changes and expert assignment events", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
-      const expert1AssignDate = "2019-09-26T13:00:00.000Z";
-      const expert2AssignDate = "2019-09-26T14:00:00.000Z";
-      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const expert1AssignDate = "2019-09-26T13:00:00.000+02:00";
+      const expert2AssignDate = "2019-09-26T14:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000+02:00";
 
       const events = [
         {
@@ -388,10 +388,10 @@ describe("CNS calculation", () => {
     });
 
     describe("with status changes and beneficiary and expert assignments while supported events", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
-      const beneficiaryAssignDate = "2019-09-26T13:00:00.000Z";
-      const expertAssignDate = "2019-09-26T14:00:00.000Z";
-      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const beneficiaryAssignDate = "2019-09-26T13:00:00.000+02:00";
+      const expertAssignDate = "2019-09-26T14:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000+02:00";
 
       const events = [
         {
@@ -456,9 +456,9 @@ describe("CNS calculation", () => {
     });
 
     describe("with status changes and not ending beneficiary assignment while supported events", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
-      const beneficiaryAssignDate = "2019-09-26T13:00:00.000Z";
-      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const beneficiaryAssignDate = "2019-09-26T13:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000+02:00";
 
       const events = [
         {
@@ -520,11 +520,11 @@ describe("CNS calculation", () => {
     });
 
     describe("with status changes and several beneficiary assignments while supported events", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
-      const beneficiary1AssignDate = "2019-09-26T13:00:00.000Z";
-      const expertAssignDate = "2019-09-26T14:00:00.000Z";
-      const beneficiary2AssignDate = "2019-09-26T15:00:00.000Z";
-      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const beneficiary1AssignDate = "2019-09-26T13:00:00.000+02:00";
+      const expertAssignDate = "2019-09-26T14:00:00.000+02:00";
+      const beneficiary2AssignDate = "2019-09-26T15:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000+02:00";
 
       const events = [
         {
@@ -610,8 +610,8 @@ describe("CNS calculation", () => {
     });
 
     describe("with unordered event list with status changes", () => {
-      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
-      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000+02:00";
 
       const unorderedEvents = [
         {

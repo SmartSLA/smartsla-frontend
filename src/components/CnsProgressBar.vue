@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import moment from "moment";
 import { computeCns } from "@/services/cns";
 
 export default {
@@ -55,7 +54,7 @@ export default {
       this.cns = computeCns(this.ticket);
     },
     parseEngagementDuration(durationString, workHours = 9) {
-      const parsedDuration = moment.duration(durationString);
+      const parsedDuration = this.moment.duration(durationString);
       let duration = parsedDuration.hours();
 
       duration += parsedDuration.days() * workHours;
