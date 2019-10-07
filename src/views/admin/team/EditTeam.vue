@@ -153,7 +153,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Team contracts") }} :</strong>
+                <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
               <v-flex xs8>
                 <v-autocomplete
