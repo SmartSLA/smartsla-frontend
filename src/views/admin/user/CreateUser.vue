@@ -79,6 +79,23 @@
                   disabled
                 ></v-text-field>
               </v-flex>
+               <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <span class="title">{{ $t("Phone") }}</span>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field
+                  v-model="user.phone"
+                  disabled
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <span class="title">{{ $t("Job title") }}</span>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field v-model="user.job_title" disabled></v-text-field>
+              </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <span class="title required-label">{{ $t("Role") }}</span>
