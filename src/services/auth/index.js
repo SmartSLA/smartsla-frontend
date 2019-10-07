@@ -35,6 +35,8 @@ export default {
           this.watch.data.preferredEmail == "vbouiller@linagora.com" ||
           this.watch.data.preferredEmail == "chamerling@linagora.com" ||
           this.watch.data.preferredEmail == "nchadi@linagora.com" ||
+          this.watch.data.preferredEmail == "roubraim@linagora.com" ||
+          this.watch.data.preferredEmail == "rboyer@linagora.com" ||
           this.watch.data[key || this.options.rolesVar]
         );
       }

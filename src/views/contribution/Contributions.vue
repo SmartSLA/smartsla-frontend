@@ -9,10 +9,6 @@
         <v-icon class="mr-2">backup</v-icon>
         <span>{{ $t("EXPORT SHEET (CSV)") }}</span>
       </a>
-      <a href="#" class="action-links mr-5 right ">
-        <v-icon class="mr-2">print</v-icon>
-        <span>{{ $t("PRINT SHEET") }}</span>
-      </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
       <v-flex xs7 pr-4>
@@ -194,7 +190,6 @@ export default {
   },
   created() {
     this.latestContributions = contributions;
-    this.$store.dispatch("sidebar/setSidebarComponent", "contributions-side-bar");
     this.currentContribution = this.$store.getters["sidebar/getActiveContribution"];
   },
   mounted() {
@@ -210,10 +205,6 @@ export default {
       this.contribution =
         this.latestContributions.filter(contribution => contribution.contributionId == value).shift() || {};
     }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>

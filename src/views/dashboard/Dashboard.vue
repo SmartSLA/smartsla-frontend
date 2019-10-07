@@ -9,25 +9,13 @@
         <v-icon class="mr-2">backup</v-icon>
         {{ $t("EXPORT SHEET (CSV)") }}
       </a>
-      <a href="#" class="action-links mr-5 right">
-        <v-icon class="mr-2">print</v-icon>
-        {{ $t("PRINT SHEET") }}
-      </a>
     </v-card-text>
     <img class="dashboard-image" src="@/assets/dashboard.png" />
   </v-container>
 </template>
 
 <script>
-export default {
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
-  }
-};
+export default {};
 </script>
 
 <style lang="stylus" scoped>

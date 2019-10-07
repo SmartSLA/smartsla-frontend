@@ -84,13 +84,6 @@ export default {
       // Handle files like:
       this.fileUploaded = file;
     }
-  },
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "main-side-bar");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   }
 };
 </script>

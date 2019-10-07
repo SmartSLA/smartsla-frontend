@@ -6,15 +6,15 @@
         :key="menuItem.icon"
         :to="{ name: menuItem.path || menuItem.name }"
         :class="{
-          'primary active-menu-link': menuItem.name == currentActiveMenu,
-          regular: menuItem.name != currentActiveMenu
+          'primary active-menu-link': menuItem.name.includes(currentActiveMenu),
+          regular: !menuItem.name.includes(currentActiveMenu)
         }"
-        :dark="menuItem.name == currentActiveMenu"
+        :dark="menuItem.name.includes(currentActiveMenu)"
       >
         <v-badge color="red" v-if="menuItem.count">
           <span slot="badge">{{ menuItem.count }}</span>
           <v-list-tile-title>
-            <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
+            <v-icon :dark="menuItem.name.includes(currentActiveMenu)">{{ menuItem.icon }}</v-icon>
             {{ menuItem.text }}
           </v-list-tile-title>
         </v-badge>
@@ -78,7 +78,7 @@ export default {
         .filter(item => item.show)
         // this is the only way to make the menu reactive when building it from array like this is done below...
         .map(item => {
-          if (item.name === routeNames.REQUESTS) {
+          if (item.name.includes(routeNames.REQUESTS)) {
             item.count = this.ticketsSize
           }
 
@@ -98,7 +98,8 @@ export default {
         show: true
       },
       {
-        name: routeNames.REQUESTS,
+        name: [routeNames.REQUESTS, routeNames.REQUEST],
+        path: routeNames.REQUESTS,
         text: this.$i18n.t("Requests"),
         icon: "format_list_numbered",
         show: true
@@ -107,19 +108,19 @@ export default {
         name: routeNames.DASHBOARD,
         text: this.$i18n.t("Dashboard"),
         icon: "dashboard",
-        show: true
+        show: false
       },
       {
         name: routeNames.SATISFACTION,
         text: this.$i18n.t("Satisfaction"),
         icon: "favorite",
-        show: true
+        show: false
       },
       {
         name: routeNames.CONTRIBUTIONS,
         text: this.$i18n.t("Contributions"),
         icon: "format_line_spacing",
-        show: true
+        show: false
       },
       {
         name: routeNames.ADMINISTRATION,

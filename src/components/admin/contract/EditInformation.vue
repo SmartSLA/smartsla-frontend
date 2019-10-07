@@ -34,18 +34,16 @@
           <v-flex xs8>
             <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("Internal mailing list") }}</v-flex>
+          <v-flex xs3>{{ $t("Internal mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field
               v-model="contract.mailingList.internal"
-              :rules="[() => contract.mailingList.internal.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("client mailing list") }}</v-flex>
+          <v-flex xs3>{{ $t("client mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field
               v-model="contract.mailingList.external"
-              :rules="[() => contract.mailingList.external.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
@@ -127,14 +125,6 @@
               <v-radio :label="$i18n.t('Unlimited')" value="unlimited"></v-radio>
             </v-radio-group>
           </v-flex>
-          <v-flex xs3>{{ $t("Governed by") }}</v-flex>
-          <v-flex xs8>
-            <v-text-field v-model="contract.govern"></v-text-field>
-          </v-flex>
-          <v-flex xs3 class="pt-3">{{ $t("Requests shared among the beneficiaries") }}</v-flex>
-          <v-flex xs8>
-            <v-checkbox v-model="contract.sharedRequests" color="primary" hide-details></v-checkbox>
-          </v-flex>
           <v-flex xs3>{{ $t("Domain") }}</v-flex>
           <v-flex xs8>
             <v-text-field></v-text-field>
@@ -194,8 +184,6 @@ export default {
         endDate: "",
         status: true,
         type: "",
-        sharedRequests: true,
-        govern: "",
         domain: "",
         humanResources: {},
         Engagements: {

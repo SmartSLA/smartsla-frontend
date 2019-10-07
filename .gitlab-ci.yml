@@ -1,0 +1,85 @@
+image: node:10
+
+stages:
+  - lint
+  - test
+  - docker_build
+  - deploy_dev
+
+.lint:
+  stage: lint
+  except:
+    - triggers
+  tags:
+    - docker
+  image: node:10
+  script:
+    - npm install
+    - npm run lint -- --no-fix
+
+test_unit:
+  stage: test
+  except:
+    - triggers
+  tags:
+    - docker
+  image: node:10
+  script:
+   - npm install
+   - npm run test:unit
+
+.test_e2e:
+  stage: test
+  except:
+    - triggers
+  tags:
+    - docker
+  environment:
+    name: production
+  image: cypress/base:10
+  script:
+    - npm install
+    - npm run test:e2e -- --headless
+
+docker_build:
+  stage: docker_build
+  tags:
+    - docker
+  services:
+    - name: docker-registry.linagora.com:5000/linshare-snapshots/linshare-dind:latest
+      alias: docker-dind
+  variables:
+    DOCKER_HOST: "tcp://docker-dind"
+    DOCKER_IMAGE: "linagora/ticketing08000linux"
+  image: docker-registry.linagora.com:5000/linshare-snapshots/linshare-dind:latest
+  script:
+    - docker build -t ${DOCKER_IMAGE} .
+  only:
+    - master@linagora/lps/studio/ticketing08000linux
+  except:
+    variables:
+      - $SKIP_BUILD_DOCKER
+
+deploy_dev:
+  stage: deploy_dev
+  except:
+    - triggers
+  tags:
+    - dev.open-paas.org
+    - deployment
+  environment:
+    name: dev
+    url: https://dev.open-paas.org
+  only:
+    - master@linagora/lps/studio/ticketing08000linux
+  script:
+    - cd /srv/${CI_PROJECT_NAME}
+    - nvm use
+    - git fetch --all
+    - git checkout ${CI_COMMIT_SHA}
+    - npm install
+    - npm update
+    - git checkout -- .
+    - BASE_URL=/08000linux/ npm run build
+    - rm -fr /srv/vue-apps/${CI_PROJECT_NAME}/*
+    - cp -fr /srv/${CI_PROJECT_NAME}/dist/* /srv/vue-apps/${CI_PROJECT_NAME}/

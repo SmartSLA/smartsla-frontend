@@ -30,9 +30,9 @@
         <td class="text-xs-left">{{ $t(props.item.request) }}</td>
         <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
         <td class="text-xs-left text-capitalize">{{ $t(props.item.idOssa) }}</td>
-        <td class="text-xs-center">{{ $t(props.item.supported) }}</td>
-        <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-        <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
+        <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
+        <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
+        <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
         <td class="text-xs-center">
           <v-btn color="error" flat small @click="removeCommitment(props.item)">
             <v-icon>remove_circle</v-icon>
@@ -106,7 +106,7 @@
               ></v-select>
             </v-flex>
             <v-flex xs5></v-flex>
-            <v-flex xs3 class="required-label">{{ $t("prise en charge") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Supported") }}</v-flex>
             <v-flex xs1>
               <v-text-field
                 v-model="newCommitment.supported.days"
@@ -142,7 +142,7 @@
             </v-flex>
             <v-flex xs1>{{ $t("H") }}</v-flex>
             <v-flex xs5></v-flex>
-            <v-flex xs3 class="required-label">{{ $t("Fix") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Resolved") }}</v-flex>
             <v-flex xs1>
               <v-text-field
                 v-model="newCommitment.resolved.days"
@@ -182,6 +182,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   name: "contract-edit-engagements",
   data() {
@@ -284,9 +286,9 @@ export default {
         newCommitment.severity = this.newSeverity;
       }
 
-      newCommitment.bypassed = this.getDaysAndHours(this.newCommitment.bypassed);
-      newCommitment.resolved = this.getDaysAndHours(this.newCommitment.resolved);
-      newCommitment.supported = this.getDaysAndHours(this.newCommitment.supported);
+      newCommitment.bypassed = this.getDuration(this.newCommitment.bypassed);
+      newCommitment.resolved = this.getDuration(this.newCommitment.resolved);
+      newCommitment.supported = this.getDuration(this.newCommitment.supported);
 
       if (
         !this.engagementList.engagements.filter(
@@ -301,14 +303,10 @@ export default {
       switch (critLevel) {
         case "critical":
           return "#f44336";
-          break;
         case "sensible":
           return "#f4b336";
-          break;
         case "standard":
           return "#e0e0e0";
-          break;
-
         default:
           return "";
       }
@@ -319,34 +317,27 @@ export default {
         case "critical":
         case "sensible":
           return "white";
-          break;
         default:
           return "black";
       }
     },
 
-    getDaysAndHours(schedule) {
-      var duration = "";
-      if (!schedule.days && !schedule.hours) {
-        return "-";
-      }
+    getDuration(schedule) {
+      const duration = moment.duration({
+        hours: schedule.hours,
+        days: schedule.days
+      });
 
-      if (schedule.days && schedule.days.length) {
-        duration = `${schedule.days}${this.$i18n.t("JO")}`;
-      }
+      return duration.toISOString();
+    },
 
-      if (schedule.hours && schedule.hours.length) {
-        if (schedule.days && schedule.days.length) {
-          duration = `${duration}-`;
-        }
-        duration = `${duration}${schedule.hours}${this.$i18n.t("HO")}`;
-      }
+    parseDuration(duration) {
+      const parsedDuration = moment.duration(duration);
 
-      if (!duration.length) {
-        duration = "-";
-      }
-
-      return duration;
+      return {
+        days: parsedDuration.days(),
+        hours: parsedDuration.hours()
+      };
     },
 
     validate() {
@@ -370,7 +361,7 @@ export default {
       }
       this.$http
         .updateContract(this.contract._id, this.contract)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("updated"),
             color: "success"
@@ -434,7 +425,7 @@ export default {
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Id OSSA"), value: "idOssa" },
         {
-          text: this.$i18n.t("prise en charge"),
+          text: this.$i18n.t("Supported"),
           value: "supported"
         },
         { text: this.$i18n.t("Bypassed"), value: "bypassed" },

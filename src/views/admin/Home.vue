@@ -163,6 +163,27 @@
           </v-card-actions>
         </v-card>
       </v-flex>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
+        <v-card>
+          <v-card-title primary-title>
+            <v-icon x-large>verified_user</v-icon>
+            <h3 class="headline mb-0">{{ $t("Roles") }}</h3>
+          </v-card-title>
+          <v-card-actions>
+            <v-layout row wrap>
+              <v-flex>
+                <v-btn
+                  color="blue-background-color white-color"
+                  :to="{ name: 'AdminRoles' }"
+                  class="users-actions white-color custom-btn-action"
+                >
+                  <span>{{ $t("Edit") }}</span>
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -251,20 +272,6 @@ export default {
       });
 
     this.$http
-      .getContributions()
-      .then(response => {
-        this.contributions = response.data;
-        this.contributionCount = response.data.length;
-        this.contributionCreationDate = response.data.slice(-1)[0].timestamps.creation;
-      })
-      .catch(error => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contributions"),
-          color: "error"
-        });
-      });
-
-    this.$http
       .listSoftware()
       .then(response => {
         this.softwares = response.data;
@@ -277,14 +284,6 @@ export default {
           color: "error"
         });
       });
-  },
-
-  created() {
-    this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    next();
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
