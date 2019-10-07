@@ -63,11 +63,11 @@
               >
               </v-select>
             </v-flex>
-            <v-flex xs1 pl1 v-if="newCommitment.request == 'other'">
+            <v-flex xs1 pl-4 v-if="newCommitment.request === 'Other'">
               <span class="pl-1">{{ $t("or add") }}</span>
             </v-flex>
             <v-flex xs1 pl1 v-else></v-flex>
-            <v-flex xs4 v-if="newCommitment.request == 'other'">
+            <v-flex xs4 v-if="newCommitment.request === 'Other'">
               <v-text-field v-model="newRequest" requried></v-text-field>
             </v-flex>
             <v-flex xs4 v-else></v-flex>
