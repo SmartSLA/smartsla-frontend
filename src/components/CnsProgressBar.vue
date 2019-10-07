@@ -56,7 +56,7 @@ export default {
         end: 18
       };
       const startDate = moment(this.ticket.timestamps.createdAt);
-      let currentDate = moment();
+      const currentDate = moment();
       const criticalityLevel = this.ticket.software.critical;
 
       workingInterval =
@@ -114,65 +114,36 @@ export default {
           } else {
             // Not resolved so between bypassed and now
 
-            // FIXME From there computing is not consistent
-
-            // FIXME No NoStop handling
-            let resolvedMinutes = this.calculateWorkingMinutes(
+            this.cns.resolved = this.computeElapsedTimeForStatus(
+              "bypassed",
               firstBypassedAction.date,
-              moment(),
-              workingInterval.start,
-              workingInterval.end
+              currentDate,
+              workingInterval,
+              noStop
             );
-            // FIXME No holidaysBetween HERE
-            resolvedMinutes =
-              resolvedMinutes -
-              this.calculateTimeSuspended(this.ticket.logs, "bypassed", workingInterval.start, workingInterval.end);
-            this.cns.resolved = +moment
-              .duration({ minutes: resolvedMinutes })
-              .asHours()
-              .toFixed(2);
           }
         } else {
           // Not bypassed so between supported and now
 
-          let bypassedMinutes = 0;
-          if (noStop) {
-            bypassedMinutes = this.hoursBetween(firstSupportedAction.date, moment()) * 60;
-          } else {
-            bypassedMinutes = this.calculateWorkingMinutes(
-              firstSupportedAction.date,
-              moment(),
-              workingInterval.start,
-              workingInterval.end
-            );
-            // FIXME No holidaysBetween HERE
-            bypassedMinutes =
-              bypassedMinutes -
-              this.calculateTimeSuspended(this.ticket.logs, "supported", workingInterval.start, workingInterval.end);
-          }
-          this.cns.bypassed = +moment
-            .duration({ minutes: bypassedMinutes })
-            .asHours()
-            .toFixed(2);
+          this.cns.bypassed = this.computeElapsedTimeForStatus(
+            "supported",
+            firstSupportedAction.date,
+            currentDate,
+            workingInterval,
+            noStop
+          );
         }
       } else {
         // Not supported so between creation and now
+        const startsDate = moment(this.ticket.timestamps.createdAt);
 
-        let startsDate = moment(this.ticket.timestamps.createdAt);
-        if (noStop) {
-          this.cns.supported = this.hoursBetween(startDate, currentDate).toFixed(2);
-        } else {
-          let holidaysCount = this.holidaysBetween(startDate, currentDate);
-          let minutesCount = this.calculateWorkingMinutes(
-            startsDate,
-            moment(),
-            workingInterval.start,
-            workingInterval.end
-          );
-          let hoursCount = minutesCount / 60;
-          hoursCount = hoursCount - holidaysCount * (workingInterval.end - workingInterval.start);
-          this.cns.supported = +hoursCount.toFixed(2);
-        }
+        this.cns.supported = this.computeElapsedTimeForStatus(
+          "new",
+          startsDate,
+          currentDate,
+          workingInterval,
+          noStop
+        );
       }
     },
     hoursBetween(start, end) {
