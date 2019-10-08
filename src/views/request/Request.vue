@@ -177,7 +177,7 @@
                     <v-flex xs12 md8 sm6 lg10 xl8 pl-0>
                       <ul v-if="attachments">
                         <li v-for="attachment in attachments">
-                          <a href="#" @click="downloadFile(attachment.id, attachment.name)">
+                          <a href="#" @click="downloadFile(attachment._id, attachment.name)">
                             {{ attachment.name }}
                           </a>
                         </li>
@@ -256,7 +256,7 @@
                       </v-card-text>
                       <v-card-text v-if="event.attachments && event.attachments.length > 0" class="pt-0">
                         <v-icon>attach_file</v-icon>
-                        <a @click="downloadFile(event.attachments[0].id, event.attachments[0])">
+                        <a @click="downloadFile(event.attachments[0]._id, event.attachments[0].name)">
                           {{ event.attachments[0].name }}
                         </a>
                       </v-card-text>
