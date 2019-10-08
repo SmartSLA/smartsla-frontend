@@ -111,7 +111,7 @@
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
-              {{ request.ticketDate | toLocaleDateString }}
+              {{ request.ticketDate | formatDateFilter('llll') }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{
