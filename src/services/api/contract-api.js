@@ -17,5 +17,9 @@ export default {
 
   deleteContract(contractId) {
     return this.delete(`/ticketing/api/contracts/${contractId}`);
+  },
+
+  getContractUsers(contractId) {
+    return this.get(`/ticketing/api/contracts/${contractId}/users`).then(result => result.data || []);
   }
 };
