@@ -158,12 +158,8 @@
                   <v-icon class="pt-1">email</v-icon>
                 </v-flex>
                 <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
-                  <v-chip
-                    v-for="(participant, index) in ticket.participants"
-                    :key="index"
-                    class="ma-2"
-                  >
-                  <a :href="`mailto:${participant}`">{{ participant }}</a>
+                  <v-chip v-for="(participant, index) in ticket.participants" :key="index" class="ma-2">
+                    <a :href="`mailto:${participant}`">{{ participant }}</a>
                   </v-chip>
                 </v-flex>
               </v-layout>
@@ -309,7 +305,24 @@
                           v-model="newResponsible"
                           :label="$t('Assigned to')"
                           return-object
-                        ></v-select>
+                        >
+                          <template slot="item" slot-scope="data">
+                            <v-list-tile-avatar>
+                              <v-chip
+                                v-if="data.item.type == 'beneficiary'"
+                                color="#174dc5"
+                                class="ma-2"
+                                label
+                                text-color="white"
+                                >{{ request.contract.client[0] }}
+                              </v-chip>
+                              <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              {{ data.item.name }}
+                            </v-list-tile-content>
+                          </template>
+                        </v-select>
                       </v-flex>
                       <v-flex xs12 md8 sm8 xl3 lg3>
                         <v-checkbox
@@ -495,14 +508,14 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import {VueEditor} from "vue2-editor";
-  import {Editor} from "vuetify-markdown-editor";
-  import VUpload from "vuetify-upload-component";
-  import ApplicationSettings from "@/services/application-settings";
-  import cnsProgressBar from "@/components/CnsProgressBar";
+import { mapGetters } from "vuex";
+import { VueEditor } from "vue2-editor";
+import { Editor } from "vuetify-markdown-editor";
+import VUpload from "vuetify-upload-component";
+import ApplicationSettings from "@/services/application-settings";
+import cnsProgressBar from "@/components/CnsProgressBar";
 
-  const NEXT_STATUS = {
+const NEXT_STATUS = {
   new: "supported",
   supported: "bypassed",
   bypassed: "resolved",
@@ -722,8 +735,8 @@ export default {
       }
     },
     commentFile(val) {
-      let el = this.$refs.uploadBtn.$el.querySelector('.v-list');
-      val.length ? el.hidden = false : el.hidden = true;
+      let el = this.$refs.uploadBtn.$el.querySelector(".v-list");
+      val.length ? (el.hidden = false) : (el.hidden = true);
     }
   },
   created() {
