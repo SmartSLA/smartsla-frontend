@@ -29,8 +29,12 @@ export default {
         bypassed: 0,
         resolved: 0
       },
-      duration: 0,
-      currentStatus: ""
+      cnsDurations: {
+        supported: 0,
+        bypassed: 0,
+        resolved: 0
+      },
+      duration: 0
     };
   },
   computed: {
@@ -70,12 +74,22 @@ export default {
         const engagement = currentEngagements[0];
 
         this.duration = this.parseEngagementDuration(engagement[this.cnsType]);
+        this.cnsDurations = {
+          supported: this.parseEngagementDuration(engagement.supported),
+          bypassed: this.parseEngagementDuration(engagement.bypassed),
+          resolved: this.parseEngagementDuration(engagement.resolved)
+        }
       }
     }
   },
   created() {
     this.calculateCNS();
     this.computeDuration();
+    this.$emit("cns-calculated", {
+      ticketId: this.ticket._id,
+      cns: this.cns,
+      durations: this.cnsDurations
+    });
   }
 };
 </script>

@@ -5,6 +5,7 @@
   "cns.state.resolution": "Resolution",
   "cns.state.support": "Support",
   "{days}WD {hours}WH": "{days}WD {hours}WH",
+  "{hours}WH / {duration}WH": "{hours}WH / {duration}WH",
   "OpenPaaS Login": "OpenPaaS Login",
   "Login": "Login",
   "Logout": "Logout",
