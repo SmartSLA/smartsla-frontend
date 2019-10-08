@@ -383,10 +383,9 @@
             </h4>
             <v-card class="pt-2 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
-              <br />
-              <v-layout row wrap v-if="request.responsible">
-                <v-flex xs8 md8 sm6 lg8 xl6>
-                  <v-avatar size="100%" class="pl-1 avatar-width">
+              <v-layout column class="center-avatar" v-if="request.responsible">
+                <v-flex xs12>
+                  <v-avatar size="60" class="pt-3">
                     <v-img :src="`${apiUrl}/api/users/${request.responsible._id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -396,7 +395,7 @@
                 <strong>{{ $t("Contact") }} :</strong>
                 {{ request.responsible && request.responsible.name }}
                 <br />
-                <strong>{{ $t("eMail") }} :</strong>
+                <strong>{{ $t("E-mail") }} :</strong>
                 {{ request.responsible && request.responsible.email }}
               </v-card-text>
               <v-card-text v-else>
@@ -696,6 +695,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.center-avatar {
+  align-items: center;
+}
+
 .action-links {
   text-decoration: none;
   color: grey;
