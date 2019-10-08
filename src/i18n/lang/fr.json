@@ -81,6 +81,7 @@
     "Created": "Créé le",
     "Created at": "Créé le",
     "Created by": "Créé par",
+    "Created by : {authorName}": "Créé par : {authorName}",
     "Critical": "Critique",
     "customer": "utilisateur",
     "Customer": "Utilisateur",
@@ -313,5 +314,6 @@
     "Welcome to Profile!!": "Bienvenue dans le profil!!",
     "Welcome to Satistfaction Page!!": "Bienvenue dans la page de satisfaction!!",
     "Welcome to Settings Page!!": "Bienvenue dans la page des paramètres!!",
-    "Yes": "Oui"
+    "Yes": "Oui",
+    "Not assigned yet": "Non assigné"
 }

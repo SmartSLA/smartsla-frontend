@@ -13,6 +13,14 @@ Vue.filter("formatDate", function(value) {
   }
 });
 
+Vue.filter("toLocaleDateString", function(date) {
+  const browserLocale = navigator.language;
+  const locale = browserLocale.includes("-") ? browserLocale.split("-")[0] : browserLocale || 'en';
+  if (date) {
+    return moment(String(date)).locale(locale).format("llll");
+  }
+});
+
 Vue.filter("striphtml", function(value) {
   var div = document.createElement("div");
   div.innerHTML = value;

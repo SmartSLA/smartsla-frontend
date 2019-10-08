@@ -102,16 +102,16 @@
           <v-layout justify-center row fill-height wrap ml-3 class="custom-ticket-bl">
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Type") }} :</strong>
-              {{ request.type }}
+              {{ $t(request.type) }}
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Severity") }} :</strong>
-              {{ request.severity }}
+              {{ $t(request.severity) }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
-              {{ request.ticketDate }}
+              {{ request.ticketDate | toLocaleDateString }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{
@@ -121,11 +121,11 @@
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Assigned to") }} :</strong>
-              {{ (request.assignedTo && request.assignedTo.name) || $t("not assigned yet") }}
+              {{ (request.assignedTo && request.assignedTo.name) || $t("Not assigned yet") }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
-              {{ request.lastUpdate }}
+              {{ request.lastUpdate | relativeTime }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
@@ -615,8 +615,9 @@ export default {
       this.attachments = request.events && request.events.map(event => event.attachments || []).flat();
       this.currentStatus = request.status;
       this.request.statusId = 1;
-      this.request.lastUpdate = new Date(request.timestamps.updatedAt).toDateString();
-      this.request.ticketDate = new Date(request.timestamps.createdAt).toDateString();
+      this.request.files = [];
+      this.request.lastUpdate = new Date(request.timestamps.updatedAt);
+      this.request.ticketDate = new Date(request.timestamps.createdAt);
       this.request.subject = request.description;
       this.events = request.events;
       this.request.linkedTickets = request.relatedRequests;
