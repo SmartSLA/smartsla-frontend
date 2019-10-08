@@ -242,7 +242,14 @@
             </router-link>
             <a v-else>{{ props.item.request.contract.name }}</a>
           </td>
-          <td class="text-xs-center">{{ props.item.updatedAt | relativeTime }}</td>
+          <td class="text-xs-center">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                    <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
+                </template>
+                <span>{{ props.item.updatedAt | formatDateFilter('llll')  }}</span>
+              </v-tooltip>
+          </td>
           <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
           <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
