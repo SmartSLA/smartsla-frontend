@@ -608,5 +608,57 @@ describe("CNS calculation", () => {
         expect(periods.bypassed.suspensions[0].end).toEqual(moment(currentDate));
       });
     });
+
+    describe("with unordered event list with status changes", () => {
+      const supportedStatusChange = "2019-09-26T12:00:00.000Z";
+      const bypassedStatusChange = "2019-09-26T16:00:00.000Z";
+
+      const unorderedEvents = [
+        {
+          status: "bypassed",
+          timestamps: {
+            createdAt: bypassedStatusChange
+          }
+        },
+        {
+          status: "supported",
+          timestamps: {
+            createdAt: supportedStatusChange
+          }
+        }
+      ];
+
+      const periods = computePeriods(unorderedEvents, ticketCreationDate);
+
+      it("should compute new and supported periods only", () => {
+        expect(periods.new).toBeDefined();
+        expect(periods.supported).toBeDefined();
+        expect(periods.bypassed).toBeDefined();
+      });
+
+      it("should set new period start to ticket creation date", () => {
+        expect(periods.new.start).toEqual(moment(ticketCreationDate));
+      });
+
+      it("should set new period end to supported status change date", () => {
+        expect(periods.new.end).toEqual(moment(supportedStatusChange));
+      });
+
+      it("should set supported period start to supported status change date", () => {
+        expect(periods.supported.start).toEqual(moment(supportedStatusChange));
+      });
+
+      it("should set supported period end to bypassed status change date", () => {
+        expect(periods.supported.end).toEqual(moment(bypassedStatusChange));
+      });
+
+      it("should set bypassed period start to bypassed status change date", () => {
+        expect(periods.bypassed.start).toEqual(moment(bypassedStatusChange));
+      });
+
+      it("should set bypassed period end to current date", () => {
+        expect(periods.bypassed.end).toEqual(currentDate);
+      });
+    });
   });
 });

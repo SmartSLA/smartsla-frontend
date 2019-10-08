@@ -47,7 +47,8 @@ function computeCns(ticket) {
  */
 function computePeriods(events, ticketStartTime) {
   const periods = {};
-  const orderedEvents = (events && events.sort((a, b) => new Date(b.date) - new Date(a.date))) || [];
+  const orderedEvents =
+    (events && events.sort((a, b) => new Date(a.timestamps.createdAt) - new Date(b.timestamps.createdAt))) || [];
   const currentDate = moment();
 
   let currentStatus = "new";
@@ -204,8 +205,8 @@ function getHolidays() {
  * @return {number}
  */
 function calculateWorkingMinutes(startingDate, endingDate, startingHour, endingHour) {
-  var startWrapper = moment.utc(startingDate);
-  const endWrapper = moment.utc(endingDate);
+  const startWrapper = moment(startingDate);
+  const endWrapper = moment(endingDate);
   let minutes = 0;
   while (startWrapper.valueOf() < endWrapper.valueOf()) {
     if (startWrapper.day() !== 0 && startWrapper.day() !== 6) {
