@@ -41,7 +41,13 @@
     <v-layout row wrap align-center>
       <v-flex xs1></v-flex>
       <v-flex xs8>
-        <form v-if="addSoftware" class="pt-4 px-4 mr-4 grey lighten-3" ref="form" lazy-validation>
+        <v-form
+          v-if="addSoftware"
+          v-model="valid"
+          class="pt-4 px-4 mr-4 grey lighten-3"
+          ref="form"
+          lazy-validation
+        >
           <h3 class="title mb-0">{{ $t("Add software") }}</h3>
           <v-layout row wrap align-center>
             <v-flex xs3 class="required-label">{{ $t("Software") }}</v-flex>
@@ -180,7 +186,7 @@
               <v-btn @click="addSoftware = !addSoftware" class="error">{{ $t("Cancel") }}</v-btn>
             </v-flex>
           </v-layout>
-        </form>
+        </v-form>
       </v-flex>
     </v-layout>
     <br />
@@ -217,21 +223,30 @@ export default {
       addSoftware: false,
       softwareList: [],
       contract: {},
+      valid: true,
       refs: ["Florentin Roatta", "Jean-Michel Boutin", "Ismaeil Abouljamal", "Laurent Joguet", "Guillaume Boudreaux"]
     };
   },
   methods: {
     appendSoftware() {
-      if (
-        !this.contract.software.filter(software => JSON.stringify(software) == JSON.stringify(this.newSoftwareName))
-          .length
-      ) {
-        this.newSoftware.software = this.newSoftwareName;
-        this.newSoftwareName = {};
-        this.contract.software.push(Object.assign({}, this.newSoftware));
-      }
+      if (this.$refs.form.validate()) {
+        this.validate();
+        if (
+          !this.contract.software.filter(software => JSON.stringify(software) == JSON.stringify(this.newSoftwareName))
+            .length
+        ) {
+          this.newSoftware.software = this.newSoftwareName;
+          this.newSoftwareName = {};
+          this.contract.software.push(Object.assign({}, this.newSoftware));
+        }
 
-      this.addSoftware = false;
+        this.addSoftware = false;
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
+      }
     },
 
     removeSoftware(selectedSoftware) {
