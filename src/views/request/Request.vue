@@ -125,7 +125,12 @@
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
-              {{ request.lastUpdate | relativeTime }}
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on"> {{ request.lastUpdate | relativeTime }}</span>
+                </template>
+                <span> {{ request.lastUpdate | formatDateFilter('llll')  }}</span>
+              </v-tooltip>
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
