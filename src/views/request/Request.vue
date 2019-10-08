@@ -4,14 +4,6 @@
       <router-link :to="{ name: 'Requests' }">
         <button><v-icon>arrow_back</v-icon></button>
       </router-link>
-      <!-- <a href="#" disabled class="text-lg-left action-links">
-        <v-icon class="mr-2">bug_report</v-icon>
-        {{ $t("REQUEST VIEW") }}
-      </a> -->
-      <a href="#" class="action-links right">
-        <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET (CSV)") }}
-      </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>
@@ -92,7 +84,7 @@
             </v-flex>
             <v-flex xs1 md1 sm1 xl1 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn color="primary" fab small dark to="#">
+                <v-btn color="primary" fab small disabled>
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
