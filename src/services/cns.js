@@ -1,7 +1,7 @@
 import moment from "moment";
 import Vue from "vue";
 
-export { computeCns, computePeriods, calculateTimeSuspended, calculateWorkingMinutes, hoursBetween };
+export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorkingMinutes, hoursBetween };
 
 /**
  * Compute Cns per status
@@ -136,7 +136,7 @@ function computeTime(period, workingInterval) {
   } else {
     minuteCount = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
     minuteCount -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
-    minuteCount -= calculateTimeSuspended(period.suspensions, workingInterval.start, workingInterval.end) * 60;
+    minuteCount -= calculateSuspendedMinutes(period.suspensions, workingInterval.start, workingInterval.end);
   }
 
   return +moment
@@ -228,7 +228,7 @@ function calculateWorkingMinutes(startingDate, endingDate, startingHour, endingH
  * @param endHour
  * @return {number} suspended time in minutes
  */
-function calculateTimeSuspended(suspensions, startingHour, endHour) {
+function calculateSuspendedMinutes(suspensions, startingHour, endHour) {
   let suspendedTime = 0;
 
   suspensions.forEach(suspension => {
