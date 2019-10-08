@@ -1,5 +1,7 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import Vue from "vue";
+
+moment.tz.setDefault("Europe/Paris");
 
 export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorkingMinutes, hoursBetween };
 

@@ -246,7 +246,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import moment from "moment";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
@@ -415,7 +414,7 @@ export default {
     },
 
     cnsDurationDisplay(durationString) {
-      const parsedDuration = moment.duration(durationString);
+      const parsedDuration = this.moment.duration(durationString);
 
       return this.$i18n.t("{days}WD {hours}WH", {
         days: parsedDuration.days(),

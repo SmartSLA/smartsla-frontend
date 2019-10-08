@@ -3,7 +3,10 @@ import { shallowMount } from "@vue/test-utils";
 import cnsComponent from "@/components/CnsProgressBar";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import moment from "moment-timezone";
 
+moment.tz.setDefault("Europe/Paris");
+Vue.prototype.moment = moment;
 Vue.use(Vuetify);
 
 const ticket = {
@@ -11,8 +14,8 @@ const ticket = {
     critical: "critical"
   },
   timestamps: {
-    updatedAt: "2019-09-27T11:28:14.223Z",
-    createdAt: "2019-09-26T13:44:44.697Z"
+    updatedAt: "2019-09-27T11:28:14.223+02:00",
+    createdAt: "2019-09-26T13:44:44.697+02:00"
   },
   status: "bypassed",
   contract: {
