@@ -230,9 +230,9 @@
                         <div class="flex">
                           <div class="subheading font-weight-medium">{{ event.author.name }}</div>
                           <div class="body-1">{{ event.timestamps.createdAt | calendarTimeFilter }}</div>
-                          <div v-if="event.isPrivateComment">
-                            <span class="red--text">{{ $t("private comment") }}</span>
-                          </div>
+<!--                          <div v-if="event.isPrivateComment">-->
+<!--                            <span class="red&#45;&#45;text">{{ $t("private comment") }}</span>-->
+<!--                          </div>-->
                         </div>
                       </v-card-title>
                       <v-card-text v-if="event.comment" v-html="event.comment" class="pt-0" />
@@ -324,13 +324,13 @@
                           </template>
                         </v-select>
                       </v-flex>
-                      <v-flex xs12 md8 sm8 xl3 lg3>
-                        <v-checkbox
-                          v-model="privateComment"
-                          color="primary"
-                          :label="$i18n.t('private comment')"
-                        ></v-checkbox>
-                      </v-flex>
+<!--                      <v-flex xs12 md8 sm8 xl3 lg3>-->
+<!--                        <v-checkbox-->
+<!--                          v-model="privateComment"-->
+<!--                          color="primary"-->
+<!--                          :label="$i18n.t('private comment')"-->
+<!--                        ></v-checkbox>-->
+<!--                      </v-flex>-->
                       <v-flex xs12 md8 sm8 xl3 lg3>
                         <v-upload ref="uploadBtn" :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
                       </v-flex>
@@ -728,12 +728,12 @@ export default {
     }
   },
   watch: {
-    privateComment(value) {
-      if (value) {
-        this.newStatus = "";
-        this.newResponsible = "";
-      }
-    },
+    // privateComment(value) {
+    //   if (value) {
+    //     this.newStatus = "";
+    //     this.newResponsible = "";
+    //   }
+    // },
     commentFile(val) {
       let el = this.$refs.uploadBtn.$el.querySelector(".v-list");
       val.length ? (el.hidden = false) : (el.hidden = true);
