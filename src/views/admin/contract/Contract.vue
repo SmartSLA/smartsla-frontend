@@ -159,7 +159,7 @@
                       <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>{{
                         $t("critical")
                       }}</v-chip
-                      >:
+                      >
                       <span v-if="contract.Engagements.critical.schedule">
                         {{
                           contract.Engagements.critical.schedule.end == "-"
@@ -200,9 +200,9 @@
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -218,7 +218,7 @@
                       <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>{{
                         $t("sensible")
                       }}</v-chip
-                      >:
+                      >
                       <span v-if="contract.Engagements.sensible.schedule">
                         {{
                           contract.Engagements.sensible.schedule.end == "-"
@@ -259,9 +259,9 @@
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -277,7 +277,7 @@
                       <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>{{
                         $t("standard")
                       }}</v-chip
-                      >:
+                      >
                       <span v-if="contract.Engagements.standard.schedule">
                         {{
                           contract.Engagements.standard.schedule.end == "-"
@@ -318,9 +318,9 @@
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -367,6 +367,7 @@
 
 <script>
 import UsersList from "@/components/user/UsersList.vue";
+import moment from "moment";
 
 export default {
   data() {
@@ -401,7 +402,7 @@ export default {
         { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
         { text: this.$i18n.t("Id OSSA"), value: "idOssa", sortable: false },
         {
-          text: this.$i18n.t("prise en charge"),
+          text: this.$i18n.t("Support"),
           value: "supported",
           sortable: false
         },
@@ -486,6 +487,15 @@ export default {
 
     standardContractualCommitment() {
       return this.contract.Engagements.standard.engagements || [];
+    },
+
+    parseDuration(duration) {
+      const parsedDuration = moment.duration(duration);
+
+      return {
+        days: parsedDuration.days(),
+        hours: parsedDuration.hours()
+      };
     }
   },
   beforeCreate() {
