@@ -316,15 +316,14 @@ export default {
       this.ticket.relatedRequests = this.linkedRequests;
       if (this.ticket.requestFile.length) {
         this.submitRequest = false;
-        let requestFile = this.ticket.requestFile[0];
-        let fileSize = requestFile.size;
-        let mimeType = requestFile.type;
-        let formData = new FormData();
+        const requestFile = this.ticket.requestFile[0];
+        const formData = new FormData();
+
         formData.append("file", requestFile);
         this.$http
-          .uploadFile(formData, mimeType, fileSize, requestFile.name)
-          .then(response => {
-            this.postRequest(response.data._id, requestFile.name);
+          .uploadFile(formData, requestFile.type, requestFile.size, requestFile.name)
+          .then(({ data }) => {
+            this.postRequest([{ _id: data._id, file: requestFile }]);
 
             this.submitRequest = true;
           })
@@ -359,14 +358,20 @@ export default {
       }
     },
 
-    postRequest(fileId = "", fileName = "") {
-      if (fileId !== "") {
-        let fileObject = {
-          name: fileName,
-          id: fileId
+    postRequest(files = []) {
+      if (files.length) {
+        const event = {
+          author: {
+            id: this.$store.state.user.user._id,
+            name: this.displayName,
+            image: this.avatarUrl
+          },
+          attachments: files.map(file => ({
+            _id: file._id, name: file.file.name, mimeType: file.file.type
+          }))
         };
-        this.ticket.files = [];
-        this.ticket.files.push(fileObject);
+
+        this.ticket.events = [event];
       }
 
       this.$http
@@ -424,7 +429,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUser: "user/getUser"
+      getUser: "user/getUser",
+      displayName: "user/getDisplayName",
+      avatarUrl: "user/getAvatarUrl",
     }),
     typeList() {
       var engagements = [];
