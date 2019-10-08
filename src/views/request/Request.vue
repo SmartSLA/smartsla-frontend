@@ -92,7 +92,7 @@
             </v-flex>
             <v-flex xs1 md1 sm1 xl1 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn color="primary" fab small dark to="#">
+                <v-btn color="primary" fab small disabled>
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
