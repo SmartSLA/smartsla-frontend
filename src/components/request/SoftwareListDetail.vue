@@ -8,15 +8,15 @@
       <ul>
         <li>
           {{ $t("Support") }} :
-          <b>{{ engagements.supported }}</b>
+          <b>{{ $t("{days}WD {hours}WH", parseDuration(engagements.supported)) }}</b>
         </li>
         <li>
           {{ $t("Bypass") }} :
-          <b>{{ engagements.bypassed }}</b>
+          <b>{{ $t("{days}WD {hours}WH", parseDuration(engagements.bypassed )) }}</b>
         </li>
         <li>
           {{ $t("Resolution") }} :
-          <b>{{ engagements.resolved }}</b>
+          <b>{{ $t("{days}WD {hours}WH", parseDuration(engagements.resolved )) }}</b>
         </li>
       </ul>
     </span>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   name: "software-list-detail",
   props: {
@@ -53,6 +55,16 @@ export default {
           supported: noneLabel
         }
       );
+    }
+  },
+  methods: {
+    parseDuration(duration) {
+      const parsedDuration = moment.duration(duration);
+
+      return {
+        days: parsedDuration.days(),
+        hours: parsedDuration.hours()
+      };
     }
   }
 };
