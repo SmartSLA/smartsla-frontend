@@ -125,9 +125,9 @@
               <v-radio :label="$i18n.t('Unlimited')" value="unlimited"></v-radio>
             </v-radio-group>
           </v-flex>
-          <v-flex xs3>{{ $t("Domain") }}</v-flex>
+          <v-flex xs3>{{ $t("Description") }}</v-flex>
           <v-flex xs8>
-            <v-text-field></v-text-field>
+            <v-textarea v-model="contract.description"></v-textarea>
           </v-flex>
           <v-flex xs12 class="text-xs-center">
             <br />
@@ -184,7 +184,7 @@ export default {
         endDate: "",
         status: true,
         type: "",
-        domain: "",
+        description: "",
         humanResources: {},
         Engagements: {
           critical: {},
