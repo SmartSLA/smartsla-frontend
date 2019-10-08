@@ -1,5 +1,9 @@
 {
   "Close": "Close",
+  "cns.state.bypass": "Bypass",
+  "cns.state.closure": "Closure",
+  "cns.state.resolution": "Resolution",
+  "cns.state.support": "Support",
   "{days}WD {hours}WH": "{days}WD {hours}WH",
   "OpenPaaS Login": "OpenPaaS Login",
   "Login": "Login",
@@ -18,6 +22,5 @@
   "Ticket assigned to {assignedTo}": "Ticket assigned to {assignedTo}",
   "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
   "Ticket passed in status {status}": "Ticket passed in status {status}",
-  "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
   "Created by : {authorName}": "Created by : {authorName}"
 }

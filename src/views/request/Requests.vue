@@ -246,7 +246,7 @@
           <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
           <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
-            <span>{{ props.item.cnsType }}</span>
+            <span>{{ $t(cnsWording(props.item.status)) }}</span>
             <cns-progress-bar
               v-if="displayCnsProgressBar(props.item.status)"
               :ticket="props.item.request"
@@ -254,7 +254,6 @@
               :hideClock="true"
             >
             </cns-progress-bar>
-            <span v-else> {{ props.item.status }} </span>
           </td>
         </template>
       </v-data-table>
@@ -272,6 +271,14 @@ import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 const { mapState } = createNamespacedHelpers("ticket")
 
 Vue.component("downloadExcel", JsonExcel);
+
+const CNS_STATUS = {
+  new: "cns.state.support",
+  supported: "cns.state.bypass",
+  bypassed: "cns.state.resolution",
+  resolved: "cns.state.closure"
+};
+
 export default {
   data() {
     return {
@@ -901,7 +908,12 @@ export default {
     },
     displayCnsProgressBar(status) {
       return !(status === "closed" || status === "resolved");
-    }
+    },
+
+    cnsWording(status) {
+      return CNS_STATUS[status] || status;
+    },
+
   },
   created() {
     this.$auth.ready(() => {
