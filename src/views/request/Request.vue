@@ -120,9 +120,20 @@
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
-              <strong>{{ $t("Assigned to") }} :</strong>
-              {{ (request.assignedTo && request.assignedTo.name) || $t("Not assigned yet") }}
+               <strong>{{ $t("Assigned to") }} :</strong>
+            <v-chip
+              v-if="request.assignedTo && request.assignedTo.type == 'beneficiary'"
+              color="#174dc5"
+              class="my-0"
+              label
+              small
+              text-color="white"
+              >{{ request.contract.client[0] }}
+            </v-chip>
+            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+              {{ (request.assignedTo && request.assignedTo.name) || $t("not assigned yet") }}
             </v-flex>
+
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
               {{ request.lastUpdate | relativeTime }}
