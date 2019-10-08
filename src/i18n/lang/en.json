@@ -15,5 +15,8 @@
   "No interlocutor in charge of the request at the moment": "No interlocutor in charge of the request at the moment",
   "Information": "Information",
   "In process of being": "In process of being",
-  "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}"
+  "Ticket assigned to {assignedTo}": "Ticket assigned to {assignedTo}",
+  "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
+  "Ticket passed in status {status}": "Ticket passed in status {status}"
+
 }
