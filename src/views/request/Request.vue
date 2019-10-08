@@ -151,55 +151,50 @@
           <v-divider class="mt-2"></v-divider>
           <v-card>
             <v-card-text>
-              <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
-                  <v-icon>subject</v-icon>
-                </v-flex>
-                <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
-                  <div class="subject-text" v-html="request.description"></div>
-                </v-flex>
-              </v-layout>
+              <v-subheader inset class="ml-0">
+                <v-icon>subject</v-icon>
+                {{ $t("Description") }}
+              </v-subheader>
+              <div class="subject-text ml-3" v-html="request.description"></div>
             </v-card-text>
             <v-card-text v-if="ticket.participants.length">
+              <v-subheader inset class="ml-0">
+                <v-icon>email</v-icon>
+                {{ $t("Participants E-mails") }}
+              </v-subheader>
               <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1 pt-2>
-                  <v-icon class="pt-1">email</v-icon>
-                </v-flex>
-                <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
+                <v-flex xs12 class="pt-0 pl-0">
                   <v-chip v-for="(participant, index) in ticket.participants" :key="index" class="ma-2">
                     <a :href="`mailto:${participant}`">{{ participant }}</a>
                   </v-chip>
                 </v-flex>
               </v-layout>
             </v-card-text>
-            <v-card-text class="pb-0" v-if="attachments.length">
-              <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
+            <v-card-text v-if="attachments && attachments.length">
+              <v-list subheader dense>
+                <v-subheader inset class="ml-0">
                   <v-icon>attach_file</v-icon>
-                </v-flex>
-                <v-flex xs9 md11 sm8 xl9 lg10 pl-0>
-                  <v-layout>
-                    <v-flex xs10 md2 sm6 lg2 xl2 pl-0>
-                      <b>{{ $t("Attachments") }}:</b>
-                    </v-flex>
-                    <v-flex xs12 md8 sm6 lg10 xl8 pl-0>
-                      <ul v-if="attachments">
-                        <li v-for="attachment in attachments" :key="attachment.id">
-                          <a href="#" @click="downloadFile(attachment)">
-                            {{ attachment.name }}
-                          </a>
-                        </li>
-                      </ul>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
+                  {{ $t("Attachments") }}
+                </v-subheader>
+                <template v-for="(attachment, index) in attachments">
+                  <v-list-tile :key="attachment.id" ripple @click="downloadFile(attachment)">
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ attachment.name }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-list-tile-action-text>{{ attachment.timestamps.createdAt | calendarTimeFilter }}</v-list-tile-action-text>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                  <v-divider v-if="index < attachments.length - 1" :key="attachment.id"></v-divider>
+                </template>
+              </v-list>
             </v-card-text>
             <v-card-text v-if="request.linkedTickets > 0">
+              <v-subheader inset class="ml-0">
+                <v-icon>insert_link</v-icon>
+                {{ $t("Related requests") }}
+              </v-subheader>
               <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
-                  <v-icon>insert_link</v-icon>
-                </v-flex>
                 <v-flex xs12 md11 sm8 xl10 lg10 pl-0>
                   <v-layout row wrap>
                     <v-flex xs6 md2 sm6 lg2 xl2 pl-0>
@@ -562,7 +557,12 @@ export default {
     },
 
     setRequestData(request) {
-      this.attachments = request.events && request.events.map(event => event.attachments || []).flat();
+      this.attachments = request.events && request.events.map(event => {
+        return (event.attachments || []).map(attachment => {
+          attachment.timestamps = event.timestamps;
+
+          return attachment;
+      })}).flat();
       this.currentStatus = request.status;
       this.request.statusId = 1;
       this.request.files = [];
