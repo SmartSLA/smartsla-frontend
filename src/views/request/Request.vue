@@ -325,7 +325,7 @@
                           <template slot="item" slot-scope="data">
                             <v-list-tile-avatar>
                               <v-chip
-                                v-if="data.item.type == 'beneficiary'"
+                                v-if="data.item.type === 'beneficiary'"
                                 color="#174dc5"
                                 class="ma-2"
                                 label
@@ -575,7 +575,7 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      assignee: [],
+      contractUsers: [],
       connectedUser: {
         type: "expert"
       }
@@ -620,13 +620,25 @@ export default {
     },
 
     allowedAssigneeList() {
-      if (["resolved", "closed"].includes(this.currentStatus)) {
-        return this.assignee.filter(user => user.type === "beneficiary");
-      }
-      return this.assignee;
+      const assignees = this.contractUsers.map(this.getContractUserAsAssignee);
+
+      return ["resolved", "closed"].includes(this.currentStatus)
+        ? assignees.filter(assignee => assignee.type === "beneficiary")
+        : assignees;
     }
   },
   methods: {
+    getContractUserAsAssignee(contractUser) {
+      return {
+        type: contractUser.type,
+        role: contractUser.role,
+        id: contractUser.user._id,
+        _id: contractUser.user._id,
+        email: contractUser.user.preferredEmail,
+        name: contractUser.user.displayName || contractUser.user.preferredEmail
+      };
+    },
+
     setRequestData(request) {
       this.attachments = request.events && request.events.map(event => event.attachments || []).flat();
       this.currentStatus = request.status;
@@ -719,10 +731,9 @@ export default {
         this.ticket = Object.assign({}, response.data);
         this.request = Object.assign({}, response.data);
         this.setRequestData(Object.assign({}, response.data));
-      });
 
-      this.$http.listUsers().then(response => {
-        this.assignee = response.data;
+        this.$http.getContractUsers(this.request.contract._id)
+          .then(contractUsers => (this.contractUsers = contractUsers));
       });
 
       this.$http.getConnectedUserId().then(res => {
@@ -756,7 +767,7 @@ export default {
       val.length ? (el.hidden = false) : (el.hidden = true);
     }
   },
-  created() {
+  mounted() {
     this.getData();
   }
 };
