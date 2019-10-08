@@ -243,7 +243,7 @@
             <a v-else>{{ props.item.request.contract.name }}</a>
           </td>
           <td class="text-xs-center">{{ props.item.updatedAt | relativeTime }}</td>
-          <td class="text-xs-center">{{ props.item.createdAt | formatDate }}</td>
+          <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
           <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
             <span>{{ props.item.cnsType }}</span>
