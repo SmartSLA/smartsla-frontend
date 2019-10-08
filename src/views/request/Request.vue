@@ -229,7 +229,7 @@
                       <v-card-title primary-title class="pt-3">
                         <div class="flex">
                           <div class="subheading font-weight-medium">{{ event.author.name }}</div>
-                          <div class="body-1">{{ event.date | calendarTimeFilter }}</div>
+                          <div class="body-1">{{ event.timestamps.createdAt | calendarTimeFilter }}</div>
                           <div v-if="event.isPrivateComment">
                             <span class="red--text">{{ $t("private comment") }}</span>
                           </div>
