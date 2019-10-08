@@ -1,118 +1,143 @@
 import moment from "moment";
 import Vue from "vue";
 
-export { computeCns, calculateTimeSuspended, calculateWorkingMinutes, hoursBetween };
+export { computeCns, computePeriods, calculateTimeSuspended, calculateWorkingMinutes, hoursBetween };
 
+/**
+ * Compute Cns per status
+ *
+ * cns per status can be 0 if n/a
+ *
+ * @param ticket
+ * @return {{bypassed: number, supported: number, resolved: number}}
+ */
 function computeCns(ticket) {
   const cns = {
     supported: 0,
     bypassed: 0,
     resolved: 0
   };
-  const startDate = moment(ticket.timestamps.createdAt);
-  const currentDate = moment();
-  const criticalityLevel = ticket.software.critical;
+  const workingInterval = (ticket.contract.Engagements[ticket.software.critical] &&
+    ticket.contract.Engagements[ticket.software.critical].schedule) || { start: 9, end: 18 };
 
-  let workingInterval =
-    ticket.contract.Engagements[criticalityLevel] && ticket.contract.Engagements[criticalityLevel].schedule;
-  let noStop = false;
+  const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
 
-  if (workingInterval) {
-    noStop = workingInterval.end === "-" || workingInterval.start === "7d/7d";
-  } else {
-    workingInterval = {
-      start: 9,
-      end: 18
-    };
-  }
-
-  // Calculate time spent between creation and supported status.
-  const supportedActions = ticket.logs.filter(log => log.action.toLowerCase() === "supported");
-  if (supportedActions.length) {
-    const firstSupportedAction = supportedActions[0];
-
-    cns.supported = computeElapsedTimeForStatus(
-      "new",
-      startDate,
-      firstSupportedAction.date,
-      workingInterval,
-      noStop,
-      ticket.logs
-    );
-
-    // Calculate time spent between supported and bypassed
-    const bypassedActions = ticket.logs.filter(log => log.action.toLowerCase() === "bypassed");
-    if (bypassedActions.length) {
-      const firstBypassedAction = bypassedActions[0];
-
-      cns.bypassed = computeElapsedTimeForStatus(
-        "supported",
-        firstSupportedAction.date,
-        firstBypassedAction.date,
-        workingInterval,
-        noStop,
-        ticket.logs
-      );
-
-      // Calculate time spent between bypassed and resolved
-      let resolvedActions = ticket.logs.filter(log => log.action.toLowerCase() === "resolved");
-      if (resolvedActions.length) {
-        let firstResolvedAction = resolvedActions[0];
-
-        cns.resolved = computeElapsedTimeForStatus(
-          "resolved",
-          firstBypassedAction.date,
-          firstResolvedAction.date,
-          workingInterval,
-          noStop,
-          ticket.logs
-        );
-      } else {
-        // Not resolved so between bypassed and now
-
-        cns.resolved = computeElapsedTimeForStatus(
-          "bypassed",
-          firstBypassedAction.date,
-          currentDate,
-          workingInterval,
-          noStop,
-          ticket.logs
-        );
-      }
-    } else {
-      // Not bypassed so between supported and now
-
-      cns.bypassed = computeElapsedTimeForStatus(
-        "supported",
-        firstSupportedAction.date,
-        currentDate,
-        workingInterval,
-        noStop,
-        ticket.logs
-      );
-    }
-  } else {
-    // Not supported so between creation and now
-    const startsDate = moment(ticket.timestamps.createdAt);
-
-    cns.supported = computeElapsedTimeForStatus("new", startsDate, currentDate, workingInterval, noStop, ticket.logs);
-  }
+  cns.supported = computeTime(periods["new"], workingInterval);
+  cns.bypassed = computeTime(periods["supported"], workingInterval);
+  cns.resolved = computeTime(periods["bypassed"], workingInterval);
 
   return cns;
 }
 
-function computeElapsedTimeForStatus(status, startDate, endDate, workingInterval, noStop, logs) {
+/**
+ * Transform events into periods of time per status (new, supported, ...)
+ *
+ * Period can be undefined if no status change matches.
+ *
+ * When event notify a beneficiary assignment,
+ * a suspension range is created until an expert assignment occurs.
+ *
+ * Suspension are split between status if it overlaps 2 status.
+ *
+ * Any non finished period or suspension are bound to currentDate
+ *
+ * @param events List of ticket events
+ * @param ticketStartTime ticket creation time
+ * @return periods per status
+ */
+function computePeriods(events, ticketStartTime) {
+  const periods = {};
+  const orderedEvents = (events && events.sort((a, b) => new Date(b.date) - new Date(a.date))) || [];
+  const currentDate = moment();
+
+  let currentStatus = "new";
+  let currentSuspension;
+
+  periods[currentStatus] = {
+    start: moment(ticketStartTime),
+    end: currentDate,
+    suspensions: []
+  };
+
+  orderedEvents.forEach(event => {
+    const eventDate = moment(event.timestamps.createdAt);
+
+    // On status change
+    if (event.status) {
+      // End previous period
+      periods[currentStatus].end = eventDate;
+
+      currentStatus = event.status;
+
+      // Create period
+      periods[currentStatus] = {
+        start: eventDate,
+        end: currentDate,
+        suspensions: []
+      };
+
+      // If suspension, split between previous and current period
+      if (currentSuspension) {
+        currentSuspension.end = eventDate;
+
+        currentSuspension = {
+          start: eventDate,
+          end: currentDate
+        };
+
+        periods[currentStatus].suspensions.push(currentSuspension);
+      }
+    }
+
+    if (event.target) {
+      // If beneficiary create suspension if none
+      if (event.target.type === "beneficiary") {
+        if (!currentSuspension) {
+          currentSuspension = {
+            start: eventDate,
+            end: currentDate
+          };
+          periods[currentStatus].suspensions.push(currentSuspension);
+        }
+      } else {
+        // If expert, end suspension if any
+        if (currentSuspension) {
+          currentSuspension.end = eventDate;
+          currentSuspension = undefined;
+        }
+      }
+    }
+  });
+
+  return periods;
+}
+
+/**
+ * Compute spent time per period regarding working hours, holidays and customer suspensions
+ *
+ * @param period
+ * @param workingInterval
+ * @return {number} hours spent regarding contrat
+ */
+function computeTime(period, workingInterval) {
+  if (!period) {
+    return 0;
+  }
+
+  const startDate = period.start;
+  const endDate = period.end;
+  const noStop = workingInterval.end === "-" || workingInterval.start === "7d/7d";
+
   let minuteCount = 0;
 
   if (noStop) {
     minuteCount = hoursBetween(startDate, endDate) * 60;
   } else {
     minuteCount = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
-    minuteCount =
-      minuteCount - holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
-    minuteCount =
-      minuteCount - calculateTimeSuspended(logs, status, workingInterval.start, workingInterval.end);
+    minuteCount -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
+    minuteCount -= calculateTimeSuspended(period.suspensions, workingInterval.start, workingInterval.end) * 60;
   }
+
   return +moment
     .duration({ minutes: minuteCount })
     .asHours()
@@ -127,6 +152,13 @@ function hoursBetween(start, end) {
   return duration.asHours();
 }
 
+/**
+ * Compute the number of holyday days during the period
+ *
+ * @param from
+ * @param to
+ * @return {number} number of holyday days during the period
+ */
 function holidaysBetween(from, to) {
   let startYear = moment(from).year();
   let endYear = moment(to).year();
@@ -147,6 +179,11 @@ function holidaysBetween(from, to) {
   return holidays.length;
 }
 
+/**
+ * Fetches holydays
+ *
+ * @return array of holydays
+ */
 function getHolidays() {
   let holidays = [];
   holidays = require("@/assets/data/holidays.json");
@@ -157,6 +194,15 @@ function getHolidays() {
   return holidays;
 }
 
+/**
+ * Calculate working minutes for the period with office hours
+ *
+ * @param startingDate
+ * @param endingDate
+ * @param startingHour
+ * @param endingHour
+ * @return {number}
+ */
 function calculateWorkingMinutes(startingDate, endingDate, startingHour, endingHour) {
   var startWrapper = moment.utc(startingDate);
   const endWrapper = moment.utc(endingDate);
@@ -173,51 +219,20 @@ function calculateWorkingMinutes(startingDate, endingDate, startingHour, endingH
   return minutes;
 }
 
-function calculateTimeSuspended(logs, actionType, startingHour, endHour) {
+/**
+ * Sums the time spent during all customers suspensions
+ *
+ * @param suspensions
+ * @param startingHour
+ * @param endHour
+ * @return {number} suspended time in minutes
+ */
+function calculateTimeSuspended(suspensions, startingHour, endHour) {
   let suspendedTime = 0;
-  let expertActions = [];
-  let nextStageActions = [];
-  let nextActionDate = moment();
-  let actions = logs.filter(log => log.action.toLowerCase() === actionType);
-  let suspendActions = actions.filter(log => {
-    const assignedTo = log.assignedTo;
 
-    return !!(assignedTo.type && assignedTo.type === "beneficiary");
+  suspensions.forEach(suspension => {
+    suspendedTime += calculateWorkingMinutes(suspension.start, suspension.end, startingHour, endHour);
   });
-
-  for (let i = 0; i < suspendActions.length; i++) {
-    expertActions = actions.filter(
-      action =>
-        moment(action.date).isAfter(moment(suspendActions[i].date)) &&
-        action.assignedTo &&
-        action.assignedTo.type !== "beneficiary"
-    );
-
-    if (expertActions && expertActions.length) {
-      for (let j = 0; j < expertActions.length; j++) {
-        suspendedTime += calculateWorkingMinutes(
-          moment(suspendActions[i].date),
-          moment(expertActions[j].date),
-          startingHour,
-          endHour
-        );
-        break;
-      }
-    } else {
-      nextStageActions = logs.filter(
-        log => log.action !== actionType && moment(log.date).isAfter(moment(suspendActions[i].date))
-      );
-
-      if (nextStageActions && nextStageActions.length) {
-        nextActionDate = moment(nextStageActions[0].date);
-      } else {
-        nextActionDate = moment();
-      }
-
-      suspendedTime += calculateWorkingMinutes(suspendActions[i].date, nextActionDate, startingHour, endHour);
-      break;
-    }
-  }
 
   return suspendedTime;
 }
