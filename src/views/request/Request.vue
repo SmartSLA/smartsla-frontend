@@ -158,12 +158,8 @@
                   <v-icon class="pt-1">email</v-icon>
                 </v-flex>
                 <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
-                  <v-chip
-                    v-for="(participant, index) in ticket.participants"
-                    :key="index"
-                    class="ma-2"
-                  >
-                  <a :href="`mailto:${participant}`">{{ participant }}</a>
+                  <v-chip v-for="(participant, index) in ticket.participants" :key="index" class="ma-2">
+                    <a :href="`mailto:${participant}`">{{ participant }}</a>
                   </v-chip>
                 </v-flex>
               </v-layout>
@@ -495,14 +491,14 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import {VueEditor} from "vue2-editor";
-  import {Editor} from "vuetify-markdown-editor";
-  import VUpload from "vuetify-upload-component";
-  import ApplicationSettings from "@/services/application-settings";
-  import cnsProgressBar from "@/components/CnsProgressBar";
+import { mapGetters } from "vuex";
+import { VueEditor } from "vue2-editor";
+import { Editor } from "vuetify-markdown-editor";
+import VUpload from "vuetify-upload-component";
+import ApplicationSettings from "@/services/application-settings";
+import cnsProgressBar from "@/components/CnsProgressBar";
 
-  const NEXT_STATUS = {
+const NEXT_STATUS = {
   new: "supported",
   supported: "bypassed",
   bypassed: "resolved",
@@ -722,8 +718,8 @@ export default {
       }
     },
     commentFile(val) {
-      let el = this.$refs.uploadBtn.$el.querySelector('.v-list');
-      val.length ? el.hidden = false : el.hidden = true;
+      let el = this.$refs.uploadBtn.$el.querySelector(".v-list");
+      val.length ? (el.hidden = false) : (el.hidden = true);
     }
   },
   created() {
