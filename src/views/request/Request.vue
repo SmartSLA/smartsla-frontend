@@ -172,7 +172,7 @@
                 </v-flex>
               </v-layout>
             </v-card-text>
-            <v-card-text class="pb-0" v-if="attachments">
+            <v-card-text class="pb-0" v-if="attachments.length">
               <v-layout>
                 <v-flex xs1 md1 sm1 lg1 xl1>
                   <v-icon>attach_file</v-icon>
@@ -184,7 +184,7 @@
                     </v-flex>
                     <v-flex xs12 md8 sm6 lg10 xl8 pl-0>
                       <ul v-if="attachments">
-                        <li v-for="attachment in attachments">
+                        <li v-for="attachment in attachments" :key="attachment.id">
                           <a href="#" @click="downloadFile(attachment)">
                             {{ attachment.name }}
                           </a>
