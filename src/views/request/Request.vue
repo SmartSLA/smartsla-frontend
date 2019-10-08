@@ -305,7 +305,24 @@
                           v-model="newResponsible"
                           :label="$t('Assigned to')"
                           return-object
-                        ></v-select>
+                        >
+                          <template slot="item" slot-scope="data">
+                            <v-list-tile-avatar>
+                              <v-chip
+                                v-if="data.item.type == 'beneficiary'"
+                                color="#174dc5"
+                                class="ma-2"
+                                label
+                                text-color="white"
+                                >{{ request.contract.client[0] }}
+                              </v-chip>
+                              <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              {{ data.item.name }}
+                            </v-list-tile-content>
+                          </template>
+                        </v-select>
                       </v-flex>
                       <v-flex xs12 md8 sm8 xl3 lg3>
                         <v-checkbox
