@@ -15,7 +15,7 @@
             <logged-main-navigation v-if="$auth.check()" />
           </v-flex>
           <v-flex shrink>
-            <op-user-menu v-if="$auth.check()" />
+            <user-menu v-if="$auth.check()" />
           </v-flex>
         </v-layout>
       </v-toolbar>
@@ -30,7 +30,7 @@
     <div v-else>
       <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
     </div>
-    <op-snackbar />
+    <snackbar/>
   </v-app>
 </template>
 
@@ -42,9 +42,9 @@ import Snackbar from "@/components/Snackbar.vue";
 
 export default {
   components: {
-    "op-user-menu": UserMenu,
-    "logged-main-navigation": LoggedMainNavigation,
-    "op-snackbar": Snackbar,
+    UserMenu,
+    LoggedMainNavigation,
+    Snackbar
   },
   created() {
     this.$auth.ready(() => {
