@@ -29,8 +29,8 @@
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
             <v-text-field
-              v-model="contract.contact.commercial">
-            </v-text-field>
+              v-model="contract.contact.commercial"
+            ></v-text-field>
           </v-flex>
           <v-flex xs3>{{ $t("Technical contact") }}</v-flex>
           <v-flex xs8>
@@ -205,7 +205,6 @@ export default {
       endDateModel: false,
       valid: true,
       clients: [],
-      commercials: "",
       techRefs: [
         "Sacha Méline",
         "Gilberte Marcellette",

@@ -52,7 +52,7 @@
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.commercial }}</router-link>
                   </v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $t("technical Contact") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Technical Contact") }} :</div>
                   </v-flex>
                   <v-flex xs8>
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.technical }}</router-link>
