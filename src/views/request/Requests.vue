@@ -234,21 +234,23 @@
           <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.author }}</td>
           <td class="text-xs-center">
-            <router-link
+            <span
+              class="blue-color link"
               v-if="$auth.check('admin')"
-              :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
+              @click="navigate({name: 'Client', params: {id: props.item.request.contract.clientId}})"
             >
-              <a class="blue-color" href="#">{{ props.item.request.contract.client }}</a>
-            </router-link>
-            <a v-else>{{ props.item.request.contract.client }}</a>
+              {{ props.item.request.contract.client }}
+            </span>
+            <span v-else>{{ props.item.request.contract.client }}</span>
             /
-            <router-link
+            <span
+              class="blue-color link"
               v-if="$auth.check('admin')"
-              :to="{ name: 'Contract', params: { id: props.item.request.contract._id } }"
+              @click="navigate({name: 'Contract', params: {id: props.item.request.contract._id}})"
             >
-              <a class="blue-color" href="#">{{ props.item.request.contract.name }}</a>
-            </router-link>
-            <a v-else>{{ props.item.request.contract.name }}</a>
+              {{ props.item.request.contract.name }}
+            </span>
+            <span v-else>{{ props.item.request.contract.name }}</span>
           </td>
           <td class="text-xs-center">
               <v-tooltip top>
@@ -624,6 +626,11 @@ export default {
     }
   },
   methods: {
+    navigate(page) {
+      const {params: {id} , name} = page;
+      let route = this.$router.resolve({name, params: { id }});
+      window.open(route.href, '_blank');
+    },
     loadTickets() {
       this.loading = true;
       this.$store
@@ -1176,4 +1183,23 @@ span.v-chip__content {
 table.v-table tbody td {
   font-size: 12px;
 }
+
+.link {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.link:after {
+  content: '';
+  width: 0px;
+  height: 1px;
+  display: block;
+  background: #76BAF0;
+  transition: 300ms;
+}
+
+.link:hover:after {
+  width: 100%;
+}
+
 </style>
