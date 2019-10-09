@@ -171,7 +171,7 @@
               </v-layout>
             </v-card-text>
             <v-card-text v-if="attachments && attachments.length">
-              <v-list subheader dense>
+              <v-list subheader two-line>
                 <v-subheader inset class="ml-0">
                   <v-icon>attach_file</v-icon>
                   {{ $t("Attachments") }}
@@ -183,6 +183,9 @@
                     </v-list-tile-content>
                     <v-list-tile-action>
                       <v-list-tile-action-text>{{ attachment.timestamps.createdAt | calendarTimeFilter }}</v-list-tile-action-text>
+                      <v-btn icon ripple class="ma-0" @click.stop="scrollToEvent(attachment.event)">
+                        <v-icon color="grey lighten-1">info</v-icon>
+                      </v-btn>
                     </v-list-tile-action>
                   </v-list-tile>
                   <v-divider v-if="index < attachments.length - 1" :key="attachment.id"></v-divider>
@@ -221,7 +224,7 @@
               <v-tab disabled href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
-                  <v-timeline-item v-for="event in events" :key="event._id" large>
+                  <v-timeline-item v-for="event in events" :key="event._id" large :ref="`event-${event._id}`">
                     <template v-slot:icon>
                       <v-avatar>
                         <v-img :src="event.author.image"></v-img>
@@ -544,6 +547,13 @@ export default {
     }
   },
   methods: {
+    scrollToEvent(event) {
+      const element = this.$refs[`event-${event._id}`];
+
+      if (element && element[0] && element[0].$el) {
+        this.$scrollTo(element[0].$el, { offset: -80 });
+      }
+    },
     getContractUserAsAssignee(contractUser) {
       return {
         type: contractUser.type,
@@ -559,6 +569,7 @@ export default {
       this.attachments = request.events && request.events.map(event => {
         return (event.attachments || []).map(attachment => {
           attachment.timestamps = event.timestamps;
+          attachment.event = event;
 
           return attachment;
       })}).flat();

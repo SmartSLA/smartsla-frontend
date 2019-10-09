@@ -2,6 +2,7 @@ import VueAxios from "vue-axios";
 import OpenPaaS from "vue-openpaas-components";
 import Vuetify from "vuetify";
 import colors from "vuetify/es5/util/colors";
+import VueScrollTo from "vue-scrollto";
 
 import App from "@/App";
 import router from "@/router";
@@ -20,6 +21,7 @@ const defaultTheme = {
 // See for instance : https://github.com/vuetifyjs/vuetify/issues/4068#issuecomment-446988490
 function applicationInit(VueInstance, { axiosInstance = api, auth = servicesAuth, theme = defaultTheme } = {}) {
   VueInstance.use(OpenPaaS);
+  VueInstance.use(VueScrollTo);
   VueInstance.use(VueAxios, axiosInstance);
   axiosInstance.defaults.baseURL = store.state.applicationConfiguration.baseUrl;
 
