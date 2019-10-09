@@ -151,55 +151,50 @@
           <v-divider class="mt-2"></v-divider>
           <v-card>
             <v-card-text>
-              <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
-                  <v-icon>subject</v-icon>
-                </v-flex>
-                <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
-                  <div class="subject-text" v-html="request.description"></div>
-                </v-flex>
-              </v-layout>
+              <v-subheader inset class="ml-0">
+                <v-icon>subject</v-icon>
+                {{ $t("Description") }}
+              </v-subheader>
+              <div class="subject-text ml-3" v-html="request.description"></div>
             </v-card-text>
             <v-card-text v-if="ticket.participants.length">
+              <v-subheader inset class="ml-0">
+                <v-icon>email</v-icon>
+                {{ $t("Participants E-mails") }}
+              </v-subheader>
               <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1 pt-2>
-                  <v-icon class="pt-1">email</v-icon>
-                </v-flex>
-                <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
+                <v-flex xs12 class="pt-0 pl-0">
                   <v-chip v-for="(participant, index) in ticket.participants" :key="index" class="ma-2">
                     <a :href="`mailto:${participant}`">{{ participant }}</a>
                   </v-chip>
                 </v-flex>
               </v-layout>
             </v-card-text>
-            <v-card-text class="pb-0" v-if="attachments.length">
-              <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
+            <v-card-text v-if="attachments && attachments.length">
+              <v-list subheader dense>
+                <v-subheader inset class="ml-0">
                   <v-icon>attach_file</v-icon>
-                </v-flex>
-                <v-flex xs9 md11 sm8 xl9 lg10 pl-0>
-                  <v-layout>
-                    <v-flex xs10 md2 sm6 lg2 xl2 pl-0>
-                      <b>{{ $t("Attachments") }}:</b>
-                    </v-flex>
-                    <v-flex xs12 md8 sm6 lg10 xl8 pl-0>
-                      <ul v-if="attachments">
-                        <li v-for="attachment in attachments" :key="attachment.id">
-                          <a href="#" @click="downloadFile(attachment)">
-                            {{ attachment.name }}
-                          </a>
-                        </li>
-                      </ul>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
+                  {{ $t("Attachments") }}
+                </v-subheader>
+                <template v-for="(attachment, index) in attachments">
+                  <v-list-tile :key="attachment.id" ripple @click="downloadFile(attachment)">
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ attachment.name }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-list-tile-action-text>{{ attachment.timestamps.createdAt | calendarTimeFilter }}</v-list-tile-action-text>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                  <v-divider v-if="index < attachments.length - 1" :key="attachment.id"></v-divider>
+                </template>
+              </v-list>
             </v-card-text>
             <v-card-text v-if="request.linkedTickets > 0">
+              <v-subheader inset class="ml-0">
+                <v-icon>insert_link</v-icon>
+                {{ $t("Related requests") }}
+              </v-subheader>
               <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
-                  <v-icon>insert_link</v-icon>
-                </v-flex>
                 <v-flex xs12 md11 sm8 xl10 lg10 pl-0>
                   <v-layout row wrap>
                     <v-flex xs6 md2 sm6 lg2 xl2 pl-0>
@@ -388,10 +383,9 @@
             </h4>
             <v-card class="pt-2 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
-              <br />
-              <v-layout row wrap v-if="request.responsible">
-                <v-flex xs8 md8 sm6 lg8 xl6>
-                  <v-avatar size="100%" class="pl-1 avatar-width">
+              <v-layout column class="center-avatar" v-if="request.responsible">
+                <v-flex xs12>
+                  <v-avatar size="60" class="pt-3">
                     <v-img :src="`${apiUrl}/api/users/${request.responsible._id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -401,7 +395,7 @@
                 <strong>{{ $t("Contact") }} :</strong>
                 {{ request.responsible && request.responsible.name }}
                 <br />
-                <strong>{{ $t("eMail") }} :</strong>
+                <strong>{{ $t("E-mail") }} :</strong>
                 {{ request.responsible && request.responsible.email }}
               </v-card-text>
               <v-card-text v-else>
@@ -439,76 +433,6 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <!--<v-flex xs12 md12 sm12 xl12 lg12 pt-4 v-if="request.communityContribution.status">
-            <v-card light color="white">
-              <v-card light color="white pb-2 pr-4">
-                <v-card-title primary-title>
-                  <div>
-                    <h3 class="headline mb-0">
-                      {{ $t("Community contribution progress") }}
-                    </h3>
-                  </div>
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-layout class="mb-1 ml--1 mr-4">
-                  <v-flex xs2 md3 sm3 lg2 xl2 pl-0 class="green--text font-weight-bold">
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.dev
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Dev") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.reversed
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Reversed") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.integrated
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Integrated") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.published
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("published") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.rejected
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Rejected") }}</small>
-                  </v-flex>
-                </v-layout>
-                <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">
-                  {{ request.communityContribution.communityIssueLink }}
-                </a>
-              </v-card>
-            </v-card>
-          </v-flex>-->
         </v-layout>
       </v-flex>
     </v-layout>
@@ -632,7 +556,12 @@ export default {
     },
 
     setRequestData(request) {
-      this.attachments = request.events && request.events.map(event => event.attachments || []).flat();
+      this.attachments = request.events && request.events.map(event => {
+        return (event.attachments || []).map(attachment => {
+          attachment.timestamps = event.timestamps;
+
+          return attachment;
+      })}).flat();
       this.currentStatus = request.status;
       this.request.statusId = 1;
       this.request.files = [];
@@ -766,6 +695,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.center-avatar {
+  align-items: center;
+}
+
 .action-links {
   text-decoration: none;
   color: grey;
