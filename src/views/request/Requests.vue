@@ -40,6 +40,7 @@
             hide-details
             class="pa-0"
             solo
+            flat
             overflow
             item-text="value"
             item-value="key"
@@ -54,6 +55,7 @@
             class="pa-0"
             overflow
             solo
+            flat
             item-text="value"
             item-value="key"
             hide-details
@@ -65,6 +67,7 @@
             :label="$i18n.t('Values')"
             v-model="valuesFilter"
             solo
+            flat
             hide-details
             hide-selected
             class="pa-0"
@@ -90,6 +93,7 @@
             class="pa-0"
             overflow
             solo
+            flat
             return-object
             item-text="name"
           ></v-overflow-btn>
@@ -108,6 +112,7 @@
             :placeholder="$i18n.t('Search')"
             prepend-inner-icon="search"
             solo
+            flat
             clearable
             hide-details
             single-line
