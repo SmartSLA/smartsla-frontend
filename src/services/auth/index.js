@@ -8,36 +8,21 @@ export default {
     enabled: false
   },
   fetchData: {
-    url: "api/user",
+    url: "ticketing/api/user",
     method: "GET",
     enabled: true
   },
-  rolesVar: "isPlatformAdmin",
+  rolesVar: "roles",
   parseUserData(data) {
     return data;
   },
-  check(role, key) {
+  check(role) {
     if (this.watch.authenticated === true) {
       if (role === "admin") {
-        //return this.watch.data[key || this.options.rolesVar];
         return (
-          this.watch.data.preferredEmail == "hgoguelin@linagora.com" ||
-          this.watch.data.preferredEmail == "wgharbi@linagora.com" ||
-          this.watch.data.preferredEmail == "jsbevilacqua@linagora.com" ||
-          this.watch.data.preferredEmail == "dkaoua@linagora.com" ||
-          this.watch.data.preferredEmail == "sphanivon@linagora.com" ||
-          this.watch.data.preferredEmail == "kferjani@linagora.com" ||
-          this.watch.data.preferredEmail == "mmaudet@linagora.com" ||
-          this.watch.data.preferredEmail == "iabouljamal@linagora.com" ||
-          this.watch.data.preferredEmail == "fmoyon@linagora.com" ||
-          this.watch.data.preferredEmail == "arkyek@linagora.com" ||
-          this.watch.data.preferredEmail == "laublet@linagora.com" ||
-          this.watch.data.preferredEmail == "vbouiller@linagora.com" ||
-          this.watch.data.preferredEmail == "chamerling@linagora.com" ||
-          this.watch.data.preferredEmail == "nchadi@linagora.com" ||
-          this.watch.data.preferredEmail == "roubraim@linagora.com" ||
-          this.watch.data.preferredEmail == "rboyer@linagora.com" ||
-          this.watch.data[key || this.options.rolesVar]
+          this.watch.data.roles.isApplicationAdmin ||
+          this.watch.data.roles.isDomainAdmin ||
+          this.watch.data.roles.isPlatformAdmin
         );
       }
 
