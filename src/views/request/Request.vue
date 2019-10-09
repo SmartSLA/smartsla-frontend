@@ -293,10 +293,10 @@
                           :label="$t('Status')"
                         >
                           <template slot="item" slot-scope="{ item }">
-                            {{ $t(item) }}
+                            {{$t(capitalize(item))}}
                           </template>
                           <template slot="selection" slot-scope="{ item }">
-                            {{ $t(item) }}
+                             {{$t(capitalize(item))}}
                           </template>
                         </v-select>
                       </v-flex>
@@ -442,6 +442,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
+import { capitalize } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import VUpload from "vuetify-upload-component";
 import ApplicationSettings from "@/services/application-settings";
@@ -674,6 +675,11 @@ export default {
       this.privateComment = false;
       this.commentFile = [];
       this.commentFile.length = 0;
+    },
+
+    capitalize(text) {
+
+      return capitalize(text);
     }
   },
   watch: {
