@@ -61,8 +61,6 @@
             </router-link>
           </td>
           <td class="text-xs-center">{{ $t(props.item.role) }}</td>
-          <td class="text-xs-center">{{ props.item.engineer }}</td>
-          <td class="text-xs-center">{{ props.item.beneficiary }}</td>
           <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
           <td class="text-xs-center">{{ props.item.phone }}</td>
         </template>
@@ -93,18 +91,6 @@ export default {
         {
           text: this.$i18n.t("Role"),
           value: "role",
-          sortable: false,
-          class: "text-xs-center"
-        },
-        {
-          text: this.$i18n.t("Engineer"),
-          value: "engineer",
-          sortable: false,
-          class: "text-xs-center"
-        },
-        {
-          text: this.$i18n.t("Beneficiary"),
-          value: "beneficiary",
           sortable: false,
           class: "text-xs-center"
         },
