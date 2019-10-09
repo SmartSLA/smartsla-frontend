@@ -163,6 +163,8 @@
 </template>
 
 <script>
+import { routeNames } from "@/router";
+
 export default {
   name: "edit-contract-information",
   data() {
@@ -274,6 +276,7 @@ export default {
                 color: "success"
               });
               this.contract = {};
+              this.$router.push({ name: routeNames.CONTRACTS });
             }
           })
           .catch(error => {

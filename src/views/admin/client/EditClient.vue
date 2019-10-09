@@ -98,6 +98,8 @@
   </v-container>
 </template>
 <script>
+import { routeNames } from "@/router";
+
 export default {
   data() {
     return {
@@ -116,6 +118,7 @@ export default {
               color: "success"
             });
             this.client = {};
+            this.$router.push({ name: routeNames.CLIENTS });
           }
         })
         .catch(error => {
