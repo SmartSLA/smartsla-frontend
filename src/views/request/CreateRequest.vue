@@ -79,13 +79,13 @@
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
                               <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
-                              {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
+                              {{ data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
                             <template v-slot:selection="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
                               <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
-                              {{ data.item.name }} {{ data.item.version }} {{ data.item.os }}
+                              {{ data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
                           </v-autocomplete>
                         </v-flex>
@@ -147,9 +147,9 @@
                         $t(
                           "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
                           {
-                            supported: selectedEngagement.supported,
-                            bypassed: selectedEngagement.bypassed,
-                            resolved: selectedEngagement.resolved
+                            supported: cnsDurationDisplay(selectedEngagement.supported),
+                            bypassed: cnsDurationDisplay(selectedEngagement.bypassed),
+                            resolved: cnsDurationDisplay(selectedEngagement.resolved)
                           }
                         )
                       }}
@@ -316,15 +316,14 @@ export default {
       this.ticket.relatedRequests = this.linkedRequests;
       if (this.ticket.requestFile.length) {
         this.submitRequest = false;
-        let requestFile = this.ticket.requestFile[0];
-        let fileSize = requestFile.size;
-        let mimeType = requestFile.type;
-        let formData = new FormData();
+        const requestFile = this.ticket.requestFile[0];
+        const formData = new FormData();
+
         formData.append("file", requestFile);
         this.$http
-          .uploadFile(formData, mimeType, fileSize, requestFile.name)
-          .then(response => {
-            this.postRequest(response.data._id, requestFile.name);
+          .uploadFile(formData, requestFile.type, requestFile.size, requestFile.name)
+          .then(({ data }) => {
+            this.postRequest([{ _id: data._id, file: requestFile }]);
 
             this.submitRequest = true;
           })
@@ -359,14 +358,20 @@ export default {
       }
     },
 
-    postRequest(fileId = "", fileName = "") {
-      if (fileId !== "") {
-        let fileObject = {
-          name: fileName,
-          id: fileId
+    postRequest(files = []) {
+      if (files.length) {
+        const event = {
+          author: {
+            id: this.$store.state.user.user._id,
+            name: this.displayName,
+            image: this.avatarUrl
+          },
+          attachments: files.map(file => ({
+            _id: file._id, name: file.file.name, mimeType: file.file.type
+          }))
         };
-        this.ticket.files = [];
-        this.ticket.files.push(fileObject);
+
+        this.ticket.events = [event];
       }
 
       this.$http
@@ -411,11 +416,22 @@ export default {
     goToRelatedTicket(ticketID) {
       const routeData = this.$router.resolve({ path: `/requests/${ticketID}` });
       window.open(routeData.href, "_blank");
-    }
+    },
+
+    cnsDurationDisplay(durationString) {
+      const parsedDuration = this.moment.duration(durationString);
+
+      return this.$i18n.t("{days}WD {hours}WH", {
+        days: parsedDuration.days(),
+        hours: parsedDuration.hours()
+      })
+    },
   },
   computed: {
     ...mapGetters({
-      getUser: "user/getUser"
+      getUser: "user/getUser",
+      displayName: "user/getDisplayName",
+      avatarUrl: "user/getAvatarUrl",
     }),
     typeList() {
       var engagements = [];

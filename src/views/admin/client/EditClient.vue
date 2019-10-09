@@ -61,7 +61,7 @@
                 <strong>{{ $t("Help access") }} :</strong>
               </v-flex>
               <v-flex xs6>
-                <v-text-field v-model="client.codeHint"></v-text-field>
+                <v-text-field v-model="client.accessHelp"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
 

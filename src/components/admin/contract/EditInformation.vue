@@ -28,7 +28,9 @@
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="commercials" v-model="contract.contact.commercial"></v-select>
+            <v-text-field
+              v-model="contract.contact.commercial">
+            </v-text-field>
           </v-flex>
           <v-flex xs3>{{ $t("Technical contact") }}</v-flex>
           <v-flex xs8>
@@ -125,9 +127,9 @@
               <v-radio :label="$i18n.t('Unlimited')" value="unlimited"></v-radio>
             </v-radio-group>
           </v-flex>
-          <v-flex xs3>{{ $t("Domain") }}</v-flex>
+          <v-flex xs3>{{ $t("Description") }}</v-flex>
           <v-flex xs8>
-            <v-text-field></v-text-field>
+            <v-textarea v-model="contract.description"></v-textarea>
           </v-flex>
           <v-flex xs12 class="text-xs-center">
             <br />
@@ -184,7 +186,7 @@ export default {
         endDate: "",
         status: true,
         type: "",
-        domain: "",
+        description: "",
         humanResources: {},
         Engagements: {
           critical: {},
@@ -203,14 +205,7 @@ export default {
       endDateModel: false,
       valid: true,
       clients: [],
-      commercials: [
-        "André VASSILIF",
-        "Rosette Dorothée",
-        "Denise Lucrèce",
-        "Soraya Louisette",
-        "Yassin BENHADDOU",
-        "Pétronille Priscille"
-      ],
+      commercials: "",
       techRefs: [
         "Sacha Méline",
         "Gilberte Marcellette",

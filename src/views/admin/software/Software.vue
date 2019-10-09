@@ -45,10 +45,6 @@
                   {{ software.licence }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Private") }} :</strong>
-                  {{ software.private ? $t("Yes") : $t("No") }}
-                </v-flex>
-                <v-flex xs12>
                   <v-layout row wrap>
                     <v-flex xs4>
                       <strong>{{ $t("Technologies") }} :</strong>

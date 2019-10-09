@@ -57,14 +57,6 @@
               <v-flex xs8>
                 <v-select :items="licenceList"></v-select>
               </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Private") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <v-switch v-model="software.private"></v-switch>
-              </v-flex>
-              <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Technology") }} :</strong>
               </v-flex>

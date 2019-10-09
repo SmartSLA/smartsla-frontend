@@ -28,7 +28,7 @@
           <v-layout row wrap class="pt-4 px-4">
             <v-flex xs6>
               <v-layout row wrap>
-                <v-flex xs12>
+                <v-flex xs12 v-if="client.image">
                   <img :src="client.image" height="100" />
                 </v-flex>
                 <v-flex xs12>
@@ -45,11 +45,11 @@
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Access code hint") }} :</strong>
-                  {{ client.codeHint }}
+                  {{ client.accessHelp }}
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Status") }} :</strong>
-                  {{ client.status }}
+                    {{ $t(client.status) ? $t("Active") : $t("Not active") }}
                 </v-flex>
               </v-layout>
             </v-flex>
@@ -70,7 +70,25 @@ export default {
     };
   },
   created() {
-    this.client = require("@/assets/data/client.json");
+    let client_id = this.$route.params.id || null;
+    this.$http
+      .getClientById(client_id)
+      .then(response => {
+          this.client = response.data;
+          this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
+          this.$store.dispatch("sidebar/setActiveAdminMenu", "clients");
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("Failed to fetch client"),
+          color: "error"
+        });
+      });
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("sidebar/resetCurrentSideBar");
+    this.$store.dispatch("sidebar/resetAdminMenu");
+    next();
   }
 };
 </script>

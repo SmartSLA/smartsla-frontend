@@ -31,15 +31,15 @@
 
   <v-layout align-center justify-space-between row mb-4 mt-4>
     <v-flex xs5>
-      <v-toolbar dense>
+      <v-toolbar flat dense>
         <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("Filter by:") }}</v-toolbar-title>
+        <v-divider vertical></v-divider>
         <v-layout align-center justify-end>
           <v-overflow-btn
             :items="categories"
             :label="$i18n.t('Categories')"
             hide-details
-            class="pa-0"
-            solo
+            class="py-0"
             flat
             overflow
             item-text="value"
@@ -54,7 +54,6 @@
             v-model="valuesFilter"
             class="pa-0"
             overflow
-            solo
             flat
             item-text="value"
             item-value="key"
@@ -66,13 +65,13 @@
             :items="values"
             :label="$i18n.t('Values')"
             v-model="valuesFilter"
-            solo
             flat
             hide-details
             hide-selected
             class="pa-0"
             overflow
           ></v-overflow-btn>
+          <v-divider vertical></v-divider>
           <v-toolbar-side-icon @click="addNewFilter">
             <v-icon dark>add</v-icon>
           </v-toolbar-side-icon>
@@ -81,8 +80,9 @@
     </v-flex>
     <v-flex xs1></v-flex>
     <v-flex xs3>
-      <v-toolbar dense>
+      <v-toolbar flat dense>
         <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("And") }}</v-toolbar-title>
+        <v-divider vertical></v-divider>
         <v-layout align-center justify-end>
           <v-overflow-btn
             :items="savedFilters"
@@ -92,11 +92,11 @@
             hide-details
             class="pa-0"
             overflow
-            solo
             flat
             return-object
             item-text="name"
           ></v-overflow-btn>
+          <v-divider vertical></v-divider>
           <v-toolbar-side-icon @click="loadFilter">
             <v-icon dark>add</v-icon>
           </v-toolbar-side-icon>
@@ -105,17 +105,16 @@
     </v-flex>
     <v-flex xs1></v-flex>
     <v-flex xs3>
-      <v-toolbar dense>
+      <v-toolbar flat dense>
         <v-layout align-center justify-end>
           <v-text-field
             v-model="search"
-            :placeholder="$i18n.t('Search')"
             prepend-inner-icon="search"
-            solo
-            flat
+            :placeholder="$i18n.t('Search')"
             clearable
-            hide-details
-            single-line
+            solo
+            class="mt-2"
+            flat
           ></v-text-field>
         </v-layout>
       </v-toolbar>
@@ -179,9 +178,9 @@
     <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
       <v-card class="px-4 pt-2">
         <v-card-text>
-          <span class="body-2"
-            >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span
-          >
+          <span
+            class="body-2"
+          >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -221,9 +220,10 @@
             <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
-              {{ props.item._id }}
-            </router-link>
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item._id } }"
+              class="blue-color"
+            >{{ props.item._id }}</router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-badge :color="ossaColors[props.item.id_ossa]">
@@ -269,19 +269,25 @@
             </router-link>
             <a v-else>{{ props.item.request.contract.name }}</a>
           </td>
-          <td class="text-xs-center">{{ props.item.updatedAt | relativeTime }}</td>
-          <td class="text-xs-center">{{ props.item.createdAt | formatDate }}</td>
+          <td class="text-xs-center">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                    <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
+                </template>
+                <span>{{ props.item.updatedAt | formatDateFilter('llll')  }}</span>
+              </v-tooltip>
+          </td>
+          <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
           <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
-            <span>{{ props.item.cnsType }}</span>
+            <span>{{ $t(cnsWording(props.item.status)) }}</span>
             <cns-progress-bar
               v-if="displayCnsProgressBar(props.item.status)"
               :ticket="props.item.request"
               :cnsType="props.item.cnsType"
               :hideClock="true"
-            >
-            </cns-progress-bar>
-            <span v-else> {{ props.item.status }} </span>
+              @cns-calculated="collectCNS"
+            ></cns-progress-bar>
           </td>
         </template>
       </v-data-table>
@@ -292,6 +298,8 @@
 <script>
 import { mapGetters, createNamespacedHelpers } from "vuex";
 import Vue from "vue";
+import { capitalize } from "lodash";
+import moment from "moment";
 import JsonExcel from "vue-json-excel";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
@@ -299,6 +307,14 @@ import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 const { mapState } = createNamespacedHelpers("ticket")
 
 Vue.component("downloadExcel", JsonExcel);
+
+const CNS_STATUS = {
+  new: "cns.state.support",
+  supported: "cns.state.bypass",
+  bypassed: "cns.state.resolution",
+  resolved: "cns.state.closure"
+};
+
 export default {
   data() {
     return {
@@ -451,7 +467,8 @@ export default {
       storedSelectionsFilter: {},
       storedSelectionsFilterHolder: {},
       deleteBtn: false,
-      updateBtn: false
+      updateBtn: false,
+      collectedCNS: []
     };
   },
   mounted() {
@@ -493,7 +510,7 @@ export default {
         type: request.type,
         severity: request.severety,
         software: request.software,
-        softwareName: request.software && request.software.name,
+        softwareName: request.software && request.software.software && request.software.software.name,
         title: request.title,
         assignedTo: request.assignedTo && request.assignedTo.name,
         responsible: request.responsible && request.responsible.name,
@@ -540,7 +557,31 @@ export default {
 
     showDeleteBtn() {
       return this.deleteBtn;
-    }
+    },
+
+    exportData() {
+      return this.requests.map(request => ({
+        [this.$i18n.t("Id")]: request._id,
+        [this.$i18n.t("ID OSSA")]: this.$i18n.t(request.idOssa.id),
+        [this.$i18n.t("Type")]: this.$i18n.t(request.type),
+        [this.$i18n.t("Severity")]: this.$i18n.t(request.severity),
+        [this.$i18n.t("Software")]: request.software.software.name,
+        [this.$i18n.t("Version")]: request.software.version,
+        [this.$i18n.t("OS")]: request.software.os,
+        [this.$i18n.t("Title")]: request.title,
+        [this.$i18n.t("Description")]: request.description,
+        [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("not assigned yet"),
+        [this.$i18n.t("Created by")]: request.author.name,
+        [this.$i18n.t("Contract")]: request.contract.client,
+        [this.$i18n.t("Beneficiary")]: request.beneficiary.name,
+        [this.$i18n.t("Last update")]: moment(request.timestamps.updatedAt).lang(this.$i18n.locale).format('L'),
+        [this.$i18n.t("Created at")]: moment(request.timestamps.createdAt).lang(this.$i18n.locale).format('L'),
+        [this.$i18n.t("Status")]: this.$i18n.t(capitalize(request.status)),
+        [this.$i18n.t("SLA support")]: this.cns(request._id, "supported"),
+        [this.$i18n.t("SLA bypass")]: this.cns(request._id, "bypassed"),
+        [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved")
+      }));
+    },
   },
   watch: {
     categoriesFilter: function(newCategory, oldCategory) {
@@ -928,6 +969,24 @@ export default {
     },
     displayCnsProgressBar(status) {
       return !(status === "closed" || status === "resolved");
+    },
+
+    cnsWording(status) {
+      return CNS_STATUS[status] || status;
+    },
+
+    cns(ticketId, type) {
+      if (this.collectedCNS[ticketId]) {
+        return this.$i18n.t("{hours}WH / {duration}WH", {
+          hours: this.collectedCNS[ticketId].cns[type],
+          duration: this.collectedCNS[ticketId].durations[type]
+        });
+      }
+
+      return "";
+    },
+    collectCNS(value) {
+      this.collectedCNS[value.ticketId] = value;
     }
   },
   created() {
@@ -1037,7 +1096,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 
 .criticality.standard {
   background-color: #e0e0e0;
-  color black;
+  color: black;
 }
 
 .criticality.sensible {
@@ -1110,6 +1169,7 @@ div.v-input:nth-child(14) {
 
 .export-excel {
   float: right;
+  cursor: pointer;
 }
 
 .chips-elements {
@@ -1135,4 +1195,13 @@ span.v-chip__content {
 table.v-table tbody td {
   font-size: 12px;
 }
+
+nav.v-toolbar .v-toolbar__content {
+  height: auto;
+}
+
+.v-toolbar__title {
+  font-size: 15px;
+}
+
 </style>

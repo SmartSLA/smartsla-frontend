@@ -23,14 +23,6 @@
                   :rules="[() => team.name.length > 0 || $i18n.t('Required field')]"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Motto") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <v-text-field v-model="team.motto"></v-text-field>
-              </v-flex>
-              <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Email") }} :</strong>
               </v-flex>
@@ -58,102 +50,8 @@
                   multiple
                 ></v-autocomplete>
               </v-flex>
-              <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Alert system active") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <v-switch v-model="team.alertActive"></v-switch>
-              </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Hash") }} :</strong>
-              </v-flex>
-              <v-flex xs6>
-                <v-text-field v-model="team.hash"></v-text-field>
-              </v-flex>
-              <v-flex xs3>
-                <v-btn class="primary" @click.native="generateHash">{{ $t("Generate Hash") }}</v-btn>
-              </v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Test alert system active") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <v-switch v-model="team.testAlertActive"></v-switch>
-              </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Automatic Alert : Starting hour") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <v-menu
-                  ref="menu1"
-                  v-model="startTime"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  :return-value.sync="time1"
-                  lazy
-                  transition="scale-transition"
-                  offset-y
-                  full-width
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="time1"
-                      :label="$i18n.t('Picker in menu')"
-                      prepend-icon="access_time"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-time-picker
-                    v-if="startTime"
-                    v-model="time1"
-                    full-width
-                    @click:minute="$refs.menu1.save(time1)"
-                  ></v-time-picker>
-                </v-menu>
-              </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Automatic Alert : Automatic starting hour") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <v-menu
-                  ref="menu2"
-                  v-model="endTime"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  :return-value.sync="time2"
-                  lazy
-                  transition="scale-transition"
-                  offset-y
-                  full-width
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="time2"
-                      :label="$i18n.t('Picker in menu')"
-                      prepend-icon="access_time"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-time-picker
-                    v-if="endTime"
-                    v-model="time2"
-                    full-width
-                    @click:minute="$refs.menu2.save(time2)"
-                  ></v-time-picker>
-                </v-menu>
-              </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Team contracts") }} :</strong>
+                <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
               <v-flex xs8>
                 <v-autocomplete
@@ -208,14 +106,9 @@ export default {
       clients: {},
       contract: "",
       contracts: {},
-      time1: "",
-      time2: "",
-      startTime: "",
-      endTime: "",
       team: {
         members: [],
         type: "",
-        hash: "",
         name: "",
         email: "",
         client: "",
@@ -232,10 +125,6 @@ export default {
     }
   },
   methods: {
-    generateHash() {
-      this.team.hash = (+new Date()).toString(36);
-    },
-
     createTeam() {
       this.$http
         .createTeam(this.team)

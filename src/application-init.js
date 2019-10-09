@@ -9,6 +9,8 @@ import { api, auth as servicesAuth } from "@/services";
 import ApplicationSettings from "@/services/application-settings";
 import store from "@/store";
 import i18n from "@/i18n";
+import moment from "moment-timezone";
+moment.tz.setDefault("Europe/Paris");
 
 const defaultTheme = {
   primary: colors.blue
@@ -28,6 +30,8 @@ function applicationInit(VueInstance, { axiosInstance = api, auth = servicesAuth
   VueInstance.use(Vuetify, { theme });
 
   VueInstance.config.productionTip = false;
+
+  VueInstance.prototype.moment = moment;
 
   return VueInstance;
 }

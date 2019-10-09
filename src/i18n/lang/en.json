@@ -1,6 +1,11 @@
 {
   "Close": "Close",
+  "cns.state.bypass": "Bypass",
+  "cns.state.closure": "Closure",
+  "cns.state.resolution": "Resolution",
+  "cns.state.support": "Support",
   "{days}WD {hours}WH": "{days}WD {hours}WH",
+  "{hours}WH / {duration}WH": "{hours}WH / {duration}WH",
   "OpenPaaS Login": "OpenPaaS Login",
   "Login": "Login",
   "Logout": "Logout",
@@ -14,5 +19,9 @@
   },
   "No interlocutor in charge of the request at the moment": "No interlocutor in charge of the request at the moment",
   "Information": "Information",
-  "In process of being": "In process of being"
+  "In process of being": "In process of being",
+  "Ticket assigned to {assignedTo}": "Ticket assigned to {assignedTo}",
+  "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
+  "Ticket passed in status {status}": "Ticket passed in status {status}",
+  "Created by : {authorName}": "Created by : {authorName}"
 }
