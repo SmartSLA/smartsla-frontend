@@ -79,6 +79,23 @@
                   disabled
                 ></v-text-field>
               </v-flex>
+               <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <span class="title">{{ $t("Phone") }}</span>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field
+                  v-model="user.phone"
+                  disabled
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <span class="title">{{ $t("Job title") }}</span>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field v-model="user.job_title" disabled></v-text-field>
+              </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <span class="title required-label">{{ $t("Role") }}</span>
@@ -108,11 +125,11 @@
                   v-model="user.client"
                 ></v-select>
               </v-flex>
-              <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
-              <v-flex xs3 class="pt-4">
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert'">
                 <span class="title">{{ $t("Contracts") }}</span>
               </v-flex>
-              <v-flex xs8>
+              <v-flex xs8 v-if="user.type !== 'expert'">
                 <v-select
                   :items="contractList"
                   item-value="_id"
@@ -121,9 +138,7 @@
                   v-model="user.contracts"
                 ></v-select>
               </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs5></v-flex>
-              <v-flex xs2>
+              <v-flex xs12 offset-xs5>
                 <v-btn class="success" @click="validateFrom">{{ $t("Create") }}</v-btn>
               </v-flex>
             </v-layout>

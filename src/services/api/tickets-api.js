@@ -11,6 +11,10 @@ export default {
     return this.post(`/ticketing/api/tickets/${ticketId}`, options);
   },
 
+  addTicketEvent(ticketId, options) {
+    return this.put(`/ticketing/api/tickets/${ticketId}/events`, options);
+  },
+
   deleteTicket(ticketId) {
     return this.post(`/ticketing/api/tickets/${ticketId}`);
   },

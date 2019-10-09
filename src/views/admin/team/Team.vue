@@ -31,10 +31,6 @@
                   {{ team.name }}
                 </v-flex>
                 <v-flex xs12>
-                  <strong>{{ $t("Motto") }} :</strong>
-                  {{ team.motto }}
-                </v-flex>
-                <v-flex xs12>
                   <strong>{{ $t("Email") }} :</strong>
                   {{ team.email }}
                 </v-flex>
@@ -71,33 +67,6 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex xs12>
-        <v-card class="px-1 mt-4 pb-4">
-          <v-card-title primary-title class="px-2">
-            <div>
-              <h3 class="title mb-0">{{ $t("Alerts settings") }}</h3>
-            </div>
-          </v-card-title>
-          <v-divider class="mx-2"></v-divider>
-          <v-layout row wrap class="pt-4 px-4">
-            <v-flex xs12>
-              <strong>{{ $t("Alert system active") }}:</strong>
-              {{ $t(team.alertSystemActive) }}
-            </v-flex>
-            <v-flex xs12>
-              <strong>{{ $t("Automatic alert system active") }}:</strong>
-              {{ $t(team.testAlertSystemActive) }}
-            </v-flex>
-            <v-flex xs12>
-              <strong>{{ $t("Automatic alert") }}: {{ $t("Start hour") }}:</strong>
-            </v-flex>
-            <v-flex xs12>
-              <strong>{{ $t("Automatic alert") }}: {{ $t("End hour") }}:</strong>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-flex>
-      <v-flex xs4></v-flex>
     </v-layout>
   </v-container>
 </template>

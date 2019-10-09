@@ -34,6 +34,7 @@ import AdminContributions from "@/views/admin/contribution/Contributions.vue";
 import AdminContribution from "@/views/admin/contribution/Contribution.vue";
 import EditContribution from "@/views/admin/contribution/EditContribution.vue";
 import EditContract from "@/views/admin/contract/EditContract.vue";
+import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
 Vue.use(Router);
@@ -78,7 +79,8 @@ export const routeNames = Object.freeze({
   EDITCLIENT: "EditClient",
   EDITSOFTWARE: "EditSoftware",
   NEWSOFTWARE: "NewSoftware",
-  SOFTWARE: "Software"
+  SOFTWARE: "Software",
+  ADMIN_ROLES: "AdminRoles"
 });
 
 export default new Router({
@@ -210,6 +212,14 @@ export default new Router({
           path: "users",
           name: routeNames.USERS,
           component: Users,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "roles",
+          name: routeNames.ADMIN_ROLES,
+          component: AdminRoles,
           meta: {
             auth: true
           }

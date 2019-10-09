@@ -55,10 +55,10 @@
     <v-layout row wrap align-center>
       <v-flex xs1></v-flex>
       <v-flex xs12>
-        <form v-if="addCommitment" class="pt-4 px-4 mr-4 grey lighten-3">
+        <v-form v-if="addCommitment" class="pt-4 px-4 mr-4 grey lighten-3" ref="form" lazy-validation>
           <h3 class="title mb-0">{{ $t("Add commitment") }}</h3>
           <v-layout row wrap align-center>
-            <v-flex xs3>{{ $t("Request type") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Request type") }}</v-flex>
             <v-flex xs4>
               <v-select
               v-model="newCommitment.request"
@@ -67,18 +67,19 @@
               item-value="key"
               flat
               single-line
+              :rules="[() => newCommitment.request.length > 0 || $i18n.t('Required field')]"
               >
               </v-select>
             </v-flex>
-            <v-flex xs1 pl1 v-if="newCommitment.request == 'other'">
+            <v-flex xs1 pl-4 v-if="newCommitment.request === 'Other'">
               <span class="pl-1">{{ $t("or add") }}</span>
             </v-flex>
             <v-flex xs1 pl1 v-else></v-flex>
-            <v-flex xs4 v-if="newCommitment.request == 'other'">
+            <v-flex xs4 v-if="newCommitment.request === 'Other'">
               <v-text-field v-model="newRequest" requried></v-text-field>
             </v-flex>
             <v-flex xs4 v-else></v-flex>
-            <v-flex xs3>{{ $t("Severity") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Severity") }}</v-flex>
             <v-flex xs4>
               <v-select
                 v-model="newCommitment.severity"
@@ -87,6 +88,7 @@
                 item-value="key"
                 flat
                 single-line
+                :rules="[() => newCommitment.severity.length > 0 || $i18n.t('Required field')]"
               >
               </v-select>
             </v-flex>
@@ -98,7 +100,7 @@
               <v-text-field v-model="newSeverity" requried></v-text-field>
             </v-flex>
             <v-flex xs4 v-else></v-flex>
-            <v-flex xs3>{{ $t("Ossa identifier") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Ossa identifier") }}</v-flex>
             <v-flex xs4>
               <v-select 
                 v-model="newCommitment.idOssa"
@@ -107,6 +109,7 @@
                 item-value="key"
                 flat
                 single-line
+                :rules="[() => newCommitment.idOssa.length > 0 || $i18n.t('Required field')]"
               >
                 <template slot="item" slot-scope="data">
                     <v-avatar :color="data.item.color" size="25">
@@ -115,7 +118,7 @@
                     <span class="pl-2"> {{ $t(data.item.key) }} </span>
                 </template>
                 <template slot="selection" slot-scope="data">
-                   <v-avatar :color="data.item.color" size="25">
+                  <v-avatar :color="data.item.color" size="25">
                       <span class="white--text">{{ data.item.id }}</span>
                     </v-avatar>
                     <span class="pl-2"> {{ $t(data.item.key) }}  </span>
@@ -123,44 +126,68 @@
               </v-select>
             </v-flex>
             <v-flex xs5></v-flex>
-            <v-flex xs3>{{ $t("Supported") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Supported") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.supported.days" mask="###"></v-text-field>
+              <v-text-field
+                v-model="newCommitment.supported.days"
+                mask="###"
+                :rules="[() => isSetDaysOrHours(newCommitment.supported) || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("D") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.supported.hours" mask="##"></v-text-field>
+              <v-text-field
+                v-model="newCommitment.supported.hours"
+                mask="##"
+                :rules="[() => isSetDaysOrHours(newCommitment.supported) || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("H") }}</v-flex>
             <v-flex xs5></v-flex>
-            <v-flex xs3>{{ $t("Bypassed") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Bypassed") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.bypassed.days" mask="###"></v-text-field>
+              <v-text-field
+                v-model="newCommitment.bypassed.days"
+                mask="###"
+                :rules="[() => isSetDaysOrHours(newCommitment.bypassed) || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("D") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.bypassed.hours" mask="##"></v-text-field>
+              <v-text-field
+                v-model="newCommitment.bypassed.hours"
+                mask="##"
+                :rules="[() => isSetDaysOrHours(newCommitment.bypassed) || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("H") }}</v-flex>
             <v-flex xs5></v-flex>
-            <v-flex xs3>{{ $t("Resolved") }}</v-flex>
+            <v-flex xs3 class="required-label">{{ $t("Resolved") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.resolved.days" mask="###"></v-text-field>
+              <v-text-field
+                v-model="newCommitment.resolved.days"
+                mask="###"
+                :rules="[() => isSetDaysOrHours(newCommitment.resolved) || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("D") }}</v-flex>
             <v-flex xs1>
-              <v-text-field v-model="newCommitment.resolved.hours" mask="##"></v-text-field>
+              <v-text-field
+                v-model="newCommitment.resolved.hours"
+                mask="##"
+                :rules="[() => isSetDaysOrHours(newCommitment.resolved) || $i18n.t('Required field')]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1>{{ $t("H") }}</v-flex>
             <v-flex xs5></v-flex>
             <v-flex xs3></v-flex>
-            <v-flex xs9>
+            <v-flex xs9 mt-3>
               <v-btn @click="appendCommitment" class="success">{{ $t("Add commitment") }}</v-btn>
               {{ $t("or") }}
               <v-btn @click="addCommitment = !addCommitment" class="error">{{ $t("Cancel") }}</v-btn>
             </v-flex>
           </v-layout>
-        </form>
+        </v-form>
       </v-flex>
     </v-layout>
     <br />
@@ -249,13 +276,19 @@ export default {
     getOssaByKey(key) {
       return this.OSSA_IDS.find(ossaId => ossaId.key == key);
     },
+    isSetDaysOrHours({days, hours}) {
+      return days || hours ? true : false;
+    },
     removeCommitment(commitment) {
       this.engagementList.engagements = this.engagementList.engagements.filter(
         item => JSON.stringify(item) != JSON.stringify(commitment)
       );
     },
     appendCommitment() {
-      var newCommitment = Object.assign({}, this.newCommitment);
+      if (!this.$refs.form.validate())
+        return;
+     
+      let newCommitment = Object.assign({}, this.newCommitment);
       if (this.newRequest.length) {
         newCommitment.request = this.newRequest;
       }
@@ -301,7 +334,7 @@ export default {
     },
 
     getDuration(schedule) {
-      const duration = moment.duration({
+      const duration = this.moment.duration({
         hours: schedule.hours,
         days: schedule.days
       });
@@ -310,7 +343,7 @@ export default {
     },
 
     parseDuration(duration) {
-      const parsedDuration = moment.duration(duration);
+      const parsedDuration = this.moment.duration(duration);
 
       return {
         days: parsedDuration.days(),

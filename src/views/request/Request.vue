@@ -4,14 +4,6 @@
       <router-link :to="{ name: 'Requests' }">
         <button><v-icon>arrow_back</v-icon></button>
       </router-link>
-      <!-- <a href="#" disabled class="text-lg-left action-links">
-        <v-icon class="mr-2">bug_report</v-icon>
-        {{ $t("REQUEST VIEW") }}
-      </a> -->
-      <a href="#" class="action-links right">
-        <v-icon class="mr-2">backup</v-icon>
-        {{ $t("EXPORT SHEET (CSV)") }}
-      </a>
     </v-card-text>
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>
@@ -92,7 +84,7 @@
             </v-flex>
             <v-flex xs1 md1 sm1 xl1 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn color="primary" fab small dark to="#">
+                <v-btn color="primary" fab small disabled>
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -102,16 +94,16 @@
           <v-layout justify-center row fill-height wrap ml-3 class="custom-ticket-bl">
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Type") }} :</strong>
-              {{ request.type }}
+              {{ $t(request.type) }}
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Severity") }} :</strong>
-              {{ request.severity }}
+              {{ $t(request.severity) }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
-              {{ request.ticketDate }}
+              {{ request.ticketDate | formatDateFilter('llll') }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{
@@ -120,16 +112,32 @@
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
-              <strong>{{ $t("Assigned to") }} :</strong>
+               <strong>{{ $t("Assigned to") }} :</strong>
+            <v-chip
+              v-if="request.assignedTo && request.assignedTo.type == 'beneficiary'"
+              color="#174dc5"
+              class="my-0"
+              label
+              small
+              text-color="white"
+              >{{ request.contract.client[0] }}
+            </v-chip>
+            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
               {{ (request.assignedTo && request.assignedTo.name) || $t("not assigned yet") }}
             </v-flex>
+
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
-              {{ request.lastUpdate }}
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on"> {{ request.lastUpdate | relativeTime }}</span>
+                </template>
+                <span> {{ request.lastUpdate | formatDateFilter('llll')  }}</span>
+              </v-tooltip>
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
-              {{ request.software && request.software.name }}
+              {{ request.software && request.software.software.name }}
             </v-flex>
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>
@@ -143,50 +151,57 @@
           <v-divider class="mt-2"></v-divider>
           <v-card>
             <v-card-text>
+              <v-subheader inset class="ml-0">
+                <v-icon>subject</v-icon>
+                {{ $t("Description") }}
+              </v-subheader>
+              <div class="subject-text ml-3" v-html="request.description"></div>
+            </v-card-text>
+            <v-card-text v-if="ticket.participants.length">
+              <v-subheader inset class="ml-0">
+                <v-icon>email</v-icon>
+                {{ $t("Participants E-mails") }}
+              </v-subheader>
               <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
-                  <v-icon>subject</v-icon>
-                </v-flex>
-                <v-flex xs11 md9 sm10 lg10 xl9 class="pt-0 pl-0">
-                  <div class="subject-text" v-html="request.description"></div>
+                <v-flex xs12 class="pt-0 pl-0">
+                  <v-chip v-for="(participant, index) in ticket.participants" :key="index" class="ma-2">
+                    <a :href="`mailto:${participant}`">{{ participant }}</a>
+                  </v-chip>
                 </v-flex>
               </v-layout>
             </v-card-text>
-            <v-card-text class="pb-0" v-if="ticket.files.length">
-              <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
+            <v-card-text v-if="attachments && attachments.length">
+              <v-list subheader dense>
+                <v-subheader inset class="ml-0">
                   <v-icon>attach_file</v-icon>
-                </v-flex>
-                <v-flex xs9 md11 sm8 xl9 lg10 pl-0>
-                  <v-layout>
-                    <v-flex xs10 md2 sm6 lg2 xl2 pl-0>
-                      <b>{{ $t("Attachments") }}:</b>
-                    </v-flex>
-                    <v-flex xs12 md8 sm6 lg10 xl8 pl-0>
-                      <ul v-if="ticket.files.length">
-                        <li v-for="(file, key) in ticket.files" :key="key">
-                          <a href="#" @click="downloadFile(file.id, file.name)">
-                            {{ file.name }}
-                          </a>
-                        </li>
-                      </ul>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
+                  {{ $t("Attachments") }}
+                </v-subheader>
+                <template v-for="(attachment, index) in attachments">
+                  <v-list-tile :key="attachment.id" ripple @click="downloadFile(attachment)">
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ attachment.name }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-list-tile-action-text>{{ attachment.timestamps.createdAt | calendarTimeFilter }}</v-list-tile-action-text>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                  <v-divider v-if="index < attachments.length - 1" :key="attachment.id"></v-divider>
+                </template>
+              </v-list>
             </v-card-text>
-            <v-card-text v-if="request.linkedTickets.length > 0">
+            <v-card-text v-if="request.linkedTickets > 0">
+              <v-subheader inset class="ml-0">
+                <v-icon>insert_link</v-icon>
+                {{ $t("Related requests") }}
+              </v-subheader>
               <v-layout>
-                <v-flex xs1 md1 sm1 lg1 xl1>
-                  <v-icon>insert_link</v-icon>
-                </v-flex>
                 <v-flex xs12 md11 sm8 xl10 lg10 pl-0>
                   <v-layout row wrap>
                     <v-flex xs6 md2 sm6 lg2 xl2 pl-0>
                       <strong>{{ $t("Related requests") }}:</strong>
                     </v-flex>
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
-                      <ul v-if="request.linkedTickets.length > 0">
+                      <ul v-if="request.linkedTickets">
                         <li v-for="(link, key) in request.linkedTickets" :key="key">
                           <router-link target="_blank" :to="{ name: 'Request', params: { id: link.request.id } }">
                             {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
@@ -206,117 +221,134 @@
               <v-tab disabled href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
-                  <v-timeline-item v-for="comment in comments" :key="comment._id" large>
+                  <v-timeline-item v-for="event in events" :key="event._id" large>
                     <template v-slot:icon>
                       <v-avatar>
-                        <v-img :src="comment.author.image"></v-img>
+                        <v-img :src="event.author.image"></v-img>
                         <!-- TODO else generate avatar from OP API -->
                       </v-avatar>
                     </template>
                     <v-card flat class="elevation-2">
-                      <v-card-title primary-title>
+                      <v-card-title primary-title class="pt-3">
                         <div class="flex">
-                          <div class="title">{{ comment.author.name }}</div>
-                          <div class="subheading">{{ comment.date | calendarTimeFilter }}</div>
-                          <div v-if="comment.actions.isPrivateComment">
-                            <span class="red--text font-italic">{{ $t("private comment") }}</span>
-                          </div>
+                          <div class="subheading font-weight-medium">{{ event.author.name }}</div>
+                          <div class="body-1">{{ event.timestamps.createdAt | calendarTimeFilter }}</div>
+<!--                          <div v-if="event.isPrivateComment">-->
+<!--                            <span class="red&#45;&#45;text">{{ $t("private comment") }}</span>-->
+<!--                          </div>-->
                         </div>
                       </v-card-title>
-                      <v-card-text v-html="comment.body"></v-card-text>
-                      <v-card-text v-if="comment.actions" class="grey--text font-italic">
+                      <v-card-text v-if="event.comment" v-html="event.comment" class="pt-0" />
+                      <v-card-text v-if="(event.target && event.target.name) || event.status" class="grey--text pt-0">
                         <p
-                          v-if="comment.actions.assignedTo.name"
+                          v-if="event.target && event.target.name"
                           v-html="
                             $t('Ticket assigned to {assignedTo}', {
-                              assignedTo: comment.actions.assignedTo.name
+                              assignedTo: event.target.name
                             })
                           "
                         ></p>
                         <p
-                          v-if="comment.actions.newStatus"
+                          v-if="event.status"
                           v-html="
                             $t('Ticket passed in status {status}', {
-                              status: comment.actions.newStatus
+                              status: event.status
                             })
                           "
                         ></p>
                       </v-card-text>
-                      <v-card-text v-if="comment.attachedFile.name">
+                      <v-card-text v-if="event.attachments && event.attachments.length > 0" class="pt-0">
                         <v-icon>attach_file</v-icon>
-                        <a @click="downloadFile(comment.attachedFile.id, attachedFile)">
-                          {{ comment.attachedFile.name }}
+                        <a @click="downloadFile(event.attachments[0])">
+                          {{ event.attachments[0].name }}
                         </a>
                       </v-card-text>
                     </v-card>
                   </v-timeline-item>
                 </v-timeline>
-                  <v-divider></v-divider>
-                  <v-form class="comment-form">
-                    <!-- <v-btn-toggle v-model="selectedEditor">
-                      <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
-                      <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
-                    </v-btn-toggle>-->
-                    <v-input prepend-icon="subject" class="pt-2">
-                      <Editor
-                        ref="editor"
-                        :outline="true"
-                        :preview="true"
-                        v-model="comment"
-                        v-if="selectedEditor == 'markdown'"
-                      />
-                      <vue-editor v-model="comment" v-else></vue-editor>
-                      <br />
-                    </v-input>
-                    <v-input prepend-icon="no-icon" class="pt-2">
-                      <v-layout row wrap>
-                        <v-flex xs10 md8 sm8 xl3 lg2>
-                          <v-select
-                            :items="[allowedStatusList]"
-                            v-model="newStatus"
-                            :disabled="privateComment"
-                            :label="$t('Status')"
-                          >
-                            <template slot="item" slot-scope='{ item }'>
-                              {{ $t(item) }}
-                            </template>
-                            <template slot="selection" slot-scope='{ item }'>
-                              {{ $t(item) }}
-                            </template>
-                          </v-select>
-                        </v-flex>
-                        <v-flex xs10 md8 sm8 xl3 lg3>
-                          <v-select
-                            :items="assignee"
-                            :disabled="privateComment"
-                            item-text="name"
-                            v-model="newResponsible"
-                            :label="$t('Assigned to')"
-                            return-object
-                          ></v-select>
-                        </v-flex>
-                        <v-flex xs12 md8 sm8 xl3 lg3>
-                          <v-checkbox
-                            v-model="privateComment"
-                            color="primary"
-                            :label="$i18n.t('private comment')"
-                          ></v-checkbox>
-                        </v-flex>
-                        <v-flex xs12 md8 sm8 xl3 lg3>
-                          <v-upload :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
-                        </v-flex>
-                      </v-layout>
-                    </v-input>
+                <v-divider></v-divider>
+                <v-form class="comment-form">
+                  <!-- <v-btn-toggle v-model="selectedEditor">
+                    <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
+                    <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
+                  </v-btn-toggle>-->
+                  <v-input prepend-icon="subject" class="pt-2">
+                    <Editor
+                      ref="editor"
+                      :outline="true"
+                      :preview="true"
+                      v-model="comment"
+                      v-if="selectedEditor == 'markdown'"
+                    />
+                    <vue-editor v-model="comment" v-else></vue-editor>
+                    <br />
+                  </v-input>
+                  <v-input prepend-icon="no-icon" class="pt-2">
                     <v-layout row wrap>
-                      <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
-                      <v-flex xs2 md4 sm4 lg4 xl4>
-                        <v-btn color="info" class="custom-comment-btn" @click="addComment" :disabled="!commentBtn">{{
-                          $t("Add comment")
-                        }}</v-btn>
+                      <v-flex xs10 md8 sm8 xl3 lg2>
+                        <v-select
+                          :items="[allowedStatusList]"
+                          v-model="newStatus"
+                          :disabled="privateComment"
+                          :label="$t('Status')"
+                        >
+                          <template slot="item" slot-scope="{ item }">
+                            {{ $t(item) }}
+                          </template>
+                          <template slot="selection" slot-scope="{ item }">
+                            {{ $t(item) }}
+                          </template>
+                        </v-select>
                       </v-flex>
-                      <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
+                      <v-flex xs10 md8 sm8 xl3 lg3>
+                        <v-select
+                          :items="allowedAssigneeList"
+                          :disabled="privateComment"
+                          item-text="name"
+                          v-model="newResponsible"
+                          :label="$t('Assigned to')"
+                          return-object
+                        >
+                          <template slot="item" slot-scope="data">
+                            <v-list-tile-avatar>
+                              <v-chip
+                                v-if="data.item.type === 'beneficiary'"
+                                color="#174dc5"
+                                class="ma-2"
+                                label
+                                text-color="white"
+                                >{{ request.contract.client[0] }}
+                              </v-chip>
+                              <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              {{ data.item.name }}
+                            </v-list-tile-content>
+                          </template>
+                        </v-select>
+                      </v-flex>
+<!--                      <v-flex xs12 md8 sm8 xl3 lg3>-->
+<!--                        <v-checkbox-->
+<!--                          v-model="privateComment"-->
+<!--                          color="primary"-->
+<!--                          :label="$i18n.t('private comment')"-->
+<!--                        ></v-checkbox>-->
+<!--                      </v-flex>-->
+                      <v-flex xs12 md8 sm8 xl3 lg3>
+                        <v-upload ref="uploadBtn" :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
+                      </v-flex>
                     </v-layout>
-                  </v-form>
+                  </v-input>
+                  <v-layout row wrap>
+                    <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
+                    <v-flex xs2 md4 sm4 lg4 xl4>
+                      <v-btn color="info" class="custom-comment-btn" @click="addEvent" :disabled="!commentBtn">{{
+                        $t("Add comment")
+                      }}</v-btn>
+                    </v-flex>
+                    <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
+                  </v-layout>
+                </v-form>
               </v-tab-item>
               <v-tab-item value="satisfaction">
                 <v-card flat>
@@ -351,10 +383,9 @@
             </h4>
             <v-card class="pt-2 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
-              <br />
-              <v-layout row wrap v-if="request.responsible">
-                <v-flex xs8 md8 sm6 lg8 xl6>
-                  <v-avatar size="100%" class="pl-1 avatar-width">
+              <v-layout column class="center-avatar" v-if="request.responsible">
+                <v-flex xs12>
+                  <v-avatar size="60" class="pt-3">
                     <v-img :src="`${apiUrl}/api/users/${request.responsible._id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -364,7 +395,7 @@
                 <strong>{{ $t("Contact") }} :</strong>
                 {{ request.responsible && request.responsible.name }}
                 <br />
-                <strong>{{ $t("eMail") }} :</strong>
+                <strong>{{ $t("E-mail") }} :</strong>
                 {{ request.responsible && request.responsible.email }}
               </v-card-text>
               <v-card-text v-else>
@@ -402,76 +433,6 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <!--<v-flex xs12 md12 sm12 xl12 lg12 pt-4 v-if="request.communityContribution.status">
-            <v-card light color="white">
-              <v-card light color="white pb-2 pr-4">
-                <v-card-title primary-title>
-                  <div>
-                    <h3 class="headline mb-0">
-                      {{ $t("Community contribution progress") }}
-                    </h3>
-                  </div>
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-layout class="mb-1 ml--1 mr-4">
-                  <v-flex xs2 md3 sm3 lg2 xl2 pl-0 class="green--text font-weight-bold">
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.dev
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Dev") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.reversed
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Reversed") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.integrated
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Integrated") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.published
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("published") }}</small>
-                  </v-flex>
-                  <v-flex xs2 md3 sm3 lg2 xl2 ml-3 pl-0>
-                    <v-icon
-                      class="progress-arrow"
-                      :class="{
-                        'green--text': request.communityContribution.status.rejected
-                      }"
-                      >label_important</v-icon
-                    >
-                    <small>{{ $t("Rejected") }}</small>
-                  </v-flex>
-                </v-layout>
-                <h3>{{ $t("Community contribution form") }}:</h3>
-                <a :href="request.communityContribution.communityIssueLink">
-                  {{ request.communityContribution.communityIssueLink }}
-                </a>
-              </v-card>
-            </v-card>
-          </v-flex>-->
         </v-layout>
       </v-flex>
     </v-layout>
@@ -485,7 +446,6 @@ import { Editor } from "vuetify-markdown-editor";
 import VUpload from "vuetify-upload-component";
 import ApplicationSettings from "@/services/application-settings";
 import cnsProgressBar from "@/components/CnsProgressBar";
-import moment from "moment";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -497,8 +457,9 @@ const NEXT_STATUS = {
 export default {
   data() {
     return {
+      attachments: [],
       ticket: {
-        comments: []
+        events: []
       },
       cnsSupported: 0,
       cnsBypassed: 0,
@@ -511,13 +472,13 @@ export default {
       commentBtn: true,
       selectedEditor: "wysiwyg",
       privateComment: false,
-      panel: [true, true],
-      comments: [],
+      events: [],
       newStatus: "",
       newResponsible: "",
+      newEvent: {},
       request: {
         statusId: 2,
-        comments: []
+        events: []
       },
       commentFile: [],
       comment: "",
@@ -530,7 +491,7 @@ export default {
         tabSize: 2,
         indentUnit: 2
       },
-      assignee: [],
+      contractUsers: [],
       connectedUser: {
         type: "expert"
       }
@@ -549,7 +510,6 @@ export default {
       displayName: "user/getDisplayName",
       getUser: "user/getUser"
     }),
-
     ticketStatusId() {
       if (this.ticket.status) {
         switch (this.ticket.status.toLowerCase()) {
@@ -573,33 +533,60 @@ export default {
       const currentStatus = this.currentStatus.toLowerCase();
 
       return NEXT_STATUS[currentStatus];
+    },
+
+    allowedAssigneeList() {
+      const assignees = this.contractUsers.map(this.getContractUserAsAssignee);
+
+      return ["resolved", "closed"].includes(this.currentStatus)
+        ? assignees.filter(assignee => assignee.type === "beneficiary")
+        : assignees;
     }
   },
   methods: {
+    getContractUserAsAssignee(contractUser) {
+      return {
+        type: contractUser.type,
+        role: contractUser.role,
+        id: contractUser.user._id,
+        _id: contractUser.user._id,
+        email: contractUser.user.preferredEmail,
+        name: contractUser.user.displayName || contractUser.user.preferredEmail
+      };
+    },
+
     setRequestData(request) {
+      this.attachments = request.events && request.events.map(event => {
+        return (event.attachments || []).map(attachment => {
+          attachment.timestamps = event.timestamps;
+
+          return attachment;
+      })}).flat();
       this.currentStatus = request.status;
       this.request.statusId = 1;
       this.request.files = [];
-      this.request.lastUpdate = new Date(request.timestamps.updatedAt).toDateString();
-      this.request.ticketDate = new Date(request.timestamps.createdAt).toDateString();
+      this.request.lastUpdate = new Date(request.timestamps.updatedAt);
+      this.request.ticketDate = new Date(request.timestamps.createdAt);
       this.request.subject = request.description;
-      this.comments = request.comments;
-      this.panel = request.comments.map(() => true);
+      this.events = request.events;
       this.request.linkedTickets = request.relatedRequests;
       this.request.communityContribution = {};
     },
-    addComment() {
+    addEvent() {
       if (this.commentFile.length) {
         this.commentBtn = false;
         let commentFile = this.commentFile[0];
-        let fileSize = commentFile.size;
-        let mimeType = commentFile.type;
         let formData = new FormData();
         formData.append("file", commentFile);
         this.$http
-          .uploadFile(formData, mimeType, fileSize, commentFile.name)
+          .uploadFile(formData, commentFile.type, commentFile.size, commentFile.name)
           .then(response => {
-            this.postComment(response.data._id, commentFile.name);
+            const attachement = {
+              _id: response.data._id,
+              name: commentFile.name,
+              mimeType: commentFile.type
+            };
+            this.postEvent(attachement);
             this.commentBtn = true;
             this.commentFile = [];
           })
@@ -611,66 +598,36 @@ export default {
             this.commentBtn = true;
           });
       } else {
-        this.postComment();
+        this.postEvent();
       }
     },
-    postComment(fileId = "", fileName = "") {
-      this.ticket.comments.push({
-        date: new Date(),
-        body: this.comment,
+    postEvent(attachement) {
+      this.newEvent = {
         author: {
           id: this.$store.state.user.user._id,
           name: this.displayName,
           image: this.avatarUrl
-        },
-        attachedFile: {
-          id: fileId,
-          name: fileName,
-          mimeType: this.commentFile.length ? this.commentFile[0].type : ""
-        },
-        actions: {
-          assignedTo: this.newResponsible,
-          newStatus: this.newStatus,
-          isPrivateComment: this.privateComment
-        },
-        isBeneficiary: this.connectedUser.type === "beneficiary"
-      });
-      if (this.newStatus) {
-        this.ticket.status = this.newStatus;
-      }
-      if (this.ticket.logs && this.ticket.logs.length) {
-        let previousLog = this.ticket.logs[this.ticket.logs.length - 1];
-        if (
-          previousLog.assignedTo &&
-          previousLog.assignedTo.type == "beneficiary" &&
-          this.newResponsible.type == "beneficiary"
-        ) {
-          // What is that for ?
-        } else {
-          this.ticket.logs.push({
-            action: this.newStatus || this.ticket.status,
-            author: this.$store.state.user.user._id,
-            date: moment().toISOString(),
-            assignedTo: this.newResponsible
-          });
         }
-      } else {
-        this.ticket.logs.push({
-          action: this.newStatus || this.ticket.status,
-          author: this.$store.state.user.user._id,
-          date: moment().toISOString(),
-          assignedTo: this.newResponsible
-        });
+      };
+
+      this.newEvent.comment = this.comment;
+
+      if (attachement) {
+        this.newEvent.attachments = [attachement];
       }
+
+      this.newEvent.status = this.newStatus;
+
+      this.newEvent.target = this.newResponsible;
+
       this.$http
-        .updateTicket(this.ticket._id, this.ticket)
+        .addTicketEvent(this.ticket._id, this.newEvent)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("updated"),
             color: "success"
           });
           this.resetComment();
-          this.panel.push(true);
           this.getData();
         })
         .catch(error => {
@@ -680,12 +637,12 @@ export default {
           });
         });
     },
-    downloadFile(fileId, fileName) {
-      this.$http.downloadFile(fileId).then(response => {
+    downloadFile({ _id, name }) {
+      this.$http.downloadFile(_id).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", fileName); //or any other extension
+        link.setAttribute("download", name); //or any other extension
         document.body.appendChild(link);
         link.click();
       });
@@ -695,10 +652,9 @@ export default {
         this.ticket = Object.assign({}, response.data);
         this.request = Object.assign({}, response.data);
         this.setRequestData(Object.assign({}, response.data));
-      });
 
-      this.$http.listUsers().then(response => {
-        this.assignee = response.data;
+        this.$http.getContractUsers(this.request.contract._id)
+          .then(contractUsers => (this.contractUsers = contractUsers));
       });
 
       this.$http.getConnectedUserId().then(res => {
@@ -716,24 +672,33 @@ export default {
       this.comment = "";
       this.newResponsible = "";
       this.privateComment = false;
+      this.commentFile = [];
+      this.commentFile.length = 0;
     }
-
   },
   watch: {
-    privateComment(value) {
-      if (value) {
-        this.newStatus = "";
-        this.newResponsible = "";
-      }
+    // privateComment(value) {
+    //   if (value) {
+    //     this.newStatus = "";
+    //     this.newResponsible = "";
+    //   }
+    // },
+    commentFile(val) {
+      let el = this.$refs.uploadBtn.$el.querySelector(".v-list");
+      val.length ? (el.hidden = false) : (el.hidden = true);
     }
   },
-  created() {
+  mounted() {
     this.getData();
   }
 };
 </script>
 
 <style lang="stylus" scoped>
+.center-avatar {
+  align-items: center;
+}
+
 .action-links {
   text-decoration: none;
   color: grey;
@@ -847,11 +812,6 @@ export default {
   border-left-color: #fa5ba5;
 }
 
-.v-expansion-panel.theme--light, .v-expansion-panel__container {
-  border: none !important;
-  box-shadow: none !important;
-}
-
 .comment-mine {
   background-color: #eaf6ff !important;
   border-radius: 20px !important;
@@ -904,7 +864,7 @@ export default {
 }
 
 .nobottomshadow {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 rgba(0, 0, 0, 0.2), 0px 0px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
 .avatar-width {
@@ -950,10 +910,6 @@ export default {
 
 .v-input__icon.v-input__icon--prepend {
   margin: 0px !important;
-}
-
-.v-card__text {
-  padding-top: 16px !important;
 }
 
 .layout.row.wrap {

@@ -46,15 +46,5 @@
       "id": 7,
       "name": "contract 8"
     }
-  ],
-  "alertSettings": {
-    "active": "yes",
-    "url": "https://08000linux.com",
-    "urlPage": "Page d'alerte pour l'equipe ossa",
-    "autoAlertActive": "yes",
-    "autoAlert": {
-      "start": "7:00",
-      "end": "7:30"
-    }
-  }
+  ]
 }

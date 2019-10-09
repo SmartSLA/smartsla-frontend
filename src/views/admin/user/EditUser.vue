@@ -36,13 +36,6 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Position") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <v-text-field v-model="user.position" :disabled="isEdit"></v-text-field>
-              </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
                 <strong class="required-label">{{ $t("Email") }} :</strong>
               </v-flex>
               <v-flex xs8>
@@ -54,25 +47,20 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong class="required-label">{{ $t("Phone") }} :</strong>
+                <strong>{{ $t("Phone") }} :</strong>
               </v-flex>
               <v-flex xs8>
                 <v-text-field
                   v-model="user.phone"
-                  :rules="[() => user.phone.length > 0 || $i18n.t('Required field')]"
                   :disabled="isEdit"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong class="required-label">{{ $t("Identifier") }} :</strong>
+                <strong>{{ $t("Job title") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field
-                  v-model="user.identifier"
-                  :rules="[() => user.identifier.length > 0 || $i18n.t('Required field')]"
-                  :disabled="isEdit"
-                ></v-text-field>
+                <v-text-field v-model="user.job_title" :disabled="isEdit"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -164,9 +152,8 @@ export default {
         contracts: "",
         client: "",
         role: "",
-        identifier: "",
         phone: "",
-        position: ""
+        job_title: ""
       },
       openDialog: false
     };

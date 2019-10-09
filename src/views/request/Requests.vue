@@ -17,7 +17,7 @@
           <span>{{ $t("Delete filter") }}</span>
         </a>
       </div>
-      <download-excel :data="requests" class="export-excel">
+      <download-excel :data="exportData" class="export-excel">
         <v-icon class="mr-2">backup</v-icon>
         <span>{{ $t("EXPORT SHEET") }}</span>
       </download-excel>
@@ -106,7 +106,12 @@
     <div v-if="customFilters.length > 0" class="filter-save mt-2">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <a href="#" class="font-italic blue--text action-links ml-2" v-on="on" v-show="isNewFilter || updateBtn">
+          <a
+            href="#"
+            class="font-italic blue--text action-links ml-2"
+            v-on="on"
+            v-show="isNewFilter || updateBtn"
+          >
             <v-icon class="mr-2 blue--text">playlist_add</v-icon>
             {{ $i18n.t("Create new filter") }}
           </a>
@@ -131,8 +136,10 @@
           </a>
         </template>
 
-        <v-card class="px-4">
-          <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
+        <v-card class="px-0">
+          <v-card-title class="headline grey lighten-3" primary-title>
+            {{ $i18n.t("Save filter") }}
+          </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
@@ -152,9 +159,9 @@
     <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
       <v-card class="px-4 pt-2">
         <v-card-text>
-          <span class="body-2"
-            >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span
-          >
+          <span
+            class="body-2"
+          >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -194,9 +201,10 @@
             <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
           <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
-              {{ props.item._id }}
-            </router-link>
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item._id } }"
+              class="blue-color"
+            >{{ props.item._id }}</router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-avatar :color="getOssaConfById(props.item.id_ossa).color" size="25">
@@ -240,19 +248,25 @@
             </router-link>
             <a v-else>{{ props.item.request.contract.name }}</a>
           </td>
-          <td class="text-xs-center">{{ props.item.updatedAt | relativeTime }}</td>
-          <td class="text-xs-center">{{ props.item.createdAt | formatDate }}</td>
+          <td class="text-xs-center">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                    <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
+                </template>
+                <span>{{ props.item.updatedAt | formatDateFilter('llll')  }}</span>
+              </v-tooltip>
+          </td>
+          <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
           <td class="text-xs-center">{{ $t(props.item.status) }}</td>
           <td class="text-xs-center">
-            <span>{{ props.item.cnsType }}</span>
+            <span>{{ $t(cnsWording(props.item.status)) }}</span>
             <cns-progress-bar
               v-if="displayCnsProgressBar(props.item.status)"
               :ticket="props.item.request"
               :cnsType="props.item.cnsType"
               :hideClock="true"
-            >
-            </cns-progress-bar>
-            <span v-else> {{ props.item.status }} </span>
+              @cns-calculated="collectCNS"
+            ></cns-progress-bar>
           </td>
         </template>
       </v-data-table>
@@ -263,6 +277,8 @@
 <script>
 import { mapGetters, createNamespacedHelpers } from "vuex";
 import Vue from "vue";
+import { capitalize } from "lodash";
+import moment from "moment";
 import JsonExcel from "vue-json-excel";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
@@ -271,6 +287,14 @@ import { OSSA_IDS } from '@/constants.js';
 const { mapState } = createNamespacedHelpers("ticket")
 
 Vue.component("downloadExcel", JsonExcel);
+
+const CNS_STATUS = {
+  new: "cns.state.support",
+  supported: "cns.state.bypass",
+  bypassed: "cns.state.resolution",
+  resolved: "cns.state.closure"
+};
+
 export default {
   data() {
     return {
@@ -418,7 +442,8 @@ export default {
       storedSelectionsFilter: {},
       storedSelectionsFilterHolder: {},
       deleteBtn: false,
-      updateBtn: false
+      updateBtn: false,
+      collectedCNS: []
     };
   },
   mounted() {
@@ -460,7 +485,7 @@ export default {
         type: request.type,
         severity: request.severety,
         software: request.software,
-        softwareName: request.software && request.software.name,
+        softwareName: request.software && request.software.software && request.software.software.name,
         title: request.title,
         assignedTo: request.assignedTo && request.assignedTo.name,
         responsible: request.responsible && request.responsible.name,
@@ -507,7 +532,31 @@ export default {
 
     showDeleteBtn() {
       return this.deleteBtn;
-    }
+    },
+
+    exportData() {
+      return this.requests.map(request => ({
+        [this.$i18n.t("Id")]: request._id,
+        [this.$i18n.t("ID OSSA")]: this.$i18n.t(request.idOssa.id),
+        [this.$i18n.t("Type")]: this.$i18n.t(request.type),
+        [this.$i18n.t("Severity")]: this.$i18n.t(request.severity),
+        [this.$i18n.t("Software")]: request.software.software.name,
+        [this.$i18n.t("Version")]: request.software.version,
+        [this.$i18n.t("OS")]: request.software.os,
+        [this.$i18n.t("Title")]: request.title,
+        [this.$i18n.t("Description")]: request.description,
+        [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("not assigned yet"),
+        [this.$i18n.t("Created by")]: request.author.name,
+        [this.$i18n.t("Contract")]: request.contract.client,
+        [this.$i18n.t("Beneficiary")]: request.beneficiary.name,
+        [this.$i18n.t("Last update")]: moment(request.timestamps.updatedAt).lang(this.$i18n.locale).format('L'),
+        [this.$i18n.t("Created at")]: moment(request.timestamps.createdAt).lang(this.$i18n.locale).format('L'),
+        [this.$i18n.t("Status")]: this.$i18n.t(capitalize(request.status)),
+        [this.$i18n.t("SLA support")]: this.cns(request._id, "supported"),
+        [this.$i18n.t("SLA bypass")]: this.cns(request._id, "bypassed"),
+        [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved")
+      }));
+    },
   },
   watch: {
     categoriesFilter: function(newCategory, oldCategory) {
@@ -899,6 +948,24 @@ export default {
     getOssaConfById(ossaId) {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
     },
+
+    cnsWording(status) {
+      return CNS_STATUS[status] || status;
+    },
+
+    cns(ticketId, type) {
+      if (this.collectedCNS[ticketId]) {
+        return this.$i18n.t("{hours}WH / {duration}WH", {
+          hours: this.collectedCNS[ticketId].cns[type],
+          duration: this.collectedCNS[ticketId].durations[type]
+        });
+      }
+
+      return "";
+    },
+    collectCNS(value) {
+      this.collectedCNS[value.ticketId] = value;
+    }
   },
   created() {
     this.$auth.ready(() => {
@@ -1007,7 +1074,7 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placehold
 
 .criticality.standard {
   background-color: #e0e0e0;
-  color black;
+  color: black;
 }
 
 .criticality.sensible {
@@ -1080,6 +1147,7 @@ div.v-input:nth-child(14) {
 
 .export-excel {
   float: right;
+  cursor: pointer;
 }
 
 .chips-elements {

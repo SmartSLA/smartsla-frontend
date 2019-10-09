@@ -14,9 +14,10 @@
                 </div>
               </v-card-title>
             </v-flex>
+            <!-- Deactivate edit button on user detail page issues/#281 -->
             <v-flex xs2>
               <div class="text-xs-right grey--text pt-3">
-                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: user._id } }">
+                <v-btn disabled color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: user._id } }">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>

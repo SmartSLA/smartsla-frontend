@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "hash-sum": "^1.0.2",
     "marked": "^0.6.2",
+    "moment-timezone": "^0.5.26",
     "node-emoji": "^1.10.0",
     "punycode": "^2.1.1",
     "strip-ansi": "^5.2.0",

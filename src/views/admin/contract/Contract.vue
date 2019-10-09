@@ -77,12 +77,6 @@
                     <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
-                  <v-flex xs4>
-                    <div class="subheading font-weight-medium">
-                      {{ $t("requests shared among the beneficiaries") }} :
-                    </div>
-                  </v-flex>
-                  <v-flex xs8>{{ contract.sharedRequests ? $t("yes") : $t("no") }}</v-flex>
                 </v-layout>
               </v-card-text>
               <v-layout row wrap align-end>
@@ -124,7 +118,7 @@
                 <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
                   <template v-slot:items="props">
                     <td class="text-xs-center">
-                      <router-link to="#">{{ props.item.name }}</router-link>
+                      <router-link to="#">{{ props.item.software.name }}</router-link>
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
                     <td class="text-xs-center">{{ props.item.os }}</td>
@@ -165,7 +159,7 @@
                       <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>{{
                         $t("critical")
                       }}</v-chip
-                      >:
+                      >
                       <span v-if="contract.Engagements.critical.schedule">
                         {{
                           contract.Engagements.critical.schedule.end == "-"
@@ -206,9 +200,9 @@
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -224,7 +218,7 @@
                       <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>{{
                         $t("sensible")
                       }}</v-chip
-                      >:
+                      >
                       <span v-if="contract.Engagements.sensible.schedule">
                         {{
                           contract.Engagements.sensible.schedule.end == "-"
@@ -265,9 +259,9 @@
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -283,7 +277,7 @@
                       <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>{{
                         $t("standard")
                       }}</v-chip
-                      >:
+                      >
                       <span v-if="contract.Engagements.standard.schedule">
                         {{
                           contract.Engagements.standard.schedule.end == "-"
@@ -334,6 +328,10 @@
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
                     <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
+                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
+                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -352,6 +350,7 @@
                 <div class="text-xs-right grey--text">
                   <v-btn
                     color="primary"
+                    disabled
                     fab
                     small
                     dark
@@ -363,21 +362,14 @@
               </v-flex>
             </v-layout>
           </v-card-title>
-          <v-card-text>
-            <div class="subheading font-weight-regular pb-2">{{ $t("beneficiaries") }} :</div>
-            <ul class="pb-2 grey--text">
-              <li v-for="beneficiary in contract.humanResources.beneficiaries" :key="beneficiary.id">
-                <router-link to="#">{{ beneficiary.name }}</router-link>
-              </li>
-            </ul>
-            <v-divider class="ml-1 mr-1 pb-2"></v-divider>
-            <div class="subheading font-weight-regular">{{ $t("Teams") }} :</div>
-            <ul ul class="pb-2 grey--text">
-              <li v-for="team in contract.humanResources.teams" :key="team.id">
-                <router-link to="#">{{ team.name }}</router-link>
-              </li>
-            </ul>
-          </v-card-text>
+          <v-list two-line dense>
+            <template v-if="customers.length">
+              <v-subheader>
+                {{ $t("Beneficiaries") }}
+              </v-subheader>
+              <users-list :users="customers"/>
+            </template>
+          </v-list>
         </v-card>
       </v-flex>
     </v-layout>
@@ -386,11 +378,14 @@
 
 <script>
 import { OSSA_IDS } from '@/constants.js';
+import UsersList from "@/components/user/UsersList.vue";
+import moment from "moment";
 
 export default {
   data() {
     return {
-      contract: {}
+      contract: {},
+      contractUsers: null
     };
   },
   computed: {
@@ -419,13 +414,16 @@ export default {
         { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
         { text: this.$i18n.t("Id OSSA"), value: "idOssa", sortable: false },
         {
-          text: this.$i18n.t("prise en charge"),
+          text: this.$i18n.t("Support"),
           value: "supported",
           sortable: false
         },
         { text: this.$i18n.t("Bypassed"), value: "bypassed", sortable: false },
         { text: this.$i18n.t("Resolved"), value: "resolved", sortable: false }
       ];
+    },
+    customers() {
+      return this.getUsersWithRole("customer");
     }
   },
   created() {
@@ -436,12 +434,21 @@ export default {
         this.contract = response.data;
       })
       .catch(error => {
-        s;
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch contract"),
           color: "error"
         });
       });
+
+      this.$http.getContractUsers(contractId)
+        .then(users => this.contractUsers = users)
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to fetch users"),
+            color: "error"
+          });
+        });
+
   },
   methods: {
     getOssaByKey(key) {
@@ -449,6 +456,12 @@ export default {
     },
     edit() {
       return;
+    },
+
+    getUsersWithRole(role) {
+      return (this.contractUsers || [])
+        .filter(contractUsers => contractUsers.role === role)
+        .map(reader => (reader.user));
     },
 
     critColor(critLevel) {
@@ -489,12 +502,24 @@ export default {
 
     standardContractualCommitment() {
       return this.contract.Engagements.standard.engagements || [];
+    },
+
+    parseDuration(duration) {
+      const parsedDuration = moment.duration(duration);
+
+      return {
+        days: parsedDuration.days(),
+        hours: parsedDuration.hours()
+      };
     }
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
       this.$router.push("/403");
     }
+  },
+  components: {
+    UsersList
   }
 };
 </script>

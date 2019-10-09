@@ -3,164 +3,160 @@
     <v-layout row wrap>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title @click.prevent="goTusers">
-            <v-icon x-large>people</v-icon>
-            <h3 class="headline mb-0">{{ $t("Users") }}</h3>
+          <v-card-title>
+            <v-badge left>
+              <template v-slot:badge>
+                <span>{{ userCount }}</span>
+              </template>
+              <div>
+                <h3 class="headline mb-0">
+                  <v-icon x-large>people</v-icon>
+                  {{ $t("Users") }}
+                </h3>
+              </div>
+            </v-badge>
+            <v-spacer></v-spacer>
+            <v-btn icon fab :to="{name: routeNames.USERS}">
+              <v-icon>list</v-icon>
+            </v-btn>
+            <v-btn icon fab :to="{name: routeNames.NEWUSER}">
+              <v-icon>add</v-icon>
+            </v-btn>
           </v-card-title>
-          <div>
-            <ul>
-              <li>{{ $t("Total number: ") }} {{ userCount }}</li>
-              <li>{{ $t("Last created at: ") }}{{ new Date(userCreationDate).toLocaleDateString() }}</li>
-            </ul>
-          </div>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex>
-                <v-btn
-                  color="blue-background-color white-color"
-                  :to="{ name: 'NewUser' }"
-                  class="users-actions white-color custom-btn-action"
-                >
-                  <span>{{ $t("Add user") }}</span>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title @click.prevent="goToteams">
-            <v-icon x-large>people_outline</v-icon>
-            <h3 class="headline mb-0">{{ $t("Teams") }}</h3>
+          <v-card-title>
+            <v-badge left>
+              <template v-slot:badge>
+                <span>{{ teamCount }}</span>
+              </template>
+              <div>
+                <h3 class="headline mb-0">
+                  <v-icon x-large>people_outline</v-icon>
+                  {{ $t("Teams") }}
+                </h3>
+              </div>
+            </v-badge>
+            <v-spacer></v-spacer>
+            <v-btn icon fab :to="{name: routeNames.TEAMS}">
+              <v-icon>list</v-icon>
+            </v-btn>
+            <v-btn icon fab :to="{name: routeNames.NEWTEAM}">
+              <v-icon>add</v-icon>
+            </v-btn>
           </v-card-title>
-          <div>
-            <ul>
-              <li>{{ $t("Total number: ") }}{{ teamCount }}</li>
-              <li>{{ $t("Last created at: ") }}{{ new Date(teamCreationDate).toLocaleDateString() }}</li>
-            </ul>
-          </div>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex>
-                <v-btn
-                  color="blue-background-color white-color"
-                  :to="{ name: 'NewTeam' }"
-                  class="users-actions white-color custom-btn-action"
-                >
-                  <span>{{ $t("Add team") }}</span>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title @click.prevent="goToclients">
-            <v-icon x-large>account_box</v-icon>
-            <h3 class="headline mb-0">{{ $t("Clients") }}</h3>
+          <v-card-title>
+            <v-badge left>
+              <template v-slot:badge>
+                <span>{{ clientCount }}</span>
+              </template>
+              <div>
+                <h3 class="headline mb-0">
+                  <v-icon x-large>account_box</v-icon>
+                  {{ $t("Clients") }}
+                </h3>
+              </div>
+            </v-badge>
+            <v-spacer></v-spacer>
+            <v-btn icon fab :to="{name: routeNames.CLIENTS}">
+              <v-icon>list</v-icon>
+            </v-btn>
+            <v-btn icon fab :to="{name: routeNames.NEWCLIENT}">
+              <v-icon>add</v-icon>
+            </v-btn>
           </v-card-title>
-          <div>
-            <ul>
-              <li>{{ $t("Total number: ") }}{{ clientCount }}</li>
-              <li>{{ $t("Last created at: ") }}{{ new Date(clientCreationDate).toLocaleDateString() }}</li>
-            </ul>
-          </div>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex>
-                <v-btn
-                  color="blue-background-color white-color"
-                  :to="{ name: 'NewClient' }"
-                  class="users-actions white-color custom-btn-action"
-                >
-                  <span>{{ $t("Add client") }}</span>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title @click.prevent="goTocontracts">
-            <v-icon x-large>assignment</v-icon>
-            <h3 class="headline mb-0">{{ $t("Contracts") }}</h3>
+          <v-card-title>
+            <v-badge left>
+              <template v-slot:badge>
+                <span>{{ contractCount }}</span>
+              </template>
+              <div>
+                <h3 class="headline mb-0">
+                  <v-icon x-large>assignment</v-icon>
+                  {{ $t("Contracts") }}
+                </h3>
+              </div>
+            </v-badge>
+            <v-spacer></v-spacer>
+            <v-btn icon fab :to="{name: routeNames.CONTRACTS}">
+              <v-icon>list</v-icon>
+            </v-btn>
+            <v-btn icon fab :to="{name: routeNames.NEWCONTRACT}">
+              <v-icon>add</v-icon>
+            </v-btn>
           </v-card-title>
-          <div>
-            <ul>
-              <li>{{ $t("Total number: ") }}{{ contractCount }}</li>
-              <li>{{ $t("Last created at: ") }}{{ new Date(contractCreationDate).toLocaleDateString() }}</li>
-            </ul>
-          </div>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex>
-                <v-btn
-                  color="blue-background-color white-color"
-                  :to="{ name: 'NewContract' }"
-                  class="users-actions white-color custom-btn-action"
-                >
-                  <span>{{ $t("Add contract") }}</span>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title @click.prevent="goTosoftwares">
-            <v-icon x-large>web</v-icon>
-            <h3 class="headline mb-0">{{ $t("Softwares") }}</h3>
+          <v-card-title>
+            <v-badge left>
+              <template v-slot:badge>
+                <span>{{ softwareCount }}</span>
+              </template>
+              <div>
+                <h3 class="headline mb-0">
+                  <v-icon x-large>web</v-icon>
+                  {{ $t("Software") }}
+                </h3>
+              </div>
+            </v-badge>
+            <v-spacer></v-spacer>
+            <v-btn icon fab :to="{name: routeNames.SOFTWARE}">
+              <v-icon>list</v-icon>
+            </v-btn>
+            <v-btn icon fab :to="{name: routeNames.NEWSOFTWARE}">
+              <v-icon>add</v-icon>
+            </v-btn>
           </v-card-title>
-          <div>
-            <ul>
-              <li>{{ $t("Total number: ") }}{{ softwareCount }}</li>
-              <li>{{ $t("Last created at: ") }}{{ new Date(softwareCreationDate).toLocaleDateString() }}</li>
-            </ul>
-          </div>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex>
-                <v-btn
-                  color="blue-background-color white-color"
-                  :to="{ name: 'NewSoftware' }"
-                  class="users-actions white-color custom-btn-action"
-                >
-                  <span>{{ $t("Add software") }}</span>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex xs12 md12 lg4 pr-4 pb-4>
         <v-card>
-          <v-card-title primary-title @click.prevent="goTocontributions">
-            <v-icon x-large>library_add</v-icon>
-            <h3 class="headline mb-0">{{ $t("Contributions") }}</h3>
+          <v-card-title>
+            <v-badge left>
+              <template v-slot:badge>
+                <span>{{ contributionCount }}</span>
+              </template>
+              <div>
+                <h3 class="headline mb-0">
+                  <v-icon x-large>library_add</v-icon>
+                  {{ $t("Contributions") }}
+                </h3>
+              </div>
+            </v-badge>
+            <v-spacer></v-spacer>
+            <v-btn icon fab :to="{name: routeNames.ADMINCONTRIBUTIONS}">
+              <v-icon>list</v-icon>
+            </v-btn>
+            <v-btn icon fab :to="{name: routeNames.NEWCONTRIBUTION}">
+              <v-icon>add</v-icon>
+            </v-btn>
           </v-card-title>
-          <div>
-            <ul>
-              <li>{{ $t("Total number: ") }}{{ contributionCount }}</li>
-              <li>{{ $t("Last created at: ") }}{{ new Date(contributionCreationDate).toLocaleDateString() }}</li>
-            </ul>
-          </div>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex>
-                <v-btn
-                  color="blue-background-color white-color"
-                  :to="{ name: 'NewContribution' }"
-                  class="users-actions white-color custom-btn-action"
-                >
-                  <span>{{ $t("Add contribution") }}</span>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
+        </v-card>
+      </v-flex>
+      <v-flex xs12 md12 lg4 pr-4 pb-4>
+        <v-card>
+          <v-card-title>
+            <h3 class="headline mb-0">
+              <v-icon x-large>verified_user</v-icon>
+              {{ $t("Roles") }}
+            </h3>
+            <v-spacer></v-spacer>
+            <v-btn icon fab :to="{name: routeNames.ADMIN_ROLES}">
+              <v-icon>build</v-icon>
+            </v-btn>
+          </v-card-title>
         </v-card>
       </v-flex>
     </v-layout>
@@ -184,13 +180,7 @@ export default {
       softwareCount: 0,
       clientCount: 0,
       contractCount: 0,
-      contributionCount: 0,
-      userCreationDate: "",
-      teamCreationDate: "",
-      softwareCreationDate: "",
-      contractCreationDate: "",
-      clientCreationDate: "",
-      contributionCreationDate: ""
+      contributionCount: 0
     };
   },
   mounted() {
@@ -199,7 +189,6 @@ export default {
       .then(response => {
         this.users = response.data;
         this.userCount = response.data.length;
-        this.userCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -213,7 +202,6 @@ export default {
       .then(response => {
         this.teams = response.data;
         this.teamCount = response.data.length;
-        this.teamCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -227,7 +215,6 @@ export default {
       .then(response => {
         this.clients = response.data;
         this.clientCount = response.data.length;
-        this.clientCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -241,7 +228,6 @@ export default {
       .then(response => {
         this.contracts = response.data;
         this.contractCount = response.data.length;
-        this.contractCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -251,25 +237,10 @@ export default {
       });
 
     this.$http
-      .getContributions()
-      .then(response => {
-        this.contributions = response.data;
-        this.contributionCount = response.data.length;
-        this.contributionCreationDate = response.data.slice(-1)[0].timestamps.creation;
-      })
-      .catch(error => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contributions"),
-          color: "error"
-        });
-      });
-
-    this.$http
       .listSoftware()
       .then(response => {
         this.softwares = response.data;
         this.softwareCount = response.data.length;
-        this.softwareCreationDate = response.data.slice(-1)[0].timestamps.creation;
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -283,37 +254,21 @@ export default {
       this.$router.push("/403");
     }
   },
-  methods: {
-    goTusers() {
-      return this.$router.push({ name: routeNames.USERS });
-    },
-    goTocontracts() {
-      return this.$router.push({ name: routeNames.CONTRACTS });
-    },
-    goToclients() {
-      return this.$router.push({ name: routeNames.CLIENTS });
-    },
-    goToteams() {
-      return this.$router.push({ name: routeNames.TEAMS });
-    },
-    goTosoftwares() {
-      return this.$router.push({ name: routeNames.SOFTWARELIST });
-    },
-    goTocontributions() {
-      return this.$router.push({ name: routeNames.ADMINCONTRIBUTIONS });
+  computed: {
+    routeNames() {
+      return routeNames;
     }
   }
 };
 </script>
 
 <style lang="stylus" scoped>
-
 .v-card__title--primary {
-  cursor pointer;
+  cursor: pointer;
 
   .v-icon {
     padding-right: 10px;
-    color:rgba(0, 0, 0, 0.87);
+    color: rgba(0, 0, 0, 0.87);
   }
 }
 
@@ -323,17 +278,19 @@ export default {
   }
 }
 
-li{
+li {
   padding-top: 24px !important;
 }
-.custom-btn-action{
+
+.custom-btn-action {
   padding-top: 9px !important;
   margin-right: auto !important;
   margin-left: auto !important;
   display: block !important;
   width: 50%;
 }
-.v-card__actions{
+
+.v-card__actions {
   padding-top: 30px !important;
 }
 </style>
