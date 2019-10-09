@@ -1,4 +1,8 @@
 export default {
+  getCurrentTicketingUser() {
+    return this.get("/ticketing/api/user").then(({ data }) => data);
+  },
+
   createUser(options) {
     return this.post(`/ticketing/api/users`, options);
   },
