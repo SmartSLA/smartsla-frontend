@@ -40,19 +40,19 @@ const getters = {
     );
   },
 
-  getDisplayName(state) {
-    return state.user && `${state.user.firstname} ${state.user.lastname}`;
+  getDisplayName(state, getters) {
+    return state.user && state.user.displayName ? state.user.displayName : getters.getEmail;
   },
 
   getEmail(state) {
     return state.user && state.user.preferredEmail;
   },
 
-  getUser(state) {
+  getUser(state, getters) {
     return {
       id: state.user.id,
-      name: `${state.user.firstname} ${state.user.lastname}`,
-      email: state.user.preferredEmail
+      name: getters.getDisplayName,
+      email: getters.getEmail
     };
   }
 };
