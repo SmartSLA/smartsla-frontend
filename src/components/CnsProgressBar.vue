@@ -9,8 +9,19 @@
         >{{ cns[cnsType] }} HO / {{ duration }} HO</v-progress-linear
       >
     </v-flex>
-    <v-flex v-if="clockDisplay && !hideClock" xs1 px-1 pt-0 pb-0>
-      <v-icon color="#249CC7">access_time</v-icon>
+    <v-flex v-if="!hideClock" xs1 px-1 pt-0 pb-0>
+      <v-icon
+        v-if="isCurrentStep"
+        color="info"
+      >
+        access_time
+      </v-icon>
+      <v-icon
+        v-else-if="isPreviousStep"
+        :color="getEngagementColor(cns[cnsType], duration)"
+      >
+        {{ percentage(cns[cnsType], duration) < 100 ? 'done' : 'clear' }}
+      </v-icon>
     </v-flex>
   </v-layout>
 </template>
@@ -37,13 +48,23 @@ export default {
     };
   },
   computed: {
-    clockDisplay() {
+    isCurrentStep() {
       return (
         (this.cnsType === "supported" && this.ticket.status === "new") ||
         (this.cnsType === "bypassed" && this.ticket.status === "supported") ||
         (this.cnsType === "resolved" && this.ticket.status === "bypassed")
       );
+    },
+
+    isPreviousStep() {
+      return (
+        this.ticket.status == "supported" && this.cnsType === "supported" ||
+        this.ticket.status == "bypassed" && (this.cnsType === "supported" || this.cnsType === "bypassed") ||
+        this.ticket.status == "resolved" && (this.cnsType === "supported" || this.cnsType === "bypassed" || this.cnsType === "resolved" ) ||
+        this.ticket.status == "closed"
+      );
     }
+
   },
   methods: {
     percentage(partialValue, totalValue) {
@@ -52,7 +73,12 @@ export default {
       return value < 100 ? value : 100;
     },
     getEngagementColor(currentValue, totalValue) {
-      return this.percentage(currentValue, totalValue) < 100 ? "success" : "error";
+      if (this.isPreviousStep || this.isCurrentStep) {
+
+        return this.percentage(currentValue, totalValue) < 100 ? "success" : "error";
+      }
+
+      return "grey";
     },
     calculateCNS() {
       this.cns = computeCns(this.ticket);
