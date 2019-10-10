@@ -167,7 +167,8 @@ export default {
         email: "",
         contracts: "",
         client: "",
-        role: ""
+        role: "",
+        phone: ""
       },
       openDialog: false
     };
@@ -187,6 +188,7 @@ export default {
     member(value) {
       this.user.name = value ? value.name : "";
       this.user.email = value ? value.email : "";
+      this.user.phone = value ? value.phone : "";
     },
     search(val) {
       if (!val || val === null) {
@@ -196,7 +198,8 @@ export default {
       this.$http.searchPeople(val)
         .then(results => results.map(person => ({
           name: person.names[0].displayName,
-          email: person.emailAddresses[0].value
+          email: person.emailAddresses[0].value,
+          phone: person.phoneNumbers && person.phoneNumbers[0] ? person.phoneNumbers[0].value : ""
         })))
         .then(results => (this.items = results))
         .catch(console.log)
