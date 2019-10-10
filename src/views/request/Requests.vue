@@ -239,7 +239,7 @@
               :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
               target="_blank"
             >
-              <span class="blue-color link"> {{ props.item.request.contract.client }} </span>
+              <span class="blue-color"> {{ props.item.request.contract.client }} </span>
             </router-link>
             <span v-else>{{ props.item.request.contract.client }}</span>
             /
@@ -248,7 +248,7 @@
               :to="{name: 'Contract', params: {id: props.item.request.contract._id}}"
               target="_blank"
             >
-              <span class="blue-color link"> {{ props.item.request.contract.name }} </span>
+              <span class="blue-color"> {{ props.item.request.contract.name }} </span>
             </router-link>
             <span v-else>{{ props.item.request.contract.name }}</span>
           </td>
@@ -1178,23 +1178,4 @@ span.v-chip__content {
 table.v-table tbody td {
   font-size: 12px;
 }
-
-.link {
-  cursor: pointer;
-  display: inline-block;
-}
-
-.link:after {
-  content: '';
-  width: 0px;
-  height: 1px;
-  display: block;
-  background: #76BAF0;
-  transition: 300ms;
-}
-
-.link:hover:after {
-  width: 100%;
-}
-
 </style>
