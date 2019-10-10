@@ -551,7 +551,7 @@ export default {
         [this.$i18n.t("OS")]: request.software.os,
         [this.$i18n.t("Title")]: request.title,
         [this.$i18n.t("Description")]: request.description,
-        [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("not assigned yet"),
+        [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("Not assigned yet"),
         [this.$i18n.t("Created by")]: request.author.name,
         [this.$i18n.t("Contract")]: request.contract.client,
         [this.$i18n.t("Beneficiary")]: request.beneficiary.name,

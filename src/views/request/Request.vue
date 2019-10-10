@@ -132,7 +132,7 @@
                   >L</v-chip>
                 </span>
               </span>
-              {{ (request.assignedTo && request.assignedTo.name) || $t("not assigned yet") }}
+              {{ (request.assignedTo && request.assignedTo.name) || $t("Not assigned yet") }}
             </v-flex>
 
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
