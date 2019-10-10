@@ -123,10 +123,16 @@
               >{{ request.contract.client[0] }}</v-chip>
               <span v-else>
                 <span v-if="request.assignedTo">
-                  <v-chip color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+                  <v-chip
+                    small
+                    class="my-0"
+                    color="#d32f2f"
+                    label
+                    text-color="white"
+                  >L</v-chip>
                 </span>
               </span>
-              {{ (request.assignedTo && request.assignedTo.name) || $t("not assigned yet") }}
+              {{ (request.assignedTo && request.assignedTo.name) || $t("Not assigned yet") }}
             </v-flex>
 
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
