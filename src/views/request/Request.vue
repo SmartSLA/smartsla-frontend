@@ -304,7 +304,7 @@
                         </v-select>
                       </v-flex>
                       <v-flex xs10 md8 sm8 xl3 lg3>
-                        <v-select
+                        <v-autocomplete
                           :items="allowedAssigneeList"
                           :disabled="privateComment"
                           item-text="name"
@@ -328,7 +328,7 @@
                               {{ data.item.name }}
                             </v-list-tile-content>
                           </template>
-                        </v-select>
+                        </v-autocomplete>
                       </v-flex>
 <!--                      <v-flex xs12 md8 sm8 xl3 lg3>-->
 <!--                        <v-checkbox-->
