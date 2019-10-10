@@ -712,25 +712,8 @@ export default {
         responsibleFilterMatch = false;
 
         responsibleFilter.forEach(currentFilter => {
-          if (request.logs && request.logs.length && request.logs[request.logs.length - 1].assignedTo) {
-            if (
-              typeof request.logs[request.logs.length - 1].assignedTo != "string" &&
-              request.logs[request.logs.length - 1].assignedTo.type &&
-              request.logs[request.logs.length - 1].assignedTo.type != "beneficiary"
-            ) {
-              if (
-                request.logs[request.logs.length - 1].assignedTo.name &&
-                request.logs[request.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
-              ) {
-                responsibleFilterMatch = true;
-              } else if (
-                request.logs[request.logs.length - 1].assignedTo.displayName &&
-                request.logs[request.logs.length - 1].assignedTo.displayName.toLowerCase() ==
-                  currentFilter.value.toLowerCase()
-              ) {
-                responsibleFilterMatch = true;
-              }
-            }
+          if (request.responsible) {
+            responsibleFilterMatch = request.responsible.name.toLowerCase() === currentFilter.value.toLowerCase()
           }
         });
       }
@@ -739,25 +722,8 @@ export default {
         assignedFilterMatch = false;
 
         assignedFilter.forEach(currentFilter => {
-          if (request.logs && request.logs.length && request.logs[request.logs.length - 1].assignedTo) {
-            if (typeof request.logs[request.logs.length - 1].assignedTo != "string") {
-              if (
-                request.logs[request.logs.length - 1].assignedTo.name &&
-                request.logs[request.logs.length - 1].assignedTo.name.toLowerCase() == currentFilter.value.toLowerCase()
-              ) {
-                assignedFilterMatch = true;
-              } else if (
-                request.logs[request.logs.length - 1].assignedTo.displayName &&
-                request.logs[request.logs.length - 1].assignedTo.displayName.toLowerCase() ==
-                  currentFilter.value.toLowerCase()
-              ) {
-                assignedFilterMatch = true;
-              }
-            } else {
-              if (request.logs[request.logs.length - 1].assignedTo.toLowerCase() == currentFilter.value.toLowerCase()) {
-                assignedFilterMatch = true;
-              }
-            }
+          if (request.assignedTo) {
+            assignedFilterMatch = request.assignedTo.name.toLowerCase() === currentFilter.value.toLowerCase()
           }
         });
       }
