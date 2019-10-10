@@ -237,18 +237,20 @@
             <router-link
               v-if="$auth.check('admin')"
               :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
+              target="_blank"
             >
-              <a class="blue-color" href="#">{{ props.item.request.contract.client }}</a>
+              <span class="blue-color"> {{ props.item.request.contract.client }} </span>
             </router-link>
-            <a v-else>{{ props.item.request.contract.client }}</a>
+            <span v-else>{{ props.item.request.contract.client }}</span>
             /
             <router-link
               v-if="$auth.check('admin')"
-              :to="{ name: 'Contract', params: { id: props.item.request.contract._id } }"
+              :to="{name: 'Contract', params: {id: props.item.request.contract._id}}"
+              target="_blank"
             >
-              <a class="blue-color" href="#">{{ props.item.request.contract.name }}</a>
+              <span class="blue-color"> {{ props.item.request.contract.name }} </span>
             </router-link>
-            <a v-else>{{ props.item.request.contract.name }}</a>
+            <span v-else>{{ props.item.request.contract.name }}</span>
           </td>
           <td class="text-xs-center">
               <v-tooltip top>
