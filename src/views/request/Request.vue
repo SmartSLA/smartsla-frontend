@@ -192,7 +192,7 @@
                 </template>
               </v-list>
             </v-card-text>
-            <v-card-text v-if="request.linkedTickets > 0">
+            <v-card-text v-if="request.linkedTickets.length">
               <v-subheader inset class="ml-0">
                 <v-icon>insert_link</v-icon>
                 {{ $t("Related requests") }}
