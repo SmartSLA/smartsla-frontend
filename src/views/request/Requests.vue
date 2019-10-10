@@ -234,22 +234,22 @@
           <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.author }}</td>
           <td class="text-xs-center">
-            <span
-              class="blue-color link"
+            <router-link
               v-if="$auth.check('admin')"
-              @click="navigate({name: 'Client', params: {id: props.item.request.contract.clientId}})"
+              :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
+              target="_blank"
             >
-              {{ props.item.request.contract.client }}
-            </span>
+              <span class="blue-color link"> {{ props.item.request.contract.client }} </span>
+            </router-link>
             <span v-else>{{ props.item.request.contract.client }}</span>
             /
-            <span
-              class="blue-color link"
+            <router-link
               v-if="$auth.check('admin')"
-              @click="navigate({name: 'Contract', params: {id: props.item.request.contract._id}})"
+              :to="{name: 'Contract', params: {id: props.item.request.contract._id}}"
+              target="_blank"
             >
-              {{ props.item.request.contract.name }}
-            </span>
+              <span class="blue-color link"> {{ props.item.request.contract.name }} </span>
+            </router-link>
             <span v-else>{{ props.item.request.contract.name }}</span>
           </td>
           <td class="text-xs-center">
@@ -626,11 +626,6 @@ export default {
     }
   },
   methods: {
-    navigate(page) {
-      const {params: {id} , name} = page;
-      let route = this.$router.resolve({name, params: { id }});
-      window.open(route.href, '_blank');
-    },
     loadTickets() {
       this.loading = true;
       this.$store
