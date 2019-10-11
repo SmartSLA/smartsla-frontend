@@ -186,6 +186,7 @@
         :rows-per-page-text="$t('Rows per page:')"
         :hide-headers="isMobile"
         :class="{ mobile: isMobile }"
+        item-key="_id"
         ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
