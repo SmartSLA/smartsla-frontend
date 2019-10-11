@@ -7,7 +7,8 @@ function initialState() {
       page: 1,
       rowsPerPage: 10,
       rowsPerPageItems: [10, 25, 50, 100],
-      totalItems: null
+      totalItems: null,
+      descending: true
     },
     length: 0,
     tickets: {},
