@@ -166,7 +166,7 @@
               </v-subheader>
               <div class="subject-text ml-3" v-html="request.description"></div>
             </v-card-text>
-            <v-card-text v-if="ticket.participants.length">
+            <v-card-text v-if="ticket.participants && ticket.participants.length">
               <v-subheader inset class="ml-0">
                 <v-icon>email</v-icon>
                 {{ $t("Participants E-mails") }}
@@ -201,7 +201,7 @@
                 </template>
               </v-list>
             </v-card-text>
-            <v-card-text v-if="request.linkedTickets.length">
+            <v-card-text v-if="request.linkedTickets && request.linkedTickets.length">
               <v-subheader inset class="ml-0">
                 <v-icon>insert_link</v-icon>
                 {{ $t("Related requests") }}
