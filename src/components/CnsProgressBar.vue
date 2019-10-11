@@ -6,7 +6,10 @@
         :value="percentage(cns[cnsType], duration)"
         :color="getEngagementColor(cns[cnsType], duration)"
         class="mt-0 white--text font-weight-bold"
-        >{{ cns[cnsType] }} HO / {{ duration }} HO</v-progress-linear
+      >
+        <span v-if="duration">{{ cns[cnsType] }} HO / {{ duration }} HO</span>
+        <span v-else>{{ cns[cnsType] }} HO</span>
+      </v-progress-linear
       >
     </v-flex>
     <v-flex v-if="!hideClock" xs1 px-1 pt-0 pb-0>
@@ -70,10 +73,17 @@ export default {
     percentage(partialValue, totalValue) {
       let value = (100 * partialValue) / totalValue;
 
+      if (!totalValue) {
+        return 100;
+      }
+
       return value < 100 ? value : 100;
     },
     getEngagementColor(currentValue, totalValue) {
       if (this.isPreviousStep || this.isCurrentStep) {
+        if (!this.duration) {
+          return "success";
+        }
 
         return this.percentage(currentValue, totalValue) < 100 ? "success" : "error";
       }
