@@ -227,11 +227,9 @@
             >{{ props.item._id }}</router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-badge :color="ossaColors[props.item.id_ossa]">
-              <template v-slot:badge>
-                <span>{{ props.item.id_ossa }}</span>
-              </template>
-            </v-badge>
+            <v-avatar :color="getOssaConfById(props.item.id_ossa).color" size="25">
+              <span class="white--text">{{ props.item.id_ossa }}</span>
+            </v-avatar>
           </td>
           <td class="text-xs-center">{{ props.item.type }}</td>
           <td class="text-xs-center">
@@ -306,6 +304,7 @@ import moment from "moment";
 import JsonExcel from "vue-json-excel";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
+import { OSSA_IDS } from '@/constants.js';
 
 const { mapState } = createNamespacedHelpers("ticket")
 
@@ -353,11 +352,6 @@ export default {
         value: ""
       },
       isMobile: false,
-      ossaColors: {
-        1: "#512da8",
-        2: "#8b60d8",
-        3: "#dbc1ff"
-      },
       headers: [
         { text: this.$i18n.t("Organization"), value: "organization" },
         { text: this.$i18n.t("Ticket N°"), value: "_id" },
@@ -938,6 +932,9 @@ export default {
     },
     displayCnsProgressBar(status) {
       return !(status === "closed" || status === "resolved");
+    },
+    getOssaConfById(ossaId) {
+      return OSSA_IDS.find(ossa => ossa.id === ossaId);
     },
 
     cnsWording(status) {
