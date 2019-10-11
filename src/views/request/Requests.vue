@@ -1,161 +1,180 @@
 <template>
   <div class="requests-list">
-    <v-card-text>
-      <div class="text-lg-left">
-        <a href="#" disabled class="action-links">
-          <v-icon class="mr-2">format_list_numbered</v-icon>
-          <span>{{ pageTitle }}</span>
-        </a>
-        <a
-          href="#"
-          disabled
-          class="font-italic ml-2 mt-1 action-links red--text"
-          @click="deleteDialog = true"
-          v-show="showDeleteBtn"
-        >
-          <v-icon class="mr-2 error--text">delete_outline</v-icon>
-          <span>{{ $t("Delete filter") }}</span>
-        </a>
-      </div>
-      <download-excel :data="exportData" class="export-excel">
-        <v-icon class="mr-2">backup</v-icon>
-        <span>{{ $t("EXPORT SHEET") }}</span>
-      </download-excel>
-    </v-card-text>
-    <div class="tickets-search">
-      <div class="requests-filter-label">
-        <span>{{ $t("Filter by:") }}</span>
-      </div>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-select
-        solo
-        :items="categories"
-        item-text="value"
-        item-value="key"
-        v-model="categoriesFilter"
-        hide-details
-        class="scoped-requests-search"
-        id="first-combo"
-        v-bind:label="$i18n.t('Categories')"
-      ></v-select>
-      <v-select
-        v-if="translatedFilter"
-        solo
-        :items="values"
-        item-text="value"
-        item-value="key"
-        v-model="valuesFilter"
-        hide-details
-        hide-selected
-        class="scoped-requests-search"
-        v-bind:label="$i18n.t('Values')"
-      ></v-select>
-      <v-select
-        v-else
-        solo
-        :items="values"
-        v-model="valuesFilter"
-        hide-details
-        hide-selected
-        class="scoped-requests-search"
-        v-bind:label="$i18n.t('Values')"
-      ></v-select>
-      <v-btn @click="addNewFilter" class="requests-filter-add">
-        <v-icon dark>add</v-icon>
-      </v-btn>
-      <v-spacer class="mx-2"></v-spacer>
-      <div class="requests-filter-label">
-        <span>{{ $t("And") }}</span>
-      </div>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-select
-        solo
-        :items="savedFilters"
-        item-text="name"
-        v-model="storedSelectionsFilterHolder"
-        hide-details
-        hide-selected
-        class="scoped-requests-search"
-        v-bind:label="$i18n.t('Stored selections')"
-        return-object
-      ></v-select>
-      <v-btn class="requests-filter-add" @click="loadFilter">
-        <v-icon dark>add</v-icon>
-      </v-btn>
-      <v-spacer class="mx-2"></v-spacer>
-      <div class="requests-filter-label">
-        <span>{{ $t("And") }}</span>
-      </div>
-      <v-spacer class="mx-2"></v-spacer>
-      <v-text-field
-        v-model="search"
-        :placeholder="$i18n.t('Search')"
-        single-line
-        hide-details
-        solo
-        class="scoped-requests-search"
-      >
-        <v-icon @click="addNewFilter" outline class="pl-2">add</v-icon>
-      </v-text-field>
-    </div>
-    <ul id="filter-chips">
-      <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
-        <v-chip @input="removeFilter(filter)" close>{{ filter.category }} : {{ filter.value }}</v-chip>
-      </li>
-    </ul>
-    <div v-if="customFilters.length > 0" class="filter-save mt-2">
-      <v-dialog v-model="dialog" width="500">
-        <template v-slot:activator="{ on }">
-          <a
-            href="#"
-            class="font-italic blue--text action-links ml-2"
-            v-on="on"
-            v-show="isNewFilter || updateBtn"
+    <v-layout align-center justify-space-between row mb-2>
+      <v-flex xs6>
+        <v-layout align-center row>
+          <span class="action-links">
+            <v-icon class="mr-2">format_list_numbered</v-icon>
+            <span>{{ pageTitle }}</span>
+          </span>
+          <v-btn flat small
+            color="error" 
+            @click="deleteDialog = true"
+            v-show="showDeleteBtn"
           >
-            <v-icon class="mr-2 blue--text">playlist_add</v-icon>
-            {{ $i18n.t("Create new filter") }}
-          </a>
-          <a
-            href="#"
-            @click="updateCurrectFilter"
-            v-show="updateBtn"
-            class="font-italic action-links warning--text ml-2"
-          >
-            <v-icon class="mr-2 warning--text">save_alt</v-icon>
-            {{ $i18n.t("save") }}
-          </a>
-          <a
-            class="font-italic grey--text action-links right"
-            href="#"
-            color="grey darken-1"
-            v-on="on"
-            @click="resetFilters"
-          >
-            <v-icon class="mr-2 grey--text">refresh</v-icon>
-            {{ $i18n.t("reset") }}
-          </a>
-        </template>
+            <v-icon class="mr-2">delete_outline</v-icon> {{ $t("Delete filter") }}
+          </v-btn>
+        </v-layout>
+      </v-flex>
+      <v-flex xs6>
+        <v-layout justify-end row>
+          <div>
+            <download-excel :data="requests" >
+              <v-btn flat small color="default">
+                <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
+              </v-btn>
+            </download-excel>
+          </div>
+        </v-layout>
+      </v-flex>
+    </v-layout>
 
-        <v-card class="px-0">
-          <v-card-title class="headline grey lighten-3" primary-title>
-            {{ $i18n.t("Save filter") }}
-          </v-card-title>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-text-field :label="$i18n.t('Filter name')" v-model="newFilterName"></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("Save") }}</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
+  <v-layout align-center justify-space-between row mb-4 mt-4>
+    <v-flex xs5>
+      <v-toolbar flat dense>
+        <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("Filter by:") }}</v-toolbar-title>
+        <v-divider vertical></v-divider>
+        <v-layout align-center justify-end>
+          <v-overflow-btn
+            :items="categories"
+            :label="$i18n.t('Categories')"
+            hide-details
+            class="py-0"
+            flat
+            overflow
+            item-text="value"
+            item-value="key"
+            v-model="categoriesFilter"
+          ></v-overflow-btn>
+          <v-divider vertical></v-divider>
+          <v-overflow-btn
+            v-if="translatedFilter"
+            :items="values"
+            :label="$i18n.t('Values')"
+            v-model="valuesFilter"
+            class="pa-0"
+            overflow
+            flat
+            item-text="value"
+            item-value="key"
+            hide-details
+            hide-selected
+          ></v-overflow-btn>
+          <v-overflow-btn
+            v-else
+            :items="values"
+            :label="$i18n.t('Values')"
+            v-model="valuesFilter"
+            flat
+            hide-details
+            hide-selected
+            class="pa-0"
+            overflow
+          ></v-overflow-btn>
+          <v-divider vertical></v-divider>
+          <v-toolbar-side-icon @click="addNewFilter">
+            <v-icon dark>add</v-icon>
+          </v-toolbar-side-icon>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+    <v-flex xs1></v-flex>
+    <v-flex xs3>
+      <v-toolbar flat dense>
+        <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("And") }}</v-toolbar-title>
+        <v-divider vertical></v-divider>
+        <v-layout align-center justify-end>
+          <v-overflow-btn
+            :items="savedFilters"
+            :label="$i18n.t('Stored selections')"
+            v-model="storedSelectionsFilterHolder"
+            hide-selected
+            hide-details
+            class="pa-0"
+            overflow
+            flat
+            return-object
+            item-text="name"
+          ></v-overflow-btn>
+          <v-divider vertical></v-divider>
+          <v-toolbar-side-icon @click="loadFilter">
+            <v-icon dark>add</v-icon>
+          </v-toolbar-side-icon>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+    <v-flex xs1></v-flex>
+    <v-flex xs3>
+      <v-toolbar flat dense>
+        <v-layout align-center justify-end>
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="search"
+            :placeholder="$i18n.t('Search')"
+            clearable
+            solo
+            class="mt-2"
+            flat
+          ></v-text-field>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+  </v-layout>
+  
+    <v-layout justify-space-between row>
+      <div>
+        <ul>
+          <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
+            <v-chip @input="removeFilter(filter)" close>{{ filter.category }} : {{ filter.value }}</v-chip>
+          </li>
+        </ul>
+      </div>
+      <div v-if="customFilters.length > 0" class="filter-save mt-2">
+        <v-dialog v-model="dialog" width="500">
+          <template v-slot:activator="{ on }">
+            <v-layout align-center justify-space-between row>
+              <div>
+                <v-btn flat small color="default" v-on="on" v-show="isNewFilter || updateBtn">
+                  <v-icon class="mr-2">playlist_add</v-icon>  {{ $i18n.t("Create new filter") }}
+                </v-btn>
+                <a
+                  href="#"
+                  @click="updateCurrectFilter"
+                  v-show="updateBtn"
+                  class="font-italic action-links warning--text ml-2"
+                >
+                  <v-icon class="mr-2 warning--text">save_alt</v-icon>
+                  {{ $i18n.t("save") }}
+                </a>
+              </div>
+              <div>
+                <v-btn flat small color="default" @click="resetFilters" v-on="on">
+                  <v-icon class="mr-2">refresh</v-icon> {{ $i18n.t("reset") }}
+                </v-btn>
+              </div>
+            </v-layout>
+          </template>
+
+          <v-card class="px-4">
+            <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12>
+                    <v-text-field :label="$i18n.t('Filter name')" v-model="newFilterName"></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("Save") }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+     </v-layout>
+     
     <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
       <v-card class="px-4 pt-2">
         <v-card-text>
@@ -170,7 +189,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <br />
+    
     <v-layout>
       <v-data-table
         :loading="loading"
@@ -305,12 +324,12 @@ export default {
       loading: true,
       dialog: false,
       deleteDialog: false,
-      pageTitle: this.$i18n.t("ALL REQUESTS"),
+      pageTitle: this.$i18n.t("All requests"),
       storedFilterUpdated: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
       tickets: [
         {
-          text: this.$i18n.t("All Tickets"),
+          text: this.$i18n.t("All tickets"),
           value: ""
         },
         {
@@ -330,7 +349,7 @@ export default {
       search: null,
       toggle_multiple: "2",
       ticketsFilter: {
-        text: this.$i18n.t("All Tickets"),
+        text: this.$i18n.t("All tickets"),
         value: ""
       },
       isMobile: false,
@@ -891,7 +910,7 @@ export default {
         return JSON.stringify(customFilter) !== JSON.stringify(filter);
       });
       if (this.customFilters.length == 0) {
-        this.pageTitle = this.$i18n.t("ALL REQUESTS");
+        this.pageTitle = this.$i18n.t("All requests");
         this.deleteBtn = false;
         this.storedSelectionsFilter = {};
         this.centralSearch = "";
@@ -906,7 +925,7 @@ export default {
       this.categoriesFilter = "";
       this.valuesFilter = "";
       this.search = "";
-      this.pageTitle = this.$i18n.t("ALL REQUESTS");
+      this.pageTitle = this.$i18n.t("All requests");
       this.storedSelectionsFilterHolder = {};
       this.deleteBtn = false;
     },
@@ -1145,4 +1164,13 @@ span.v-chip__content {
 table.v-table tbody td {
   font-size: 12px;
 }
+
+nav.v-toolbar .v-toolbar__content {
+  height: auto;
+}
+
+.v-toolbar__title {
+  font-size: 15px;
+}
+
 </style>

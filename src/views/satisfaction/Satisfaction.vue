@@ -6,7 +6,7 @@
 export default {
   data() {
     return {
-      msg: this.$i18n.t("Welcome to Satistfaction Page!!")
+      msg: this.$i18n.t("Welcome to satisfaction page!!")
     };
   }
 };

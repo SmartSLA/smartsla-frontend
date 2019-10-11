@@ -1,10 +1,17 @@
 <template>
   <v-container grid-list-md>
-    <v-card-text>
-      <router-link :to="{ name: 'Requests' }">
-        <button><v-icon>arrow_back</v-icon></button>
-      </router-link>
-    </v-card-text>
+    <v-layout align-center justify-space-between row>
+      <div>
+        <router-link :to="{ name: 'Requests' }">
+          <button><v-icon>arrow_back</v-icon></button>
+        </router-link>
+      </div>
+      <div>
+        <v-btn flat small color="default">
+          <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet (CSV)") }}
+        </v-btn>
+      </div>
+    </v-layout>
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>
         <v-card light color="white">
