@@ -112,7 +112,7 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.SOFTWARE}">
+            <v-btn icon fab :to="{name: routeNames.SOFTWARELIST}">
               <v-icon>list</v-icon>
             </v-btn>
             <v-btn icon fab :to="{name: routeNames.NEWSOFTWARE}">
