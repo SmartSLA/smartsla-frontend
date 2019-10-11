@@ -304,7 +304,7 @@
                   </v-input>
                   <v-input prepend-icon="no-icon" class="pt-2">
                     <v-layout row wrap>
-                      <v-flex xs10 md8 sm8 xl3 lg2>
+                      <v-flex xs12 md6>
                         <v-select
                           :items="[allowedStatusList]"
                           v-model="newStatus"
@@ -319,7 +319,7 @@
                           </template>
                         </v-select>
                       </v-flex>
-                      <v-flex xs10 md8 sm8 xl3 lg3>
+                      <v-flex xs12 md6>
                         <v-autocomplete
                           :items="allowedAssigneeList"
                           :disabled="privateComment"
@@ -346,18 +346,16 @@
                           </template>
                         </v-autocomplete>
                       </v-flex>
-<!--                      <v-flex xs12 md8 sm8 xl3 lg3>-->
-<!--                        <v-checkbox-->
-<!--                          v-model="privateComment"-->
-<!--                          color="primary"-->
-<!--                          :label="$i18n.t('private comment')"-->
-<!--                        ></v-checkbox>-->
-<!--                      </v-flex>-->
-                      <v-flex xs12 md8 sm8 xl3 lg3>
-                        <v-upload ref="uploadBtn" :label="$i18n.t('Attach file')" v-model="commentFile"></v-upload>
-                      </v-flex>
                     </v-layout>
                   </v-input>
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <attachments-creation
+                        v-bind:attachments.sync="commentCreationAttachments"
+                        :disabled="!commentBtn"
+                      />
+                    </v-flex>
+                  </v-layout>
                   <v-layout row wrap>
                     <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
                     <v-flex xs2 md4 sm4 lg4 xl4>
@@ -463,7 +461,7 @@ import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
 import { capitalize } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
-import VUpload from "vuetify-upload-component";
+import AttachmentsCreation  from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
 import cnsProgressBar from "@/components/CnsProgressBar";
 
@@ -478,6 +476,7 @@ export default {
   data() {
     return {
       attachments: [],
+      commentCreationAttachments: [],
       ticket: {
         events: []
       },
@@ -500,7 +499,6 @@ export default {
         statusId: 2,
         events: []
       },
-      commentFile: [],
       comment: "",
       options: {
         lineNumbers: true,
@@ -520,7 +518,7 @@ export default {
   components: {
     VueEditor,
     Editor,
-    VUpload,
+    AttachmentsCreation,
     "cns-progress-bar": cnsProgressBar
   },
   computed: {
@@ -601,35 +599,33 @@ export default {
       this.request.communityContribution = {};
     },
     addEvent() {
-      if (this.commentFile.length) {
-        this.commentBtn = false;
-        let commentFile = this.commentFile[0];
-        let formData = new FormData();
-        formData.append("file", commentFile);
-        this.$http
-          .uploadFile(formData, commentFile.type, commentFile.size, commentFile.name)
-          .then(response => {
-            const attachement = {
-              _id: response.data._id,
-              name: commentFile.name,
-              mimeType: commentFile.type
-            };
-            this.postEvent(attachement);
-            this.commentBtn = true;
-            this.commentFile = [];
-          })
-          .catch(error => {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: error.response.data.error.details,
-              color: "error"
-            });
-            this.commentBtn = true;
+      this.commentBtn = false;
+      const attachmentsPromise = this.commentCreationAttachments.length ?
+        this.$http.getUploader().uploadAll(this.commentCreationAttachments) :
+        Promise.resolve([]);
+
+      attachmentsPromise
+        .then(attachments => this.postEvent(attachments))
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
           });
-      } else {
-        this.postEvent();
-      }
+          this.resetComment();
+          this.getData();
+        })
+        .catch(err => {
+          console.log(err);
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: "Error while updating ticket",
+            color: "error"
+          });
+        })
+        .finally(() => {
+          this.commentBtn = true;
+        });
     },
-    postEvent(attachement) {
+    postEvent(attachments = []) {
       this.newEvent = {
         author: {
           id: this.$store.state.user.user._id,
@@ -640,30 +636,16 @@ export default {
 
       this.newEvent.comment = this.comment;
 
-      if (attachement) {
-        this.newEvent.attachments = [attachement];
+      if (attachments.length) {
+        this.newEvent.attachments = attachments.map(attachment => ({
+          _id: attachment._id, name: attachment.name, mimeType: attachment.type
+        }));
       }
 
       this.newEvent.status = this.newStatus;
-
       this.newEvent.target = this.newResponsible;
 
-      this.$http
-        .addTicketEvent(this.ticket._id, this.newEvent)
-        .then(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("updated"),
-            color: "success"
-          });
-          this.resetComment();
-          this.getData();
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
+      return this.$http.addTicketEvent(this.ticket._id, this.newEvent);
     },
     downloadFile({ _id, name }) {
       this.$http.downloadFile(_id).then(response => {
@@ -700,25 +682,13 @@ export default {
       this.comment = "";
       this.newResponsible = "";
       this.privateComment = false;
-      this.commentFile = [];
-      this.commentFile.length = 0;
+      this.commentCreationAttachments = [];
+      this.commentCreationAttachments.length = 0;
     },
 
     capitalize(text) {
 
       return capitalize(text);
-    }
-  },
-  watch: {
-    // privateComment(value) {
-    //   if (value) {
-    //     this.newStatus = "";
-    //     this.newResponsible = "";
-    //   }
-    // },
-    commentFile(val) {
-      let el = this.$refs.uploadBtn.$el.querySelector(".v-list");
-      val.length ? (el.hidden = false) : (el.hidden = true);
     }
   },
   mounted() {
