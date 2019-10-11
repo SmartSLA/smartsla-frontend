@@ -1,7 +1,7 @@
 <template>
   <v-tooltip top>
     <template v-slot:activator="{ on }">
-      <span v-on="on">{{ request.severity }}</span>
+      <span v-on="on">{{ $t(request.severity) }}</span>
     </template>
     <span>
       <b>{{ $t("Engagements") }} {{ request.severity }} :</b>

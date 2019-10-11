@@ -58,7 +58,7 @@
               <!-- <v-layout row wrap>
                 <v-flex xs12>
                   <strong>{{ $t("Client") }} :</strong>
-                  {{ user.client }}
+                  {{ user.client.name }}
                 </v-flex>
                 <v-flex xs12>
                   <v-layout row wrap>

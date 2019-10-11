@@ -231,7 +231,7 @@
               <span class="white--text">{{ props.item.id_ossa }}</span>
             </v-avatar>
           </td>
-          <td class="text-xs-center">{{ props.item.type }}</td>
+          <td class="text-xs-center">{{ $t(props.item.type) }}</td>
           <td class="text-xs-center">
             <software-list-detail :request="props.item.request"></software-list-detail>
           </td>
@@ -279,7 +279,7 @@
               </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
-          <td class="text-xs-center">{{ $t(props.item.status) }}</td>
+          <td class="text-xs-center">{{ $t(capitalize(props.item.status)) }}</td>
           <td class="text-xs-center">
             <span>{{ $t(cnsWording(props.item.status)) }}</span>
             <cns-progress-bar
@@ -940,7 +940,6 @@ export default {
     cnsWording(status) {
       return CNS_STATUS[status] || status;
     },
-
     cns(ticketId, type) {
       if (this.collectedCNS[ticketId]) {
         return this.$i18n.t("{hours}WH / {duration}WH", {
@@ -953,6 +952,9 @@ export default {
     },
     collectCNS(value) {
       this.collectedCNS[value.ticketId] = value;
+    },
+    capitalize(value) {
+      return capitalize(value)
     }
   },
   created() {
