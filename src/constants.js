@@ -19,3 +19,8 @@ export const OSSA_IDS = [
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
 
 export const REQUEST_TYPES = ["Information", "Anomaly", "Other"];
+
+export const TYPE = {
+  EXPERT: "expert",
+  BENEFICIARY: "beneficiary"
+};

@@ -151,10 +151,13 @@
             </v-flex>
             <v-flex xs3>{{ $t("Referent") }}</v-flex>
             <v-flex xs9>
-              <v-select
+              <v-autocomplete
+                :items="referents"
                 v-model="newSoftware.technicalReferent"
-                :items="refs"
-              ></v-select>
+                item-text="name"
+                :rules="[() => newSoftware.technicalReferent.length > 0 || $i18n.t('Required field')]"
+                return-object
+              ></v-autocomplete>
             </v-flex>
             <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
             <v-flex xs9>
@@ -197,6 +200,8 @@
 </template>
 
 <script>
+import { TYPE } from "@/constants.js";
+
 export default {
   name: "edit-contract-software",
   data() {
@@ -220,7 +225,7 @@ export default {
       softwareList: [],
       contract: {},
       valid: true,
-      refs: ["Florentin Roatta", "Jean-Michel Boutin", "Ismaeil Abouljamal", "Laurent Joguet", "Guillaume Boudreaux"]
+      referents: []
     };
   },
   methods: {
@@ -345,6 +350,18 @@ export default {
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: "cannot fetch software list",
+          color: "error"
+        });
+      });
+
+    this.$http
+      .listUsers(TYPE.EXPERT)
+      .then(({ data }) => {
+        this.referents = data;
+      })
+      .catch(error => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("cannot fetch experts list"),
           color: "error"
         });
       });
