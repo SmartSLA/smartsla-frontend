@@ -221,8 +221,11 @@
                     </v-row>
                   </v-flex>
                   <v-container>
-                    <v-flex xs12 md8 sm8 xl3 lg3>
-                      <v-upload :label="$i18n.t('Attach file')" v-model="ticket.requestFile"></v-upload>
+                    <v-flex xs12>
+                      <attachments
+                        v-bind:attachments.sync="attachments"
+                        :disabled="submitRequest"
+                      />
                     </v-flex>
                   </v-container>
                 </v-layout>
@@ -253,11 +256,9 @@
 import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
 import Vue from "vue";
-import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
-import VUpload from "vuetify-upload-component";
+import Attachments  from "@/components/attachments/creation/Attachments.vue";
 
-Vue.use(FileUpload);
 export default {
   data() {
     return {
@@ -275,10 +276,10 @@ export default {
         responsible: {},
         author: {},
         comments: [],
-        requestFile: [],
         contenu: "",
         files: []
       },
+      attachments: [],
       participants: [],
       linkedRequest: null,
       linkType: null,
@@ -310,35 +311,25 @@ export default {
   },
   components: {
     VueEditor,
-    VUpload
+    Attachments
   },
   methods: {
     submit() {
       this.ticket.author = this.getUser;
-
-      this.submitRequest = false;
+      this.submitRequest = true;
       this.ticket.participants = this.participants;
       this.ticket.relatedRequests = this.linkedRequests;
-      if (this.ticket.requestFile.length) {
-        this.submitRequest = false;
-        const requestFile = this.ticket.requestFile[0];
-        const formData = new FormData();
-
-        formData.append("file", requestFile);
-        this.$http
-          .uploadFile(formData, requestFile.type, requestFile.size, requestFile.name)
-          .then(({ data }) => {
-            this.postRequest([{ _id: data._id, file: requestFile }]);
-
-            this.submitRequest = true;
-          })
+      if (this.attachments.length) {
+        this.$http.getUploader()
+          .uploadAll(this.attachments)
+          .then(attachments => this.postRequest(attachments))
           .catch(error => {
             this.$store.dispatch("ui/displaySnackbar", {
               message: error.response.data.error.details,
               color: "error"
             });
-            this.submitRequest = true;
-          });
+          })
+          .finally(() => this.submitRequest = true);
       } else {
         this.postRequest();
       }
@@ -363,16 +354,16 @@ export default {
       }
     },
 
-    postRequest(files = []) {
-      if (files.length) {
+    postRequest(attachments = []) {
+      if (attachments.length) {
         const event = {
           author: {
             id: this.$store.state.user.user._id,
             name: this.displayName,
             image: this.avatarUrl
           },
-          attachments: files.map(file => ({
-            _id: file._id, name: file.file.name, mimeType: file.file.type
+          attachments: attachments.map(attachment => ({
+            _id: attachment._id, name: attachment.name, mimeType: attachment.type
           }))
         };
 
@@ -399,7 +390,8 @@ export default {
             message: error.response.data.error.details,
             color: "error"
           });
-        });
+        })
+        .finally(() => this.postRequest = false);
     },
     remove(item) {
       this.participants.splice(this.participants.indexOf(item), 1);
