@@ -966,39 +966,19 @@ export default {
   margin-left: 16px !important;
 }
 
-
-@media only screen and (max-width: 1263px) {
-  .v-stepper__step,
-  .v-stepper__step.v-stepper__step--active.v-stepper__step--complete,
-  .v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete {
-    display: flex !important;
-  }
-
-  .v-divider.theme--light {
-    display: flex !important;
-  }
-}
-
 @media screen and (max-width: 780px) {
-  .v-stepper__step,
-  .v-stepper__step.v-stepper__step--active.v-stepper__step--complete,
-  .v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete {
-    display: flex !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    width: 100%
-  }
 
-  .v-stepper__header {
-    height: auto;
+  .lbl_ticket_status {
+    display: none;
   }
 
   .v-stepper__step {
-      width: 100%
+    padding: 24px 0 !important;;
+    flex-basis: 10px !important;;
   }
 
-  .lbl_ticket_status {
-    text-align: center;
+  .v-stepper__header {
+    height: 82px !important;
   }
 }
 </style>
