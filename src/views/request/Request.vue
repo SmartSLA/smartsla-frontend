@@ -278,9 +278,13 @@
                       </v-card-text>
                       <v-card-text v-if="event.attachments && event.attachments.length > 0" class="pt-0">
                         <v-icon>attach_file</v-icon>
-                        <a @click="downloadFile(event.attachments[0])">
-                          {{ event.attachments[0].name }}
-                        </a>
+                        <ul>
+                          <li v-for="(attachment, index) in event.attachments" :key="index">
+                            <a @click="downloadFile(attachment)">
+                              {{ attachment.name }}
+                            </a>
+                          </li>
+                        </ul>
                       </v-card-text>
                     </v-card>
                   </v-timeline-item>
