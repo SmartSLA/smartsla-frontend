@@ -9,6 +9,4 @@ import "./filters/calendarTimeFilter";
 import "./filters/formatDateFilter";
 import "./filters/striphtml";
 
-
-
 window.Application = getApplication(applicationInit(Vue));

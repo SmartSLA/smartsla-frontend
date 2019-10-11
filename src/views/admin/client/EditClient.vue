@@ -76,7 +76,7 @@
             <v-card>
               <v-card-title class="body-2">{{ $t("You are about to delete:") }}</v-card-title>
               <v-card-text>
-                <span class="pl-3">{{ $t("client") }} : {{ client.name }}</span>
+                <span class="pl-3">{{ $t("Client") }} : {{ client.name }}</span>
                 <br />
                 <br />
                 <span class="body-2">{{ $t("is linked to the following elements") }}</span>
