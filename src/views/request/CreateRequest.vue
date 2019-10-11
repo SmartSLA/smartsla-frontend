@@ -208,7 +208,12 @@
                       <div v-for="(link, key) in linkedRequests" :key="key">
                         <v-chip close @input="resetRelatedRequest(link.request.id)">
                           <v-avatar>
-                            <v-icon small @click="goToRelatedTicket(link.request.id)">open_in_new</v-icon>
+                            <router-link                       
+                              :to="{name: routeNames.REQUEST, params: {id: link.request.id }}"
+                              target="_blank"
+                            >
+                              <v-icon small>open_in_new</v-icon>
+                            </router-link>
                           </v-avatar>
                           {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
                         </v-chip>
@@ -246,6 +251,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { routeNames } from "@/router";
 import Vue from "vue";
 import FileUpload from "v-file-upload";
 import { VueEditor } from "vue2-editor";
@@ -296,7 +302,6 @@ export default {
       softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
-      relatedRequests: [],
       engagementsCategory: [],
       selectedTypes: [],
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
@@ -387,7 +392,7 @@ export default {
           // TODO: Move to store once the store is used to create requests
           this.$store.dispatch("ticket/countTickets");
 
-          this.$router.push(`/requests/${ticketId}`);
+          this.$router.push({name: routeNames.REQUEST, params: {id: ticketId}});
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -413,10 +418,6 @@ export default {
 
       return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
     },
-    goToRelatedTicket(ticketID) {
-      const routeData = this.$router.resolve({ path: `/requests/${ticketID}` });
-      window.open(routeData.href, "_blank");
-    },
 
     cnsDurationDisplay(durationString) {
       const parsedDuration = this.moment.duration(durationString);
@@ -430,9 +431,19 @@ export default {
   computed: {
     ...mapGetters({
       getUser: "user/getUser",
+      requests: "ticket/getTickets",
       displayName: "user/getDisplayName",
       avatarUrl: "user/getAvatarUrl",
     }),
+
+    relatedRequests() {
+      return (this.requests || []).map(ticket => ({ id: `${ticket._id}`, title: ticket.title }));
+    },
+
+    routeNames() {
+      return routeNames;
+    },
+
     typeList() {
       var engagements = [];
       var types = [];
@@ -519,11 +530,7 @@ export default {
     });
   },
   mounted() {
-    this.$http.listTickets().then(response => {
-      response.data.forEach(ticket => {
-        this.relatedRequests.push({ id: `${ticket._id}`, title: ticket.title });
-      });
-    });
+    this.$store.dispatch("ticket/fetchTickets");
   }
 };
 </script>
