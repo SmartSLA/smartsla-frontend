@@ -1,17 +1,17 @@
 export const OSSA_IDS = [
-{
-    id: "3",
+  {
+    id: 3,
     color: "#dbc1ff",
-    key: "Blocking",
+    key: "Blocking"
   },
   {
-    id: "2",
+    id: 2,
     color: "#8b60d8",
-    key: "Non-blocking",
+    key: "Non-blocking"
   },
   {
-    id: "1",
+    id: 1,
     color: "#512da8",
-    key: "Information",
+    key: "Information"
   }
 ];
