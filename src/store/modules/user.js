@@ -48,11 +48,16 @@ const getters = {
     return state.user && state.user.preferredEmail;
   },
 
+  getType(state) {
+    return state.user && state.user.ticketing && state.user.ticketing.type;
+  },
+
   getUser(state, getters) {
     return {
       id: state.user.id,
       name: getters.getDisplayName,
-      email: getters.getEmail
+      email: getters.getEmail,
+      type: getters.getType
     };
   }
 };
