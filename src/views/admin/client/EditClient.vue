@@ -142,12 +142,13 @@ export default {
 
     deleteClient() {
       this.$http
-        .deleteClient(this.client._id)
+        .deleteClient(this.$route.params.id)
         .then(response => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("client deleted"),
             color: "success"
           });
+          this.$router.push({ name: routeNames.CLIENTS });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -164,7 +165,9 @@ export default {
   },
   created() {
     if (this.$route.params.id) {
-      this.client = require("@/assets/data/client.json");
+      this.$http.getClientById(this.$route.params.id).then(client => {
+        this.client = client.data;
+      });
     }
   }
 };
