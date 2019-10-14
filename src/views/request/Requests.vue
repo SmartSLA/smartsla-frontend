@@ -209,6 +209,12 @@
         ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
+          <td>
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item._id } }"
+              class="blue-color"
+            >{{ props.item._id }}</router-link>
+          </td>
           <td class="text-xs-center">
             <v-chip
               v-if="props.item.assignedTo && props.item.assignedTo.type == 'beneficiary'"
@@ -219,12 +225,6 @@
               >{{ props.item.contract.client[0] }}
             </v-chip>
             <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
-          </td>
-          <td>
-            <router-link
-              :to="{ name: 'Request', params: { id: props.item._id } }"
-              class="blue-color"
-            >{{ props.item._id }}</router-link>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-avatar :color="getOssaConfById(props.item.id_ossa).color" size="25">
@@ -353,8 +353,8 @@ export default {
       },
       isMobile: false,
       headers: [
-        { text: this.$i18n.t("Organization"), value: "organization" },
         { text: this.$i18n.t("Ticket N°"), value: "_id" },
+        { text: this.$i18n.t("Organization"), value: "organization" },
         { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
