@@ -247,7 +247,11 @@
                         <!-- TODO else generate avatar from OP API -->
                       </v-avatar>
                     </template>
-                    <v-card flat class="elevation-2">
+                    <v-card
+                      flat
+                      class="elevation-2"
+                      :color="event.author.type === 'expert' ? 'blue lighten-5' : 'grey lighten-4'"
+                    >
                       <v-card-title primary-title class="pt-3">
                         <div class="flex">
                           <div class="subheading font-weight-medium">{{ event.author.name }}</div>
@@ -638,7 +642,8 @@ export default {
         author: {
           id: this.$store.state.user.user._id,
           name: this.displayName,
-          image: this.avatarUrl
+          image: this.avatarUrl,
+          type: this.getUser.type
         }
       };
 
