@@ -211,12 +211,12 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
             <v-chip
-              v-if="props.item.assignedTo && props.item.assignedTo.type == 'beneficiary'"
+              v-if="props.item.request.assignedTo && props.item.request.assignedTo.type == 'beneficiary'"
               color="#174dc5"
               class="ma-2"
               label
               text-color="white"
-              >{{ props.item.contract.client[0] }}
+              >{{ props.item.request.contract.client[0] }}
             </v-chip>
             <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
