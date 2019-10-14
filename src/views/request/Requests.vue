@@ -29,7 +29,7 @@
       </v-flex>
     </v-layout>
 
-  <v-layout align-center justify-space-between row mb-4 mt-4>
+  <v-layout align-center justify-space-between row mb-4 mt-4 class="hidden-sm-and-down">
     <v-flex xs5>
       <v-toolbar flat dense>
         <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("Filter by:") }}</v-toolbar-title>
@@ -120,8 +120,105 @@
       </v-toolbar>
     </v-flex>
   </v-layout>
+
+
+<!-- small device -->
+  <v-layout column mb-2 mt-4 class="hidden-md-and-up">
+    <v-flex xs12 mb-2>
+      <v-toolbar flat dense>
+        <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("Filter by:") }}</v-toolbar-title>
+        <v-layout align-center justify-end>
+          <v-overflow-btn
+            :items="categories"
+            :label="$i18n.t('Categories')"
+            flat
+            overflow
+            item-text="value"
+            item-value="key"
+            v-model="categoriesFilter"
+          ></v-overflow-btn>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+
+    <v-flex xs12 mb-4>
+      <v-toolbar flat dense>
+        <v-layout align-center justify-end>
+          <v-overflow-btn
+            v-if="translatedFilter"
+            :items="values"
+            :label="$i18n.t('Values')"
+            v-model="valuesFilter"
+            class="pa-0"
+            overflow
+            flat
+            item-text="value"
+            item-value="key"
+            hide-details
+            hide-selected
+          ></v-overflow-btn>
+          <v-overflow-btn
+            v-else
+            :items="values"
+            :label="$i18n.t('Values')"
+            v-model="valuesFilter"
+            flat
+            hide-details
+            hide-selected
+            class="pa-0"
+            overflow
+          ></v-overflow-btn>
+          <v-toolbar-side-icon @click="addNewFilter">
+            <v-icon dark>add</v-icon>
+          </v-toolbar-side-icon>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
   
-    <v-layout justify-space-between row>
+    <v-flex xs12  mb-4>
+      <v-toolbar flat dense>
+        <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("And") }}</v-toolbar-title>
+        <v-divider vertical></v-divider>
+        <v-layout align-center justify-end>
+          <v-overflow-btn
+            :items="savedFilters"
+            :label="$i18n.t('Stored selections')"
+            v-model="storedSelectionsFilterHolder"
+            hide-selected
+            hide-details
+            class="pa-0"
+            overflow
+            flat
+            return-object
+            item-text="name"
+          ></v-overflow-btn>
+          <v-divider vertical></v-divider>
+          <v-toolbar-side-icon @click="loadFilter">
+            <v-icon dark>add</v-icon>
+          </v-toolbar-side-icon>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+
+    <v-flex xs12>
+      <v-toolbar flat dense>
+        <v-layout align-center justify-end>
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="search"
+            :placeholder="$i18n.t('Search')"
+            clearable
+            solo
+            class="mt-2"
+            flat
+          ></v-text-field>
+        </v-layout>
+      </v-toolbar>
+    </v-flex>
+  </v-layout>
+  <!-- small devices -->
+  
+    <v-layout justify-space-between row class="actions_filters">
       <div>
         <ul>
           <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
@@ -1172,4 +1269,9 @@ nav.v-toolbar .v-toolbar__content {
   font-size: 15px;
 }
 
+@media only screen and (max-width: 768px) {
+  .actions_filters {
+    flex-direction: column !important;
+  }
+}
 </style>
