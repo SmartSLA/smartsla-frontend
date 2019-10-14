@@ -17,7 +17,13 @@
               </v-flex>
               <v-flex xs2>
                 <div class="text-xs-right grey--text pt-3">
-                  <v-btn color="primary" fab small dark :to="{ name: 'EditClient', params: { id: 15 } }">
+                  <v-btn
+                    :to="{ name: 'EditClient', params: { id: this.$route.params.id } }"
+                    color="primary"
+                    fab
+                    small
+                    dark
+                  >
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
@@ -49,7 +55,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Status") }} :</strong>
-                    {{ $t(client.status) ? $t("Active") : $t("Not active") }}
+                  {{ $t(client.status) ? $t("Active") : $t("Not active") }}
                 </v-flex>
               </v-layout>
             </v-flex>
@@ -70,13 +76,12 @@ export default {
     };
   },
   created() {
-    let client_id = this.$route.params.id || null;
     this.$http
-      .getClientById(client_id)
+      .getClientById(this.$route.params.id)
       .then(response => {
-          this.client = response.data;
-          this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-          this.$store.dispatch("sidebar/setActiveAdminMenu", "clients");
+        this.client = response.data;
+        this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
+        this.$store.dispatch("sidebar/setActiveAdminMenu", "clients");
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
