@@ -177,7 +177,7 @@ export default {
               color: "success"
             });
             this.software = {};
-            this.$router.push({ name: routeNames.CONTRACTS });
+            this.$router.push({ name: routeNames.SOFTWARELIST });
           }
         })
         .catch(error => {
