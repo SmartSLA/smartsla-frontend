@@ -17,7 +17,13 @@
               </v-flex>
               <v-flex xs4>
                 <div class="text-xs-right grey--text pt-3">
-                  <v-btn color="primary" fab small dark :to="{ name: 'EditSoftware', params: { id: 15 } }">
+                  <v-btn
+                    :to="{ name: 'EditSoftware', params: { id: this.$route.params.id } }"
+                    color="primary"
+                    fab
+                    small
+                    dark
+                  >
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>

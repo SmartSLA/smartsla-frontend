@@ -201,12 +201,13 @@ export default {
 
     deleteSoftware() {
       this.$http
-        .deleteSoftware(this.software._id)
+        .deleteSoftware(this.$route.params.id)
         .then(response => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Software deleted"),
             color: "success"
           });
+          this.$router.push({ name: routeNames.SOFTWARELIST });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
