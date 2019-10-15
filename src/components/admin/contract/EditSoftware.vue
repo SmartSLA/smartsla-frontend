@@ -52,7 +52,7 @@
           <v-layout row wrap align-center>
             <v-flex xs3 class="required-label">{{ $t("Software") }}</v-flex>
             <v-flex xs9>
-              <v-select
+              <v-autocomplete
                 v-model="newSoftwareName"
                 :items="softwareList"
                 item-text="name"
@@ -61,7 +61,7 @@
                 return-object
                 single-line
                 :rules="[() => Object.keys(newSoftwareName).length > 0 || $i18n.t('Required field')]"
-              ></v-select>
+              ></v-autocomplete>
             </v-flex>
             <v-flex xs3 class="required-label">{{ $t("Start of support") }}</v-flex>
             <v-flex xs9>
