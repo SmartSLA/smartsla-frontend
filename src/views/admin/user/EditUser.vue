@@ -108,7 +108,7 @@
               <v-flex xs1></v-flex>
               <v-flex xs5></v-flex>
               <v-flex xs2>
-                <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+                <v-btn class="success" disabled @click="validateFrom">{{ $t("validate") }}</v-btn>
                 <v-btn color="error" @click="openDialog = true" v-if="isEdit">{{ $t("Delete") }}</v-btn>
               </v-flex>
             </v-layout>
@@ -205,12 +205,13 @@ export default {
 
     deleteUser() {
       this.$http
-        .deleteUser(this.user._id)
+        .deleteUser(this.$route.params.id)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("User deleted"),
             color: "success"
           });
+          this.$router.push({ name: routeNames.USERS });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {

@@ -53,7 +53,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.title }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'User', params: { id: props.item.user._id } }" class="blue-color">
+            <router-link :to="{ name: 'User', params: { id: props.item._id } }" class="blue-color">
               <div v-if="props.item.isdisabled == 'yes'">
                 <strike>{{ props.item.name }}</strike>
               </div>
