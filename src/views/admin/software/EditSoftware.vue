@@ -35,7 +35,7 @@
                 <strong>{{ $t("Description") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-textarea name="description"></v-textarea>
+                <v-textarea name="description" v-model="software.description"></v-textarea>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -190,7 +190,25 @@ export default {
 
     validateFrom() {
       if (this.$refs.form.validate()) {
-        this.createSoftware();
+        if (!this.isNew) { 
+          this.createSoftware();
+        } else {
+          this.$http
+            .updateSoftware(this.software._id, this.software)
+            .then(() => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("updated"),
+                color: "success"
+              });
+              this.$router.push({ name: routeNames.SOFTWARELIST });
+            })
+            .catch(error => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: error.response.data.error.details,
+                color: "error"
+              });
+            });
+        }
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("the required fields must be filled"),
@@ -208,6 +226,21 @@ export default {
             color: "success"
           });
           this.$router.push({ name: routeNames.SOFTWARELIST });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    }
+  },
+  mounted() {
+    if (this.$route.params.id) {
+      this.$http
+        .getSoftwareById(this.$route.params.id)
+        .then(response => {
+          this.software = response.data;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
