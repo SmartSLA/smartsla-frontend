@@ -308,6 +308,20 @@ export default {
         this.engagementList.engagements.push(newCommitment);
         this.addCommitment = false;
       }
+      this.newCommitment = {
+        supported: {},
+        request: "",
+        severity: "",
+        idOssa: "",
+        bypassed: {
+          days: "",
+          hours: ""
+        },
+        resolved: {
+          days: "",
+          hours: ""
+        }
+      };
     },
     critColor(critLevel) {
       switch (critLevel) {
