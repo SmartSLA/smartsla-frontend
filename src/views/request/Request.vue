@@ -113,9 +113,8 @@
               {{ request.ticketDate | formatDateFilter('llll') }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
-              <strong>{{
-                $t("Created by : {authorName}", { authorName: request.author && request.author.name })
-              }}</strong>
+              <strong>{{ $t("Created by") }} :</strong>
+              {{ request.author && request.author.name }}
             </v-flex>
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
@@ -408,8 +407,8 @@
             >{{ $t("interlocutor in charge of the request") }}</h4>
             <v-card class="pt-2 px-5 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
-              <v-layout ml-5 pl-5 row class="center-avatar" v-if="request.responsible">
-                <v-flex shrink px-1 xs12>
+              <v-layout ml-5 pl-5 row class="center-avatar">
+                <v-flex shrink px-1 xs12 v-if="request.responsible">
                   <v-avatar size="60" class="pt-0">
                     <v-img :src="`${apiUrl}/api/users/${request.responsible._id}/profile/avatar`"></v-img>
                   </v-avatar>
@@ -422,6 +421,17 @@
                     <br />
                     <strong>{{ $t("E-mail") }} :</strong>
                     {{ request.responsible && request.responsible.email }}
+                    <br />
+                    <span
+                    v-if="request.responsible && request.responsible.phone"
+                    >
+                      <strong>{{ $t("Phone") }} :</strong>
+                      <a
+                      :href="`tel://${request.responsible.phone}`"
+                      >
+                        {{ request.responsible.phone }}
+                      </a>
+                    </span>
                   </v-card-text>
                   <v-card-text v-else>
                     <h4>{{ $t("No interlocutor in charge of the request at the moment") }}</h4>
@@ -434,7 +444,7 @@
             >{{ $t("Beneficiary") }}</h4>
             <v-card class="pt-2 px-5">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
-              <v-layout ml-5 pl-5 row class="center-avatar" v-if="request.beneficiary">
+              <v-layout ml-5 pl-5 row class="center-avatar">
                 <v-flex shrink px-1 xs12>
                   <v-avatar size="60" class="pt-0">
                     <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
@@ -457,6 +467,17 @@
                     <router-link :to="{ name: 'Contract', params: { id: request.contract._id } }">
                       <a class="blue-color" href="#">{{ request.contract && request.contract.name }}</a>
                     </router-link>
+                    <br />
+                    <span
+                    v-if="request.beneficiary && request.beneficiary.phone"
+                    >
+                      <strong>{{ $t("Phone") }} :</strong>
+                      <a
+                      :href="`tel://${request.beneficiary.phone}`"
+                      >
+                        {{ request.beneficiary.phone }}
+                      </a>
+                    </span>
                   </v-card-text>
                 </v-flex>
               </v-layout>
