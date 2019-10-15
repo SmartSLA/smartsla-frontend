@@ -63,7 +63,7 @@
                 :rules="[() => Object.keys(newSoftwareName).length > 0 || $i18n.t('Required field')]"
               ></v-autocomplete>
             </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("Start of support") }}</v-flex>
+            <v-flex xs3>{{ $t("Start of support") }}</v-flex>
             <v-flex xs9>
               <v-menu
                 v-model="startDateModel"
@@ -83,7 +83,6 @@
                     prepend-icon="event"
                     @blur="newSoftware.startDate = parseDate(newSoftware.SupportDate.start)"
                     v-on="on"
-                    :rules="[() => newSoftware.SupportDate.start.length > 0 || $i18n.t('Required field')]"
                   ></v-text-field>
                 </template>
                 <v-date-picker
@@ -93,7 +92,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("End of support") }}</v-flex>
+            <v-flex xs3>{{ $t("End of support") }}</v-flex>
             <v-flex xs9>
               <v-menu
                 v-model="endDateModel"
@@ -113,7 +112,6 @@
                     prepend-icon="event"
                     @blur="newSoftware.SupportDate.end = parseDate(newSoftware.SupportDate.end)"
                     v-on="on"
-                    :rules="[() => newSoftware.SupportDate.end.length > 0 || $i18n.t('Required field')]"
                   ></v-text-field>
                 </template>
                 <v-date-picker
@@ -151,20 +149,18 @@
                 :rules="[() => newSoftware.os.length > 0 || $i18n.t('Required field')]"
               ></v-text-field>
             </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("Referent") }}</v-flex>
+            <v-flex xs3>{{ $t("Referent") }}</v-flex>
             <v-flex xs9>
               <v-select
                 v-model="newSoftware.technicalReferent"
                 :items="refs"
-                :rules="[() => newSoftware.technicalReferent.length > 0 || $i18n.t('Required field')]"
               ></v-select>
             </v-flex>
-            <v-flex xs3 class="pt-3 required-label">{{ $t("Generic") }}</v-flex>
+            <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
             <v-flex xs9>
               <v-radio-group
                v-model="newSoftware.generic"
                row
-               :rules="[() => newSoftware.generic.length > 0 || $i18n.t('Required field')]"
                >
                 <v-radio :label="$i18n.t('yes')" value="yes"></v-radio>
                 <v-radio :label="$i18n.t('no')" value="repo"></v-radio>
