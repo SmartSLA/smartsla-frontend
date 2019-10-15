@@ -35,7 +35,7 @@
                 <strong>{{ $t("Active") }} :</strong>
               </v-flex>
               <v-flex xs6>
-                <v-switch v-model="client.status"></v-switch>
+                <v-switch v-model="client.active"></v-switch>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -43,6 +43,7 @@
               </v-flex>
               <v-flex xs6>
                 <file-upload
+                  url=""
                   prepend-icon="attach_file"
                   class="file pt-2"
                   :btn-label="$i18n.t('Attach file')"
@@ -103,6 +104,7 @@ import { routeNames } from "@/router";
 export default {
   data() {
     return {
+      valid: false,
       openDialog: false,
       client: {}
     };
@@ -131,7 +133,25 @@ export default {
 
     validateFrom() {
       if (this.$refs.form.validate()) {
-        this.createClient();
+        if (!this.isNew) { 
+          this.createClient();
+        } else {
+          this.$http
+            .updateClient(this.client._id, this.client)
+            .then(() => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("updated"),
+                color: "success"
+              });
+              this.$router.push({ name: routeNames.CLIENTS });
+            })
+            .catch(error => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: error.response.data.error.details,
+                color: "error"
+              });
+            });
+        }
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("the required fields must be filled"),
@@ -163,11 +183,19 @@ export default {
       return this.$route.params.id;
     }
   },
-  created() {
+  mounted() {
     if (this.$route.params.id) {
-      this.$http.getClientById(this.$route.params.id).then(client => {
-        this.client = client.data;
-      });
+      this.$http
+        .getClientById(this.$route.params.id)
+        .then(response => {
+          this.client = response.data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     }
   }
 };
