@@ -23,7 +23,7 @@
         v-else-if="isPreviousStep"
         :color="getEngagementColor(cns[cnsType], duration)"
       >
-        {{ percentage(cns[cnsType], duration) < 100 ? 'done' : 'clear' }}
+        {{ duration === 0 ? 'done' : (percentage(cns[cnsType], duration) < 100 ? 'done' : 'clear') }}
       </v-icon>
     </v-flex>
   </v-layout>
