@@ -34,7 +34,7 @@
             <v-avatar :color="getOssaByKey(props.item.idOssa).color" size="25">
               <span class="white--text">{{ getOssaByKey(props.item.idOssa).id }}</span>
             </v-avatar>
-            <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }}  </span>
+            <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }} </span>
           </span>
         </td>
         <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
@@ -61,13 +61,13 @@
             <v-flex xs3 class="required-label">{{ $t("Request type") }}</v-flex>
             <v-flex xs4>
               <v-select
-              v-model="newCommitment.request"
-              :items="requestTypes"
-              item-text="value"
-              item-value="key"
-              flat
-              single-line
-              :rules="[() => newCommitment.request.length > 0 || $i18n.t('Required field')]"
+                v-model="newCommitment.request"
+                :items="requestTypes"
+                item-text="value"
+                item-value="key"
+                flat
+                single-line
+                :rules="[() => newCommitment.request.length > 0 || $i18n.t('Required field')]"
               >
               </v-select>
             </v-flex>
@@ -102,7 +102,7 @@
             <v-flex xs4 v-else></v-flex>
             <v-flex xs3 class="required-label">{{ $t("Ossa identifier") }}</v-flex>
             <v-flex xs4>
-              <v-select 
+              <v-select
                 v-model="newCommitment.idOssa"
                 :items="OSSA_IDS"
                 item-text="value"
@@ -112,16 +112,16 @@
                 :rules="[() => newCommitment.idOssa.length > 0 || $i18n.t('Required field')]"
               >
                 <template slot="item" slot-scope="data">
-                    <v-avatar :color="data.item.color" size="25">
-                      <span class="white--text">{{ data.item.id }}</span>
-                    </v-avatar>
-                    <span class="pl-2"> {{ $t(data.item.key) }} </span>
+                  <v-avatar :color="data.item.color" size="25">
+                    <span class="white--text">{{ data.item.id }}</span>
+                  </v-avatar>
+                  <span class="pl-2"> {{ $t(data.item.key) }} </span>
                 </template>
                 <template slot="selection" slot-scope="data">
                   <v-avatar :color="data.item.color" size="25">
-                      <span class="white--text">{{ data.item.id }}</span>
-                    </v-avatar>
-                    <span class="pl-2"> {{ $t(data.item.key) }}  </span>
+                    <span class="white--text">{{ data.item.id }}</span>
+                  </v-avatar>
+                  <span class="pl-2"> {{ $t(data.item.key) }} </span>
                 </template>
               </v-select>
             </v-flex>
@@ -203,7 +203,9 @@
 
 <script>
 import moment from "moment";
-import { OSSA_IDS } from '@/constants.js';
+import { OSSA_IDS } from "@/constants.js";
+import { SEVERITY_TYPES } from "@/constants.js";
+import { REQUEST_TYPES } from "@/constants.js";
 
 export default {
   name: "contract-edit-engagements",
@@ -237,38 +239,8 @@ export default {
       },
       addCommitment: false,
       contract: {},
-      requestTypes: [
-        {
-          key: "Information",
-          value: this.$i18n.t("Information")
-        },
-        {
-          key: "Anomaly",
-          value: this.$i18n.t("Software anomaly")
-        },
-        {
-          key: "Other",
-          value: this.$i18n.t("Other")
-        }
-      ],
-      severityTypes: [
-        {
-          key: 'Minor',
-          value: this.$i18n.t("Minor")
-        },
-        {
-          key: 'Major',
-          value: this.$i18n.t("Major")
-        },
-        {
-          key: 'Blocking',
-          value: this.$i18n.t("Blocking")
-        },
-        {
-          key: 'None',
-          value: this.$i18n.t("None")
-        }
-      ],
+      requestTypes: REQUEST_TYPES.map(requestType => ({ key: requestType, value: this.$i18n.t(requestType) })),
+      severityTypes: SEVERITY_TYPES.map(severityType => ({ key: severityType, value: this.$i18n.t(severityType) })),
       OSSA_IDS
     };
   },
@@ -276,7 +248,7 @@ export default {
     getOssaByKey(key) {
       return this.OSSA_IDS.find(ossaId => ossaId.key == key);
     },
-    isSetDaysOrHours({days, hours}) {
+    isSetDaysOrHours({ days, hours }) {
       return days || hours ? true : false;
     },
     removeCommitment(commitment) {
@@ -285,9 +257,8 @@ export default {
       );
     },
     appendCommitment() {
-      if (!this.$refs.form.validate())
-        return;
-     
+      if (!this.$refs.form.validate()) return;
+
       let newCommitment = Object.assign({}, this.newCommitment);
       if (this.newRequest.length) {
         newCommitment.request = this.newRequest;
@@ -309,6 +280,20 @@ export default {
         this.engagementList.engagements.push(newCommitment);
         this.addCommitment = false;
       }
+      this.newCommitment = {
+        supported: {},
+        request: "",
+        severity: "",
+        idOssa: "",
+        bypassed: {
+          days: "",
+          hours: ""
+        },
+        resolved: {
+          days: "",
+          hours: ""
+        }
+      };
     },
     critColor(critLevel) {
       switch (critLevel) {
