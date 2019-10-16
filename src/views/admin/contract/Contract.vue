@@ -325,10 +325,6 @@
                         <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }}  </span>
                       </span>
                     </td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.supported) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.bypassed) }}</td>
-                    <td class="text-xs-center">{{ $t(props.item.resolved) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
                     <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
                     <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
