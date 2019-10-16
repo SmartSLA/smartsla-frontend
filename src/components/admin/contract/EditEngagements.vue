@@ -13,11 +13,23 @@
     <v-layout row wrap align-center>
       <v-flex xs2>{{ $t("Treatment time range") }}</v-flex>
       <v-flex xs1>
-        <v-text-field v-model="engagementList.schedule.start" mask="###"></v-text-field>
+        <v-text-field
+          required
+          class="required-label"
+          :error-messages="addCommitment && !engagementList.schedule.start ? $t('Required field') : ''"
+          v-model="engagementList.schedule.start"
+          mask="###"
+        ></v-text-field>
       </v-flex>
       <v-flex xs1>{{ $t("H") }}</v-flex>
       <v-flex xs1>
-        <v-text-field v-model="engagementList.schedule.end" mask="##"></v-text-field>
+        <v-text-field
+          required
+          :error-messages="addCommitment && !engagementList.schedule.end ? $t('Required field') : ''"
+          class="required-label"
+          v-model="engagementList.schedule.end"
+          mask="##"
+        ></v-text-field>
       </v-flex>
       <v-flex xs1>{{ $t("H") }}</v-flex>
       <v-flex xs1>{{ $t("or") }}</v-flex>
@@ -257,8 +269,9 @@ export default {
       );
     },
     appendCommitment() {
-      if (!this.$refs.form.validate()) return;
-
+      if (!this.$refs.form.validate() || !this.engagementList.schedule.start || !this.engagementList.schedule.end)
+        return;
+    
       let newCommitment = Object.assign({}, this.newCommitment);
       if (this.newRequest.length) {
         newCommitment.request = this.newRequest;
