@@ -70,7 +70,8 @@
                             prepend-icon="laptop"
                             background-color="white"
                             v-model="ticket.software"
-                            :search-input.sync="software"
+                            :filter="searchSoftware"
+                            item-text="software.name"
                             class="required-element"
                             return-object
                             :rules="[() => Object.keys(ticket.software).length > 0 || $i18n.t('Required field')]"
@@ -417,8 +418,14 @@ export default {
       return this.$i18n.t("{days}WD {hours}WH", {
         days: parsedDuration.days(),
         hours: parsedDuration.hours()
-      })
+      });
     },
+    searchSoftware(item, queryText) {
+      const searchText = queryText.toLowerCase();
+      const proposedSoftware = `${item.software.name} ${item.version} ${item.os}`;
+
+      return proposedSoftware.toLowerCase().indexOf(searchText) > -1;
+    }
   },
   computed: {
     ...mapGetters({

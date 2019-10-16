@@ -3,8 +3,8 @@ export default {
     return this.get(`/ticketing/api/software/${softwareId}`);
   },
 
-  listSoftware() {
-    return this.get(`/ticketing/api/software`);
+  listSoftware({ sortBy = "-timestamps.creation" }) {
+    return this.get(`/ticketing/api/software`, { params: { sortBy } });
   },
 
   createSoftware(options) {

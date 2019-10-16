@@ -97,7 +97,7 @@ export default {
   },
   mounted() {
     this.$http
-      .listSoftware()
+      .listSoftware({ sortBy: "name" })
       .then(response => {
         this.softwares = response.data;
       })
