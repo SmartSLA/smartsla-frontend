@@ -18,7 +18,7 @@
                 <strong>{{ $t("Type") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-radio-group v-model="user.type" row color="primary" :disabled="isEdit">
+                <v-radio-group v-model="user.type" row color="primary">
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
@@ -89,7 +89,6 @@
                   item-value="_id"
                   item-text="name"
                   v-model="user.client"
-                  :disabled="isEdit"
                 ></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
@@ -165,7 +164,17 @@ export default {
   },
   created() {
     if (this.$route.params.id) {
-      this.user = require("@/assets/data/user.json");
+      this.$http
+        .getUserById(this.$route.params.id)
+        .then(({data}) => {
+          this.user = data;
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: $t("Can not fetech user"),
+            color: "error"
+          });
+        });
     }
     this.getContracts();
     this.getClients();
@@ -174,19 +183,34 @@ export default {
     createUser() {
       this.$http
         .createUser(this.user)
-        .then(response => {
-          if (response.data && response.status === 201) {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("User created"),
-              color: "success"
-            });
-            this.user = {};
-          }
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("User created"),
+            color: "success"
+          });
           this.$router.push({ name: routeNames.USERS });
         })
-        .catch(error => {
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
+            message: $t("Can not create user"),
+            color: "error"
+          });
+        });
+    },
+
+    updateUser() {
+      this.$http
+        .updateUser(this.user._id, this.user)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
+          });
+          this.$router.push({ name: routeNames.USERS });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: $t("Can not update user"),
             color: "error"
           });
         });
@@ -194,7 +218,9 @@ export default {
 
     validateFrom() {
       if (this.$refs.form.validate()) {
-        this.createUser();
+        if(this.$route.params.id) {
+          this.updateUser();
+        }
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("the required fields must be filled"),
@@ -213,9 +239,9 @@ export default {
           });
           this.$router.push({ name: routeNames.USERS });
         })
-        .catch(error => {
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
+            message: $t("Can not delete user"),
             color: "error"
           });
         });
@@ -223,10 +249,10 @@ export default {
     getContracts() {
       this.$http
         .getContracts()
-        .then(response => {
-          this.contractList = response.data;
+        .then(({data}) => {
+          this.contractList = data;
         })
-        .catch(error => {
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("failed to fetch contracts list"),
             color: "error"
@@ -236,10 +262,10 @@ export default {
     getClients() {
       this.$http
         .listClients()
-        .then(response => {
-          this.clientsList = response.data;
+        .then(({data}) => {
+          this.clientsList = data;
         })
-        .catch(error => {
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: "cannot fetch clients",
             color: "error"

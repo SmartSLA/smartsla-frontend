@@ -21,5 +21,9 @@ export default {
 
   deleteUser(userId) {
     return this.delete(`/ticketing/api/users/${userId}`);
+  },
+
+  updateUser(userId, options) {
+    return this.put(`/ticketing/api/users/${userId}`, options);
   }
 };
