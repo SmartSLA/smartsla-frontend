@@ -204,6 +204,8 @@
 <script>
 import moment from "moment";
 import { OSSA_IDS } from "@/constants.js";
+import { SEVERITY_TYPES } from "@/constants.js";
+import { REQUEST_TYPES } from "@/constants.js";
 
 export default {
   name: "contract-edit-engagements",
@@ -237,38 +239,8 @@ export default {
       },
       addCommitment: false,
       contract: {},
-      requestTypes: [
-        {
-          key: "Information",
-          value: this.$i18n.t("Information")
-        },
-        {
-          key: "Anomaly",
-          value: this.$i18n.t("Software anomaly")
-        },
-        {
-          key: "Other",
-          value: this.$i18n.t("Other")
-        }
-      ],
-      severityTypes: [
-        {
-          key: "Minor",
-          value: this.$i18n.t("Minor")
-        },
-        {
-          key: "Major",
-          value: this.$i18n.t("Major")
-        },
-        {
-          key: "Blocking",
-          value: this.$i18n.t("Blocking")
-        },
-        {
-          key: "None",
-          value: this.$i18n.t("None")
-        }
-      ],
+      requestTypes: REQUEST_TYPES.map(requestType => ({ key: requestType, value: this.$i18n.t(requestType) })),
+      severityTypes: SEVERITY_TYPES.map(severityType => ({ key: severityType, value: this.$i18n.t(severityType) })),
       OSSA_IDS
     };
   },
