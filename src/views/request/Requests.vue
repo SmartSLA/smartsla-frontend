@@ -236,7 +236,7 @@
             <software-list-detail :request="props.item.request"></software-list-detail>
           </td>
           <td class="text-xs-center">
-            <v-tooltip top>
+            <v-tooltip top v-if="props.item.request.software && props.item.request.software.software">
               <template v-slot:activator="{ on }">
                 <span v-bind:class="['criticality', props.item.request.software.critical]" v-on="on">
                   {{ props.item.softwareName }}
