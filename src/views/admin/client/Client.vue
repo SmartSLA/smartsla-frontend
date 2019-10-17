@@ -80,8 +80,6 @@ export default {
       .getClientById(this.$route.params.id)
       .then(response => {
         this.client = response.data;
-        this.$store.dispatch("sidebar/setSidebarComponent", "admin-main-side-bar");
-        this.$store.dispatch("sidebar/setActiveAdminMenu", "clients");
       })
       .catch(error => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -89,11 +87,6 @@ export default {
           color: "error"
         });
       });
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("sidebar/resetCurrentSideBar");
-    this.$store.dispatch("sidebar/resetAdminMenu");
-    next();
   }
 };
 </script>
