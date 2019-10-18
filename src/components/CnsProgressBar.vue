@@ -7,8 +7,8 @@
         :color="getEngagementColor(cns[cnsType], duration)"
         class="mt-0 white--text font-weight-bold"
       >
-        <span v-if="duration">{{ cns[cnsType] }} HO / {{ duration }} HO</span>
-        <span v-else>{{ cns[cnsType] }} HO</span>
+        <span v-if="duration">{{ cns[cnsType] | humanizeHoursDurationFilter }} / {{ duration }} HO</span>
+        <span v-else>{{ cns[cnsType] | humanizeHoursDurationFilter }}</span>
       </v-progress-linear
       >
     </v-flex>
@@ -31,16 +31,15 @@
 
 <script>
 import { computeCns } from "@/services/cns";
-
 export default {
   name: "cns-progress-bar",
   props: { ticket: Object, cnsType: String, hideClock: Boolean },
   data() {
     return {
       cns: {
-        supported: 0,
-        bypassed: 0,
-        resolved: 0
+        supported: {},
+        bypassed: {},
+        resolved: {}
       },
       cnsDurations: {
         supported: 0,
@@ -70,8 +69,8 @@ export default {
 
   },
   methods: {
-    percentage(partialValue, totalValue) {
-      let value = (100 * partialValue) / totalValue;
+    percentage({hours}, totalValue) {
+      let value = (100 * hours) / totalValue;
 
       if (!totalValue) {
         return 100;
@@ -79,13 +78,13 @@ export default {
 
       return value < 100 ? value : 100;
     },
-    getEngagementColor(currentValue, totalValue) {
+    getEngagementColor({hours}, totalValue) {
       if (this.isPreviousStep || this.isCurrentStep) {
         if (!this.duration) {
           return "success";
         }
 
-        return this.percentage(currentValue, totalValue) < 100 ? "success" : "error";
+        return this.percentage(hours, totalValue) < 100 ? "success" : "error";
       }
 
       return "grey";

@@ -10,8 +10,11 @@ import "@/filters/calendarTimeFilter";
 import "@/filters/formatDateFilter";
 import "@/filters/striphtml";
 import "@/filters/prettyBytesFilter";
+import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
 Vue.component('text-highlight', TextHighlight);
+Vue.filter('humanizeHoursDurationFilter', humanizeHoursDurationFilter)
+
 
 window.Application = getApplication(applicationInit(Vue));
 Vue.component("downloadCsv", JsonCsv);
