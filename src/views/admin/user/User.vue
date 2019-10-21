@@ -10,13 +10,13 @@
             <v-flex xs10>
               <v-card-title primary-title class="px-4">
                 <div>
-                  <h3 class="display-1 font-weight-medium mb-0">{{ user.name }}</h3>
+                  <h3 class="display-1 font-weight-medium mb-0">{{ ticketingUser.name }}</h3>
                 </div>
               </v-card-title>
             </v-flex>
             <v-flex xs2>
               <div class="text-xs-right grey--text pt-3">
-                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: user._id } }">
+                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: reqParamId } }">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -29,27 +29,27 @@
               <v-layout row wrap>
                 <v-flex xs12>
                   <strong>{{ $t("Type") }} :</strong>
-                  {{ $t(user.type) }}
+                  {{ $t(ticketingUser.type) }}
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Name") }} :</strong>
-                  {{ user.name }}
+                  {{ ticketingUser.name }}
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Email") }} :</strong>
-                  {{ user.email }}
+                  {{ ticketingUser.email }}
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Phone") }} :</strong>
-                  {{ user.phone }}
+                  {{ ticketingUser.phone }}
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Team") }} :</strong>
-                  {{ user.team }}
+                  {{ ticketingUser.team }}
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Role") }} :</strong>
-                  {{ user.role }}
+                  {{ ticketingUser.role }}
                 </v-flex>
               </v-layout>
             </v-flex>
@@ -87,7 +87,8 @@
 export default {
   data() {
     return {
-      user: {}
+      ticketingUser: {},
+      reqParamId: this.$route.params.id
     };
   },
   methods: {
@@ -95,7 +96,7 @@ export default {
       this.$http
         .getUserById(this.$route.params.id)
         .then(response => {
-          this.user = response.data;
+          this.ticketingUser = response.data;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
