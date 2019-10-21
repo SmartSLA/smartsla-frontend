@@ -20,7 +20,7 @@ export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
 
 export const REQUEST_TYPES = ["Information", "Anomaly", "Other"];
 
-export const TYPE = {
+export const USER_TYPE = {
   EXPERT: "expert",
   BENEFICIARY: "beneficiary"
 };
