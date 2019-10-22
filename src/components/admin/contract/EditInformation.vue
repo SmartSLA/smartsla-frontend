@@ -258,7 +258,7 @@ export default {
     },
 
     validate() {
-      var contract = this.contract;
+      let contract = this.contract;
       if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
         contract.mailingList.external = contract.mailingList.external.split(",");
       }
@@ -285,6 +285,12 @@ export default {
             });
           });
       } else {
+        const {name: client, clientId} = contract.client;
+        contract = {
+          ...contract,
+          client,
+          clientId
+        };
         this.$http
           .updateContract(contract._id, contract)
           .then(response => {
@@ -292,6 +298,8 @@ export default {
               message: this.$i18n.t("contract saved"),
               color: "success"
             });
+
+            this.$router.push({ name: routeNames.CONTRACT, params: { id: this.contract._id } });
           })
           .catch(error => {
             this.$store.dispatch("ui/displaySnackbar", {

@@ -53,9 +53,15 @@
                   <strong>{{ $t("Access code hint") }} :</strong>
                   {{ client.accessHelp }}
                 </v-flex>
-                <v-flex xs12>
-                  <strong>{{ $t("Status") }} :</strong>
-                  {{ $t(client.status) ? $t("Active") : $t("Not active") }}
+                <v-flex xs12 class="ml-1">
+                  <v-layout row justify-space-between>
+                    <strong> {{ $t("Status") }} :</strong>
+                    <v-switch
+                      class="ma-0 pa-0 ml-2"
+                      disabled
+                      v-model="client.active"
+                    ></v-switch>
+                  </v-layout>
                 </v-flex>
               </v-layout>
             </v-flex>
