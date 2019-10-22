@@ -165,6 +165,7 @@
                       <vue-editor
                         placeholder="Description"
                         v-model="ticket.description"
+                        :editorToolbar="editorToolbar"
                         class="required-element"
                       ></vue-editor>
                     </v-input>
@@ -257,6 +258,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
+import editorToolbar from "@/services/helpers/default-toolbar";
 import Vue from "vue";
 import { VueEditor } from "vue2-editor";
 import Attachments  from "@/components/attachments/creation/Attachments.vue";
@@ -465,6 +467,10 @@ export default {
       displayName: "user/getDisplayName",
       avatarUrl: "user/getAvatarUrl",
     }),
+
+    editorToolbar() {
+      return editorToolbar;
+    },
 
     relatedRequests() {
       return (this.requests || []).map(ticket => ({ id: `${ticket._id}`, title: ticket.title }));
