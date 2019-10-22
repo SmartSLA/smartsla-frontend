@@ -101,13 +101,13 @@
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
                               <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
-                              {{ data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
+                              {{ data.item.software && data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
                             <template v-slot:selection="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
                               <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
-                              {{ data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
+                              {{ data.item.software && data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
                             </template>
                           </v-autocomplete>
                         </v-flex>

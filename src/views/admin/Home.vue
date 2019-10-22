@@ -237,7 +237,7 @@ export default {
       });
 
     this.$http
-      .listSoftware()
+      .listSoftware({})
       .then(response => {
         this.softwares = response.data;
         this.softwareCount = response.data.length;

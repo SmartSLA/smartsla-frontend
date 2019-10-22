@@ -41,7 +41,7 @@ export default {
     this.$http.listClients().then(response => {
       this.clients = response.data;
     });
-    this.$http.listTickets().then(response => {
+    this.$http.listTickets({}).then(response => {
       this.tickets = response.data;
     });
   },
