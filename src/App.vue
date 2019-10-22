@@ -6,7 +6,7 @@
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
-          <router-link :to="{ path: 'requests' }">
+          <router-link :to="{ name: routeNames.REQUESTS }">
             <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
           </router-link>
         </v-toolbar-title>
@@ -36,6 +36,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { routeNames } from "@/router";
 import UserMenu from "@/components/UserMenu.vue";
 import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
 import Snackbar from "@/components/Snackbar.vue";
@@ -54,6 +55,10 @@ export default {
   computed: {
     showNavigation() {
       return this.$route.matched.some(route => route.meta.showSideBar)
+    },
+
+    routeNames() {
+      return routeNames;
     }
   }
 };
