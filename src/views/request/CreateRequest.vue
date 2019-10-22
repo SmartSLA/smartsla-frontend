@@ -63,18 +63,39 @@
                     <v-container grid-list-md>
                       <v-layout row wrap>
                         <v-flex xs12 md3 sm12 lg0 xl3>
+                          <v-select
+                            prepend-icon="storage"
+                            :disabled="!ticket.contract._id"
+                            :items="[...typeList]"
+                            v-model="ticket.type"
+                            :label="$i18n.t('Type')"
+                            :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
+                            class="required-element"
+                            return-object
+                          >
+                            <template slot="selection" slot-scope="{ item }">
+                              {{ $t(item) }}
+                            </template>
+                            <template slot="item" slot-scope="{ item }">
+                              {{ $t(item) }}
+                            </template>
+                          </v-select>
+                        </v-flex>
+                        <v-flex xs1></v-flex>
+                        <v-flex xs12 md3 sm12 lg0 xl3>
                           <v-autocomplete
-                            :disabled="!ticket.contract.software"
-                            :items="ticket.contract.software"
+                            :disabled="!ticket.type.length"
+                            :items="[...softwareList]"
                             :label="$i18n.t('Software')"
                             prepend-icon="laptop"
                             background-color="white"
                             v-model="ticket.software"
                             :filter="searchSoftware"
-                            item-text="software.name"
-                            class="required-element"
+                            :rules="[validateSoftware() || $i18n.t('Required field')]"
+                            :search-input.sync="software"
+                            :class="{'required-element': !isInformationRequest}"
                             return-object
-                            :rules="[() => Object.keys(ticket.software).length > 0 || $i18n.t('Required field')]"
+                            item-text="software.name"
                           >
                             <template v-slot:item="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
@@ -93,33 +114,13 @@
                         <v-flex xs1></v-flex>
                         <v-flex xs12 md3 sm12 lg0 xl3>
                           <v-select
-                            prepend-icon="storage"
-                            :disabled="!ticket.software.critical"
-                            :items="[...typeList]"
-                            v-model="ticket.type"
-                            :label="$i18n.t('Type')"
-                            :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
-                            class="required-element"
-                            return-object
-                          >
-                            <template slot="selection" slot-scope="{ item }">
-                              {{ $t(item) }}
-                            </template>
-                            <template slot="item" slot-scope="{ item }">
-                              {{ $t(item) }}
-                            </template>
-                          </v-select>
-                        </v-flex>
-                        <v-flex xs1></v-flex>
-                        <v-flex xs12 md3 sm12 lg0 xl3>
-                          <v-select
                             prepend-icon="report"
                             :items="[...severityList]"
                             :disabled="!ticket.type"
                             v-model="ticket.severity"
                             :label="$i18n.t('Severity')"
-                            :rules="[() => ticket.severity.length > 0 || $i18n.t('Required field')]"
-                            class="required-element"
+                            :rules="[validateSeverity() || $i18n.t('Required field')]"
+                            :class="{'required-element': !isInformationRequest}"
                             return-object
                           >
                             <template slot="selection" slot-scope="{ item }">
@@ -301,7 +302,6 @@ export default {
       software: "",
       os: "",
       type: "",
-      softwareList: [],
       contractList: [],
       types: ["type1", "type2", "type3", "type4"],
       engagementsCategory: [],
@@ -371,6 +371,14 @@ export default {
         this.ticket.events = [event];
       }
 
+      if (!this.ticket.software.software) {
+        delete this.ticket.software;
+      }
+
+      if (!this.ticket.severity.length) {
+        delete this.ticket.severity;
+      }
+
       this.$http
         .createTicket(this.ticket)
         .then(response => {
@@ -401,6 +409,29 @@ export default {
     isValidEmail(email) {
       return this.reg.test(email);
     },
+
+    validateSoftware() {
+      if (this.ticket.type.length) {
+        if (this.ticket.type.toLowerCase() === "information") {
+          return true;
+        }
+        return Object.keys(this.ticket.software || {}).length > 0;
+      }
+
+      return true;
+    },
+
+    validateSeverity() {
+      if (this.ticket.type.length) {
+        if (this.ticket.type.toLowerCase() === "information") {
+          return true;
+        }
+        return this.ticket.severity.length > 0;
+      }
+
+      return true;
+    },
+
     resetRelatedRequest(relatedRequestID) {
       this.linkedRequests = this.linkedRequests.filter(item => item.request.id !== relatedRequestID);
     },
@@ -445,47 +476,47 @@ export default {
 
     typeList() {
       var engagements = [];
-      var types = [];
-      if (this.ticket.contract) {
-        if (this.ticket.software) {
-          if (this.selectedTypes.length) {
-            return this.selectedTypes.map(engagement => engagement.request);
-          }
-          if (this.ticket.software.critical) {
-            switch (this.ticket.software.critical) {
-              case "critical":
-                engagements = this.ticket.contract.Engagements.critical.engagements;
-                break;
-              case "sensible":
-                engagements = this.ticket.contract.Engagements.sensible.engagements;
-
-                break;
-              case "standard":
-                engagements = this.ticket.contract.Engagements.standard.engagements;
-
-                break;
-            }
-
-            types = engagements.map(engagement => engagement.request);
-            this.selectedTypes = engagements.slice();
-            return types;
-          }
-        }
+      if (this.ticket.contract && Object.keys(this.ticket.contract).length) {
+        engagements.push(...(this.ticket.contract.Engagements.critical.engagements || []));
+        engagements.push(...(this.ticket.contract.Engagements.sensible.engagements || []));
+        engagements.push(...(this.ticket.contract.Engagements.standard.engagements || []));
+        return engagements.map(engagement => engagement.request);
       }
+
       this.selectedTypes = [];
       return [];
     },
-    severityList() {
-      if (this.ticket.type.length) {
-        return this.selectedTypes
-          .filter(engagement => engagement.request == this.ticket.type)
-          .map(item => item.severity);
+
+    softwareList() {
+      let softwareList = [];
+      if (this.ticket.contract && this.ticket.type.length) {
+        Object.keys(this.ticket.contract.Engagements || {}).forEach(criticity => {
+          if (
+            (this.ticket.contract.Engagements[criticity].engagements || []).filter(
+              engagement => engagement.request == this.ticket.type
+            ).length
+          ) {
+            softwareList.push(...this.ticket.contract.software.filter(software => software.critical === criticity));
+          }
+        });
+
+        return softwareList;
       }
-      this.engagementsCategory = this.selectedTypes.slice();
+
+      return [];
+    },
+
+    severityList() {
+      if (this.ticket.type.length && Object.keys(this.ticket.software || {}).length) {
+        const engagements = this.ticket.contract.Engagements[this.ticket.software.critical].engagements;
+        this.engagementsCategory = engagements.slice();
+        return engagements.filter(engagement => engagement.request == this.ticket.type).map(item => item.severity);
+      }
+
       return [];
     },
     selectedEngagement() {
-      if (this.ticket.severity.length) {
+      if (this.ticket.severity.length && this.engagementsCategory.length) {
         var engagements = [];
         engagements = [...this.engagementsCategory].filter(
           engagement => engagement.request == this.ticket.type && engagement.severity == this.ticket.severity
@@ -504,20 +535,24 @@ export default {
       filtredList = filtredList.filter(item => !store.includes(item));
 
       return filtredList;
+    },
+
+    isInformationRequest() {
+      return this.ticket.type && this.ticket.type.toLowerCase() === "information";
     }
   },
   watch: {
     "ticket.contract": function(newContract, oldContract) {
       this.ticket.software = {};
-      this.ticket.severity = {};
-      this.ticket.type = {};
-    },
-    "ticket.software": function(newSoftware, oldSoftware) {
-      this.ticket.severity = {};
-      this.ticket.type = {};
+      this.ticket.severity = "";
+      this.ticket.type = "";
     },
     "ticket.type": function(newType, oldType) {
-      this.ticket.severity = {};
+      this.ticket.severity = "";
+      this.ticket.software = "";
+    },
+    "ticket.software": function(newSoftware, oldSoftware) {
+      this.ticket.severity = "";
     },
     participants(participants) {
       this.emailVerfication = participants.map(participant => [participant, this.isValidEmail(participant)]);
