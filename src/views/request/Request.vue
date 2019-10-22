@@ -306,7 +306,12 @@
                       v-model="comment"
                       v-if="selectedEditor == 'markdown'"
                     />
-                    <vue-editor v-model="comment" v-else></vue-editor>
+                    <vue-editor
+                      v-model="comment"
+                      :editorToolbar="editorToolbar"
+                      v-else
+                    >
+                    </vue-editor>
                     <br />
                   </v-input>
                   <v-input prepend-icon="no-icon" class="pt-2">
@@ -496,6 +501,7 @@ import { capitalize } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import AttachmentsCreation  from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
+import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
 
 const NEXT_STATUS = {
@@ -592,6 +598,10 @@ export default {
       return ["resolved", "closed"].includes(this.currentStatus)
         ? assignees.filter(assignee => assignee.type === "beneficiary")
         : assignees;
+    },
+
+    editorToolbar() {
+      return editorToolbar;
     }
   },
   methods: {
