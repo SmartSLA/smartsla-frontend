@@ -102,17 +102,19 @@ export default {
       return duration;
     },
     computeDuration() {
-      const criticality = this.ticket.software.critical;
-      const currentEngagements = [...this.ticket.contract.Engagements[criticality].engagements];
+      if (this.ticket.software && this.ticket.software.software) {
+        const criticality = this.ticket.software.critical;
+        const currentEngagements = [...this.ticket.contract.Engagements[criticality].engagements];
 
-      if (currentEngagements.length) {
-        const engagement = currentEngagements[0];
+        if (currentEngagements.length) {
+          const engagement = currentEngagements[0];
 
-        this.duration = this.parseEngagementDuration(engagement[this.cnsType]);
-        this.cnsDurations = {
-          supported: this.parseEngagementDuration(engagement.supported),
-          bypassed: this.parseEngagementDuration(engagement.bypassed),
-          resolved: this.parseEngagementDuration(engagement.resolved)
+          this.duration = this.parseEngagementDuration(engagement[this.cnsType]);
+          this.cnsDurations = {
+            supported: this.parseEngagementDuration(engagement.supported),
+            bypassed: this.parseEngagementDuration(engagement.bypassed),
+            resolved: this.parseEngagementDuration(engagement.resolved)
+          }
         }
       }
     }

@@ -19,15 +19,16 @@ function computeCns(ticket) {
     bypassed: 0,
     resolved: 0
   };
-  const workingInterval = (ticket.contract.Engagements[ticket.software.critical] &&
-    ticket.contract.Engagements[ticket.software.critical].schedule) || { start: 9, end: 18 };
+  if (ticket.software && ticket.software.software) {
+    const workingInterval = (ticket.contract.Engagements[ticket.software.critical] &&
+      ticket.contract.Engagements[ticket.software.critical].schedule) || { start: 9, end: 18 };
 
-  const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
+    const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
 
-  cns.supported = computeTime(periods["new"], workingInterval);
-  cns.bypassed = computeTime(periods["supported"], workingInterval);
-  cns.resolved = computeTime(periods["bypassed"], workingInterval);
-
+    cns.supported = computeTime(periods["new"], workingInterval);
+    cns.bypassed = computeTime(periods["supported"], workingInterval);
+    cns.resolved = computeTime(periods["bypassed"], workingInterval);
+  }
   return cns;
 }
 
