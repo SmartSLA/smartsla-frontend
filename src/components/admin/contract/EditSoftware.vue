@@ -152,11 +152,10 @@
             <v-flex xs3>{{ $t("Referent") }}</v-flex>
             <v-flex xs9>
               <v-autocomplete
-                :items="referents"
+                :items="[...referents]"
                 v-model="newSoftware.technicalReferent"
                 item-text="name"
                 :rules="[() => newSoftware.technicalReferent.length > 0 || $i18n.t('Required field')]"
-                return-object
               ></v-autocomplete>
             </v-flex>
             <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
@@ -343,7 +342,7 @@ export default {
   },
   created() {
     this.$http
-      .listSoftware()
+      .listSoftware({})
       .then(response => {
         this.softwareList = response.data;
       })

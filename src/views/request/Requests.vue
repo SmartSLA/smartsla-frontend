@@ -230,8 +230,8 @@
             <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-avatar :color="getOssaConfById(props.item.id_ossa).color" size="25">
-              <span class="white--text">{{ props.item.id_ossa }}</span>
+            <v-avatar :color="getOssaConfById(props.item.id_ossa || 1).color" size="25">
+              <span class="white--text">{{ props.item.id_ossa || 1 }}</span>
             </v-avatar>
           </td>
           <td class="text-xs-center">{{ $t(props.item.type) }}</td>
@@ -475,8 +475,8 @@ export default {
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
-    this.$http.listSoftware().then(response => {
-      response.data.forEach(software => {
+    this.$http.listSoftware({}).then(({data}) => {
+      data.map(software => {
         this.softwareList.push(software.name);
       });
     });
@@ -719,8 +719,9 @@ export default {
         softwareFilter.forEach(currentFilter => {
           if (
             request.software &&
-            request.software.name &&
-            request.software.name.toLowerCase() == currentFilter.value.toLowerCase()
+            request.software.software &&
+            request.software.software.name &&
+            request.software.software.name.toLowerCase() == currentFilter.value.toLowerCase()
           ) {
             softwareFilterMatch = true;
           }
