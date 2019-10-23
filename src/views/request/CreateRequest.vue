@@ -211,7 +211,7 @@
                       <div v-for="(link, key) in linkedRequests" :key="key">
                         <v-chip close @input="resetRelatedRequest(link.request.id)">
                           <v-avatar>
-                            <router-link                       
+                            <router-link
                               :to="{name: routeNames.REQUEST, params: {id: link.request.id }}"
                               target="_blank"
                             >
@@ -381,8 +381,12 @@ export default {
         delete this.ticket.severity;
       }
 
+      const newTicket = Object.assign({}, this.ticket);
+
+      newTicket.contract = newTicket.contract._id;
+
       this.$http
-        .createTicket(this.ticket)
+        .createTicket(newTicket)
         .then(response => {
           const ticketId = response.data;
 
@@ -394,7 +398,7 @@ export default {
           // TODO: Move to store once the store is used to create requests
           this.$store.dispatch("ticket/countTickets");
 
-          this.$router.push({name: routeNames.REQUEST, params: {id: ticketId}});
+          this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
