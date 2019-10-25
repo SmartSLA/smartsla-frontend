@@ -30,7 +30,7 @@
         <v-list-tile
           v-for="menuItem in filteredMenuItems"
           :key="menuItem.icon"
-          :to="{ name: menuItem.name }"
+          :to="{ name: menuItem.path || menuItem.name }"
           :class="{
             'primary active-menu-link': menuItem.name == currentActiveMenu,
             regular: menuItem.name != currentActiveMenu
@@ -70,7 +70,7 @@ export default {
     }),
 
     currentActiveMenu() {
-      return this.$route.matched[0].name || this.$route.name;
+      return this.$route.matched.length && this.$route.matched[0].name || this.$route.name;
     },
 
     filteredMenuItems() {
