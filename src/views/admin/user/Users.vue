@@ -12,24 +12,41 @@
           single-line
           hide-details
           solo
-          class="users-search-name"
-        ></v-text-field>
+          class="users-filter-field"
+        >
+        </v-text-field>
         <v-select
           solo
           :items="clients"
-          v-model="clients"
+          v-model="client"
           hide-details
-          label="Client"
-          class="users-search-client"
+          :label="$t('Client')"
+          item-text="name"
+          item-value="_id"
+          class="users-filter-field"
         ></v-select>
+
         <v-select
           solo
-          :items="roles"
-          v-model="roles"
+          :items="contracts"
+          v-model="contract"
           hide-details
-          :label="$i18n.t('Roles')"
-          class="users-search-roles"
+          :label="$t('Contract')"
+          item-text="name"
+          item-value="_id"
+          class="users-filter-field"
         ></v-select>
+
+        <v-select solo :items="roles" v-model="role" hide-details :label="$i18n.t('Roles')" class="users-filter-field">
+        </v-select>
+
+        <div>
+          <v-btn flat @click="resetFilters">
+            <v-icon class="mr-2">refresh</v-icon>
+            {{ $i18n.t("reset") }}
+          </v-btn>
+        </div>
+
         <div class="users-operations">
           <router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
             <v-icon>add_circle</v-icon>
@@ -43,7 +60,7 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="users"
+        :items="usersList"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
@@ -51,7 +68,6 @@
         :rows-per-page-text="$t('Rows per page:')"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.title }}</td>
           <td class="text-xs-center">
             <router-link :to="{ name: 'User', params: { id: props.item.user._id } }" class="blue-color">
               <div v-if="props.item.isdisabled == 'yes'">
@@ -60,7 +76,8 @@
               <div v-else>{{ props.item.name }}</div>
             </router-link>
           </td>
-          <td class="text-xs-center">{{ $t(props.item.role) }}</td>
+          <td class="text-xs-center">{{ $t(capitalize(props.item.type)) }}</td>
+          <td class="text-xs-center">{{ $t(capitalize(props.item.role)) }}</td>
           <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
           <td class="text-xs-center">
             <a :href="`tel://${props.item.phone}`">
@@ -74,28 +91,33 @@
 </template>
 
 <script>
+import { USER_ROLES } from "@/constants.js";
+import { capitalize } from "lodash";
+
 export default {
   data() {
     return {
       search: "",
       clients: [],
-      roles: [],
+      client: null,
+      contracts: [],
+      contract: null,
+      role: null,
+      relations: [],
       rowsPerPageItems: [10, 25, 50],
       pagination: {
         rowsPerPage: 10
       },
       headers: [
-        { text: this.$i18n.t("Title"), value: "title", class: "text-xs-center" },
         {
           text: this.$i18n.t("Name"),
           value: "name",
-          sortable: false,
           class: "text-xs-center"
         },
+        { text: this.$i18n.t("Type"), value: "type", class: "text-xs-center" },
         {
           text: this.$i18n.t("Role"),
           value: "role",
-          sortable: false,
           class: "text-xs-center"
         },
         {
@@ -114,17 +136,43 @@ export default {
       users: []
     };
   },
+  computed: {
+    roles() {
+      return [...USER_ROLES.expert, ...USER_ROLES.beneficiary];
+    },
+
+    usersList() {
+      let users = [...(this.users || [])];
+
+      if (this.client) {
+        users = users.filter(user => user.contract.client && user.contract.client === this.client);
+      }
+
+      if (this.role) {
+        users = users.filter(user => user.role && user.role === this.role);
+      }
+
+      if (this.contract) {
+        users = users.filter(user => user.contract._id === this.contract._id);
+      }
+
+      return users;
+    }
+  },
+  methods: {
+    resetFilters() {
+      this.client = this.role = this.search = this.contract = null;
+    },
+
+    capitalize(term) {
+      return capitalize(term);
+    }
+  },
   mounted() {
     this.$http
       .listUsers()
-      .then(response => {
-        let users = response.data.map(user => {
-          if (user.user.accounts) {
-            user.email = user.user.accounts[0].emails[0] || "";
-          }
-          return user;
-        });
-        this.users = users;
+      .then(({ data }) => {
+        this.users = data;
       })
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -132,6 +180,20 @@ export default {
           color: "error"
         });
       });
+
+    this.$http
+      .listClients()
+      .then(({ data }) => {
+        this.clients = data;
+      })
+      .catch(console.log);
+
+    this.$http
+      .getContracts()
+      .then(({ data }) => {
+        this.contracts = data;
+      })
+      .catch(console.log);
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
@@ -171,8 +233,9 @@ export default {
   color: #777;
 }
 
-.users-search-name, .users-search-client, .users-search-roles {
-  width: 300px;
+.users-filter-field {
+  padding-right: 10px !important;
+  width: 200px;
 }
 
 .users-search {
@@ -185,7 +248,6 @@ export default {
 }
 
 .user-mail {
-
   font-weight: bold !important;
 }
 
