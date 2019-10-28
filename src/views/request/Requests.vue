@@ -19,7 +19,7 @@
       <v-flex xs6>
         <v-layout justify-end row>
           <div>
-            <download-excel :data="requests" >
+            <download-excel :data="requests" :name="`08000linux_${moment().format('YYYY-MM-DD-HH[h]mm[m]ss')}.xls`">
               <v-btn flat small color="default">
                 <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
               </v-btn>
