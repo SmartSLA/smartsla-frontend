@@ -306,11 +306,4 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .cust_uploader .v-list.theme--light {
   padding: 0px !important;
 }
-
-@media only screen and (max-width: 959px) {
-  
-  .v-stepper:not(.v-stepper--vertical) .v-stepper__label {
-    display: block !important;
-  }
-}
 </style>

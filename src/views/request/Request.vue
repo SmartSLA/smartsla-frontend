@@ -720,7 +720,16 @@ export default {
 };
 </script>
 
+<style lang="stylus">
+@media only screen and (max-width: 959px) {
+  .v-stepper__label {
+    display: block !important;
+  }
+}
+</style>
+
 <style lang="stylus" scoped>
+
 .center-avatar {
   align-items: center;
 }
