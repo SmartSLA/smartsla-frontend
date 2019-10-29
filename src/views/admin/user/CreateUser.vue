@@ -15,7 +15,7 @@
                 <span class="title">{{ $t("Type") }}</span>
               </v-flex>
               <v-flex xs8>
-                <v-radio-group v-model="user.type" row color="primary">
+                <v-radio-group v-model="user.type" @change="initRole()" row color="primary">
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
@@ -150,6 +150,7 @@
 </template>
 <script>
 import { routeNames } from "@/router";
+import { USER_TYPE } from "@/constants.js";
 
 export default {
   data() {
@@ -165,7 +166,7 @@ export default {
         type: "",
         name: "",
         email: "",
-        contracts: "",
+        contracts: [],
         client: "",
         role: "",
         phone: ""
@@ -203,6 +204,10 @@ export default {
       return Promise.all([this.getContracts(), this.getClients()]);
     },
     createUser() {
+      if (this.user.type === USER_TYPE.EXPERT) {
+        this.user.client = "";
+        this.user.contracts = [];
+      }
       this.$http
         .createUser(this.user)
         .then(response => {
@@ -256,6 +261,9 @@ export default {
             color: "error"
           });
         });
+    },
+    initRole() {
+      this.user.role = "";
     }
   }
 };

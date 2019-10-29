@@ -199,7 +199,7 @@
 </template>
 
 <script>
-import { TYPE } from "@/constants.js";
+import { USER_TYPE } from "@/constants.js";
 
 export default {
   name: "edit-contract-software",
@@ -354,7 +354,7 @@ export default {
       });
 
     this.$http
-      .listUsers(TYPE.EXPERT)
+      .listUsers(USER_TYPE.EXPERT)
       .then(({ data }) => {
         this.referents = data;
       })
