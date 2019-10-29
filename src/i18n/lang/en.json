@@ -23,5 +23,7 @@
   "Ticket assigned to {assignedTo}": "Ticket assigned to {assignedTo}",
   "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
   "Ticket passed in status {status}": "Ticket passed in status {status}",
-  "Created by : {authorName}": "Created by : {authorName}"
+  "Created by : {authorName}": "Created by : {authorName}",
+  "This button allows you to add an additional filter to the ticket board": "This button allows you to add an additional filter to the ticket board",
+  "This button allows you to load a saved filter": "This button allows you to load a saved filter"
 }
