@@ -338,5 +338,7 @@
     "Not assigned yet": "Non assigné",
     "Failed to fetch client": "Client introuvable!",
     "Active": "Actif",
-    "Not active": "Inactif"
+    "Not active": "Inactif",
+    "This button allows you to add an additional filter to the ticket board": "Ce bouton vous permet de rajouter un filtre supplémentaire au tableau de tickets",
+    "This button allows you to load a saved filter": "Ce bouton vous permet de charger un filtrage sauvegardé"
 }

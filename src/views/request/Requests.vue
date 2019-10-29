@@ -75,9 +75,16 @@
               class="pa-0"
               overflow
             ></v-overflow-btn>
-            <v-toolbar-side-icon @click="addNewFilter">
-              <v-icon dark>add</v-icon>
-            </v-toolbar-side-icon>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-toolbar-side-icon v-on="on" @click="addNewFilter">
+                  <v-icon dark>add</v-icon>
+                </v-toolbar-side-icon>
+              </template>
+              <span>
+                {{$i18n.t('This button allows you to add an additional filter to the ticket board')}}
+              </span>
+            </v-tooltip>
           </v-layout>
         </v-toolbar>
       </v-flex>
@@ -100,9 +107,16 @@
               item-text="name"
             ></v-overflow-btn>
             <v-divider vertical></v-divider>
-            <v-toolbar-side-icon @click="loadFilter">
-              <v-icon dark>add</v-icon>
-            </v-toolbar-side-icon>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-toolbar-side-icon v-on="on" @click="loadFilter">
+                  <v-icon dark>add</v-icon>
+                </v-toolbar-side-icon>
+              </template>
+              <span>
+                {{$i18n.t('This button allows you to load a saved filter')}}
+              </span>
+            </v-tooltip>
           </v-layout>
         </v-toolbar>
       </v-flex>
