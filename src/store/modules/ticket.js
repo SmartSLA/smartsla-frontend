@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { isString, isNumber } from "lodash";
+import { isString, isNumber, isUndefined } from "lodash";
 
 function initialState() {
   return {
@@ -93,10 +93,22 @@ const getters = {
     const { sortBy, descending, page, rowsPerPage } = state.pagination;
     let result = Object.values(state.tickets);
 
+    result = result.map(request => ({
+      ...request,
+      authorName: request.author && request.author.name,
+      softwareName: request.software && request.software.software && request.software.software.name,
+      responsibleName: request.responsible && request.responsible.name,
+      assignedToName: request.assignedTo && request.assignedTo.name,
+      id_ossa: request.idOssa.id,
+      organizationLabel: request.assignedTo && request.assignedTo.type === 'beneficiary' ? request.contract.client[0] : 'L' ,
+      createdAt: request.timestamps.createdAt,
+      updatedAt: request.timestamps.updatedAt,
+    }));
+
     if (sortBy) {
       result = result.sort((a, b) => {
-        const valueA = a[sortBy];
-        const valueB = b[sortBy];
+        const valueA = !isUndefined(a[sortBy]) ? a[sortBy] : "";
+        const valueB = !isUndefined(b[sortBy]) ? b[sortBy] : "";
 
         if (isString(valueA) && isString(valueB)) {
           return descending

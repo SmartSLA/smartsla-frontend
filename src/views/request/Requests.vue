@@ -225,9 +225,9 @@
               class="ma-2"
               label
               text-color="white"
-              >{{ props.item.request.contract.client[0] }}
+              >{{ props.item.request.organizationLabel }}
             </v-chip>
-            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">{{ props.item.request.organizationLabel }}</v-chip>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-avatar :color="getOssaConfById(props.item.id_ossa || 1).color" size="25">
@@ -252,7 +252,7 @@
           </td>
           <td class="text-xs-center">{{ props.item.title | striphtml }}</td>
           <td class="text-xs-center">{{ props.item.assignedTo }}</td>
-          <td class="text-xs-center">{{ props.item.responsible }}</td>
+          <td class="text-xs-center">{{ props.item.responsible }}</td>
           <td class="text-xs-center">{{ props.item.author }}</td>
           <td class="text-xs-center">
             <router-link
@@ -357,20 +357,20 @@ export default {
       isMobile: false,
       headers: [
         { text: this.$i18n.t("Ticket N°"), value: "_id" },
-        { text: this.$i18n.t("Organization"), value: "organization" },
+        { text: this.$i18n.t("Organization"), value: "organizationLabel" },
         { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
-        { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
+        { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "softwareName" },
-        { text: this.$i18n.t("Title"), value: "title" },
-        { text: this.$i18n.t("Assigned to"), value: "assignedTo" },
-        { text: this.$i18n.t("Responsible"), value: "responsible" },
-        { text: this.$i18n.t("Author"), value: "author" },
+        { text: this.$i18n.t("Title"), value: "title", sortable: false},
+        { text: this.$i18n.t("Assigned to"), value: "assignedToName" },
+        { text: this.$i18n.t("Responsible"), value: "responsibleName" },
+        { text: this.$i18n.t("Author"), value: "authorName" },
         { text: this.$i18n.t("Client / Contrat"), value: "client_contrat", sortable: false },
         { text: this.$i18n.t("MAJ"), value: "updatedAt" },
         { text: this.$i18n.t("Created"), value: "createdAt" },
         { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("In process of being"), value: "cns_type" }
+        { text: this.$i18n.t("In process of being"), value: "cns_type", sortable: false }
       ],
       categories: [
         {
@@ -508,13 +508,12 @@ export default {
         organization: request.organization,
         author: request.author && request.author.name,
         type: request.type,
-        severity: request.severety,
+        severity: request.severity,
         software: request.software,
         softwareName: request.software && request.software.software && request.software.software.name,
         title: request.title,
         assignedTo: request.assignedTo && request.assignedTo.name,
         responsible: request.responsible && request.responsible.name,
-        author: request.author && request.author.name,
         customer: request.customer,
         updatedAt: request.timestamps.updatedAt,
         createdAt: request.timestamps.createdAt,
