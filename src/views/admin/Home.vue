@@ -107,7 +107,7 @@
               <div>
                 <h3 class="headline mb-0">
                   <v-icon x-large>web</v-icon>
-                  {{ $t("Software") }}
+                  {{ $t("Softwares") }}
                 </h3>
               </div>
             </v-badge>

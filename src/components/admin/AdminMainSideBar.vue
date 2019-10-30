@@ -65,7 +65,7 @@
               <v-icon>web</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>{{ $t("Software") }}</v-list-tile-title>
+              <v-list-tile-title>{{ $t("Softwares") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
            <v-list-tile
