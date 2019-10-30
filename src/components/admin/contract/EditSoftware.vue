@@ -27,18 +27,22 @@
         </td>
         <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
         <td class="text-xs-center">
-          <v-btn color="error" flat small @click="removeSoftware(props.item)">
+          <v-btn color="primary" flat small @click="editSoftware(props)">
+            <v-icon>edit</v-icon>
+            {{ $t("edit") }}
+          </v-btn>
+          <v-btn color="error" flat small @click="deleteSoftware(props.item)">
             <v-icon>remove_circle</v-icon>
             {{ $t("remove") }}
           </v-btn>
         </td>
       </template>
     </v-data-table>
-    <v-btn small flat class="pl-4 success--text" @click="addSoftware = !addSoftware">
+    <v-btn small flat class="pl-4 success--text" @click="show" v-if="!isEdit">
       <v-icon class="success--text">add_circle</v-icon>
       {{ $t("Add") }}
     </v-btn>
-    <v-layout row wrap align-center>
+    <v-layout class="mt-2" row wrap align-center>
       <v-flex xs1></v-flex>
       <v-flex xs8>
         <v-form
@@ -48,19 +52,19 @@
           ref="form"
           lazy-validation
         >
-          <h3 class="title mb-0">{{ $t("Add software") }}</h3>
+          <h3 class="title mb-0">{{ !isEdit ? $t("Add software") : $t("Edit software") }}</h3>
           <v-layout row wrap align-center>
             <v-flex xs3 class="required-label">{{ $t("Software") }}</v-flex>
             <v-flex xs9>
               <v-autocomplete
-                v-model="newSoftwareName"
+                v-model="newSoftware.software"
                 :items="softwareList"
                 item-text="name"
                 item-value="name"
                 flat
                 return-object
                 single-line
-                :rules="[() => Object.keys(newSoftwareName).length > 0 || $i18n.t('Required field')]"
+                :rules="[() => Object.keys(newSoftware.software).length > 0 || $i18n.t('Required field')]"
               ></v-autocomplete>
             </v-flex>
             <v-flex xs3>{{ $t("Start of support") }}</v-flex>
@@ -179,22 +183,29 @@
             </v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9>
-              <v-btn @click="appendSoftware" class="success">{{ $t("Add software") }}</v-btn>
+              <v-btn @click="submit" class="success">{{ !isEdit ? $t("Add software") : $t("Edit software") }}</v-btn>
               {{ $t("or") }}
-              <v-btn @click="addSoftware = !addSoftware" class="error">{{ $t("Cancel") }}</v-btn>
+              <v-btn @click="cancel" class="error">{{ $t("Cancel") }}</v-btn>
             </v-flex>
           </v-layout>
         </v-form>
+        <v-dialog v-model="showDialog" persistent max-width="300">
+          <v-card class="px-4 pt-2">
+            <v-card-text>
+              <span
+                class="body-2"
+              >{{ $t("Are you sure you want to remove the software") }} ?</span>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="confirmDeleteSoftware">{{ $t("confirm") }}</v-btn>
+              <v-btn color="error" @click="showDialog = false">{{ $t("cancel") }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-flex>
     </v-layout>
     <br />
-    <v-layout row wrap align-center>
-      <v-flex xs4></v-flex>
-      <v-flex xs3>
-        <v-btn @click="validate" class="success" :disabled="addSoftware">{{ $t("Validate changes") }}</v-btn>
-      </v-flex>
-      <v-flex xs3></v-flex>
-    </v-layout>
   </v-card>
 </template>
 
@@ -224,35 +235,53 @@ export default {
       softwareList: [],
       contract: {},
       valid: true,
-      referents: []
+      referents: [],
+      isEdit: false,
+      selectedItem: {},
+      showDialog: false
     };
   },
   methods: {
-    appendSoftware() {
-      if (this.$refs.form.validate()) {
-        this.validate();
-        if (
-          !this.contract.software.filter(software => JSON.stringify(software) == JSON.stringify(this.newSoftwareName))
-            .length
-        ) {
-          this.newSoftware.software = this.newSoftwareName;
-          this.newSoftwareName = {};
-          this.contract.software.push(Object.assign({}, this.newSoftware));
+    resetOnCancel() {
+      this.isEdit = false;
+      this.newSoftware = {
+        software: {},
+        critical: "standard",
+        generic: false,
+        technicalReferent: "",
+        os: "",
+        version: "",
+        SupportDate: {
+          start: "",
+          end: ""
         }
-
-        this.addSoftware = false;
-      } else {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("the required fields must be filled"),
-          color: "error"
-        });
-      }
+      };
     },
+    isFormValid() {
+      return this.$refs.form.validate();
+    },
+    show() {
+      this.resetOnCancel();
+      this.addSoftware = !this.addSoftware;
+    },
+    editSoftware({item: softwareItem}) {
+      this.isEdit = true;
+      this.addSoftware = true;
+      this.selectedItem = softwareItem;
+      this.newSoftware = {
+        ...this.selectedItem
+      }
 
-    removeSoftware(selectedSoftware) {
+    },
+    deleteSoftware(selectedSoftware) {
+      this.showDialog = true;
+      this.selectedItem = selectedSoftware;
+    },
+    confirmDeleteSoftware() {
       this.contract.software = this.contract.software.filter(
-        software => JSON.stringify(software) != JSON.stringify(selectedSoftware)
+        software => JSON.stringify(software) != JSON.stringify(this.selectedItem)
       );
+      this.doRequest();
     },
     parseDate(date) {
       if (!date) return null;
@@ -260,8 +289,30 @@ export default {
       const [month, day, year] = date.split("/");
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     },
+    cancel() {
+      this.addSoftware = !this.addSoftware;
+      this.resetOnCancel();
+    },
+    submit() {
+      if (this.$refs.form.validate()) {
+        if(this.isEdit) {
+          const softwareIdx = this.contract.software.findIndex(
+            software => JSON.stringify(software) == JSON.stringify(this.selectedItem)
+          );
+          this.$set(this.contract.software, softwareIdx, this.newSoftware);
+        } else {
+          this.contract.software.push(Object.assign({}, this.newSoftware));
+        }
 
-    validate() {
+        this.doRequest();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
+      }
+    },
+    doRequest() {
       this.$http
         .updateContract(this.contract._id, this.contract)
         .then(response => {
@@ -269,6 +320,9 @@ export default {
             message: this.$i18n.t("updated"),
             color: "success"
           });
+          this.addSoftware = false;
+          this.isEdit = false;
+          this.showDialog = false;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
