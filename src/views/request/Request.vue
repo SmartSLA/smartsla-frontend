@@ -274,7 +274,7 @@
                           v-if="event.status"
                           v-html="
                             $t('Ticket passed in status {status}', {
-                              status: event.status
+                              status: statusDisplay(event.status)
                             })
                           "
                         ></p>
@@ -731,8 +731,13 @@ export default {
     },
 
     capitalize(text) {
-
       return capitalize(text);
+    },
+
+    statusDisplay(status) {
+      const capitalizedStatus = capitalize(status);
+
+      return this.$i18n.t(capitalizedStatus);
     }
   },
   mounted() {
