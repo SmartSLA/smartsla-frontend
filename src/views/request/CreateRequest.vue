@@ -85,17 +85,15 @@
                         <v-flex xs12 md3 sm12 lg0 xl3>
                           <v-autocomplete
                             :disabled="!ticket.type.length"
-                            :items="[...softwareList]"
                             :label="$i18n.t('Software')"
                             prepend-icon="laptop"
                             background-color="white"
+                            :items="[...sortedListOfSoftware]"
                             v-model="ticket.software"
                             :filter="searchSoftware"
                             :rules="[validateSoftware() || $i18n.t('Required field')]"
-                            :search-input.sync="software"
-                            :class="{'required-element': !isInformationRequest}"
+                            :class="{ 'required-element': !isInformationRequest }"
                             return-object
-                            item-text="software.name"
                           >
                             <template v-slot:item="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
@@ -549,6 +547,13 @@ export default {
 
     isInformationRequest() {
       return this.ticket.type && this.ticket.type.toLowerCase() === "information";
+    },
+    sortedListOfSoftware() {
+      if (this.ticket.contract.software) {
+        return this.ticket.contract.software.sort((a, b) => a.software.name.localeCompare(b.software.name))
+      }
+
+      return [];
     }
   },
   watch: {
