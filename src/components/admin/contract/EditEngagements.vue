@@ -10,8 +10,9 @@
         </h3>
       </div>
     </v-card-title>
-    <v-layout row wrap align-center>
+    <v-layout row wrap align-center align-content-center justify-center>
       <v-flex xs2>{{ $t("Treatment time range") }}</v-flex>
+      <v-flex xs1 class="text-xs-right mr-4">{{ $t("From") }}</v-flex>
       <v-flex xs1>
         <v-text-field
           required
@@ -22,7 +23,8 @@
         ></v-text-field>
       </v-flex>
       <v-flex xs1>{{ $t("H") }}</v-flex>
-      <v-flex xs1>
+      <v-flex xs1 class="text-xs-right mr-4">{{ $t("to") }}</v-flex>
+      <v-flex xs2>
         <v-text-field
           required
           :error-messages="addCommitment && !engagementList.schedule.end ? $t('Required field') : ''"
@@ -33,7 +35,7 @@
       </v-flex>
       <v-flex xs1>{{ $t("H") }}</v-flex>
       <v-flex xs1>{{ $t("or") }}</v-flex>
-      <v-flex xs3>
+      <v-flex xs1>
         <v-checkbox v-model="allweek" color="primary" :value="true" :label="$i18n.t('7d/7d')" hide-details></v-checkbox>
       </v-flex>
     </v-layout>
