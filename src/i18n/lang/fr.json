@@ -310,7 +310,7 @@
     "Ticket #": "Ticket N°",
     "Ticket assigned to {assignedTo}": "Ticket assigné à <strong> {assignedTo} </strong>",
     "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Engagements contractuels du ticket: Prise en charge en {supported}, contournement en {bypassed}, et résolution en {resolved}",
-    "ticket created": "ticket crée",
+    "ticket created": "ticket créé",
     "Ticket N°": "Ticket N°",
     "Ticket passed in status {status}": "Ticket passé en statut <strong> {status} </strong>",
     "Ticket status": "Statut du ticket",
