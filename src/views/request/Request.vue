@@ -320,7 +320,7 @@
                         <v-select
                           :items="[allowedStatusList]"
                           v-model="newStatus"
-                          :disabled="privateComment"
+                          :disabled="privateComment || !allowedStatusList"
                           :label="$t('Status')"
                         >
                           <template slot="item" slot-scope="{ item }">
