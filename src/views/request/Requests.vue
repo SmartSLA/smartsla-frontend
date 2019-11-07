@@ -214,7 +214,7 @@
         :total-items="totalRequests"
         :items="requestsAsDataTable"
         :headers="headers"
-        class="elevation-1"
+        class="elevation-1 pb-0"
         :search="centralSearch"
         :custom-filter="requestsFilter"
         :filter="requestFilterByGroup"

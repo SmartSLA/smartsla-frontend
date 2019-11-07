@@ -194,14 +194,6 @@ th.column.sortable.text-xs-left {
   background-color: #2195f2;
 }
 
-button.v-btn.v-btn--disabled.v-btn--flat.v-btn--icon.theme--light {
-  background-color: #2195f2;
-}
-
-button.v-btn.v-btn--flat.v-btn--icon.theme--light {
-  background-color: #2195f2;
-}
-
 th {
   background-color: #ffffff;
 }
