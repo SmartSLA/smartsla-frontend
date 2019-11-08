@@ -1,7 +1,9 @@
 <template>
   <v-tooltip top>
     <template v-slot:activator="{ on }">
-      <span v-on="on">{{ $t(request.severity) }}</span>
+      <span v-on="on">
+        <text-highlight :queries="query">{{ $t(request.severity) }}</text-highlight>
+      </span>
     </template>
     <span>
       <b>{{ $t("Engagements") }} {{ $t(request.severity) }} :</b>
@@ -29,7 +31,8 @@ import moment from "moment";
 export default {
   name: "software-list-detail",
   props: {
-    request: Object
+    request: Object,
+    query: String
   },
   computed: {
     engagements: function() {

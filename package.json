@@ -30,6 +30,7 @@
     "vue-openpaas-components": "github:linagora/vue-openpaas-components",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.17.1",
+    "vue-text-highlight": "^2.0.10",
     "vue2-editor": "^2.6.6",
     "vuetify": "^1.3.4",
     "vuetify-markdown-editor": "^0.3.11",
