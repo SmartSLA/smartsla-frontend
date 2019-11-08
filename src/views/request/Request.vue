@@ -16,11 +16,11 @@
       <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>
         <v-card light color="white">
           <v-layout row wrap>
-            <v-flex xs2 md1 sm1 lg1 xl1 class="mt-4">
+            <v-flex xs12 md1 sm1 lg1 xl1 class="mt-4 lbl_ticket_status">
               <strong class="pt-4 pl-4">{{ $t("Status") }}:</strong>
             </v-flex>
-            <v-flex xs10 md11 sm11 xl11 lg11>
-              <v-stepper class="noshadow" non-linear>
+            <v-flex xs12 md11 sm11 xl11 lg11>
+              <v-stepper class="noshadow" alt-labels>
                 <v-stepper-header>
                   <v-stepper-step step="1" color="success" complete>{{ $t("New") }}</v-stepper-step>
                   <v-divider v-if="ticketStatusId < 1"></v-divider>
@@ -82,16 +82,16 @@
           </v-layout>
           <v-divider />
           <v-layout wrap>
-            <v-flex xs11 md11 sm11 lg11 xl11 class="pt-0 pb-0">
+            <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">#{{ request._id }} - {{ request.title }}</h3>
                 </div>
               </v-card-title>
             </v-flex>
-            <v-flex xs1 md1 sm1 xl1 lg1 class="pt-0 pb-0">
+            <v-flex xs4 md1 sm1 xl1 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn color="primary" fab small disabled>
+                <v-btn color="primary" fab small disabled class="ma-0">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -752,7 +752,16 @@ export default {
 };
 </script>
 
+<style lang="stylus">
+@media only screen and (max-width: 959px) {
+  .v-stepper__label {
+    display: block !important;
+  }
+}
+</style>
+
 <style lang="stylus" scoped>
+
 .center-avatar {
   align-items: center;
 }
@@ -996,5 +1005,21 @@ export default {
 
 .custom-ticket-bl {
   margin-left: 16px !important;
+}
+
+@media screen and (max-width: 780px) {
+
+  .lbl_ticket_status {
+    display: none;
+  }
+
+  .v-stepper__step {
+    padding: 24px 0 !important;;
+    flex-basis: 10px !important;;
+  }
+
+  .v-stepper__header {
+    height: 82px !important;
+  }
 }
 </style>

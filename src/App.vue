@@ -281,34 +281,6 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
   margin: 0px !important;
 }
 
-@media only screen and (max-width: 959px) {
-  .v-stepper:not(.v-stepper--vertical) .v-stepper__label {
-    display: block !important;
-  }
-}
-
-@media only screen and (max-width: 1263px) {
-  .v-stepper__step.v-stepper__step--active.v-stepper__step--complete {
-    display: none !important;
-  }
-
-  .current_step.v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete {
-    display: flex !important;
-  }
-
-  .v-stepper__step.v-stepper__step--inactive.v-stepper__step--complete {
-    display: none !important;
-  }
-
-  .v-stepper__step {
-    display: none !important;
-  }
-
-  hr.v-divider.theme--light {
-    display: none !important;
-  }
-}
-
 @media only screen and (min-width: 1264px) {
   .file-upload .input-wrapper {
     width: 175px !important;
@@ -318,10 +290,6 @@ form #app .v-icon.v-icon--link.material-icons.theme--light {
 .v-toolbar__content {
   padding-left: 0px !important;
   padding-right: 0px !important;
-}
-
-.v-stepper__label {
-  padding-left: 9px !important;
 }
 
 .v-card.v-sheet.theme--light p {
