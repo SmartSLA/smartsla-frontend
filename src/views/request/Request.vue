@@ -364,14 +364,20 @@
                     <v-flex xs12>
                       <attachments-creation
                         v-bind:attachments.sync="commentCreationAttachments"
-                        :disabled="!commentBtn"
+                        :disabled="isSubmitting"
                       />
                     </v-flex>
                   </v-layout>
                   <v-layout row wrap>
                     <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
                     <v-flex xs2 md4 sm4 lg4 xl4>
-                      <v-btn color="info" class="custom-comment-btn" @click="addEvent" :disabled="!commentBtn">{{
+                      <v-btn 
+                        color="info"
+                        class="custom-comment-btn"
+                        @click="addEvent"
+                        :disabled="isSubmitting"
+                        :loading="isSubmitting"
+                      >{{
                         $t("Add comment")
                       }}</v-btn>
                     </v-flex>
@@ -527,10 +533,10 @@ export default {
       bypassedDuration: 0,
       currentStatus: "",
       applicationSettings: {},
-      commentBtn: true,
       selectedEditor: "wysiwyg",
       privateComment: false,
       events: [],
+      isSubmitting: false,
       newStatus: "",
       newResponsible: "",
       newEvent: {},
@@ -642,7 +648,7 @@ export default {
       this.request.communityContribution = {};
     },
     addEvent() {
-      this.commentBtn = false;
+      this.isSubmitting = true;
       const attachmentsPromise = this.commentCreationAttachments.length ?
         this.$http.getUploader().uploadAll(this.commentCreationAttachments) :
         Promise.resolve([]);
@@ -665,7 +671,7 @@ export default {
           });
         })
         .finally(() => {
-          this.commentBtn = true;
+          this.isSubmitting = false;
         });
     },
     postEvent(attachments = []) {
