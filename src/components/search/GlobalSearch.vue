@@ -8,7 +8,6 @@
     solo
     hide-no-data
     item-text="name"
-    item-value="name"
     :filter="filterByGroup"
     :search-input.sync="search"
     @input="selectedItem"
@@ -23,6 +22,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "global-search",
   data() {
@@ -30,20 +31,25 @@ export default {
       search: null,
       searchResults: [],
       clients: [],
-      contracts: [],
-      tickets: []
+      contracts: []
     };
   },
   mounted() {
-    this.$http.getContracts().then(response => {
-      this.contracts = response.data;
-    });
-    this.$http.listClients().then(response => {
-      this.clients = response.data;
-    });
-    this.$http.listTickets({}).then(response => {
-      this.tickets = response.data;
-    });
+    if (this.$auth.check() && this.userType !== "beneficiary") {
+      this.$http.getContracts().then(response => {
+        this.contracts = response.data;
+      });
+      this.$http.listClients().then(response => {
+        this.clients = response.data;
+      });
+    }
+    this.$store.dispatch("ticket/fetchTickets");
+  },
+  computed: {
+    ...mapGetters({
+      userType: "user/getType",
+      tickets: "ticket/getTickets"
+    })
   },
   methods: {
     filterByGroup(item, queryText, itemText) {
@@ -66,29 +72,31 @@ export default {
     },
 
     buildSearchItems() {
-      var searchItems = [{ header: "clients" }];
-
-      this.clients.map(client => {
-        searchItems.push({
-          name: client.name,
-          type: "client",
-          id: client._id
+      var searchItems = [];
+      if (this.userType !== "beneficiary") {
+        searchItems.push({ header: "clients" });
+        this.clients.map(client => {
+          searchItems.push({
+            name: client.name,
+            type: "client",
+            id: client._id
+          });
         });
-      });
-      searchItems.push({ divider: true });
-      searchItems.push({ header: "contracts" });
-      this.contracts.map(contract => {
-        searchItems.push({
-          name: contract.name,
-          type: "contract",
-          id: contract._id
+        searchItems.push({ divider: true });
+        searchItems.push({ header: "contracts" });
+        this.contracts.map(contract => {
+          searchItems.push({
+            name: contract.name,
+            type: "contract",
+            id: contract._id
+          });
         });
-      });
-      searchItems.push({ divider: true });
+        searchItems.push({ divider: true });
+      }
       searchItems.push({ header: "tickets" });
       this.tickets.map(ticket => {
         searchItems.push({
-          name: ticket.title,
+          name: `#${ticket._id} ${ticket.title}`,
           type: "ticket",
           id: ticket._id
         });
@@ -99,7 +107,7 @@ export default {
   },
   watch: {
     search(val) {
-      if (val && val.length > 1) {
+      if (val && val.length) {
         this.searchResults = [...this.buildSearchItems()];
       } else {
         this.searchResults = [];
