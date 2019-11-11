@@ -480,14 +480,20 @@
                     </router-link>
                     <br />
                     <span
-                    v-if="request.beneficiary && request.beneficiary.phone"
+                      v-if="request.beneficiary && request.beneficiary.phone"
                     >
                       <strong>{{ $t("Phone") }} :</strong>
                       <a
-                      :href="`tel://${request.beneficiary.phone}`"
+                      :href="`tel://${request.beneficiary.phone || request.callNumber }`"
                       >
-                        {{ request.beneficiary.phone }}
+                        {{ request.beneficiary.phone || request.callNumber }}
                       </a>
+                    </span>
+                    <span
+                      v-if="request.meetingId && request.meetingId.length"
+                    >
+                      <strong>{{ $t("meeting ID") }} :</strong>
+                      {{ request.meetingId }}
                     </span>
                   </v-card-text>
                 </v-flex>

@@ -37,6 +37,34 @@
                     ></v-autocomplete>
                   </v-flex>
                   <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
+                  <v-flex xs6 md4 lg12 xl6 sm9>
+                    <v-text-field
+                      v-if="!userPhone"
+                      prepend-icon="phone"
+                      v-model="callNumber"
+                      :label="$i18n.t('Call number')"
+                      type="text"
+                      mask="phone"
+                      :rules="[() => callNumber.length > 0 || $i18n.t('Required field')]"
+                      class="required-element"
+                      :hint="$t('For example, +33.1.84.88.01010')"
+                      persistent-hint
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs6 md4 lg12 xl6 sm9>
+                    <v-text-field
+                      v-if="!userPhone"
+                      prepend-icon="meeting_room"
+                      v-model="meetingId"
+                      :label="$i18n.t('Meeting ID')"
+                      type="text"
+                      mask="###########"
+                      :rules="[() => meetingId.length > 0 || $i18n.t('Required field')]"
+                      class="required-element"
+                      :hint="$t('For example, 0123456')"
+                      persistent-hint
+                    ></v-text-field>
+                  </v-flex>
                   <v-flex xs12 md12 lg12 sm12 xl12>
                     <v-combobox
                       prepend-icon="mail"
@@ -318,7 +346,9 @@ export default {
       engagementsCategory: [],
       selectedTypes: [],
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
-      emailVerfication: []
+      emailVerfication: [],
+      meetingId: "",
+      callNumber: ""
     };
   },
   components: {
@@ -390,6 +420,13 @@ export default {
         delete this.ticket.severity;
       }
 
+      if (this.callNumber && this.callNumber.length) {
+        this.ticket.callNumber = this.callNumber;
+      }
+
+      if (this.meetingId && this.meetingId.length) {
+        this.ticket.meetingId = this.meetingId;
+      }
       const newTicket = Object.assign({}, this.ticket);
 
       newTicket.contract = newTicket.contract._id;
@@ -479,6 +516,7 @@ export default {
       requests: "ticket/getTickets",
       displayName: "user/getDisplayName",
       avatarUrl: "user/getAvatarUrl",
+      userPhone: "user/getPhone"
     }),
 
     editorToolbar() {
