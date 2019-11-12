@@ -62,7 +62,11 @@
           </td>
           <td class="text-xs-center">{{ $t(props.item.role) }}</td>
           <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
-          <td class="text-xs-center">{{ props.item.phone }}</td>
+          <td class="text-xs-center">
+            <a :href="`tel://${props.item.phone}`">
+              {{ props.item.phone }}
+            </a>
+          </td>
         </template>
       </v-data-table>
     </div>
