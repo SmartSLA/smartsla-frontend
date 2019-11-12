@@ -126,7 +126,7 @@
                 label
                 small
                 text-color="white"
-              >{{ request.contract.client[0] }}</v-chip>
+              >{{ request.contract && request.contract.client[0] }}</v-chip>
               <span v-else>
                 <span v-if="request.assignedTo">
                   <v-chip
@@ -348,7 +348,7 @@
                                 class="ma-2"
                                 label
                                 text-color="white"
-                                >{{ request.contract.client[0] }}
+                                >{{ request.contract && request.contract.client[0] }}
                               </v-chip>
                               <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
                             </v-list-tile-avatar>
@@ -457,7 +457,7 @@
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout ml-5 pl-5 row class="center-avatar">
                 <v-flex shrink px-1 xs12>
-                  <v-avatar size="60" class="pt-0">
+                  <v-avatar size="60" class="pt-0" v-if="request.beneficiary">
                     <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
@@ -468,14 +468,14 @@
                     <br />
                     <span class="body-2">{{ $t("Client") }} / {{ $t("Contract") }} :&nbsp;</span>
                     <router-link
-                      :to="{ name: 'Client', params: { id: request.contract.clientId } }"
+                      :to="{ name: 'Client', params: { id: request.contract && request.contract.clientId } }"
                     >
                       <a
                         class="blue-color"
                         href="#"
                       >{{ request.contract && request.contract.client }}</a>
                     </router-link>/
-                    <router-link :to="{ name: 'Contract', params: { id: request.contract._id } }">
+                    <router-link :to="{ name: 'Contract', params: { id: request.contract && request.contract._id } }">
                       <a class="blue-color" href="#">{{ request.contract && request.contract.name }}</a>
                     </router-link>
                     <br />
@@ -503,7 +503,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
-import { capitalize } from "lodash";
+import { flatten, capitalize } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import AttachmentsCreation  from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
@@ -520,6 +520,7 @@ const NEXT_STATUS = {
 export default {
   data() {
     return {
+      apiUrl: "",
       attachments: [],
       commentCreationAttachments: [],
       ticket: {
@@ -630,13 +631,14 @@ export default {
     },
 
     setRequestData(request) {
-      this.attachments = request.events && request.events.map(event => {
+      const attachments = request.events && request.events.map(event => {
         return (event.attachments || []).map(attachment => {
           attachment.timestamps = event.timestamps;
           attachment.event = event;
 
           return attachment;
-      })}).flat();
+      })});
+      this.attachments = flatten(attachments);
       this.currentStatus = request.status;
       this.request.statusId = 1;
       this.request.files = [];
