@@ -4,7 +4,7 @@
       <span v-on="on">{{ $t(request.severity) }}</span>
     </template>
     <span>
-      <b>{{ $t("Engagements") }} {{ request.severity }} :</b>
+      <b>{{ $t("Engagements") }} {{ $t(request.severity) }} :</b>
       <ul>
         <li>
           {{ $t("Support") }} :
