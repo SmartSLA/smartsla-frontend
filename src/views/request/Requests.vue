@@ -19,7 +19,7 @@
       <v-flex xs6>
         <v-layout justify-end row>
           <div>
-            <download-excel :data="requests" :name="`08000linux_${moment().format('YYYY-MM-DD-HH[h]mm[m]ss')}.xls`">
+            <download-excel :data="exportData" :name="csvFileName">
               <v-btn flat small color="default">
                 <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
               </v-btn>
@@ -318,14 +318,12 @@ import { mapGetters, createNamespacedHelpers } from "vuex";
 import Vue from "vue";
 import { capitalize } from "lodash";
 import moment from "moment";
-import JsonExcel from "vue-json-excel";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import { OSSA_IDS } from '@/constants.js';
 
 const { mapState } = createNamespacedHelpers("ticket")
 
-Vue.component("downloadExcel", JsonExcel);
 
 const CNS_STATUS = {
   new: "cns.state.support",
@@ -512,7 +510,8 @@ export default {
     ...mapGetters({
       email: "user/getEmail",
       requests: "ticket/getCurrentPageRequests",
-      totalRequests: "ticket/getNbOfTickets"
+      totalRequests: "ticket/getNbOfTickets",
+      allRequests: "ticket/getTickets"
     }),
 
     requestsAsDataTable() {
@@ -536,7 +535,6 @@ export default {
         request
       }));
     },
-
     ...mapState({
       rowsPerPageItems: state => state.pagination.rowsPerPageItems
     }),
@@ -573,7 +571,7 @@ export default {
     },
 
     exportData() {
-      return this.requests.map(request => ({
+      return this.allRequests.map(request => ({
         [this.$i18n.t("Id")]: request._id,
         [this.$i18n.t("ID OSSA")]: this.$i18n.t(request.idOssa.id),
         [this.$i18n.t("Type")]: this.$i18n.t(request.type),
@@ -595,6 +593,9 @@ export default {
         [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved")
       }));
     },
+    csvFileName(){
+      return `08000linux_${moment().lang(this.$i18n.locale).format('L')}.xls`;
+    }
   },
   watch: {
     categoriesFilter: function(newCategory, oldCategory) {
