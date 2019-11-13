@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>{{ $t("New issue") }}</span>
+      <span>{{ isInEdit ? $t("Edit issue") : $t("New issue") }}</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
@@ -37,7 +37,7 @@
                       return-object
                     ></v-autocomplete>
                   </v-flex>
-                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>                  
+                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
                       v-if="isInEdit"

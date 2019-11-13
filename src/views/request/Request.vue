@@ -89,7 +89,14 @@
             </v-flex>
             <v-flex xs4 md1 sm1 xl1 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn color="primary" fab small dark :to="{ name: 'EditRequest', params: { id: request._id } }">
+                <v-btn
+                  :disabled="!isAdmin"
+                  color="primary"
+                  fab
+                  small
+                  dark
+                  :to="{ name: 'EditRequest', params: { id: request._id } }"
+                >
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -595,6 +602,9 @@ export default {
 
     editorToolbar() {
       return editorToolbar;
+    },
+    isAdmin() {
+      return this.$auth.check("admin");
     }
   },
   methods: {
