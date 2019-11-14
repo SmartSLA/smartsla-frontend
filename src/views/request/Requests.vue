@@ -480,7 +480,8 @@ export default {
       storedSelectionsFilterHolder: {},
       deleteBtn: false,
       updateBtn: false,
-      collectedCNS: []
+      collectedCNS: [],
+      csvFileName: `08000linux_${moment().lang(this.$i18n.locale).format('LLL')}.xls`
     };
   },
   mounted() {
@@ -592,9 +593,6 @@ export default {
         [this.$i18n.t("SLA bypass")]: this.cns(request._id, "bypassed"),
         [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved")
       }));
-    },
-    csvFileName(){
-      return `08000linux_${moment().lang(this.$i18n.locale).format('L')}.xls`;
     }
   },
   watch: {
