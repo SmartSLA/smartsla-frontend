@@ -18,7 +18,7 @@
                 <strong>{{ $t("Type") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-radio-group v-model="user.type" row color="primary">
+                <v-radio-group v-model="user.type" row color="primary" @change="initRole">
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
@@ -180,6 +180,9 @@ export default {
     this.getClients();
   },
   methods: {
+    initRole() {
+      this.user.role = "";
+    },
     createUser() {
       this.$http
         .createUser(this.user)
