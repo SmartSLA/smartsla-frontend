@@ -22,6 +22,8 @@
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
+                <label class="v-label theme--light" v-if="user.type === 'beneficiary' ">{{$t("Beneficiary is a customer linked to a client and can create, see tickets")}}</label>
+                <label class="v-label theme--light" v-if="user.type === 'expert'">{{$t("Expert is part of the team handling the ticket")}}</label>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -78,6 +80,10 @@
                   <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
                 </v-radio-group>
+                <label class="v-label theme--light" v-if=" user.role === 'viewer'">{{ $t("Viewer role can only see tickets") }}</label>
+                <label class="v-label theme--light" v-if=" user.role === 'customer'">{{ $t("User role can create and comment tickets") }}</label>
+                <label class="v-label theme--light" v-if=" user.role === 'expert'">{{ $t("Expert role can see all tickets") }}</label>
+                <label class="v-label theme--light" v-if=" user.role === 'manager'">{{ $t("Admin role can see all tickets and administrate") }}</label>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4" v-if="user.type != 'expert'">
