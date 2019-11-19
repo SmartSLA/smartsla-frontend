@@ -169,43 +169,54 @@
                     </v-input>
                   </v-flex>
                   <v-flex>
-                    <v-row class="d-flex flex-row">
-                      <v-select
-                        prepend-icon="link"
-                        :items="linkTypes"
-                        :label="$i18n.t('Link type')"
-                        v-model="linkType"
-                        single-line
-                        hide-details
-                        solo
-                      ></v-select>
-                      <v-autocomplete
-                        :label="$i18n.t('Related requests')"
-                        v-model="linkedRequest"
-                        :items="filtredRelated"
-                        :filter="searchRequest"
-                        solo
-                        hide-selected
-                        return-object
-                      >
-                        <template v-slot:selection="data">
-                          {{ `#${data.item.id} - ${data.item.title}` }}
-                        </template>
-                        <template v-slot:item="data">
-                          {{ `#${data.item.id} - ${data.item.title}` }}
-                        </template>
-                        <template v-slot:append-outer>
-                          <v-btn
-                            :disabled="!(linkType && linkedRequest)"
-                            class="black--text full-height"
-                            @click.native="addRelated"
-                          >
-                            <v-icon dark>add</v-icon>
-                          </v-btn>
-                        </template>
-                      </v-autocomplete>
-                    </v-row>
-                    <v-row class="d-inline-flex ml-4">
+                    <v-layout column class="link-type">
+                      <v-flex xs6 md6 mb-2>
+                        <v-select
+                          prepend-icon="link"
+                          :items="linkTypes"
+                          :label="$i18n.t('Link type')"
+                          v-model="linkType"
+                          single-line
+                          hide-details
+                          flat
+                          solo
+                          background-color="grey lighten-5"
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs6 md6 mb-2>
+                        <v-autocomplete
+                          :items="filtredRelated"
+                          :filter="searchRequest"
+                          :label="$i18n.t('Related requests')"
+                          hide-details
+                          hide-selected
+                          return-object
+                          v-model="linkedRequest"
+                          background-color="grey lighten-5"
+                          flat
+                          solo
+                        >
+                          <template v-slot:selection="data">
+                            {{ `#${data.item.id} - ${data.item.title}` }}
+                          </template>
+                          <template v-slot:item="data">
+                            {{ `#${data.item.id} - ${data.item.title}` }}
+                          </template>
+                          <template v-slot:append-outer>
+                            <v-btn
+                              :disabled="!(linkType && linkedRequest)"
+                              class="black--text"
+                              @click.native="addRelated"
+                              icon
+                              background-color="grey lighten-5"
+                            >
+                              <v-icon>mdi-plus-circle</v-icon>
+                            </v-btn>
+                          </template>
+                        </v-autocomplete>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout column class="d-inline-flex ml-4 link-type">
                       <div v-for="(link, key) in linkedRequests" :key="key">
                         <v-chip close @input="resetRelatedRequest(link.request.id)">
                           <v-avatar>
@@ -219,7 +230,7 @@
                           {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
                         </v-chip>
                       </div>
-                    </v-row>
+                    </v-layout>
                   </v-flex>
                   <v-container>
                     <v-flex xs12>
@@ -584,6 +595,12 @@ export default {
 };
 </script>
 
+<style>
+.v-text-field.v-text-field--solo .v-input__append-outer {
+  padding:6px 0 0 0 !important;
+}
+</style>
+
 <style lang="stylus" scoped>
 .add-link {
   height: 48px;
@@ -690,6 +707,18 @@ button.ml-0 {
 @media only screen and (max-width: 959px) {
   .v-input.pt-0.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--enclosed.v-select.theme--light {
     padding-left: 33px !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .link-type .flex:nth-child(2) {
+    margin:0 0 0 31px;
+  }
+}
+
+@media only screen and (min-width: 1263px) {
+  .link-type {
+    flex-direction: row !important;
   }
 }
 
