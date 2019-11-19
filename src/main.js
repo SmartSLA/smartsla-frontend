@@ -8,7 +8,7 @@ import "@/filters/calendarTimeFilter";
 import "@/filters/formatDateFilter";
 import "@/filters/striphtml";
 import "@/filters/prettyBytesFilter";
-import JsonExcel from "vue-json-excel";
+import JsonCsv from "vue-json-csv";
 
 window.Application = getApplication(applicationInit(Vue));
-Vue.component("downloadExcel", JsonExcel);
+Vue.component("downloadCsv", JsonCsv);
