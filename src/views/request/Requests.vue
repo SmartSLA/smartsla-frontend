@@ -19,11 +19,11 @@
       <v-flex xs6>
         <v-layout justify-end row>
           <div>
-            <download-excel :data="exportData" :name="csvFileName">
+            <download-csv :data="exportData" :name="csvFileName">
               <v-btn flat small color="default">
                 <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
               </v-btn>
-            </download-excel>
+            </download-csv>
           </div>
         </v-layout>
       </v-flex>
@@ -481,7 +481,7 @@ export default {
       deleteBtn: false,
       updateBtn: false,
       collectedCNS: [],
-      csvFileName: `08000linux_${moment().lang(this.$i18n.locale).format('LLL')}.xls`
+      csvFileName: `08000linux_${moment().lang(this.$i18n.locale).format('LLL')}.csv`
     };
   },
   mounted() {
@@ -581,7 +581,7 @@ export default {
         [this.$i18n.t("Version")]: request.software && request.software.version,
         [this.$i18n.t("OS")]: request.software && request.software.os,
         [this.$i18n.t("Title")]: request.title,
-        [this.$i18n.t("Description")]: request.description,
+        [this.$i18n.t("Description")]: this.$options.filters.striphtml(request.description),
         [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("Not assigned yet"),
         [this.$i18n.t("Created by")]: request.author.name,
         [this.$i18n.t("Contract")]: request.contract.client,
@@ -1149,11 +1149,6 @@ div.v-input:nth-child(14) {
 
 .text-lg-left > span:nth-child(2) {
   margin-top: 2px;
-}
-
-.export-excel {
-  float: right;
-  cursor: pointer;
 }
 
 .chips-elements {
