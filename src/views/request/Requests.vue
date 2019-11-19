@@ -248,15 +248,20 @@
               <span class="white--text">{{ props.item.id_ossa || 1 }}</span>
             </v-avatar>
           </td>
-          <td class="text-xs-center">{{ $t(props.item.type) }}</td>
           <td class="text-xs-center">
-            <software-list-detail :request="props.item.request"></software-list-detail>
+            <text-highlight :queries="highlightSearch">{{ $t(props.item.request.type) }}</text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <software-list-detail :request="props.item.request" :query="highlightSearch"></software-list-detail>
           </td>
           <td class="text-xs-center">
             <v-tooltip top v-if="props.item.request.software && props.item.request.software.software">
               <template v-slot:activator="{ on }">
-                <span v-bind:class="['criticality', props.item.request.software.critical]" v-on="on">
-                  {{ props.item.softwareName }}
+                <span 
+                  v-bind:class="['criticality', props.item.request.software.critical]"
+                  v-on="on"
+                >
+                  <text-highlight :queries="highlightSearch">{{ props.item.softwareName }}</text-highlight>
                 </span>
               </template>
               <span>{{
@@ -264,28 +269,40 @@
               }}</span>
             </v-tooltip>
           </td>
-          <td class="text-xs-center">{{ props.item.title | striphtml }}</td>
-          <td class="text-xs-center">{{ props.item.assignedTo }}</td>
-          <td class="text-xs-center">{{ props.item.responsible }}</td>
-          <td class="text-xs-center">{{ props.item.author }}</td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ props.item.request.assignedToName }}</text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ props.item.request.responsibleName }}</text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
+          </td>
           <td class="text-xs-center">
             <router-link
               v-if="$auth.check('admin')"
               :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
               target="_blank"
             >
-              <span class="blue-color"> {{ props.item.request.contract.client }} </span>
+              <span class="blue-color">
+                <text-highlight :queries="highlightSearch">{{ props.item.request.contract.client }}</text-highlight>
+              </span>
             </router-link>
-            <span v-else>{{ props.item.request.contract.client }}</span>
+            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract.client }}</text-highlight>
             /
             <router-link
               v-if="$auth.check('admin')"
               :to="{name: 'Contract', params: {id: props.item.request.contract._id}}"
               target="_blank"
             >
-              <span class="blue-color"> {{ props.item.request.contract.name }} </span>
+              <span class="blue-color">
+                <text-highlight :queries="highlightSearch">{{ props.item.request.contract.name }}</text-highlight>
+              </span>
             </router-link>
-            <span v-else>{{ props.item.request.contract.name }}</span>
+            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract.name }}</text-highlight>
           </td>
           <td class="text-xs-center">
               <v-tooltip top>
@@ -296,7 +313,9 @@
               </v-tooltip>
           </td>
           <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
-          <td class="text-xs-center">{{ $t(capitalize(props.item.status)) }}</td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ $t(capitalize(props.item.status)) }}</text-highlight>
+          </td>
           <td class="text-xs-center">
             <span>{{ $t(cnsWording(props.item.status)) }}</span>
             <cns-progress-bar
@@ -514,6 +533,10 @@ export default {
       totalRequests: "ticket/getNbOfTickets",
       allRequests: "ticket/getTickets"
     }),
+
+    highlightSearch() {
+      return this.search ? this.search : "";
+    },
 
     requestsAsDataTable() {
       return this.requests.map(request => ({
@@ -813,11 +836,17 @@ export default {
 
       if (match && this.search) {
         return (
-          (request.software && request.software.name && request.software.name.toLowerCase().includes(this.search)) ||
+          (request.softwareName && request.softwareName.toLowerCase().includes(this.search)) ||
           request.description.toLowerCase().includes(this.search) ||
           request.title.toLowerCase().includes(this.search) ||
           request.contract.client.toLowerCase().includes(this.search) ||
-          request.contract.name.toLowerCase().includes(this.search)
+          request.contract.name.toLowerCase().includes(this.search) ||
+          request.status.toLowerCase().includes(this.search) ||
+          request.assignedToName && request.assignedToName.toLowerCase().includes(this.search) ||
+          request.responsibleName && request.responsibleName.toLowerCase().includes(this.search) ||
+          request.authorName && request.authorName.toLowerCase().includes(this.search) ||
+          request.type && request.type.toLowerCase().includes(this.search) ||
+          request.severity && request.severity.toLowerCase().includes(this.search)
         );
       }
 
