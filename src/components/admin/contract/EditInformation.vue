@@ -135,7 +135,7 @@
             <br />
           </v-flex>
           <v-flex xs12 class="text-xs-center">
-            <v-btn :disabled="!valid" color="success" @click="validateForm">{{
+            <v-btn :disabled="!valid || requiredUnfilled" color="success" @click="validateForm">{{
               isNew ? $t("Validate changes") : $t("Create")
             }}</v-btn>
             <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
@@ -220,6 +220,12 @@ export default {
   computed: {
     isNew() {
       return this.$route.params.id;
+    },
+    requiredUnfilled(){
+      return !this.contract.endDate.length ||
+             !this.contract.startDate.length ||
+             !Object.keys(this.contract.client).length ||
+             !this.contract.name.length;
     }
   },
   mounted() {
