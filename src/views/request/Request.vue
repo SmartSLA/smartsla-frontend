@@ -480,7 +480,7 @@
                     </router-link>
                     <br />
                     <span
-                      v-if="request.beneficiary && request.beneficiary.phone"
+                      v-if="request.beneficiary"
                     >
                       <strong>{{ $t("Phone") }} :</strong>
                       <a

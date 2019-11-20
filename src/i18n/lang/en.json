@@ -47,5 +47,6 @@
   "Ticket passed in status {status}": "Ticket passed in status {status}",
   "User role can create and comment tickets": "User role can create and comment tickets",
   "Viewer role can only see tickets": "Viewer role can only see tickets",
-  "Welcome to Your OpenPaaS Vue.js App": "Welcome to Your OpenPaaS Vue.js App"
+  "Welcome to Your OpenPaaS Vue.js App": "Welcome to Your OpenPaaS Vue.js App",
+  "You must fill a call number in order to let the support join you": "You must fill a call number in order to let the support join you"
 }

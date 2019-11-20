@@ -366,5 +366,6 @@
     "Welcome to profile!!": "Bienvenue dans le profil!!",
     "Welcome to satisfaction Page!!": "Bienvenue dans la page de satisfaction!!",
     "Welcome to settings Page!!": "Bienvenue dans la page des paramètres!!",
-    "Yes": "Oui"
+    "Yes": "Oui",
+    "You must fill a call number in order to let the support join you":"Vous devez nous fournir un numéro d'appel pour que le support  soit capable de vous joindre"
 }

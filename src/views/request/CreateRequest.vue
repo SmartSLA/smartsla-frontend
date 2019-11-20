@@ -37,13 +37,18 @@
                     ></v-autocomplete>
                   </v-flex>
                   <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
+                  <v-flex xs12 v-if="!userPhone">
+                    <span class="ml-4">
+                    {{ $t("You must fill a call number in order to let the support join you") }}
+                    </span>
+                  </v-flex>
                   <v-flex xs6 md4 lg12 xl6 sm9>
                     <v-text-field
                       v-if="!userPhone"
                       prepend-icon="phone"
                       v-model="callNumber"
                       :label="$i18n.t('Call number')"
-                      type="text"
+                      type="tel"
                       mask="phone"
                       :rules="[() => callNumber.length > 0 || $i18n.t('Required field')]"
                       class="required-element"
