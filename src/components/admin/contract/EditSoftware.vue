@@ -125,9 +125,10 @@ export default {
       this.contract.software = this.contract.software.filter(
         software => JSON.stringify(software) != JSON.stringify(this.selectedItem)
       );
-      this.doRequest();
+      this.doRequest('Deleted');
     },
     submit(software) {
+      const toastMsg = this.isEdit ? 'Updated' : 'Added';
       if(this.isEdit) {
         const softwareIdx = this.contract.software.findIndex(
           software => JSON.stringify(software) == JSON.stringify(this.selectedItem)
@@ -136,14 +137,14 @@ export default {
       } else {
         this.contract.software.push(Object.assign({}, software));
       }
-      this.doRequest();
+      this.doRequest(toastMsg);
     },
-    doRequest() {
+    doRequest(toastMsg) {
       this.$http
         .updateContract(this.contract._id, this.contract)
         .then(response => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t( this.isEdit ? 'Updated' : 'Added' ),
+            message: this.$i18n.t(toastMsg),
             color: "success"
           });
           this.formDialog = false;
