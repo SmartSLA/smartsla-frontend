@@ -107,13 +107,24 @@ export default {
         const currentEngagements = [...this.ticket.contract.Engagements[criticality].engagements];
 
         if (currentEngagements.length) {
-          const engagement = currentEngagements[0];
+          let engagements = currentEngagements.filter(engagement => {
+            let engagementCheck = engagement.request.toLowerCase() === this.ticket.type.toLowerCase();
 
-          this.duration = this.parseEngagementDuration(engagement[this.cnsType]);
-          this.cnsDurations = {
-            supported: this.parseEngagementDuration(engagement.supported),
-            bypassed: this.parseEngagementDuration(engagement.bypassed),
-            resolved: this.parseEngagementDuration(engagement.resolved)
+            if (this.ticket.severity && this.ticket.severity.length) {
+              engagementCheck = engagement.severity.toLowerCase() === this.ticket.severity.toLowerCase();
+            }
+
+            return engagementCheck;
+          });
+
+          if (engagements.length) {
+            const engagement = engagements[0];
+            this.duration = this.parseEngagementDuration(engagement[this.cnsType]);
+            this.cnsDurations = {
+              supported: this.parseEngagementDuration(engagement.supported),
+              bypassed: this.parseEngagementDuration(engagement.bypassed),
+              resolved: this.parseEngagementDuration(engagement.resolved)
+            }
           }
         }
       }
