@@ -27,187 +27,59 @@
         </td>
         <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
         <td class="text-xs-center">
-          <v-btn color="error" flat small @click="removeSoftware(props.item)">
+          <v-btn color="primary" flat small @click="editSoftware(props)">
+            <v-icon>edit</v-icon>
+            {{ $t("edit") }}
+          </v-btn>
+          <v-btn color="error" flat small @click="deleteSoftware(props.item)">
             <v-icon>remove_circle</v-icon>
             {{ $t("remove") }}
           </v-btn>
         </td>
       </template>
     </v-data-table>
-    <v-btn small flat class="pl-4 success--text" @click="addSoftware = !addSoftware">
+    <v-btn small flat class="pl-4 success--text" @click="show" v-if="!isEdit">
       <v-icon class="success--text">add_circle</v-icon>
       {{ $t("Add") }}
     </v-btn>
-    <v-layout row wrap align-center>
-      <v-flex xs1></v-flex>
-      <v-flex xs8>
-        <v-form
-          v-if="addSoftware"
-          v-model="valid"
-          class="pt-4 px-4 mr-4 grey lighten-3"
-          ref="form"
-          lazy-validation
-        >
-          <h3 class="title mb-0">{{ $t("Add software") }}</h3>
-          <v-layout row wrap align-center>
-            <v-flex xs3 class="required-label">{{ $t("Software") }}</v-flex>
-            <v-flex xs9>
-              <v-autocomplete
-                v-model="newSoftwareName"
-                :items="softwareList"
-                item-text="name"
-                item-value="name"
-                flat
-                return-object
-                single-line
-                :rules="[() => Object.keys(newSoftwareName).length > 0 || $i18n.t('Required field')]"
-              ></v-autocomplete>
-            </v-flex>
-            <v-flex xs3>{{ $t("Start of support") }}</v-flex>
-            <v-flex xs9>
-              <v-menu
-                v-model="startDateModel"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="newSoftware.SupportDate.start"
-                    persistent-hint
-                    prepend-icon="event"
-                    @blur="newSoftware.startDate = parseDate(newSoftware.SupportDate.start)"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="newSoftware.SupportDate.start"
-                  no-title
-                  @input="startDateModel = false"
-                ></v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs3>{{ $t("End of support") }}</v-flex>
-            <v-flex xs9>
-              <v-menu
-                v-model="endDateModel"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="newSoftware.SupportDate.end"
-                    persistent-hint
-                    prepend-icon="event"
-                    @blur="newSoftware.SupportDate.end = parseDate(newSoftware.SupportDate.end)"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="newSoftware.SupportDate.end"
-                  no-title
-                  @input="endDateModel = false"
-                ></v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("Critical") }}</v-flex>
-            <v-flex xs9>
-              <v-btn-toggle :value="newSoftware.critical" v-model="newSoftware.critical">
-                <v-btn value="critical" flat :class="{ error: newSoftware.critical == 'critical' }">{{
-                  $t("critical")
-                }}</v-btn>
-                <v-btn value="sensible" flat :class="{ warning: newSoftware.critical == 'sensible' }">{{
-                  $t("sensible")
-                }}</v-btn>
-                <v-btn value="standard" flat :class="{ white: newSoftware.critical == 'standard' }">{{
-                  $t("standard")
-                }}</v-btn>
-              </v-btn-toggle>
-            </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("Version") }}</v-flex>
-            <v-flex xs9>
-              <v-text-field
-                v-model="newSoftware.version"
-                :rules="[() => newSoftware.version.length > 0 || $i18n.t('Required field')]"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs3 class="required-label">{{ $t("OS") }}</v-flex>
-            <v-flex xs9>
-              <v-text-field
-                v-model="newSoftware.os"
-                :rules="[() => newSoftware.os.length > 0 || $i18n.t('Required field')]"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs3>{{ $t("Referent") }}</v-flex>
-            <v-flex xs9>
-              <v-autocomplete
-                :items="[...referents]"
-                v-model="newSoftware.technicalReferent"
-                item-text="name"
-                :rules="[() => newSoftware.technicalReferent.length > 0 || $i18n.t('Required field')]"
-              ></v-autocomplete>
-            </v-flex>
-            <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
-            <v-flex xs9>
-              <v-radio-group
-               v-model="newSoftware.generic"
-               row
-               >
-                <v-radio :label="$i18n.t('yes')" value="yes"></v-radio>
-                <v-radio :label="$i18n.t('no')" value="repo"></v-radio>
-              </v-radio-group>
-            </v-flex>
-            <v-flex xs3 class="pt-3" v-if="newSoftware.generic && newSoftware.generic != 'yes'">
-              {{ $t("repo link") }}
-            </v-flex>
-            <v-flex xs9 v-if="newSoftware.generic && newSoftware.generic != 'yes'">
-              <v-text-field v-model="newSoftware.generic.repo"></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <br />
-            </v-flex>
-            <v-flex xs3></v-flex>
-            <v-flex xs9>
-              <v-btn @click="appendSoftware" class="success">{{ $t("Add software") }}</v-btn>
-              {{ $t("or") }}
-              <v-btn @click="addSoftware = !addSoftware" class="error">{{ $t("Cancel") }}</v-btn>
-            </v-flex>
-          </v-layout>
-        </v-form>
-      </v-flex>
+    <v-layout class="mt-4 pb-2" row wrap align-center>
+        <v-dialog v-model="formDialog" scrollable :fullscreen="$vuetify.breakpoint.xs" persistent max-width="600px">
+          <form-software
+            :software="newSoftware"
+            :editing="isEdit"
+            :isModalOpen="formDialog"
+            @submit="submit"
+            @closeFormModal="closeFormModal"
+          ></form-software>
+        </v-dialog>
+
+        <v-dialog v-model="deleteModal" persistent max-width="300">
+          <v-card class="px-4 pt-2">
+            <v-card-text>
+              <span
+                class="body-2"
+              >{{ $t("Are you sure you want to remove the software") }} ?</span>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="confirmDeleteSoftware">{{ $t("confirm") }}</v-btn>
+              <v-btn color="error" @click="deleteModal = false">{{ $t("cancel") }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </v-layout>
     <br />
-    <v-layout row wrap align-center>
-      <v-flex xs4></v-flex>
-      <v-flex xs3>
-        <v-btn @click="validate" class="success" :disabled="addSoftware">{{ $t("Validate changes") }}</v-btn>
-      </v-flex>
-      <v-flex xs3></v-flex>
-    </v-layout>
   </v-card>
 </template>
 
 <script>
-import { USER_TYPE } from "@/constants.js";
+import FormSoftware from "@/components/admin/contract/FormSoftware.vue";
 
 export default {
   name: "edit-contract-software",
   data() {
     return {
-      newSoftwareName: {},
-      startDateModel: "",
-      endDateModel: "",
+      formDialog: false,
       newSoftware: {
         software: {},
         critical: "standard",
@@ -220,55 +92,63 @@ export default {
           end: ""
         }
       },
-      addSoftware: false,
-      softwareList: [],
       contract: {},
-      valid: true,
-      referents: []
+      isEdit: false,
+      selectedItem: {},
+      deleteModal: false
     };
   },
+  components: {
+    FormSoftware
+  },
   methods: {
-    appendSoftware() {
-      if (this.$refs.form.validate()) {
-        this.validate();
-        if (
-          !this.contract.software.filter(software => JSON.stringify(software) == JSON.stringify(this.newSoftwareName))
-            .length
-        ) {
-          this.newSoftware.software = this.newSoftwareName;
-          this.newSoftwareName = {};
-          this.contract.software.push(Object.assign({}, this.newSoftware));
-        }
-
-        this.addSoftware = false;
-      } else {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("the required fields must be filled"),
-          color: "error"
-        });
+    closeFormModal() {
+      this.formDialog = false;
+      this.isEdit = false;
+    },
+    show() {
+      this.formDialog = true;
+    },
+    editSoftware({item: softwareItem}) {
+      this.isEdit = true;
+      this.formDialog = true;
+      this.selectedItem = softwareItem;
+      this.newSoftware = {
+        ...this.selectedItem
       }
     },
-
-    removeSoftware(selectedSoftware) {
+    deleteSoftware(selectedSoftware) {
+      this.deleteModal = true;
+      this.selectedItem = selectedSoftware;
+    },
+    confirmDeleteSoftware() {
       this.contract.software = this.contract.software.filter(
-        software => JSON.stringify(software) != JSON.stringify(selectedSoftware)
+        software => JSON.stringify(software) != JSON.stringify(this.selectedItem)
       );
+      this.doRequest();
     },
-    parseDate(date) {
-      if (!date) return null;
-
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    submit(software) {
+      if(this.isEdit) {
+        const softwareIdx = this.contract.software.findIndex(
+          software => JSON.stringify(software) == JSON.stringify(this.selectedItem)
+        );
+        this.$set(this.contract.software, softwareIdx, software);
+      } else {
+        this.contract.software.push(Object.assign({}, software));
+      }
+      this.doRequest();
     },
-
-    validate() {
+    doRequest() {
       this.$http
         .updateContract(this.contract._id, this.contract)
         .then(response => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("updated"),
+            message: this.$i18n.t( this.isEdit ? 'Updated' : 'Added' ),
             color: "success"
           });
+          this.formDialog = false;
+          this.isEdit = false;
+          this.deleteModal = false;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -293,7 +173,6 @@ export default {
           return "";
       }
     },
-
     critTextColor(critLevel) {
       switch (critLevel) {
         case "critical":
@@ -339,31 +218,6 @@ export default {
           });
         });
     }
-  },
-  created() {
-    this.$http
-      .listSoftware({})
-      .then(response => {
-        this.softwareList = response.data;
-      })
-      .catch(error => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: "cannot fetch software list",
-          color: "error"
-        });
-      });
-
-    this.$http
-      .listUsers(USER_TYPE.EXPERT)
-      .then(({ data }) => {
-        this.referents = data;
-      })
-      .catch(error => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("cannot fetch experts list"),
-          color: "error"
-        });
-      });
   }
 };
 </script>
