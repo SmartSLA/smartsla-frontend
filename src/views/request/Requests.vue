@@ -284,25 +284,25 @@
           <td class="text-xs-center">
             <router-link
               v-if="$auth.check('admin')"
-              :to="{ name: 'Client', params: { id: props.item.request.contract.clientId } }"
+              :to="{ name: 'Client', params: { id: props.item.request.contract && props.item.request.contract.clientId } }"
               target="_blank"
             >
               <span class="blue-color">
-                <text-highlight :queries="highlightSearch">{{ props.item.request.contract.client }}</text-highlight>
+                <text-highlight :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.client }}</text-highlight>
               </span>
             </router-link>
-            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract.client }}</text-highlight>
+            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.client }}</text-highlight>
             /
             <router-link
               v-if="$auth.check('admin')"
-              :to="{name: 'Contract', params: {id: props.item.request.contract._id}}"
+              :to="{name: 'Contract', params: {id: props.item.request.contract && props.item.request.contract._id}}"
               target="_blank"
             >
               <span class="blue-color">
-                <text-highlight :queries="highlightSearch">{{ props.item.request.contract.name }}</text-highlight>
+                <text-highlight :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.name }}</text-highlight>
               </span>
             </router-link>
-            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract.name }}</text-highlight>
+            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.name }}</text-highlight>
           </td>
           <td class="text-xs-center">
               <v-tooltip top>
@@ -607,7 +607,7 @@ export default {
         [this.$i18n.t("Description")]: this.$options.filters.striphtml(request.description),
         [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("Not assigned yet"),
         [this.$i18n.t("Created by")]: request.author.name,
-        [this.$i18n.t("Contract")]: request.contract.client,
+        [this.$i18n.t("Contract")]: request.contract && request.contract.client,
         [this.$i18n.t("Beneficiary")]: request.beneficiary.name,
         [this.$i18n.t("Last update")]: moment(request.timestamps.updatedAt).lang(this.$i18n.locale).format('L'),
         [this.$i18n.t("Created at")]: moment(request.timestamps.createdAt).lang(this.$i18n.locale).format('L'),
