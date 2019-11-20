@@ -10,6 +10,7 @@ Vue.prototype.moment = moment;
 Vue.use(Vuetify);
 
 const ticket = {
+  type: "anomaly",
   software: {
     software: "5d9dab9cdeed5a496dc35e35",
     critical: "critical"
@@ -30,7 +31,9 @@ const ticket = {
           {
             supported: "PT1H",
             bypassed: "P1D",
-            resolved: "P2D"
+            resolved: "P2D",
+            severity: "major",
+            request: "anomaly"
           }
         ]
       },
@@ -43,7 +46,9 @@ const ticket = {
           {
             supported: "PT1H",
             bypassed: "P1D",
-            resolved: "P2D"
+            resolved: "P2D",
+            severity: "major",
+            request: "anomaly"
           }
         ]
       },
@@ -56,7 +61,9 @@ const ticket = {
           {
             supported: "PT1H",
             bypassed: "P1D",
-            resolved: "P2D"
+            resolved: "P2D",
+            severity: "major",
+            request: "anomaly"
           }
         ]
       }
