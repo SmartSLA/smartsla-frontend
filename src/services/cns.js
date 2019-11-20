@@ -28,6 +28,7 @@ function computeCns(ticket) {
     cns.supported = computeTime(periods["new"], workingInterval);
     cns.bypassed = computeTime(periods["supported"], workingInterval);
     cns.resolved = computeTime(periods["bypassed"], workingInterval);
+    cns.resolved += cns.bypassed;
   }
   return cns;
 }

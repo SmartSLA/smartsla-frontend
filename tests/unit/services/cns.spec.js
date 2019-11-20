@@ -89,7 +89,7 @@ describe("CNS calculation", () => {
 
       expect(cns.supported).toEqual(1);
       expect(cns.bypassed).toBeGreaterThan(0);
-      expect(cns.resolved).toEqual(0);
+      expect(cns.resolved).toEqual(cns.bypassed);
     });
 
     it("should not increment counter when ticket is assigned to a client", () => {
@@ -133,7 +133,7 @@ describe("CNS calculation", () => {
       // ticket was in bypassed stage for 1 hour ( 2nd action => 3rd action )
       expect(cns.bypassed).toEqual(1);
       // greater than 0 because an expert was assigned to next status
-      expect(cns.resolved).toBeGreaterThan(0);
+      expect(cns.resolved).toBeGreaterThan(cns.bypassed);
     });
   });
 
