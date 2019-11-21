@@ -397,7 +397,7 @@ export default {
         { text: this.$i18n.t("Assigned to"), value: "assignedToName" },
         { text: this.$i18n.t("Responsible"), value: "responsibleName" },
         { text: this.$i18n.t("Author"), value: "authorName" },
-        { text: this.$i18n.t("Client / Contrat"), value: "client_contrat", sortable: false },
+        { text: this.$i18n.t("Client / Contract"), value: "client_contract", sortable: false },
         { text: this.$i18n.t("MAJ"), value: "updatedAt" },
         { text: this.$i18n.t("Created"), value: "createdAt" },
         { text: this.$i18n.t("Status"), value: "status" },
