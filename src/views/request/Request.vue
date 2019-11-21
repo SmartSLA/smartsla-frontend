@@ -515,6 +515,7 @@ import AttachmentsCreation  from "@/components/attachments/creation/Attachments.
 import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
+import { routeNames } from "@/router";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -710,7 +711,7 @@ export default {
 
         this.$http.getContractUsers(data.contract._id)
           .then(contractUsers => (this.contractUsers = contractUsers));
-      });
+      }).catch(console.log);
 
       this.$http.getConnectedUserId().then(res => {
         this.$http.getUserById(res.data._id).then(user => {

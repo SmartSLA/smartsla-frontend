@@ -37,6 +37,8 @@ import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
+import { requireRead } from '@/guards/ticket-guards';
+
 Vue.use(Router);
 
 // Set your routes here
@@ -123,6 +125,7 @@ export default new Router({
       path: "/requests/:id",
       name: routeNames.REQUEST,
       component: Request,
+      beforeEnter: requireRead,
       meta: {
         auth: true
       }
