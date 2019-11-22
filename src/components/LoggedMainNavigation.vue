@@ -33,7 +33,8 @@
           :to="{ name: menuItem.path || menuItem.name }"
           :class="{
             'primary active-menu-link': menuItem.name == currentActiveMenu,
-            regular: menuItem.name != currentActiveMenu
+            'regular': menuItem.name != currentActiveMenu,
+            'item-sm-down': true
           }"
           :dark="menuItem.name == currentActiveMenu"
         >
@@ -158,6 +159,7 @@ export default {
   padding: 0px;
   display: grid;
   margin: 0px;
+  min-width: 200px;
 }
 
 .main-menu.v-toolbar.theme--light {
@@ -175,5 +177,8 @@ export default {
 .v-list__tile--active {
   background-color: #2195f2 !important;
   border-color: #2195f2 !important;
+}
+.item-sm-down a div.v-list__tile__title {
+  padding-top: 0;
 }
 </style>

@@ -5,7 +5,7 @@
         <router-view name="sidebar"/>
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
-        <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
+        <v-toolbar-title :class="['ml-0',  !$vuetify.breakpoint.smAndDown ? 'pl-3' : '']">
           <router-link :to="{ name: routeNames.REQUESTS }">
             <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
           </router-link>
