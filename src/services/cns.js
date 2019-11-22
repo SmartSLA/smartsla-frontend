@@ -21,13 +21,12 @@ function computeCns(ticket) {
   if (ticket.software && ticket.software.software && ticket.contract) {
     const workingInterval = (ticket.contract.Engagements[ticket.software.critical] &&
       ticket.contract.Engagements[ticket.software.critical].schedule) || { start: 9, end: 18 };
-
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
 
     cns.supported = computeTime(periods["new"], workingInterval);
     cns.bypassed = computeTime(periods["supported"], workingInterval);
     cns.resolved = computeTime(periods["bypassed"], workingInterval);
-    const {days , hours, minutes} = cns.bypassed;
+    const { days, hours, minutes } = cns.bypassed;
     cns.resolved.days += days;
     cns.resolved.hours += hours;
     cns.resolved.minutes += minutes;
@@ -133,7 +132,7 @@ function computeTime(period, workingInterval) {
       days: 0,
       hours: 0,
       minutes: 0
-    }
+    };
   }
 
   const startDate = period.start;
@@ -149,17 +148,17 @@ function computeTime(period, workingInterval) {
     minutes = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
     minutes -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
     minutes -= calculateSuspendedMinutes(period.suspensions, workingInterval.start, workingInterval.end);
-    return getWorkingTime(minutes, (workingInterval.end - workingInterval.start));
+    return getWorkingTime(minutes, workingInterval.end - workingInterval.start);
   }
 }
 
 function getWorkingTime(workingMinutes, hoursInDay) {
-  const d = workingMinutes / (hoursInDay*60);
+  const d = workingMinutes / (hoursInDay * 60);
   const days = Math.floor(d);
-  const hours = Math.floor((d - days) *  hoursInDay);
-  const minutes = Math.round(workingMinutes)%60;
+  const hours = Math.floor((d - days) * hoursInDay);
+  const minutes = Math.round(workingMinutes) % 60;
 
-  return {days, hours, minutes};
+  return { days, hours, minutes };
 }
 
 function hoursBetween(start, end) {

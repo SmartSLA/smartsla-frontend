@@ -28,6 +28,7 @@
   "This button allows you to add an additional filter to the ticket board": "This button allows you to add an additional filter to the ticket board",
   "This button allows you to load a saved filter": "This button allows you to load a saved filter",
   "This is an about page": "This is an about page",
+  "This option allow customers to create tickets outside of business hours subject to SLA": "This option allow customers to create ticket outside of business hours subject to SLA",
   "Ticket assigned to {assignedTo}": "Ticket assigned to {assignedTo}",
   "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
   "Ticket passed in status {status}": "Ticket passed in status {status}",

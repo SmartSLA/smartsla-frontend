@@ -10,35 +10,6 @@
         </h3>
       </div>
     </v-card-title>
-    <v-layout row wrap align-center align-content-center justify-center>
-      <v-flex xs2>{{ $t("Treatment time range") }}</v-flex>
-      <v-flex xs1 class="text-xs-right mr-4">{{ $t("From") }}</v-flex>
-      <v-flex xs1>
-        <v-text-field
-          required
-          class="required-label"
-          :error-messages="addCommitment && !engagementList.schedule.start ? $t('Required field') : ''"
-          v-model="engagementList.schedule.start"
-          mask="###"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs1>{{ $t("H") }}</v-flex>
-      <v-flex xs1 class="text-xs-right mr-4">{{ $t("to") }}</v-flex>
-      <v-flex xs2>
-        <v-text-field
-          required
-          :error-messages="addCommitment && !engagementList.schedule.end ? $t('Required field') : ''"
-          class="required-label"
-          v-model="engagementList.schedule.end"
-          mask="##"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs1>{{ $t("H") }}</v-flex>
-      <v-flex xs1>{{ $t("or") }}</v-flex>
-      <v-flex xs1>
-        <v-checkbox v-model="allweek" color="primary" :value="true" :label="$i18n.t('7d/7d')" hide-details></v-checkbox>
-      </v-flex>
-    </v-layout>
     <v-data-table :items="engagementList.engagements" :headers="contractualCommitmentsHeaders" hide-actions>
       <template v-slot:items="props">
         <td class="text-xs-left">{{ $t(props.item.request) }}</td>
@@ -229,7 +200,6 @@ export default {
       newSeverity: "",
       allweek: false,
       engagementList: {
-        schedule: {},
         engagements: []
       },
       engagementListObject: {
@@ -271,7 +241,7 @@ export default {
       );
     },
     appendCommitment() {
-      if (!this.$refs.form.validate() || !this.engagementList.schedule.start || !this.engagementList.schedule.end)
+      if (!this.$refs.form.validate())
         return;
     
       let newCommitment = Object.assign({}, this.newCommitment);
@@ -352,10 +322,6 @@ export default {
     },
 
     validate() {
-      if (this.allweek) {
-        this.engagementList.schedule.start = "7d/7d";
-        this.engagementList.schedule.end = "-";
-      }
       switch (this.$route.params.type) {
         case "critical":
           this.contract.Engagements.critical = this.engagementList;
@@ -405,14 +371,6 @@ export default {
 
             default:
               break;
-          }
-          if (!this.engagementList.schedule) {
-            this.engagementList.schedule = {};
-          } else {
-            if (this.engagementList.schedule.end == "-") {
-              this.engagementList.schedule = {};
-              this.allweek = true;
-            }
           }
         })
         .catch(error => {

@@ -22,12 +22,12 @@ const ticket = {
   },
   status: "new",
   contract: {
+    businessHours: {
+      start: 9,
+      end: 18
+    },
     Engagements: {
       critical: {
-        schedule: {
-          start: 9,
-          end: 18
-        },
         engagements: [
           {
             supported: "PT1H",
@@ -37,10 +37,6 @@ const ticket = {
         ]
       },
       sensible: {
-        schedule: {
-          start: 9,
-          end: 18
-        },
         engagements: [
           {
             supported: "PT1H",
@@ -50,10 +46,6 @@ const ticket = {
         ]
       },
       standard: {
-        schedule: {
-          start: 9,
-          end: 18
-        },
         engagements: [
           {
             supported: "PT1H",
