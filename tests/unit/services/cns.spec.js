@@ -1,10 +1,15 @@
 import { computeCns, computePeriods, calculateWorkingMinutes, hoursBetween } from "@/services/cns";
 import moment from "moment";
+import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
-const currentDate = moment();
+
+const currentDate = moment('2019-09-30T18:00:00.697+02:00');
+function getCurrentDate() {
+  return currentDate;
+}
 
 moment.now = function() {
-  return currentDate;
+  return getCurrentDate();
 };
 
 const ticket = {
@@ -16,7 +21,7 @@ const ticket = {
     updatedAt: "2019-09-27T11:28:14.223+02:00",
     createdAt: "2019-09-26T13:44:44.697+02:00"
   },
-  status: "bypassed",
+  status: "new",
   contract: {
     Engagements: {
       critical: {
@@ -63,41 +68,73 @@ const ticket = {
   events: []
 };
 
-describe("CNS calculation", () => {
-  describe("The computeCns function", () => {
-    it("should compute cns correctly when issue is in supported state", () => {
-      var cns = computeCns(ticket);
+let ticketCopy;
 
-      expect(cns.supported).toBeGreaterThan(0);
-      expect(cns.bypassed).toEqual(0);
-      expect(cns.resolved).toEqual(0);
+describe("CNS calculation", () => {
+  beforeEach(() => {
+    ticketCopy = ticket;
+    ticketCopy.events = [];
+  });
+
+  describe("The computeCns function", () => {
+
+    it("should be a valid structure " , () => {
+      const {supported, bypassed, resolved} = computeCns(ticketCopy);
+
+      expect(supported).toMatchObject({
+        days: expect.any(Number),
+        hours: expect.any(Number),
+        minutes: expect.any(Number)
+      });
+
+      expect(bypassed).toMatchObject({
+        days: expect.any(Number),
+        hours: expect.any(Number),
+        minutes: expect.any(Number)
+      });
+
+      expect(resolved).toMatchObject({
+        days: expect.any(Number),
+        hours: expect.any(Number),
+        minutes: expect.any(Number)
+      });
+      
     });
 
-    it("should compute cns correctly when issue is in bypassed state", () => {
-      var ticketCopy = ticket;
+    it.only("should compute cns correctly when issue is in supported state", () => {
+      let cns = computeCns(ticketCopy);
+      expect(cns.supported.days).toEqual(2);
+      expect(cns.supported.hours).toEqual(4);
+      expect(cns.supported.minutes).toEqual(16);
+    });
+
+    it.only("should compute cns correctly when issue is in bypassed state", () => {
+      const createdAt = moment(ticketCopy.timestamps.createdAt).clone().add(3 , 'hours');
+
       ticketCopy.events.push({
         status: "supported",
         timestamps: {
-          createdAt: "2019-09-26T14:44:44.697+02:00"
-        }, // 1 Hour after ticket creation
+          createdAt
+        },
         target: {
           type: "expert"
         }
       });
 
-      var cns = computeCns(ticketCopy);
-
-      expect(cns.supported).toEqual(1);
-      expect(cns.bypassed).toBeGreaterThan(0);
-      expect(cns.resolved).toEqual(cns.bypassed);
+      let cns = computeCns(ticketCopy);
+      expect(cns.supported.days).toEqual(0);
+      expect(cns.supported.hours).toEqual(3);
+      expect(cns.bypassed.days).toEqual(2);
+      expect(cns.resolved.days).toEqual(cns.bypassed.days);
     });
 
-    it("should not increment counter when ticket is assigned to a client", () => {
-      var ticketCopy = ticket;
+    it.only("should not increment counter when ticket is assigned to a client", () => {
+      let createdAt = moment(ticketCopy.timestamps.createdAt).clone().add(2 , 'hours');
+      
       ticketCopy.events.push({
         status: "supported",
         timestamps: {
-          createdAt: "2019-09-26T14:44:44.697+02:00" // 1 Hour after ticket creation
+          createdAt
         },
         target: {
           type: "beneficiary"
@@ -105,35 +142,84 @@ describe("CNS calculation", () => {
       });
 
       // Assign ticket to an expert
+      createdAt = moment(ticketCopy.timestamps.createdAt).clone().add(3 , 'hours');
+
+      ticketCopy.events.push({
+        status: "supported",
+        timestamps: {
+          createdAt
+        },
+        target: {
+          type: "expert"
+        }
+      });
+
+      createdAt = moment(ticketCopy.timestamps.createdAt).clone().add(1, 'hours');
+      ticketCopy.events.push({
+        status: "bypassed",
+        timestamps: {
+          createdAt
+        },
+        target: {
+          type: "expert"
+        }
+      });
+
+      const cns = computeCns(ticketCopy);
+      expect(cns.bypassed.hours).toEqual(1);
+    
+    });
+
+  });
+
+
+  describe("The CNS humanize filter", () => {
+    beforeEach(() => {
+      ticketCopy = ticket;
+      ticketCopy.events = [];
+    });
+
+  
+    it("should print a valid humanize time when issue is in supported state", () => {
+      let cns = computeCns(ticketCopy);
+      expect(humanizeHoursDurationFilter(cns.supported)).toBe('2J 4H');
+    });
+
+    it("should print a valid humanize time when issue is in bypassed state", () => {
+
       ticketCopy.events.push({
         status: "supported",
         timestamps: {
           createdAt: "2019-09-26T15:44:44.697+02:00"
-        }, // 2 Hours after ticket creation
+        },
         target: {
           type: "expert"
         }
       });
+      
+      let cns = computeCns(ticketCopy);
+      expect(humanizeHoursDurationFilter(cns.bypassed)).toBe('2J 2H');
+    });
 
-      // Ticket passed to another status
+    it("should print a valid humanize time when issue is in resolved state", () => {
+      
       ticketCopy.events.push({
         status: "bypassed",
         timestamps: {
-          createdAt: "2019-09-26T16:44:44.697+02:00"
-        }, // 3 Hours after ticket creation
+          createdAt: "2019-09-27T13:44:44.697+02:00"
+        },
         target: {
           type: "expert"
         }
       });
 
-      // ticket was in supported stage for 1 hour ( creation => 2nd action )
-      const cns = computeCns(ticketCopy);
-
-      expect(cns.supported).toEqual(1);
-      // ticket was in bypassed stage for 1 hour ( 2nd action => 3rd action )
-      expect(cns.bypassed).toEqual(1);
-      // greater than 0 because an expert was assigned to next status
-      expect(cns.resolved).toBeGreaterThan(cns.bypassed);
+      // expect(cns.supported).toEqual(1);
+      // // ticket was in bypassed stage for 1 hour ( 2nd action => 3rd action )
+      // expect(cns.bypassed).toEqual(1);
+      // // greater than 0 because an expert was assigned to next status
+      // expect(cns.resolved).toBeGreaterThan(cns.bypassed);
+      let cns = computeCns(ticketCopy);
+      expect(humanizeHoursDurationFilter(cns.resolved)).toBe('1J 4H');
     });
   });
 
@@ -158,7 +244,7 @@ describe("CNS calculation", () => {
 
     describe("with empty events", () => {
       it("should compute new period only", () => {
-        var periods = computePeriods(undefined, ticketCreationDate);
+        let periods = computePeriods(undefined, ticketCreationDate);
 
         expect(periods.new).toBeDefined();
         expect(periods.supported).toBeUndefined();
@@ -166,13 +252,13 @@ describe("CNS calculation", () => {
       });
 
       it("should set new period start to ticket creation date", () => {
-        var periods = computePeriods(undefined, ticketCreationDate);
+        let periods = computePeriods(undefined, ticketCreationDate);
 
         expect(periods.new.start).toEqual(moment(ticketCreationDate));
       });
 
       it("should set new period end to current date", () => {
-        var periods = computePeriods(undefined, ticketCreationDate);
+        let periods = computePeriods(undefined, ticketCreationDate);
 
         expect(periods.new.end).toEqual(currentDate);
       });

@@ -319,7 +319,7 @@
           <td class="text-xs-center">
             <span>{{ $t(cnsWording(props.item.status)) }}</span>
             <cns-progress-bar
-              v-if="displayCnsProgressBar(props.item.status)"
+              v-if="displayCnsProgressBar(props.item.status) && props.item.type !== 'Information'"
               :ticket="props.item.request"
               :cnsType="props.item.cnsType"
               :hideClock="true"

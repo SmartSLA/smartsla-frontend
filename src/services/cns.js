@@ -1,6 +1,5 @@
 import moment from "moment-timezone";
 import Vue from "vue";
-
 moment.tz.setDefault("Europe/Paris");
 
 export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorkingMinutes, hoursBetween };
@@ -28,7 +27,10 @@ function computeCns(ticket) {
     cns.supported = computeTime(periods["new"], workingInterval);
     cns.bypassed = computeTime(periods["supported"], workingInterval);
     cns.resolved = computeTime(periods["bypassed"], workingInterval);
-    cns.resolved += cns.bypassed;
+    const {days , hours, minutes} = cns.bypassed;
+    cns.resolved.days += days;
+    cns.resolved.hours += hours;
+    cns.resolved.minutes += minutes;
   }
   return cns;
 }
@@ -122,31 +124,41 @@ function computePeriods(events, ticketStartTime) {
  *
  * @param period
  * @param workingInterval
- * @return {number} hours spent regarding contrat
+ * @return {Object} time spent regarding contrat
  */
 function computeTime(period, workingInterval) {
   if (!period) {
-    return 0;
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0
+    }
   }
 
   const startDate = period.start;
   const endDate = period.end;
   const noStop = workingInterval.end === "-" || workingInterval.start === "7d/7d";
 
-  let minuteCount = 0;
+  let minutes = 0;
 
   if (noStop) {
-    minuteCount = hoursBetween(startDate, endDate) * 60;
+    minutes = hoursBetween(startDate, endDate) * 60;
+    return getWorkingTime(minutes, 24);
   } else {
-    minuteCount = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
-    minuteCount -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
-    minuteCount -= calculateSuspendedMinutes(period.suspensions, workingInterval.start, workingInterval.end);
+    minutes = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
+    minutes -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
+    minutes -= calculateSuspendedMinutes(period.suspensions, workingInterval.start, workingInterval.end);
+    return getWorkingTime(minutes, (workingInterval.end - workingInterval.start));
   }
+}
 
-  return +moment
-    .duration({ minutes: minuteCount })
-    .asHours()
-    .toFixed(2);
+function getWorkingTime(workingMinutes, hoursInDay) {
+  const d = workingMinutes / (hoursInDay*60);
+  const days = Math.floor(d);
+  const hours = Math.floor((d - days) *  hoursInDay);
+  const minutes = Math.round(workingMinutes)%60;
+
+  return {days, hours, minutes};
 }
 
 function hoursBetween(start, end) {
