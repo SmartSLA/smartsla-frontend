@@ -101,14 +101,14 @@ describe("CNS calculation", () => {
       
     });
 
-    it.only("should compute cns correctly when issue is in supported state", () => {
+    it("should compute cns correctly when issue is in supported state", () => {
       let cns = computeCns(ticketCopy);
       expect(cns.supported.days).toEqual(2);
       expect(cns.supported.hours).toEqual(4);
       expect(cns.supported.minutes).toEqual(16);
     });
 
-    it.only("should compute cns correctly when issue is in bypassed state", () => {
+    it("should compute cns correctly when issue is in bypassed state", () => {
       const createdAt = moment(ticketCopy.timestamps.createdAt).clone().add(3 , 'hours');
 
       ticketCopy.events.push({
@@ -128,7 +128,7 @@ describe("CNS calculation", () => {
       expect(cns.resolved.days).toEqual(cns.bypassed.days);
     });
 
-    it.only("should not increment counter when ticket is assigned to a client", () => {
+    it("should not increment counter when ticket is assigned to a client", () => {
       let createdAt = moment(ticketCopy.timestamps.createdAt).clone().add(2 , 'hours');
       
       ticketCopy.events.push({
@@ -259,8 +259,8 @@ describe("CNS calculation", () => {
 
       it("should set new period end to current date", () => {
         let periods = computePeriods(undefined, ticketCreationDate);
-
-        expect(periods.new.end).toEqual(currentDate);
+        // `format('X')` Convert moment object to timestamp
+        expect(periods.new.end.format('X')).toEqual(currentDate.format('X'));
       });
     });
 
@@ -296,7 +296,7 @@ describe("CNS calculation", () => {
       });
 
       it("should set supported period end to current date", () => {
-        expect(periods.supported.end).toEqual(currentDate);
+        expect(periods.supported.end.format('X')).toEqual(currentDate.format('X'));
       });
     });
 
@@ -348,7 +348,7 @@ describe("CNS calculation", () => {
       });
 
       it("should set bypassed period end to current date", () => {
-        expect(periods.bypassed.end).toEqual(currentDate);
+        expect(periods.bypassed.end.format('X')).toEqual(currentDate.format('X'));
       });
     });
 
@@ -602,7 +602,7 @@ describe("CNS calculation", () => {
       });
 
       it("should add bypassed suspensions with current date as end date", () => {
-        expect(periods.bypassed.suspensions[0].end).toEqual(moment(currentDate));
+        expect(periods.bypassed.suspensions[0].end.format('X')).toEqual(moment(currentDate).format('X'));
       });
     });
 
@@ -692,7 +692,7 @@ describe("CNS calculation", () => {
       });
 
       it("should add bypassed suspensions with current date as end date", () => {
-        expect(periods.bypassed.suspensions[0].end).toEqual(moment(currentDate));
+        expect(periods.bypassed.suspensions[0].end.format('X')).toEqual(moment(currentDate).format('X'));
       });
     });
 
@@ -744,7 +744,7 @@ describe("CNS calculation", () => {
       });
 
       it("should set bypassed period end to current date", () => {
-        expect(periods.bypassed.end).toEqual(currentDate);
+        expect(periods.bypassed.end.format('X')).toEqual(currentDate.format('X'));
       });
     });
   });
