@@ -433,11 +433,11 @@ export default {
         this.ticket.events = [event];
       }
 
-      if (!this.ticket.software.software) {
+      if (this.ticket.hasOwnProperty("software") && !this.ticket.software.software) {
         delete this.ticket.software;
       }
 
-      if (!this.ticket.severity.length) {
+      if (this.ticket.hasOwnProperty("severity") && !this.ticket.severity.length) {
         delete this.ticket.severity;
       }
 
@@ -457,6 +457,7 @@ export default {
       }
 
       if (this.$route.params.id) {
+        // TODO: Prevent to send event when nothing has been added
         this.$http
           .updateTicket(this.$route.params.id, ticket)
           .then(() => {
@@ -675,7 +676,7 @@ export default {
       return [];
     },
     selectedEngagement() {
-      if (this.ticket.severity.length && this.engagementsCategory.length) {
+      if (this.ticket.severity && this.ticket.severity.length && this.engagementsCategory.length) {
         var engagements = [];
         engagements = [...this.engagementsCategory].filter(
           engagement => engagement.request == this.ticket.type && engagement.severity == this.ticket.severity
@@ -711,20 +712,20 @@ export default {
   },
   watch: {
     "ticket.contract": function(newContract, oldContract) {
-      if (oldContract._id && newContract._id !== oldContract._id) {
+      if (Object.keys(oldContract).length !== 0) {
+        this.ticket.type = "";
         this.ticket.software = {};
         this.ticket.severity = "";
-        this.ticket.type = "";
       }
     },
     "ticket.type": function(newType, oldType) {
-      if (oldType.length && newType !== oldType) {
+      if (oldType.length !== 0) {
+        this.ticket.software = {};
         this.ticket.severity = "";
-        this.ticket.software = "";
       }
     },
     "ticket.software": function(newSoftware, oldSoftware) {
-      if (oldSoftware.software && oldSoftware.software !== newSoftware.software) {
+      if (Object.keys(oldSoftware).length !== 0) {
         this.ticket.severity = "";
       }
     },
@@ -742,6 +743,8 @@ export default {
         this.ticket = Object.assign({}, data);
         this.linkedRequests = data.relatedRequests;
         this.participants = data.participants;
+        this.callNumber = data.callNumber;
+        this.meetingId = data.meetingId;
       });
     }
 

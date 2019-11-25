@@ -65,7 +65,8 @@ const getters = {
       id: state.user.id,
       name: getters.getDisplayName,
       email: getters.getEmail,
-      type: getters.getType
+      type: getters.getType,
+      image: getters.getAvatarUrl
     };
   }
 };
