@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-md>
+  <v-container grid-list-md v-if="request">
     <v-layout align-center justify-space-between row>
       <div>
         <router-link :to="{ name: 'Requests' }">
@@ -172,14 +172,14 @@
               </v-subheader>
               <div class="subject-text ml-3" v-html="request.description"></div>
             </v-card-text>
-            <v-card-text v-if="ticket.participants && ticket.participants.length">
+            <v-card-text v-if="request.participants && request.participants.length">
               <v-subheader inset class="ml-0">
                 <v-icon>email</v-icon>
                 {{ $t("Participants E-mails") }}
               </v-subheader>
               <v-layout>
                 <v-flex xs12 class="pt-0 pl-0">
-                  <v-chip v-for="(participant, index) in ticket.participants" :key="index" class="ma-2">
+                  <v-chip v-for="(participant, index) in request.participants" :key="index" class="ma-2">
                     <a :href="`mailto:${participant}`">{{ participant }}</a>
                   </v-chip>
                 </v-flex>
@@ -207,7 +207,7 @@
                 </template>
               </v-list>
             </v-card-text>
-            <v-card-text v-if="request.linkedTickets && request.linkedTickets.length">
+            <v-card-text v-if="request.relatedRequests && request.relatedRequests.length">
               <v-subheader inset class="ml-0">
                 <v-icon>insert_link</v-icon>
                 {{ $t("Related requests") }}
@@ -219,8 +219,8 @@
                       <strong>{{ $t("Related requests") }}:</strong>
                     </v-flex>
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
-                      <ul v-if="request.linkedTickets">
-                        <li v-for="(link, key) in request.linkedTickets" :key="key">
+                      <ul v-if="request.relatedRequests">
+                        <li v-for="(link, key) in request.relatedRequests" :key="key">
                           <router-link target="_blank" :to="{ name: 'Request', params: { id: link.request.id } }">
                             {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
                           </router-link>
@@ -239,7 +239,7 @@
               <v-tab disabled href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
-                  <v-timeline-item v-for="event in events" :key="event._id" large :ref="`event-${event._id}`">
+                  <v-timeline-item v-for="event in request.events" :key="event._id" large :ref="`event-${event._id}`">
                     <template v-slot:icon>
                       <v-avatar>
                         <v-img :src="event.author.image"></v-img>
@@ -405,11 +405,11 @@
               </v-card-title>
               <v-divider></v-divider>
               {{ $t("Supported") }}
-              <cns-progress-bar :ticket="ticket" :cnsType="'supported'"></cns-progress-bar>
+              <cns-progress-bar :ticket="request" :cnsType="'supported'" class="pt-1"></cns-progress-bar>
               {{ $t("Bypass") }}
-              <cns-progress-bar :ticket="ticket" :cnsType="'bypassed'"></cns-progress-bar>
+              <cns-progress-bar :ticket="request" :cnsType="'bypassed'"></cns-progress-bar>
               {{ $t("Solution") }}
-              <cns-progress-bar :ticket="ticket" :cnsType="'resolved'"></cns-progress-bar>
+              <cns-progress-bar :ticket="request" :cnsType="'resolved'"></cns-progress-bar>
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
@@ -523,9 +523,6 @@ export default {
       apiUrl: "",
       attachments: [],
       commentCreationAttachments: [],
-      ticket: {
-        events: []
-      },
       cnsSupported: 0,
       cnsBypassed: 0,
       cnsResolved: 0,
@@ -536,15 +533,11 @@ export default {
       applicationSettings: {},
       selectedEditor: "wysiwyg",
       privateComment: false,
-      events: [],
       isSubmitting: false,
       newStatus: "",
       newResponsible: "",
       newEvent: {},
-      request: {
-        statusId: 2,
-        events: []
-      },
+      request: null,
       comment: "",
       options: {
         lineNumbers: true,
@@ -574,9 +567,10 @@ export default {
       displayName: "user/getDisplayName",
       getUser: "user/getUser"
     }),
+
     ticketStatusId() {
-      if (this.ticket.status) {
-        switch (this.ticket.status.toLowerCase()) {
+      if (this.request.status) {
+        switch (this.request.status.toLowerCase()) {
           case "new":
             return 0;
           case "supported":
@@ -630,25 +624,6 @@ export default {
       };
     },
 
-    setRequestData(request) {
-      const attachments = request.events && request.events.map(event => {
-        return (event.attachments || []).map(attachment => {
-          attachment.timestamps = event.timestamps;
-          attachment.event = event;
-
-          return attachment;
-      })});
-      this.attachments = flatten(attachments);
-      this.currentStatus = request.status;
-      this.request.statusId = 1;
-      this.request.files = [];
-      this.request.lastUpdate = new Date(request.timestamps.updatedAt);
-      this.request.ticketDate = new Date(request.timestamps.createdAt);
-      this.request.subject = request.description;
-      this.events = request.events;
-      this.request.linkedTickets = request.relatedRequests;
-      this.request.communityContribution = {};
-    },
     addEvent() {
       this.isSubmitting = true;
       const attachmentsPromise = this.commentCreationAttachments.length ?
@@ -697,7 +672,7 @@ export default {
       this.newEvent.status = this.newStatus;
       this.newEvent.target = this.newResponsible;
 
-      return this.$http.addTicketEvent(this.ticket._id, this.newEvent);
+      return this.$http.addTicketEvent(this.request._id, this.newEvent);
     },
     downloadFile({ _id, name }) {
       this.$http.downloadFile(_id).then(response => {
@@ -709,13 +684,25 @@ export default {
         link.click();
       });
     },
-    getData() {
-      this.$http.getTicketById(this.$route.params.id).then(response => {
-        this.ticket = Object.assign({}, response.data);
-        this.request = Object.assign({}, response.data);
-        this.setRequestData(Object.assign({}, response.data));
 
-        this.$http.getContractUsers(this.request.contract._id)
+    getData() {
+      this.$http.getTicketById(this.$route.params.id).then(({ data }) => {
+        this.request = data;
+        const attachments = data.events && data.events.map(event => {
+          return (event.attachments || []).map(attachment => {
+            attachment.timestamps = event.timestamps;
+            attachment.event = event;
+
+            return attachment;
+          });
+        });
+
+        this.attachments = flatten(attachments);
+        this.currentStatus = data.status;
+        this.request.lastUpdate = new Date(data.timestamps.updatedAt);
+        this.request.ticketDate = new Date(data.timestamps.createdAt);
+
+        this.$http.getContractUsers(data.contract._id)
           .then(contractUsers => (this.contractUsers = contractUsers));
       });
 
@@ -726,8 +713,6 @@ export default {
           }
         });
       });
-
-      this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
     },
     resetComment() {
       this.newStatus = "";
@@ -748,8 +733,9 @@ export default {
       return this.$i18n.t(capitalizedStatus);
     }
   },
-  mounted() {
+  created() {
     this.getData();
+    this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
   }
 };
 </script>
