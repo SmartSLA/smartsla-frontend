@@ -39,6 +39,7 @@ export default {
       const engagements =
         this.request.software &&
         this.request.software.critical &&
+        this.request.contract &&
         this.request.contract.Engagements[this.request.software.critical] &&
         this.request.contract.Engagements[this.request.software.critical].engagements;
       const severity = this.request.severity;
