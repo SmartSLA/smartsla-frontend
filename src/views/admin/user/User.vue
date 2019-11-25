@@ -51,31 +51,29 @@
                   <strong>{{ $t("Role") }} :</strong>
                   {{ ticketingUser.role }}
                 </v-flex>
-              </v-layout>
-            </v-flex>
-            <v-flex xs4>
-              <!-- <v-layout row wrap>
-                <v-flex xs12>
+                <v-flex xs12 v-if="$auth.check('admin') && ticketingUser.client">
                   <strong>{{ $t("Client") }} :</strong>
-                  {{ user.client.name }}
+                  <router-link
+                    :to="{ name: 'Client', params: { id: ticketingUser.client.id } }"
+                    target="_blank"
+                  >
+                    {{ ticketingUser.client.name }}
+                  </router-link>
                 </v-flex>
-                <v-flex xs12>
-                  <v-layout row wrap>
-                    <v-flex xs4>
-                      <strong>{{ $t("Contracts") }} :</strong>
-                    </v-flex>
-                    <v-flex xs8>
-                      <ul>
-                        <li v-for="(contract, key) in user.contracts" :key="key">
-                          <router-link :to="{ name: 'Contract', params: { id: 15 } }" class="blue-color">{{
-                            contract.name
-                          }}</router-link>
-                        </li>
-                      </ul>
-                    </v-flex>
-                  </v-layout>
+                <v-flex xs12 v-if="$auth.check('admin') && ticketingUser.contracts && !!ticketingUser.contracts.length">
+                  <strong>{{ $t("Contrats") }} :</strong>
+                  <ul>
+                    <li v-for="entry in ticketingUser.contracts" :key="entry._id">
+                      <router-link
+                        :to="{ name: 'Contract', params: { id: entry.contract._id } }"
+                        target="_blank"
+                      >
+                        <span class="blue-color"> {{ entry.contract.name }} </span>
+                      </router-link>
+                    </li>
+                  </ul>
                 </v-flex>
-              </v-layout> -->
+              </v-layout>
             </v-flex>
           </v-layout>
         </v-card>
@@ -97,8 +95,18 @@ export default {
         .getUserById(this.$route.params.id)
         .then(response => {
           this.ticketingUser = response.data;
+          if(this.ticketingUser.contracts && !!this.ticketingUser.contracts.length){
+            this.ticketingUser = {
+              ...this.ticketingUser,
+              client: {
+                name: this.ticketingUser.contracts[0].contract.client,
+                id: this.ticketingUser.contracts[0].contract.clientId
+              }
+            }
+          }
         })
         .catch(error => {
+          console.log(error);
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("failed to fetch the user"),
             color: "error"
