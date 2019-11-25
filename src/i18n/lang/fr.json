@@ -1,6 +1,8 @@
 {
     "{days}WD {hours}WH": "{days}JO {hours}Ho",
+    "{days}WD": "{days}JO",
     "{hours}WH / {duration}WH": "{hours}HO / {duration}HO",
+    "{hours}WH": "{hours}HO",
     "Access code": "Code d'accès",
     "Access code hint": "Aide au code d'accès",
     "Active": "Actif",
