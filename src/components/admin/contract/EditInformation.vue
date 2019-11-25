@@ -207,14 +207,7 @@ export default {
       endDateModel: false,
       valid: true,
       clients: [],
-      techRefs: [
-        "Sacha Méline",
-        "Gilberte Marcellette",
-        "Jérome HERLEDAN",
-        "Maximilienne Priscille",
-        "Nicolas CHAUVET",
-        "César Tristan"
-      ]
+      techRefs: []
     };
   },
   computed: {
