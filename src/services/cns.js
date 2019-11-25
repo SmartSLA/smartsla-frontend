@@ -53,9 +53,10 @@ function computeCns(ticket) {
  */
 function computePeriods(events, ticketStartTime) {
   const periods = {};
-  const orderedEvents =
-    (events && events.sort((a, b) => new Date(a.timestamps.createdAt) - new Date(b.timestamps.createdAt))) || [];
   const currentDate = moment();
+  const orderedEvents = (events && [...events]) || [];
+
+  orderedEvents.sort((a, b) => new Date(a.timestamps.createdAt) - new Date(b.timestamps.createdAt));
 
   let currentStatus = "new";
   let currentSuspension;
