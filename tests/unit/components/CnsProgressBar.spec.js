@@ -4,10 +4,12 @@ import cnsComponent from "@/components/CnsProgressBar";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import moment from "moment-timezone";
+import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
 moment.tz.setDefault("Europe/Paris");
 Vue.prototype.moment = moment;
 Vue.use(Vuetify);
+Vue.filter("humanizeHoursDurationFilter", humanizeHoursDurationFilter);
 
 const ticket = {
   type: "anomaly",
@@ -78,6 +80,12 @@ describe("duration calculation", () => {
       propsData: {
         ticket,
         cnsType: "supported"
+      },
+      mocks: {
+        $t: key => key,
+        $i18n: {
+          t: () => {}
+        }
       }
     });
     expect(target.vm.duration).toEqual(1);
@@ -88,6 +96,12 @@ describe("duration calculation", () => {
       propsData: {
         ticket,
         cnsType: "bypassed"
+      },
+      mocks: {
+        $t: key => key,
+        $i18n: {
+          t: () => {}
+        }
       }
     });
     expect(target.vm.duration).toEqual(9);
@@ -98,6 +112,12 @@ describe("duration calculation", () => {
       propsData: {
         ticket,
         cnsType: "resolved"
+      },
+      mocks: {
+        $t: key => key,
+        $i18n: {
+          t: () => {}
+        }
       }
     });
     expect(target.vm.duration).toEqual(18);

@@ -7,7 +7,7 @@
         :color="getEngagementColor(cns[cnsType], duration)"
         class="mt-0 white--text font-weight-bold"
       >
-        <span v-if="duration">{{ cns[cnsType] | humanizeHoursDurationFilter }} / {{ duration }} HO</span>
+        <span v-if="duration">{{ cns[cnsType] | humanizeHoursDurationFilter }} / {{ durationDisplay | humanizeHoursDurationFilter }}</span>
         <span v-else>{{ cns[cnsType] | humanizeHoursDurationFilter }}</span>
       </v-progress-linear
       >
@@ -46,7 +46,8 @@ export default {
         bypassed: 0,
         resolved: 0
       },
-      duration: 0
+      duration: 0,
+      commitmentDuration: {}
     };
   },
   computed: {
@@ -65,6 +66,16 @@ export default {
         this.ticket.status == "resolved" && (this.cnsType === "supported" || this.cnsType === "bypassed" || this.cnsType === "resolved" ) ||
         this.ticket.status == "closed"
       );
+    },
+    
+    durationDisplay() {
+      const duration = {
+        days: this.commitmentDuration.days(),
+        hours: this.commitmentDuration.hours(),
+        minutes: this.commitmentDuration.minutes()
+      };
+
+      return duration;
     }
 
   },
@@ -93,10 +104,10 @@ export default {
       this.cns = computeCns(this.ticket);
     },
     parseEngagementDuration(durationString, workHours = 9) {
-      const parsedDuration = this.moment.duration(durationString);
-      let duration = parsedDuration.hours();
+      const commitmentDuration = this.moment.duration(durationString);
+      let duration = commitmentDuration.hours();
 
-      duration += parsedDuration.days() * workHours;
+      duration += commitmentDuration.days() * workHours;
 
       return duration;
     },
@@ -118,6 +129,7 @@ export default {
 
           if (engagements.length) {
             const engagement = engagements[0];
+            this.commitmentDuration = this.moment.duration(engagement[this.cnsType]);
             this.duration = this.parseEngagementDuration(engagement[this.cnsType]);
             this.cnsDurations = {
               supported: this.parseEngagementDuration(engagement.supported),
