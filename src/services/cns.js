@@ -18,7 +18,7 @@ function computeCns(ticket) {
     bypassed: 0,
     resolved: 0
   };
-  if (ticket.software && ticket.software.software) {
+  if (ticket.software && ticket.software.software && ticket.contract) {
     const workingInterval = (ticket.contract.Engagements[ticket.software.critical] &&
       ticket.contract.Engagements[ticket.software.critical].schedule) || { start: 9, end: 18 };
 

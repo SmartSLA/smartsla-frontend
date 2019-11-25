@@ -112,7 +112,7 @@ export default {
       return duration;
     },
     computeDuration() {
-      if (this.ticket.software && this.ticket.software.software) {
+      if (this.ticket.software && this.ticket.software.software && this.ticket.contract) {
         const criticality = this.ticket.software.critical;
         const currentEngagements = [...this.ticket.contract.Engagements[criticality].engagements];
 
