@@ -24,7 +24,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <span class="title">{{ $t("Search users") }}</span>
+                <span class="title required-label">{{ $t("Search users") }}</span>
               </v-flex>
               <v-flex xs8>
                  <v-autocomplete
@@ -38,6 +38,7 @@
                   item-value="name"
                   :label="$t('Users')"
                   cache-items
+                  :rules="[() => member && !!Object.keys(member) || $i18n.t('Required field')]"
                   return-object
                 >
                   <template slot="no-data">
