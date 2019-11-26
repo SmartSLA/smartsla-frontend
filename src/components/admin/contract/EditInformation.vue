@@ -48,6 +48,45 @@
               v-model="contract.mailingList.external"
             ></v-text-field>
           </v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Business hours") }}</v-flex>
+          <v-flex xs8>
+            <v-layout row wrap align-center align-content-center>
+                <v-flex xs1 class="text-xs-right mr-4">{{ $t("From") }}</v-flex>
+                <v-flex xs1>
+                  <v-text-field
+                    v-model="contract.businessHours.start"
+                    required
+                    type="number"
+                    class="required-label"
+                    mask="##"
+                    :rules="[hoursRules.required, hoursRules.minHour, hoursRules.maxHour]"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs1>{{ $t("H") }}</v-flex>
+                <v-flex xs1 class="text-xs-right mr-4">{{ $t("to") }}</v-flex>
+                <v-flex xs1>
+                  <v-text-field
+                    v-model="contract.businessHours.end"
+                    required
+                    type="number"
+                    class="required-label"
+                    mask="##"
+                    :rules="[hoursRules.required, hoursRules.minHour, hoursRules.maxHour]"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs1>{{ $t("H") }}</v-flex>
+            </v-layout>
+          </v-flex>
+          <v-flex xs3>
+            {{ $t("24h/24 7D/7 option") }}
+          </v-flex>
+          <v-flex xs8>
+            <v-checkbox
+              :label="$t('this option allows customers to create tickets in non-business hours subject to SLA')"
+              v-model="contract.features.nonBusinessHours"
+              :value="true"
+            ></v-checkbox>
+          </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
           <v-flex xs8>
             <v-menu
@@ -186,6 +225,13 @@ export default {
         },
         startDate: "",
         endDate: "",
+        businessHours: {
+          start: "",
+          end: ""
+        },
+        features: {
+          nonBusinessHours: false
+        },
         status: true,
         type: "",
         description: "",
@@ -207,7 +253,12 @@ export default {
       endDateModel: false,
       valid: true,
       clients: [],
-      techRefs: []
+      techRefs: [],
+      hoursRules: {
+       required: value => !!value || this.$i18n.t("Required field"),
+       minHour: value => value >= 0 || this.$i18n.t("invalid"),
+       maxHour: value => value <= 24 || this.$i18n.t("invalid"),
+     }
     };
   },
   computed: {

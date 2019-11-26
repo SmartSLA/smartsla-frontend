@@ -23,11 +23,12 @@ function computeCns(ticket) {
       ticket.contract.Engagements[ticket.software.critical].schedule) || { start: 9, end: 18 };
 
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
+    const nonBusinessHours = (ticket.contract.features && ticket.contract.features.nonBusinessHours) || false;
 
-    cns.supported = computeTime(periods["new"], workingInterval);
-    cns.bypassed = computeTime(periods["supported"], workingInterval);
-    cns.resolved = computeTime(periods["bypassed"], workingInterval);
-    const {days , hours, minutes} = cns.bypassed;
+    cns.supported = computeTime(periods["new"], workingInterval, nonBusinessHours);
+    cns.bypassed = computeTime(periods["supported"], workingInterval, nonBusinessHours);
+    cns.resolved = computeTime(periods["bypassed"], workingInterval, nonBusinessHours);
+    const { days, hours, minutes } = cns.bypassed;
     cns.resolved.days += days;
     cns.resolved.hours += hours;
     cns.resolved.minutes += minutes;
@@ -127,19 +128,17 @@ function computePeriods(events, ticketStartTime) {
  * @param workingInterval
  * @return {Object} time spent regarding contrat
  */
-function computeTime(period, workingInterval) {
+function computeTime(period, workingInterval, noStop) {
   if (!period) {
     return {
       days: 0,
       hours: 0,
       minutes: 0
-    }
+    };
   }
 
   const startDate = period.start;
   const endDate = period.end;
-  const noStop = workingInterval.end === "-" || workingInterval.start === "7d/7d";
-
   let minutes = 0;
 
   if (noStop) {
@@ -149,17 +148,17 @@ function computeTime(period, workingInterval) {
     minutes = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
     minutes -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
     minutes -= calculateSuspendedMinutes(period.suspensions, workingInterval.start, workingInterval.end);
-    return getWorkingTime(minutes, (workingInterval.end - workingInterval.start));
+    return getWorkingTime(minutes, workingInterval.end - workingInterval.start);
   }
 }
 
 function getWorkingTime(workingMinutes, hoursInDay) {
-  const d = workingMinutes / (hoursInDay*60);
+  const d = workingMinutes / (hoursInDay * 60);
   const days = Math.floor(d);
-  const hours = Math.floor((d - days) *  hoursInDay);
-  const minutes = Math.round(workingMinutes)%60;
+  const hours = Math.floor((d - days) * hoursInDay);
+  const minutes = Math.round(workingMinutes) % 60;
 
-  return {days, hours, minutes};
+  return { days, hours, minutes };
 }
 
 function hoursBetween(start, end) {
