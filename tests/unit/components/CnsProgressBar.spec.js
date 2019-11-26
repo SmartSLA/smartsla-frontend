@@ -23,6 +23,9 @@ const ticket = {
   },
   status: "bypassed",
   contract: {
+    features: {
+      nonBusinessHours: false
+    },
     businessHours: {
       start: 9,
       end: 18

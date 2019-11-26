@@ -21,11 +21,13 @@ function computeCns(ticket) {
   if (ticket.software && ticket.software.software && ticket.contract) {
     const workingInterval = (ticket.contract.Engagements[ticket.software.critical] &&
       ticket.contract.Engagements[ticket.software.critical].schedule) || { start: 9, end: 18 };
-    const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
 
-    cns.supported = computeTime(periods["new"], workingInterval);
-    cns.bypassed = computeTime(periods["supported"], workingInterval);
-    cns.resolved = computeTime(periods["bypassed"], workingInterval);
+    const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
+    const nonBusinessHours = (ticket.contract.features && ticket.contract.features.nonBusinessHours) || false;
+
+    cns.supported = computeTime(periods["new"], workingInterval, nonBusinessHours);
+    cns.bypassed = computeTime(periods["supported"], workingInterval, nonBusinessHours);
+    cns.resolved = computeTime(periods["bypassed"], workingInterval, nonBusinessHours);
     const { days, hours, minutes } = cns.bypassed;
     cns.resolved.days += days;
     cns.resolved.hours += hours;
@@ -126,7 +128,7 @@ function computePeriods(events, ticketStartTime) {
  * @param workingInterval
  * @return {Object} time spent regarding contrat
  */
-function computeTime(period, workingInterval) {
+function computeTime(period, workingInterval, noStop) {
   if (!period) {
     return {
       days: 0,
@@ -137,8 +139,6 @@ function computeTime(period, workingInterval) {
 
   const startDate = period.start;
   const endDate = period.end;
-  const noStop = workingInterval.end === "-" || workingInterval.start === "7d/7d";
-
   let minutes = 0;
 
   if (noStop) {

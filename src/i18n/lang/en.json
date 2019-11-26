@@ -1,6 +1,7 @@
 {
   "Admin role can see all tickets and administrate": "Admin role can see all tickets and administrate",
   "Beneficiary is a customer linked to a client and can create, see tickets": "Beneficiary is a customer linked to a client and can create, see tickets",
+  "Business hours": "Business hours",
   "Close": "Close",
   "cns.state.bypass": "Bypass",
   "cns.state.closure": "Closure",
@@ -28,7 +29,7 @@
   "This button allows you to add an additional filter to the ticket board": "This button allows you to add an additional filter to the ticket board",
   "This button allows you to load a saved filter": "This button allows you to load a saved filter",
   "This is an about page": "This is an about page",
-  "This option allow customers to create tickets outside of business hours subject to SLA": "This option allow customers to create ticket outside of business hours subject to SLA",
+  "this option allows customers to create tickets in non-business hours subject to SLA": "This option allow customers to create ticket outside of business hours subject to SLA",
   "Ticket assigned to {assignedTo}": "Ticket assigned to {assignedTo}",
   "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
   "Ticket passed in status {status}": "Ticket passed in status {status}",

@@ -76,6 +76,9 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("24h/7 option") }} :</div>
                   </v-flex>
+                  <v-flex xs8>
+                    <v-flex xs8>{{ $t(contract.features && contract.features.nonBusinessHours) ? $t("active") : $t("not active") }}</v-flex>
+                  </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Start") }} :</div>
                   </v-flex>

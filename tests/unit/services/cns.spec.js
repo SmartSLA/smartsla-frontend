@@ -26,6 +26,9 @@ const ticket = {
       start: 9,
       end: 18
     },
+    features: {
+      nonBusinessHours: false
+    },
     Engagements: {
       critical: {
         engagements: [

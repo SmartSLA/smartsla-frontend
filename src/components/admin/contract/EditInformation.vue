@@ -48,7 +48,7 @@
               v-model="contract.mailingList.external"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3 class="required-label">{{ $t("Bussiness hours") }}</v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Business hours") }}</v-flex>
           <v-flex xs8>
             <v-layout row wrap align-center align-content-center>
                 <v-flex xs1 class="text-xs-right mr-4">{{ $t("From") }}</v-flex>
@@ -76,6 +76,16 @@
                 </v-flex>
                 <v-flex xs1>{{ $t("H") }}</v-flex>
             </v-layout>
+          </v-flex>
+          <v-flex xs3>
+            {{ $t("24h/24 7D/7 option") }}
+          </v-flex>
+          <v-flex xs8>
+            <v-checkbox
+              :label="$t('this option allows customers to create tickets in non-business hours subject to SLA')"
+              v-model="contract.features.nonBusinessHours"
+              :value="true"
+            ></v-checkbox>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
           <v-flex xs8>
@@ -218,6 +228,9 @@ export default {
         businessHours: {
           start: "",
           end: ""
+        },
+        features: {
+          nonBusinessHours: false
         },
         status: true,
         type: "",
