@@ -12,7 +12,7 @@
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="form" v-model="valid" lazy-validation v-if="user._id">
             <v-layout row wrap>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Type") }} :</strong>
@@ -98,21 +98,19 @@
                 ></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
-              <v-flex xs3 class="pt-4">
+              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert'">
                 <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
-              <v-flex xs8>
+              <v-flex xs8 v-if="user.type !== 'expert'">
                 <v-select
-                  :items="contractList"
+                  :items="filteredContractsByClient"
                   item-value="_id"
                   item-text="name"
                   multiple
                   v-model="user.contracts"
                 ></v-select>
               </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs5></v-flex>
-              <v-flex xs2>
+              <v-flex xs12 offset-xs5>
                 <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
                 <v-btn color="error" @click="openDialog = true" v-if="isEdit">{{ $t("Delete") }}</v-btn>
               </v-flex>
@@ -154,7 +152,7 @@ export default {
         type: "",
         name: "",
         email: "",
-        contracts: "",
+        contracts: [],
         client: "",
         role: "",
         phone: "",
@@ -163,17 +161,32 @@ export default {
       openDialog: false
     };
   },
+  watch: {
+    'user.client': 'resetUserContracts'
+  },
   computed: {
     isEdit() {
-      return this.$route.params.id;
+      return !!this.$route.params.id;
+    },
+    filteredContractsByClient() {
+      if(this.user.client === "") return [];
+      return this.contractList.filter(contract => contract.clientId === this.user.client);
     }
   },
   created() {
+    this.fetchData();
     if (this.$route.params.id) {
       this.$http
         .getUserById(this.$route.params.id)
         .then(({data}) => {
           this.user = data;
+          if(this.user.contracts && !!this.user.contracts.length){
+            this.user = {
+              ...this.user,
+              client: this.user.contracts[0].contract.clientId,
+              contracts: this.user.contracts.map(({contract}) => contract._id)
+            }
+          }
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -182,12 +195,15 @@ export default {
           });
         });
     }
-    this.getContracts();
-    this.getClients();
   },
   methods: {
+    fetchData() {
+      return Promise.all([this.getContracts(), this.getClients()]);
+    },
     initRole() {
       this.user.role = "";
+      this.user.contracts = [];
+      this.user.client = "";
     },
     createUser() {
       this.$http
@@ -206,7 +222,6 @@ export default {
           });
         });
     },
-
     updateUser() {
       this.$http
         .updateUser(this.user._id, this.user)
@@ -224,7 +239,6 @@ export default {
           });
         });
     },
-
     validateFrom() {
       if (this.$refs.form.validate()) {
         if(this.$route.params.id) {
@@ -237,7 +251,6 @@ export default {
         });
       }
     },
-
     deleteUser() {
       this.$http
         .deleteUser(this.$route.params.id)
@@ -259,7 +272,7 @@ export default {
       this.$http
         .getContracts()
         .then(({data}) => {
-          this.contractList = data;
+          this.contractList = data || [];
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -272,7 +285,7 @@ export default {
       this.$http
         .listClients()
         .then(({data}) => {
-          this.clientsList = data;
+          this.clientsList = data || [];
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -280,6 +293,10 @@ export default {
             color: "error"
           });
         });
+    },
+    resetUserContracts(oldVal, newVal) {
+      if(!!oldVal && !!newVal)
+        this.user.contracts = [];
     }
   }
 };
