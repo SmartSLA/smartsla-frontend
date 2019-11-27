@@ -22,9 +22,33 @@
             <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }} </span>
           </span>
         </td>
-        <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
-        <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
-        <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
+        <td class="text-xs-center">
+          <span>
+            {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+          </span>
+          <span v-if="contract.features && contract.features.nonstopService">
+             <br />
+            {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+          </span>
+        </td>
+        <td class="text-xs-center">
+          <span>
+            {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+          </span>
+          <span v-if="contract.features && contract.features.nonstopService">
+             <br />
+            {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+          </span>
+        </td>
+        <td class="text-xs-center">
+          <span>
+            {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+          </span>
+          <span v-if="contract.features && contract.features.nonstopService">
+             <br />
+            {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+          </span>
+        </td>
         <td class="text-xs-center">
           <v-btn color="error" flat small @click="removeCommitment(props.item)">
             <v-icon>remove_circle</v-icon>
@@ -110,61 +134,138 @@
                 </template>
               </v-select>
             </v-flex>
-            <v-flex xs5></v-flex>
+            <v-flex xs3></v-flex>
+            <v-flex xs3> {{ $t("treatment time range") }} </v-flex>
+            <v-flex xs3> {{ $t("Business hours") }} </v-flex>
+            <v-flex xs1></v-flex>
+            <v-flex xs4 v-if="contract.features && contract.features.nonstopService">{{ $t("Non business hours") }} </v-flex>
+            <v-flex xs4 v-else></v-flex>
             <v-flex xs3 class="required-label">{{ $t("Supported") }}</v-flex>
-            <v-flex xs1>
-              <v-text-field
-                v-model="newCommitment.supported.days"
-                mask="###"
-                :rules="[() => isSetDaysOrHours(newCommitment.supported) || $i18n.t('Required field')]"
-              ></v-text-field>
+            <v-flex xs3> 
+              <v-layout row>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.supported.businessHours.days"
+                    mask="###"
+                    :rules="[() => isSetDaysOrHours(newCommitment.supported.businessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("D") }}</v-flex>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.supported.businessHours.hours"
+                    mask="##"
+                    :rules="[() => isSetDaysOrHours(newCommitment.supported.businessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4"> {{ $t("H") }} </v-flex>
+              </v-layout>
             </v-flex>
-            <v-flex xs1>{{ $t("D") }}</v-flex>
-            <v-flex xs1>
-              <v-text-field
-                v-model="newCommitment.supported.hours"
-                mask="##"
-                :rules="[() => isSetDaysOrHours(newCommitment.supported) || $i18n.t('Required field')]"
-              ></v-text-field>
+            <v-flex xs1></v-flex>
+            <v-flex xs3> 
+              <v-layout row wrap v-if="contract.features && contract.features.nonstopService">
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.supported.nonBusinessHours.days"
+                    mask="###"
+                    :rules="[() => isSetDaysOrHours(newCommitment.supported.nonBusinessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("d") }}</v-flex>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.supported.nonBusinessHours.hours"
+                    mask="##"
+                    :rules="[() => isSetDaysOrHours(newCommitment.supported.nonBusinessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("h") }}</v-flex>
+              </v-layout>
             </v-flex>
-            <v-flex xs1>{{ $t("H") }}</v-flex>
-            <v-flex xs5></v-flex>
             <v-flex xs3 class="required-label">{{ $t("Bypassed") }}</v-flex>
-            <v-flex xs1>
-              <v-text-field
-                v-model="newCommitment.bypassed.days"
-                mask="###"
-                :rules="[() => isSetDaysOrHours(newCommitment.bypassed) || $i18n.t('Required field')]"
-              ></v-text-field>
+            <v-flex xs3> 
+              <v-layout row>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.bypassed.businessHours.days"
+                    mask="###"
+                    :rules="[() => isSetDaysOrHours(newCommitment.bypassed.businessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("D") }}</v-flex>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.bypassed.businessHours.hours"
+                    mask="##"
+                    :rules="[() => isSetDaysOrHours(newCommitment.bypassed.businessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4"> {{ $t("H") }} </v-flex>
+              </v-layout>
             </v-flex>
-            <v-flex xs1>{{ $t("D") }}</v-flex>
-            <v-flex xs1>
-              <v-text-field
-                v-model="newCommitment.bypassed.hours"
-                mask="##"
-                :rules="[() => isSetDaysOrHours(newCommitment.bypassed) || $i18n.t('Required field')]"
-              ></v-text-field>
+            <v-flex xs1></v-flex>
+            <v-flex xs3> 
+              <v-layout row wrap v-if="contract.features && contract.features.nonstopService">
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.bypassed.nonBusinessHours.days"
+                    mask="###"
+                    :rules="[() => isSetDaysOrHours(newCommitment.bypassed.nonBusinessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("d") }}</v-flex>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.bypassed.nonBusinessHours.hours"
+                    mask="##"
+                    :rules="[() => isSetDaysOrHours(newCommitment.bypassed.nonBusinessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("h") }}</v-flex>
+              </v-layout>
             </v-flex>
-            <v-flex xs1>{{ $t("H") }}</v-flex>
-            <v-flex xs5></v-flex>
             <v-flex xs3 class="required-label">{{ $t("Resolved") }}</v-flex>
-            <v-flex xs1>
-              <v-text-field
-                v-model="newCommitment.resolved.days"
-                mask="###"
-                :rules="[() => isSetDaysOrHours(newCommitment.resolved) || $i18n.t('Required field')]"
-              ></v-text-field>
+            <v-flex xs3> 
+              <v-layout row>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.resolved.businessHours.days"
+                    mask="###"
+                    :rules="[() => isSetDaysOrHours(newCommitment.resolved.businessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("D") }}</v-flex>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.resolved.businessHours.hours"
+                    mask="##"
+                    :rules="[() => isSetDaysOrHours(newCommitment.resolved.businessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4"> {{ $t("H") }} </v-flex>
+              </v-layout>
             </v-flex>
-            <v-flex xs1>{{ $t("D") }}</v-flex>
-            <v-flex xs1>
-              <v-text-field
-                v-model="newCommitment.resolved.hours"
-                mask="##"
-                :rules="[() => isSetDaysOrHours(newCommitment.resolved) || $i18n.t('Required field')]"
-              ></v-text-field>
+            <v-flex xs1></v-flex>
+            <v-flex xs3> 
+              <v-layout row wrap v-if="contract.features && contract.features.nonstopService">
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.resolved.nonBusinessHours.days"
+                    mask="###"
+                    :rules="[() => isSetDaysOrHours(newCommitment.resolved.nonBusinessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("d") }}</v-flex>
+                <v-flex xs3>
+                  <v-text-field
+                    v-model="newCommitment.resolved.nonBusinessHours.hours"
+                    mask="##"
+                    :rules="[() => isSetDaysOrHours(newCommitment.resolved.nonBusinessHours) || $i18n.t('Required field')]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs1 class="pt-4">{{ $t("h") }}</v-flex>
+              </v-layout>
             </v-flex>
-            <v-flex xs1>{{ $t("H") }}</v-flex>
-            <v-flex xs5></v-flex>
             <v-flex xs3></v-flex>
             <v-flex xs9 mt-3>
               <v-btn @click="appendCommitment" class="success">{{ $t("Add commitment") }}</v-btn>
@@ -187,7 +288,6 @@
 </template>
 
 <script>
-import moment from "moment";
 import { OSSA_IDS } from "@/constants.js";
 import { SEVERITY_TYPES } from "@/constants.js";
 import { REQUEST_TYPES } from "@/constants.js";
@@ -207,17 +307,38 @@ export default {
         engagements: []
       },
       newCommitment: {
-        supported: {},
+        supported: {
+          BH: {
+            days: "",
+            hours: ""
+          },
+          NBH: {
+            days: "",
+            hours: ""
+          }
+        },
         request: "",
         severity: "",
         idOssa: "",
         bypassed: {
-          days: "",
-          hours: ""
+          BH: {
+            days: "",
+            hours: ""
+          },
+          NBH: {
+            days: "",
+            hours: ""
+          }
         },
         resolved: {
-          days: "",
-          hours: ""
+          BH: {
+            days: "",
+            hours: ""
+          },
+          NBH: {
+            days: "",
+            hours: ""
+          }
         },
         description: ""
       },
@@ -243,7 +364,7 @@ export default {
     appendCommitment() {
       if (!this.$refs.form.validate())
         return;
-    
+
       let newCommitment = Object.assign({}, this.newCommitment);
       if (this.newRequest.length) {
         newCommitment.request = this.newRequest;
@@ -304,12 +425,19 @@ export default {
     },
 
     getDuration(schedule) {
-      const duration = this.moment.duration({
-        hours: schedule.hours,
-        days: schedule.days
+      const bhduration = this.moment.duration({
+        hours: schedule.businessHours.hours,
+        days: schedule.businessHours.days
+      });
+      const nbhduration = this.moment.duration({
+        hours: schedule.nonBusinessHours.hours,
+        days: schedule.nonBusinessHours.days
       });
 
-      return duration.toISOString();
+      return {
+        bh: bhduration.toISOString(),
+        nbh: nbhduration.toISOString()
+      };
     },
 
     parseDuration(duration) {

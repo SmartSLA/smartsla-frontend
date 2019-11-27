@@ -208,9 +208,33 @@
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                        <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+                      </span>
+                    </td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                         <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+                      </span>
+                    </td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                         <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+                      </span>
+                    </td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -261,9 +285,33 @@
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                        <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+                      </span>
+                    </td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                        <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+                      </span>
+                    </td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                        <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+                      </span>
+                    </td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -321,9 +369,33 @@
                         <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }}  </span>
                       </span>
                     </td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.supported)) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed)) }}</td>
-                    <td class="text-xs-center">{{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved)) }}</td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                        <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+                      </span>
+                    </td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                        <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+                      </span>
+                    </td>
+                    <td class="text-xs-center">
+                      <span>
+                        {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+                      </span>
+                      <span v-if="contract.features && contract.features.nonstopService">
+                        <br />
+                        {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+                      </span>
+                    </td>
                   </template>
                 </v-data-table>
               </v-card-text>
