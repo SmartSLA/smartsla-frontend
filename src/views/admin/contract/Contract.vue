@@ -40,7 +40,15 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Client") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ contract.client }}</v-flex>
+                  <v-flex xs8>
+                    <router-link
+                      v-if="$auth.check('admin')"
+                      :to="{ name: 'Client', params: { id: contract.clientId } }"
+                      class="blue-color"
+                    >{{ contract.client }}
+                    </router-link>
+                    <span v-else> {{ contract.client }} </span>
+                  </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Name") }} :</div>
                   </v-flex>
