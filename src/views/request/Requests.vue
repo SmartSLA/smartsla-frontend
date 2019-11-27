@@ -319,7 +319,7 @@
           <td class="text-xs-center">
             <span>{{ $t(cnsWording(props.item.status)) }}</span>
             <cns-progress-bar
-              v-if="displayCnsProgressBar(props.item.status) && props.item.type !== 'Information'"
+              v-if="displayCnsProgressBar(props.item)"
               :ticket="props.item.request"
               :cnsType="props.item.cnsType"
               :hideClock="true"
@@ -975,8 +975,10 @@ export default {
       if (status === "bypassed") return "resolved";
       else return "";
     },
-    displayCnsProgressBar(status) {
-      return !(status === "closed" || status === "resolved");
+    displayCnsProgressBar(item) {
+      return ((item.status !== "closed" || item.status !== "resolved") &&
+              item.request.software && item.request.software.software &&
+              item.request.contract && item.request.contract.clientId);
     },
     getOssaConfById(ossaId) {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
