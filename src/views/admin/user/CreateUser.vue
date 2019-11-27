@@ -82,7 +82,7 @@
                   disabled
                 ></v-text-field>
               </v-flex>
-               <v-flex xs1></v-flex>
+              <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <span class="title">{{ $t("Phone") }}</span>
               </v-flex>
@@ -138,7 +138,7 @@
               </v-flex>
               <v-flex xs8 v-if="user.type !== 'expert'">
                 <v-select
-                  :items="contractList"
+                  :items="filteredContractsByClient"
                   item-value="_id"
                   item-text="name"
                   multiple
@@ -184,6 +184,12 @@ export default {
   created() {
     this.fetchData();
   },
+  computed: {
+    filteredContractsByClient() {
+      if(!this.user.client.length) return [];
+      return this.contractList.filter(contract => contract.clientId === this.user.client);
+    },
+  },
   watch: {
     member(value) {
       this.user.name = value ? value.name : "";
@@ -204,7 +210,8 @@ export default {
         .then(results => (this.items = results))
         .catch(console.log)
         .finally(() => (this.isLoading = false));
-    }
+    },
+    'user.client': 'resetUserContracts'
   },
   methods: {
     fetchData() {
@@ -217,8 +224,8 @@ export default {
       }
       this.$http
         .createUser(this.user)
-        .then(response => {
-          if (response.data && response.status === 201) {
+        .then(({data, status}) => {
+          if (data && status === 201) {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("User created"),
               color: "success"
@@ -234,7 +241,9 @@ export default {
           });
         });
     },
-
+    resetUserContracts() {
+      this.user.contracts = [];
+    },
     validateFrom() {
       if (this.$refs.form.validate()) {
         this.createUser();
@@ -245,11 +254,10 @@ export default {
         });
       }
     },
-
     getContracts() {
       this.$http
         .getContracts()
-        .then(response => (this.contractList = response.data || []))
+        .then(({data}) => (this.contractList = data || []))
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("failed to fetch contracts list"),
@@ -257,11 +265,10 @@ export default {
           });
         });
     },
-
     getClients() {
       this.$http
         .listClients()
-        .then(response => (this.clientsList = response.data || []))
+        .then(({data}) => (this.clientsList = data || []))
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: "cannot fetch clients",
