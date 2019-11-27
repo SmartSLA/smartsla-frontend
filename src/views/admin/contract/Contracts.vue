@@ -76,6 +76,15 @@
               >
             </div>
           </td>
+          <td class="text-xs-center">
+            <router-link
+              v-if="$auth.check('admin')"
+              class="blue-color"
+              :to="{ name: 'Client', params: { id: props.item.clientId } }"
+            >{{ props.item.client }}
+            </router-link>
+            <span v-else> {{ props.item.client }} </span>
+          </td>
           <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>
           <td class="text-xs-center">{{ new Date(props.item.endDate).toDateString() }}</td>
         </template>
@@ -95,6 +104,7 @@ export default {
       roles: [],
       headers: [
         { text: this.$i18n.t("Name"), value: "name" },
+        { text: this.$i18n.t("Client"), value: "client" },
         { text: this.$i18n.t("Begin"), value: "begin" },
         { text: this.$i18n.t("End"), value: "end" }
       ],
