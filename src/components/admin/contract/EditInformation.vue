@@ -82,7 +82,7 @@
           </v-flex>
           <v-flex xs8>
             <v-checkbox
-              :label="$t('this option allows customers to create tickets in non-business hours subject to SLA')"
+              :label="$t('This option allows customers to create tickets in non-business hours subject to SLA')"
               v-model="contract.features.nonBusinessHours"
               :value="true"
             ></v-checkbox>
