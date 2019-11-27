@@ -112,6 +112,7 @@ export default {
       return duration;
     },
     computeDuration() {
+      const createdInNonBusinessHours = !this.ticket.createdDuringBusinessHours || false;
       if (this.ticket.software && this.ticket.software.software && this.ticket.contract) {
         const criticality = this.ticket.software.critical;
         const currentEngagements = [...this.ticket.contract.Engagements[criticality].engagements];
@@ -129,12 +130,12 @@ export default {
 
           if (engagements.length) {
             const engagement = engagements[0];
-            this.commitmentDuration = this.moment.duration(engagement[this.cnsType]);
-            this.duration = this.parseEngagementDuration(engagement[this.cnsType]);
+            this.commitmentDuration = this.moment.duration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours : engagement[this.cnsType].businessHours);
+            this.duration = this.parseEngagementDuration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours :  engagement[this.cnsType].businessHours);
             this.cnsDurations = {
-              supported: this.parseEngagementDuration(engagement.supported),
-              bypassed: this.parseEngagementDuration(engagement.bypassed),
-              resolved: this.parseEngagementDuration(engagement.resolved)
+              supported: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.supported.nonBusinessHours : engagement.supported.businessHours),
+              bypassed: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.bypassed.nonBusinessHours : engagement.bypassed.businessHours),
+              resolved: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.resolved.nonBusinessHours : engagement.resolved.businessHours)
             }
           }
         }

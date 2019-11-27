@@ -12,6 +12,7 @@ moment.now = function() {
 };
 
 const ticket = {
+  createdDuringBusinessHours: true,
   software: {
     software: "5d9dab9cdeed5a496dc35e35",
     critical: "critical"

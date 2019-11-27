@@ -220,7 +220,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
                       </span>
@@ -229,7 +229,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                          <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
                       </span>
@@ -238,7 +238,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                          <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
                       </span>
@@ -297,7 +297,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
                       </span>
@@ -306,7 +306,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
                       </span>
@@ -315,7 +315,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
                       </span>
@@ -381,7 +381,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
                       </span>
@@ -390,7 +390,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
                       </span>
@@ -399,7 +399,7 @@
                       <span>
                         {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
                       </span>
-                      <span v-if="contract.features && contract.features.nonstopService">
+                      <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
                         {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
                       </span>
