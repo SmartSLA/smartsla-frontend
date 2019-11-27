@@ -55,7 +55,9 @@
                   type="number"
                   class="required-label"
                   mask="##"
-                  :rules="[hoursRules.required, hoursRules.minHour, hoursRules.maxHour]"
+                  min="0"
+                  max="23"
+                  :rules="[hoursRules.required]"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>{{ $t("H") }}</v-flex>
@@ -67,7 +69,9 @@
                   type="number"
                   class="required-label"
                   mask="##"
-                  :rules="[hoursRules.required, hoursRules.minHour, hoursRules.maxHour]"
+                  min="0"
+                  max="23"
+                  :rules="[hoursRules.required]"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>{{ $t("H") }}</v-flex>
@@ -251,10 +255,8 @@ export default {
       clients: [],
       techRefs: [],
       hoursRules: {
-       required: value => !!value || this.$i18n.t("Required field"),
-       minHour: value => value >= 0 || this.$i18n.t("invalid"),
-       maxHour: value => value <= 24 || this.$i18n.t("invalid"),
-     }
+        required: value => !!value || this.$i18n.t("Required field")
+      }
     };
   },
   computed: {
