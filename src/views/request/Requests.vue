@@ -49,7 +49,7 @@
         </v-toolbar>
       </v-flex>
       <v-flex xs12 md4 mb-4>
-        <v-toolbar flat dense>
+        <v-toolbar flat dense v-if="!showStoredFilters">
           <v-layout align-center justify-end>
             <v-overflow-btn
               v-if="translatedFilter"
@@ -87,16 +87,11 @@
             </v-tooltip>
           </v-layout>
         </v-toolbar>
-      </v-flex>
-      <v-flex md1 mb-4 class="hidden-sm-and-down"></v-flex>
-      <v-flex xs12 md4 mb-4>
-        <v-toolbar flat dense>
-          <v-toolbar-title class="pl-2 pr-2 grey--text">{{ $t("And") }}</v-toolbar-title>
-          <v-divider vertical></v-divider>
+        <v-toolbar flat dense v-else>
           <v-layout align-center justify-end>
             <v-overflow-btn
               :items="savedFilters"
-              :label="$i18n.t('Stored selections')"
+              :label="$i18n.t('Values')"
               v-model="storedSelectionsFilterHolder"
               hide-selected
               hide-details
@@ -106,8 +101,7 @@
               return-object
               item-text="name"
             ></v-overflow-btn>
-            <v-divider vertical></v-divider>
-            <v-tooltip top>
+            <v-tooltip top v-if="!!savedFilters.length">
               <template v-slot:activator="{ on }">
                 <v-toolbar-side-icon v-on="on" @click="loadFilter">
                   <v-icon dark>add</v-icon>
@@ -120,7 +114,7 @@
           </v-layout>
         </v-toolbar>
       </v-flex>
-      <v-flex md1 mb-4 class="hidden-sm-and-down"></v-flex>
+      <v-flex md4 mb-4 class="hidden-sm-and-down"></v-flex>
       <v-flex xs12 md4>
         <v-toolbar flat dense>
           <v-layout align-center justify-end>
@@ -354,6 +348,7 @@ const CNS_STATUS = {
 export default {
   data() {
     return {
+      showStoredFilters: false,
       loading: true,
       dialog: false,
       deleteDialog: false,
@@ -404,6 +399,11 @@ export default {
         { text: this.$i18n.t("In process of being"), value: "cns_type", sortable: false }
       ],
       categories: [
+        {
+          key: "stored_selections",
+          value: this.$i18n.t("Stored selections")
+        },
+        { divider: true },
         {
           key: "Type",
           value: this.$i18n.t("Type")
@@ -658,6 +658,7 @@ export default {
       } catch (err) {
         // continue regardless of error
       } finally {
+        this.showStoredFilters = this.categoriesFilter === 'stored_selections' ? true : false;
         let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
         this.values = this.values.filter(value => {
           return selectedValues.filter(filter => filter.value == value).length == 0;
