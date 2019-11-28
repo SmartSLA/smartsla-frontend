@@ -42,6 +42,15 @@
                   {{ client.name }}
                 </v-flex>
                 <v-flex xs12>
+                  <strong>{{ $t("Contracts") }} :</strong>
+                  <span v-for="(contract, index) in client.contracts" :key=contract._id>
+                    <router-link :to="{ name: 'Contract', params: { id: contract._id } }">
+                      {{contract.name}}
+                    </router-link>
+                    <span v-if="index+1 < client.contracts.length">, </span>
+                  </span>
+                </v-flex>
+                <v-flex xs12>
                   <strong>{{ $t("Address") }} :</strong>
                   {{ client.address }}
                 </v-flex>
