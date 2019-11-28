@@ -223,7 +223,7 @@
           <td>
             <router-link
               :to="{ name: 'Request', params: { id: props.item._id } }"
-              class="blue-color"
+              class="blue-color item-id"
             >{{ props.item._id }}</router-link>
           </td>
           <td class="text-xs-center">
@@ -264,7 +264,12 @@
             </v-tooltip>
           </td>
           <td class="text-xs-center">
+            <router-link
+              :to="{ name: 'Request', params: { id: props.item._id } }"
+              class="blue-color"
+            >
             <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
+            </router-link>
           </td>
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{ props.item.request.assignedToName }}</text-highlight>
@@ -1225,5 +1230,9 @@ nav.v-toolbar .v-toolbar__content {
   .filter_layout {
     flex-direction: row !important;
   }
+}
+.item-id {
+  font-size: 13px;
+  font-weight: 500;
 }
 </style>
