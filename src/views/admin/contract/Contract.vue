@@ -448,7 +448,21 @@ import moment from "moment";
 export default {
   data() {
     return {
-      contract: {},
+      contract: {
+        contact: {
+          commercial: "",
+          technical: ""
+        },
+        mailingList: {
+          external: [],
+          internal: []
+        },
+        Engagements: {
+          critical: {},
+          sensible: {},
+          standard: {}
+        }
+      },
       contractUsers: null
     };
   },
