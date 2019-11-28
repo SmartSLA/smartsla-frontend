@@ -48,6 +48,10 @@ const getters = {
     return state.user && state.user.preferredEmail;
   },
 
+  getPhone(state) {
+    return state.user && (state.user.main_phone || (state.user.ticketing && state.user.ticketing.phone));
+  },
+
   getType(state) {
     return state.user && state.user.ticketing && state.user.ticketing.type;
   },

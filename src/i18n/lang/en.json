@@ -3,6 +3,7 @@
   "Beneficiary is a customer linked to a client and can create, see tickets": "Beneficiary is a customer linked to a client and can create, see tickets",
   "Business hours": "Business hours",
   "BH": "BH",
+  "Call number": "Call number",
   "Close": "Close",
   "cns.state.bypass": "Bypass",
   "cns.state.closure": "Closure",
@@ -28,6 +29,7 @@
   "Login": "Login",
   "Logout": "Logout",
   "NBH": "NBH",
+  "Meeting ID": "Meeting ID",
   "No interlocutor in charge of the request at the moment": "No interlocutor in charge of the request at the moment",
   "OpenPaaS Login": "OpenPaaS Login",
   "otherSoftwareContributions": {
@@ -45,5 +47,6 @@
   "Ticket passed in status {status}": "Ticket passed in status {status}",
   "User role can create and comment tickets": "User role can create and comment tickets",
   "Viewer role can only see tickets": "Viewer role can only see tickets",
-  "Welcome to Your OpenPaaS Vue.js App": "Welcome to Your OpenPaaS Vue.js App"
+  "Welcome to Your OpenPaaS Vue.js App": "Welcome to Your OpenPaaS Vue.js App",
+  "You must fill a call number in order to let the support join you": "You must fill a call number in order to let the support join you"
 }

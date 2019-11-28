@@ -55,6 +55,7 @@
     "by": "par",
     "Bypass": "Contournement",
     "Bypassed": "Contourné",
+    "Call number": "Numéro d'appel",
     "cancel": "Annuler",
     "Cancel": "Annuler",
     "cannot fetch experts list": "Impossible de récupérer la liste des experts",
@@ -158,6 +159,8 @@
     "Final solution": "Résolution",
     "Fix": "Correction",
     "Forums": "Forums",
+    "For example, 0123456": "Par exemple, 0123456",
+    "For example, +33.1.84.88.01010": "Par exemple, +33.1.84.88.01010",
     "From": "De",
     "Generic": "Générique",
     "Governed by": "Régis par",
@@ -191,6 +194,7 @@
     "Logout": "Déconnexion",
     "MAJ": "MAJ",
     "Major": "Majeur",
+    "Meeting ID": "ID de réunion",
     "Members": "Membres",
     "Metrics": "Donnée métriques",
     "Minor": "Mineur",
@@ -362,5 +366,6 @@
     "Welcome to profile!!": "Bienvenue dans le profil!!",
     "Welcome to satisfaction Page!!": "Bienvenue dans la page de satisfaction!!",
     "Welcome to settings Page!!": "Bienvenue dans la page des paramètres!!",
-    "Yes": "Oui"
+    "Yes": "Oui",
+    "You must fill a call number in order to let the support join you":"Vous devez nous fournir un numéro d'appel pour que le support  soit capable de vous joindre"
 }
