@@ -100,7 +100,10 @@ export default {
       search: "",
       clients: [],
       rowsPerPageItems: [10, 25, 50],
-      pagination: "10",
+      pagination: {
+        page: 1,
+        rowsPerPage: 10
+      },
       roles: [],
       headers: [
         { text: this.$i18n.t("Name"), value: "name" },

@@ -55,7 +55,10 @@ export default {
       search: "",
       contact: [],
       rowsPerPageItems: [10, 25, 50],
-      pagination: "10",
+      pagination: {
+        page: 1,
+        rowsPerPage: 10
+      },
       devise: [],
       headers: [
         {
