@@ -267,7 +267,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
-import business from "moment-business";
+import momentBusiness from "moment-business";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import Vue from "vue";
 import { VueEditor } from "vue2-editor";
@@ -510,7 +510,7 @@ export default {
       }
 
       if (this.ticket.contract && this.ticket.contract.features && this.ticket.contract.features.nonBusinessHours) {
-        if (business.isWeekendDay(currentDate)) {
+        if (momentBusiness.isWeekendDay(currentDate)) {
           return false;
         }
 

@@ -22,7 +22,7 @@ export function humanizeHoursDurationFilter(value, isInBusinessHours) {
     }
 
     if (minutes) {
-      return `${minutes}min`;
+      return vueInstance.$i18n.t(`{minutes}min`, value);
     }
   }
 
