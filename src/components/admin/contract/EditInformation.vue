@@ -165,6 +165,9 @@
               <v-radio :label="$i18n.t('Credit')" value="credit"></v-radio>
               <v-radio :label="$i18n.t('Unlimited')" value="unlimited"></v-radio>
             </v-radio-group>
+            <v-flex xs3>
+              <v-text-field v-if="contract.type === 'credit'" v-model.number="contract.credits" type="number" />
+            </v-flex>
           </v-flex>
           <v-flex xs3>{{ $t("Description") }}</v-flex>
           <v-flex xs8>
@@ -256,7 +259,8 @@ export default {
       techRefs: [],
       hoursRules: {
         required: value => !!value || this.$i18n.t("Required field")
-      }
+      },
+      credits: 0
     };
   },
   computed: {
