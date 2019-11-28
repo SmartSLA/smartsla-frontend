@@ -99,6 +99,12 @@
                     <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
+                  <v-flex xs4>
+                    <div class="subheading font-weight-medium">{{ $t("Type") }} :</div>
+                  </v-flex>
+                  <v-flex xs4>{{ contract.type }}</v-flex>
+                  <v-flex xs4 v-if="contract.type === 'credit'">{{ contract.credits }}</v-flex>
+                  <v-flex xs4 v-else></v-flex>
                 </v-layout>
               </v-card-text>
               <v-layout row wrap align-end>
