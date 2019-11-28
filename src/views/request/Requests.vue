@@ -616,6 +616,7 @@ export default {
         [this.$i18n.t("Description")]: this.$options.filters.striphtml(request.description),
         [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("Not assigned yet"),
         [this.$i18n.t("Created by")]: request.author.name,
+        //[this.$i18n.t("Service (of author)")]: request.author.service || 'N/A',
         [this.$i18n.t("Contract")]: request.contract && request.contract.client,
         [this.$i18n.t("Beneficiary")]: request.beneficiary.name,
         [this.$i18n.t("Last update")]: moment(request.timestamps.updatedAt).lang(this.$i18n.locale).format('L'),
@@ -623,7 +624,14 @@ export default {
         [this.$i18n.t("Status")]: this.$i18n.t(capitalize(request.status)),
         [this.$i18n.t("SLA support")]: this.cns(request._id, "supported"),
         [this.$i18n.t("SLA bypass")]: this.cns(request._id, "bypassed"),
-        [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved")
+        [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved"),
+        [this.$i18n.t("BH / NBH")]: request.createdDuringBusinessHours ? this.$i18n.t("BH") : this.$i18n.t("NBH"),
+        //[this.$i18n.t("TPC")]: 'N/A',
+        //[this.$i18n.t("TCt")]: 'N/A',
+        //[this.$i18n.t("TCt / TCt target in %age")]: 'N/A',
+        //[this.$i18n.t("TCr")]: 'N/A',
+        //[this.$i18n.t("TCr / TCr target in %age")]: 'N/A',
+        //[this.$i18n.t("TA")]: 'N/A',
       }));
     }
   },
@@ -1000,7 +1008,7 @@ export default {
     cns(ticketId, type) {
       if (this.collectedCNS[ticketId]) {
         return this.$i18n.t("{hours}WH / {duration}WH", {
-          hours: this.collectedCNS[ticketId].cns[type],
+          hours: this.collectedCNS[ticketId].cns[type].hours,
           duration: this.collectedCNS[ticketId].durations[type]
         });
       }
