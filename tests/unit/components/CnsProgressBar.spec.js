@@ -4,12 +4,11 @@ import cnsComponent from "@/components/CnsProgressBar";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import moment from "moment-timezone";
-import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
 moment.tz.setDefault("Europe/Paris");
 Vue.prototype.moment = moment;
 Vue.use(Vuetify);
-Vue.filter("humanizeHoursDurationFilter", humanizeHoursDurationFilter);
+Vue.filter("humanizeHoursDurationFilter", () => {});
 
 const ticket = {
   type: "anomaly",
@@ -162,7 +161,7 @@ describe("duration calculation", () => {
         }
       }
     });
-    expect(target.vm.duration).toEqual(18);
+    expect(target.vm.duration).toEqual(48);
   });
 
   it("should parse the cns duration correctly when in resolved state in HO", () => {
@@ -194,6 +193,6 @@ describe("duration calculation", () => {
         }
       }
     });
-    expect(target.vm.duration).toEqual(27);
+    expect(target.vm.duration).toEqual(72);
   });
 });

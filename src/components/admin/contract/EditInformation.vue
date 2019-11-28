@@ -60,7 +60,7 @@
                   :rules="[hoursRules.required]"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs1>{{ $t("H") }}</v-flex>
+              <v-flex xs1>{{ $t("h") }}</v-flex>
               <v-flex xs1 class="text-xs-right mr-4">{{ $t("to") }}</v-flex>
               <v-flex xs1>
                 <v-text-field
@@ -74,7 +74,7 @@
                   :rules="[hoursRules.required]"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs1>{{ $t("H") }}</v-flex>
+              <v-flex xs1>{{ $t("h") }}</v-flex>
             </v-layout>
           </v-flex>
           <v-flex xs3>
