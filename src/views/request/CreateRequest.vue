@@ -147,9 +147,9 @@
                         $t(
                           "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
                           {
-                            supported: cnsDurationDisplay(selectedEngagement.supported),
-                            bypassed: cnsDurationDisplay(selectedEngagement.bypassed),
-                            resolved: cnsDurationDisplay(selectedEngagement.resolved)
+                            supported: cnsDurationDisplay(selectedEngagement.supported, createdDuringBusinessHours),
+                            bypassed: cnsDurationDisplay(selectedEngagement.bypassed, createdDuringBusinessHours),
+                            resolved: cnsDurationDisplay(selectedEngagement.resolved, createdDuringBusinessHours)
                           }
                         )
                       }}
@@ -458,10 +458,18 @@ export default {
       return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
     },
 
-    cnsDurationDisplay(durationString) {
+    cnsDurationDisplay(cnsType, isInBusinessHours) {
+      const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
       const parsedDuration = this.moment.duration(durationString);
 
-      return this.$i18n.t("{days}WD {hours}WH", {
+      if (isInBusinessHours) {
+        return this.$i18n.t("{days}WD {hours}WH", {
+          days: parsedDuration.days(),
+          hours: parsedDuration.hours()
+        });
+      }
+      
+      return this.$i18n.t("{days}D {hours}H", {
         days: parsedDuration.days(),
         hours: parsedDuration.hours()
       });
@@ -491,6 +499,26 @@ export default {
 
     routeNames() {
       return routeNames;
+    },
+
+    createdDuringBusinessHours() { 
+      const currentDate = this.moment();
+
+      if (this.ticket._id && this.ticket.createdDuringBusinessHours) {
+        return true;
+      }
+
+      if (this.ticket.contract && this.ticket.contract.features && this.ticket.contract.features.nonBusinessHours) {
+        if (currentDate.weekday() === 6 || currentDate.weekday() === 0) {
+          return false;
+        }
+
+        if (this.ticket.contract.businessHours && this.ticket.contract.businessHours.start && this.ticket.contract.businessHours.end) {
+           return (currentDate.hours() >= this.ticket.contract.businessHours.start && currentDate.hours() <= this.ticket.contract.businessHours.end);
+        }
+      }
+
+      return false;
     },
 
     typeList() {
