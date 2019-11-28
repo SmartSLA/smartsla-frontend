@@ -26,7 +26,7 @@
           <span>
             {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
           </span>
-          <span v-if="contract.features && contract.features.nonstopService">
+          <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
             {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
           </span>
@@ -35,7 +35,7 @@
           <span>
             {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
           </span>
-          <span v-if="contract.features && contract.features.nonstopService">
+          <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
             {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
           </span>
@@ -44,7 +44,7 @@
           <span>
             {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
           </span>
-          <span v-if="contract.features && contract.features.nonstopService">
+          <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
             {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
           </span>
@@ -138,7 +138,7 @@
             <v-flex xs3> {{ $t("treatment time range") }} </v-flex>
             <v-flex xs3> {{ $t("Business hours") }} </v-flex>
             <v-flex xs1></v-flex>
-            <v-flex xs4 v-if="contract.features && contract.features.nonstopService">{{ $t("Non business hours") }} </v-flex>
+            <v-flex xs4 v-if="contract.features && contract.features.nonBusinessHours">{{ $t("Non business hours") }} </v-flex>
             <v-flex xs4 v-else></v-flex>
             <v-flex xs3 class="required-label">{{ $t("Supported") }}</v-flex>
             <v-flex xs3> 
@@ -163,7 +163,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3> 
-              <v-layout row wrap v-if="contract.features && contract.features.nonstopService">
+              <v-layout row wrap v-if="contract.features && contract.features.nonBusinessHours">
                 <v-flex xs3>
                   <v-text-field
                     v-model="newCommitment.supported.nonBusinessHours.days"
@@ -205,7 +205,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3> 
-              <v-layout row wrap v-if="contract.features && contract.features.nonstopService">
+              <v-layout row wrap v-if="contract.features && contract.features.nonBusinessHours">
                 <v-flex xs3>
                   <v-text-field
                     v-model="newCommitment.bypassed.nonBusinessHours.days"
@@ -247,7 +247,7 @@
             </v-flex>
             <v-flex xs1></v-flex>
             <v-flex xs3> 
-              <v-layout row wrap v-if="contract.features && contract.features.nonstopService">
+              <v-layout row wrap v-if="contract.features && contract.features.nonBusinessHours">
                 <v-flex xs3>
                   <v-text-field
                     v-model="newCommitment.resolved.nonBusinessHours.days"
@@ -308,11 +308,11 @@ export default {
       },
       newCommitment: {
         supported: {
-          BH: {
+          businessHours: {
             days: "",
             hours: ""
           },
-          NBH: {
+          nonBusinessHours: {
             days: "",
             hours: ""
           }
@@ -321,21 +321,21 @@ export default {
         severity: "",
         idOssa: "",
         bypassed: {
-          BH: {
+          businessHours: {
             days: "",
             hours: ""
           },
-          NBH: {
+          nonBusinessHours: {
             days: "",
             hours: ""
           }
         },
         resolved: {
-          BH: {
+          businessHours: {
             days: "",
             hours: ""
           },
-          NBH: {
+          nonBusinessHours: {
             days: "",
             hours: ""
           }
@@ -435,8 +435,8 @@ export default {
       });
 
       return {
-        bh: bhduration.toISOString(),
-        nbh: nbhduration.toISOString()
+        businessHours: bhduration.toISOString(),
+        nonBusinessHours: nbhduration.toISOString()
       };
     },
 

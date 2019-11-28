@@ -21,7 +21,7 @@ function computeCns(ticket) {
   if (ticket.software && ticket.software.software && ticket.contract) {
     const workingInterval = ticket.contract.businessHours || { start: 9, end: 18 };
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
-    const nonBusinessHours = (ticket.contract.features && ticket.contract.features.nonBusinessHours) || false;
+    const nonBusinessHours = !ticket.createdDuringBusinessHours || false;
 
     cns.supported = computeTime(periods["new"], workingInterval, nonBusinessHours);
     cns.bypassed = computeTime(periods["supported"], workingInterval, nonBusinessHours);
