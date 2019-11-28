@@ -93,7 +93,8 @@ export default {
 
   },
   methods: {
-    percentage({hours}, totalValue) {
+    percentage(cns, totalValue) {
+      var hours = this.getCnsHours(cns);
       let value = (100 * hours) / totalValue;
 
       if (!totalValue) {
@@ -102,13 +103,34 @@ export default {
 
       return value < 100 ? value : 100;
     },
-    getEngagementColor({hours}, totalValue) {
+
+    getCnsHours(cns) {
+      var workHours = 0;
+      var hours = cns.hours;
+      if (this.ticket.createdDuringBusinessHours) {
+        workHours = (this.ticket.contract.businessHours && 
+        (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
+      } else {
+        workHours = 24;
+      }
+      if (cns.days) {
+        hours += cns.days * workHours;
+      }
+      if (cns.minutes) {
+        hours += cns.minutes / 60;
+      }
+
+      return hours;
+    },
+
+    getEngagementColor(cns, totalValue) {
+      var hours = this.getCnsHours(cns);
       if (this.isPreviousStep || this.isCurrentStep) {
         if (!this.duration) {
           return "success";
         }
 
-        return this.percentage(hours, totalValue) < 100 ? "success" : "error";
+        return this.percentage(cns, totalValue) < 100 ? "success" : "error";
       }
 
       return "grey";
@@ -116,7 +138,14 @@ export default {
     calculateCNS() {
       this.cns = computeCns(this.ticket);
     },
-    parseEngagementDuration(durationString, workHours = 9) {
+    parseEngagementDuration(durationString) {
+      var workHours = 0;
+      if (this.ticket.createdDuringBusinessHours) {
+        workHours = (this.ticket.contract.businessHours && 
+        (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
+      } else {
+        workHours = 24;
+      }
       const commitmentDuration = this.moment.duration(durationString);
       let duration = commitmentDuration.hours();
 
