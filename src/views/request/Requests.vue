@@ -466,8 +466,12 @@ export default {
           value: this.$i18n.t("Blocking")
         },
         {
-          key: "Non-blocking",
-          value: this.$i18n.t("Non blocking")
+          key: "Minor",
+          value: this.$i18n.t("Minor")
+        },
+        {
+          key: "Major",
+          value: this.$i18n.t("Major")
         }
       ],
       status: [
@@ -748,7 +752,7 @@ export default {
         severityFilterMatch = false;
 
         severityFilter.forEach(currentFilter => {
-          if (request.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
+          if (request.severity && request.severity.toLowerCase() == currentFilter.value.toLowerCase()) {
             severityFilterMatch = true;
           }
         });
