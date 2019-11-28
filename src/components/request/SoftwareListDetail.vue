@@ -10,15 +10,15 @@
       <ul>
         <li>
           {{ $t("Support") }} :
-          <b>{{ $t("{days}WD {hours}WH", parseDuration(engagements.supported)) }}</b>
+          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.supported)) }}</b>
         </li>
         <li>
           {{ $t("Bypass") }} :
-          <b>{{ $t("{days}WD {hours}WH", parseDuration(engagements.bypassed )) }}</b>
+          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.bypassed )) }}</b>
         </li>
         <li>
           {{ $t("Resolution") }} :
-          <b>{{ $t("{days}WD {hours}WH", parseDuration(engagements.resolved )) }}</b>
+          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.resolved )) }}</b>
         </li>
       </ul>
     </span>

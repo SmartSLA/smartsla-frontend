@@ -267,6 +267,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
+import business from "moment-business";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import Vue from "vue";
 import { VueEditor } from "vue2-editor";
@@ -463,13 +464,13 @@ export default {
       const parsedDuration = this.moment.duration(durationString);
 
       if (isInBusinessHours) {
-        return this.$i18n.t("{days}WD {hours}WH", {
+        return this.$i18n.t("{days}wd {hours}wh", {
           days: parsedDuration.days(),
           hours: parsedDuration.hours()
         });
       }
       
-      return this.$i18n.t("{days}D {hours}H", {
+      return this.$i18n.t("{days}d {hours}h", {
         days: parsedDuration.days(),
         hours: parsedDuration.hours()
       });
@@ -509,7 +510,7 @@ export default {
       }
 
       if (this.ticket.contract && this.ticket.contract.features && this.ticket.contract.features.nonBusinessHours) {
-        if (currentDate.weekday() === 6 || currentDate.weekday() === 0) {
+        if (business.isWeekendDay(currentDate)) {
           return false;
         }
 

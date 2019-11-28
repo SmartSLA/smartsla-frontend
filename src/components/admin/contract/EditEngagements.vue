@@ -24,29 +24,29 @@
         </td>
         <td class="text-xs-center">
           <span>
-            {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+            {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
-            {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+            {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
           </span>
         </td>
         <td class="text-xs-center">
           <span>
-            {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+            {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
-            {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+            {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
           </span>
         </td>
         <td class="text-xs-center">
           <span>
-            {{ $t("BH") }}: {{ $t("{days}WD {hours}WH", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+            {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
-            {{ $t("NBH") }}: {{ $t("{days}D {hours}H", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+            {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
           </span>
         </td>
         <td class="text-xs-center">

@@ -7,8 +7,13 @@
         :color="getEngagementColor(cns[cnsType], duration)"
         class="mt-0 white--text font-weight-bold"
       >
-        <span v-if="duration">{{ cns[cnsType] | humanizeHoursDurationFilter }} / {{ durationDisplay | humanizeHoursDurationFilter }}</span>
-        <span v-else>{{ cns[cnsType] | humanizeHoursDurationFilter }}</span>
+        <span v-if="duration">
+          {{ cns[cnsType] | humanizeHoursDurationFilter(createdInNonBusinessHours) }}
+          <span v-if="!hideClock">
+            / {{ durationDisplay | humanizeHoursDurationFilter(createdInNonBusinessHours) }}
+          </span>
+          </span>
+        <span v-else>{{ cns[cnsType] | humanizeHoursDurationFilter(createdInNonBusinessHours) }}</span>
       </v-progress-linear
       >
     </v-flex>
@@ -76,6 +81,14 @@ export default {
       };
 
       return duration;
+    },
+
+    createdInNonBusinessHours() {
+      if (this.ticket && this.ticket.createdDuringBusinessHours) {
+        return this.ticket.createdDuringBusinessHours;
+      }
+
+      return false;
     }
 
   },
