@@ -387,17 +387,38 @@ export default {
         this.addCommitment = false;
       }
       this.newCommitment = {
-        supported: {},
+        supported: {
+        businessHours: {
+            days: "",
+            hours: ""
+          },
+          nonBusinessHours: {
+            days: "",
+            hours: ""
+          }
+        },
         request: "",
         severity: "",
         idOssa: "",
-        bypassed: {
-          days: "",
-          hours: ""
+        bypassed: {         
+          businessHours: {
+            days: "",
+            hours: ""
+          },
+          nonBusinessHours: {
+            days: "",
+            hours: ""
+          }
         },
         resolved: {
-          days: "",
-          hours: ""
+          businessHours: {
+            days: "",
+            hours: ""
+          },
+          nonBusinessHours: {
+            days: "",
+            hours: ""
+          }
         }
       };
     },

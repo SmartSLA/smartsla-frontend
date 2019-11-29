@@ -505,15 +505,21 @@ export default {
       const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
       const parsedDuration = this.moment.duration(durationString);
 
-      if (isInBusinessHours) {
-        return this.$i18n.t("{days}wd {hours}wh", {
+      if (parsedDuration.days()) {
+        if (parsedDuration.hours()) {
+          return this.$i18n.t(isInBusinessHours ? "{days}wd {hours}wh" : "{days}d {hours}h", {
+            days: parsedDuration.days(),
+            hours: parsedDuration.hours()
+          });
+        }
+
+        return this.$i18n.t(isInBusinessHours ? "{days}wd" : "{days}d", {
           days: parsedDuration.days(),
-          hours: parsedDuration.hours()
         });
       }
-      
-      return this.$i18n.t("{days}d {hours}h", {
-        days: parsedDuration.days(),
+
+
+      return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
         hours: parsedDuration.hours()
       });
     },

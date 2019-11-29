@@ -224,29 +224,29 @@
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported)) }}
                       </span>
                     </td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.bypassed && props.item.bypassed, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
-                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+                        <br />
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.bypassed && props.item.bypassed)) }}
                       </span>
                     </td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.resolved && props.item.resolved, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
-                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+                        <br />
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.resolved && props.item.resolved)) }}
                       </span>
                     </td>
                   </template>
@@ -301,29 +301,29 @@
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported)) }}
                       </span>
                     </td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.bypassed && props.item.bypassed, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.bypassed && props.item.bypassed)) }}
                       </span>
                     </td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.resolved && props.item.resolved, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.resolved && props.item.resolved)) }}
                       </span>
                     </td>
                   </template>
@@ -385,29 +385,29 @@
                     </td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.supported && props.item.supported.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.supported && props.item.supported.nonBusinessHours)) }}
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported)) }}
                       </span>
                     </td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.bypassed && props.item.bypassed.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.bypassed && props.item.bypassed, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.bypassed && props.item.bypassed.nonBusinessHours)) }}
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.bypassed && props.item.bypassed)) }}
                       </span>
                     </td>
                     <td class="text-xs-center">
                       <span>
-                        {{ $t("BH") }}: {{ $t("{days}wd {hours}wh", parseDuration(props.item.resolved && props.item.resolved.businessHours)) }}
+                        {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.resolved && props.item.resolved, true)) }}
                       </span>
                       <span v-if="contract.features && contract.features.nonBusinessHours">
                         <br />
-                        {{ $t("NBH") }}: {{ $t("{days}d {hours}h", parseDuration(props.item.resolved && props.item.resolved.nonBusinessHours)) }}
+                        {{ $t("NBH") }}: {{ $t(cnsDurationDisplay(props.item.resolved && props.item.resolved)) }}
                       </span>
                     </td>
                   </template>
@@ -598,7 +598,30 @@ export default {
         days: parsedDuration.days(),
         hours: parsedDuration.hours()
       };
-    }
+    },
+
+    cnsDurationDisplay(cnsType, isInBusinessHours = false) {
+      const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
+      const parsedDuration = this.moment.duration(durationString);
+
+      if (parsedDuration.days()) {
+        if (parsedDuration.hours()) {
+          return this.$i18n.t(isInBusinessHours ? "{days}wd {hours}wh" : "{days}d {hours}h", {
+            days: parsedDuration.days(),
+            hours: parsedDuration.hours()
+          });
+        }
+
+        return this.$i18n.t(isInBusinessHours ? "{days}wd" : "{days}d", {
+          days: parsedDuration.days(),
+        });
+      }
+
+
+      return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
+        hours: parsedDuration.hours()
+      });
+    },
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
