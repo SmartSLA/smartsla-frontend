@@ -87,7 +87,7 @@
       </v-flex>
       <v-flex xs3 class="required-label">{{ $t("Critical") }}</v-flex>
       <v-flex xs9>
-        <v-btn-toggle :value="software.critical" v-model="software.critical">
+        <v-btn-toggle :value="software.critical" v-model="software.critical" mandatory>
           <v-btn value="critical" flat :class="{ error: software.critical == 'critical' }">{{
             $t("critical")
           }}</v-btn>
