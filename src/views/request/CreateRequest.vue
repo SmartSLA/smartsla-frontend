@@ -564,7 +564,7 @@ export default {
         }
 
         if (this.ticket.contract.businessHours && this.ticket.contract.businessHours.start && this.ticket.contract.businessHours.end) {
-           return (currentDate.hours() >= this.ticket.contract.businessHours.start && currentDate.hours() <= this.ticket.contract.businessHours.end);
+           return (currentDate.hours() >= this.ticket.contract.businessHours.start && currentDate.hours() < this.ticket.contract.businessHours.end);
         }
       }
 
