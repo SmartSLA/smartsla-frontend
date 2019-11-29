@@ -49,7 +49,6 @@
                       v-model="callNumber"
                       :label="$i18n.t('Call number')"
                       type="tel"
-                      mask="phone"
                       :rules="[() => callNumber.length > 0 || $i18n.t('Required field')]"
                       class="required-element"
                       :hint="$t('For example, +33.1.84.88.01010')"
