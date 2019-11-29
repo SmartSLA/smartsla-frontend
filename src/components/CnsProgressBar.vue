@@ -106,18 +106,21 @@ export default {
 
     getCnsHours(cns) {
       var workHours = 0;
-      var hours = cns.hours;
-      if (this.ticket.createdDuringBusinessHours) {
-        workHours = (this.ticket.contract.businessHours && 
-        (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
-      } else {
-        workHours = 24;
-      }
-      if (cns.days) {
-        hours += cns.days * workHours;
-      }
-      if (cns.minutes) {
-        hours += cns.minutes / 60;
+      var hours = 0;
+      if (cns) {
+        hours += cns.hours;
+        if (this.ticket.createdDuringBusinessHours) {
+          workHours = (this.ticket.contract.businessHours && 
+          (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
+        } else {
+          workHours = 24;
+        }
+        if (cns.days) {
+          hours += cns.days * workHours;
+        }
+        if (cns.minutes) {
+          hours += cns.minutes / 60;
+        }
       }
 
       return hours;
@@ -172,12 +175,14 @@ export default {
 
           if (engagements.length) {
             const engagement = engagements[0];
-            this.commitmentDuration = this.moment.duration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours : engagement[this.cnsType].businessHours);
-            this.duration = this.parseEngagementDuration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours :  engagement[this.cnsType].businessHours);
-            this.cnsDurations = {
-              supported: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.supported.nonBusinessHours : engagement.supported.businessHours),
-              bypassed: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.bypassed.nonBusinessHours : engagement.bypassed.businessHours),
-              resolved: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.resolved.nonBusinessHours : engagement.resolved.businessHours)
+            if (engagement[this.cnsType]) {
+              this.commitmentDuration = this.moment.duration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours : engagement[this.cnsType].businessHours);
+              this.duration = this.parseEngagementDuration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours :  engagement[this.cnsType].businessHours);
+              this.cnsDurations = {
+                supported: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.supported.nonBusinessHours : engagement.supported.businessHours),
+                bypassed: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.bypassed.nonBusinessHours : engagement.bypassed.businessHours),
+                resolved: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.resolved.nonBusinessHours : engagement.resolved.businessHours)
+              }
             }
           }
         }
