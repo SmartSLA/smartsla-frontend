@@ -56,7 +56,7 @@ const actions = {
 
   setSearch: ({ commit, dispatch }, search) => {
     if (!search) {
-      return dispatch("fetchTickets");
+      return;
     }
 
     commit(types.SET_SEARCH, search);
