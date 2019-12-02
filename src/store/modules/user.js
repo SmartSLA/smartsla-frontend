@@ -40,6 +40,10 @@ const getters = {
     );
   },
 
+  getContracts(state) {
+    return (state.user && state.user.contracts) || [];
+  },
+
   getDisplayName(state, getters) {
     return state.user && state.user.displayName ? state.user.displayName : getters.getEmail;
   },

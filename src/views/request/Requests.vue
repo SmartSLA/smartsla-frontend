@@ -205,8 +205,8 @@
       <v-data-table
         :loading="loading"
         :pagination.sync="pagination"
-        :total-items="totalRequests"
-        :items="requestsAsDataTable"
+        :total-items="0"
+        :items="[]"
         :headers="headers"
         class="elevation-1 pb-0"
         :search="centralSearch"
@@ -326,6 +326,17 @@
             ></cns-progress-bar>
           </td>
         </template>
+        <template v-slot:no-data>
+            <v-layout justify-center>
+          <span v-if="!userContracts.length">
+          {{ $t("You are not registered in any contract, you should get in touch with someone in charge of the platform in your company") }}
+          </span>
+          <span v-else>
+          {{ $t("You are registered in the contract {contract} but there are no published tickets at the moment", {contract: displayUserContracts}) }}
+          <v-btn color="info" :to="{name: 'New issue'}" small>{{ $t('You can create a new issue') }}</v-btn>
+          </span>
+            </v-layout>
+        </template>
       </v-data-table>
     </v-layout>
   </div>
@@ -339,7 +350,6 @@ import moment from "moment";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import { OSSA_IDS } from '@/constants.js';
-
 const { mapState } = createNamespacedHelpers("ticket")
 
 
@@ -540,11 +550,16 @@ export default {
       email: "user/getEmail",
       requests: "ticket/getCurrentPageRequests",
       totalRequests: "ticket/getNbOfTickets",
-      allRequests: "ticket/getTickets"
+      allRequests: "ticket/getTickets",
+      userContracts: "user/getContracts"
     }),
 
     highlightSearch() {
       return this.search ? this.search : "";
+    },
+
+    displayUserContracts() {
+      return this.userContracts.map(userContract => userContract.contract.name).join(", ")
     },
 
     requestsAsDataTable() {
