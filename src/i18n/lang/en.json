@@ -25,6 +25,7 @@
   "Call number": "Call number",
   "Close": "Close",
   "cns.state.bypass": "Bypass",
+  "cns.state.closed": "Closed",
   "cns.state.closure": "Closure",
   "cns.state.resolution": "Resolution",
   "cns.state.support": "Support",

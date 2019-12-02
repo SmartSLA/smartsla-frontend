@@ -347,7 +347,8 @@ const CNS_STATUS = {
   new: "cns.state.support",
   supported: "cns.state.bypass",
   bypassed: "cns.state.resolution",
-  resolved: "cns.state.closure"
+  resolved: "cns.state.closure",
+  closed: "cns.state.closed"
 };
 
 export default {
@@ -994,9 +995,9 @@ export default {
       else return "";
     },
     displayCnsProgressBar(item) {
-      return ((item.status !== "closed" || item.status !== "resolved") &&
+      return  item.status !== "closed" && item.status !== "resolved" &&
               item.request.software && item.request.software.software &&
-              item.request.contract && item.request.contract.clientId);
+              item.request.contract && item.request.contract.clientId;
     },
     getOssaConfById(ossaId) {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
