@@ -70,6 +70,12 @@
                       >
                         <span class="blue-color"> {{ entry.contract.name }} </span>
                       </router-link>
+                      <v-spacer/>
+                      <span> 
+                        <span class="font-italic font-weight-bold">{{ $t("Role") }}: </span>
+                        <span v-if="entry.role === 'customer'"> {{ $t('customer') }} </span>
+                        <span v-if="entry.role === 'viewer'"> {{ $t('viewer') }} </span>
+                      </span>
                     </li>
                   </ul>
                 </v-flex>

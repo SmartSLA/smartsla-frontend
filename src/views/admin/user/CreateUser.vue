@@ -110,8 +110,8 @@
                   color="primary"
                   :rules="[() => user.role.length > 0 || $i18n.t('Required field')]"
                 >
-                  <v-radio :label="$t('Customer')" value="customer" v-if="user.type === 'beneficiary'"></v-radio>
-                  <v-radio :label="$t('Viewer')" value="viewer" v-if="user.type === 'beneficiary'"></v-radio>
+                  <v-radio :label="$t('customer')" value="customer" v-if="user.type === 'beneficiary'"></v-radio>
+                  <v-radio :label="$t('viewer')" value="viewer" v-if="user.type === 'beneficiary'"></v-radio>
                   <v-radio :label="$t('Manager')" value="manager" v-if="user.type === 'expert'"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert" v-if="user.type === 'expert'"></v-radio>
                 </v-radio-group>
@@ -133,17 +133,30 @@
                 ></v-select>
               </v-flex>
               <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert'">
+              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert' && user.client">
                 <span class="title">{{ $t("Contracts") }}</span>
               </v-flex>
-              <v-flex xs8 v-if="user.type !== 'expert'">
-                <v-select
-                  :items="filteredContractsByClient"
-                  item-value="_id"
-                  item-text="name"
-                  multiple
-                  v-model="user.contracts"
-                ></v-select>
+              <v-flex xs8 v-if="user.type !== 'expert' && user.client">
+                <v-card>
+                  <v-list subheader two-line>
+                    <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id" >
+                      <v-list-tile-action>
+                        <v-checkbox v-model="contract.selected"></v-checkbox>
+                      </v-list-tile-action>
+                      <v-list-tile-content>
+                        <v-list-tile-title>{{ contract.name }}</v-list-tile-title>
+                        <v-list-tile-sub-title>{{ contract.client }}</v-list-tile-sub-title>
+                      </v-list-tile-content>
+                      <v-list-tile-action>
+                        <v-select
+                          :items="contractRoles"
+                          label="Role"
+                          v-model="contract.role"
+                        ></v-select>
+                      </v-list-tile-action>
+                    </v-list-tile>
+                  </v-list>
+                </v-card>
               </v-flex>
               <v-flex xs12 offset-xs5>
                 <v-btn class="success" @click="validateFrom">{{ $t("Create") }}</v-btn>
@@ -157,7 +170,8 @@
 </template>
 <script>
 import { routeNames } from "@/router";
-import { USER_TYPE } from "@/constants.js";
+import { USER_TYPE, USER_ROLES } from "@/constants.js";
+import Vue from "vue";
 
 export default {
   data() {
@@ -178,7 +192,8 @@ export default {
         role: "",
         phone: ""
       },
-      openDialog: false
+      openDialog: false,
+      contractRoles: USER_ROLES.beneficiary.map((role) => ({ text: this.$i18n.t(role), value: role }))
     };
   },
   created() {
@@ -186,9 +201,17 @@ export default {
   },
   computed: {
     filteredContractsByClient() {
-      if(!this.user.client.length) return [];
-      return this.contractList.filter(contract => contract.clientId === this.user.client);
-    },
+      if(!this.user.client) return [];
+      const contracts = this.contractList
+        .filter(contract => contract.clientId === this.user.client)
+        .map(contract => {
+          Vue.set(contract, 'contract_id', contract._id);
+          Vue.set(contract, 'selected', false);
+          Vue.set(contract, 'role', 'viewer');
+          return contract
+        });
+        return contracts;
+    }
   },
   watch: {
     member(value) {
@@ -221,6 +244,10 @@ export default {
       if (this.user.type === USER_TYPE.EXPERT) {
         this.user.client = "";
         this.user.contracts = [];
+      } else {
+        this.user.contracts = this.filteredContractsByClient
+        .filter(({selected}) => selected === true)
+        .map(({contract_id, role}) => ({contract_id, role}));
       }
       this.$http
         .createUser(this.user)

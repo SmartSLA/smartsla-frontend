@@ -27,6 +27,7 @@ export const USER_TYPE = {
 
 const BENEFICIARY_ROLES = ["customer", "viewer"];
 const EXPERT_ROLES = ["manager", "expert"];
+
 export const USER_ROLES = {
   expert: EXPERT_ROLES,
   beneficiary: BENEFICIARY_ROLES
