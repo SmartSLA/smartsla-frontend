@@ -34,6 +34,10 @@
           <v-flex xs8>
             <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
           </v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Timezone") }}</v-flex>
+          <v-flex xs8>
+            <timezone-picker :timezone.sync="contract.timezone"></timezone-picker>
+          </v-flex>
           <v-flex xs3>{{ $t("Internal mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field v-model="contract.mailingList.internal"></v-text-field>
@@ -204,6 +208,7 @@
 
 <script>
 import { routeNames } from "@/router";
+import TimezonePicker from "@/components/timezone-picker/timezone.vue";
 
 export default {
   name: "edit-contract-information",
@@ -242,7 +247,8 @@ export default {
           sensible: {},
           standard: {}
         },
-        software: []
+        software: [],
+        timezone: null
       },
       startDateMenu: "",
       endDateMenu: "",
@@ -260,6 +266,9 @@ export default {
       },
       credits: 0
     };
+  },
+  components: {
+    TimezonePicker
   },
   computed: {
     isNew() {

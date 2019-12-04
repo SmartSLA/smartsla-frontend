@@ -1,3 +1,9 @@
+
+export const DEFAULT_TIMEZONE =  {
+  name: '(GMT+01:00) Central European Time - Paris',
+  value: 'Europe/Paris'
+};
+
 export const OSSA_IDS = [
   {
     id: 3,

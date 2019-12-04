@@ -2,8 +2,7 @@ import moment from "moment-timezone";
 import Vue from "vue";
 import { Cns, CnsValue } from "@/services/cns.model";
 import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
-
-moment.tz.setDefault("Europe/Paris");
+import { DEFAULT_TIMEZONE } from '@/constants.js';
 
 export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorkingMinutes, hoursBetween };
 
@@ -19,6 +18,8 @@ function computeCns(ticket) {
   const cns = new Cns();
 
   if (ticket.software && ticket.software.software && ticket.contract) {
+    const timezone = getTimeZone(ticket.contract);
+    moment.tz.setDefault(timezone);
     const workingInterval = ticket.contract.businessHours || { start: 9, end: 18 };
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
     const nonBusinessHours = !ticket.createdDuringBusinessHours || false;
@@ -267,4 +268,15 @@ function calculateSuspendedMinutes(suspensions, startingHour, endHour, nbh = fal
   }
 
   return suspendedTime;
+}
+
+/**
+ * Return full timezone name for a contract otherwise return default `Europe/Paris`
+ * 
+ * @param contract 
+ * @return {string} full timezone name 
+ */
+function getTimeZone(contract) {
+  const timezone = !contract.timezone ? DEFAULT_TIMEZONE.value : contract.timezone;
+  return timezone;
 }

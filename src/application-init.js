@@ -11,7 +11,9 @@ import ApplicationSettings from "@/services/application-settings";
 import store from "@/store";
 import i18n from "@/i18n";
 import moment from "moment-timezone";
-moment.tz.setDefault("Europe/Paris");
+import { DEFAULT_TIMEZONE } from '@/constants.js';
+
+moment.tz.setDefault(DEFAULT_TIMEZONE.value);
 
 const defaultTheme = {
   primary: colors.blue
