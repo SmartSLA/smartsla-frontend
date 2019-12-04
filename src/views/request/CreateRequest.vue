@@ -150,7 +150,7 @@
                             v-model="ticket.severity"
                             :label="$i18n.t('Severity')"
                             :rules="[validateSeverity() || $i18n.t('Required field')]"
-                            :class="{'required-element': !isInformationRequest || this.ticket.software }"
+                            :class="{'required-element': !isInformationRequest || ticket.software }"
                             return-object
                           >
                             <template slot="selection" slot-scope="{ item }">
@@ -479,9 +479,12 @@ export default {
     },
 
     validateSeverity() {
+      if (this.ticket.severity.length > 0) {
+        return true;
+      }
       if (this.ticket.type.length) {
         if (this.ticket.type.toLowerCase() === "information") {
-          return !this.ticket.software;
+          return true;
         }
         return this.ticket.severity.length > 0;
       }
