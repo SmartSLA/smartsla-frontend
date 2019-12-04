@@ -588,7 +588,7 @@ export default {
       },
 
       set: function(value) {
-        this.$store.dispatch("ticket/setSearch", value);
+        this.$store.dispatch("ticket/setSearch", value || "");
       }
     },
 
@@ -971,7 +971,6 @@ export default {
         this.pageTitle = this.$i18n.t("All requests");
         this.deleteBtn = false;
         this.storedSelectionsFilter = {};
-        this.centralSearch = "";
       } else {
         this.centralSearch = this.customFilters[0].value;
       }
