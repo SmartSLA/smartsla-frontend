@@ -141,6 +141,7 @@
 </template>
 <script>
 import { routeNames } from "@/router";
+import { USER_ROLES } from "@/constants.js";
 
 export default {
   data() {
@@ -169,7 +170,7 @@ export default {
       return !!this.$route.params.id;
     },
     filteredContractsByClient() {
-      if(this.user.client === "") return [];
+      if(!this.user.client) return [];
       return this.contractList.filter(contract => contract.clientId === this.user.client);
     }
   },
@@ -203,9 +204,9 @@ export default {
     initRole() {
       this.user.role = "";
       this.user.contracts = [];
-      this.user.client = "";
     },
     createUser() {
+      this.user.client = USER_ROLES.beneficiary.includes(this.user.role) ? this.user.client : "" ; 
       this.$http
         .createUser(this.user)
         .then(() => {
@@ -223,6 +224,7 @@ export default {
         });
     },
     updateUser() {
+      this.user.client = USER_ROLES.beneficiary.includes(this.user.role) ? this.user.client : "" ; 
       this.$http
         .updateUser(this.user._id, this.user)
         .then(() => {
