@@ -5,6 +5,7 @@ import TextHighlight from 'vue-text-highlight';
 
 import "@/main.styl";
 import "@mdi/font/css/materialdesignicons.css";
+import 'material-design-icons-iconfont/dist/material-design-icons.css' 
 import "@/filters/relativeTimeFilter";
 import "@/filters/calendarTimeFilter";
 import "@/filters/formatDateFilter";
