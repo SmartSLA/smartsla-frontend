@@ -141,6 +141,7 @@ function computeTime(period, workingInterval, noStop) {
 
   if (noStop) {
     minutes = hoursBetween(startDate, endDate) * 60;
+    minutes -= calculateSuspendedMinutes(period.suspensions, 0, 24, true);
     return getWorkingTime(minutes, 24);
   } else {
     minutes = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
@@ -240,14 +241,20 @@ function calculateWorkingMinutes(startingDate, endingDate, startingHour, endingH
  * @param suspensions
  * @param startingHour
  * @param endHour
+ * @param nbh 24/7 option
  * @return {number} suspended time in minutes
  */
-function calculateSuspendedMinutes(suspensions, startingHour, endHour) {
+function calculateSuspendedMinutes(suspensions, startingHour, endHour, nbh = false) {
   let suspendedTime = 0;
-
-  suspensions.forEach(suspension => {
-    suspendedTime += calculateWorkingMinutes(suspension.start, suspension.end, startingHour, endHour);
-  });
+  if (nbh) {
+    suspensions.forEach(suspension => {
+      suspendedTime += hoursBetween(suspension.start, suspension.end) * 60;
+    });
+  } else {
+    suspensions.forEach(suspension => {
+      suspendedTime += calculateWorkingMinutes(suspension.start, suspension.end, startingHour, endHour);
+    });
+  }
 
   return suspendedTime;
 }
