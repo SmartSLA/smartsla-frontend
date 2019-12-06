@@ -479,10 +479,7 @@ export default {
     },
 
     validateSeverity() {
-      if (this.ticket.type.length) {
-        if (this.ticket.type.toLowerCase() === "information") {
-          return !this.ticket.software;
-        }
+      if (this.ticket.type.length && this.ticket.software ) {
         return this.ticket.severity.length > 0;
       }
 
