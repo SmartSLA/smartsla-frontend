@@ -205,8 +205,8 @@
       <v-data-table
         :loading="loading"
         :pagination.sync="pagination"
-        :total-items="0"
-        :items="[]"
+        :total-items="totalRequests"
+        :items="requestsAsDataTable"
         :headers="headers"
         class="elevation-1 pb-0"
         :search="centralSearch"
