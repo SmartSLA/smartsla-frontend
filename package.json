@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "hash-sum": "^1.0.2",
     "marked": "^0.6.2",
+    "material-design-icons-iconfont": "^5.0.1",
     "moment-business": "^3.0.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.26",
