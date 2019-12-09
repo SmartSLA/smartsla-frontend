@@ -1,8 +1,8 @@
 {
     "{days}d": "{days}j",
     "{days}D": "{days}j",
-    "{days}d {hours}h": "{days}j {hours}j",
-    "{days}D {hours}H": "{days}j {hours}j",
+    "{days}d {hours}h": "{days}j {hours}h",
+    "{days}D {hours}H": "{days}j {hours}h",
     "{days}wd": "{days}jo",
     "{days}WD": "{days}jo",
     "{days}wd {hours}wh": "{days}jo {hours}ho",

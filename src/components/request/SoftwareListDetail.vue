@@ -63,13 +63,16 @@ export default {
   },
   methods: {
     parseDuration(duration) {
-      const parsedDuration = moment.duration(duration);
+      const parsedDuration = this.moment.duration(duration);
+      const days = parsedDuration.clone().subtract({
+        hours: parsedDuration.hours()
+      }).asDays();
 
       return {
-        days: parsedDuration.days(),
+        days,
         hours: parsedDuration.hours()
       };
-    }
+    },
   }
 };
 </script>
