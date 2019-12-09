@@ -24,29 +24,29 @@
         </td>
         <td class="text-xs-center">
           <span>
-            {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.supported && props.item.supported.businessHours) }}
+            {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.supported && props.item.supported.businessHours, true) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
-            {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.supported && props.item.supported.nonBusinessHours, true) }}
+            {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.supported && props.item.supported.nonBusinessHours) }}
           </span>
         </td>
         <td class="text-xs-center">
           <span>
-            {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.bypassed && props.item.bypassed.businessHours) }}
+            {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.bypassed && props.item.bypassed.businessHours, true) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
-            {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.bypassed && props.item.bypassed.nonBusinessHours, true) }}
+            {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.bypassed && props.item.bypassed.nonBusinessHours) }}
           </span>
         </td>
         <td class="text-xs-center">
           <span>
-            {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.resolved && props.item.resolved.businessHours) }}
+            {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.resolved && props.item.resolved.businessHours, true) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
              <br />
-            {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.resolved && props.item.resolved.nonBusinessHours, true) }}
+            {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.resolved && props.item.resolved.nonBusinessHours) }}
           </span>
         </td>
         <td class="text-xs-center">
