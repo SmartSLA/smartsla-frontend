@@ -114,7 +114,7 @@
           </v-layout>
         </v-toolbar>
       </v-flex>
-      <v-flex md4 mb-4 class="hidden-sm-and-down"></v-flex>
+      <v-flex md4 sm3 mb-4 class="hidden-xs-only"></v-flex>
       <v-flex xs12 md4>
         <v-toolbar flat dense>
           <v-layout align-center justify-end>
@@ -1253,7 +1253,7 @@ nav.v-toolbar .v-toolbar__content {
   }
 }
 
-@media only screen and (min-width: 1263px) {
+@media only screen and (min-width: 600px) {
   .filter_layout {
     flex-direction: row !important;
   }
