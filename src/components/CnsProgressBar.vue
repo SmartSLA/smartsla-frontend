@@ -80,6 +80,7 @@ export default {
       }).asDays();
 
       const hours = this.commitmentDuration.clone().subtract({
+        days,
         minutes: this.commitmentDuration.minutes()
       }).asHours();
 
