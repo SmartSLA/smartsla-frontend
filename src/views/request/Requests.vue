@@ -136,7 +136,7 @@
       <div>
         <ul>
           <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
-            <v-chip @input="removeFilter(filter)" close>{{ filter.category }} : {{ filter.value }}</v-chip>
+            <v-chip @input="removeFilter(filter)" close>{{ $i18n.t(filter.category) }} : {{ $i18n.t(capitalize(filter.value)) }}</v-chip>
           </li>
         </ul>
       </div>
