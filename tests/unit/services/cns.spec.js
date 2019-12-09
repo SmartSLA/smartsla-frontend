@@ -1,4 +1,10 @@
-import { computeCns, computePeriods, calculateWorkingMinutes, hoursBetween } from "@/services/cns";
+import {
+  computeCns,
+  computePeriods,
+  calculateWorkingMinutes,
+  hoursBetween,
+  calculateSuspendedMinutes
+} from "@/services/cns";
 import moment from "moment";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
@@ -648,6 +654,7 @@ describe("CNS calculation", () => {
       ];
 
       const periods = computePeriods(events, ticketCreationDate);
+      const hnoSuspendedMinutes = calculateSuspendedMinutes(periods["supported"].suspensions, 0, 24, true);
 
       it("should compute new, supported and periods ", () => {
         expect(periods.new).toBeDefined();
@@ -688,6 +695,65 @@ describe("CNS calculation", () => {
 
       it("should add bypassed suspensions with current date as end date", () => {
         expect(periods.bypassed.suspensions[0].end.format("X")).toEqual(moment(currentDate).format("X"));
+      });
+
+      it("should calculate the suspended time correctly", () => {
+        expect(hnoSuspendedMinutes).toEqual(120);
+      });
+    });
+
+    describe("with status changes and several beneficiary assignments while supported events in NBH", () => {
+      const supportedStatusChange = "2019-09-26T12:00:00.000+02:00";
+      const beneficiary1AssignDate = "2019-09-26T13:00:00.000+02:00";
+      const expertAssignDate = "2019-09-27T14:00:00.000+02:00";
+      const beneficiary2AssignDate = "2019-09-27T15:00:00.000+02:00";
+      const bypassedStatusChange = "2019-09-28T16:00:00.000+02:00";
+
+      const events = [
+        {
+          status: "supported",
+          timestamps: {
+            createdAt: supportedStatusChange
+          }
+        },
+        {
+          timestamps: {
+            createdAt: beneficiary1AssignDate
+          },
+          target: {
+            type: "beneficiary"
+          }
+        },
+        {
+          timestamps: {
+            createdAt: expertAssignDate
+          },
+          target: {
+            type: "expert"
+          }
+        },
+        {
+          timestamps: {
+            createdAt: beneficiary2AssignDate
+          },
+          target: {
+            type: "beneficiary"
+          }
+        },
+        {
+          status: "bypassed",
+          timestamps: {
+            createdAt: bypassedStatusChange
+          }
+        }
+      ];
+
+      const periods = computePeriods(events, ticketCreationDate);
+      const hnoSuspendedMinutes = calculateSuspendedMinutes(periods["supported"].suspensions, 0, 24, true);
+
+      it("should calculate the suspended time correctly in non business hour", () => {
+        // It should be 2 days 2 hours = 50 hours = 3000 minutes.
+        expect(hnoSuspendedMinutes).toEqual(3000);
       });
     });
 
