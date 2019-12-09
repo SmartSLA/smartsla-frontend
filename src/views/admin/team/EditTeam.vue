@@ -58,7 +58,6 @@
                   :items="contracts"
                   item-text="name"
                   item-value="name"
-                  background-color="white"
                   multiple
                 ></v-autocomplete>
               </v-flex>
@@ -95,6 +94,8 @@
   </v-container>
 </template>
 <script>
+import { TYPE } from "@/constants.js";
+
 export default {
   data() {
     return {
@@ -103,7 +104,6 @@ export default {
       valid: true,
       users: {},
       expertUsers: {},
-      clients: {},
       contract: "",
       contracts: {},
       team: {
@@ -188,10 +188,20 @@ export default {
           });
         });
     }
-    this.clients = require("@/assets/data/clients.json");
-    this.contracts = require("@/assets/data/contracts.json");
-    this.users = require("@/assets/data/users.json");
-    this.expertUsers = require("@/assets/data/users.json");
+    this.$http
+      .listUsers()
+      .then(({ data }) => {
+        this.users = data;
+        this.expertUsers = data.filter(user => user.type == TYPE.EXPERT);
+      })
+      .catch(console.log);
+
+    this.$http
+      .getContracts()
+      .then(({data}) => {
+        this.contracts = data;
+      })
+      .catch(console.log);
   }
 };
 </script>

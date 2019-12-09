@@ -18,7 +18,6 @@
 </template>
 
 <script>
-var requests = require("@/assets/data/orders.json");
 export default {
   data() {
     return {
