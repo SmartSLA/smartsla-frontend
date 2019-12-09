@@ -74,9 +74,18 @@ export default {
     },
     
     durationDisplay() {
-      const duration = {
-        days: this.commitmentDuration.days(),
+      const days = this.commitmentDuration.clone().subtract({
         hours: this.commitmentDuration.hours(),
+        minutes: this.commitmentDuration.minutes()
+      }).asDays();
+
+      const hours = this.commitmentDuration.clone().subtract({
+        minutes: this.commitmentDuration.minutes()
+      }).asHours();
+
+      const duration = {
+        days,
+        hours,
         minutes: this.commitmentDuration.minutes()
       };
 
@@ -150,9 +159,13 @@ export default {
         workHours = 24;
       }
       const commitmentDuration = this.moment.duration(durationString);
+      const commitmentDurationInDays = commitmentDuration.clone().subtract({
+        hours: commitmentDuration.hours()
+      });
+
       let duration = commitmentDuration.hours();
 
-      duration += commitmentDuration.days() * workHours;
+      duration += commitmentDurationInDays.asDays() * workHours;
 
       return duration;
     },

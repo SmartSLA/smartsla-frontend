@@ -500,17 +500,20 @@ export default {
     cnsDurationDisplay(cnsType, isInBusinessHours) {
       const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
       const parsedDuration = this.moment.duration(durationString);
+      const days = parsedDuration.clone().subtract({
+        hours: parsedDuration.hours()
+      }).asDays();
 
-      if (parsedDuration.days()) {
+      if (days) {
         if (parsedDuration.hours()) {
           return this.$i18n.t(isInBusinessHours ? "{days}wd {hours}wh" : "{days}d {hours}h", {
-            days: parsedDuration.days(),
+            days,
             hours: parsedDuration.hours()
           });
         }
 
         return this.$i18n.t(isInBusinessHours ? "{days}wd" : "{days}d", {
-          days: parsedDuration.days(),
+          days
         });
       }
 
