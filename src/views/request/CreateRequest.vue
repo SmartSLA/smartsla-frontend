@@ -199,9 +199,9 @@
                           "Ticket contractual engagements: " +
                             "Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
                           {
-                            supported: cnsDurationDisplay(selectedEngagement.supported, createdDuringBusinessHours),
-                            bypassed: cnsDurationDisplay(selectedEngagement.bypassed, createdDuringBusinessHours),
-                            resolved: cnsDurationDisplay(selectedEngagement.resolved, createdDuringBusinessHours)
+                            supported: cnsDurationDisplay(selectedEngagement.supported),
+                            bypassed: cnsDurationDisplay(selectedEngagement.bypassed),
+                            resolved: cnsDurationDisplay(selectedEngagement.resolved)
                           }
                         )
                       }}
@@ -321,6 +321,7 @@ import editorToolbar from "@/services/helpers/default-toolbar";
 import { VueEditor } from "vue2-editor";
 import Attachments from "@/components/attachments/creation/Attachments.vue";
 import { USER_TYPE } from "@/constants.js";
+import { UNDEFINED_DURATION } from "@/constants";
 
 export default {
   data() {
@@ -538,9 +539,12 @@ export default {
       return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
     },
 
-    cnsDurationDisplay(cnsType, isInBusinessHours) {
-      const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
-      const parsedDuration = this.moment.duration(durationString);
+    cnsDurationDisplay(engagement) {
+      const isInBusinessHours =
+        this.getBusinessHour || (!this.getBusinessHour && engagement.nonBusinessHours === UNDEFINED_DURATION);
+      const durationString = isInBusinessHours ? engagement.businessHours : engagement.nonBusinessHours;
+      let parsedDuration = this.moment.duration(durationString);
+
       const days = parsedDuration
         .clone()
         .subtract({
@@ -605,7 +609,7 @@ export default {
       return routeNames;
     },
 
-    createdDuringBusinessHours() {
+    getBusinessHour() {
       const currentDate = this.moment();
 
       if (this.ticket._id && this.ticket.createdDuringBusinessHours) {
@@ -629,7 +633,7 @@ export default {
         }
       }
 
-      return false;
+      return true;
     },
 
     typeList() {

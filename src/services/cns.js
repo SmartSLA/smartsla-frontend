@@ -3,6 +3,7 @@ import Vue from "vue";
 import { Cns, CnsValue } from "@/services/cns.model";
 import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
 import { DEFAULT_TIMEZONE } from "@/constants.js";
+import { UNDEFINED_DURATION } from "@/constants";
 
 export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorkingMinutes, hoursBetween };
 
@@ -128,11 +129,16 @@ function computePeriods(events, ticketStartTime) {
  *
  * @param period
  * @param workingInterval
- * @param noStop
+ * @param useNonBusinessHours
  * @param engagement
  * @return {Object} time spent regarding contrat
  */
-function computeTime(period, workingInterval, noStop, engagement) {
+function computeTime(period, workingInterval, useNonBusinessHours, engagement) {
+  let noStop = useNonBusinessHours;
+  if (useNonBusinessHours) {
+    noStop = engagement.nonBusinessHours !== UNDEFINED_DURATION;
+  }
+
   const workingHoursInterval = noStop ? 24 : workingInterval.end - workingInterval.start;
   const cnsValue = new CnsValue(engagement, workingHoursInterval);
 

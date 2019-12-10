@@ -8,12 +8,12 @@
         class="mt-0 white--text font-weight-bold"
       >
         <span v-if="duration">
-          {{ cns[cnsType] | humanizeHoursDurationFilter(createdInNonBusinessHours) }}
+          {{ cns[cnsType] | humanizeHoursDurationFilter(displayBusinessHoursFormat) }}
           <span v-if="!hideClock">
-            / {{ durationDisplay | humanizeHoursDurationFilter(createdInNonBusinessHours) }}
+            / {{ durationDisplay | humanizeHoursDurationFilter(displayBusinessHoursFormat) }}
           </span>
         </span>
-        <span v-else>{{ cns[cnsType] | humanizeHoursDurationFilter(createdInNonBusinessHours) }}</span>
+        <span v-else>{{ cns[cnsType] | humanizeHoursDurationFilter(displayBusinessHoursFormat) }}</span>
       </v-progress-linear>
     </v-flex>
     <v-flex v-if="!hideClock" xs1 px-1 pt-0 pb-0>
@@ -29,6 +29,8 @@
 
 <script>
 import { computeCns } from "@/services/cns";
+import { UNDEFINED_DURATION } from "@/constants";
+
 export default {
   name: "cns-progress-bar",
   props: { ticket: Object, cnsType: String, hideClock: Boolean },
@@ -41,7 +43,8 @@ export default {
         resolved: 0
       },
       duration: 0,
-      commitmentDuration: {}
+      commitmentDuration: {},
+      nonBusinessHoursDefined: true
     };
   },
   computed: {
@@ -89,12 +92,16 @@ export default {
       return duration;
     },
 
-    createdInNonBusinessHours() {
+    createdInBusinessHours() {
       if (this.ticket && this.ticket.createdDuringBusinessHours) {
         return this.ticket.createdDuringBusinessHours;
       }
 
       return false;
+    },
+
+    displayBusinessHoursFormat() {
+      return this.createdInBusinessHours || (!this.createdInBusinessHours && !this.nonBusinessHoursDefined);
     }
   },
   methods: {
@@ -136,6 +143,27 @@ export default {
       return hours;
     },
 
+    getCommitment(commitment, inNonBusinessHours) {
+      if (inNonBusinessHours && commitment.nonBusinessHours !== UNDEFINED_DURATION) {
+        return this.moment.duration(commitment.nonBusinessHours);
+      }
+
+      return this.moment.duration(commitment.businessHours);
+    },
+
+    selectEngagement(engagement, inNonBusinessHours) {
+      let parsedDuration = {};
+      if (inNonBusinessHours) {
+        parsedDuration = this.parseEngagementDuration(engagement.nonBusinessHours);
+        if (!parsedDuration) {
+          return this.parseEngagementDuration(engagement.businessHours);
+        }
+      } else {
+        parsedDuration = this.parseEngagementDuration(engagement.businessHours);
+      }
+
+      return parsedDuration;
+    },
     getEngagementColor(cns, totalValue) {
       if (this.isPreviousStep || this.isCurrentStep) {
         if (!this.duration) {
@@ -191,26 +219,13 @@ export default {
           if (engagements.length) {
             const engagement = engagements[0];
             if (engagement[this.cnsType]) {
-              this.commitmentDuration = this.moment.duration(
-                createdInNonBusinessHours
-                  ? engagement[this.cnsType].nonBusinessHours
-                  : engagement[this.cnsType].businessHours
-              );
-              this.duration = this.parseEngagementDuration(
-                createdInNonBusinessHours
-                  ? engagement[this.cnsType].nonBusinessHours
-                  : engagement[this.cnsType].businessHours
-              );
+              this.commitmentDuration = this.getCommitment(engagement[this.cnsType], createdInNonBusinessHours);
+              this.nonBusinessHoursDefined = engagement[this.cnsType].nonBusinessHours !== UNDEFINED_DURATION;
+              this.duration = this.selectEngagement(engagement[this.cnsType], createdInNonBusinessHours);
               this.cnsDurations = {
-                supported: this.parseEngagementDuration(
-                  createdInNonBusinessHours ? engagement.supported.nonBusinessHours : engagement.supported.businessHours
-                ),
-                bypassed: this.parseEngagementDuration(
-                  createdInNonBusinessHours ? engagement.bypassed.nonBusinessHours : engagement.bypassed.businessHours
-                ),
-                resolved: this.parseEngagementDuration(
-                  createdInNonBusinessHours ? engagement.resolved.nonBusinessHours : engagement.resolved.businessHours
-                )
+                supported: this.selectEngagement(engagement.supported, createdInNonBusinessHours),
+                bypassed: this.selectEngagement(engagement.bypassed, createdInNonBusinessHours),
+                resolved: this.selectEngagement(engagement.resolved, createdInNonBusinessHours)
               };
             }
           }

@@ -78,3 +78,4 @@ export const UPDATE_COMMENT = {
     changed: "{author} changed the related requests."
   }
 };
+export const UNDEFINED_DURATION = "P0D";
