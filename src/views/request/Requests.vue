@@ -166,8 +166,8 @@
             </v-layout>
           </template>
 
-          <v-card class="px-4">
-            <v-card-title class="headline grey lighten-2" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
+          <v-card class="px-0">
+            <v-card-title class="headline grey lighten-3" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
             <v-card-text>
               <v-container grid-list-md>
                 <v-layout wrap>
