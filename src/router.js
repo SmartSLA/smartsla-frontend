@@ -38,6 +38,8 @@ import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
 import { requireRead } from '@/guards/ticket-guards';
+import { URL_RESET_PASSWORD } from "@/constants.js";
+
 
 Vue.use(Router);
 
@@ -55,6 +57,7 @@ export const routeNames = Object.freeze({
   ORDERS: "Orders",
   PROFILE: "Profile",
   SETTINGS: "Settings",
+  RESET_PASSWORD: "ResetPassword",
   LOGIN: "Login",
   ADMINISTRATION: "Administration",
   ADMINHOME: "AdministrationHome",
@@ -184,6 +187,13 @@ export default new Router({
       component: Profile,
       meta: {
         auth: true
+      }
+    },
+    {
+      path: "/reset-password",
+      name: routeNames.RESET_PASSWORD,
+      beforeEnter: _ => {
+        window.location.href = URL_RESET_PASSWORD;
       }
     },
     {

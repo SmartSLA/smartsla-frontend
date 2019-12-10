@@ -30,8 +30,12 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn :disabled="logMeIn" :loading="logMeIn" @click="login">{{ $t("Login") }}</v-btn>
+            <v-layout justify-space-between>
+              <router-link :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
+                {{ $t("Reset Password") }}
+              </router-link>
+              <v-btn :disabled="logMeIn" :loading="logMeIn" @click="login">{{ $t("Login") }}</v-btn>
+            </v-layout>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -48,6 +52,11 @@ export default {
       email: null,
       password: null
     };
+  },
+  computed: {
+    routeNames() {
+      return routeNames;
+    }
   },
   methods: {
     login() {
