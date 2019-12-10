@@ -1,5 +1,7 @@
 import moment from "moment-timezone";
 import Vue from "vue";
+import { Cns, CnsValue } from "@/services/cns.model";
+
 moment.tz.setDefault("Europe/Paris");
 
 export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorkingMinutes, hoursBetween };
@@ -13,11 +15,8 @@ export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorking
  * @return {{bypassed: number, supported: number, resolved: number}}
  */
 function computeCns(ticket) {
-  const cns = {
-    supported: 0,
-    bypassed: 0,
-    resolved: 0
-  };
+  const cns = new Cns();
+
   if (ticket.software && ticket.software.software && ticket.contract) {
     const workingInterval = ticket.contract.businessHours || { start: 9, end: 18 };
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
@@ -26,11 +25,13 @@ function computeCns(ticket) {
     cns.supported = computeTime(periods["new"], workingInterval, nonBusinessHours);
     cns.bypassed = computeTime(periods["supported"], workingInterval, nonBusinessHours);
     cns.resolved = computeTime(periods["bypassed"], workingInterval, nonBusinessHours);
+
     const { days, hours, minutes } = cns.bypassed;
     cns.resolved.days += days;
     cns.resolved.hours += hours;
     cns.resolved.minutes += minutes;
   }
+
   return cns;
 }
 
@@ -124,31 +125,37 @@ function computePeriods(events, ticketStartTime) {
  *
  * @param period
  * @param workingInterval
+ * @param noStop
  * @return {Object} time spent regarding contrat
  */
 function computeTime(period, workingInterval, noStop) {
+  const workingHoursInterval = noStop ? 24 : workingInterval.end - workingInterval.start;
+  const cnsValue = new CnsValue();
+
   if (!period) {
-    return {
-      days: 0,
-      hours: 0,
-      minutes: 0
-    };
+    return cnsValue;
   }
 
   const startDate = period.start;
   const endDate = period.end;
-  let minutes = 0;
+  let elapsedMinutes = 0;
 
   if (noStop) {
-    minutes = hoursBetween(startDate, endDate) * 60;
-    minutes -= calculateSuspendedMinutes(period.suspensions, 0, 24, true);
-    return getWorkingTime(minutes, 24);
+    elapsedMinutes = hoursBetween(startDate, endDate) * 60;
+    elapsedMinutes -= calculateSuspendedMinutes(period.suspensions, 0, 24, true);
   } else {
-    minutes = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
-    minutes -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
-    minutes -= calculateSuspendedMinutes(period.suspensions, workingInterval.start, workingInterval.end);
-    return getWorkingTime(minutes, workingInterval.end - workingInterval.start);
+    elapsedMinutes = calculateWorkingMinutes(startDate, endDate, workingInterval.start, workingInterval.end);
+    elapsedMinutes -= holidaysBetween(startDate, endDate) * (workingInterval.end - workingInterval.start) * 60;
+    elapsedMinutes -= calculateSuspendedMinutes(period.suspensions, workingInterval.start, workingInterval.end);
   }
+
+  const { days, hours, minutes } = getWorkingTime(elapsedMinutes, workingHoursInterval);
+
+  cnsValue.minutes = minutes;
+  cnsValue.hours = hours;
+  cnsValue.days = days;
+
+  return cnsValue;
 }
 
 function getWorkingTime(workingMinutes, hoursInDay) {
