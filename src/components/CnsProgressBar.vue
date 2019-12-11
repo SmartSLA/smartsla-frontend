@@ -41,11 +41,7 @@ export default {
   props: { ticket: Object, cnsType: String, hideClock: Boolean },
   data() {
     return {
-      cns: {
-        supported: {},
-        bypassed: {},
-        resolved: {}
-      },
+      cns: {},
       cnsDurations: {
         supported: 0,
         bypassed: 0,
@@ -72,7 +68,7 @@ export default {
         this.ticket.status == "closed"
       );
     },
-    
+
     durationDisplay() {
       const days = this.commitmentDuration.clone().subtract({
         hours: this.commitmentDuration.hours(),
@@ -120,7 +116,7 @@ export default {
       if (cns) {
         hours += cns.hours;
         if (this.ticket.createdDuringBusinessHours) {
-          workHours = (this.ticket.contract.businessHours && 
+          workHours = (this.ticket.contract.businessHours &&
           (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
         } else {
           workHours = 24;
@@ -154,7 +150,7 @@ export default {
     parseEngagementDuration(durationString) {
       var workHours = 0;
       if (this.ticket.createdDuringBusinessHours) {
-        workHours = (this.ticket.contract.businessHours && 
+        workHours = (this.ticket.contract.businessHours &&
         (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
       } else {
         workHours = 24;

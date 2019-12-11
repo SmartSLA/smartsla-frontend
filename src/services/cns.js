@@ -1,6 +1,7 @@
 import moment from "moment-timezone";
 import Vue from "vue";
 import { Cns, CnsValue } from "@/services/cns.model";
+import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
 
 moment.tz.setDefault("Europe/Paris");
 
@@ -21,10 +22,11 @@ function computeCns(ticket) {
     const workingInterval = ticket.contract.businessHours || { start: 9, end: 18 };
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
     const nonBusinessHours = !ticket.createdDuringBusinessHours || false;
+    const engagement = getTicketSoftwareEngagement(ticket) || {};
 
-    cns.supported = computeTime(periods["new"], workingInterval, nonBusinessHours);
-    cns.bypassed = computeTime(periods["supported"], workingInterval, nonBusinessHours);
-    cns.resolved = computeTime(periods["bypassed"], workingInterval, nonBusinessHours);
+    cns.supported = computeTime(periods["new"], workingInterval, nonBusinessHours, engagement.supported);
+    cns.bypassed = computeTime(periods["supported"], workingInterval, nonBusinessHours, engagement.bypassed);
+    cns.resolved = computeTime(periods["bypassed"], workingInterval, nonBusinessHours, engagement.resolved);
 
     const { days, hours, minutes } = cns.bypassed;
     cns.resolved.days += days;
@@ -126,11 +128,12 @@ function computePeriods(events, ticketStartTime) {
  * @param period
  * @param workingInterval
  * @param noStop
+ * @param engagement
  * @return {Object} time spent regarding contrat
  */
-function computeTime(period, workingInterval, noStop) {
+function computeTime(period, workingInterval, noStop, engagement) {
   const workingHoursInterval = noStop ? 24 : workingInterval.end - workingInterval.start;
-  const cnsValue = new CnsValue();
+  const cnsValue = new CnsValue(engagement, workingHoursInterval);
 
   if (!period) {
     return cnsValue;
