@@ -55,10 +55,6 @@ export default {
 
     settings() {
       return this.$router.push({ name: routeNames.SETTINGS });
-    },
-
-    resetPwd() {
-      this.$router.push({ name: routeNames.RESET_PASSWORD });
     }
   },
   computed: {

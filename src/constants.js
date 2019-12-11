@@ -31,5 +31,3 @@ export const USER_ROLES = {
   expert: EXPERT_ROLES,
   beneficiary: BENEFICIARY_ROLES
 };
-
-export const URL_RESET_PASSWORD = 'https://ssp.08000linux.com/';

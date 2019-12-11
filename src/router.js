@@ -38,8 +38,6 @@ import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
 import { requireRead } from '@/guards/ticket-guards';
-import { URL_RESET_PASSWORD } from "@/constants.js";
-
 
 Vue.use(Router);
 
@@ -193,7 +191,7 @@ export default new Router({
       path: "/reset-password",
       name: routeNames.RESET_PASSWORD,
       beforeEnter: _ => {
-        window.location.href = URL_RESET_PASSWORD;
+        window.location.href = ApplicationSettings.SSP_URL;
       }
     },
     {
