@@ -39,7 +39,7 @@
                   <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
                   <v-flex xs12 v-if="!userPhone">
                     <span class="ml-4">
-                    {{ $t("You must fill a call number in order to let the support join you") }}
+                      {{ $t("You must fill a call number in order to let the support join you") }}
                     </span>
                   </v-flex>
                   <v-flex xs6 md4 lg12 xl6 sm9>
@@ -131,13 +131,15 @@
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
                               <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
-                              {{ data.item.software && data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
+                              {{ data.item.software && data.item.software.name }} {{ data.item.version }}
+                              {{ data.item.os }}
                             </template>
                             <template v-slot:selection="data">
                               <v-chip label v-if="data.item.critical == 'critical'" color="red">C</v-chip>
                               <v-chip label v-else-if="data.item.critical == 'sensible'" color="orange">S</v-chip>
                               <v-chip label v-else color="grey">S</v-chip>
-                              {{ data.item.software && data.item.software.name }} {{ data.item.version }} {{ data.item.os }}
+                              {{ data.item.software && data.item.software.name }} {{ data.item.version }}
+                              {{ data.item.os }}
                             </template>
                           </v-autocomplete>
                         </v-flex>
@@ -150,7 +152,7 @@
                             v-model="ticket.severity"
                             :label="$i18n.t('Severity')"
                             :rules="[validateSeverity() || $i18n.t('Required field')]"
-                            :class="{'required-element': !isInformationRequest || this.ticket.software }"
+                            :class="{ 'required-element': !isInformationRequest || this.ticket.software }"
                             return-object
                           >
                             <template slot="selection" slot-scope="{ item }">
@@ -253,7 +255,7 @@
                         <v-chip close @input="resetRelatedRequest(link.request.id)">
                           <v-avatar>
                             <router-link
-                              :to="{name: routeNames.REQUEST, params: {id: link.request.id }}"
+                              :to="{ name: routeNames.REQUEST, params: { id: link.request.id } }"
                               target="_blank"
                             >
                               <v-icon small>open_in_new</v-icon>
@@ -266,10 +268,7 @@
                   </v-flex>
                   <v-container>
                     <v-flex xs12>
-                      <attachments
-                        v-bind:attachments.sync="attachments"
-                        :disabled="submitRequest"
-                      />
+                      <attachments v-bind:attachments.sync="attachments" :disabled="submitRequest" />
                     </v-flex>
                   </v-container>
                 </v-layout>
@@ -301,9 +300,8 @@ import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
 import momentBusiness from "moment-business";
 import editorToolbar from "@/services/helpers/default-toolbar";
-import Vue from "vue";
 import { VueEditor } from "vue2-editor";
-import Attachments  from "@/components/attachments/creation/Attachments.vue";
+import Attachments from "@/components/attachments/creation/Attachments.vue";
 
 export default {
   data() {
@@ -350,6 +348,7 @@ export default {
       types: ["type1", "type2", "type3", "type4"],
       engagementsCategory: [],
       selectedTypes: [],
+      // eslint-disable-next-line max-len
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       emailVerfication: [],
       meetingId: "",
@@ -367,7 +366,8 @@ export default {
       this.ticket.participants = this.participants;
       this.ticket.relatedRequests = this.linkedRequests;
       if (this.attachments.length) {
-        this.$http.getUploader()
+        this.$http
+          .getUploader()
           .uploadAll(this.attachments)
           .then(attachments => this.postRequest(attachments))
           .catch(error => {
@@ -376,7 +376,7 @@ export default {
               color: "error"
             });
           })
-          .finally(() => this.submitRequest = true);
+          .finally(() => (this.submitRequest = true));
       } else {
         this.postRequest();
       }
@@ -410,7 +410,9 @@ export default {
             image: this.avatarUrl
           },
           attachments: attachments.map(attachment => ({
-            _id: attachment._id, name: attachment.name, mimeType: attachment.type
+            _id: attachment._id,
+            name: attachment.name,
+            mimeType: attachment.type
           }))
         };
 
@@ -457,7 +459,7 @@ export default {
             color: "error"
           });
         })
-        .finally(() => this.postRequest = false);
+        .finally(() => (this.postRequest = false));
     },
     remove(item) {
       this.participants.splice(this.participants.indexOf(item), 1);
@@ -479,7 +481,7 @@ export default {
     },
 
     validateSeverity() {
-      if (this.ticket.type.length && this.ticket.software ) {
+      if (this.ticket.type.length && this.ticket.software) {
         return this.ticket.severity.length > 0;
       }
 
@@ -500,9 +502,12 @@ export default {
     cnsDurationDisplay(cnsType, isInBusinessHours) {
       const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
       const parsedDuration = this.moment.duration(durationString);
-      const days = parsedDuration.clone().subtract({
-        hours: parsedDuration.hours()
-      }).asDays();
+      const days = parsedDuration
+        .clone()
+        .subtract({
+          hours: parsedDuration.hours()
+        })
+        .asDays();
 
       if (days) {
         if (parsedDuration.hours()) {
@@ -516,7 +521,6 @@ export default {
           days
         });
       }
-
 
       return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
         hours: parsedDuration.hours()
@@ -550,7 +554,7 @@ export default {
       return routeNames;
     },
 
-    createdDuringBusinessHours() { 
+    createdDuringBusinessHours() {
       const currentDate = this.moment();
 
       if (this.ticket._id && this.ticket.createdDuringBusinessHours) {
@@ -562,8 +566,15 @@ export default {
           return false;
         }
 
-        if (this.ticket.contract.businessHours && this.ticket.contract.businessHours.start && this.ticket.contract.businessHours.end) {
-           return (currentDate.hours() >= this.ticket.contract.businessHours.start && currentDate.hours() < this.ticket.contract.businessHours.end);
+        if (
+          this.ticket.contract.businessHours &&
+          this.ticket.contract.businessHours.start &&
+          this.ticket.contract.businessHours.end
+        ) {
+          return (
+            currentDate.hours() >= this.ticket.contract.businessHours.start &&
+            currentDate.hours() < this.ticket.contract.businessHours.end
+          );
         }
       }
 
@@ -638,23 +649,23 @@ export default {
     },
     sortedListOfSoftware() {
       if (this.ticket.contract.software) {
-        return this.ticket.contract.software.sort((a, b) => a.software.name.localeCompare(b.software.name))
+        return this.ticket.contract.software.sort((a, b) => a.software.name.localeCompare(b.software.name));
       }
 
       return [];
     }
   },
   watch: {
-    "ticket.contract": function(newContract, oldContract) {
+    "ticket.contract": function() {
       this.ticket.software = {};
       this.ticket.severity = "";
       this.ticket.type = "";
     },
-    "ticket.type": function(newType, oldType) {
+    "ticket.type": function() {
       this.ticket.severity = "";
       this.ticket.software = "";
     },
-    "ticket.software": function(newSoftware, oldSoftware) {
+    "ticket.software": function() {
       this.ticket.severity = "";
     },
     participants(participants) {
@@ -674,7 +685,7 @@ export default {
 
 <style>
 .v-text-field.v-text-field--solo .v-input__append-outer {
-  padding:6px 0 0 0 !important;
+  padding: 6px 0 0 0 !important;
 }
 </style>
 
@@ -708,8 +719,12 @@ export default {
 }
 
 .elevation-12 {
-  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 1px rgba(0, 0, 0, 0.14),
+      0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 1px rgba(0, 0, 0, 0.14),
+      0px 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
   widows: 100%;
 }
 

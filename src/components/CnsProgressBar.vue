@@ -8,27 +8,20 @@
         class="mt-0 white--text font-weight-bold"
       >
         <span v-if="duration">
-          {{ cns[cnsType] | humanizeHoursDurationFilter(createdInNonBusinessHours) }}
+          {{ cns[cnsType] | humanizeHoursDurationFilter(createdInNonBusinessHours) }}
           <span v-if="!hideClock">
             / {{ durationDisplay | humanizeHoursDurationFilter(createdInNonBusinessHours) }}
           </span>
-          </span>
+        </span>
         <span v-else>{{ cns[cnsType] | humanizeHoursDurationFilter(createdInNonBusinessHours) }}</span>
-      </v-progress-linear
-      >
+      </v-progress-linear>
     </v-flex>
     <v-flex v-if="!hideClock" xs1 px-1 pt-0 pb-0>
-      <v-icon
-        v-if="isCurrentStep"
-        color="info"
-      >
+      <v-icon v-if="isCurrentStep" color="info">
         access_time
       </v-icon>
-      <v-icon
-        v-else-if="isPreviousStep"
-        :color="getEngagementColor(cns[cnsType], duration)"
-      >
-        {{ duration === 0 ? 'done' : (percentage(cns[cnsType], duration) < 100 ? 'done' : 'clear') }}
+      <v-icon v-else-if="isPreviousStep" :color="getEngagementColor(cns[cnsType], duration)">
+        {{ duration === 0 ? "done" : percentage(cns[cnsType], duration) < 100 ? "done" : "clear" }}
       </v-icon>
     </v-flex>
   </v-layout>
@@ -62,23 +55,30 @@ export default {
 
     isPreviousStep() {
       return (
-        this.ticket.status == "supported" && this.cnsType === "supported" ||
-        this.ticket.status == "bypassed" && (this.cnsType === "supported" || this.cnsType === "bypassed") ||
-        this.ticket.status == "resolved" && (this.cnsType === "supported" || this.cnsType === "bypassed" || this.cnsType === "resolved" ) ||
+        (this.ticket.status == "supported" && this.cnsType === "supported") ||
+        (this.ticket.status == "bypassed" && (this.cnsType === "supported" || this.cnsType === "bypassed")) ||
+        (this.ticket.status == "resolved" &&
+          (this.cnsType === "supported" || this.cnsType === "bypassed" || this.cnsType === "resolved")) ||
         this.ticket.status == "closed"
       );
     },
 
     durationDisplay() {
-      const days = this.commitmentDuration.clone().subtract({
-        hours: this.commitmentDuration.hours(),
-        minutes: this.commitmentDuration.minutes()
-      }).asDays();
+      const days = this.commitmentDuration
+        .clone()
+        .subtract({
+          hours: this.commitmentDuration.hours(),
+          minutes: this.commitmentDuration.minutes()
+        })
+        .asDays();
 
-      const hours = this.commitmentDuration.clone().subtract({
-        days,
-        minutes: this.commitmentDuration.minutes()
-      }).asHours();
+      const hours = this.commitmentDuration
+        .clone()
+        .subtract({
+          days,
+          minutes: this.commitmentDuration.minutes()
+        })
+        .asHours();
 
       const duration = {
         days,
@@ -96,7 +96,6 @@ export default {
 
       return false;
     }
-
   },
   methods: {
     percentage(cns, totalValue) {
@@ -116,8 +115,10 @@ export default {
       if (cns) {
         hours += cns.hours;
         if (this.ticket.createdDuringBusinessHours) {
-          workHours = (this.ticket.contract.businessHours &&
-          (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
+          workHours =
+            (this.ticket.contract.businessHours &&
+              this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start) ||
+            9;
         } else {
           workHours = 24;
         }
@@ -133,7 +134,6 @@ export default {
     },
 
     getEngagementColor(cns, totalValue) {
-      var hours = this.getCnsHours(cns);
       if (this.isPreviousStep || this.isCurrentStep) {
         if (!this.duration) {
           return "success";
@@ -150,8 +150,10 @@ export default {
     parseEngagementDuration(durationString) {
       var workHours = 0;
       if (this.ticket.createdDuringBusinessHours) {
-        workHours = (this.ticket.contract.businessHours &&
-        (this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start)) || 9;
+        workHours =
+          (this.ticket.contract.businessHours &&
+            this.ticket.contract.businessHours.end - this.ticket.contract.businessHours.start) ||
+          9;
       } else {
         workHours = 24;
       }
@@ -186,13 +188,27 @@ export default {
           if (engagements.length) {
             const engagement = engagements[0];
             if (engagement[this.cnsType]) {
-              this.commitmentDuration = this.moment.duration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours : engagement[this.cnsType].businessHours);
-              this.duration = this.parseEngagementDuration(createdInNonBusinessHours ? engagement[this.cnsType].nonBusinessHours :  engagement[this.cnsType].businessHours);
+              this.commitmentDuration = this.moment.duration(
+                createdInNonBusinessHours
+                  ? engagement[this.cnsType].nonBusinessHours
+                  : engagement[this.cnsType].businessHours
+              );
+              this.duration = this.parseEngagementDuration(
+                createdInNonBusinessHours
+                  ? engagement[this.cnsType].nonBusinessHours
+                  : engagement[this.cnsType].businessHours
+              );
               this.cnsDurations = {
-                supported: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.supported.nonBusinessHours : engagement.supported.businessHours),
-                bypassed: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.bypassed.nonBusinessHours : engagement.bypassed.businessHours),
-                resolved: this.parseEngagementDuration(createdInNonBusinessHours ? engagement.resolved.nonBusinessHours : engagement.resolved.businessHours)
-              }
+                supported: this.parseEngagementDuration(
+                  createdInNonBusinessHours ? engagement.supported.nonBusinessHours : engagement.supported.businessHours
+                ),
+                bypassed: this.parseEngagementDuration(
+                  createdInNonBusinessHours ? engagement.bypassed.nonBusinessHours : engagement.bypassed.businessHours
+                ),
+                resolved: this.parseEngagementDuration(
+                  createdInNonBusinessHours ? engagement.resolved.nonBusinessHours : engagement.resolved.businessHours
+                )
+              };
             }
           }
         }

@@ -70,20 +70,22 @@ export default {
     }),
 
     currentActiveMenu() {
-      return this.$route.matched.length && this.$route.matched[0].name || this.$route.name;
+      return (this.$route.matched.length && this.$route.matched[0].name) || this.$route.name;
     },
 
     filteredMenuItems() {
-      return this.menuItems
-        .filter(item => item.show)
-        // this is the only way to make the menu reactive when building it from array like this is done below...
-        .map(item => {
-          if (item.name.includes(routeNames.REQUESTS)) {
-            item.count = this.ticketsSize
-          }
+      return (
+        this.menuItems
+          .filter(item => item.show)
+          // this is the only way to make the menu reactive when building it from array like this is done below...
+          .map(item => {
+            if (item.name.includes(routeNames.REQUESTS)) {
+              item.count = this.ticketsSize;
+            }
 
-          return item;
-        });
+            return item;
+          })
+      );
     }
   },
   created() {

@@ -43,11 +43,11 @@
                 </v-flex>
                 <v-flex xs12>
                   <strong>{{ $t("Contracts") }} :</strong>
-                  <span v-for="(contract, index) in client.contracts" :key=contract._id>
+                  <span v-for="(contract, index) in client.contracts" :key="contract._id">
                     <router-link :to="{ name: 'Contract', params: { id: contract._id } }">
-                      {{contract.name}}
+                      {{ contract.name }}
                     </router-link>
-                    <span v-if="index+1 < client.contracts.length">, </span>
+                    <span v-if="index + 1 < client.contracts.length">, </span>
                   </span>
                 </v-flex>
                 <v-flex xs12>
@@ -65,11 +65,7 @@
                 <v-flex xs12 class="ml-1">
                   <v-layout row justify-space-between>
                     <strong> {{ $t("Status") }} :</strong>
-                    <v-switch
-                      class="ma-0 pa-0 ml-2"
-                      disabled
-                      v-model="client.active"
-                    ></v-switch>
+                    <v-switch class="ma-0 pa-0 ml-2" disabled v-model="client.active"></v-switch>
                   </v-layout>
                 </v-flex>
               </v-layout>
@@ -96,7 +92,7 @@ export default {
       .then(response => {
         this.client = response.data;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("Failed to fetch client"),
           color: "error"

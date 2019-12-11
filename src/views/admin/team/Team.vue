@@ -84,7 +84,7 @@ export default {
       .then(response => {
         this.team = response.data;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: "failed to fetch team",
           color: "error"

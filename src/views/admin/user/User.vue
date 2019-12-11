@@ -53,10 +53,7 @@
                 </v-flex>
                 <v-flex xs12 v-if="$auth.check('admin') && ticketingUser.client">
                   <strong>{{ $t("Client") }} :</strong>
-                  <router-link
-                    :to="{ name: 'Client', params: { id: ticketingUser.client.id } }"
-                    target="_blank"
-                  >
+                  <router-link :to="{ name: 'Client', params: { id: ticketingUser.client.id } }" target="_blank">
                     {{ ticketingUser.client.name }}
                   </router-link>
                 </v-flex>
@@ -64,17 +61,14 @@
                   <strong>{{ $t("Contrats") }} :</strong>
                   <ul>
                     <li v-for="entry in ticketingUser.contracts" :key="entry._id">
-                      <router-link
-                        :to="{ name: 'Contract', params: { id: entry.contract._id } }"
-                        target="_blank"
-                      >
+                      <router-link :to="{ name: 'Contract', params: { id: entry.contract._id } }" target="_blank">
                         <span class="blue-color"> {{ entry.contract.name }} </span>
                       </router-link>
-                      <v-spacer/>
-                      <span> 
+                      <v-spacer />
+                      <span>
                         <span class="font-italic font-weight-bold">{{ $t("Role") }}: </span>
-                        <span v-if="entry.role === 'customer'"> {{ $t('customer') }} </span>
-                        <span v-if="entry.role === 'viewer'"> {{ $t('viewer') }} </span>
+                        <span v-if="entry.role === 'customer'"> {{ $t("customer") }} </span>
+                        <span v-if="entry.role === 'viewer'"> {{ $t("viewer") }} </span>
                       </span>
                     </li>
                   </ul>
@@ -101,14 +95,14 @@ export default {
         .getUserById(this.$route.params.id)
         .then(response => {
           this.ticketingUser = response.data;
-          if(this.ticketingUser.contracts && !!this.ticketingUser.contracts.length){
+          if (this.ticketingUser.contracts && !!this.ticketingUser.contracts.length) {
             this.ticketingUser = {
               ...this.ticketingUser,
               client: {
                 name: this.ticketingUser.contracts[0].contract.client,
                 id: this.ticketingUser.contracts[0].contract.clientId
               }
-            }
+            };
           }
         })
         .catch(error => {

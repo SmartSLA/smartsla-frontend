@@ -27,7 +27,7 @@
             {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.supported && props.item.supported.businessHours, true) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
-             <br />
+            <br />
             {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.supported && props.item.supported.nonBusinessHours) }}
           </span>
         </td>
@@ -36,7 +36,7 @@
             {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.bypassed && props.item.bypassed.businessHours, true) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
-             <br />
+            <br />
             {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.bypassed && props.item.bypassed.nonBusinessHours) }}
           </span>
         </td>
@@ -45,7 +45,7 @@
             {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.resolved && props.item.resolved.businessHours, true) }}
           </span>
           <span v-if="contract.features && contract.features.nonBusinessHours">
-             <br />
+            <br />
             {{ $t("NBH") }}: {{ cnsDurationDisplay(props.item.resolved && props.item.resolved.nonBusinessHours) }}
           </span>
         </td>
@@ -69,13 +69,13 @@
       <v-flex xs12>
         <v-dialog scrollable v-model="formDialog" :fullscreen="$vuetify.breakpoint.xs" persistent max-width="600px">
           <FormEngagement
-            :commitment=newCommitment
-            :editing=isEdit
+            :commitment="newCommitment"
+            :editing="isEdit"
             :isModalOpen="formDialog"
-            :requestTypes=requestTypes
-            :severityTypes=severityTypes
-            :ossaIds=ossaIds
-            :contract=contract
+            :requestTypes="requestTypes"
+            :severityTypes="severityTypes"
+            :ossaIds="ossaIds"
+            :contract="contract"
             @submit="submit"
             @closeFormModal="closeFormModal"
           >
@@ -88,7 +88,6 @@
 
 <script>
 import { OSSA_IDS, SEVERITY_TYPES, REQUEST_TYPES } from "@/constants.js";
-import moment from "moment";
 import FormEngagement from "@/components/admin/contract/FormEngagement.vue";
 
 export default {
@@ -173,28 +172,28 @@ export default {
       this.selectedItem = commitment;
       this.newCommitment = {
         ...this.selectedItem,
-        request: this.isCustomRequestType(commitment.request) ?  "Other" : commitment.request,
-        custom_request: commitment.request === 'Other' ? commitment.request : commitment.request,
+        request: this.isCustomRequestType(commitment.request) ? "Other" : commitment.request,
+        custom_request: commitment.request === "Other" ? commitment.request : commitment.request,
         supported: {
           businessHours: this.parseDuration(commitment.supported.businessHours),
-          nonBusinessHours: this.parseDuration(commitment.supported.nonBusinessHours),
+          nonBusinessHours: this.parseDuration(commitment.supported.nonBusinessHours)
         },
         bypassed: {
           businessHours: this.parseDuration(commitment.bypassed.businessHours),
-          nonBusinessHours: this.parseDuration(commitment.bypassed.nonBusinessHours),
+          nonBusinessHours: this.parseDuration(commitment.bypassed.nonBusinessHours)
         },
         resolved: {
           businessHours: this.parseDuration(commitment.resolved.businessHours),
-          nonBusinessHours: this.parseDuration(commitment.resolved.nonBusinessHours),
+          nonBusinessHours: this.parseDuration(commitment.resolved.nonBusinessHours)
         }
-      }
+      };
     },
     isCustomRequestType(value) {
       return !this.requestTypes.map(e => e.key).includes(value);
     },
     submit(commitment) {
-      const toastMsg = this.isEdit ? 'Updated' : 'Added';
-      if(this.isEdit) {
+      const toastMsg = this.isEdit ? "Updated" : "Added";
+      if (this.isEdit) {
         const { _id: software_editing_id } = this.selectedItem;
         const index = this.engagementList.engagements.findIndex(commitment => commitment._id === software_editing_id);
         commitment = this.normalizeCommitment(commitment);
@@ -209,10 +208,10 @@ export default {
     normalizeCommitment(commitment) {
       return {
         ...commitment,
-        request: commitment.request === 'Other' ? commitment.custom_request : commitment.request,
+        request: commitment.request === "Other" ? commitment.custom_request : commitment.request,
         supported: this.getDuration(commitment.supported),
         bypassed: this.getDuration(commitment.bypassed),
-        resolved: this.getDuration(commitment.resolved),
+        resolved: this.getDuration(commitment.resolved)
       };
     },
     critColor(critLevel) {
@@ -237,7 +236,6 @@ export default {
       }
     },
     getDuration(schedule) {
-
       const bhduration = this.moment.duration({
         hours: schedule.businessHours.hours,
         days: schedule.businessHours.days
@@ -255,21 +253,27 @@ export default {
 
     parseDuration(durationString) {
       const parsedDuration = this.moment.duration(durationString);
-      const days = parsedDuration.clone().subtract({
-        hours: parsedDuration.hours()
-      }).asDays();
+      const days = parsedDuration
+        .clone()
+        .subtract({
+          hours: parsedDuration.hours()
+        })
+        .asDays();
 
       return {
         hours: parsedDuration.hours(),
         days
-      }
+      };
     },
 
     cnsDurationDisplay(durationString, isInBusinessHours = false) {
       const parsedDuration = this.moment.duration(durationString);
-      const days = parsedDuration.clone().subtract({
-        hours: parsedDuration.hours()
-      }).asDays();
+      const days = parsedDuration
+        .clone()
+        .subtract({
+          hours: parsedDuration.hours()
+        })
+        .asDays();
 
       if (days) {
         if (parsedDuration.hours()) {
@@ -283,7 +287,6 @@ export default {
           days
         });
       }
-
 
       return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
         hours: parsedDuration.hours()

@@ -133,7 +133,7 @@ export default {
 
     validateFrom() {
       if (this.$refs.form.validate()) {
-        if (!this.isNew) { 
+        if (!this.isNew) {
           this.createClient();
         } else {
           this.$http
@@ -163,7 +163,7 @@ export default {
     deleteClient() {
       this.$http
         .deleteClient(this.$route.params.id)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("client deleted"),
             color: "success"

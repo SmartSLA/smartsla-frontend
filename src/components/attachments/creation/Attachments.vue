@@ -10,7 +10,14 @@
         <v-divider v-if="index < attachments.length - 1" :key="`divider${index}`"></v-divider>
       </template>
     </v-list>
-    <upload-button multiple ref="file-upload" :title="$t('Attach files')" no-title-update :disabled="disabled" @file-update="setAttachments">
+    <upload-button
+      multiple
+      ref="file-upload"
+      :title="$t('Attach files')"
+      no-title-update
+      :disabled="disabled"
+      @file-update="setAttachments"
+    >
     </upload-button>
   </div>
 </template>
@@ -43,7 +50,7 @@ export default {
           upload: {
             isComplete: false,
             uploading: false,
-            progress: 0,
+            progress: 0
           },
           file
         });
@@ -54,5 +61,5 @@ export default {
     UploadButton,
     Attachment
   }
-}
+};
 </script>

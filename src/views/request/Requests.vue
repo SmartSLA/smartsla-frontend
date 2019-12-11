@@ -7,11 +7,7 @@
             <v-icon class="mr-2">format_list_numbered</v-icon>
             <span>{{ pageTitle }}</span>
           </span>
-          <v-btn flat small
-            color="error" 
-            @click="deleteDialog = true"
-            v-show="showDeleteBtn"
-          >
+          <v-btn flat small color="error" @click="deleteDialog = true" v-show="showDeleteBtn">
             <v-icon class="mr-2">delete_outline</v-icon> {{ $t("Delete filter") }}
           </v-btn>
         </v-layout>
@@ -20,9 +16,7 @@
         <v-layout justify-end row>
           <div>
             <download-csv :data="exportData" :name="csvFileName">
-              <v-btn flat small color="default">
-                <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
-              </v-btn>
+              <v-btn flat small color="default"> <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }} </v-btn>
             </download-csv>
           </div>
         </v-layout>
@@ -82,7 +76,7 @@
                 </v-toolbar-side-icon>
               </template>
               <span>
-                {{$i18n.t('This button allows you to add an additional filter to the ticket board')}}
+                {{ $i18n.t("This button allows you to add an additional filter to the ticket board") }}
               </span>
             </v-tooltip>
           </v-layout>
@@ -108,7 +102,7 @@
                 </v-toolbar-side-icon>
               </template>
               <span>
-                {{$i18n.t('This button allows you to load a saved filter')}}
+                {{ $i18n.t("This button allows you to load a saved filter") }}
               </span>
             </v-tooltip>
           </v-layout>
@@ -131,12 +125,14 @@
         </v-toolbar>
       </v-flex>
     </v-layout>
-  
+
     <v-layout justify-space-between row class="actions_filters">
       <div>
         <ul>
           <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
-            <v-chip @input="removeFilter(filter)" close>{{ $i18n.t(filter.category) }} : {{ $i18n.t(capitalize(filter.value)) }}</v-chip>
+            <v-chip @input="removeFilter(filter)" close
+              >{{ $i18n.t(filter.category) }} : {{ $i18n.t(capitalize(filter.value)) }}</v-chip
+            >
           </li>
         </ul>
       </div>
@@ -146,7 +142,7 @@
             <v-layout align-center justify-space-between row>
               <div>
                 <v-btn flat small color="default" v-on="on" v-show="isNewFilter || updateBtn">
-                  <v-icon class="mr-2">playlist_add</v-icon>  {{ $i18n.t("Create new filter") }}
+                  <v-icon class="mr-2">playlist_add</v-icon> {{ $i18n.t("Create new filter") }}
                 </v-btn>
                 <a
                   href="#"
@@ -189,9 +185,9 @@
     <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
       <v-card class="px-4 pt-2">
         <v-card-text>
-          <span
-            class="body-2"
-          >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span>
+          <span class="body-2"
+            >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span
+          >
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -200,7 +196,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
+
     <v-layout>
       <v-data-table
         :loading="loading"
@@ -221,10 +217,9 @@
       >
         <template slot="items" slot-scope="props">
           <td>
-            <router-link
-              :to="{ name: 'Request', params: { id: props.item._id } }"
-              class="blue-color item-id"
-            >{{ props.item._id }}</router-link>
+            <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color item-id">{{
+              props.item._id
+            }}</router-link>
           </td>
           <td class="text-xs-center">
             <v-chip
@@ -235,7 +230,9 @@
               text-color="white"
               >{{ props.item.request.organizationLabel }}
             </v-chip>
-            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">{{ props.item.request.organizationLabel }}</v-chip>
+            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">{{
+              props.item.request.organizationLabel
+            }}</v-chip>
           </td>
           <td class="text-xs-center" v-if="$auth.check('admin')">
             <v-avatar :color="getOssaConfById(props.item.id_ossa || 1).color" size="25">
@@ -251,24 +248,23 @@
           <td class="text-xs-center">
             <v-tooltip top v-if="props.item.request.software && props.item.request.software.software">
               <template v-slot:activator="{ on }">
-                <span 
-                  v-bind:class="['criticality', props.item.request.software.critical]"
-                  v-on="on"
-                >
+                <span v-bind:class="['criticality', props.item.request.software.critical]" v-on="on">
                   <text-highlight :queries="highlightSearch">{{ props.item.softwareName }}</text-highlight>
                 </span>
               </template>
               <span>{{
-                $t("Version : " + props.item.request.software.version + " / Criticité : " + props.item.request.software.critical)
+                $t(
+                  "Version : " +
+                    props.item.request.software.version +
+                    " / Criticité : " +
+                    props.item.request.software.critical
+                )
               }}</span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">
-            <router-link
-              :to="{ name: 'Request', params: { id: props.item._id } }"
-              class="blue-color"
-            >
-            <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
+            <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
+              <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
             </router-link>
           </td>
           <td class="text-xs-center">
@@ -283,35 +279,46 @@
           <td class="text-xs-center">
             <router-link
               v-if="$auth.check('admin')"
-              :to="{ name: 'Client', params: { id: props.item.request.contract && props.item.request.contract.clientId } }"
+              :to="{
+                name: 'Client',
+                params: { id: props.item.request.contract && props.item.request.contract.clientId }
+              }"
               target="_blank"
             >
               <span class="blue-color">
-                <text-highlight :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.client }}</text-highlight>
+                <text-highlight :queries="highlightSearch">{{
+                  props.item.request.contract && props.item.request.contract.client
+                }}</text-highlight>
               </span>
             </router-link>
-            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.client }}</text-highlight>
+            <text-highlight v-else :queries="highlightSearch">{{
+              props.item.request.contract && props.item.request.contract.client
+            }}</text-highlight>
             /
             <router-link
               v-if="$auth.check('admin')"
-              :to="{name: 'Contract', params: {id: props.item.request.contract && props.item.request.contract._id}}"
+              :to="{ name: 'Contract', params: { id: props.item.request.contract && props.item.request.contract._id } }"
               target="_blank"
             >
               <span class="blue-color">
-                <text-highlight :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.name }}</text-highlight>
+                <text-highlight :queries="highlightSearch">{{
+                  props.item.request.contract && props.item.request.contract.name
+                }}</text-highlight>
               </span>
             </router-link>
-            <text-highlight v-else :queries="highlightSearch">{{ props.item.request.contract && props.item.request.contract.name }}</text-highlight>
+            <text-highlight v-else :queries="highlightSearch">{{
+              props.item.request.contract && props.item.request.contract.name
+            }}</text-highlight>
           </td>
           <td class="text-xs-center">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                    <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
-                </template>
-                <span>{{ props.item.updatedAt | formatDateFilter('llll')  }}</span>
-              </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
+              </template>
+              <span>{{ props.item.updatedAt | formatDateFilter("llll") }}</span>
+            </v-tooltip>
           </td>
-          <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter('ll') }}</td>
+          <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter("ll") }}</td>
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{ $t(capitalize(props.item.status)) }}</text-highlight>
           </td>
@@ -327,15 +334,23 @@
           </td>
         </template>
         <template v-slot:no-data>
-            <v-layout justify-center>
-          <span v-if="!userContracts.length">
-          {{ $t("You are not registered in any contract, you should get in touch with someone in charge of the platform in your company") }}
-          </span>
-          <span v-else>
-          {{ $t("You are registered in the contract {contract} but there are no published tickets at the moment", {contract: displayUserContracts}) }}
-          <v-btn color="info" :to="{name: 'New issue'}" small>{{ $t('You can create a new issue') }}</v-btn>
-          </span>
-            </v-layout>
+          <v-layout justify-center>
+            <span v-if="!userContracts.length">
+              {{
+                $t(
+                  "You are not registered in any contract, you should get in touch with someone in charge of the platform in your company"
+                )
+              }}
+            </span>
+            <span v-else>
+              {{
+                $t("You are registered in the contract {contract} but there are no published tickets at the moment", {
+                  contract: displayUserContracts
+                })
+              }}
+              <v-btn color="info" :to="{ name: 'New issue' }" small>{{ $t("You can create a new issue") }}</v-btn>
+            </span>
+          </v-layout>
         </template>
       </v-data-table>
     </v-layout>
@@ -344,14 +359,12 @@
 
 <script>
 import { mapGetters, createNamespacedHelpers } from "vuex";
-import Vue from "vue";
 import { capitalize } from "lodash";
 import moment from "moment";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
-import { OSSA_IDS } from '@/constants.js';
-const { mapState } = createNamespacedHelpers("ticket")
-
+import { OSSA_IDS } from "@/constants.js";
+const { mapState } = createNamespacedHelpers("ticket");
 
 const CNS_STATUS = {
   new: "cns.state.support",
@@ -404,7 +417,7 @@ export default {
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "softwareName" },
-        { text: this.$i18n.t("Title"), value: "title", sortable: false},
+        { text: this.$i18n.t("Title"), value: "title", sortable: false },
         { text: this.$i18n.t("Assigned to"), value: "assignedToName" },
         { text: this.$i18n.t("Responsible"), value: "responsibleName" },
         { text: this.$i18n.t("Author"), value: "authorName" },
@@ -520,14 +533,16 @@ export default {
       deleteBtn: false,
       updateBtn: false,
       collectedCNS: [],
-      csvFileName: `08000linux_${moment().lang(this.$i18n.locale).format('LLL')}.csv`
+      csvFileName: `08000linux_${moment()
+        .lang(this.$i18n.locale)
+        .format("LLL")}.csv`
     };
   },
   mounted() {
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
-    this.$http.listSoftware({}).then(({data}) => {
+    this.$http.listSoftware({}).then(({ data }) => {
       data.map(software => {
         this.softwareList.push(software.name);
       });
@@ -560,7 +575,7 @@ export default {
     },
 
     displayUserContracts() {
-      return this.userContracts.map(userContract => userContract.contract.name).join(", ")
+      return this.userContracts.map(userContract => userContract.contract.name).join(", ");
     },
 
     requestsAsDataTable() {
@@ -630,18 +645,23 @@ export default {
         [this.$i18n.t("OS")]: request.software && request.software.os,
         [this.$i18n.t("Title")]: request.title,
         [this.$i18n.t("Description")]: this.$options.filters.striphtml(request.description),
-        [this.$i18n.t("Assigned to")]: request.assignedTo && request.assignedTo.name || this.$i18n.t("Not assigned yet"),
+        [this.$i18n.t("Assigned to")]:
+          (request.assignedTo && request.assignedTo.name) || this.$i18n.t("Not assigned yet"),
         [this.$i18n.t("Created by")]: request.author.name,
         //[this.$i18n.t("Service (of author)")]: request.author.service || 'N/A',
         [this.$i18n.t("Contract")]: request.contract && request.contract.client,
         [this.$i18n.t("Beneficiary")]: request.beneficiary.name,
-        [this.$i18n.t("Last update")]: moment(request.timestamps.updatedAt).lang(this.$i18n.locale).format('L'),
-        [this.$i18n.t("Created at")]: moment(request.timestamps.createdAt).lang(this.$i18n.locale).format('L'),
+        [this.$i18n.t("Last update")]: moment(request.timestamps.updatedAt)
+          .lang(this.$i18n.locale)
+          .format("L"),
+        [this.$i18n.t("Created at")]: moment(request.timestamps.createdAt)
+          .lang(this.$i18n.locale)
+          .format("L"),
         [this.$i18n.t("Status")]: this.$i18n.t(capitalize(request.status)),
         [this.$i18n.t("SLA support")]: this.cns(request._id, "supported"),
         [this.$i18n.t("SLA bypass")]: this.cns(request._id, "bypassed"),
         [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved"),
-        [this.$i18n.t("BH / NBH")]: request.createdDuringBusinessHours ? this.$i18n.t("BH") : this.$i18n.t("NBH"),
+        [this.$i18n.t("BH / NBH")]: request.createdDuringBusinessHours ? this.$i18n.t("BH") : this.$i18n.t("NBH")
         //[this.$i18n.t("TPC")]: 'N/A',
         //[this.$i18n.t("TCt")]: 'N/A',
         //[this.$i18n.t("TCt / TCt target in %age")]: 'N/A',
@@ -652,7 +672,7 @@ export default {
     }
   },
   watch: {
-    categoriesFilter: function(newCategory, oldCategory) {
+    categoriesFilter: function() {
       try {
         switch (this.categoriesFilter) {
           case "Type":
@@ -691,7 +711,7 @@ export default {
       } catch (err) {
         // continue regardless of error
       } finally {
-        this.showStoredFilters = this.categoriesFilter === 'stored_selections' ? true : false;
+        this.showStoredFilters = this.categoriesFilter === "stored_selections" ? true : false;
         let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
         this.values = this.values.filter(value => {
           return selectedValues.filter(filter => filter.value == value).length == 0;
@@ -741,7 +761,7 @@ export default {
         }
       }
     },
-    requestFilterByGroup(item, search) {
+    requestFilterByGroup(item) {
       const request = item.request;
       let match = false;
       let typesFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "type");
@@ -802,7 +822,7 @@ export default {
 
         responsibleFilter.forEach(currentFilter => {
           if (request.responsible) {
-            responsibleFilterMatch = request.responsible.name.toLowerCase() === currentFilter.value.toLowerCase()
+            responsibleFilterMatch = request.responsible.name.toLowerCase() === currentFilter.value.toLowerCase();
           }
         });
       }
@@ -812,7 +832,7 @@ export default {
 
         assignedFilter.forEach(currentFilter => {
           if (request.assignedTo) {
-            assignedFilterMatch = request.assignedTo.name.toLowerCase() === currentFilter.value.toLowerCase()
+            assignedFilterMatch = request.assignedTo.name.toLowerCase() === currentFilter.value.toLowerCase();
           }
         });
       }
@@ -876,11 +896,11 @@ export default {
           request.contract.client.toLowerCase().includes(this.search) ||
           request.contract.name.toLowerCase().includes(this.search) ||
           request.status.toLowerCase().includes(this.search) ||
-          request.assignedToName && request.assignedToName.toLowerCase().includes(this.search) ||
-          request.responsibleName && request.responsibleName.toLowerCase().includes(this.search) ||
-          request.authorName && request.authorName.toLowerCase().includes(this.search) ||
-          request.type && request.type.toLowerCase().includes(this.search) ||
-          request.severity && request.severity.toLowerCase().includes(this.search)
+          (request.assignedToName && request.assignedToName.toLowerCase().includes(this.search)) ||
+          (request.responsibleName && request.responsibleName.toLowerCase().includes(this.search)) ||
+          (request.authorName && request.authorName.toLowerCase().includes(this.search)) ||
+          (request.type && request.type.toLowerCase().includes(this.search)) ||
+          (request.severity && request.severity.toLowerCase().includes(this.search))
         );
       }
 
@@ -1009,9 +1029,14 @@ export default {
       else return "";
     },
     displayCnsProgressBar(item) {
-      return  item.status !== "closed" && item.status !== "resolved" &&
-              item.request.software && item.request.software.software &&
-              item.request.contract && item.request.contract.clientId;
+      return (
+        item.status !== "closed" &&
+        item.status !== "resolved" &&
+        item.request.software &&
+        item.request.software.software &&
+        item.request.contract &&
+        item.request.contract.clientId
+      );
     },
     getOssaConfById(ossaId) {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
@@ -1034,7 +1059,7 @@ export default {
       this.collectedCNS[value.ticketId] = value;
     },
     capitalize(value) {
-      return capitalize(value)
+      return capitalize(value);
     }
   },
   created() {
@@ -1076,7 +1101,8 @@ export default {
   margin-top: 10px;
 }
 
-.v-input.pa-0.v-text-field.v-select.v-select--is-menu-active.v-autocomplete.v-input--is-focused.primary--text, .v-input.pa-0.v-text-field.v-select {
+.v-input.pa-0.v-text-field.v-select.v-select--is-menu-active.v-autocomplete.v-input--is-focused.primary--text,
+.v-input.pa-0.v-text-field.v-select {
   width: 200px !important;
 }
 
@@ -1132,7 +1158,10 @@ th.column.sortable.text-xs-left {
   padding-top: 10px !important;
 }
 
-div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placeholder, > div, > div, > div.v-input__append-inner, > div, div.v-input.scoped-requests-searchv-text-field--enclosed.v-select {
+div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placeholder,
+> div, > div, > div.v-input__append-inner,
+> div,
+div.v-input.scoped-requests-searchv-text-field--enclosed.v-select {
   max-width: 250px;
 }
 

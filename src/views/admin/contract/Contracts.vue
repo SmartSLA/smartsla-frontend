@@ -81,7 +81,7 @@
               v-if="$auth.check('admin')"
               class="blue-color"
               :to="{ name: 'Client', params: { id: props.item.clientId } }"
-            >{{ props.item.client }}
+              >{{ props.item.client }}
             </router-link>
             <span v-else> {{ props.item.client }} </span>
           </td>
@@ -120,7 +120,7 @@ export default {
       .then(response => {
         this.contracts = response.data;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch contracts list"),
           color: "error"
@@ -164,7 +164,11 @@ export default {
   color: #777;
 }
 
-.contracts-search-name, .contracts-search-status, .contracts-search-tam, .contracts-search-commercial, .contracts-search-team {
+.contracts-search-name,
+.contracts-search-status,
+.contracts-search-tam,
+.contracts-search-commercial,
+.contracts-search-team {
   width: 200px;
 }
 

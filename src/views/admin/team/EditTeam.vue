@@ -54,12 +54,7 @@
                 <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-autocomplete
-                  :items="contracts"
-                  item-text="name"
-                  item-value="name"
-                  multiple
-                ></v-autocomplete>
+                <v-autocomplete :items="contracts" item-text="name" item-value="name" multiple></v-autocomplete>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs5></v-flex>
@@ -94,7 +89,8 @@
   </v-container>
 </template>
 <script>
-import { TYPE } from "@/constants.js";
+import { USER_TYPE } from "@/constants.js";
+import { routeNames } from "@/router";
 
 export default {
   data() {
@@ -159,7 +155,7 @@ export default {
     deleteTeam() {
       this.$http
         .deleteTeam(this.team._id)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("team deleted"),
             color: "success"
@@ -181,7 +177,7 @@ export default {
         .then(response => {
           this.team = response.data;
         })
-        .catch(error => {
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: "failed to fetch team",
             color: "error"
@@ -192,13 +188,13 @@ export default {
       .listUsers()
       .then(({ data }) => {
         this.users = data;
-        this.expertUsers = data.filter(user => user.type == TYPE.EXPERT);
+        this.expertUsers = data.filter(user => user.type == USER_TYPE.EXPERT);
       })
       .catch(console.log);
 
     this.$http
       .getContracts()
-      .then(({data}) => {
+      .then(({ data }) => {
         this.contracts = data;
       })
       .catch(console.log);

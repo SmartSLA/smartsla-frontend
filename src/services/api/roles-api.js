@@ -15,6 +15,6 @@ export default {
   },
 
   deleteRole(roleId) {
-    return this.delete(`/ticketing/api/roles/${roleId}`)
+    return this.delete(`/ticketing/api/roles/${roleId}`);
   }
 };

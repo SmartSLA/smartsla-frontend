@@ -118,7 +118,7 @@ export default {
         cummunicationLink: "www.drupal.com/7.1.4"
       }
     };
-  },
+  }
 };
 </script>
 <style lang="stylus" scoped>
