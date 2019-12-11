@@ -179,7 +179,8 @@
                       <v-icon>mdi-file-document-edit-outline</v-icon>
                       {{
                         $t(
-                          "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
+                          "Ticket contractual engagements: " +
+                            "Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
                           {
                             supported: cnsDurationDisplay(selectedEngagement.supported, createdDuringBusinessHours),
                             bypassed: cnsDurationDisplay(selectedEngagement.bypassed, createdDuringBusinessHours),
@@ -348,7 +349,7 @@ export default {
       types: ["type1", "type2", "type3", "type4"],
       engagementsCategory: [],
       selectedTypes: [],
-      // eslint-disable-next-line max-len
+      // eslint-disable-next-line max-len,no-useless-escape
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       emailVerfication: [],
       meetingId: "",
@@ -590,7 +591,8 @@ export default {
         return engagements.map(engagement => engagement.request);
       }
 
-      this.selectedTypes = [];
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.selectedTypes = []; // FIXME Fix this
       return [];
     },
 
@@ -616,7 +618,8 @@ export default {
     severityList() {
       if (this.ticket.type.length && Object.keys(this.ticket.software || {}).length) {
         const engagements = this.ticket.contract.Engagements[this.ticket.software.critical].engagements;
-        this.engagementsCategory = engagements.slice();
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.engagementsCategory = engagements.slice(); // FIXME Fix this
         return engagements.filter(engagement => engagement.request == this.ticket.type).map(item => item.severity);
       }
 
@@ -649,6 +652,8 @@ export default {
     },
     sortedListOfSoftware() {
       if (this.ticket.contract.software) {
+        // FIXME Fix this
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         return this.ticket.contract.software.sort((a, b) => a.software.name.localeCompare(b.software.name));
       }
 

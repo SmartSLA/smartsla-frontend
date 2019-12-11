@@ -21,7 +21,7 @@
         access_time
       </v-icon>
       <v-icon v-else-if="isPreviousStep" :color="getEngagementColor(cns[cnsType], duration)">
-        {{ duration === 0 ? "done" : percentage(cns[cnsType], duration) < 100 ? "done" : "clear" }}
+        {{ getLabel(cns[cnsType], duration) }}
       </v-icon>
     </v-flex>
   </v-layout>
@@ -98,6 +98,9 @@ export default {
     }
   },
   methods: {
+    getLabel(cns, duration) {
+      return duration === 0 ? "done" : this.percentage(cns, duration) < 100 ? "done" : "clear";
+    },
     percentage(cns, totalValue) {
       var hours = this.getCnsHours(cns);
       let value = (100 * hours) / totalValue;

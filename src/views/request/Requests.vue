@@ -338,7 +338,8 @@
             <span v-if="!userContracts.length">
               {{
                 $t(
-                  "You are not registered in any contract, you should get in touch with someone in charge of the platform in your company"
+                  "You are not registered in any contract, " +
+                    "you should get in touch with someone in charge of the platform in your company"
                 )
               }}
             </span>
