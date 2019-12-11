@@ -75,8 +75,8 @@
                   color="primary"
                   :rules="[() => user.role.length > 0 || $i18n.t('Required field')]"
                 >
-                  <v-radio :label="$t('Customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
-                  <v-radio :label="$t('Viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
+                  <v-radio :label="$t('customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
+                  <v-radio :label="$t('viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
                   <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
                 </v-radio-group>
@@ -98,18 +98,32 @@
                 ></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
-              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert'">
+              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert' && user.client">
                 <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
-              <v-flex xs8 v-if="user.type !== 'expert'">
-                <v-select
-                  :items="filteredContractsByClient"
-                  item-value="_id"
-                  item-text="name"
-                  multiple
-                  v-model="user.contracts"
-                ></v-select>
+              <v-flex xs8 v-if="user.type !== 'expert' && user.client">
+                <v-card>
+                  <v-list subheader two-line>
+                    <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id" @click="contract.selected != contract.selected">
+                      <v-list-tile-action>
+                        <v-checkbox v-model="contract.selected" color="success"></v-checkbox>
+                      </v-list-tile-action>
+                      <v-list-tile-content>
+                        <v-list-tile-title>{{ contract.name }}</v-list-tile-title>
+                        <v-list-tile-sub-title>{{ contract.client }}</v-list-tile-sub-title>
+                      </v-list-tile-content>
+                      <v-list-tile-action>
+                        <v-select
+                          :items="contractRoles"
+                          :label="$t('Role')"
+                          v-model="contract.role"
+                        ></v-select>
+                      </v-list-tile-action>
+                    </v-list-tile>
+                  </v-list>
+                </v-card>
               </v-flex>
+
               <v-flex xs12 offset-xs5>
                 <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
                 <v-btn color="error" @click="openDialog = true" v-if="isEdit">{{ $t("Delete") }}</v-btn>
@@ -142,6 +156,7 @@
 <script>
 import { routeNames } from "@/router";
 import { USER_ROLES } from "@/constants.js";
+import Vue from "vue";
 
 export default {
   data() {
@@ -159,7 +174,8 @@ export default {
         phone: "",
         job_title: ""
       },
-      openDialog: false
+      openDialog: false,
+      contractRoles: USER_ROLES.beneficiary.map((role) => ({ text: this.$i18n.t(role), value: role }))
     };
   },
   watch: {
@@ -171,7 +187,15 @@ export default {
     },
     filteredContractsByClient() {
       if(!this.user.client) return [];
-      return this.contractList.filter(contract => contract.clientId === this.user.client);
+      const contracts = this.contractList
+        .filter(contract => contract.clientId === this.user.client)
+        .map(contract => {
+          Vue.set(contract, 'contract_id', contract._id);
+          Vue.set(contract, 'selected', this.isContractUser(contract._id));
+          Vue.set(contract, 'role', this.getRoleByContractId(contract._id) || 'viewer');
+          return contract
+        });
+        return contracts;
     }
   },
   created() {
@@ -185,7 +209,7 @@ export default {
             this.user = {
               ...this.user,
               client: this.user.contracts[0].contract.clientId,
-              contracts: this.user.contracts.map(({contract}) => contract._id)
+              contracts: this.user.contracts.map(({contract, role, selected}) => ({contract: contract._id, role, selected: true}))
             }
           }
         })
@@ -198,6 +222,14 @@ export default {
     }
   },
   methods: {
+    isContractUser(contract_id) {
+      const userContracts = this.user.contracts.map(({contract}) => (contract));
+      return userContracts.includes(contract_id);
+    },
+    getRoleByContractId(id) {
+      const { role } = this.user.contracts.find(contract => contract.contract === id) || {role : 'viewer'};
+      return role;
+    },
     fetchData() {
       return Promise.all([this.getContracts(), this.getClients()]);
     },
@@ -205,26 +237,16 @@ export default {
       this.user.role = "";
       this.user.contracts = [];
     },
-    createUser() {
-      this.user.client = USER_ROLES.beneficiary.includes(this.user.role) ? this.user.client : "" ; 
-      this.$http
-        .createUser(this.user)
-        .then(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("User created"),
-            color: "success"
-          });
-          this.$router.push({ name: routeNames.USERS });
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: $t("Can not create user"),
-            color: "error"
-          });
-        });
-    },
     updateUser() {
-      this.user.client = USER_ROLES.beneficiary.includes(this.user.role) ? this.user.client : "" ; 
+      const contracts = this.filteredContractsByClient
+        .filter(({selected}) => selected === true)
+        .map(({contract_id, role}) => ({contract_id, role}));
+      
+      this.user  = {
+        ...this.user,
+        contracts
+      };
+
       this.$http
         .updateUser(this.user._id, this.user)
         .then(() => {
