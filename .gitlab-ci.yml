@@ -6,7 +6,7 @@ stages:
   - docker_build
   - deploy_dev
 
-.lint:
+lint:
   stage: lint
   except:
     - triggers
