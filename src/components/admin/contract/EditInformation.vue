@@ -38,7 +38,7 @@
           <v-flex xs8>
             <v-text-field v-model="contract.mailingList.internal"></v-text-field>
           </v-flex>
-          <v-flex xs3>{{ $t("client mailing list") }}</v-flex>
+          <v-flex xs3>{{ $t("Client mailing list") }}</v-flex>
           <v-flex xs8>
             <v-text-field v-model="contract.mailingList.external"></v-text-field>
           </v-flex>
