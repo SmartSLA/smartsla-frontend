@@ -6,7 +6,6 @@ import {
   calculateSuspendedMinutes
 } from "@/services/cns";
 import moment from "moment";
-import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
 const currentDate = moment("2019-09-30T18:00:00.697+02:00");
 function getCurrentDate() {

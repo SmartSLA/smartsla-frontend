@@ -2,7 +2,7 @@
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
       <v-navigation-drawer clipped fixed app v-if="$auth.check() && showNavigation">
-        <router-view name="sidebar"/>
+        <router-view name="sidebar" />
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
@@ -30,12 +30,11 @@
     <div v-else>
       <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
     </div>
-    <snackbar/>
+    <snackbar />
   </v-app>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
 import UserMenu from "@/components/UserMenu.vue";
 import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
@@ -54,7 +53,7 @@ export default {
   },
   computed: {
     showNavigation() {
-      return this.$route.matched.some(route => route.meta.showSideBar)
+      return this.$route.matched.some(route => route.meta.showSideBar);
     },
 
     routeNames() {
@@ -169,7 +168,8 @@ export default {
   background-color: #eee !important;
 }
 
-.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text, .v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text {
+.v-icon.arrow-down.pr-4.material-icons.theme--light.blue--text,
+.v-icon.arrow-down.pr-5.pt-2.material-icons.theme--light.blue--text {
   font-size: 36px !important;
 }
 
@@ -211,13 +211,7 @@ tr:nth-child(odd) {
   padding: 0px !important;
 }
 
-/* #openpaas > div.application--wrap > div > main > div > div > div > main > div > div.container.fluid.fill-height > div > div > div > div.v-card__text > form > div > div:nth-child(8) > div > div.flex.pl-0.xs6 > div > div.v-input__append-outer {
-  height: 48px;
-  padding-top: 0px !important;
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
-  margin-left: 0px !important;
-} */
+
 .ql-container {
   background: #FAFAFA;
 }

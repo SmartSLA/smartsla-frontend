@@ -45,7 +45,7 @@
                       v-if="$auth.check('admin')"
                       :to="{ name: 'Client', params: { id: contract.clientId } }"
                       class="blue-color"
-                    >{{ contract.client }}
+                      >{{ contract.client }}
                     </router-link>
                     <span v-else> {{ contract.client }} </span>
                   </v-flex>
@@ -85,7 +85,9 @@
                     <div class="subheading font-weight-medium">{{ $t("24h/7 option") }} :</div>
                   </v-flex>
                   <v-flex xs8>
-                    <v-flex xs8>{{ $t(contract.features && contract.features.nonBusinessHours) ? $t("active") : $t("not active") }}</v-flex>
+                    <v-flex xs8>{{
+                      $t(contract.features && contract.features.nonBusinessHours) ? $t("active") : $t("not active")
+                    }}</v-flex>
                   </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Start") }} :</div>
@@ -184,11 +186,7 @@
                   <v-flex xs10>
                     <h4 class="headline">
                       {{ $t("Contractual commitments") }}
-                      <v-chip
-                        :color="critColor('critical')"
-                        :text-color="critTextColor('critical')"
-                        label
-                      >
+                      <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')" label>
                         {{ $t("critical") }}
                       </v-chip>
                     </h4>
@@ -261,11 +259,7 @@
                   <v-flex xs10>
                     <h4 class="headline">
                       {{ $t("Contractual commitments") }}
-                      <v-chip 
-                        :color="critColor('sensible')"
-                        :text-color="critTextColor('sensible')"
-                        label
-                      >
+                      <v-chip :color="critColor('sensible')" :text-color="critTextColor('sensible')" label>
                         {{ $t("sensible") }}
                       </v-chip>
                     </h4>
@@ -338,11 +332,7 @@
                   <v-flex xs10>
                     <h4 class="headline">
                       {{ $t("Contractual commitments") }}
-                      <v-chip
-                        :color="critColor('standard')"
-                        :text-color="critTextColor('standard')"
-                        label
-                      >
+                      <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')" label>
                         {{ $t("standard") }}
                       </v-chip>
                     </h4>
@@ -380,7 +370,7 @@
                         <v-avatar :color="getOssaByKey(props.item.idOssa).color" size="25">
                           <span class="white--text">{{ getOssaByKey(props.item.idOssa).id }}</span>
                         </v-avatar>
-                        <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }}  </span>
+                        <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }} </span>
                       </span>
                     </td>
                     <td class="text-xs-center">
@@ -445,7 +435,7 @@
               <v-subheader>
                 {{ $t("Beneficiaries") }}
               </v-subheader>
-              <users-list :users="customers"/>
+              <users-list :users="customers" />
             </template>
           </v-list>
         </v-card>
@@ -455,9 +445,8 @@
 </template>
 
 <script>
-import { OSSA_IDS } from '@/constants.js';
+import { OSSA_IDS } from "@/constants.js";
 import UsersList from "@/components/user/UsersList.vue";
-import moment from "moment";
 
 export default {
   data() {
@@ -525,22 +514,22 @@ export default {
       .then(response => {
         this.contract = response.data;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch contract"),
           color: "error"
         });
       });
 
-      this.$http.getContractUsers(contractId)
-        .then(users => this.contractUsers = users)
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Failed to fetch users"),
-            color: "error"
-          });
+    this.$http
+      .getContractUsers(contractId)
+      .then(users => (this.contractUsers = users))
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("Failed to fetch users"),
+          color: "error"
         });
-
+      });
   },
   methods: {
     getOssaByKey(key) {
@@ -551,9 +540,7 @@ export default {
     },
 
     getUsersWithRole(role) {
-      return (this.contractUsers || [])
-        .filter(contractUsers => contractUsers.role === role)
-        .map(reader => (reader.user));
+      return (this.contractUsers || []).filter(contractUsers => contractUsers.role === role).map(reader => reader.user);
     },
 
     critColor(critLevel) {
@@ -594,9 +581,12 @@ export default {
     cnsDurationDisplay(cnsType, isInBusinessHours = false) {
       const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
       const parsedDuration = this.moment.duration(durationString);
-      const days = parsedDuration.clone().subtract({
-        hours: parsedDuration.hours()
-      }).asDays();
+      const days = parsedDuration
+        .clone()
+        .subtract({
+          hours: parsedDuration.hours()
+        })
+        .asDays();
 
       if (days) {
         if (parsedDuration.hours()) {
@@ -611,11 +601,10 @@ export default {
         });
       }
 
-
       return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
         hours: parsedDuration.hours()
       });
-    },
+    }
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {

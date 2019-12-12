@@ -1,153 +1,142 @@
 <template>
   <v-card>
-  <v-card-title class="light-blue lighten-1">
-    <span class="title white--text">{{ !editing ? $t("Add software") : $t("Edit software") }}</span>
-    <v-spacer></v-spacer>
-    <v-btn icon dark @click="cancel">
+    <v-card-title class="light-blue lighten-1">
+      <span class="title white--text">{{ !editing ? $t("Add software") : $t("Edit software") }}</span>
+      <v-spacer></v-spacer>
+      <v-btn icon dark @click="cancel">
         <v-icon>mdi-close</v-icon>
-    </v-btn>
-  </v-card-title>
-  <v-card-text>
-    <v-form
-      v-model="valid"
-      ref="form"
-      lazy-validation
-    >
-    <v-layout row wrap align-center>
-      <v-flex xs3 class="required-label">{{ $t("Software") }}</v-flex>
-      <v-flex xs9>
-        <v-autocomplete
-          v-model="software.software"
-          :items="softwareList"
-          item-text="name"
-          item-value="name"
-          flat
-          return-object
-          single-line
-          :rules="[() => Object.keys(software.software).length > 0 || $i18n.t('Required field')]"
-        ></v-autocomplete>
-      </v-flex>
-      <v-flex xs3>{{ $t("Start of support") }}</v-flex>
-      <v-flex xs9>
-        <v-menu
-          v-model="startDateModel"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          max-width="290px"
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on }">
+      </v-btn>
+    </v-card-title>
+    <v-card-text>
+      <v-form v-model="valid" ref="form" lazy-validation>
+        <v-layout row wrap align-center>
+          <v-flex xs3 class="required-label">{{ $t("Software") }}</v-flex>
+          <v-flex xs9>
+            <v-autocomplete
+              v-model="software.software"
+              :items="softwareList"
+              item-text="name"
+              item-value="name"
+              flat
+              return-object
+              single-line
+              :rules="[() => Object.keys(software.software).length > 0 || $i18n.t('Required field')]"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex xs3>{{ $t("Start of support") }}</v-flex>
+          <v-flex xs9>
+            <v-menu
+              v-model="startDateModel"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="software.SupportDate.start"
+                  persistent-hint
+                  prepend-icon="event"
+                  @blur="software.startDate = parseDate(software.SupportDate.start)"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="software.SupportDate.start"
+                no-title
+                @input="startDateModel = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex xs3>{{ $t("End of support") }}</v-flex>
+          <v-flex xs9>
+            <v-menu
+              v-model="endDateModel"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="software.SupportDate.end"
+                  persistent-hint
+                  prepend-icon="event"
+                  @blur="software.SupportDate.end = parseDate(software.SupportDate.end)"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="software.SupportDate.end" no-title @input="endDateModel = false"></v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Critical") }}</v-flex>
+          <v-flex xs9>
+            <v-btn-toggle :value="software.critical" v-model="software.critical" mandatory>
+              <v-btn value="critical" flat :class="{ error: software.critical == 'critical' }">{{
+                $t("critical")
+              }}</v-btn>
+              <v-btn value="sensible" flat :class="{ warning: software.critical == 'sensible' }">{{
+                $t("sensible")
+              }}</v-btn>
+              <v-btn value="standard" flat :class="{ white: software.critical == 'standard' }">{{
+                $t("standard")
+              }}</v-btn>
+            </v-btn-toggle>
+          </v-flex>
+          <v-flex xs3 class="required-label">{{ $t("Version") }}</v-flex>
+          <v-flex xs9>
             <v-text-field
-              v-model="software.SupportDate.start"
-              persistent-hint
-              prepend-icon="event"
-              @blur="software.startDate = parseDate(software.SupportDate.start)"
-              v-on="on"
+              v-model="software.version"
+              :rules="[() => software.version.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="software.SupportDate.start"
-            no-title
-            @input="startDateModel = false"
-          ></v-date-picker>
-        </v-menu>
-      </v-flex>
-      <v-flex xs3>{{ $t("End of support") }}</v-flex>
-      <v-flex xs9>
-        <v-menu
-          v-model="endDateModel"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          max-width="290px"
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on }">
+          </v-flex>
+          <v-flex xs3 class="required-label">{{ $t("OS") }}</v-flex>
+          <v-flex xs9>
             <v-text-field
-              v-model="software.SupportDate.end"
-              persistent-hint
-              prepend-icon="event"
-              @blur="software.SupportDate.end = parseDate(software.SupportDate.end)"
-              v-on="on"
+              v-model="software.os"
+              :rules="[() => software.os.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="software.SupportDate.end"
-            no-title
-            @input="endDateModel = false"
-          ></v-date-picker>
-        </v-menu>
-      </v-flex>
-      <v-flex xs3 class="required-label">{{ $t("Critical") }}</v-flex>
-      <v-flex xs9>
-        <v-btn-toggle :value="software.critical" v-model="software.critical" mandatory>
-          <v-btn value="critical" flat :class="{ error: software.critical == 'critical' }">{{
-            $t("critical")
-          }}</v-btn>
-          <v-btn value="sensible" flat :class="{ warning: software.critical == 'sensible' }">{{
-            $t("sensible")
-          }}</v-btn>
-          <v-btn value="standard" flat :class="{ white: software.critical == 'standard' }">{{
-            $t("standard")
-          }}</v-btn>
-        </v-btn-toggle>
-      </v-flex>
-      <v-flex xs3 class="required-label">{{ $t("Version") }}</v-flex>
-      <v-flex xs9>
-        <v-text-field
-          v-model="software.version"
-          :rules="[() => software.version.length > 0 || $i18n.t('Required field')]"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs3 class="required-label">{{ $t("OS") }}</v-flex>
-      <v-flex xs9>
-        <v-text-field
-          v-model="software.os"
-          :rules="[() => software.os.length > 0 || $i18n.t('Required field')]"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs3>{{ $t("Referent") }}</v-flex>
-      <v-flex xs9>
-        <v-autocomplete
-          :items="[...referents]"
-          v-model="software.technicalReferent"
-          item-text="name"
-          :search-input.sync="syncTechnical"
-        ></v-autocomplete>
-      </v-flex>
-      <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
-      <v-flex xs9>
-        <v-radio-group
-          v-model="software.generic"
-          row
-        >
-          <v-radio :label="$i18n.t('yes')" value="yes"></v-radio>
-          <v-radio :label="$i18n.t('no')" value="repo"></v-radio>
-        </v-radio-group>
-      </v-flex>
-      <v-flex xs3 class="pt-3" v-if="software.generic && software.generic != 'yes'">
-        {{ $t("repo link") }}
-      </v-flex>
-      <v-flex xs9 v-if="software.generic && software.generic != 'yes'">
-        <v-text-field v-model="software.generic.repo"></v-text-field>
-      </v-flex>
-    </v-layout>
-  </v-form>
-  </v-card-text>
-  <v-divider></v-divider>
-  <v-card-actions>
+          </v-flex>
+          <v-flex xs3>{{ $t("Referent") }}</v-flex>
+          <v-flex xs9>
+            <v-autocomplete
+              :items="[...referents]"
+              v-model="software.technicalReferent"
+              item-text="name"
+              :search-input.sync="syncTechnical"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
+          <v-flex xs9>
+            <v-radio-group v-model="software.generic" row>
+              <v-radio :label="$i18n.t('yes')" value="yes"></v-radio>
+              <v-radio :label="$i18n.t('no')" value="repo"></v-radio>
+            </v-radio-group>
+          </v-flex>
+          <v-flex xs3 class="pt-3" v-if="software.generic && software.generic != 'yes'">
+            {{ $t("repo link") }}
+          </v-flex>
+          <v-flex xs9 v-if="software.generic && software.generic != 'yes'">
+            <v-text-field v-model="software.generic.repo"></v-text-field>
+          </v-flex>
+        </v-layout>
+      </v-form>
+    </v-card-text>
+    <v-divider></v-divider>
+    <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="light-blue" flat @click="submit">{{ !editing ? $t("Add") : $t("Edit") }}</v-btn>
       <v-btn color="red lighten-2" flat @click="cancel">{{ $t("Cancel") }}</v-btn>
-  </v-card-actions>
-</v-card>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -166,28 +155,28 @@ export default {
     softwareList: [],
     valid: true,
     referents: [],
-    syncTechnical: null,
+    syncTechnical: null
   }),
   watch: {
     isModalOpen(value) {
-      if(value && !this.editing) {
+      if (value && !this.editing) {
         this.resetOnCancel();
         this.$refs.form.resetValidation();
       }
     },
     syncTechnical(referent) {
-      if (referent === '') {
-        this.software.technicalReferent = '';
+      if (referent === "") {
+        this.software.technicalReferent = "";
       }
     }
   },
   methods: {
     cancel() {
-      this.$emit('closeFormModal');
+      this.$emit("closeFormModal");
     },
     submit() {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', this.software);
+        this.$emit("submit", this.software);
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("the required fields must be filled"),
@@ -221,7 +210,7 @@ export default {
       .then(response => {
         this.softwareList = response.data;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: "cannot fetch software list",
           color: "error"
@@ -233,7 +222,7 @@ export default {
       .then(({ data }) => {
         this.referents = data;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("cannot fetch experts list"),
           color: "error"

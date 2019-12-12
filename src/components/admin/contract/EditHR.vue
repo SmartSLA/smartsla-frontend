@@ -163,7 +163,7 @@ export default {
     validate() {
       this.$http
         .updateContract(this.contract._id, this.contract)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("updated"),
             color: "success"

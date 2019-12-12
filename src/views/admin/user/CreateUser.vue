@@ -19,15 +19,19 @@
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
-                <label class="v-label theme--light" v-if="user.type === 'beneficiary' ">{{$t("Beneficiary is a customer linked to a client and can create, see tickets")}}</label>
-                <label class="v-label theme--light" v-if="user.type === 'expert'">{{$t("Expert is part of the team handling the ticket")}}</label>
+                <label class="v-label theme--light" v-if="user.type === 'beneficiary'">{{
+                  $t("Beneficiary is a customer linked to a client and can create, see tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.type === 'expert'">{{
+                  $t("Expert is part of the team handling the ticket")
+                }}</label>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <span class="title required-label">{{ $t("Search users") }}</span>
               </v-flex>
               <v-flex xs8>
-                 <v-autocomplete
+                <v-autocomplete
                   v-model="member"
                   :items="items"
                   :loading="isLoading"
@@ -38,7 +42,7 @@
                   item-value="name"
                   :label="$t('Users')"
                   cache-items
-                  :rules="[() => member && !!Object.keys(member) || $i18n.t('Required field')]"
+                  :rules="[() => (member && !!Object.keys(member)) || $i18n.t('Required field')]"
                   return-object
                 >
                   <template slot="no-data">
@@ -51,7 +55,7 @@
 
                   <template slot="selection" slot-scope="data">
                     <v-chip :selected="data.selected">
-                    {{ data.item.name }}
+                      {{ data.item.name }}
                     </v-chip>
                   </template>
 
@@ -60,37 +64,28 @@
                       <v-list-tile-title v-text="data.item.name"></v-list-tile-title>
                     </v-list-tile-content>
                   </template>
-                 </v-autocomplete>
+                </v-autocomplete>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <span class="title required-label">{{ $t("Name") }}</span>
               </v-flex>
               <v-flex xs8>
-                <v-text-field
-                  v-model="user.name"
-                  disabled
-                ></v-text-field>
+                <v-text-field v-model="user.name" disabled></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <span class="title required-label">{{ $t("Email") }}</span>
               </v-flex>
               <v-flex xs8>
-                <v-text-field
-                  v-model="user.email"
-                  disabled
-                ></v-text-field>
+                <v-text-field v-model="user.email" disabled></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <span class="title">{{ $t("Phone") }}</span>
               </v-flex>
               <v-flex xs8>
-                <v-text-field
-                  v-model="user.phone"
-                  disabled
-                ></v-text-field>
+                <v-text-field v-model="user.phone" disabled></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -115,22 +110,25 @@
                   <v-radio :label="$t('Manager')" value="manager" v-if="user.type === 'expert'"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert" v-if="user.type === 'expert'"></v-radio>
                 </v-radio-group>
-                <label class="v-label theme--light" v-if=" user.role === 'viewer'">{{ $t("Viewer role can only see tickets") }}</label>
-                <label class="v-label theme--light" v-if=" user.role === 'customer'">{{ $t("User role can create and comment tickets") }}</label>
-                <label class="v-label theme--light" v-if=" user.role === 'expert'">{{ $t("Expert role can see all tickets") }}</label>
-                <label class="v-label theme--light" v-if=" user.role === 'manager'">{{ $t("Admin role can see all tickets and administrate") }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'viewer'">{{
+                  $t("Viewer role can only see tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'customer'">{{
+                  $t("User role can create and comment tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'expert'">{{
+                  $t("Expert role can see all tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'manager'">{{
+                  $t("Admin role can see all tickets and administrate")
+                }}</label>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4" v-if="user.type !== 'expert'">
                 <span class="title">{{ $t("Client") }}</span>
               </v-flex>
               <v-flex xs8 v-if="user.type !== 'expert'">
-                <v-select
-                  :items="clientsList"
-                  item-value="_id"
-                  item-text="name"
-                  v-model="user.client"
-                ></v-select>
+                <v-select :items="clientsList" item-value="_id" item-text="name" v-model="user.client"></v-select>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4" v-if="user.type !== 'expert' && user.client">
@@ -139,7 +137,7 @@
               <v-flex xs8 v-if="user.type !== 'expert' && user.client">
                 <v-card>
                   <v-list subheader two-line>
-                    <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id" >
+                    <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id">
                       <v-list-tile-action>
                         <v-checkbox v-model="contract.selected"></v-checkbox>
                       </v-list-tile-action>
@@ -148,11 +146,7 @@
                         <v-list-tile-sub-title>{{ contract.client }}</v-list-tile-sub-title>
                       </v-list-tile-content>
                       <v-list-tile-action>
-                        <v-select
-                          :items="contractRoles"
-                          label="Role"
-                          v-model="contract.role"
-                        ></v-select>
+                        <v-select :items="contractRoles" label="Role" v-model="contract.role"></v-select>
                       </v-list-tile-action>
                     </v-list-tile>
                   </v-list>
@@ -193,7 +187,7 @@ export default {
         phone: ""
       },
       openDialog: false,
-      contractRoles: USER_ROLES.beneficiary.map((role) => ({ text: this.$i18n.t(role), value: role }))
+      contractRoles: USER_ROLES.beneficiary.map(role => ({ text: this.$i18n.t(role), value: role }))
     };
   },
   created() {
@@ -201,21 +195,21 @@ export default {
   },
   computed: {
     filteredContractsByClient() {
-      if(!this.user.client) return [];
+      if (!this.user.client) return [];
       const contracts = this.contractList
         .filter(contract => contract.clientId === this.user.client)
         .map(contract => {
-          Vue.set(contract, 'contract_id', contract._id);
-          Vue.set(contract, 'selected', false);
-          Vue.set(contract, 'role', 'viewer');
-          return contract
+          Vue.set(contract, "contract_id", contract._id);
+          Vue.set(contract, "selected", false);
+          Vue.set(contract, "role", "viewer");
+          return contract;
         });
-        return contracts;
+      return contracts;
     }
   },
   watch: {
     member(value) {
-      this.user.name = value ? value.name : "";
+      this.user.name = value ? value.name : "";
       this.user.email = value ? value.email : "";
       this.user.phone = value ? value.phone : "";
     },
@@ -224,17 +218,20 @@ export default {
         return;
       }
       this.isLoading = true;
-      this.$http.searchPeople(val)
-        .then(results => results.map(person => ({
-          name: person.names[0].displayName,
-          email: person.emailAddresses[0].value,
-          phone: person.phoneNumbers && person.phoneNumbers[0] ? person.phoneNumbers[0].value : ""
-        })))
+      this.$http
+        .searchPeople(val)
+        .then(results =>
+          results.map(person => ({
+            name: person.names[0].displayName,
+            email: person.emailAddresses[0].value,
+            phone: person.phoneNumbers && person.phoneNumbers[0] ? person.phoneNumbers[0].value : ""
+          }))
+        )
         .then(results => (this.items = results))
         .catch(console.log)
         .finally(() => (this.isLoading = false));
     },
-    'user.client': 'resetUserContracts'
+    "user.client": "resetUserContracts"
   },
   methods: {
     fetchData() {
@@ -246,12 +243,12 @@ export default {
         this.user.contracts = [];
       } else {
         this.user.contracts = this.filteredContractsByClient
-        .filter(({selected}) => selected === true)
-        .map(({contract_id, role}) => ({contract_id, role}));
+          .filter(({ selected }) => selected === true)
+          .map(({ contract_id, role }) => ({ contract_id, role }));
       }
       this.$http
         .createUser(this.user)
-        .then(({data, status}) => {
+        .then(({ data, status }) => {
           if (data && status === 201) {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("User created"),
@@ -284,8 +281,8 @@ export default {
     getContracts() {
       this.$http
         .getContracts()
-        .then(({data}) => (this.contractList = data || []))
-        .catch(error => {
+        .then(({ data }) => (this.contractList = data || []))
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("failed to fetch contracts list"),
             color: "error"
@@ -295,8 +292,8 @@ export default {
     getClients() {
       this.$http
         .listClients()
-        .then(({data}) => (this.clientsList = data || []))
-        .catch(error => {
+        .then(({ data }) => (this.clientsList = data || []))
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: "cannot fetch clients",
             color: "error"

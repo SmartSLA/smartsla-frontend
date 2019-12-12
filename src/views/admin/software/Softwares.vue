@@ -101,7 +101,7 @@ export default {
       .then(response => {
         this.softwares = response.data;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch software list"),
           color: "error"

@@ -97,7 +97,7 @@
               </v-layout>
             </v-flex>
             <v-flex xs4 pr-2 v-if="software.logo">
-               <img :src="software.logo" height="150" />
+              <img :src="software.logo" height="150" />
             </v-flex>
           </v-layout>
         </v-card>
@@ -159,7 +159,7 @@
 export default {
   data() {
     return {
-      software: {},
+      software: {}
     };
   },
   created() {
@@ -169,7 +169,7 @@ export default {
         .then(response => {
           this.software = response.data;
         })
-        .catch(error => {
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: "Failed to fetch software",
             color: "error"

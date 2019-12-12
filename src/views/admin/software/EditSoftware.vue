@@ -190,7 +190,7 @@ export default {
 
     validateFrom() {
       if (this.$refs.form.validate()) {
-        if (!this.isNew) { 
+        if (!this.isNew) {
           this.createSoftware();
         } else {
           this.$http
@@ -220,7 +220,7 @@ export default {
     deleteSoftware() {
       this.$http
         .deleteSoftware(this.$route.params.id)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Software deleted"),
             color: "success"

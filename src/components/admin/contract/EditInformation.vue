@@ -28,9 +28,7 @@
           </v-flex>
           <v-flex xs3>{{ $t("Commercial contact") }}</v-flex>
           <v-flex xs8>
-            <v-text-field
-              v-model="contract.contact.commercial"
-            ></v-text-field>
+            <v-text-field v-model="contract.contact.commercial"></v-text-field>
           </v-flex>
           <v-flex xs3>{{ $t("Technical contact") }}</v-flex>
           <v-flex xs8>
@@ -267,11 +265,13 @@ export default {
     isNew() {
       return this.$route.params.id;
     },
-    requiredUnfilled(){
-      return !this.contract.endDate.length ||
-             !this.contract.startDate.length ||
-             !Object.keys(this.contract.client).length ||
-             !this.contract.name.length;
+    requiredUnfilled() {
+      return (
+        !this.contract.endDate.length ||
+        !this.contract.startDate.length ||
+        !Object.keys(this.contract.client).length ||
+        !this.contract.name.length
+      );
     }
   },
   mounted() {
@@ -305,7 +305,7 @@ export default {
       .then(response => {
         this.clients = response.data.map(client => ({ name: client.name, clientId: client._id }));
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: "cannot fetch clients",
           color: "error"
@@ -348,7 +348,7 @@ export default {
             });
           });
       } else {
-        const {name: client, clientId} = contract.client;
+        const { name: client, clientId } = contract.client;
         contract = {
           ...contract,
           client,
@@ -356,7 +356,7 @@ export default {
         };
         this.$http
           .updateContract(contract._id, contract)
-          .then(response => {
+          .then(() => {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("contract saved"),
               color: "success"
@@ -387,7 +387,7 @@ export default {
     deleteContract() {
       this.$http
         .deleteContract(this.contract._id)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("contract deleted"),
             color: "success"

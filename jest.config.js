@@ -6,6 +6,7 @@ module.exports = {
     "^.+\\.jsx?$": "babel-jest"
   },
   transformIgnorePatterns: [
+    // eslint-disable-next-line max-len
     "<rootDir>/node_modules/(?!(vue-openpaas-components|vuetify-upload-component|vue-json-excel|vuetify/lib|vuetify/src/stylus)/)"
   ],
   moduleNameMapper: {

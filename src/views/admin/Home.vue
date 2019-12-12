@@ -16,10 +16,10 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.USERS}">
+            <v-btn icon fab :to="{ name: routeNames.USERS }">
               <v-icon>list</v-icon>
             </v-btn>
-            <v-btn icon fab :to="{name: routeNames.NEWUSER}">
+            <v-btn icon fab :to="{ name: routeNames.NEWUSER }">
               <v-icon>add</v-icon>
             </v-btn>
           </v-card-title>
@@ -40,10 +40,10 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.TEAMS}">
+            <v-btn icon fab :to="{ name: routeNames.TEAMS }">
               <v-icon>list</v-icon>
             </v-btn>
-            <v-btn icon fab :to="{name: routeNames.NEWTEAM}">
+            <v-btn icon fab :to="{ name: routeNames.NEWTEAM }">
               <v-icon>add</v-icon>
             </v-btn>
           </v-card-title>
@@ -64,10 +64,10 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.CLIENTS}">
+            <v-btn icon fab :to="{ name: routeNames.CLIENTS }">
               <v-icon>list</v-icon>
             </v-btn>
-            <v-btn icon fab :to="{name: routeNames.NEWCLIENT}">
+            <v-btn icon fab :to="{ name: routeNames.NEWCLIENT }">
               <v-icon>add</v-icon>
             </v-btn>
           </v-card-title>
@@ -88,10 +88,10 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.CONTRACTS}">
+            <v-btn icon fab :to="{ name: routeNames.CONTRACTS }">
               <v-icon>list</v-icon>
             </v-btn>
-            <v-btn icon fab :to="{name: routeNames.NEWCONTRACT}">
+            <v-btn icon fab :to="{ name: routeNames.NEWCONTRACT }">
               <v-icon>add</v-icon>
             </v-btn>
           </v-card-title>
@@ -112,10 +112,10 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.SOFTWARELIST}">
+            <v-btn icon fab :to="{ name: routeNames.SOFTWARELIST }">
               <v-icon>list</v-icon>
             </v-btn>
-            <v-btn icon fab :to="{name: routeNames.NEWSOFTWARE}">
+            <v-btn icon fab :to="{ name: routeNames.NEWSOFTWARE }">
               <v-icon>add</v-icon>
             </v-btn>
           </v-card-title>
@@ -136,10 +136,10 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.ADMINCONTRIBUTIONS}">
+            <v-btn icon fab :to="{ name: routeNames.ADMINCONTRIBUTIONS }">
               <v-icon>list</v-icon>
             </v-btn>
-            <v-btn icon fab :to="{name: routeNames.NEWCONTRIBUTION}">
+            <v-btn icon fab :to="{ name: routeNames.NEWCONTRIBUTION }">
               <v-icon>add</v-icon>
             </v-btn>
           </v-card-title>
@@ -153,7 +153,7 @@
               {{ $t("Roles") }}
             </h3>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{name: routeNames.ADMIN_ROLES}">
+            <v-btn icon fab :to="{ name: routeNames.ADMIN_ROLES }">
               <v-icon>build</v-icon>
             </v-btn>
           </v-card-title>
@@ -190,7 +190,7 @@ export default {
         this.users = response.data;
         this.userCount = response.data.length;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch users"),
           color: "error"
@@ -203,7 +203,7 @@ export default {
         this.teams = response.data;
         this.teamCount = response.data.length;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch teams"),
           color: "error"
@@ -216,7 +216,7 @@ export default {
         this.clients = response.data;
         this.clientCount = response.data.length;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch clients"),
           color: "error"
@@ -229,7 +229,7 @@ export default {
         this.contracts = response.data;
         this.contractCount = response.data.length;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch contracts"),
           color: "error"
@@ -242,7 +242,7 @@ export default {
         this.softwares = response.data;
         this.softwareCount = response.data.length;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch softwares"),
           color: "error"

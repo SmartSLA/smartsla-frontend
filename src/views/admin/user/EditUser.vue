@@ -22,8 +22,12 @@
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
-                <label class="v-label theme--light" v-if="user.type === 'beneficiary' ">{{$t("Beneficiary is a customer linked to a client and can create, see tickets")}}</label>
-                <label class="v-label theme--light" v-if="user.type === 'expert'">{{$t("Expert is part of the team handling the ticket")}}</label>
+                <label class="v-label theme--light" v-if="user.type === 'beneficiary'">{{
+                  $t("Beneficiary is a customer linked to a client and can create, see tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.type === 'expert'">{{
+                  $t("Expert is part of the team handling the ticket")
+                }}</label>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -52,10 +56,7 @@
                 <strong>{{ $t("Phone") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field
-                  v-model="user.phone"
-                  :disabled="isEdit"
-                ></v-text-field>
+                <v-text-field v-model="user.phone" :disabled="isEdit"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -80,22 +81,25 @@
                   <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
                 </v-radio-group>
-                <label class="v-label theme--light" v-if=" user.role === 'viewer'">{{ $t("Viewer role can only see tickets") }}</label>
-                <label class="v-label theme--light" v-if=" user.role === 'customer'">{{ $t("User role can create and comment tickets") }}</label>
-                <label class="v-label theme--light" v-if=" user.role === 'expert'">{{ $t("Expert role can see all tickets") }}</label>
-                <label class="v-label theme--light" v-if=" user.role === 'manager'">{{ $t("Admin role can see all tickets and administrate") }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'viewer'">{{
+                  $t("Viewer role can only see tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'customer'">{{
+                  $t("User role can create and comment tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'expert'">{{
+                  $t("Expert role can see all tickets")
+                }}</label>
+                <label class="v-label theme--light" v-if="user.role === 'manager'">{{
+                  $t("Admin role can see all tickets and administrate")
+                }}</label>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4" v-if="user.type != 'expert'">
                 <strong>{{ $t("Client") }} :</strong>
               </v-flex>
               <v-flex xs8 v-if="user.type != 'expert'">
-                <v-select
-                  :items="clientsList"
-                  item-value="_id"
-                  item-text="name"
-                  v-model="user.client"
-                ></v-select>
+                <v-select :items="clientsList" item-value="_id" item-text="name" v-model="user.client"></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
               <v-flex xs3 class="pt-4" v-if="user.type !== 'expert' && user.client">
@@ -104,7 +108,11 @@
               <v-flex xs8 v-if="user.type !== 'expert' && user.client">
                 <v-card>
                   <v-list subheader two-line>
-                    <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id" @click="contract.selected != contract.selected">
+                    <v-list-tile
+                      v-for="contract in filteredContractsByClient"
+                      :key="contract._id"
+                      @click="contract.selected != contract.selected"
+                    >
                       <v-list-tile-action>
                         <v-checkbox v-model="contract.selected" color="success"></v-checkbox>
                       </v-list-tile-action>
@@ -113,11 +121,7 @@
                         <v-list-tile-sub-title>{{ contract.client }}</v-list-tile-sub-title>
                       </v-list-tile-content>
                       <v-list-tile-action>
-                        <v-select
-                          :items="contractRoles"
-                          :label="$t('Role')"
-                          v-model="contract.role"
-                        ></v-select>
+                        <v-select :items="contractRoles" :label="$t('Role')" v-model="contract.role"></v-select>
                       </v-list-tile-action>
                     </v-list-tile>
                   </v-list>
@@ -175,27 +179,27 @@ export default {
         job_title: ""
       },
       openDialog: false,
-      contractRoles: USER_ROLES.beneficiary.map((role) => ({ text: this.$i18n.t(role), value: role }))
+      contractRoles: USER_ROLES.beneficiary.map(role => ({ text: this.$i18n.t(role), value: role }))
     };
   },
   watch: {
-    'user.client': 'resetUserContracts'
+    "user.client": "resetUserContracts"
   },
   computed: {
     isEdit() {
       return !!this.$route.params.id;
     },
     filteredContractsByClient() {
-      if(!this.user.client) return [];
+      if (!this.user.client) return [];
       const contracts = this.contractList
         .filter(contract => contract.clientId === this.user.client)
         .map(contract => {
-          Vue.set(contract, 'contract_id', contract._id);
-          Vue.set(contract, 'selected', this.isContractUser(contract._id));
-          Vue.set(contract, 'role', this.getRoleByContractId(contract._id) || 'viewer');
-          return contract
+          Vue.set(contract, "contract_id", contract._id);
+          Vue.set(contract, "selected", this.isContractUser(contract._id));
+          Vue.set(contract, "role", this.getRoleByContractId(contract._id) || "viewer");
+          return contract;
         });
-        return contracts;
+      return contracts;
     }
   },
   created() {
@@ -203,19 +207,23 @@ export default {
     if (this.$route.params.id) {
       this.$http
         .getUserById(this.$route.params.id)
-        .then(({data}) => {
+        .then(({ data }) => {
           this.user = data;
-          if(this.user.contracts && !!this.user.contracts.length){
+          if (this.user.contracts && !!this.user.contracts.length) {
             this.user = {
               ...this.user,
               client: this.user.contracts[0].contract.clientId,
-              contracts: this.user.contracts.map(({contract, role, selected}) => ({contract: contract._id, role, selected: true}))
-            }
+              contracts: this.user.contracts.map(({ contract, role }) => ({
+                contract: contract._id,
+                role,
+                selected: true
+              }))
+            };
           }
         })
-        .catch(error => {
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: $t("Can not fetech user"),
+            message: this.$i18n.t("Can not fetech user"),
             color: "error"
           });
         });
@@ -223,11 +231,11 @@ export default {
   },
   methods: {
     isContractUser(contract_id) {
-      const userContracts = this.user.contracts.map(({contract}) => (contract));
+      const userContracts = this.user.contracts.map(({ contract }) => contract);
       return userContracts.includes(contract_id);
     },
     getRoleByContractId(id) {
-      const { role } = this.user.contracts.find(contract => contract.contract === id) || {role : 'viewer'};
+      const { role } = this.user.contracts.find(contract => contract.contract === id) || { role: "viewer" };
       return role;
     },
     fetchData() {
@@ -239,10 +247,10 @@ export default {
     },
     updateUser() {
       const contracts = this.filteredContractsByClient
-        .filter(({selected}) => selected === true)
-        .map(({contract_id, role}) => ({contract_id, role}));
-      
-      this.user  = {
+        .filter(({ selected }) => selected === true)
+        .map(({ contract_id, role }) => ({ contract_id, role }));
+
+      this.user = {
         ...this.user,
         contracts
       };
@@ -258,14 +266,14 @@ export default {
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: $t("Can not update user"),
+            message: this.$i18n.t("Can not update user"),
             color: "error"
           });
         });
     },
     validateFrom() {
       if (this.$refs.form.validate()) {
-        if(this.$route.params.id) {
+        if (this.$route.params.id) {
           this.updateUser();
         }
       } else {
@@ -287,7 +295,7 @@ export default {
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: $t("Can not delete user"),
+            message: this.$i18n.t("Can not delete user"),
             color: "error"
           });
         });
@@ -295,7 +303,7 @@ export default {
     getContracts() {
       this.$http
         .getContracts()
-        .then(({data}) => {
+        .then(({ data }) => {
           this.contractList = data || [];
         })
         .catch(() => {
@@ -308,7 +316,7 @@ export default {
     getClients() {
       this.$http
         .listClients()
-        .then(({data}) => {
+        .then(({ data }) => {
           this.clientsList = data || [];
         })
         .catch(() => {
@@ -319,8 +327,7 @@ export default {
         });
     },
     resetUserContracts(oldVal, newVal) {
-      if(!!oldVal && !!newVal)
-        this.user.contracts = [];
+      if (!!oldVal && !!newVal) this.user.contracts = [];
     }
   }
 };

@@ -126,7 +126,7 @@ export default {
         });
         this.users = users;
       })
-      .catch(error => {
+      .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch users"),
           color: "error"

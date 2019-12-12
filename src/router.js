@@ -37,7 +37,7 @@ import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
-import { requireRead } from '@/guards/ticket-guards';
+import { requireRead } from "@/guards/ticket-guards";
 
 Vue.use(Router);
 

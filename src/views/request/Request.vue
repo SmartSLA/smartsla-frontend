@@ -7,9 +7,7 @@
         </router-link>
       </div>
       <div>
-        <v-btn flat small color="default">
-          <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet (CSV)") }}
-        </v-btn>
+        <v-btn flat small color="default"> <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet (CSV)") }} </v-btn>
       </div>
     </v-layout>
     <v-layout row wrap justify-space-between>
@@ -110,7 +108,7 @@
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
-              {{ request.ticketDate | formatDateFilter('llll') }}
+              {{ request.ticketDate | formatDateFilter("llll") }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created by") }} :</strong>
@@ -126,16 +124,11 @@
                 label
                 small
                 text-color="white"
-              >{{ request.contract && request.contract.client[0] }}</v-chip>
+                >{{ request.contract && request.contract.client[0] }}</v-chip
+              >
               <span v-else>
                 <span v-if="request.assignedTo">
-                  <v-chip
-                    small
-                    class="my-0"
-                    color="#d32f2f"
-                    label
-                    text-color="white"
-                  >L</v-chip>
+                  <v-chip small class="my-0" color="#d32f2f" label text-color="white">L</v-chip>
                 </span>
               </span>
               {{ (request.assignedTo && request.assignedTo.name) || $t("Not assigned yet") }}
@@ -147,7 +140,7 @@
                 <template v-slot:activator="{ on }">
                   <span v-on="on"> {{ request.lastUpdate | relativeTime }}</span>
                 </template>
-                <span> {{ request.lastUpdate | formatDateFilter('llll')  }}</span>
+                <span> {{ request.lastUpdate | formatDateFilter("llll") }}</span>
               </v-tooltip>
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
@@ -197,7 +190,9 @@
                       <v-list-tile-title>{{ attachment.name }}</v-list-tile-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
-                      <v-list-tile-action-text>{{ attachment.timestamps.createdAt | calendarTimeFilter }}</v-list-tile-action-text>
+                      <v-list-tile-action-text>{{
+                        attachment.timestamps.createdAt | calendarTimeFilter
+                      }}</v-list-tile-action-text>
                       <v-btn icon ripple class="ma-0" @click.stop="scrollToEvent(attachment.event)">
                         <v-icon color="grey lighten-1">info</v-icon>
                       </v-btn>
@@ -255,9 +250,6 @@
                         <div class="flex">
                           <div class="subheading font-weight-medium">{{ event.author.name }}</div>
                           <div class="body-1">{{ event.timestamps.createdAt | calendarTimeFilter }}</div>
-<!--                          <div v-if="event.isPrivateComment">-->
-<!--                            <span class="red&#45;&#45;text">{{ $t("private comment") }}</span>-->
-<!--                          </div>-->
                         </div>
                       </v-card-title>
                       <v-card-text v-if="event.comment" v-html="event.comment" class="pt-0" />
@@ -306,12 +298,7 @@
                       v-model="comment"
                       v-if="selectedEditor == 'markdown'"
                     />
-                    <vue-editor
-                      v-model="comment"
-                      :editorToolbar="editorToolbar"
-                      v-else
-                    >
-                    </vue-editor>
+                    <vue-editor v-model="comment" :editorToolbar="editorToolbar" v-else> </vue-editor>
                     <br />
                   </v-input>
                   <v-input prepend-icon="no-icon" class="pt-2">
@@ -324,10 +311,10 @@
                           :label="$t('Status')"
                         >
                           <template slot="item" slot-scope="{ item }">
-                            {{$t(capitalize(item))}}
+                            {{ $t(capitalize(item)) }}
                           </template>
                           <template slot="selection" slot-scope="{ item }">
-                             {{$t(capitalize(item))}}
+                            {{ $t(capitalize(item)) }}
                           </template>
                         </v-select>
                       </v-flex>
@@ -371,15 +358,14 @@
                   <v-layout row wrap>
                     <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
                     <v-flex xs2 md4 sm4 lg4 xl4>
-                      <v-btn 
+                      <v-btn
                         color="info"
                         class="custom-comment-btn"
                         @click="addEvent"
                         :disabled="isSubmitting"
                         :loading="isSubmitting"
-                      >{{
-                        $t("Add comment")
-                      }}</v-btn>
+                        >{{ $t("Add comment") }}</v-btn
+                      >
                     </v-flex>
                     <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                   </v-layout>
@@ -413,9 +399,9 @@
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
-            <h4
-              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
-            >{{ $t("interlocutor in charge of the request") }}</h4>
+            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
+              {{ $t("interlocutor in charge of the request") }}
+            </h4>
             <v-card class="pt-2 px-5 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <v-layout ml-5 pl-5 row class="center-avatar">
@@ -433,13 +419,9 @@
                     <strong>{{ $t("E-mail") }} :</strong>
                     {{ request.responsible && request.responsible.email }}
                     <br />
-                    <span
-                    v-if="request.responsible && request.responsible.phone"
-                    >
+                    <span v-if="request.responsible && request.responsible.phone">
                       <strong>{{ $t("Phone") }} :</strong>
-                      <a
-                      :href="`tel://${request.responsible.phone}`"
-                      >
+                      <a :href="`tel://${request.responsible.phone}`">
                         {{ request.responsible.phone }}
                       </a>
                     </span>
@@ -450,9 +432,9 @@
                 </v-flex>
               </v-layout>
             </v-card>
-            <h4
-              class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1"
-            >{{ $t("Beneficiary") }}</h4>
+            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
+              {{ $t("Beneficiary") }}
+            </h4>
             <v-card class="pt-2 px-5">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout ml-5 pl-5 row class="center-avatar">
@@ -470,28 +452,19 @@
                     <router-link
                       :to="{ name: 'Client', params: { id: request.contract && request.contract.clientId } }"
                     >
-                      <a
-                        class="blue-color"
-                        href="#"
-                      >{{ request.contract && request.contract.client }}</a>
-                    </router-link>/
+                      <a class="blue-color" href="#">{{ request.contract && request.contract.client }}</a> </router-link
+                    >/
                     <router-link :to="{ name: 'Contract', params: { id: request.contract && request.contract._id } }">
                       <a class="blue-color" href="#">{{ request.contract && request.contract.name }}</a>
                     </router-link>
                     <br />
-                    <span
-                      v-if="request.beneficiary"
-                    >
+                    <span v-if="request.beneficiary">
                       <strong>{{ $t("Phone") }} :</strong>
-                      <a
-                      :href="`tel://${request.beneficiary.phone || request.callNumber }`"
-                      >
+                      <a :href="`tel://${request.beneficiary.phone || request.callNumber}`">
                         {{ request.beneficiary.phone || request.callNumber }}
                       </a>
                     </span>
-                    <span
-                      v-if="request.meetingId && request.meetingId.length"
-                    >
+                    <span v-if="request.meetingId && request.meetingId.length">
                       <strong>{{ $t("meeting ID") }} :</strong>
                       {{ request.meetingId }}
                     </span>
@@ -511,11 +484,10 @@ import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
 import { flatten, capitalize } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
-import AttachmentsCreation  from "@/components/attachments/creation/Attachments.vue";
+import AttachmentsCreation from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
-import { routeNames } from "@/router";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -633,9 +605,9 @@ export default {
 
     addEvent() {
       this.isSubmitting = true;
-      const attachmentsPromise = this.commentCreationAttachments.length ?
-        this.$http.getUploader().uploadAll(this.commentCreationAttachments) :
-        Promise.resolve([]);
+      const attachmentsPromise = this.commentCreationAttachments.length
+        ? this.$http.getUploader().uploadAll(this.commentCreationAttachments)
+        : Promise.resolve([]);
 
       attachmentsPromise
         .then(attachments => this.postEvent(attachments))
@@ -672,7 +644,9 @@ export default {
 
       if (attachments.length) {
         this.newEvent.attachments = attachments.map(attachment => ({
-          _id: attachment._id, name: attachment.name, mimeType: attachment.type
+          _id: attachment._id,
+          name: attachment.name,
+          mimeType: attachment.type
         }));
       }
 
@@ -693,25 +667,29 @@ export default {
     },
 
     getData() {
-      this.$http.getTicketById(this.$route.params.id).then(({ data }) => {
-        this.request = data;
-        const attachments = data.events && data.events.map(event => {
-          return (event.attachments || []).map(attachment => {
-            attachment.timestamps = event.timestamps;
-            attachment.event = event;
+      this.$http
+        .getTicketById(this.$route.params.id)
+        .then(({ data }) => {
+          this.request = data;
+          const attachments =
+            data.events &&
+            data.events.map(event => {
+              return (event.attachments || []).map(attachment => {
+                attachment.timestamps = event.timestamps;
+                attachment.event = event;
 
-            return attachment;
-          });
-        });
+                return attachment;
+              });
+            });
 
-        this.attachments = flatten(attachments);
-        this.currentStatus = data.status;
-        this.request.lastUpdate = new Date(data.timestamps.updatedAt);
-        this.request.ticketDate = new Date(data.timestamps.createdAt);
+          this.attachments = flatten(attachments);
+          this.currentStatus = data.status;
+          this.request.lastUpdate = new Date(data.timestamps.updatedAt);
+          this.request.ticketDate = new Date(data.timestamps.createdAt);
 
-        this.$http.getContractUsers(data.contract._id)
-          .then(contractUsers => (this.contractUsers = contractUsers));
-      }).catch(console.log);
+          this.$http.getContractUsers(data.contract._id).then(contractUsers => (this.contractUsers = contractUsers));
+        })
+        .catch(console.log);
 
       this.$http.getConnectedUserId().then(res => {
         this.$http.getUserById(res.data._id).then(user => {

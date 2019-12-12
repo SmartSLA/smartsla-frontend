@@ -100,9 +100,10 @@ const getters = {
       responsibleName: request.responsible && request.responsible.name,
       assignedToName: request.assignedTo && request.assignedTo.name,
       id_ossa: request.idOssa.id,
-      organizationLabel: request.assignedTo && request.assignedTo.type === 'beneficiary' ? request.contract.client[0] : 'L' ,
+      organizationLabel:
+        request.assignedTo && request.assignedTo.type === "beneficiary" ? request.contract.client[0] : "L",
       createdAt: request.timestamps.createdAt,
-      updatedAt: request.timestamps.updatedAt,
+      updatedAt: request.timestamps.updatedAt
     }));
 
     if (sortBy) {

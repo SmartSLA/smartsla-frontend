@@ -2,7 +2,7 @@
   <div>
     <v-list-tile v-for="user in users" :key="user._id" avatar>
       <v-list-tile-avatar class="mr-3">
-        <img :src="getAvatarUrl(user)">
+        <img :src="getAvatarUrl(user)" />
       </v-list-tile-avatar>
       <v-list-tile-content>
         <v-list-tile-title>{{ user.displayName }}</v-list-tile-title>

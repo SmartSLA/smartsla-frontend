@@ -14,11 +14,11 @@
         </li>
         <li>
           {{ $t("Bypass") }} :
-          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.bypassed )) }}</b>
+          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.bypassed)) }}</b>
         </li>
         <li>
           {{ $t("Resolution") }} :
-          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.resolved )) }}</b>
+          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.resolved)) }}</b>
         </li>
       </ul>
     </span>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import moment from "moment";
 import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
 
 export default {
@@ -53,15 +52,18 @@ export default {
   methods: {
     parseDuration(duration) {
       const parsedDuration = this.moment.duration(duration);
-      const days = parsedDuration.clone().subtract({
-        hours: parsedDuration.hours()
-      }).asDays();
+      const days = parsedDuration
+        .clone()
+        .subtract({
+          hours: parsedDuration.hours()
+        })
+        .asDays();
 
       return {
         days,
         hours: parsedDuration.hours()
       };
-    },
+    }
   }
 };
 </script>

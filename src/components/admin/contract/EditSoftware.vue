@@ -43,30 +43,28 @@
       {{ $t("Add") }}
     </v-btn>
     <v-layout class="mt-4 pb-2" row wrap align-center>
-        <v-dialog v-model="formDialog" scrollable :fullscreen="$vuetify.breakpoint.xs" persistent max-width="600px">
-          <form-software
-            :software="newSoftware"
-            :editing="isEdit"
-            :isModalOpen="formDialog"
-            @submit="submit"
-            @closeFormModal="closeFormModal"
-          ></form-software>
-        </v-dialog>
+      <v-dialog v-model="formDialog" scrollable :fullscreen="$vuetify.breakpoint.xs" persistent max-width="600px">
+        <form-software
+          :software="newSoftware"
+          :editing="isEdit"
+          :isModalOpen="formDialog"
+          @submit="submit"
+          @closeFormModal="closeFormModal"
+        ></form-software>
+      </v-dialog>
 
-        <v-dialog v-model="deleteModal" persistent max-width="300">
-          <v-card class="px-4 pt-2">
-            <v-card-text>
-              <span
-                class="body-2"
-              >{{ $t("Are you sure you want to remove the software") }} ?</span>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" @click="confirmDeleteSoftware">{{ $t("confirm") }}</v-btn>
-              <v-btn color="error" @click="deleteModal = false">{{ $t("cancel") }}</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+      <v-dialog v-model="deleteModal" persistent max-width="300">
+        <v-card class="px-4 pt-2">
+          <v-card-text>
+            <span class="body-2">{{ $t("Are you sure you want to remove the software") }} ?</span>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="confirmDeleteSoftware">{{ $t("confirm") }}</v-btn>
+            <v-btn color="error" @click="deleteModal = false">{{ $t("cancel") }}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-layout>
     <br />
   </v-card>
@@ -109,13 +107,13 @@ export default {
     show() {
       this.formDialog = true;
     },
-    editSoftware({item: softwareItem}) {
+    editSoftware({ item: softwareItem }) {
       this.isEdit = true;
       this.formDialog = true;
       this.selectedItem = softwareItem;
       this.newSoftware = {
         ...this.selectedItem
-      }
+      };
     },
     deleteSoftware(selectedSoftware) {
       this.deleteModal = true;
@@ -125,11 +123,11 @@ export default {
       this.contract.software = this.contract.software.filter(
         software => JSON.stringify(software) != JSON.stringify(this.selectedItem)
       );
-      this.doRequest('Deleted');
+      this.doRequest("Deleted");
     },
     submit(software) {
-      const toastMsg = this.isEdit ? 'Updated' : 'Added';
-      if(this.isEdit) {
+      const toastMsg = this.isEdit ? "Updated" : "Added";
+      if (this.isEdit) {
         const softwareIdx = this.contract.software.findIndex(
           software => JSON.stringify(software) == JSON.stringify(this.selectedItem)
         );
@@ -142,7 +140,7 @@ export default {
     doRequest(toastMsg) {
       this.$http
         .updateContract(this.contract._id, this.contract)
-        .then(response => {
+        .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t(toastMsg),
             color: "success"
@@ -162,13 +160,10 @@ export default {
       switch (critLevel) {
         case "critical":
           return "#f44336";
-          break;
         case "sensible":
           return "#f4b336";
-          break;
         case "standard":
           return "#e0e0e0";
-          break;
 
         default:
           return "";
@@ -179,7 +174,6 @@ export default {
         case "critical":
         case "sensible":
           return "white";
-          break;
         default:
           return "black";
       }

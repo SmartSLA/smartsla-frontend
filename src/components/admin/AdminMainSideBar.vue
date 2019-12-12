@@ -4,11 +4,7 @@
       <v-flex xs12>
         <v-list class="mini-side-bar">
           <v-subheader class="white--text pl-4 subheading font-weight-bold">{{ $t("Users") }}</v-subheader>
-          <v-list-tile
-            :to="{name: routeNames.USERS}"
-            class="mini-side-bar-item"
-            active-class="primary"
-          >
+          <v-list-tile :to="{ name: routeNames.USERS }" class="mini-side-bar-item" active-class="primary">
             <v-list-tile-action>
               <v-icon>people</v-icon>
             </v-list-tile-action>
@@ -16,11 +12,7 @@
               <v-list-tile-title>{{ $t("Users") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile
-            :to="{name: routeNames.TEAMS}"
-            class="mini-side-bar-item"
-            active-class="primary"
-          >
+          <v-list-tile :to="{ name: routeNames.TEAMS }" class="mini-side-bar-item" active-class="primary">
             <v-list-tile-action>
               <v-icon>people_outline</v-icon>
             </v-list-tile-action>
@@ -30,11 +22,7 @@
           </v-list-tile>
           <v-divider class="ml-2 mr-2"></v-divider>
           <v-subheader class="white--text pl-4 subheading font-weight-bold">{{ $t("Clients") }}</v-subheader>
-          <v-list-tile
-            :to="{name: routeNames.CLIENTS}"
-            class="mini-side-bar-item"
-            active-class="primary"
-          >
+          <v-list-tile :to="{ name: routeNames.CLIENTS }" class="mini-side-bar-item" active-class="primary">
             <v-list-tile-action>
               <v-icon>account_box</v-icon>
             </v-list-tile-action>
@@ -42,11 +30,7 @@
               <v-list-tile-title>{{ $t("Clients") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile
-            :to="{name: routeNames.CONTRACTS}"
-            class="mini-side-bar-item"
-            active-class="primary"
-          >
+          <v-list-tile :to="{ name: routeNames.CONTRACTS }" class="mini-side-bar-item" active-class="primary">
             <v-list-tile-action>
               <v-icon>assignment</v-icon>
             </v-list-tile-action>
@@ -56,11 +40,7 @@
           </v-list-tile>
           <v-divider class="ml-2 mr-2"></v-divider>
           <v-subheader class="white--text pl-4 subheading font-weight-bold">{{ $t("Platform") }}</v-subheader>
-           <v-list-tile
-            :to="{name: routeNames.SOFTWARELIST}"
-            class="mini-side-bar-item"
-            active-class="primary"
-          >
+          <v-list-tile :to="{ name: routeNames.SOFTWARELIST }" class="mini-side-bar-item" active-class="primary">
             <v-list-tile-action>
               <v-icon>web</v-icon>
             </v-list-tile-action>
@@ -68,11 +48,7 @@
               <v-list-tile-title>{{ $t("Software") }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-           <v-list-tile
-            :to="{name: routeNames.ADMINCONTRIBUTIONS}"
-            class="mini-side-bar-item"
-            active-class="primary"
-          >
+          <v-list-tile :to="{ name: routeNames.ADMINCONTRIBUTIONS }" class="mini-side-bar-item" active-class="primary">
             <v-list-tile-action>
               <v-icon>library_add</v-icon>
             </v-list-tile-action>
