@@ -52,11 +52,11 @@
         <td class="text-xs-center">
           <v-btn color="primary" flat small @click="editCommitment(props.item)">
             <v-icon>edit</v-icon>
-            {{ $t("edit") }}
+            {{ $t("Edit") }}
           </v-btn>
           <v-btn color="error" flat small @click="removeCommitment(props.item)">
             <v-icon>remove_circle</v-icon>
-            {{ $t("remove") }}
+            {{ $t("Remove") }}
           </v-btn>
         </td>
       </template>
