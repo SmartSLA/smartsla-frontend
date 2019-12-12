@@ -12,7 +12,7 @@
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
-          <v-form ref="form" v-model="valid" lazy-validation v-if="user._id">
+          <v-form ref="form" v-model="valid" lazy-validation>
             <v-layout row wrap>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Type") }} :</strong>
@@ -29,6 +29,46 @@
                   $t("Expert is part of the team handling the ticket")
                 }}</label>
               </v-flex>
+              <v-flex xs1 v-if="!isEdit"></v-flex>
+              <v-flex xs3 class="pt-4" v-if="!isEdit">
+                <span class="title required-label">{{ $t("Search users") }}</span>
+              </v-flex>
+              <v-flex xs8 v-if="!isEdit">
+                <v-autocomplete
+                  v-model="member"
+                  :items="items"
+                  :loading="isLoading"
+                  :search-input.sync="search"
+                  chips
+                  deletable-chips
+                  item-text="name"
+                  item-value="name"
+                  :label="$t('Users')"
+                  cache-items
+                  :rules="[() => (member && !!Object.keys(member)) || $i18n.t('Required field')]"
+                  return-object
+                >
+                  <template slot="no-data">
+                    <v-list-tile>
+                      <v-list-tile-title>
+                        {{ $t("Please refine your search...") }}
+                      </v-list-tile-title>
+                    </v-list-tile>
+                  </template>
+
+                  <template slot="selection" slot-scope="data">
+                    <v-chip :selected="data.selected">
+                      {{ data.item.name }}
+                    </v-chip>
+                  </template>
+
+                  <template slot="item" slot-scope="data">
+                    <v-list-tile-content>
+                      <v-list-tile-title v-text="data.item.name"></v-list-tile-title>
+                    </v-list-tile-content>
+                  </template>
+                </v-autocomplete>
+              </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <strong class="required-label">{{ $t("Name") }} :</strong>
@@ -37,7 +77,7 @@
                 <v-text-field
                   v-model="user.name"
                   :rules="[() => user.name.length > 0 || $i18n.t('Required field')]"
-                  :disabled="isEdit"
+                  disabled
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
@@ -48,7 +88,7 @@
                 <v-text-field
                   v-model="user.email"
                   :rules="[() => /.+@.+/.test(user.email) || $i18n.t('email required')]"
-                  :disabled="isEdit"
+                  disabled
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
@@ -56,14 +96,14 @@
                 <strong>{{ $t("Phone") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field v-model="user.phone" :disabled="isEdit"></v-text-field>
+                <v-text-field v-model="user.phone" disabled></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Job title") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field v-model="user.job_title" :disabled="isEdit"></v-text-field>
+                <v-text-field v-model="user.job_title" disabled></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -76,10 +116,7 @@
                   color="primary"
                   :rules="[() => user.role.length > 0 || $i18n.t('Required field')]"
                 >
-                  <v-radio :label="$t('customer')" value="customer" v-if="user.type == 'beneficiary'"></v-radio>
-                  <v-radio :label="$t('viewer')" value="viewer" v-if="user.type == 'beneficiary'"></v-radio>
-                  <v-radio :label="$t('Manager')" value="manager" v-if="user.type == 'expert'"></v-radio>
-                  <v-radio :label="$t('Expert')" value="expert" v-if="user.type == 'expert'"></v-radio>
+                  <v-radio v-for="role in roles" :key="role" :label="$t(role)" :value="role"></v-radio>
                 </v-radio-group>
                 <label class="v-label theme--light" v-if="user.role === 'viewer'">{{
                   $t("Viewer role can only see tickets")
@@ -129,7 +166,9 @@
               </v-flex>
 
               <v-flex xs12 offset-xs5>
-                <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+                <v-btn class="success" @click="validateFrom">
+                  {{ isEdit ? $t("validate") : $t("Create") }}
+                </v-btn>
                 <v-btn color="error" @click="openDialog = true" v-if="isEdit">{{ $t("Delete") }}</v-btn>
               </v-flex>
             </v-layout>
@@ -159,12 +198,16 @@
 </template>
 <script>
 import { routeNames } from "@/router";
-import { USER_ROLES } from "@/constants.js";
+import { USER_TYPE, USER_ROLES } from "@/constants.js";
 import Vue from "vue";
 
 export default {
   data() {
     return {
+      member: null,
+      isLoading: false,
+      items: [],
+      search: null,
       clientsList: [],
       contractList: [],
       valid: true,
@@ -183,9 +226,31 @@ export default {
     };
   },
   watch: {
+    search(val) {
+      if (!val || val === null) {
+        return;
+      }
+      this.isLoading = true;
+      this.$http
+        .searchPeople(val)
+        .then(results =>
+          results.map(person => ({
+            name: person.names[0].displayName,
+            email: person.emailAddresses[0].value,
+            phone: person.phoneNumbers && person.phoneNumbers[0] ? person.phoneNumbers[0].value : ""
+          }))
+        )
+        .then(results => (this.items = results))
+        .catch(console.log)
+        .finally(() => (this.isLoading = false));
+    },
+    member: "setUser",
     "user.client": "resetUserContracts"
   },
   computed: {
+    roles() {
+      return this.user.type === "beneficiary" ? USER_ROLES.beneficiary : USER_ROLES.expert;
+    },
     isEdit() {
       return !!this.$route.params.id;
     },
@@ -230,6 +295,14 @@ export default {
     }
   },
   methods: {
+    setUser(value) {
+      this.user = {
+        ...this.user,
+        name: value.name || "",
+        email: value.email || "",
+        phone: value.phone || ""
+      };
+    },
     isContractUser(contract_id) {
       const userContracts = this.user.contracts.map(({ contract }) => contract);
       return userContracts.includes(contract_id);
@@ -275,6 +348,8 @@ export default {
       if (this.$refs.form.validate()) {
         if (this.$route.params.id) {
           this.updateUser();
+        } else {
+          this.createUser();
         }
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -282,6 +357,34 @@ export default {
           color: "error"
         });
       }
+    },
+    createUser() {
+      if (this.user.type === USER_TYPE.EXPERT) {
+        this.user.client = "";
+        this.user.contracts = [];
+      } else {
+        this.user.contracts = this.filteredContractsByClient
+          .filter(({ selected }) => selected === true)
+          .map(({ contract_id, role }) => ({ contract_id, role }));
+      }
+      this.$http
+        .createUser(this.user)
+        .then(({ data, status }) => {
+          if (data && status === 201) {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("User created"),
+              color: "success"
+            });
+            this.user = {};
+          }
+          this.$router.push({ name: routeNames.USERS });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
     },
     deleteUser() {
       this.$http
