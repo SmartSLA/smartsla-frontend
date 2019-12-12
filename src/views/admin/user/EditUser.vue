@@ -387,7 +387,7 @@ export default {
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
+            message: this.$i18n.t(error.response.data.error.details),
             color: "error"
           });
         });
