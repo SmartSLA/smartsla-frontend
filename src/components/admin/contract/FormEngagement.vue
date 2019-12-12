@@ -67,7 +67,7 @@
             </v-select>
           </v-flex>
 
-          <v-flex xs4>{{ $t("treatment time range") }}</v-flex>
+          <v-flex xs4>{{ $t("Treatment time range") }}</v-flex>
           <v-flex xs8>
             <v-layout>
               <v-flex xs6> {{ $t("Business hours") }} </v-flex>
