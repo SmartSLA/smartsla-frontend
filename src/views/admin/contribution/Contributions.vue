@@ -20,6 +20,7 @@
           v-model="softwares"
           hide-details
           :label="$i18n.t('software')"
+          :no-data-text="$i18n.t('No data available')"
           class="contributions-search-software"
         ></v-select>
         <v-select
@@ -28,6 +29,7 @@
           v-model="statuss"
           hide-details
           :label="$i18n.t('status')"
+          :no-data-text="$i18n.t('No data available')"
           class="contributions-search-statuss"
         ></v-select>
         <div class="contributions-operations">

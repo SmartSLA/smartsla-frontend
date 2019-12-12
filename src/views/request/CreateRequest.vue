@@ -101,6 +101,7 @@
                             :items="[...typeList]"
                             v-model="ticket.type"
                             :label="$i18n.t('Type')"
+                            :no-data-text="$i18n.t('No data available')"
                             :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
                             class="required-element"
                             return-object
