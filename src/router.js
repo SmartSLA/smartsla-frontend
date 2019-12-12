@@ -55,6 +55,7 @@ export const routeNames = Object.freeze({
   ORDERS: "Orders",
   PROFILE: "Profile",
   SETTINGS: "Settings",
+  RESET_PASSWORD: "ResetPassword",
   LOGIN: "Login",
   ADMINISTRATION: "Administration",
   ADMINHOME: "AdministrationHome",
@@ -184,6 +185,13 @@ export default new Router({
       component: Profile,
       meta: {
         auth: true
+      }
+    },
+    {
+      path: "/reset-password",
+      name: routeNames.RESET_PASSWORD,
+      beforeEnter: () => {
+        window.location.href = ApplicationSettings.SSP_URL;
       }
     },
     {

@@ -16,6 +16,10 @@
                 </v-list-tile-content>
               </v-list-tile>
               <v-divider />
+              <v-list-tile :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
+                <v-list-tile-title>{{ $t("Change Password") }}</v-list-tile-title>
+              </v-list-tile>
+              <v-divider />
               <v-list-tile @click.prevent="logout">
                 <v-list-tile-title>{{ $t("Logout") }}</v-list-tile-title>
               </v-list-tile>
@@ -58,7 +62,10 @@ export default {
       getAvatarUrl: "user/getAvatarUrl",
       getDisplayName: "user/getDisplayName",
       getEmail: "user/getEmail"
-    })
+    }),
+    routeNames() {
+      return routeNames;
+    }
   }
 };
 </script>
