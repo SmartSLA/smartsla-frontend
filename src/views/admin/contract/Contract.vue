@@ -100,7 +100,7 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Timezone") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ timezone() }}</v-flex>
+                  <v-flex xs8>{{ timezone() }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
@@ -449,10 +449,9 @@
 </template>
 
 <script>
-import { OSSA_IDS, DEFAULT_TIMEZONE } from '@/constants.js';
+import { OSSA_IDS, DEFAULT_TIMEZONE } from "@/constants.js";
 import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
 import UsersList from "@/components/user/UsersList.vue";
-import moment from "moment";
 
 export default {
   data() {
@@ -540,7 +539,9 @@ export default {
   },
   methods: {
     timezone() {
-      const { name } = !this.contract.timezone ? DEFAULT_TIMEZONE : DATETIME_TIMEZONE.find(timezone => timezone.value === this.contract.timezone);
+      const { name } = !this.contract.timezone
+        ? DEFAULT_TIMEZONE
+        : DATETIME_TIMEZONE.find(timezone => timezone.value === this.contract.timezone);
       return name;
     },
     getOssaByKey(key) {

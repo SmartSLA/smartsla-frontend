@@ -4,7 +4,7 @@ import cnsComponent from "@/components/CnsProgressBar";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import moment from "moment-timezone";
-import { DEFAULT_TIMEZONE } from '@/constants.js';
+import { DEFAULT_TIMEZONE } from "@/constants.js";
 moment.tz.setDefault(DEFAULT_TIMEZONE.value);
 Vue.prototype.moment = moment;
 Vue.use(Vuetify);

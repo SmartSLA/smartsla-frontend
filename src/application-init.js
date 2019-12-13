@@ -11,7 +11,7 @@ import ApplicationSettings from "@/services/application-settings";
 import store from "@/store";
 import i18n from "@/i18n";
 import moment from "moment-timezone";
-import { DEFAULT_TIMEZONE } from '@/constants.js';
+import { DEFAULT_TIMEZONE } from "@/constants.js";
 
 moment.tz.setDefault(DEFAULT_TIMEZONE.value);
 

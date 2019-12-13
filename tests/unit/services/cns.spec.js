@@ -6,9 +6,8 @@ import {
   calculateSuspendedMinutes
 } from "@/services/cns";
 import moment from "moment-timezone";
-import { DEFAULT_TIMEZONE } from '@/constants.js';
+import { DEFAULT_TIMEZONE } from "@/constants.js";
 moment.tz.setDefault(DEFAULT_TIMEZONE.value);
-
 
 const currentDate = moment("2019-09-30T18:00:00.697+02:00");
 function getCurrentDate() {
@@ -31,7 +30,7 @@ const ticket = {
   },
   status: "new",
   contract: {
-    timezone: 'Europe/Paris',
+    timezone: "Europe/Paris",
     businessHours: {
       start: 9,
       end: 18
