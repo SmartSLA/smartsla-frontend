@@ -98,6 +98,10 @@
                   </v-flex>
                   <v-flex xs8>{{ new Date(contract.endDate).toString() }}</v-flex>
                   <v-flex xs4>
+                    <div class="subheading font-weight-medium">{{ $t("Timezone") }} :</div>
+                  </v-flex>
+                  <v-flex xs8>{{ timezone() }}</v-flex>
+                  <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
@@ -445,13 +449,15 @@
 </template>
 
 <script>
-import { OSSA_IDS } from "@/constants.js";
+import { OSSA_IDS, DEFAULT_TIMEZONE } from "@/constants.js";
+import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
 import UsersList from "@/components/user/UsersList.vue";
 
 export default {
   data() {
     return {
       contract: {
+        timezone: null,
         contact: {
           commercial: "",
           technical: ""
@@ -532,6 +538,12 @@ export default {
       });
   },
   methods: {
+    timezone() {
+      const { name } = !this.contract.timezone
+        ? DEFAULT_TIMEZONE
+        : DATETIME_TIMEZONE.find(timezone => timezone.value === this.contract.timezone);
+      return name;
+    },
     getOssaByKey(key) {
       return OSSA_IDS.find(ossaId => ossaId.key == key);
     },
