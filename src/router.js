@@ -18,7 +18,6 @@ import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/user/Users.vue";
 import User from "@/views/admin/user/User.vue";
 import EditUser from "@/views/admin/user/EditUser.vue";
-import CreateUser from "@/views/admin/user/CreateUser.vue";
 import Clients from "@/views/admin/client/Clients.vue";
 import Client from "@/views/admin/client/Client.vue";
 import EditClient from "@/views/admin/client/EditClient.vue";
@@ -238,7 +237,7 @@ export default new Router({
         {
           path: "users/new",
           name: routeNames.NEWUSER,
-          component: CreateUser,
+          component: EditUser,
           meta: {
             auth: true
           }

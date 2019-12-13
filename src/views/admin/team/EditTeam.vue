@@ -31,7 +31,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Manager") }} :</strong>
+                <strong>{{ $t("manager") }} :</strong>
               </v-flex>
               <v-flex xs8>
                 <v-select :items="expertUsers" item-text="name" item-value="name"></v-select>
