@@ -15,10 +15,16 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-layout row wrap>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Type") }} :</strong>
+                <strong class="required-label">{{ $t("Type") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-radio-group v-model="user.type" row color="primary" @change="initRole">
+                <v-radio-group
+                  v-model="user.type"
+                  row
+                  color="primary"
+                  @change="initRole"
+                  :rules="[() => user.type.length > 0 || $i18n.t('Required field')]"
+                >
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
                 </v-radio-group>
