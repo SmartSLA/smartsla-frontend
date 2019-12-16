@@ -448,7 +448,7 @@ export default {
           value: this.$i18n.t("Software")
         },
         {
-          key: "Assign To",
+          key: "Assign to",
           value: this.$i18n.t("Assigned to")
         },
         {
@@ -689,7 +689,7 @@ export default {
             this.translatedFilter = false;
             this.values = [...this.softwareList];
             break;
-          case "Assign To":
+          case "Assign to":
             this.translatedFilter = false;
             this.values = [...this.userList].map(user => user.name);
             break;
