@@ -20,6 +20,7 @@
           v-model="clients"
           hide-details
           :label="$i18n.t('Status')"
+          :no-data-text="$i18n.t('No data available')"
           class="contracts-search-status"
         ></v-select>
         <v-select
@@ -28,6 +29,7 @@
           v-model="clients"
           hide-details
           :label="$i18n.t('Team')"
+          :no-data-text="$i18n.t('No data available')"
           class="contracts-search-team"
         ></v-select>
         <v-select
@@ -36,6 +38,7 @@
           v-model="roles"
           hide-details
           :label="$i18n.t('Commercial')"
+          :no-data-text="$i18n.t('No data available')"
           class="contracts-search-commercial"
         ></v-select>
         <div class="contracts-operations">

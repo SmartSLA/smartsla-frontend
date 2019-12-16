@@ -62,6 +62,7 @@
               v-else
               :items="values"
               :label="$i18n.t('Values')"
+              :no-data-text="$i18n.t('No data available')"
               v-model="valuesFilter"
               flat
               hide-details
