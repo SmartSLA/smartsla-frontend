@@ -326,6 +326,7 @@
                           v-model="newResponsible"
                           :label="$t('Assigned to')"
                           return-object
+                          hide-details
                         >
                           <template slot="item" slot-scope="data">
                             <v-list-tile-avatar>
@@ -344,6 +345,18 @@
                             </v-list-tile-content>
                           </template>
                         </v-autocomplete>
+                        <v-layout class="font-weight-medium" xs6 md6>
+                          <v-flex text-xs-left pa-0>
+                            <router-link class="action-link" @click.native.prevent="assignCustomer" to="">{{
+                              $t("Assign the customer")
+                            }}</router-link>
+                          </v-flex>
+                          <v-flex text-xs-right pa-0>
+                            <router-link class="action-link" @click.native.prevent="assignSelf" to="">{{
+                              $t("Take it")
+                            }}</router-link>
+                          </v-flex>
+                        </v-layout>
                       </v-flex>
                     </v-layout>
                   </v-input>
@@ -716,6 +729,12 @@ export default {
       const capitalizedStatus = capitalize(status);
 
       return this.$i18n.t(capitalizedStatus);
+    },
+    assignSelf() {
+      this.newResponsible = this.getUser;
+    },
+    assignCustomer() {
+      this.newResponsible = this.request.author;
     }
   },
   created() {
@@ -994,5 +1013,9 @@ export default {
   .v-stepper__header {
     height: 82px !important;
   }
+}
+
+.action-link {
+  text-decoration: none;
 }
 </style>
