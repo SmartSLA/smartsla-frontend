@@ -92,11 +92,11 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Start") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ contract.startDate | formatDateFilter("llll") }}</v-flex>
+                  <v-flex xs8>{{ contract.startDate | formatDateFilter }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("End") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ contract.endDate | formatDateFilter("llll") }}</v-flex>
+                  <v-flex xs8>{{ contract.endDate | formatDateFilter }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Timezone") }} :</div>
                   </v-flex>
