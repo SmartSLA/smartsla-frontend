@@ -86,17 +86,17 @@
                   </v-flex>
                   <v-flex xs8>
                     <v-flex xs8>{{
-                      $t(contract.features && contract.features.nonBusinessHours) ? $t("active") : $t("not active")
+                      $t(contract.features && contract.features.nonBusinessHours) ? $t("active") : $t("Not active")
                     }}</v-flex>
                   </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Start") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ new Date(contract.startDate).toString() }}</v-flex>
+                  <v-flex xs8>{{ contract.startDate | formatDateFilter("llll") }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("End") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ new Date(contract.endDate).toString() }}</v-flex>
+                  <v-flex xs8>{{ contract.endDate | formatDateFilter("llll") }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Timezone") }} :</div>
                   </v-flex>
