@@ -80,16 +80,28 @@
                 <span class="pl-3">{{ $t("Client") }} : {{ client.name }}</span>
                 <br />
                 <br />
-                <span class="body-2">{{ $t("is linked to the following elements") }}</span>
-                <br />
-                -
-                <br />
+                <div v-if="client.contracts">
+                  <span class="body-2">
+                    {{
+                      $t("{name} is linked to the following elements", {
+                        name: client.name
+                      })
+                    }}
+                  </span>
+                  <ul>
+                    <li v-for="(item, key) in client.contracts" :key="key">
+                      <router-link target="_blank" :to="{ name: 'Contract', params: { id: item._id } }">
+                        {{ item.name }}
+                      </router-link>
+                    </li>
+                  </ul>
+                </div>
                 <span class="body-2">{{ $t("Are you sure?") }}</span>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
-                <v-btn color="error darken-1" flat @click="deleteClient">Delete</v-btn>
+                <v-btn color="grey darken-1" flat @click="openDialog = false">{{ $t("Close") }}</v-btn>
+                <v-btn color="error darken-1" flat @click="deleteClient">{{ $t("Delete") }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
