@@ -32,7 +32,7 @@
           </v-flex>
           <v-flex xs3>{{ $t("Technical contact") }}</v-flex>
           <v-flex xs8>
-            <v-select :items="techRefs" v-model="contract.contact.technical"></v-select>
+            <v-text-field v-model="contract.contact.technical"></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Timezone") }}</v-flex>
           <v-flex xs8>
@@ -260,7 +260,6 @@ export default {
       endDateModel: false,
       valid: true,
       clients: [],
-      techRefs: [],
       hoursRules: {
         required: value => !!value || this.$i18n.t("Required field")
       },
