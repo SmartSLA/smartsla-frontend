@@ -3,7 +3,9 @@ image: node:10
 stages:
   - lint
   - test
-  - docker_build
+  - build
+  - release
+  - publish
   - deploy_dev
 
 lint:
@@ -16,6 +18,50 @@ lint:
   script:
     - npm install
     - npm run lint -- --no-fix
+
+### BEGIN OF TEMPLATES
+
+.build-docker-tpl: &build-docker-tpl
+  image: docker-registry.linagora.com:5000/linshare-snapshots/linshare-dind:latest
+  tags:
+    - docker
+  services:
+      - name: docker-registry.linagora.com:5000/linshare-snapshots/linshare-dind:latest
+        alias: docker-dind
+
+
+### END OF TEMPLATES
+
+# build and optionaly test your image here.
+build:
+  <<: *build-docker-tpl
+  stage: build
+  variables:
+      DOCKER_HOST: "tcp://docker-dind"
+  script:
+    - docker build . -t build:latest
+  except:
+    refs:
+      - master@linagora/lps/studio/ticketing08000linux
+      - tags@linagora/lps/studio/ticketing08000linux
+      - /^release-.*/@linagora/lps/studio/ticketing08000linux
+    variables:
+      - $SKIP_BUILD_DOCKER
+
+check_author:
+  image: docker-registry.linagora.com:5000/lgs-releases/gitlab-integrity-checks:latest
+  stage: lint
+  variables:
+    GIT_DEPTH: "1"
+  tags:
+    - ultralight
+  script:
+    - check_author.py check "$GITLAB_USER_EMAIL" "$GITLAB_USER_NAME" --no-accents
+  except:
+    refs:
+      - master@linagora/lps/studio/ticketing08000linux
+      - tags@linagora/lps/studio/ticketing08000linux
+      - /^release-.*/@linagora/lps/studio/ticketing08000linux
 
 test_unit:
   stage: test
@@ -41,24 +87,65 @@ test_unit:
     - npm install
     - npm run test:e2e -- --headless
 
-docker_build:
-  stage: docker_build
-  tags:
-    - docker
-  services:
-    - name: docker-registry.linagora.com:5000/linshare-snapshots/linshare-dind:latest
-      alias: docker-dind
+# build and push a new snapshot of your docker image.
+snapshot:
+  <<: *build-docker-tpl
+  stage: release
   variables:
-    DOCKER_HOST: "tcp://docker-dind"
-    DOCKER_IMAGE: "linagora/ticketing08000linux"
-  image: docker-registry.linagora.com:5000/linshare-snapshots/linshare-dind:latest
+      DOCKER_HOST: "tcp://docker-dind"
+      DOCKER_IMAGE_PRIVATE: "docker-registry.linagora.com:5000/lps-snapshots/ticketing08000linux"
   script:
-    - docker build -t ${DOCKER_IMAGE} .
+    - guess-version.sh guess
+    - source version.env
+    - docker-tag-computing.sh ${VERSION} docker-tag-and-push.env
+    - docker login -u ${REGISTRY_USER} -p ${REGISTRY_TOKEN} docker-registry.linagora.com:5000
+    - docker build . -t build:latest
+    - docker-tag-and-push.sh build:latest ${DOCKER_IMAGE_PRIVATE}
+    - docker logout docker-registry.linagora.com:5000
   only:
     - master@linagora/lps/studio/ticketing08000linux
+    - /^release-.*/@linagora/lps/studio/ticketing08000linux
   except:
     variables:
       - $SKIP_BUILD_DOCKER
+
+docker-release:
+  <<: *build-docker-tpl
+  stage: release
+  variables:
+      DOCKER_HOST: "tcp://docker-dind"
+      DOCKER_IMAGE_PRIVATE: "docker-registry.linagora.com:5000/lps-releases/ticketing08000linux"
+  script:
+    - docker-tag-computing.sh ${CI_COMMIT_TAG} docker-tag-and-push.env
+    - docker login -u ${REGISTRY_USER_RELEASE} -p ${REGISTRY_TOKEN_RELEASE} docker-registry.linagora.com:5000
+    - docker build . -t build:latest
+    - docker-tag-and-push.sh build:latest ${DOCKER_IMAGE_PRIVATE}
+    - docker logout docker-registry.linagora.com:5000
+  only:
+    - tags@linagora/lps/studio/ticketing08000linux
+  except:
+    variables:
+      - $SKIP_BUILD_DOCKER
+
+# push the latest docker tag from the current docker tag, cf last job.
+mark-as-latest:
+  <<: *build-docker-tpl
+  stage: publish
+  variables:
+      GIT_STRATEGY: none
+      DOCKER_HOST: "tcp://docker-dind"
+      DOCKER_IMAGE_PRIVATE: "docker-registry.linagora.com:5000/lps-releases/ticketing08000linux"
+  script:
+    - docker login -u ${REGISTRY_USER_RELEASE} -p ${REGISTRY_TOKEN_RELEASE} docker-registry.linagora.com:5000
+    - docker-tag-computing.sh ${CI_COMMIT_TAG} docker-tags.env
+    - source docker-tags.env
+    - docker pull ${DOCKER_IMAGE_PRIVATE}:${DOCKER_TAG}
+    - export DOCKER_TAGS=latest
+    - docker-tag-and-push.sh ${DOCKER_IMAGE_PRIVATE}:${DOCKER_TAG} ${DOCKER_IMAGE_PRIVATE}
+    - docker logout docker-registry.linagora.com:5000
+  when: manual
+  only:
+    - tags@linagora/lps/studio/ticketing08000linux
 
 deploy_dev:
   stage: deploy_dev
