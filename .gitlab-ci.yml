@@ -18,6 +18,8 @@ lint:
   script:
     - npm install
     - npm run lint -- --no-fix
+  except:
+    - tags@linagora/lps/studio/ticketing08000linux
 
 ### BEGIN OF TEMPLATES
 
@@ -73,6 +75,8 @@ test_unit:
   script:
    - npm install
    - npm run test:unit
+  except:
+    - tags@linagora/lps/studio/ticketing08000linux
 
 .test_e2e:
   stage: test
