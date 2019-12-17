@@ -3,9 +3,9 @@ import { applicationInit, getApplication } from "@/application-init";
 import JsonCsv from "vue-json-csv";
 import TextHighlight from "vue-text-highlight";
 
-import "@/main.styl";
 import "@mdi/font/css/materialdesignicons.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
+import "@/main.styl";
 import "@/filters/relativeTimeFilter";
 import "@/filters/calendarTimeFilter";
 import "@/filters/formatDateFilter";
