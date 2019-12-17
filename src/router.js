@@ -47,6 +47,7 @@ export const routeNames = Object.freeze({
   CREATECLIENT: "Create Client",
   REQUESTS: "Requests",
   REQUEST: "Request",
+  EDITREQUEST: "EditRequest",
   DASHBOARD: "Dashboard",
   SATISFACTION: "Satisfaction",
   HISTORIC: "Historic",
@@ -126,6 +127,14 @@ export default new Router({
       name: routeNames.REQUEST,
       component: Request,
       beforeEnter: requireRead,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/requests/:id/edit",
+      name: routeNames.EDITREQUEST,
+      component: CreateRequest,
       meta: {
         auth: true
       }

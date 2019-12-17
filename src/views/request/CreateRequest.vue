@@ -2,7 +2,7 @@
   <v-content>
     <div>
       <v-icon>create</v-icon>
-      <span>{{ $t("New issue") }}</span>
+      <span>{{ isInEdit ? $t("Edit issue") : $t("New issue") }}</span>
     </div>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
@@ -26,12 +26,28 @@
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
                       :items="contractList"
+                      :disabled="isInEdit"
                       :label="$i18n.t('Contract')"
                       prepend-icon="note"
                       background-color="white"
                       v-model="ticket.contract"
                       item-text="name"
                       :rules="[() => Object.keys(ticket.contract).length > 0 || $i18n.t('Required field')]"
+                      class="required-element"
+                      return-object
+                    ></v-autocomplete>
+                  </v-flex>
+                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
+                  <v-flex xs6 md6 lg6 xl4 sm2>
+                    <v-autocomplete
+                      v-if="isInEdit"
+                      :items="beneficiaryList"
+                      :label="$i18n.t('Beneficiary')"
+                      prepend-icon="people"
+                      background-color="white"
+                      v-model="ticket.beneficiary"
+                      item-text="name"
+                      :rules="[() => Object.keys(ticket.beneficiary).length > 0 || $i18n.t('Required field')]"
                       class="required-element"
                       return-object
                     ></v-autocomplete>
@@ -304,6 +320,7 @@ import momentBusiness from "moment-business";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import { VueEditor } from "vue2-editor";
 import Attachments from "@/components/attachments/creation/Attachments.vue";
+import { USER_TYPE } from "@/constants.js";
 
 export default {
   data() {
@@ -319,11 +336,9 @@ export default {
         software: {},
         relatedRequests: [],
         status: "new",
-        responsible: {},
         author: {},
-        comments: [],
-        contenu: "",
-        files: []
+        beneficiary: {},
+        Responsible: {}
       },
       attachments: [],
       participants: [],
@@ -340,14 +355,9 @@ export default {
       ],
       linkedRequests: [],
       submitRequest: false,
-      states: ["Item 1", "Item 2", "Item 3", "Item 4"],
-      scale_states: ["Item 1", "Item 2", "Item 3", "Item 4"],
-      severity: "",
-      software: "",
-      os: "",
-      type: "",
+      beneficiaryList: [],
+      responsibleList: [],
       contractList: [],
-      types: ["type1", "type2", "type3", "type4"],
       engagementsCategory: [],
       selectedTypes: [],
       // eslint-disable-next-line max-len,no-useless-escape
@@ -363,7 +373,9 @@ export default {
   },
   methods: {
     submit() {
-      this.ticket.author = this.getUser;
+      if (!this.$route.params.id) {
+        this.ticket.author = this.getUser; // TODO: handle the ticket author in the backend.
+      }
       this.submitRequest = true;
       this.ticket.participants = this.participants;
       this.ticket.relatedRequests = this.linkedRequests;
@@ -372,9 +384,9 @@ export default {
           .getUploader()
           .uploadAll(this.attachments)
           .then(attachments => this.postRequest(attachments))
-          .catch(error => {
+          .catch(() => {
             this.$store.dispatch("ui/displaySnackbar", {
-              message: error.response.data.error.details,
+              message: this.$i18n.t("Failed to upload attachments"),
               color: "error"
             });
           })
@@ -421,11 +433,11 @@ export default {
         this.ticket.events = [event];
       }
 
-      if (!this.ticket.software.software) {
+      if (this.ticket.hasOwnProperty("software") && !this.ticket.software.software) {
         delete this.ticket.software;
       }
 
-      if (!this.ticket.severity.length) {
+      if (this.ticket.hasOwnProperty("severity") && !this.ticket.severity.length) {
         delete this.ticket.severity;
       }
 
@@ -436,32 +448,57 @@ export default {
       if (this.meetingId && this.meetingId.length) {
         this.ticket.meetingId = this.meetingId;
       }
-      const newTicket = Object.assign({}, this.ticket);
 
-      newTicket.contract = newTicket.contract._id;
+      const ticket = Object.assign({}, this.ticket);
 
-      this.$http
-        .createTicket(newTicket)
-        .then(response => {
-          const ticketId = response.data;
+      ticket.contract = ticket.contract._id;
+      if (ticket.responsible && ticket.responsible._id) {
+        ticket.responsible = this.normalizeResponsible(this.ticket.responsible);
+      }
 
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("ticket created"),
-            color: "success"
-          });
+      if (this.$route.params.id) {
+        // TODO: Prevent to send event when nothing has been added
+        this.$http
+          .updateTicket(this.$route.params.id, ticket)
+          .then(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Ticket updated"),
+              color: "success"
+            });
 
-          // TODO: Move to store once the store is used to create requests
-          this.$store.dispatch("ticket/countTickets");
+            this.$router.push({ name: routeNames.REQUEST, params: { id: ticket._id } });
+          })
+          .catch(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Failed to update ticket"),
+              color: "error"
+            });
+          })
+          .finally(() => (this.submitRequest = false));
+      } else {
+        this.$http
+          .createTicket(ticket)
+          .then(response => {
+            const ticketId = response.data;
 
-          this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        })
-        .finally(() => (this.postRequest = false));
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("ticket created"),
+              color: "success"
+            });
+
+            // TODO: Move to store once the store is used to create requests
+            this.$store.dispatch("ticket/countTickets");
+
+            this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
+          })
+          .catch(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Failed to create ticket"),
+              color: "error"
+            });
+          })
+          .finally(() => (this.submitRequest = false));
+      }
     },
     remove(item) {
       this.participants.splice(this.participants.indexOf(item), 1);
@@ -533,6 +570,14 @@ export default {
       const proposedSoftware = `${item.software.name} ${item.version} ${item.os}`;
 
       return proposedSoftware.toLowerCase().indexOf(searchText) > -1;
+    },
+
+    normalizeResponsible(responsible) {
+      const newResponsible = responsible;
+
+      delete newResponsible.user;
+      delete newResponsible.timestamps;
+      return newResponsible;
     }
   },
   computed: {
@@ -543,6 +588,10 @@ export default {
       avatarUrl: "user/getAvatarUrl",
       userPhone: "user/getPhone"
     }),
+
+    isInEdit() {
+      return this.$route.params.id && true;
+    },
 
     editorToolbar() {
       return editorToolbar;
@@ -627,7 +676,7 @@ export default {
       return [];
     },
     selectedEngagement() {
-      if (this.ticket.severity.length && this.engagementsCategory.length) {
+      if (this.ticket.severity && this.ticket.severity.length && this.engagementsCategory.length) {
         var engagements = [];
         engagements = [...this.engagementsCategory].filter(
           engagement => engagement.request == this.ticket.type && engagement.severity == this.ticket.severity
@@ -662,25 +711,46 @@ export default {
     }
   },
   watch: {
-    "ticket.contract": function() {
-      this.ticket.software = {};
-      this.ticket.severity = "";
-      this.ticket.type = "";
+    "ticket.contract": function(newContract, oldContract) {
+      if (Object.keys(oldContract).length !== 0) {
+        this.ticket.type = "";
+        this.ticket.software = {};
+        this.ticket.severity = "";
+      }
     },
-    "ticket.type": function() {
-      this.ticket.severity = "";
-      this.ticket.software = "";
+    "ticket.type": function(newType, oldType) {
+      if (oldType.length !== 0) {
+        this.ticket.software = {};
+        this.ticket.severity = "";
+      }
     },
-    "ticket.software": function() {
-      this.ticket.severity = "";
+    "ticket.software": function(newSoftware, oldSoftware) {
+      if (Object.keys(oldSoftware).length !== 0) {
+        this.ticket.severity = "";
+      }
     },
     participants(participants) {
       this.emailVerfication = participants.map(participant => [participant, this.isValidEmail(participant)]);
     }
   },
   created() {
-    this.$http.getContracts().then(response => {
-      this.contractList = response.data;
+    this.$http.getContracts().then(({ data }) => {
+      this.contractList = data;
+    });
+
+    if (this.$route.params.id) {
+      this.$http.getTicketById(this.$route.params.id).then(({ data }) => {
+        this.ticket = Object.assign({}, data);
+        this.linkedRequests = data.relatedRequests;
+        this.participants = data.participants;
+        this.callNumber = data.callNumber;
+        this.meetingId = data.meetingId;
+      });
+    }
+
+    this.$http.listUsers().then(({ data }) => {
+      this.beneficiaryList = data;
+      this.responsibleList = data.filter(user => user.type === USER_TYPE.EXPERT);
     });
   },
   mounted() {

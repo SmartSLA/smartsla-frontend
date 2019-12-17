@@ -15,6 +15,7 @@ export default {
     return this.put(`/ticketing/api/tickets/${ticketId}/events`, options);
   },
 
+  // TO DO: verify if it's DELETE or POST
   deleteTicket(ticketId) {
     return this.post(`/ticketing/api/tickets/${ticketId}`);
   },

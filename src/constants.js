@@ -37,3 +37,44 @@ export const USER_ROLES = {
   expert: EXPERT_ROLES,
   beneficiary: BENEFICIARY_ROLES
 };
+
+export const UPDATE_COMMENT = {
+  title: {
+    changed: "{author} changed the title from {oldValue} to {newValue}."
+  },
+  beneficiary: {
+    changed: "{author} changed the beneficiary from {oldValue} to {newValue}."
+  },
+  responsible: {
+    added: "{author} added the responsible {newValue}.",
+    changed: "{author} changed the responsible from {oldValue} to {newValue}."
+  },
+  callNumber: {
+    changed: "{author} changed the call number from {oldValue} to {newValue}."
+  },
+  meetingId: {
+    changed: "{author} changed the meeting ID from {oldValue} to {newValue}."
+  },
+  participants: {
+    changed: "{author} changed the participants list."
+  },
+  type: {
+    changed: "{author} changed the type from {oldValue} to {newValue}."
+  },
+  software: {
+    changed: "{author} changed the software from {oldValue} to {newValue}.",
+    added: "{author} added the software {newValue}.",
+    removed: "{author} removed the software {oldValue}."
+  },
+  severity: {
+    changed: "{author} changed the severity from {oldValue} to {newValue}.",
+    added: "{author} added the severity {newValue}.",
+    removed: "{author} removed the severity {oldValue}."
+  },
+  description: {
+    changed: "{author} changed the description."
+  },
+  relatedrequests: {
+    changed: "{author} changed the related requests."
+  }
+};

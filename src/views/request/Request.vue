@@ -89,7 +89,14 @@
             </v-flex>
             <v-flex xs4 md1 sm1 xl1 lg1 class="pt-0 pb-0">
               <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn color="primary" fab small disabled class="ma-0">
+                <v-btn
+                  :disabled="!isAdmin"
+                  color="primary"
+                  fab
+                  small
+                  dark
+                  :to="{ name: 'EditRequest', params: { id: request._id } }"
+                >
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
@@ -145,15 +152,15 @@
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
-              {{ request.software && request.software.software.name }}
+              {{ request.software && request.software.software && request.software.software.name }}
             </v-flex>
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>
-              {{ request.software && request.software.version }}
+              {{ request.software && request.software.software && request.software.version }}
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("OS") }} :</strong>
-              {{ request.software && request.software.os }}
+              {{ request.software && request.software.software && request.software.os }}
             </v-flex>
           </v-layout>
           <v-divider class="mt-2"></v-divider>
@@ -280,6 +287,17 @@
                             </a>
                           </li>
                         </ul>
+                      </v-card-text>
+                      <v-card-text v-if="event.changes" class="grey--text pt-0">
+                        <p v-for="(eventChanges, index) in event.changes" :key="index" :parentData="event">
+                          {{
+                            $t(UPDATE_COMMENT[eventChanges.field][eventChanges.action], {
+                              author: event.author.name,
+                              oldValue: eventChanges.oldValue,
+                              newValue: eventChanges.newValue
+                            })
+                          }}
+                        </p>
                       </v-card-text>
                     </v-card>
                   </v-timeline-item>
@@ -501,6 +519,7 @@ import AttachmentsCreation from "@/components/attachments/creation/Attachments.v
 import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
+import { UPDATE_COMMENT } from "@/constants.js";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -543,7 +562,8 @@ export default {
       contractUsers: [],
       connectedUser: {
         type: "expert"
-      }
+      },
+      UPDATE_COMMENT: UPDATE_COMMENT
     };
   },
   components: {
@@ -554,9 +574,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      email: "user/getEmail",
-      avatarUrl: "user/getAvatarUrl",
-      displayName: "user/getDisplayName",
       getUser: "user/getUser"
     }),
 
@@ -595,6 +612,9 @@ export default {
 
     editorToolbar() {
       return editorToolbar;
+    },
+    isAdmin() {
+      return this.$auth.check("admin");
     }
   },
   methods: {
@@ -647,8 +667,8 @@ export default {
       this.newEvent = {
         author: {
           id: this.$store.state.user.user._id,
-          name: this.displayName,
-          image: this.avatarUrl,
+          name: this.getUser.name,
+          image: this.getUser.image,
           type: this.getUser.type
         }
       };
