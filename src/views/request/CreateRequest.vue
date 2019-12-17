@@ -735,7 +735,7 @@ export default {
   },
   created() {
     this.$http.getContracts().then(({ data }) => {
-      this.contractList = data;
+      this.contractList = data.filter(contract => contract.status);
     });
 
     if (this.$route.params.id) {
