@@ -1,6 +1,6 @@
 {
-  "name": "vue-openpaas-ossa",
-  "version": "0.1.0",
+  "name": "ticketing08000linux",
+  "version": "1.6.0-dev",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
