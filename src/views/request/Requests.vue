@@ -217,122 +217,125 @@
         ref="requestsTable"
       >
         <template slot="items" slot-scope="props">
-          <td>
-            <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color item-id">{{
-              props.item._id
-            }}</router-link>
-          </td>
-          <td class="text-xs-center">
-            <v-chip
-              v-if="props.item.request.assignedTo && props.item.request.assignedTo.type == 'beneficiary'"
-              color="#174dc5"
-              class="ma-2"
-              label
-              text-color="white"
-              >{{ props.item.request.organizationLabel }}
-            </v-chip>
-            <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">{{
-              props.item.request.organizationLabel
-            }}</v-chip>
-          </td>
-          <td class="text-xs-center" v-if="$auth.check('admin')">
-            <v-avatar :color="getOssaConfById(props.item.id_ossa || 1).color" size="25">
-              <span class="white--text">{{ props.item.id_ossa || 1 }}</span>
-            </v-avatar>
-          </td>
-          <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch">{{ $t(props.item.request.type) }}</text-highlight>
-          </td>
-          <td class="text-xs-center">
-            <software-list-detail :request="props.item.request" :query="highlightSearch"></software-list-detail>
-          </td>
-          <td class="text-xs-center">
-            <v-tooltip top v-if="props.item.request.software && props.item.request.software.software">
-              <template v-slot:activator="{ on }">
-                <span v-bind:class="['criticality', props.item.request.software.critical]" v-on="on">
-                  <text-highlight :queries="highlightSearch">{{ props.item.softwareName }}</text-highlight>
-                </span>
-              </template>
-              <span>{{
-                $t(
-                  "Version : " +
-                    props.item.request.software.version +
-                    " / Criticité : " +
-                    props.item.request.software.critical
-                )
-              }}</span>
-            </v-tooltip>
-          </td>
-          <td class="text-xs-center">
-            <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color">
+          <tr @click="openTicket(props.item._id)">
+            <td>
+              <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color item-id">{{
+                props.item._id
+              }}</router-link>
+            </td>
+            <td class="text-xs-center">
+              <v-chip
+                v-if="props.item.request.assignedTo && props.item.request.assignedTo.type == 'beneficiary'"
+                color="#174dc5"
+                class="ma-2"
+                label
+                text-color="white"
+                >{{ props.item.request.organizationLabel }}
+              </v-chip>
+              <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">{{
+                props.item.request.organizationLabel
+              }}</v-chip>
+            </td>
+            <td class="text-xs-center" v-if="$auth.check('admin')">
+              <v-avatar :color="getOssaConfById(props.item.id_ossa || 1).color" size="25">
+                <span class="white--text">{{ props.item.id_ossa || 1 }}</span>
+              </v-avatar>
+            </td>
+            <td class="text-xs-center">
+              <text-highlight :queries="highlightSearch">{{ $t(props.item.request.type) }}</text-highlight>
+            </td>
+            <td class="text-xs-center">
+              <software-list-detail :request="props.item.request" :query="highlightSearch"></software-list-detail>
+            </td>
+            <td class="text-xs-center">
+              <v-tooltip top v-if="props.item.request.software && props.item.request.software.software">
+                <template v-slot:activator="{ on }">
+                  <span v-bind:class="['criticality', props.item.request.software.critical]" v-on="on">
+                    <text-highlight :queries="highlightSearch">{{ props.item.softwareName }}</text-highlight>
+                  </span>
+                </template>
+                <span>{{
+                  $t(
+                    "Version : " +
+                      props.item.request.software.version +
+                      " / Criticité : " +
+                      props.item.request.software.critical
+                  )
+                }}</span>
+              </v-tooltip>
+            </td>
+            <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
-            </router-link>
-          </td>
-          <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch">{{ props.item.request.assignedToName }}</text-highlight>
-          </td>
-          <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch">{{ props.item.request.responsibleName }}</text-highlight>
-          </td>
-          <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
-          </td>
-          <td class="text-xs-center">
-            <router-link
-              v-if="$auth.check('admin')"
-              :to="{
-                name: 'Client',
-                params: { id: props.item.request.contract && props.item.request.contract.clientId }
-              }"
-              target="_blank"
-            >
-              <span class="blue-color">
-                <text-highlight :queries="highlightSearch">{{
-                  props.item.request.contract && props.item.request.contract.client
-                }}</text-highlight>
-              </span>
-            </router-link>
-            <text-highlight v-else :queries="highlightSearch">{{
-              props.item.request.contract && props.item.request.contract.client
-            }}</text-highlight>
-            /
-            <router-link
-              v-if="$auth.check('admin')"
-              :to="{ name: 'Contract', params: { id: props.item.request.contract && props.item.request.contract._id } }"
-              target="_blank"
-            >
-              <span class="blue-color">
-                <text-highlight :queries="highlightSearch">{{
-                  props.item.request.contract && props.item.request.contract.name
-                }}</text-highlight>
-              </span>
-            </router-link>
-            <text-highlight v-else :queries="highlightSearch">{{
-              props.item.request.contract && props.item.request.contract.name
-            }}</text-highlight>
-          </td>
-          <td class="text-xs-center">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
-              </template>
-              <span>{{ props.item.updatedAt | formatDateFilter("llll") }}</span>
-            </v-tooltip>
-          </td>
-          <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter("ll") }}</td>
-          <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch">{{ $t(capitalize(props.item.status)) }}</text-highlight>
-          </td>
-          <td class="text-xs-center">
-            <span>{{ $t(cnsWording(props.item.status)) }}</span>
-            <cns-progress-bar
-              v-if="displayCnsProgressBar(props.item)"
-              :ticket="props.item.request"
-              :cnsType="props.item.cnsType"
-              :hideClock="true"
-              @cns-calculated="collectCNS"
-            ></cns-progress-bar>
-          </td>
+            </td>
+            <td class="text-xs-center">
+              <text-highlight :queries="highlightSearch">{{ props.item.request.assignedToName }}</text-highlight>
+            </td>
+            <td class="text-xs-center">
+              <text-highlight :queries="highlightSearch">{{ props.item.request.responsibleName }}</text-highlight>
+            </td>
+            <td class="text-xs-center">
+              <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
+            </td>
+            <td class="text-xs-center">
+              <router-link
+                v-if="$auth.check('admin')"
+                :to="{
+                  name: 'Client',
+                  params: { id: props.item.request.contract && props.item.request.contract.clientId }
+                }"
+                target="_blank"
+              >
+                <span class="blue-color">
+                  <text-highlight :queries="highlightSearch">{{
+                    props.item.request.contract && props.item.request.contract.client
+                  }}</text-highlight>
+                </span>
+              </router-link>
+              <text-highlight v-else :queries="highlightSearch">{{
+                props.item.request.contract && props.item.request.contract.client
+              }}</text-highlight>
+              /
+              <router-link
+                v-if="$auth.check('admin')"
+                :to="{
+                  name: 'Contract',
+                  params: { id: props.item.request.contract && props.item.request.contract._id }
+                }"
+                target="_blank"
+              >
+                <span class="blue-color">
+                  <text-highlight :queries="highlightSearch">{{
+                    props.item.request.contract && props.item.request.contract.name
+                  }}</text-highlight>
+                </span>
+              </router-link>
+              <text-highlight v-else :queries="highlightSearch">{{
+                props.item.request.contract && props.item.request.contract.name
+              }}</text-highlight>
+            </td>
+            <td class="text-xs-center">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
+                </template>
+                <span>{{ props.item.updatedAt | formatDateFilter("llll") }}</span>
+              </v-tooltip>
+            </td>
+            <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter("ll") }}</td>
+            <td class="text-xs-center">
+              <text-highlight :queries="highlightSearch">{{ $t(capitalize(props.item.status)) }}</text-highlight>
+            </td>
+            <td class="text-xs-center">
+              <span>{{ $t(cnsWording(props.item.status)) }}</span>
+              <cns-progress-bar
+                v-if="displayCnsProgressBar(props.item)"
+                :ticket="props.item.request"
+                :cnsType="props.item.cnsType"
+                :hideClock="true"
+                @cns-calculated="collectCNS"
+              ></cns-progress-bar>
+            </td>
+          </tr>
         </template>
         <template v-slot:no-data>
           <v-layout justify-center>
@@ -363,6 +366,7 @@
 import { mapGetters, createNamespacedHelpers } from "vuex";
 import { capitalize } from "lodash";
 import moment from "moment";
+import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import { OSSA_IDS } from "@/constants.js";
@@ -1062,6 +1066,9 @@ export default {
     },
     capitalize(value) {
       return capitalize(value);
+    },
+    openTicket(ticketId) {
+      this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
     }
   },
   created() {
