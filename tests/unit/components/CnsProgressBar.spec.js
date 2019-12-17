@@ -20,6 +20,7 @@ const ticket = {
     updatedAt: "2019-09-27T11:28:14.223+02:00",
     createdAt: "2019-09-26T13:44:44.697+02:00"
   },
+  severity: "major",
   status: "bypassed",
   createdDuringBusinessHours: true,
   contract: {
