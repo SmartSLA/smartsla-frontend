@@ -1051,7 +1051,7 @@ export default {
       if (this.collectedCNS[ticketId]) {
         return this.$i18n.t("{hours}WH / {duration}WH", {
           hours: this.collectedCNS[ticketId].cns[type].hours,
-          duration: this.collectedCNS[ticketId].durations[type]
+          duration: this.collectedCNS[ticketId].cns[type].getEngagementInHours()
         });
       }
 

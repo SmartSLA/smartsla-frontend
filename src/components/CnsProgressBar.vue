@@ -36,11 +36,6 @@ export default {
     return {
       cns: {},
       currentCnsValue: {},
-      cnsDurations: {
-        supported: 0,
-        bypassed: 0,
-        resolved: 0
-      },
       currentCnsValueEngagement: {},
       nonBusinessHoursDefined: true
     };
@@ -85,11 +80,6 @@ export default {
         hours: currentCnsValueEngagement.hours(),
         minutes: currentCnsValueEngagement.minutes()
       };
-      this.cnsDurations = {
-        supported: this.cns.supported.getEngagementInHours(),
-        bypassed: this.cns.bypassed.getEngagementInHours(),
-        resolved: this.cns.resolved.getEngagementInHours()
-      };
     }
   },
   created() {
@@ -98,8 +88,7 @@ export default {
     this.computeDuration();
     this.$emit("cns-calculated", {
       ticketId: this.ticket._id,
-      cns: this.cns,
-      durations: this.cnsDurations
+      cns: this.cns
     });
   }
 };
