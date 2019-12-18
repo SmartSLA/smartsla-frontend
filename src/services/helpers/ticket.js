@@ -12,7 +12,7 @@ function getTicketSoftwareEngagement(ticket) {
   return (
     engagements &&
     engagements.find(function(engagement) {
-      return engagement.severity === ticket.severity;
+      return engagement.severity === ticket.severity && engagement.request === ticket.type;
     })
   );
 }
