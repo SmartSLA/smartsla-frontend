@@ -7,13 +7,12 @@
         :color="getEngagementColor(currentCnsValue)"
         class="mt-0 white--text font-weight-bold"
       >
-        <span v-if="currentCnsValue.getEngagementInHours()">
+        <span>
           {{ currentCnsValue | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
           <span v-if="!hideClock">
             / {{ currentCnsValueEngagement | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
           </span>
         </span>
-        <span v-else>{{ currentCnsValue | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}</span>
       </v-progress-linear>
     </v-flex>
     <v-flex v-if="!hideClock" xs1 px-1 pt-0 pb-0>
@@ -56,11 +55,11 @@ export default {
     },
     isPreviousStep() {
       return (
-        (this.ticket.status == "supported" && this.cnsType === "supported") ||
-        (this.ticket.status == "bypassed" && (this.cnsType === "supported" || this.cnsType === "bypassed")) ||
-        (this.ticket.status == "resolved" &&
+        (this.ticket.status === "supported" && this.cnsType === "supported") ||
+        (this.ticket.status === "bypassed" && (this.cnsType === "supported" || this.cnsType === "bypassed")) ||
+        (this.ticket.status === "resolved" &&
           (this.cnsType === "supported" || this.cnsType === "bypassed" || this.cnsType === "resolved")) ||
-        this.ticket.status == "closed"
+        this.ticket.status === "closed"
       );
     }
   },
