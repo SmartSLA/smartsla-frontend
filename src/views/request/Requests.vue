@@ -90,7 +90,7 @@
               v-model="storedSelectionsFilterHolder"
               hide-selected
               hide-details
-              class="pa-0"
+              class="truncated pa-0"
               overflow
               flat
               return-object
@@ -1292,5 +1292,10 @@ nav.v-toolbar .v-toolbar__content {
 .item-id {
   font-size: 13px;
   font-weight: 500;
+}
+.truncated &::v-deep div.v-select__selection--comma{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
