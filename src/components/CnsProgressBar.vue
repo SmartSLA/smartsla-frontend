@@ -4,7 +4,7 @@
       <v-progress-linear
         height="18"
         :value="currentCnsValue.getPercentageElapsed()"
-        :color="getEngagementColor(currentCnsValue)"
+        :color="currentCnsValueColor"
         class="mt-0 white--text font-weight-bold"
       >
         <span>
@@ -19,8 +19,8 @@
       <v-icon v-if="isCurrentStep" color="info">
         access_time
       </v-icon>
-      <v-icon v-else-if="isPreviousStep" :color="getEngagementColor(currentCnsValue)">
-        {{ getLabel(currentCnsValue) }}
+      <v-icon v-else-if="isPreviousStep" :color="currentCnsValueColor">
+        {{ currentCnsValueLabel }}
       </v-icon>
     </v-flex>
   </v-layout>
@@ -36,7 +36,6 @@ export default {
     return {
       cns: {},
       currentCnsValue: {},
-      currentCnsValueEngagement: {},
       nonBusinessHoursDefined: true
     };
   },
@@ -56,36 +55,35 @@ export default {
           (this.cnsType === "supported" || this.cnsType === "bypassed" || this.cnsType === "resolved")) ||
         this.ticket.status === "closed"
       );
-    }
-  },
-  methods: {
-    getLabel(cnsValue) {
-      return cnsValue.getEngagementInHours() === 0 ? "done" : cnsValue.getPercentageElapsed() < 100 ? "done" : "clear";
     },
-    getEngagementColor(cnsValue) {
+    currentCnsValueColor() {
       if (this.isPreviousStep || this.isCurrentStep) {
-        if (!cnsValue.getEngagementInHours()) {
-          return "success";
-        }
-
-        return cnsValue.getPercentageElapsed() < 100 ? "success" : "error";
+        return this.isCurrentEngagementFulfilled() ? "success" : "error";
       }
 
       return "grey";
     },
-    computeDuration() {
+    currentCnsValueLabel() {
+      return this.isCurrentEngagementFulfilled() ? "done" : "clear";
+    },
+    currentCnsValueEngagement() {
       const currentCnsValueEngagement = this.moment.duration(this.currentCnsValue.engagement);
-      this.currentCnsValueEngagement = {
+
+      return {
         days: Math.trunc(currentCnsValueEngagement.asDays()),
         hours: currentCnsValueEngagement.hours(),
         minutes: currentCnsValueEngagement.minutes()
       };
     }
   },
+  methods: {
+    isCurrentEngagementFulfilled() {
+      return !this.currentCnsValue.getEngagementInHours() || this.currentCnsValue.getPercentageElapsed() < 100;
+    }
+  },
   created() {
     this.cns = computeCns(this.ticket);
     this.currentCnsValue = this.cns[this.cnsType];
-    this.computeDuration();
     this.$emit("cns-calculated", {
       ticketId: this.ticket._id,
       cns: this.cns
