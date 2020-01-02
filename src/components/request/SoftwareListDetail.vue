@@ -10,15 +10,15 @@
       <ul>
         <li>
           {{ $t("Support") }} :
-          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.supported)) }}</b>
+          <b>{{ parseDuration(engagements.supported) }}</b>
         </li>
         <li>
           {{ $t("Bypass") }} :
-          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.bypassed)) }}</b>
+          <b>{{ parseDuration(engagements.bypassed) }}</b>
         </li>
         <li>
           {{ $t("Resolution") }} :
-          <b>{{ $t("{days}wd {hours}wh", parseDuration(engagements.resolved)) }}</b>
+          <b>{{ parseDuration(engagements.resolved) }}</b>
         </li>
       </ul>
     </span>
@@ -27,6 +27,7 @@
 
 <script>
 import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
+import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
 export default {
   name: "software-list-detail",
@@ -59,10 +60,7 @@ export default {
         })
         .asDays();
 
-      return {
-        days,
-        hours: parsedDuration.hours()
-      };
+      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, true);
     }
   }
 };
