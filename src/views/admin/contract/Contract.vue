@@ -451,6 +451,7 @@
 <script>
 import { OSSA_IDS, DEFAULT_TIMEZONE } from "@/constants.js";
 import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
+import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import UsersList from "@/components/user/UsersList.vue";
 
 export default {
@@ -600,22 +601,7 @@ export default {
         })
         .asDays();
 
-      if (days) {
-        if (parsedDuration.hours()) {
-          return this.$i18n.t(isInBusinessHours ? "{days}wd {hours}wh" : "{days}d {hours}h", {
-            days,
-            hours: parsedDuration.hours()
-          });
-        }
-
-        return this.$i18n.t(isInBusinessHours ? "{days}wd" : "{days}d", {
-          days
-        });
-      }
-
-      return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
-        hours: parsedDuration.hours()
-      });
+      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, isInBusinessHours);
     }
   },
   beforeCreate() {

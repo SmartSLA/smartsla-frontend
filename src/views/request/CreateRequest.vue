@@ -320,6 +320,7 @@ import momentBusiness from "moment-business";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import { VueEditor } from "vue2-editor";
 import Attachments from "@/components/attachments/creation/Attachments.vue";
+import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import { USER_TYPE } from "@/constants.js";
 import { UNDEFINED_DURATION } from "@/constants";
 
@@ -552,22 +553,7 @@ export default {
         })
         .asDays();
 
-      if (days) {
-        if (parsedDuration.hours()) {
-          return this.$i18n.t(isInBusinessHours ? "{days}wd {hours}wh" : "{days}d {hours}h", {
-            days,
-            hours: parsedDuration.hours()
-          });
-        }
-
-        return this.$i18n.t(isInBusinessHours ? "{days}wd" : "{days}d", {
-          days
-        });
-      }
-
-      return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
-        hours: parsedDuration.hours()
-      });
+      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, isInBusinessHours);
     },
     searchSoftware(item, queryText) {
       const searchText = queryText.toLowerCase();

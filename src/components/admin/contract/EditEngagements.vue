@@ -89,6 +89,7 @@
 <script>
 import { OSSA_IDS, SEVERITY_TYPES, REQUEST_TYPES } from "@/constants.js";
 import FormEngagement from "@/components/admin/contract/FormEngagement.vue";
+import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 
 export default {
   name: "contract-edit-engagements",
@@ -275,22 +276,7 @@ export default {
         })
         .asDays();
 
-      if (days) {
-        if (parsedDuration.hours()) {
-          return this.$i18n.t(isInBusinessHours ? "{days}wd {hours}wh" : "{days}d {hours}h", {
-            days,
-            hours: parsedDuration.hours()
-          });
-        }
-
-        return this.$i18n.t(isInBusinessHours ? "{days}wd" : "{days}d", {
-          days
-        });
-      }
-
-      return this.$i18n.t(isInBusinessHours ? "{hours}wh" : "{hours}h", {
-        hours: parsedDuration.hours()
-      });
+      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, isInBusinessHours);
     },
     validate(toastMsg) {
       switch (this.$route.params.type) {

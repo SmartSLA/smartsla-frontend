@@ -1,30 +1,21 @@
 export function humanizeHoursDurationFilter(value, isInBusinessHours) {
-  const vueInstance = window.Application;
+  const workingHourPrefix = isInBusinessHours ? "w" : "";
+  const i18n = window.Application.$i18n;
+  let humanizedDuration = 0;
+  let durationSuffix = "";
+
   if (value) {
     let { days, hours, minutes } = value;
     if (days) {
-      if (hours) {
-        return isInBusinessHours
-          ? vueInstance.$i18n.t(`{days}wd {hours}wh`, value)
-          : vueInstance.$i18n.t(`{days}d {hours}h`, value);
-      }
-
-      return isInBusinessHours ? vueInstance.$i18n.t(`{days}wd`, value) : vueInstance.$i18n.t(`${days}d`, value);
-    }
-    if (hours) {
-      if (minutes) {
-        return isInBusinessHours
-          ? vueInstance.$i18n.t(`{hours}wh {minutes}min`, value)
-          : vueInstance.$i18n.t(`{hours}h {minutes}min`, value);
-      }
-
-      return isInBusinessHours ? vueInstance.$i18n.t(`{hours}wh`, value) : vueInstance.$i18n.t(`{hours}h`, value);
-    }
-
-    if (minutes) {
-      return vueInstance.$i18n.t(`{minutes}min`, value);
+      durationSuffix = hours ? ` {hours}${workingHourPrefix}h` : "";
+      humanizedDuration = i18n.t(`{days}${workingHourPrefix}d${durationSuffix}`, value);
+    } else if (hours) {
+      durationSuffix = minutes ? ` {minutes}min` : "";
+      humanizedDuration = i18n.t(`{hours}${workingHourPrefix}h${durationSuffix}`, value);
+    } else if (minutes) {
+      humanizedDuration = i18n.t(`{minutes}min`, value);
     }
   }
 
-  return 0;
+  return humanizedDuration;
 }
