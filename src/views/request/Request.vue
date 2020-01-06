@@ -250,7 +250,13 @@
                     <v-card
                       flat
                       class="elevation-2"
-                      :color="event.author.type === 'expert' ? 'blue lighten-5' : 'grey lighten-4'"
+                      :color="
+                        event.isPrivate
+                          ? 'red lighten-4'
+                          : event.author.type === 'expert'
+                          ? 'blue lighten-5'
+                          : 'grey lighten-4'
+                      "
                     >
                       <v-card-title primary-title class="pt-3">
                         <div class="flex">
@@ -303,11 +309,18 @@
                 </v-timeline>
                 <v-divider></v-divider>
                 <v-form class="comment-form">
-                  <!-- <v-btn-toggle v-model="selectedEditor">
+                  <v-tabs v-model="isPrivateTab">
+                    <v-tabs-slider color="primary"></v-tabs-slider>
+                    <v-tab>{{ $t("Public comments") }}</v-tab>
+                    <v-tab v-if="this.getUser.type === 'expert'">
+                      {{ $t("Private Comments") }}
+                    </v-tab>
+                  </v-tabs>
+                  <v-input prepend-icon="subject">
+                    <!-- <v-btn-toggle v-model="selectedEditor">
                     <v-btn flat value="wysiwyg">{{ $t("wysiwyg Editor") }}</v-btn>
                     <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
                   </v-btn-toggle>-->
-                  <v-input prepend-icon="subject" class="pt-2">
                     <Editor
                       ref="editor"
                       :outline="true"
@@ -322,9 +335,10 @@
                     <v-layout row wrap>
                       <v-flex xs12 md6>
                         <v-select
+                          v-if="!isPrivateTab"
                           :items="[allowedStatusList]"
                           v-model="newStatus"
-                          :disabled="privateComment || !allowedStatusList"
+                          :disabled="!allowedStatusList"
                           :label="$t('Status')"
                         >
                           <template slot="item" slot-scope="{ item }">
@@ -335,10 +349,9 @@
                           </template>
                         </v-select>
                       </v-flex>
-                      <v-flex xs12 md6>
+                      <v-flex v-if="!isPrivateTab" xs12 md6>
                         <v-autocomplete
                           :items="allowedAssigneeList"
-                          :disabled="privateComment"
                           item-text="name"
                           v-model="newResponsible"
                           :label="$t('Assigned to')"
@@ -542,7 +555,6 @@ export default {
       currentStatus: "",
       applicationSettings: {},
       selectedEditor: "wysiwyg",
-      privateComment: false,
       isSubmitting: false,
       newStatus: "",
       newResponsible: "",
@@ -562,7 +574,8 @@ export default {
       connectedUser: {
         type: "expert"
       },
-      UPDATE_COMMENT: UPDATE_COMMENT
+      UPDATE_COMMENT: UPDATE_COMMENT,
+      isPrivateTab: null
     };
   },
   components: {
@@ -683,6 +696,7 @@ export default {
 
       this.newEvent.status = this.newStatus;
       this.newEvent.target = this.newResponsible;
+      this.newEvent.isPrivate = this.isPrivateTab;
 
       return this.$http.addTicketEvent(this.request._id, this.newEvent);
     },
@@ -734,7 +748,6 @@ export default {
       this.newStatus = "";
       this.comment = "";
       this.newResponsible = "";
-      this.privateComment = false;
       this.commentCreationAttachments = [];
       this.commentCreationAttachments.length = 0;
     },
