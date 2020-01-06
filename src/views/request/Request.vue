@@ -244,8 +244,7 @@
                   <v-timeline-item v-for="event in request.events" :key="event._id" large :ref="`event-${event._id}`">
                     <template v-slot:icon>
                       <v-avatar>
-                        <v-img :src="event.author.image"></v-img>
-                        <!-- TODO else generate avatar from OP API -->
+                        <v-img :src="`${apiUrl}/api/users/${event.author.id}/profile/avatar`"></v-img>
                       </v-avatar>
                     </template>
                     <v-card
@@ -668,7 +667,6 @@ export default {
         author: {
           id: this.$store.state.user.user._id,
           name: this.getUser.name,
-          image: this.getUser.image,
           type: this.getUser.type
         }
       };
