@@ -5,7 +5,7 @@ describe("Ticket helper", () => {
 
   beforeEach(() => {
     ticket = {
-      createdDuringBusinessHours: true,
+      createdDuringBusinessHours: false,
       software: {
         software: "5d9dab9cdeed5a496dc35e35",
         critical: "critical"
@@ -24,7 +24,7 @@ describe("Ticket helper", () => {
           end: 18
         },
         features: {
-          nonBusinessHours: false
+          nonBusinessHours: true
         },
         Engagements: {
           critical: {
@@ -32,16 +32,34 @@ describe("Ticket helper", () => {
               {
                 request: "Information",
                 severity: "Major",
-                supported: "P5D",
-                bypassed: "P10D",
-                resolved: "P20D"
+                supported: {
+                  businessHours: "P5D",
+                  nonBusinessHours: "P5D"
+                },
+                bypassed: {
+                  businessHours: "P10D",
+                  nonBusinessHours: "P0D"
+                },
+                resolved: {
+                  businessHours: "P20D",
+                  nonBusinessHours: "P0D"
+                }
               },
               {
                 request: "Anomaly",
                 severity: "Major",
-                supported: "PT1H",
-                bypassed: "P1D",
-                resolved: "P2D"
+                supported: {
+                  businessHours: "PT1H",
+                  nonBusinessHours: "PT2H"
+                },
+                bypassed: {
+                  businessHours: "P1D",
+                  nonBusinessHours: "P2D"
+                },
+                resolved: {
+                  businessHours: "P2D",
+                  nonBusinessHours: "P0D"
+                }
               }
             ]
           }
@@ -56,11 +74,9 @@ describe("Ticket helper", () => {
       const engagement = getTicketSoftwareEngagement(ticket);
 
       expect(engagement).toMatchObject({
-        request: "Anomaly",
-        severity: "Major",
-        supported: "PT1H",
-        bypassed: "P1D",
-        resolved: "P2D"
+        supported: { hours: "PT2H", businessHours: false },
+        bypassed: { hours: "P2D", businessHours: false },
+        resolved: { hours: "P2D", businessHours: true }
       });
     });
 
