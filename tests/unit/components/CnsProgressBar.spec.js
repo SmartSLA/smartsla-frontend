@@ -100,100 +100,102 @@ const ticket = {
 var hnoTicket = Object.assign({}, ticket);
 hnoTicket.createdDuringBusinessHours = false;
 
-describe("duration calculation", () => {
-  it("should parse the cns duration correctly when in supported state in HO", () => {
-    const target = shallowMount(cnsComponent, {
-      propsData: {
-        ticket,
-        cnsType: "supported"
-      },
-      mocks: {
-        $t: key => key,
-        $i18n: {
-          t: () => {}
+describe("The CnsProgressBass Component", () => {
+  describe("duration calculation", () => {
+    it("should parse the cns duration correctly when in supported state in HO", () => {
+      const target = shallowMount(cnsComponent, {
+        propsData: {
+          ticket,
+          cnsType: "supported"
+        },
+        mocks: {
+          $t: key => key,
+          $i18n: {
+            t: () => {}
+          }
         }
-      }
+      });
+      expect(target.vm.currentCnsValue.getEngagementInHours()).toEqual(1);
     });
-    expect(target.vm.duration).toEqual(1);
-  });
 
-  it("should parse the cns duration correctly when in supported state in HNO", () => {
-    const target = shallowMount(cnsComponent, {
-      propsData: {
-        ticket: hnoTicket,
-        cnsType: "supported"
-      },
-      mocks: {
-        $t: key => key,
-        $i18n: {
-          t: () => {}
+    it("should parse the cns duration correctly when in supported state in HNO", () => {
+      const target = shallowMount(cnsComponent, {
+        propsData: {
+          ticket: hnoTicket,
+          cnsType: "supported"
+        },
+        mocks: {
+          $t: key => key,
+          $i18n: {
+            t: () => {}
+          }
         }
-      }
+      });
+      expect(target.vm.currentCnsValue.getEngagementInHours()).toEqual(3);
     });
-    expect(target.vm.duration).toEqual(3);
-  });
 
-  it("should parse the cns duration correctly when in bypassed state in HO", () => {
-    const target = shallowMount(cnsComponent, {
-      propsData: {
-        ticket,
-        cnsType: "bypassed"
-      },
-      mocks: {
-        $t: key => key,
-        $i18n: {
-          t: () => {}
+    it("should parse the cns duration correctly when in bypassed state in HO", () => {
+      const target = shallowMount(cnsComponent, {
+        propsData: {
+          ticket,
+          cnsType: "bypassed"
+        },
+        mocks: {
+          $t: key => key,
+          $i18n: {
+            t: () => {}
+          }
         }
-      }
+      });
+      expect(target.vm.currentCnsValue.getEngagementInHours()).toEqual(9);
     });
-    expect(target.vm.duration).toEqual(9);
-  });
 
-  it("should parse the cns duration correctly when in bypassed state in HNO", () => {
-    const target = shallowMount(cnsComponent, {
-      propsData: {
-        ticket: hnoTicket,
-        cnsType: "bypassed"
-      },
-      mocks: {
-        $t: key => key,
-        $i18n: {
-          t: () => {}
+    it("should parse the cns duration correctly when in bypassed state in HNO", () => {
+      const target = shallowMount(cnsComponent, {
+        propsData: {
+          ticket: hnoTicket,
+          cnsType: "bypassed"
+        },
+        mocks: {
+          $t: key => key,
+          $i18n: {
+            t: () => {}
+          }
         }
-      }
+      });
+      expect(target.vm.currentCnsValue.getEngagementInHours()).toEqual(48);
     });
-    expect(target.vm.duration).toEqual(48);
-  });
 
-  it("should parse the cns duration correctly when in resolved state in HO", () => {
-    const target = shallowMount(cnsComponent, {
-      propsData: {
-        ticket,
-        cnsType: "resolved"
-      },
-      mocks: {
-        $t: key => key,
-        $i18n: {
-          t: () => {}
+    it("should parse the cns duration correctly when in resolved state in HO", () => {
+      const target = shallowMount(cnsComponent, {
+        propsData: {
+          ticket,
+          cnsType: "resolved"
+        },
+        mocks: {
+          $t: key => key,
+          $i18n: {
+            t: () => {}
+          }
         }
-      }
+      });
+      expect(target.vm.currentCnsValue.getEngagementInHours()).toEqual(18);
     });
-    expect(target.vm.duration).toEqual(18);
-  });
 
-  it("should parse the cns duration correctly when in resolved state in HNO", () => {
-    const target = shallowMount(cnsComponent, {
-      propsData: {
-        ticket: hnoTicket,
-        cnsType: "resolved"
-      },
-      mocks: {
-        $t: key => key,
-        $i18n: {
-          t: () => {}
+    it("should parse the cns duration correctly when in resolved state in HNO", () => {
+      const target = shallowMount(cnsComponent, {
+        propsData: {
+          ticket: hnoTicket,
+          cnsType: "resolved"
+        },
+        mocks: {
+          $t: key => key,
+          $i18n: {
+            t: () => {}
+          }
         }
-      }
+      });
+      expect(target.vm.currentCnsValue.getEngagementInHours()).toEqual(72);
     });
-    expect(target.vm.duration).toEqual(72);
   });
 });

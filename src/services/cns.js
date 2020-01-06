@@ -21,16 +21,32 @@ function computeCns(ticket) {
   if (ticket.software && ticket.software.software && ticket.contract) {
     const timezone = getTimeZone(ticket.contract);
     moment.tz.setDefault(timezone);
+
     const workingInterval = ticket.contract.businessHours || { start: 9, end: 18 };
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
-    const nonBusinessHours = !ticket.createdDuringBusinessHours || false;
     const engagement = getTicketSoftwareEngagement(ticket) || {};
 
-    cns.supported = computeTime(periods["new"], workingInterval, nonBusinessHours, engagement.supported);
-    cns.bypassed = computeTime(periods["supported"], workingInterval, nonBusinessHours, engagement.bypassed);
-    cns.resolved = computeTime(periods["bypassed"], workingInterval, nonBusinessHours, engagement.resolved);
+    cns.supported = computeTime(
+      periods["new"],
+      workingInterval,
+      !ticket.createdDuringBusinessHours,
+      engagement.supported
+    );
+    cns.bypassed = computeTime(
+      periods["supported"],
+      workingInterval,
+      !ticket.createdDuringBusinessHours,
+      engagement.bypassed
+    );
+    cns.resolved = computeTime(
+      periods["bypassed"],
+      workingInterval,
+      !ticket.createdDuringBusinessHours,
+      engagement.resolved
+    );
 
     const { days, hours, minutes } = cns.bypassed;
+
     cns.resolved.days += days;
     cns.resolved.hours += hours;
     cns.resolved.minutes += minutes;
@@ -134,13 +150,11 @@ function computePeriods(events, ticketStartTime) {
  * @return {Object} time spent regarding contrat
  */
 function computeTime(period, workingInterval, useNonBusinessHours, engagement) {
-  let noStop = useNonBusinessHours;
-  if (useNonBusinessHours) {
-    noStop = engagement.nonBusinessHours !== UNDEFINED_DURATION;
-  }
+  const noStop = useNonBusinessHours && engagement.nonBusinessHours !== UNDEFINED_DURATION;
 
   const workingHoursInterval = noStop ? 24 : workingInterval.end - workingInterval.start;
-  const cnsValue = new CnsValue(engagement, workingHoursInterval);
+  const engagementDuration = engagement && ((noStop && engagement.nonBusinessHours) || engagement.businessHours);
+  const cnsValue = new CnsValue(engagementDuration, workingHoursInterval, noStop);
 
   if (!period) {
     return cnsValue;
