@@ -42,27 +42,54 @@ const ticket = {
       critical: {
         engagements: [
           {
-            supported: "PT1H",
-            bypassed: "P1D",
-            resolved: "P2D"
+            supported: {
+              businessHours: "PT1H",
+              nonBusinessHours: "PT2H"
+            },
+            bypassed: {
+              businessHours: "P1D",
+              nonBusinessHours: "P2D"
+            },
+            resolved: {
+              businessHours: "P2D",
+              nonBusinessHours: "P4D"
+            }
           }
         ]
       },
       sensible: {
         engagements: [
           {
-            supported: "PT1H",
-            bypassed: "P1D",
-            resolved: "P2D"
+            supported: {
+              businessHours: "PT1H",
+              nonBusinessHours: "PT2H"
+            },
+            bypassed: {
+              businessHours: "P1D",
+              nonBusinessHours: "P2D"
+            },
+            resolved: {
+              businessHours: "P2D",
+              nonBusinessHours: "P4D"
+            }
           }
         ]
       },
       standard: {
         engagements: [
           {
-            supported: "PT1H",
-            bypassed: "P1D",
-            resolved: "P2D"
+            supported: {
+              businessHours: "PT1H",
+              nonBusinessHours: "PT2H"
+            },
+            bypassed: {
+              businessHours: "P1D",
+              nonBusinessHours: "P2D"
+            },
+            resolved: {
+              businessHours: "P2D",
+              nonBusinessHours: "P4D"
+            }
           }
         ]
       }

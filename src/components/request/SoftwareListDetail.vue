@@ -37,22 +37,12 @@ export default {
   },
   computed: {
     engagements: function() {
-      const engagementFound = getTicketSoftwareEngagement(this.request);
-
-      const noneLabel = this.$i18n.t("None");
-
-      return (
-        engagementFound || {
-          resolved: noneLabel,
-          bypassed: noneLabel,
-          supported: noneLabel
-        }
-      );
+      return getTicketSoftwareEngagement(this.request);
     }
   },
   methods: {
-    parseDuration(duration) {
-      const parsedDuration = this.moment.duration(duration);
+    parseDuration(engagement) {
+      const parsedDuration = this.moment.duration(engagement.hours);
       const days = parsedDuration
         .clone()
         .subtract({
@@ -60,7 +50,7 @@ export default {
         })
         .asDays();
 
-      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, true);
+      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, engagement.businessHours);
     }
   }
 };

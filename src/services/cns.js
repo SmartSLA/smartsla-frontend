@@ -3,7 +3,6 @@ import Vue from "vue";
 import { Cns, CnsValue } from "@/services/cns.model";
 import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
 import { DEFAULT_TIMEZONE } from "@/constants.js";
-import { UNDEFINED_DURATION } from "@/constants";
 
 export { computeCns, computePeriods, calculateSuspendedMinutes, calculateWorkingMinutes, hoursBetween };
 
@@ -26,24 +25,9 @@ function computeCns(ticket) {
     const periods = computePeriods(ticket.events, ticket.timestamps.createdAt);
     const engagement = getTicketSoftwareEngagement(ticket) || {};
 
-    cns.supported = computeTime(
-      periods["new"],
-      workingInterval,
-      !ticket.createdDuringBusinessHours,
-      engagement.supported
-    );
-    cns.bypassed = computeTime(
-      periods["supported"],
-      workingInterval,
-      !ticket.createdDuringBusinessHours,
-      engagement.bypassed
-    );
-    cns.resolved = computeTime(
-      periods["bypassed"],
-      workingInterval,
-      !ticket.createdDuringBusinessHours,
-      engagement.resolved
-    );
+    cns.supported = computeTime(periods["new"], workingInterval, engagement.supported);
+    cns.bypassed = computeTime(periods["supported"], workingInterval, engagement.bypassed);
+    cns.resolved = computeTime(periods["bypassed"], workingInterval, engagement.resolved);
 
     const { days, hours, minutes } = cns.bypassed;
 
@@ -145,15 +129,14 @@ function computePeriods(events, ticketStartTime) {
  *
  * @param period
  * @param workingInterval
- * @param useNonBusinessHours
  * @param engagement
  * @return {Object} time spent regarding contrat
  */
-function computeTime(period, workingInterval, useNonBusinessHours, engagement) {
-  const noStop = useNonBusinessHours && engagement.nonBusinessHours !== UNDEFINED_DURATION;
+function computeTime(period, workingInterval, engagement) {
+  const noStop = !engagement.businessHours;
 
   const workingHoursInterval = noStop ? 24 : workingInterval.end - workingInterval.start;
-  const engagementDuration = engagement && ((noStop && engagement.nonBusinessHours) || engagement.businessHours);
+  const engagementDuration = engagement.hours;
   const cnsValue = new CnsValue(engagementDuration, workingHoursInterval, noStop);
 
   if (!period) {
