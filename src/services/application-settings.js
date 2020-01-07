@@ -7,7 +7,8 @@ export const ApplicationSettings = Object.freeze({
       name: "08000Linux",
       color: "#d32f2f",
       logo: "logo.png"
-    }
+    },
+    LIMESURVEY_URL: "http://limesurvey.localhost:8080/"
   },
   ...process.env,
   ...window.openpaas

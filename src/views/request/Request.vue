@@ -221,10 +221,9 @@
             </v-card-text>
           </v-card>
           <v-card>
-            <v-tabs grow icons-and-text class="ml-3 mr-3">
+            <v-tabs icons-and-text class="ml-3 mr-3">
               <v-tabs-slider color="primary"></v-tabs-slider>
               <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
-              <v-tab disabled href="#satisfaction">{{ $t("satisfaction after closure") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
                   <v-timeline-item v-for="event in request.events" :key="event._id" large :ref="`event-${event._id}`">
@@ -317,6 +316,12 @@
                           }}
                         </p>
                       </v-card-text>
+                      <v-card-text v-if="request.survey && event.isSurvey" class="grey--text mt-0">
+                        <v-icon>link</v-icon>
+                        <a :href="getSurveyUrl()" target="_blank" style="text-decoration:none;">
+                          {{ $t("Please fill out this survey") }}
+                        </a>
+                      </v-card-text>
                     </v-card>
                   </v-timeline-item>
                 </v-timeline>
@@ -382,27 +387,38 @@
                       />
                     </v-flex>
                   </v-layout>
-                  <v-layout row wrap>
-                    <v-flex xs1 md4 sm4 lg4 xl4></v-flex>
-                    <v-flex xs2 md4 sm4 lg4 xl4>
-                      <v-btn
-                        color="info"
-                        class="custom-comment-btn"
-                        @click="addEvent"
-                        :disabled="isSubmitting"
-                        :loading="isSubmitting"
-                        >{{ $t("Add comment") }}</v-btn
-                      >
+                  <v-layout row wrap id="submission">
+                    <v-flex md4 class="hidden-sm-and-down"></v-flex>
+                    <v-flex xs6 md4>
+                      <v-layout row>
+                        <v-btn
+                          @click="addEvent(false)"
+                          :disabled="isSubmitting"
+                          :loading="isSubmitting"
+                          color="info"
+                          class="btn-submit"
+                        >
+                          {{ $t("Submit") }}
+                        </v-btn>
+                        <v-menu top pl-0 offset-y v-if="getUser.type === 'expert'">
+                          <template v-slot:activator="{ on }">
+                            <v-btn color="info" v-on="on" class="ml-0 px-1 btn-list">
+                              <v-icon>arrow_drop_down</v-icon>
+                            </v-btn>
+                          </template>
+                          <v-list>
+                            <v-list-tile @click="addEvent(true)" :disabled="surveySubmitted">
+                              <v-list-tile-title
+                                class="btn-action-list"
+                                v-html="$t('Submit and send the survey')"
+                              ></v-list-tile-title>
+                            </v-list-tile>
+                          </v-list>
+                        </v-menu>
+                      </v-layout>
                     </v-flex>
                   </v-layout>
                 </v-form>
-              </v-tab-item>
-              <v-tab-item value="satisfaction">
-                <v-card flat>
-                  <v-card-text>
-                    {{ $t("the satisfaction survey will be available once the ticket is closed") }}
-                  </v-card-text>
-                </v-card>
               </v-tab-item>
             </v-tabs>
           </v-card>
@@ -524,6 +540,7 @@ import AssignedToUser from "@/components/request/AssignedToUser";
 import UserListAssignment from "@/components/request/UserListAssignment";
 import RelatedContributions from "@/components/request/RelatedContributions";
 import { UPDATE_COMMENT, NEXT_STATUS, USER_TYPE } from "@/constants.js";
+import surveyUrl from "@/services/limesurvey/limesurvey.js";
 
 export default {
   data() {
@@ -580,6 +597,10 @@ export default {
       return flatten(attachments);
     },
 
+    surveySubmitted() {
+      return this.request.survey && !!Object.values(this.request.survey).length;
+    },
+
     ticketStatusId() {
       if (this.request.status) {
         switch (this.request.status) {
@@ -629,7 +650,7 @@ export default {
       }
     },
 
-    addEvent() {
+    addEvent(isSurvey = false) {
       this.isSubmitting = true;
       const attachmentsPromise = this.commentCreationAttachments.length
         ? this.$http.getUploader().uploadAll(this.commentCreationAttachments)
@@ -649,6 +670,10 @@ export default {
             isPrivate: this.isPrivateTab
           };
 
+          if (isSurvey) {
+            event.isSurvey = isSurvey;
+          }
+
           if (attachments.length) {
             event.attachments = attachments.map(attachment => ({
               _id: attachment._id,
@@ -658,10 +683,7 @@ export default {
           }
 
           this.$store
-            .dispatch("ticket/addEvent", {
-              ticketId: this.request._id,
-              event
-            })
+            .dispatch("ticket/addEvent", { ticketId: this.request._id, event })
             .then(() => {
               this.$store.dispatch("ui/displaySnackbar", {
                 message: this.$i18n.t("updated"),
@@ -715,23 +737,34 @@ export default {
 
       return this.$i18n.t(capitalizedStatus);
     },
+
     assignSelf() {
       this.newResponsible = this.getUser;
     },
+
     assignCustomer() {
       this.newResponsible = this.request.author;
     },
+
     assignTo(user) {
       this.newResponsible = user;
     },
+
     fetchTicket() {
       this.$store.dispatch("ticket/fetchTicketById", this.$route.params.id);
     },
+
     copyEventLink(eventId) {
       const element = `event-${eventId}`;
       const baseUrl = `${window.location.origin}${this.$route.path}`;
 
       this.$copyText(`${baseUrl}#${element}`);
+    },
+
+    getSurveyUrl() {
+      const { token, id } = this.request.survey;
+      const { absoluteUrl } = surveyUrl(id);
+      return new URL(`?token=${token}`, absoluteUrl).toString();
     }
   },
   created() {
@@ -746,6 +779,10 @@ export default {
   .v-stepper__label {
     display: block !important;
   }
+}
+
+.btn-action-list span {
+  font-weight: bold;
 }
 </style>
 
@@ -1028,5 +1065,20 @@ export default {
   color:#00A0C6;
   text-decoration: underline
   cursor:pointer;
+}
+
+#submission .btn-list {
+  min-width:0;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  box-shadow: none;
+}
+
+#submission .btn-submit {
+  margin-right: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  box-shadow: none;
+  border-right: 1px solid rgba(1, 9, 16, 0.1);
 }
 </style>
