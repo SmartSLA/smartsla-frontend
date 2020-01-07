@@ -28,6 +28,7 @@
 
 <script>
 import { computeCns } from "@/services/cns";
+import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 
 export default {
   name: "cns-progress-bar",
@@ -67,13 +68,7 @@ export default {
       return this.isCurrentEngagementFulfilled() ? "done" : "clear";
     },
     currentCnsValueEngagement() {
-      const currentCnsValueEngagement = this.moment.duration(this.currentCnsValue.engagement);
-
-      return {
-        days: Math.trunc(currentCnsValueEngagement.asDays()),
-        hours: currentCnsValueEngagement.hours(),
-        minutes: currentCnsValueEngagement.minutes()
-      };
+      return convertIsoDurationInDaysHoursMinutes(this.currentCnsValue.engagement);
     }
   },
   methods: {

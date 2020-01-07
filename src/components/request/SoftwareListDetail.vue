@@ -28,6 +28,7 @@
 <script>
 import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
+import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 
 export default {
   name: "software-list-detail",
@@ -42,15 +43,9 @@ export default {
   },
   methods: {
     parseDuration(engagement) {
-      const parsedDuration = this.moment.duration(engagement.hours);
-      const days = parsedDuration
-        .clone()
-        .subtract({
-          hours: parsedDuration.hours()
-        })
-        .asDays();
+      const { days, hours } = convertIsoDurationInDaysHoursMinutes(engagement.hours);
 
-      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, engagement.businessHours);
+      return humanizeHoursDurationFilter({ days, hours }, engagement.businessHours);
     }
   }
 };

@@ -322,7 +322,8 @@ import { VueEditor } from "vue2-editor";
 import Attachments from "@/components/attachments/creation/Attachments.vue";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import { USER_TYPE } from "@/constants.js";
-import { UNDEFINED_DURATION } from "@/constants";
+import { getEngagementHours } from "@/services/helpers/ticket";
+import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 
 export default {
   data() {
@@ -541,19 +542,10 @@ export default {
     },
 
     cnsDurationDisplay(engagement) {
-      const isInBusinessHours =
-        this.getBusinessHour || (!this.getBusinessHour && engagement.nonBusinessHours === UNDEFINED_DURATION);
-      const durationString = isInBusinessHours ? engagement.businessHours : engagement.nonBusinessHours;
-      let parsedDuration = this.moment.duration(durationString);
+      const engagementHours = getEngagementHours(engagement, this.getBusinessHour);
+      const { days, hours } = convertIsoDurationInDaysHoursMinutes(engagementHours.hours);
 
-      const days = parsedDuration
-        .clone()
-        .subtract({
-          hours: parsedDuration.hours()
-        })
-        .asDays();
-
-      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, isInBusinessHours);
+      return humanizeHoursDurationFilter({ days, hours }, engagementHours.businessHours);
     },
     searchSoftware(item, queryText) {
       const searchText = queryText.toLowerCase();

@@ -1,4 +1,4 @@
-import moment from "moment-timezone";
+import { convertIsoDurationInDaysHoursMinutes, getHoursValue } from "@/services/helpers/duration";
 
 export { Cns, CnsValue };
 
@@ -23,7 +23,7 @@ class CnsValue {
   }
 
   getPercentageElapsed() {
-    const cnsInHours = this.getHoursValue(this.days, this.hours, this.minutes);
+    const cnsInHours = getHoursValue(this.workingHours, this.days, this.hours, this.minutes);
 
     const engagementInHours = this.getEngagementInHours();
 
@@ -39,14 +39,8 @@ class CnsValue {
       return 0;
     }
 
-    const engagementDuration = moment.duration(this.engagement);
-    const days = Math.trunc(engagementDuration.asDays());
-    const hours = engagementDuration.hours();
+    const { days, hours } = convertIsoDurationInDaysHoursMinutes(this.engagement);
 
-    return this.getHoursValue(days, hours);
-  }
-
-  getHoursValue(days, hours, minutes = 0) {
-    return days * this.workingHours + hours + minutes / 60;
+    return getHoursValue(this.workingHours, days, hours);
   }
 }
