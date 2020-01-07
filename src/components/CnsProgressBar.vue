@@ -1,19 +1,32 @@
 <template>
   <v-layout row wrap>
     <v-flex px-1 pt-0 pb-0 text-xs-center :class="{ xs12: hideClock, xs11: !hideClock }">
-      <v-progress-linear
-        height="18"
-        :value="currentCnsValue.getPercentageElapsed()"
-        :color="currentCnsValueColor"
-        class="mt-0 white--text font-weight-bold"
-      >
-        <span>
-          {{ currentCnsValue | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
-          <span v-if="!hideClock">
-            / {{ currentCnsValueEngagement | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <span v-on="on">
+            <v-progress-linear
+              height="18"
+              :value="currentCnsValue.getPercentageElapsed()"
+              :color="currentCnsValueColor"
+              class="mt-0 white--text font-weight-bold"
+            >
+              <span>
+                {{ currentCnsValue | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
+                <span v-if="!hideClock">
+                  / {{ currentCnsValueEngagement | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
+                </span>
+              </span>
+            </v-progress-linear>
           </span>
+        </template>
+        <span>
+          {{ $t("Time spent : ") }}
+          {{ currentCnsValue | humanizeHoursDurationFilter(currentCnsValue.isNonBusinessHours) }}
+          /
+          {{ currentCnsValueEngagement | humanizeHoursDurationFilter(currentCnsValue.isNonBusinessHours) }}
+          ({{ currentCnsValue && `${Math.trunc(currentCnsValue.getPercentageElapsed())}%` }})
         </span>
-      </v-progress-linear>
+      </v-tooltip>
     </v-flex>
     <v-flex v-if="!hideClock" xs1 px-1 pt-0 pb-0>
       <v-icon v-if="isCurrentStep" color="info">
@@ -91,5 +104,3 @@ export default {
   }
 };
 </script>
-
-<style></style>
