@@ -90,6 +90,7 @@
 import { OSSA_IDS, SEVERITY_TYPES, REQUEST_TYPES } from "@/constants.js";
 import FormEngagement from "@/components/admin/contract/FormEngagement.vue";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
+import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 
 export default {
   name: "contract-edit-engagements",
@@ -253,30 +254,18 @@ export default {
     },
 
     parseDuration(durationString) {
-      const parsedDuration = this.moment.duration(durationString);
-      const days = parsedDuration
-        .clone()
-        .subtract({
-          hours: parsedDuration.hours()
-        })
-        .asDays();
+      const { days, hours } = convertIsoDurationInDaysHoursMinutes(durationString);
 
       return {
-        hours: parsedDuration.hours(),
-        days
+        days,
+        hours
       };
     },
 
     cnsDurationDisplay(durationString, isInBusinessHours = false) {
-      const parsedDuration = this.moment.duration(durationString);
-      const days = parsedDuration
-        .clone()
-        .subtract({
-          hours: parsedDuration.hours()
-        })
-        .asDays();
+      const { days, hours } = convertIsoDurationInDaysHoursMinutes(durationString);
 
-      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, isInBusinessHours);
+      return humanizeHoursDurationFilter({ days, hours }, isInBusinessHours);
     },
     validate(toastMsg) {
       switch (this.$route.params.type) {

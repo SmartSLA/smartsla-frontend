@@ -1,6 +1,6 @@
 import { UNDEFINED_DURATION } from "@/constants";
 
-export { getTicketSoftwareEngagement };
+export { getTicketSoftwareEngagement, getEngagementHours };
 
 function getTicketSoftwareEngagement(ticket) {
   const engagements =
@@ -19,19 +19,19 @@ function getTicketSoftwareEngagement(ticket) {
 
   return (
     foundEngagements && {
-      supported: getEngagementHours(ticket, foundEngagements.supported),
-      bypassed: getEngagementHours(ticket, foundEngagements.bypassed),
-      resolved: getEngagementHours(ticket, foundEngagements.resolved)
+      supported: getEngagementHours(foundEngagements.supported, ticket.createdDuringBusinessHours),
+      bypassed: getEngagementHours(foundEngagements.bypassed, ticket.createdDuringBusinessHours),
+      resolved: getEngagementHours(foundEngagements.resolved, ticket.createdDuringBusinessHours)
     }
   );
 }
 
-function isEngagementInBusinessHour(ticket, engagement) {
-  return ticket.createdDuringBusinessHours || engagement.nonBusinessHours === UNDEFINED_DURATION;
+function isEngagementInBusinessHour(engagement, useBusinessHours) {
+  return useBusinessHours || engagement.nonBusinessHours === UNDEFINED_DURATION;
 }
 
-function getEngagementHours(request, engagement) {
-  const businessHours = isEngagementInBusinessHour(request, engagement);
+function getEngagementHours(engagement, useBusinessHours) {
+  const businessHours = isEngagementInBusinessHour(engagement, useBusinessHours);
   const hours = businessHours ? engagement.businessHours : engagement.nonBusinessHours;
 
   return {

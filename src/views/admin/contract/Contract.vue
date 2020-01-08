@@ -451,6 +451,7 @@
 <script>
 import { OSSA_IDS, DEFAULT_TIMEZONE } from "@/constants.js";
 import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
+import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import UsersList from "@/components/user/UsersList.vue";
 
@@ -593,15 +594,9 @@ export default {
 
     cnsDurationDisplay(cnsType, isInBusinessHours = false) {
       const durationString = isInBusinessHours ? cnsType.businessHours : cnsType.nonBusinessHours;
-      const parsedDuration = this.moment.duration(durationString);
-      const days = parsedDuration
-        .clone()
-        .subtract({
-          hours: parsedDuration.hours()
-        })
-        .asDays();
+      const { days, hours } = convertIsoDurationInDaysHoursMinutes(durationString);
 
-      return humanizeHoursDurationFilter({ days, hours: parsedDuration.hours() }, isInBusinessHours);
+      return humanizeHoursDurationFilter({ days, hours }, isInBusinessHours);
     }
   },
   beforeCreate() {
