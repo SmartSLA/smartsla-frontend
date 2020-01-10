@@ -339,6 +339,7 @@ import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilt
 import { USER_TYPE } from "@/constants.js";
 import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
+import moment from "moment";
 
 export default {
   data() {
@@ -576,6 +577,11 @@ export default {
       delete newResponsible.user;
       delete newResponsible.timestamps;
       return newResponsible;
+    },
+    isExpired(expirationDate) {
+      const diff = moment().diff(expirationDate);
+
+      return Math.sign(diff) === 1;
     }
   },
   computed: {
@@ -702,7 +708,9 @@ export default {
       if (this.ticket.contract.software) {
         // FIXME Fix this
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        return this.ticket.contract.software.sort((a, b) => a.software.name.localeCompare(b.software.name));
+        return this.ticket.contract.software
+          .filter(software => !this.isExpired(software.SupportDate.end))
+          .sort((a, b) => a.software.name.localeCompare(b.software.name));
       }
 
       return [];
