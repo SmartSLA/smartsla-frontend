@@ -175,6 +175,14 @@
           <v-flex xs8>
             <v-textarea v-model="contract.description"></v-textarea>
           </v-flex>
+          <v-flex xs3>{{ $t("External links") }}</v-flex>
+          <v-flex xs8>
+            <external-links
+              :externalLinks="externalLinks"
+              @add-external-link="addExternalLink"
+              @remove-external-link="removeExternalLink"
+            ></external-links>
+          </v-flex>
           <v-flex xs12 class="text-xs-center">
             <br />
           </v-flex>
@@ -209,6 +217,7 @@
 <script>
 import { routeNames } from "@/router";
 import TimezonePicker from "@/components/timezone-picker/timezone.vue";
+import ExternalLinks from "@/components/ExternalLinks.vue";
 
 export default {
   name: "edit-contract-information",
@@ -263,11 +272,13 @@ export default {
       hoursRules: {
         required: value => !!value || this.$i18n.t("Required field")
       },
-      credits: 0
+      credits: 0,
+      externalLinks: []
     };
   },
   components: {
-    TimezonePicker
+    TimezonePicker,
+    ExternalLinks
   },
   computed: {
     isNew() {
@@ -288,6 +299,7 @@ export default {
         .getContractById(this.$route.params.id)
         .then(({ data }) => {
           this.contract = data;
+          this.externalLinks = data.externalLinks;
           if (!data.hasOwnProperty("businessHours")) {
             this.contract = {
               businessHours: {
@@ -336,6 +348,7 @@ export default {
       if (contract.mailingList.internal.length && !(contract.mailingList.internal instanceof Array)) {
         contract.mailingList.internal = contract.mailingList.internal.split(",");
       }
+      contract.externalLinks = this.externalLinks;
       if (!this.isNew) {
         this.$http
           .createContract(contract)
@@ -408,6 +421,15 @@ export default {
             color: "error"
           });
         });
+    },
+    addExternalLink(name, url) {
+      this.externalLinks.push({
+        name: name,
+        url: url
+      });
+    },
+    removeExternalLink(index) {
+      this.externalLinks.splice(index, 1);
     }
   }
 };
