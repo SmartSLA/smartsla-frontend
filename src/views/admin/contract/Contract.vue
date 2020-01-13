@@ -111,10 +111,10 @@
                   <v-flex xs4>{{ contract.type }}</v-flex>
                   <v-flex xs4 v-if="contract.type === 'credit'">{{ contract.credits }}</v-flex>
                   <v-flex xs4 v-else></v-flex>
-                  <v-flex v-if="contract.externalLinks.length" xs4>
+                  <v-flex v-if="contract.externalLinks && contract.externalLinks.length" xs4>
                     <div class="subheading font-weight-medium">{{ $t("External Links") }} :</div>
                   </v-flex>
-                  <v-flex v-if="contract.externalLinks.length" xs8>
+                  <v-flex v-if="contract.externalLinks && contract.externalLinks.length" xs8>
                     <li :key="index" v-for="(link, index) in contract.externalLinks">
                       <a :href="link.url" target="_blank">{{ link.name }}</a>
                     </li>
