@@ -3,6 +3,10 @@ export default {
     return this.get(`/ticketing/api/contracts/${contractId}`);
   },
 
+  getContractTicketsById(contractId) {
+    return this.get(`/ticketing/api/contract/${contractId}/tickets`);
+  },
+
   getContracts() {
     return this.get(`/ticketing/api/contracts`);
   },
