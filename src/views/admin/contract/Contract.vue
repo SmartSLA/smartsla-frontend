@@ -470,7 +470,6 @@ import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import UsersList from "@/components/user/UsersList.vue";
-
 export default {
   data() {
     return {
