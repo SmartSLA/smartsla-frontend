@@ -14,209 +14,213 @@
             </div>
           </v-card-title>
           <v-divider class="mx-2"></v-divider>
-          <v-layout row wrap>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Name") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field
-                v-model="contribution.name"
-                :rules="[() => contribution.name.length > 0 || $i18n.t('Required field')]"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Software") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select
-                :items="software"
-                v-model="contribution.software"
-                :rules="[() => contribution.software.length > 0 || $i18n.t('Required field')]"
-              ></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Engineer") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select
-                :items="users"
-                v-model="contribution.engineer"
-                :rules="[() => contribution.engineer.length > 0 || $i18n.t('Required field')]"
-              ></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Request Number") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field v-model="contribution.requestNumber"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Patch") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <file-upload
-                prepend-icon="attach_file"
-                class="file pt-2"
-                url
-                :btn-label="$i18n.t('Attach file')"
-                btn-uploading-label="Uploading file"
-              ></file-upload>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Contribution type") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select :items="types"></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Version") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select
-                :items="version"
-                v-model="contribution.version"
-                :rules="[() => contribution.version.length > 0 || $i18n.t('Required field')]"
-              ></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Patched in version") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select :items="version"></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Status") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-select :items="statusList"></v-select>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Communication link") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field v-model="contribution.link"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Deposed on") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-menu
-                v-model="startDateModel"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="contribution.startDate"
-                    persistent-hint
-                    prepend-icon="event"
-                    @blur="contribution.startDate = parseDate(contribution.startDate)"
-                    v-on="on"
-                    :rules="[() => contribution.startDate.length > 0 || $i18n.t('Required field')]"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="contribution.startDate"
-                  no-title
-                  @input="startDateModel = false"
-                  :rules="[() => contribution.startDate.length > 0 || $i18n.t('Required field')]"
-                ></v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Closed on") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-menu
-                v-model="endDateModel"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="contribution.endDate"
-                    persistent-hint
-                    prepend-icon="event"
-                    @blur="contribution.endDate = parseDate(contribution.endDate)"
-                    v-on="on"
-                    :rules="[() => contribution.endDate.length > 0 || $i18n.t('Required field')]"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="contribution.endDate"
-                  no-title
-                  @input="endDateModel = false"
-                  :rules="[() => contribution.endDate.length > 0 || $i18n.t('Required field')]"
-                ></v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs1></v-flex>
-
-            <v-flex xs3 class="pt-4">
-              <strong>{{ $t("Synthesis") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-text-field v-model="contribution.synthesis"></v-text-field>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs3 class="pt-4">
-              <strong class="required-label">{{ $t("Description") }} :</strong>
-            </v-flex>
-            <v-flex xs8>
-              <v-textarea
-                v-model="contribution.synthesis"
-                :rules="[() => contribution.synthesis.length > 0 || $i18n.t('Required field')]"
-              ></v-textarea>
-            </v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs5></v-flex>
-            <v-flex xs2>
-              <v-btn class="success">{{ $t("validate") }}</v-btn>
-            </v-flex>
-          </v-layout>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-layout row wrap>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Name") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field
+                  v-model="contribution.name"
+                  :rules="[() => (contribution.name && contribution.name.length > 0) || $i18n.t('Required field')]"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Software") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-select
+                  :items="software"
+                  item-text="name"
+                  item-value="_id"
+                  v-model="contribution.software"
+                  :rules="[
+                    () => (contribution.software && contribution.software.length > 0) || $i18n.t('Required field')
+                  ]"
+                ></v-select>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Author") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-select
+                  :items="users"
+                  item-text="name"
+                  item-value="_id"
+                  v-model="contribution.author"
+                  :rules="[() => (contribution.author && contribution.author.length > 0) || $i18n.t('Required field')]"
+                ></v-select>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Contribution type") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-select
+                  v-model="contribution.type"
+                  :items="types"
+                  :item-text="value"
+                  :item-value="key"
+                  :rules="[() => (contribution.type && contribution.type.length > 0) || $i18n.t('Required field')]"
+                ></v-select>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Version") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field
+                  v-model="contribution.version"
+                  :rules="[
+                    () => (contribution.version && contribution.version.length > 0) || $i18n.t('Required field')
+                  ]"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("Patched in version") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-text-field
+                  v-model="contribution.patchedInVersion"
+                  :rules="[
+                    () =>
+                      (contribution.patchedInVersion && contribution.patchedInVersion.length > 0) ||
+                      $i18n.t('Required field')
+                  ]"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("links") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-layout row wrap v-for="(link, index) in contribution.links" :key="index">
+                  <v-flex xs4>
+                    <v-layout row>
+                      <v-flex :class="contribution.links[index].name === 'Other' ? 'xs4' : 'xs12'">
+                        <v-select
+                          :items="linkNames"
+                          v-model="contribution.links[index].name"
+                          prepend-icon="link"
+                          :label="$t('Link Name')"
+                        ></v-select>
+                      </v-flex>
+                      <v-flex>
+                        <v-text-field
+                          v-if="contribution.links[index].name === 'Other'"
+                          v-model="contribution.links[index].othername"
+                          :label="$t('Link Name')"
+                        ></v-text-field>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex>
+                    <v-text-field v-model="contribution.links[index].url" :label="$t('External Link')"></v-text-field>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-btn flat icon color="red lighten-2" @click="removeLink(index)">
+                      <v-icon>cancel</v-icon>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+                <v-btn flat icon color="green lighten-2" @click="addLink">
+                  <v-icon>add_circle</v-icon>
+                </v-btn>
+                {{ $t("add a new link") }}
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Deposed on") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-menu
+                  v-model="startDateModel"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="contribution.deposedAt"
+                      persistent-hint
+                      prepend-icon="event"
+                      @blur="contribution.deposedAt = parseDate(contribution.deposedAt)"
+                      v-on="on"
+                      :rules="[
+                        () => (contribution.deposedAt && contribution.deposedAt.length > 0) || $i18n.t('Required field')
+                      ]"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="contribution.deposedAt"
+                    no-title
+                    @input="startDateModel = false"
+                    :rules="[
+                      () => (contribution.deposedAt && contribution.deposedAt.length > 0) || $i18n.t('Required field')
+                    ]"
+                  ></v-date-picker>
+                </v-menu>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong class="required-label">{{ $t("Description") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <v-textarea
+                  v-model="contribution.description"
+                  :rules="[
+                    () => (contribution.description && contribution.description.length > 0) || $i18n.t('Required field')
+                  ]"
+                ></v-textarea>
+              </v-flex>
+              <v-flex xs1></v-flex>
+              <v-flex xs5></v-flex>
+              <v-flex xs2>
+                <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-form>
         </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
+import { USER_TYPE, CONTRIBUTION_TYPES, CONTRIBUTION_LINK_TYPES } from "@/constants.js";
+import { routeNames } from "@/router";
+
 export default {
   data() {
     return {
+      valid: true,
       startDateModel: "",
-      endDateModel: "",
-      contribution: {},
-      types: [this.$i18n.t("Backport"), this.$i18n.t("Correction"), this.$i18n.t("Evolution")],
-      version: ["1.0", "2.1", "3.2", "4.0", "5.1"],
-      statusList: [
-        this.$i18n.t("accepted"),
-        this.$i18n.t("non reversed"),
-        this.$i18n.t("proposed"),
-        this.$i18n.t("rejected")
-      ]
+      contribution: {
+        links: [
+          {
+            name: "",
+            url: "",
+            othername: ""
+          }
+        ]
+      },
+      types: CONTRIBUTION_TYPES.map(contributionType => ({
+        key: contributionType,
+        value: this.$i18n.t(contributionType)
+      })),
+      linkNames: CONTRIBUTION_LINK_TYPES.map(contributionLinkType => ({
+        key: contributionLinkType,
+        value: this.$i18n.t(contributionLinkType)
+      })),
+      software: [],
+      users: []
     };
   },
   computed: {
@@ -230,12 +234,80 @@ export default {
 
       const [month, day, year] = date.split("/");
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    },
+
+    addLink() {
+      this.contribution.links.push({
+        name: "",
+        url: "",
+        othername: ""
+      });
+    },
+
+    removeLink(index) {
+      this.contribution.links.splice(index, 1);
+    },
+
+    create() {
+      this.contribution.links = this.contribution.links.map(link => {
+        return {
+          name: link.othername || link.name,
+          url: link.url
+        };
+      });
+
+      this.$http
+        .createContribution(this.contribution)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("contribution created"),
+            color: "success"
+          });
+          this.$router.push({ name: routeNames.ADMINCONTRIBUTIONS });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    },
+
+    validateFrom() {
+      if (this.$refs.form.validate()) {
+        this.create();
+      } else {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("the required fields must be filled"),
+          color: "error"
+        });
+      }
     }
   },
   created() {
-    if (this.$route.params.id) {
-      this.contribution = require("@/assets/data/contributions.json");
-    }
+    this.$http
+      .listSoftware({})
+      .then(({ data }) => {
+        this.software = data;
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("cannot fetch software list"),
+          color: "error"
+        });
+      });
+
+    this.$http
+      .listUsers(USER_TYPE.EXPERT)
+      .then(({ data }) => {
+        this.users = data;
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("cannot fetch experts list"),
+          color: "error"
+        });
+      });
   }
 };
 </script>

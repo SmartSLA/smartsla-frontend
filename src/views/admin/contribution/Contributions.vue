@@ -45,7 +45,7 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="admincontributions"
+        :items="contributions"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
@@ -53,16 +53,14 @@
         :rows-per-page-text="$t('Rows per page:')"
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.software }}</td>
+          <td class="text-xs-center">{{ props.item.software.name }}</td>
           <td class="text-xs-center">
-            <router-link :to="{ name: 'AdminContribution', params: { id: 15 } }" class="blue-color">{{
+            <router-link :to="{ name: 'AdminContribution', params: { id: props.item._id } }" class="blue-color">{{
               props.item.name
             }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.status }}</td>
-          <td class="text-xs-center">{{ props.item.deposit }}</td>
-          <td class="text-xs-center">{{ props.item.closure }}</td>
-          <td class="text-xs-center">{{ props.item.time_limit }}</td>
+          <td class="text-xs-center">{{ props.item.deposedAt }}</td>
           <td class="text-xs-center">{{ props.item.updated }}</td>
         </template>
       </v-data-table>
@@ -71,7 +69,6 @@
 </template>
 
 <script>
-var admincontributions = require("@/assets/data/admincontributions.json");
 export default {
   data() {
     return {
@@ -106,31 +103,33 @@ export default {
           class: "text-xs-center"
         },
         {
-          text: this.$i18n.t("Closure at"),
-          value: "closure",
-          sortable: false,
-          class: "text-xs-center"
-        },
-        {
-          text: this.$i18n.t("Time limit"),
-          value: "time_limit",
-          sortable: false,
-          class: "text-xs-center"
-        },
-        {
           text: this.$i18n.t("Updated at"),
           value: "updated",
           sortable: false,
           class: "text-xs-center"
         }
       ],
-      admincontributions
+      contributions: []
     };
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
       this.$router.push("/403");
     }
+  },
+
+  created() {
+    this.$http
+      .getContributions()
+      .then(({ data }) => {
+        this.contributions = data;
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("cannot fetch contribution list"),
+          color: "error"
+        });
+      });
   }
 };
 </script>

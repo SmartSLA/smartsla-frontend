@@ -1,21 +1,21 @@
 export default {
   getContributionById(contributionId) {
-    return this.get(`/ossa/contributions/${contributionId}`);
+    return this.get(`/ticketing/api/contributions/${contributionId}`);
   },
 
   getContributions() {
-    return this.get(`/ossa/contributions`);
+    return this.get(`/ticketing/api/contributions`);
   },
 
   createContribution(options) {
-    return this.post(`/ossa/contributions/`, options);
+    return this.post(`/ticketing/api/contributions`, options);
   },
 
   updateContribution(contributionId, options) {
-    return this.post(`/ossa/contributions/${contributionId}`, options);
+    return this.post(`/ticketing/api/contributions/${contributionId}`, options);
   },
 
   deleteContribution(contributionId) {
-    return this.delete(`/ossa/contribution/${contributionId}`);
+    return this.delete(`/ticketing/api/contributions/${contributionId}`);
   }
 };
