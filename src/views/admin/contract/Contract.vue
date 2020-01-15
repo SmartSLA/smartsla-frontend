@@ -108,9 +108,17 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Type") }} :</div>
                   </v-flex>
-                  <v-flex xs4>{{ contract.type }}</v-flex>
-                  <v-flex xs4 v-if="contract.type === 'credit'">{{ contract.credits }}</v-flex>
-                  <v-flex xs4 v-else></v-flex>
+                  <v-flex xs8 v-if="contract.type === 'credit'">
+                    <v-layout row wrap>
+                      <v-flex xs6>{{ contract.type }}</v-flex>
+                      <v-flex xs6>{{ contract.credits }}</v-flex>
+                      <v-flex xs6>{{ $t("Consumed") }}</v-flex>
+                      <v-flex xs6>{{ consumedCredits }}</v-flex>
+                      <v-flex xs6>{{ $t("Remaining") }}</v-flex>
+                      <v-flex xs6>{{ contract.credits - this.consumedCredits }}</v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex v-else xs8>{{ contract.type }}</v-flex>
                   <v-flex v-if="contract.externalLinks && contract.externalLinks.length" xs4>
                     <div class="subheading font-weight-medium">{{ $t("External Links") }} :</div>
                   </v-flex>
@@ -483,7 +491,9 @@ export default {
         },
         externalLinks: []
       },
-      contractUsers: null
+      contractUsers: null,
+      contractTickets: null,
+      consumedCredits: 0
     };
   },
   computed: {
@@ -544,6 +554,19 @@ export default {
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("Failed to fetch users"),
+          color: "error"
+        });
+      });
+
+    this.$http
+      .getContractTicketsById(contractId)
+      .then(({ data }) => {
+        this.contractTickets = data.list;
+        this.consumedCredits = data.list.length;
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("Failed to fetch contract tickets"),
           color: "error"
         });
       });
