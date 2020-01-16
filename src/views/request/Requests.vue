@@ -202,7 +202,6 @@
       <v-data-table
         :loading="loading"
         :pagination.sync="pagination"
-        :total-items="totalRequests"
         :items="requestsAsDataTable"
         :headers="headers"
         class="elevation-1 pb-0"
@@ -419,11 +418,11 @@ export default {
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "softwareName" },
-        { text: this.$i18n.t("Title"), value: "title", sortable: false },
+        { text: this.$i18n.t("Title"), value: "title" },
         { text: this.$i18n.t("Assigned to"), value: "assignedToName" },
         { text: this.$i18n.t("Responsible"), value: "responsibleName" },
         { text: this.$i18n.t("Author"), value: "authorName" },
-        { text: this.$i18n.t("Client / Contract"), value: "client_contract", sortable: false },
+        { text: this.$i18n.t("Client / Contract"), value: "clientContract" },
         { text: this.$i18n.t("MAJ"), value: "updatedAt" },
         { text: this.$i18n.t("Created"), value: "createdAt" },
         { text: this.$i18n.t("Status"), value: "status" },
@@ -567,7 +566,6 @@ export default {
     ...mapGetters({
       email: "user/getEmail",
       requests: "ticket/getCurrentPageRequests",
-      totalRequests: "ticket/getNbOfTickets",
       allRequests: "ticket/getTickets",
       userContracts: "user/getContracts"
     }),
@@ -594,6 +592,7 @@ export default {
         assignedTo: request.assignedTo && request.assignedTo.name,
         responsible: request.responsible && request.responsible.name,
         customer: request.customer,
+        clientContract: request.contract && request.contract.client + request.contract.name,
         updatedAt: request.timestamps.updatedAt,
         createdAt: request.timestamps.createdAt,
         status: request.status,
