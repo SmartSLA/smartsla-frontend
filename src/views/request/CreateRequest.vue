@@ -293,7 +293,21 @@
               </v-card-text>
               <v-card-actions>
                 <v-layout row wrap>
-                  <v-flex>
+                  <v-flex xs12>
+                    <div v-if="ticket.contract.credits <= contractTicketsCount + 1" class="text-xs-center">
+                      {{
+                        $i18n.t(
+                          // eslint-disable-next-line max-len
+                          "Warning : Your contract has only {credits} credits and you already consumed {consumed} credits",
+                          {
+                            credits: ticket.contract.credits,
+                            consumed: contractTicketsCount
+                          }
+                        )
+                      }}
+                    </div>
+                  </v-flex>
+                  <v-flex xs12>
                     <v-btn
                       :disabled="submitRequest"
                       :loading="submitRequest"
@@ -343,6 +357,7 @@ export default {
         beneficiary: {},
         Responsible: {}
       },
+      contractTicketsCount: 0,
       attachments: [],
       participants: [],
       linkedRequest: null,
@@ -694,6 +709,18 @@ export default {
   },
   watch: {
     "ticket.contract": function(newContract, oldContract) {
+      this.$http
+        .getContractTicketsById(newContract._id)
+        .then(({ data }) => {
+          this.contractTicketsCount = data.list.length;
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to fetch contract tickets"),
+            color: "error"
+          });
+        });
+
       if (Object.keys(oldContract).length !== 0) {
         this.ticket.type = "";
         this.ticket.software = {};
