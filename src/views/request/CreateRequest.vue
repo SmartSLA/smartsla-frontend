@@ -211,6 +211,7 @@
                     <v-input
                       prepend-icon="notes"
                       :rules="[() => ticket.description.length > 0 || $i18n.t('Required field')]"
+                      class="description-input"
                     >
                       <vue-editor
                         placeholder="Description"
@@ -309,7 +310,7 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-btn
-                      :disabled="submitRequest"
+                      :disabled="requiredUnfilled || submitRequest"
                       :loading="submitRequest"
                       @click="validateFrom"
                       class="blue-background-color white-color custom-btn-action"
@@ -705,6 +706,16 @@ export default {
       }
 
       return [];
+    },
+    requiredUnfilled() {
+      return (
+        !Object.keys(this.ticket.contract || {}).length ||
+        !this.ticket.title.length ||
+        !this.ticket.type.length ||
+        !this.ticket.description.length ||
+        (this.ticket.type.toLowerCase() != "information" &&
+          (!Object.keys(this.ticket.software || {}).length || !this.ticket.severity.length))
+      );
     }
   },
   watch: {
@@ -914,5 +925,11 @@ button.ml-0 {
 
 .v-card__actions {
   padding-top: 30px !important;
+}
+
+::v-deep .description-input .v-input__prepend-outer .v-input__icon--prepend i::after {
+  margin-left: .1em;
+  content: '*';
+  color: red;
 }
 </style>
