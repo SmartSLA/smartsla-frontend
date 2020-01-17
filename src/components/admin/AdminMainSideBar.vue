@@ -30,15 +30,6 @@
               </v-list-tile-action>
             </v-list-tile>
 
-            <v-list-tile :to="{ name: routeNames.ADMIN_ROLES }" active-class="primary">
-              <v-list-tile-content>
-                <v-list-tile-title class="pl-2">{{ $t("Roles") }}</v-list-tile-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-icon>verified_user</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-
             <v-list-tile :to="{ name: routeNames.TEAMS }" active-class="primary">
               <v-list-tile-content>
                 <v-list-tile-title class="pl-2">{{ $t("Teams") }}</v-list-tile-title>
