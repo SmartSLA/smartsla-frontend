@@ -61,8 +61,8 @@
                 <v-select
                   v-model="contribution.type"
                   :items="types"
-                  :item-text="value"
-                  :item-value="key"
+                  item-text="value"
+                  item-value="key"
                   :rules="[() => (contribution.type && contribution.type.length > 0) || $i18n.t('Required field')]"
                 ></v-select>
               </v-flex>
@@ -104,6 +104,7 @@
                         <v-select
                           :items="linkNames"
                           v-model="contribution.links[index].name"
+                          item-text="value"
                           prepend-icon="link"
                           :label="$t('Link Name')"
                         ></v-select>
