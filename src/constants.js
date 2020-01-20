@@ -25,6 +25,10 @@ export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
 
 export const REQUEST_TYPES = ["Information", "Anomaly", "Other"];
 
+export const CONTRIBUTION_TYPES = ["Backport", "Correction", "Evolution"];
+
+export const CONTRIBUTION_LINK_TYPES = ["Path link", "binary link with the path", "Other"];
+
 export const USER_TYPE = {
   EXPERT: "expert",
   BENEFICIARY: "beneficiary"
