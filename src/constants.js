@@ -23,7 +23,7 @@ export const OSSA_IDS = [
 
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
 
-export const REQUEST_TYPES = ["Information", "Anomaly", "Other"];
+export const REQUEST_TYPES = ["Information", "Administration", "Anomaly", "Other"];
 
 export const CONTRIBUTION_TYPES = ["Backport", "Correction", "Evolution"];
 
