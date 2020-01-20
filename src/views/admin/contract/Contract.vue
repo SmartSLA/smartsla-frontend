@@ -30,8 +30,19 @@
                       >
                         <v-icon>edit</v-icon>
                       </v-btn>
+                      <v-btn color="primary" depressed fab small dark @click="editEngagment">
+                        <v-icon>post_add</v-icon>
+                      </v-btn>
                     </div>
                   </v-flex>
+                  <v-dialog v-model="formDialog" scrollable :fullscreen="$vuetify.breakpoint.xs" max-width="600px">
+                    <copy-engagements-form
+                      :isModalOpen="formDialog"
+                      :contract="contract"
+                      @submit="submit"
+                      @closeFormModal="closeFormModal"
+                    ></copy-engagements-form>
+                  </v-dialog>
                 </v-layout>
               </v-card-title>
               <v-card-text>
@@ -472,6 +483,7 @@ import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duratio
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import UsersList from "@/components/user/UsersList.vue";
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import CopyEngagementsForm from "@/components/admin/contract/CopyEngagementsForm.vue";
 
 export default {
   data() {
@@ -493,6 +505,7 @@ export default {
         },
         externalLinks: []
       },
+      formDialog: false,
       contractUsers: null,
       contractTickets: null,
       consumedCredits: 0
@@ -631,6 +644,43 @@ export default {
       const { days, hours } = convertIsoDurationInDaysHoursMinutes(durationString);
 
       return humanizeHoursDurationFilter({ days, hours }, isInBusinessHours);
+    },
+    closeFormModal() {
+      this.formDialog = false;
+    },
+    editEngagment() {
+      this.formDialog = true;
+    },
+    submit(contract) {
+      this.$http
+        .updateContract(this.contract._id, contract)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Updated"),
+            color: "success"
+          });
+          this.getData();
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to update the contract"),
+            color: "error"
+          });
+        });
+      this.formDialog = false;
+    },
+    getData() {
+      this.$http
+        .getContractById(this.contract._id)
+        .then(({ data }) => {
+          this.contract = data;
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("failed to fetch contract"),
+            color: "error"
+          });
+        });
     }
   },
   beforeCreate() {
@@ -640,7 +690,8 @@ export default {
   },
   components: {
     UsersList,
-    ExpiredLabel
+    ExpiredLabel,
+    CopyEngagementsForm
   }
 };
 </script>
