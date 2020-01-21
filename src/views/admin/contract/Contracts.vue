@@ -63,21 +63,17 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            <div v-if="props.item.isdisabled == 'yes'">
-              <strike>
-                <router-link class="contracts-actions" :to="{ name: 'Contract', params: { id: props.item.id } }">{{
-                  props.item.name
-                }}</router-link>
-              </strike>
-              <span class="expired-contracts">Expired</span>
-            </div>
-            <div v-else>
-              <router-link
-                class="contracts-actions blue-color"
-                :to="{ name: 'Contract', params: { id: props.item._id } }"
-                >{{ props.item.name }}</router-link
-              >
-            </div>
+            <router-link
+              class="contracts-actions blue-color"
+              :to="{ name: 'Contract', params: { id: props.item._id } }"
+            >
+              {{ props.item.name }}
+              <expired-label
+                :expirationDate="props.item.endDate"
+                :status="props.item.status"
+                :haveAStatus="true"
+              ></expired-label>
+            </router-link>
           </td>
           <td class="text-xs-center">
             <router-link
@@ -97,6 +93,8 @@
 </template>
 
 <script>
+import ExpiredLabel from "@/components/ExpiredLabel.vue";
+
 export default {
   data() {
     return {
@@ -134,6 +132,9 @@ export default {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
       this.$router.push("/403");
     }
+  },
+  components: {
+    ExpiredLabel
   }
 };
 </script>
@@ -196,14 +197,6 @@ export default {
 .contracts-operations {
   margin: 10px;
   display: flex;
-}
-
-.expired-contracts {
-  color: #fa4b4b;
-  padding: 2px;
-  border: #fa4b4b solid 1px;
-  border-radius: 5px;
-  margin-left: 5px;
 }
 
 .contracts-actions {

@@ -7,7 +7,10 @@
     </v-card-title>
     <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
       <template v-slot:items="props">
-        <td class="text-xs-center">{{ props.item.software.name }}</td>
+        <td class="text-xs-center">
+          {{ props.item.software.name }}
+          <expired-label :expirationDate="props.item.SupportDate.end"></expired-label>
+        </td>
         <td class="text-xs-center">{{ props.item.version }}</td>
         <td class="text-xs-center">{{ props.item.os }}</td>
         <td class="text-xs-center" v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length">
@@ -72,6 +75,7 @@
 
 <script>
 import FormSoftware from "@/components/admin/contract/FormSoftware.vue";
+import ExpiredLabel from "@/components/ExpiredLabel.vue";
 
 export default {
   name: "edit-contract-software",
@@ -97,7 +101,8 @@ export default {
     };
   },
   components: {
-    FormSoftware
+    FormSoftware,
+    ExpiredLabel
   },
   methods: {
     closeFormModal() {

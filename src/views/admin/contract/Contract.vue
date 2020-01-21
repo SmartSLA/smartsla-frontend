@@ -169,6 +169,7 @@
                   <template v-slot:items="props">
                     <td class="text-xs-center">
                       <router-link to="#">{{ props.item.software.name }}</router-link>
+                      <expired-label :expirationDate="props.item.SupportDate.end"></expired-label>
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
                     <td class="text-xs-center">{{ props.item.os }}</td>
@@ -470,6 +471,8 @@ import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import UsersList from "@/components/user/UsersList.vue";
+import ExpiredLabel from "@/components/ExpiredLabel.vue";
+
 export default {
   data() {
     return {
@@ -636,7 +639,8 @@ export default {
     }
   },
   components: {
-    UsersList
+    UsersList,
+    ExpiredLabel
   }
 };
 </script>
