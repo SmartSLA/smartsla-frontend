@@ -238,6 +238,7 @@
                       </v-flex>
                       <v-flex xs6 md6 mb-2>
                         <v-autocomplete
+                          :disabled="!filtredRelated.length"
                           :items="filtredRelated"
                           :filter="searchRequest"
                           :label="$i18n.t('Related requests')"
@@ -384,7 +385,8 @@ export default {
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       emailVerfication: [],
       meetingId: "",
-      callNumber: ""
+      callNumber: "",
+      ticketsContract: []
     };
   },
   components: {
@@ -602,7 +604,7 @@ export default {
     },
 
     relatedRequests() {
-      return (this.requests || []).map(ticket => ({ id: `${ticket._id}`, title: ticket.title }));
+      return (this.ticketsContract || []).map(ticket => ({ id: `${ticket._id}`, title: ticket.title }));
     },
 
     routeNames() {
@@ -732,6 +734,7 @@ export default {
         .getContractTicketsById(newContract._id)
         .then(({ data }) => {
           this.contractTicketsCount = data.list.length;
+          this.ticketsContract = data.list;
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
