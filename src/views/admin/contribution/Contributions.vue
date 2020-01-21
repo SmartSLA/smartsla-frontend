@@ -16,17 +16,19 @@
         ></v-text-field>
         <v-select
           solo
-          :items="softwares"
-          v-model="softwares"
+          :items="softwareList"
+          v-model="software"
+          item-text="name"
           hide-details
           :label="$i18n.t('software')"
           :no-data-text="$i18n.t('No data available')"
           class="contributions-search-software"
+          return-object
         ></v-select>
         <v-select
           solo
-          :items="statuss"
-          v-model="statuss"
+          :items="statusList"
+          v-model="status"
           hide-details
           :label="$i18n.t('status')"
           :no-data-text="$i18n.t('No data available')"
@@ -45,7 +47,7 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="contributions"
+        :items="contributionList"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
@@ -69,14 +71,23 @@
 </template>
 
 <script>
+import { CONTRIBUTION_STATUS_LIST } from "@/constants.js";
+
 export default {
   data() {
     return {
       search: "",
-      softwares: [],
-      statuss: [],
+      software: {},
+      softwareList: [],
+      status: "",
+      statusList: CONTRIBUTION_STATUS_LIST.map(contributionStatus => ({
+        key: contributionStatus,
+        value: this.$i18n.t(contributionStatus)
+      })),
       rowsPerPageItems: [10, 25, 50],
-      pagination: "10",
+      pagination: {
+        rowsPerPage: 10
+      },
       headers: [
         {
           text: this.$i18n.t("Software"),
@@ -112,6 +123,24 @@ export default {
       contributions: []
     };
   },
+  computed: {
+    contributionList() {
+      let filteredContributions = this.contributions;
+
+      if (this.software && this.software._id) {
+        filteredContributions = filteredContributions.filter(
+          contribution => contribution.software && contribution.software._id === this.software._id
+        );
+      }
+
+      if (this.status && this.status.length) {
+        filteredContributions = filteredContributions.filter(contribution => contribution.status === this.status);
+      }
+
+      return filteredContributions;
+    }
+  },
+
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
       this.$router.push("/403");
@@ -127,6 +156,18 @@ export default {
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("cannot fetch contribution list"),
+          color: "error"
+        });
+      });
+
+    this.$http
+      .listSoftware({})
+      .then(({ data }) => {
+        this.softwareList = data;
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("cannot fetch software list"),
           color: "error"
         });
       });
