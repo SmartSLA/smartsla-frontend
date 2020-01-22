@@ -698,7 +698,9 @@ export default {
         store.push(storedItem.request);
       });
 
-      filtredList = filtredList.filter(item => !store.includes(item));
+      filtredList = filtredList.filter(item => {
+        return !store.filter(request => request.id === item.id && request.title === item.title).length;
+      });
 
       return filtredList;
     },
