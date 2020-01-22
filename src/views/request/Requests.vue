@@ -201,6 +201,7 @@
     <v-layout>
       <v-data-table
         :loading="loading"
+        :total-items="totalRequests"
         :pagination.sync="pagination"
         :items="requestsAsDataTable"
         :headers="headers"
@@ -570,6 +571,7 @@ export default {
     ...mapGetters({
       email: "user/getEmail",
       requests: "ticket/getCurrentPageRequests",
+      totalRequests: "ticket/getNbOfTickets",
       allRequests: "ticket/getTickets",
       userContracts: "user/getContracts"
     }),
@@ -596,7 +598,6 @@ export default {
         assignedTo: request.assignedTo && request.assignedTo.name,
         responsible: request.responsible && request.responsible.name,
         customer: request.customer,
-        clientContract: request.contract && request.contract.client + request.contract.name,
         updatedAt: request.timestamps.updatedAt,
         createdAt: request.timestamps.createdAt,
         status: request.status,

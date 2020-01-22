@@ -100,6 +100,7 @@ const getters = {
       responsibleName: request.responsible && request.responsible.name,
       assignedToName: request.assignedTo && request.assignedTo.name,
       id_ossa: request.idOssa.id,
+      clientContract: request.contract && request.contract.client + request.contract.name,
       organizationLabel:
         request.assignedTo && request.assignedTo.type === "beneficiary" ? request.contract.client[0] : "L",
       createdAt: request.timestamps.createdAt,
