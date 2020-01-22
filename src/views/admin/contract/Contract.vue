@@ -13,10 +13,10 @@
             <v-card>
               <v-card-title primary-title class="pb-0">
                 <v-layout>
-                  <v-flex xs10>
+                  <v-flex>
                     <h3 class="headline">{{ contract.name }}</h3>
                   </v-flex>
-                  <v-flex xs2>
+                  <v-flex>
                     <div class="text-xs-right grey--text">
                       <v-btn
                         color="primary"
