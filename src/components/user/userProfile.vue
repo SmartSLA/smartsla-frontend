@@ -82,6 +82,8 @@
   </v-container>
 </template>
 <script>
+import { routeNames } from "@/router";
+
 export default {
   data() {
     return {
@@ -105,12 +107,13 @@ export default {
             };
           }
         })
-        .catch(error => {
-          console.log(error);
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("failed to fetch the user"),
             color: "error"
           });
+
+          this.$router.push({ name: routeNames.REQUESTS });
         });
     }
   },
