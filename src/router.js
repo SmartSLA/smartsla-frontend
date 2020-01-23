@@ -188,7 +188,7 @@ export default new Router({
       }
     },
     {
-      path: "/profile",
+      path: "/profile/:id",
       name: routeNames.PROFILE,
       component: Profile,
       meta: {
