@@ -899,8 +899,8 @@ export default {
           (request.softwareName && request.softwareName.toLowerCase().includes(this.search)) ||
           request.description.toLowerCase().includes(this.search) ||
           request.title.toLowerCase().includes(this.search) ||
-          request.contract.client.toLowerCase().includes(this.search) ||
-          request.contract.name.toLowerCase().includes(this.search) ||
+          (request.contract && request.contract.client.toLowerCase().includes(this.search)) ||
+          (request.contract && request.contract.name.toLowerCase().includes(this.search)) ||
           request.status.toLowerCase().includes(this.search) ||
           (request.assignedToName && request.assignedToName.toLowerCase().includes(this.search)) ||
           (request.responsibleName && request.responsibleName.toLowerCase().includes(this.search)) ||
