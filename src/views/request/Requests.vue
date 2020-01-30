@@ -215,6 +215,8 @@
         :class="{ mobile: isMobile }"
         item-key="_id"
         ref="requestsTable"
+        :no-results-text="$i18n.t('No results text')"
+        :no-data-text="$i18n.t('Loading')"
       >
         <template slot="items" slot-scope="props">
           <tr @click="openTicket(props.item._id)">
@@ -338,7 +340,7 @@
           </tr>
         </template>
         <template v-slot:no-data>
-          <v-layout justify-center>
+          <v-layout justify-center v-if="!loading">
             <span v-if="!userContracts.length">
               {{
                 $t(
