@@ -5,7 +5,7 @@
         <text-highlight :queries="query">{{ $t(request.severity) }}</text-highlight>
       </span>
     </template>
-    <span>
+    <span v-if="engagements">
       <b>{{ $t("Engagements") }} {{ $t(request.severity) }} :</b>
       <ul>
         <li>
