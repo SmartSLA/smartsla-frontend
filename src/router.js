@@ -8,6 +8,7 @@ import Login from "@/views/Login.vue";
 import Dashboard from "@/views/dashboard/Dashboard.vue";
 import Satisfaction from "@/views/satisfaction/Satisfaction.vue";
 import Historic from "@/views/history/Historic.vue";
+import Contribution from "@/views/contribution/Contribution.vue";
 import Contributions from "@/views/contribution/Contributions.vue";
 import Orders from "@/views/order/Orders.vue";
 import Profile from "@/views/profile/Profile.vue";
@@ -30,7 +31,6 @@ import Software from "@/views/admin/software/Software.vue";
 import EditSoftware from "@/views/admin/software/EditSoftware.vue";
 import Contract from "@/views/admin/contract/Contract.vue";
 import AdminContributions from "@/views/admin/contribution/Contributions.vue";
-import AdminContribution from "@/views/admin/contribution/Contribution.vue";
 import EditContribution from "@/views/admin/contribution/EditContribution.vue";
 import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdminRoles from "@/views/admin/roles/Main.vue";
@@ -51,6 +51,7 @@ export const routeNames = Object.freeze({
   DASHBOARD: "Dashboard",
   SATISFACTION: "Satisfaction",
   HISTORIC: "Historic",
+  CONTRIBUTION: "Contribution",
   CONTRIBUTIONS: "Contributions",
   ORDERS: "Orders",
   PROFILE: "Profile",
@@ -65,7 +66,6 @@ export const routeNames = Object.freeze({
   CONTRACTS: "Contracts",
   CONTRACT: "Contract",
   ADMINCONTRIBUTIONS: "AdminContributions",
-  ADMINCONTRIBUTION: "AdminContribution",
   EDITCONTRIBUTION: "EditContribution",
   NEWCONTRIBUTION: "NewContribution",
   EDITCONTRACT: "Edit Contract",
@@ -175,6 +175,14 @@ export default new Router({
       path: "/contributions",
       name: routeNames.CONTRIBUTIONS,
       component: Contributions,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/contributions/:id",
+      name: routeNames.CONTRIBUTION,
+      component: Contribution,
       meta: {
         auth: true
       }
@@ -367,14 +375,6 @@ export default new Router({
           path: "admincontributions",
           name: routeNames.ADMINCONTRIBUTIONS,
           component: AdminContributions,
-          meta: {
-            auth: true
-          }
-        },
-        {
-          path: "admincontributions/:id",
-          name: routeNames.ADMINCONTRIBUTION,
-          component: AdminContribution,
           meta: {
             auth: true
           }
