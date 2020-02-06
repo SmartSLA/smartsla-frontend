@@ -29,6 +29,7 @@
           hint="https://www.linshare.org/"
           v-model="linkUrl"
           type="url"
+          :rules="[() => linkPattern.test(linkUrl) || $i18n.t('invalid link')]"
           persistent-hint
         ></v-text-field>
       </v-flex>
@@ -50,15 +51,16 @@ export default {
   data() {
     return {
       linkName: "",
-      linkUrl: ""
+      linkUrl: "",
+      linkPattern: /(http|https|ftp):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-/]))?/
     };
   },
   methods: {
     addExternalLink() {
       this.$emit("add-external-link", this.linkName, this.linkUrl);
-
       this.linkName = this.linkUrl = "";
     },
+
     removeExternalLink(index) {
       this.$emit("remove-external-link", index);
     }
