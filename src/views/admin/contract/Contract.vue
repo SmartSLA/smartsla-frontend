@@ -179,7 +179,12 @@
                 <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
                   <template v-slot:items="props">
                     <td class="text-xs-center">
-                      <router-link to="#">{{ props.item.software.name }}</router-link>
+                      <router-link
+                        :to="{ name: 'Software', params: { id: props.item.software._id } }"
+                        class="blue-color"
+                      >
+                        {{ props.item.software.name }}
+                      </router-link>
                       <expired-label :expirationDate="props.item.SupportDate.end"></expired-label>
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
