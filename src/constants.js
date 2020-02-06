@@ -29,7 +29,7 @@ export const REQUEST_TYPES = ["Information", "Administration", "Anomaly", "Other
 
 export const CONTRIBUTION_TYPES = ["Backport", "Correction", "Evolution"];
 
-export const CONTRIBUTION_LINK_TYPES = ["Path link", "binary link with the path", "Other"];
+export const CONTRIBUTION_LINK_TYPES = ["Patch link", "binary link with the path", "Other"];
 
 export const USER_TYPE = {
   EXPERT: "expert",

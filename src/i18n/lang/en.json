@@ -53,6 +53,7 @@
   "cns.state.closure": "Closure",
   "cns.state.resolution": "Resolution",
   "cns.state.support": "Support",
+  "contribution status": "contribution status",
   "Consumed": "Consumed",
   "Copy": "Copy",
   "Copy from an existing contract": "Copy from an existing contract",
@@ -91,13 +92,13 @@
   "otherSoftwareContributions": {
     "message": "other {software} contributions"
   },
-  "Reversed": "Reversed",
+  "Patch link": "Patch link",
   "Password": "Password",
   "Profile": "Profile",
   "Published": "Published",
   "Remaining": "Remaining",
-  "Path link": "Path link",
   "Rejected": "Rejected",
+  "Reversed": "Reversed",
   "Settings": "Settings",
   "Softwares": "Software",
   "Take it": "Take it",
