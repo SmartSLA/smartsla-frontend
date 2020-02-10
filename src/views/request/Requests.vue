@@ -365,7 +365,7 @@
 <script>
 import { mapGetters, createNamespacedHelpers } from "vuex";
 import { capitalize } from "lodash";
-import moment from "moment";
+import moment from "moment-timezone";
 import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
