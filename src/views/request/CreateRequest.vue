@@ -140,7 +140,7 @@
                             :items="[...sortedListOfSoftware]"
                             v-model="ticket.software"
                             :filter="searchSoftware"
-                            :rules="[validateSoftware() || $i18n.t('Required field')]"
+                            :rules="[isSoftwareValid || !isInformationRequest || $i18n.t('Required field')]"
                             :class="{ 'required-element': !isInformationRequest }"
                             return-object
                           >
@@ -168,8 +168,8 @@
                             :disabled="!ticket.type"
                             v-model="ticket.severity"
                             :label="$i18n.t('Severity')"
-                            :rules="[validateSeverity() || $i18n.t('Required field')]"
-                            :class="{ 'required-element': !isInformationRequest || this.ticket.software }"
+                            :rules="[isSeverityValid || !isInformationRequest || $i18n.t('Required field')]"
+                            :class="{ 'required-element': !isInformationRequest }"
                             return-object
                           >
                             <template slot="selection" slot-scope="{ item }">
@@ -530,20 +530,17 @@ export default {
       return this.reg.test(email);
     },
 
-    validateSoftware() {
-      if (this.ticket.type.length) {
-        if (this.ticket.type.toLowerCase() === "information") {
-          return true;
-        }
+    isSoftwareValid() {
+      if (this.ticket.type) {
         return Object.keys(this.ticket.software || {}).length > 0;
       }
 
       return true;
     },
 
-    validateSeverity() {
-      if (this.ticket.type.length && this.ticket.software) {
-        return this.ticket.severity.length > 0;
+    isSeverityValid() {
+      if (this.ticket.type && this.ticket.software && Object.keys(this.ticket.software).length) {
+        return !!this.ticket.severity;
       }
 
       return true;
