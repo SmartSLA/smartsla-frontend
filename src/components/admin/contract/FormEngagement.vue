@@ -88,7 +88,7 @@
                       persistent-hint
                       v-model="commitment.supported.businessHours.days"
                       mask="###"
-                      :rules="[() => isSetDaysOrHours(commitment.supported.businessHours) || $i18n.t('Required field')]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -98,7 +98,7 @@
                       persistent-hint
                       v-model="commitment.supported.businessHours.hours"
                       mask="##"
-                      :rules="[() => isSetDaysOrHours(commitment.supported.businessHours) || $i18n.t('Required field')]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -111,9 +111,7 @@
                       persistent-hint
                       v-model="commitment.supported.nonBusinessHours.days"
                       mask="###"
-                      :rules="[
-                        () => isSetDaysOrHours(commitment.supported.nonBusinessHours) || $i18n.t('Required field')
-                      ]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -123,9 +121,7 @@
                       persistent-hint
                       v-model="commitment.supported.nonBusinessHours.hours"
                       mask="##"
-                      :rules="[
-                        () => isSetDaysOrHours(commitment.supported.nonBusinessHours) || $i18n.t('Required field')
-                      ]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -144,7 +140,7 @@
                       persistent-hint
                       v-model="commitment.bypassed.businessHours.days"
                       mask="###"
-                      :rules="[() => isSetDaysOrHours(commitment.bypassed.businessHours) || $i18n.t('Required field')]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -154,7 +150,7 @@
                       persistent-hint
                       v-model="commitment.bypassed.businessHours.hours"
                       mask="##"
-                      :rules="[() => isSetDaysOrHours(commitment.bypassed.businessHours) || $i18n.t('Required field')]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -167,9 +163,7 @@
                       persistent-hint
                       v-model="commitment.bypassed.nonBusinessHours.days"
                       mask="###"
-                      :rules="[
-                        () => isSetDaysOrHours(commitment.bypassed.nonBusinessHours) || $i18n.t('Required field')
-                      ]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -179,9 +173,7 @@
                       persistent-hint
                       v-model="commitment.bypassed.nonBusinessHours.hours"
                       mask="##"
-                      :rules="[
-                        () => isSetDaysOrHours(commitment.bypassed.nonBusinessHours) || $i18n.t('Required field')
-                      ]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -200,7 +192,7 @@
                       persistent-hint
                       v-model="commitment.resolved.businessHours.days"
                       mask="###"
-                      :rules="[() => isSetDaysOrHours(commitment.resolved.businessHours) || $i18n.t('Required field')]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -210,7 +202,7 @@
                       persistent-hint
                       v-model="commitment.resolved.businessHours.hours"
                       mask="##"
-                      :rules="[() => isSetDaysOrHours(commitment.resolved.businessHours) || $i18n.t('Required field')]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -223,9 +215,7 @@
                       persistent-hint
                       v-model="commitment.resolved.nonBusinessHours.days"
                       mask="###"
-                      :rules="[
-                        () => isSetDaysOrHours(commitment.resolved.nonBusinessHours) || $i18n.t('Required field')
-                      ]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -235,9 +225,7 @@
                       persistent-hint
                       v-model="commitment.resolved.nonBusinessHours.hours"
                       mask="##"
-                      :rules="[
-                        () => isSetDaysOrHours(commitment.resolved.nonBusinessHours) || $i18n.t('Required field')
-                      ]"
+                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -276,10 +264,6 @@ export default {
     };
   },
   methods: {
-    isSetDaysOrHours(value) {
-      const { days, hours } = value;
-      return days || hours ? true : false;
-    },
     cancel() {
       this.$emit("closeFormModal");
     },
