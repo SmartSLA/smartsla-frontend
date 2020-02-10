@@ -29,7 +29,7 @@
           hint="https://www.linshare.org/"
           v-model="linkUrl"
           type="url"
-          :rules="[() => linkPattern.test(linkUrl) || $i18n.t('invalid link')]"
+          :rules="[v => isUrl(v) || $i18n.t('invalid link')]"
           persistent-hint
         ></v-text-field>
       </v-flex>
@@ -59,6 +59,13 @@ export default {
     addExternalLink() {
       this.$emit("add-external-link", this.linkName, this.linkUrl);
       this.linkName = this.linkUrl = "";
+    },
+
+    isUrl(uri) {
+      if (uri) {
+        return this.linkPattern.test(uri);
+      }
+      return true;
     },
 
     removeExternalLink(index) {
