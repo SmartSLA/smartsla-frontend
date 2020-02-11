@@ -140,8 +140,8 @@
                             :items="[...sortedListOfSoftware]"
                             v-model="ticket.software"
                             :filter="searchSoftware"
-                            :rules="[isSoftwareValid || !isInformationRequest || $i18n.t('Required field')]"
-                            :class="{ 'required-element': !isInformationRequest }"
+                            :rules="[isSoftwareValid || isAnomalyTicket || $i18n.t('Required field')]"
+                            :class="{ 'required-element': isAnomalyTicket }"
                             return-object
                           >
                             <template v-slot:item="data">
@@ -168,8 +168,8 @@
                             :disabled="!ticket.type"
                             v-model="ticket.severity"
                             :label="$i18n.t('Severity')"
-                            :rules="[isSeverityValid || !isInformationRequest || $i18n.t('Required field')]"
-                            :class="{ 'required-element': !isInformationRequest }"
+                            :rules="[isSeverityValid || isAnomalyTicket || $i18n.t('Required field')]"
+                            :class="{ 'required-element': isAnomalyTicket }"
                             return-object
                           >
                             <template slot="selection" slot-scope="{ item }">
@@ -341,6 +341,7 @@ import { USER_TYPE } from "@/constants.js";
 import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import moment from "moment-timezone";
+import { REQUEST_TYPE } from "@/constants";
 
 export default {
   data() {
@@ -702,8 +703,8 @@ export default {
       return filtredList;
     },
 
-    isInformationRequest() {
-      return this.ticket.type && this.ticket.type.toLowerCase() === "information";
+    isAnomalyTicket() {
+      return this.ticket.type && this.ticket.type === REQUEST_TYPE.ANOMALY;
     },
     sortedListOfSoftware() {
       if (this.ticket.contract.software) {
@@ -722,8 +723,7 @@ export default {
         !this.ticket.title.length ||
         !this.ticket.type.length ||
         !this.ticket.description.length ||
-        (this.ticket.type.toLowerCase() != "information" &&
-          (!Object.keys(this.ticket.software || {}).length || !this.ticket.severity.length))
+        (this.isAnomalyTicket && (!Object.keys(this.ticket.software || {}).length || !this.ticket.severity.length))
       );
     }
   },

@@ -25,7 +25,19 @@ export const CONTRIBUTION_STATUS_LIST = ["Dev", "Reversed", "Integrated", "Publi
 
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
 
-export const REQUEST_TYPES = ["Information", "Administration", "Anomaly", "Other"];
+export const REQUEST_TYPE = {
+  INFORMATION: "Information",
+  ADMINISTRATION: "Administration",
+  ANOMALY: "Anomaly",
+  OTHER: "Other"
+};
+
+export const REQUEST_TYPES = [
+  REQUEST_TYPE.INFORMATION,
+  REQUEST_TYPE.ADMINISTRATION,
+  REQUEST_TYPE.ANOMALY,
+  REQUEST_TYPE.OTHER
+];
 
 export const CONTRIBUTION_TYPES = ["Backport", "Correction", "Evolution"];
 
