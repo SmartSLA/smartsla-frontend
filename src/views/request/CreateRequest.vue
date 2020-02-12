@@ -340,7 +340,7 @@ import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilt
 import { USER_TYPE } from "@/constants.js";
 import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
-import moment from "moment";
+import moment from "moment-timezone";
 
 export default {
   data() {
