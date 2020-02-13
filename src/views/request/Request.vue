@@ -124,21 +124,7 @@
 
             <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Assigned to") }} :</strong>
-              <v-chip
-                v-if="request.assignedTo && request.assignedTo.type == 'beneficiary'"
-                color="#174dc5"
-                class="my-0"
-                label
-                small
-                text-color="white"
-                >{{ request.contract && request.contract.client[0] }}</v-chip
-              >
-              <span v-else>
-                <span v-if="request.assignedTo">
-                  <v-chip small class="my-0" color="#d32f2f" label text-color="white">L</v-chip>
-                </span>
-              </span>
-              {{ (request.assignedTo && request.assignedTo.name) || $t("Not assigned yet") }}
+              <assigned-to-user :user="request.assignedTo" :contractId="request.contract"> </assigned-to-user>
             </v-flex>
 
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
@@ -350,60 +336,14 @@
                         </v-select>
                       </v-flex>
                       <v-flex v-if="!isPrivateTab" xs12 md6>
-                        <v-autocomplete
-                          :items="allowedAssigneeList"
-                          item-text="name"
-                          v-model="newResponsible"
-                          :label="$t('Assigned to')"
-                          return-object
-                          hide-details
+                        <user-list-assignment
+                          :users="allowedAssigneeList"
+                          :responsible.sync="newResponsible"
+                          :contractId="request.contract"
+                          @assignCustomer="assignCustomer"
+                          @assignSelf="assignSelf"
                         >
-                          <template slot="item" slot-scope="data">
-                            <v-list-tile-avatar>
-                              <v-chip
-                                v-if="data.item.type === 'beneficiary'"
-                                color="#174dc5"
-                                class="ma-2"
-                                label
-                                text-color="white"
-                                >{{ request.contract && request.contract.client[0] }}
-                              </v-chip>
-                              <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                              {{ data.item.name }}
-                            </v-list-tile-content>
-                          </template>
-                        </v-autocomplete>
-                        <v-layout class="font-weight-medium btn-actions" xs6 md6>
-                          <v-flex text-xs-left pa-0>
-                            <span v-if="isUserBeneficiary()">
-                              <v-btn
-                                class="px-1 mt-1 text-transform"
-                                :disabled="canAssign()"
-                                flat
-                                color="primary"
-                                @click.prevent="assignTo('expert')"
-                                >{{ $t("Assign the expert") }}
-                              </v-btn>
-                            </span>
-                            <span v-else>
-                              <v-btn class="px-1 mt-1" flat color="primary" @click.prevent="assignTo('beneficiary')"
-                                >{{ $t("Assign the customer") }}
-                              </v-btn>
-                            </span>
-                          </v-flex>
-                          <v-flex text-xs-right pa-0>
-                            <v-btn
-                              :disabled="canTakeIt()"
-                              class="px-1 mt-1"
-                              flat
-                              color="primary"
-                              @click.prevent="assignSelf"
-                              >{{ $t("Take it") }}
-                            </v-btn>
-                          </v-flex>
-                        </v-layout>
+                        </user-list-assignment>
                       </v-flex>
                     </v-layout>
                   </v-input>
@@ -508,19 +448,14 @@
                 </v-flex>
                 <v-flex grow pa-1 xs12>
                   <v-card-text>
-                    <strong>{{ $t("Contact") }} :</strong>
-                    {{ request.beneficiary && request.beneficiary.name }}
-                    <br />
-                    <span class="body-2">{{ $t("Client") }} / {{ $t("Contract") }} :&nbsp;</span>
-                    <router-link
-                      :to="{ name: 'Client', params: { id: request.contract && request.contract.clientId } }"
-                    >
-                      <a class="blue-color" href="#">{{ request.contract && request.contract.client }}</a> </router-link
-                    >/
-                    <router-link :to="{ name: 'Contract', params: { id: request.contract && request.contract._id } }">
-                      <a class="blue-color" href="#">{{ request.contract && request.contract.name }}</a>
-                    </router-link>
-                    <br />
+                    <span class="d-block">
+                      <strong>{{ $t("Contact") }} :</strong>
+                      {{ request.beneficiary && request.beneficiary.name }}
+                    </span>
+                    <span class="d-block">
+                      <span class="body-2">{{ $t("Client") }} / {{ $t("Contract") }} :&nbsp;</span>
+                      <client-contract-links :contractId="request.contract"></client-contract-links>
+                    </span>
                     <span v-if="request.beneficiary">
                       <strong>{{ $t("Phone") }} :</strong>
                       <a :href="`tel://${request.beneficiary.phone || request.callNumber}`">
@@ -552,6 +487,10 @@ import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import { UPDATE_COMMENT } from "@/constants.js";
+import { mapActions } from "vuex";
+import ClientContractLinks from "@/components/request/ClientContractLinks";
+import AssignedToUser from "@/components/request/AssignedToUser";
+import UserListAssignment from "@/components/request/UserListAssignment";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -577,7 +516,7 @@ export default {
       selectedEditor: "wysiwyg",
       isSubmitting: false,
       newStatus: "",
-      newResponsible: "",
+      newResponsible: {},
       newEvent: {},
       request: null,
       comment: "",
@@ -602,7 +541,10 @@ export default {
     VueEditor,
     Editor,
     AttachmentsCreation,
-    "cns-progress-bar": cnsProgressBar
+    "cns-progress-bar": cnsProgressBar,
+    ClientContractLinks,
+    AssignedToUser,
+    UserListAssignment
   },
   computed: {
     ...mapGetters({
@@ -650,6 +592,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("ticket", ["fetchTicketById"]),
     canAssign() {
       const ticketStatus = ["resolved", "closed"].includes(this.currentStatus);
       if (ticketStatus || !this.request.responsible) {
@@ -755,29 +698,28 @@ export default {
     },
 
     getData() {
-      this.$http
-        .getTicketById(this.$route.params.id)
-        .then(({ data }) => {
-          this.request = data;
-          const attachments =
-            data.events &&
-            data.events.map(event => {
-              return (event.attachments || []).map(attachment => {
-                attachment.timestamps = event.timestamps;
-                attachment.event = event;
+      const ticketId = this.$route.params.id;
+      this.fetchTicketById(ticketId).then(() => {
+        this.request = this.$store.getters["ticket/getTicketById"](ticketId);
+        const contractId = this.request.contract;
+        const attachments =
+          this.request.events &&
+          this.request.events.map(event => {
+            return (event.attachments || []).map(attachment => {
+              attachment.timestamps = event.timestamps;
+              attachment.event = event;
 
-                return attachment;
-              });
+              return attachment;
             });
+          });
 
-          this.attachments = flatten(attachments);
-          this.currentStatus = data.status;
-          this.request.lastUpdate = new Date(data.timestamps.updatedAt);
-          this.request.ticketDate = new Date(data.timestamps.createdAt);
+        this.attachments = flatten(attachments);
+        this.currentStatus = this.request.status;
+        this.request.lastUpdate = new Date(this.request.timestamps.updatedAt);
+        this.request.ticketDate = new Date(this.request.timestamps.createdAt);
 
-          this.$http.getContractUsers(data.contract._id).then(contractUsers => (this.contractUsers = contractUsers));
-        })
-        .catch(console.log);
+        this.$http.getContractUsers(contractId).then(contractUsers => (this.contractUsers = contractUsers));
+      });
 
       this.$http.getConnectedUserId().then(res => {
         this.$http.getUserById(res.data._id).then(user => {
@@ -790,7 +732,7 @@ export default {
     resetComment() {
       this.newStatus = "";
       this.comment = "";
-      this.newResponsible = "";
+      this.newResponsible = {};
       this.commentCreationAttachments = [];
       this.commentCreationAttachments.length = 0;
     },
@@ -807,11 +749,12 @@ export default {
     assignSelf() {
       this.newResponsible = this.getUser;
     },
-    assignTo(userType) {
-      this.newResponsible = userType === "beneficiary" ? this.request.author : this.request.responsible;
+    assignCustomer() {
+      this.newResponsible = this.request.author;
     }
   },
   created() {
+    this.$store.dispatch("contract/fetchContracts");
     this.getData();
     this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
   }
@@ -830,11 +773,6 @@ export default {
 
 .center-avatar {
   align-items: center;
-}
-
-.action-links {
-  text-decoration: none;
-  color: grey;
 }
 
 .progress-arrow {

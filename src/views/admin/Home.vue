@@ -78,7 +78,7 @@
           <v-card-title>
             <v-badge left>
               <template v-slot:badge>
-                <span>{{ contractCount }}</span>
+                <span>{{ contracts.length }} </span>
               </template>
               <div>
                 <h3 class="headline mb-0">
@@ -165,13 +165,14 @@
 
 <script>
 import { routeNames } from "@/router";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       msg: this.$i18n.t("Administration"),
       users: [],
       teams: [],
-      contracts: [],
       clients: [],
       contributions: [],
       softwares: [],
@@ -179,7 +180,6 @@ export default {
       teamCount: 0,
       softwareCount: 0,
       clientCount: 0,
-      contractCount: 0,
       contributionCount: 0
     };
   },
@@ -224,19 +224,6 @@ export default {
       });
 
     this.$http
-      .getContracts()
-      .then(response => {
-        this.contracts = response.data;
-        this.contractCount = response.data.length;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contracts"),
-          color: "error"
-        });
-      });
-
-    this.$http
       .listSoftware({})
       .then(response => {
         this.softwares = response.data;
@@ -255,6 +242,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      contracts: "contract/getContracts"
+    }),
+
     routeNames() {
       return routeNames;
     }

@@ -60,17 +60,10 @@
               }}</router-link>
             </td>
             <td class="text-xs-center">
-              <v-chip
-                v-if="props.item.request.assignedTo && props.item.request.assignedTo.type == 'beneficiary'"
-                color="#174dc5"
-                class="ma-2"
-                label
-                text-color="white"
-                >{{ props.item.request.organizationLabel }}
-              </v-chip>
-              <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">{{
-                props.item.request.organizationLabel
-              }}</v-chip>
+              <organization-label
+                :contractId="props.item.request.contract"
+                :user="props.item.request.assignedTo"
+              ></organization-label>
             </td>
             <td class="text-xs-center" v-if="$auth.check('admin')">
               <v-avatar :color="getOssaConfById(props.item.id_ossa || 1).color" size="25">
@@ -112,42 +105,11 @@
             <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
             </td>
-            <td class="text-xs-center" v-on:click.stop>
-              <router-link
-                v-if="$auth.check('admin')"
-                :to="{
-                  name: 'Client',
-                  params: { id: props.item.request.contract && props.item.request.contract.clientId }
-                }"
-                target="_blank"
-              >
-                <span class="blue-color">
-                  <text-highlight :queries="highlightSearch">{{
-                    props.item.request.contract && props.item.request.contract.client
-                  }}</text-highlight>
-                </span>
-              </router-link>
-              <text-highlight v-else :queries="highlightSearch">{{
-                props.item.request.contract && props.item.request.contract.client
-              }}</text-highlight>
-              /
-              <router-link
-                v-if="$auth.check('admin')"
-                :to="{
-                  name: 'Contract',
-                  params: { id: props.item.request.contract && props.item.request.contract._id }
-                }"
-                target="_blank"
-              >
-                <span class="blue-color">
-                  <text-highlight :queries="highlightSearch">{{
-                    props.item.request.contract && props.item.request.contract.name
-                  }}</text-highlight>
-                </span>
-              </router-link>
-              <text-highlight v-else :queries="highlightSearch">{{
-                props.item.request.contract && props.item.request.contract.name
-              }}</text-highlight>
+            <td class="text-xs-center">
+              <client-contract-links
+                :contractId="props.item.request.contract"
+                :query="highlightSearch"
+              ></client-contract-links>
             </td>
             <td class="text-xs-center">
               <v-tooltip top>
@@ -207,6 +169,8 @@ import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import dataTableFilter from "@/components/filter/Filter";
 import { OSSA_IDS } from "@/constants.js";
+import ClientContractLinks from "@/components/request/ClientContractLinks";
+import OrganizationLabel from "@/components/request/OrganizationLabel";
 const { mapState } = createNamespacedHelpers("ticket");
 
 const CNS_STATUS = {
@@ -365,7 +329,7 @@ export default {
       customFilters: [],
       softwareList: [],
       userList: [],
-      contractClientList: [],
+      newFilterName: "",
       savedFilters: [],
       collectedCNS: [],
       csvFileName: `08000linux_${moment()
@@ -374,6 +338,8 @@ export default {
     };
   },
   mounted() {
+    this.$store.dispatch("contract/fetchContracts");
+
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
@@ -387,13 +353,10 @@ export default {
         this.userList.push(user);
       });
     });
-    this.$http.getContracts().then(response => {
-      response.data.forEach(contract => {
-        this.contractClientList.push(contract.name);
-      });
-    });
-
     this.fetchUserFilters();
+    this.$http.listFilters().then(response => {
+      this.savedFilters = response.data;
+    });
   },
   computed: {
     ...mapGetters({
@@ -401,8 +364,16 @@ export default {
       requests: "ticket/getCurrentPageRequests",
       totalRequests: "ticket/getNbOfTickets",
       allRequests: "ticket/getTickets",
-      userContracts: "user/getContracts"
+      userContracts: "user/getContracts",
+      contractsList: "contract/getContracts"
     }),
+
+    contractsName() {
+      return (this.contractsList || []).reduce((acc, curr) => {
+        acc.push(curr.name);
+        return acc;
+      }, []);
+    },
 
     highlightSearch() {
       return this.search ? this.search : "";
@@ -520,7 +491,7 @@ export default {
             break;
           case "Client / Contract":
             this.translatedFilter = false;
-            this.values = [...this.contractClientList];
+            this.values = [...this.contractsName];
             break;
           case "Status":
             this.translatedFilter = true;
@@ -578,7 +549,7 @@ export default {
       let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assign to");
       let responsibleFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "responsible");
       let transmitterFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "transmitter");
-      let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "client / contract");
+      // let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "client / contract");
       let statusFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "status");
 
       let typesFilterMatch = true;
@@ -662,7 +633,8 @@ export default {
         });
       }
 
-      if (clientFilter.length) {
+      // FIXME: Fix after merging filters sub component
+      /*if (clientFilter.length) {
         clientFilterMatch = false;
 
         clientFilter.forEach(currentFilter => {
@@ -674,7 +646,7 @@ export default {
             clientFilterMatch = true;
           }
         });
-      }
+      }*/
 
       if (statusFilter.length) {
         statusFilterMatch = false;
@@ -701,8 +673,9 @@ export default {
           (request.softwareName && request.softwareName.toLowerCase().includes(this.search)) ||
           request.description.toLowerCase().includes(this.search) ||
           request.title.toLowerCase().includes(this.search) ||
-          (request.contract && request.contract.client.toLowerCase().includes(this.search)) ||
-          (request.contract && request.contract.name.toLowerCase().includes(this.search)) ||
+          // FIXME
+          // (request.contract && request.contract.client.toLowerCase().includes(this.search)) ||
+          // (request.contract && request.contract.name.toLowerCase().includes(this.search)) ||
           request.status.toLowerCase().includes(this.search) ||
           (request.assignedToName && request.assignedToName.toLowerCase().includes(this.search)) ||
           (request.responsibleName && request.responsibleName.toLowerCase().includes(this.search)) ||
@@ -729,8 +702,8 @@ export default {
         item.status !== "resolved" &&
         item.request.software &&
         item.request.software.software &&
-        item.request.contract &&
-        item.request.contract.clientId
+        item.request.contract && // FIXME
+        item.request.contract.clientId // FIXME
       );
     },
     getOssaConfById(ossaId) {
@@ -810,7 +783,9 @@ export default {
   components: {
     "cns-progress-bar": cnsProgressBar,
     SoftwareListDetail,
-    dataTableFilter
+    dataTableFilter,
+    ClientContractLinks,
+    OrganizationLabel
   }
 };
 </script>

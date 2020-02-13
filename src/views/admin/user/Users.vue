@@ -93,6 +93,7 @@
 <script>
 import { USER_ROLES } from "@/constants.js";
 import { capitalize } from "lodash";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -100,7 +101,6 @@ export default {
       search: "",
       clients: [],
       client: null,
-      contracts: [],
       contract: null,
       role: null,
       relations: [],
@@ -137,6 +137,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      contracts: "contract/getContracts"
+    }),
+
     roles() {
       return [...USER_ROLES.expert, ...USER_ROLES.beneficiary];
     },
@@ -185,13 +189,6 @@ export default {
       .listClients()
       .then(({ data }) => {
         this.clients = data;
-      })
-      .catch(console.log);
-
-    this.$http
-      .getContracts()
-      .then(({ data }) => {
-        this.contracts = data;
       })
       .catch(console.log);
   },

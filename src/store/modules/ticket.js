@@ -21,7 +21,8 @@ const types = {
   SET_TICKETS: "SET_TICKETS",
   SET_TICKET_LENGTH: "SET_TICKET_LENGTH",
   SET_PAGINATION: "SET_PAGINATION",
-  SET_SEARCH: "SET_SEARCH"
+  SET_SEARCH: "SET_SEARCH",
+  UPDATE_TICKET: "UPDATE_TICKET"
 };
 
 const actions = {
@@ -35,6 +36,12 @@ const actions = {
         dispatch("countTickets");
         commit(types.SET_TICKETS, response.data);
       });
+  },
+
+  fetchTicketById: ({ commit }, id) => {
+    return Vue.axios.getTicketById(id).then(({ data }) => {
+      commit(types.UPDATE_TICKET, data);
+    });
   },
 
   countTickets: ({ commit }) => {
@@ -83,6 +90,11 @@ const mutations = {
 
   [types.SET_SEARCH](state, search) {
     state.search = search;
+  },
+
+  [types.UPDATE_TICKET](state, ticket) {
+    const { _id } = state.tickets[ticket._id];
+    Vue.set(state.tickets, _id, ticket);
   }
 };
 
@@ -90,20 +102,25 @@ const getters = {
   getNbOfTickets: state => Number(state.length),
   getSearch: state => state.search,
   getTickets: state => Object.values(state.tickets) || [],
+  getTicketById: state => id => {
+    const ticket = (Object.values(state.tickets) || []).find(ticket => ticket._id === +id);
+    if (!ticket) {
+      return;
+    }
+    return ticket;
+  },
   getCurrentPageRequests: state => {
     const { sortBy, descending, page, rowsPerPage } = state.pagination;
-    let result = Object.values(state.tickets);
-
-    result = result.map(request => ({
+    let result = Object.values(state.tickets).map(request => ({
       ...request,
       authorName: request.author && request.author.name,
       softwareName: request.software && request.software.software && request.software.software.name,
       responsibleName: request.responsible && request.responsible.name,
       assignedToName: request.assignedTo && request.assignedTo.name,
       id_ossa: request.idOssa.id,
-      clientContract: request.contract && request.contract.client + request.contract.name,
-      organizationLabel:
-        request.assignedTo && request.assignedTo.type === "beneficiary" ? request.contract.client[0] : "L",
+      // FIXME
+      // organizationLabel:
+      //   request.assignedTo && request.assignedTo.type === "beneficiary" ? request.contract.client[0] : "L",
       createdAt: request.timestamps.createdAt,
       updatedAt: request.timestamps.updatedAt
     }));

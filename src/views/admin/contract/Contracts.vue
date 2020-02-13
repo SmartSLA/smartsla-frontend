@@ -94,6 +94,7 @@
 
 <script>
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -111,22 +112,16 @@ export default {
         { text: this.$i18n.t("Client"), value: "client" },
         { text: this.$i18n.t("Begin"), value: "begin" },
         { text: this.$i18n.t("End"), value: "end" }
-      ],
-      contracts: []
+      ]
     };
   },
-  created() {
-    this.$http
-      .getContracts()
-      .then(response => {
-        this.contracts = response.data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contracts list"),
-          color: "error"
-        });
-      });
+  mounted() {
+    this.$store.dispatch("contract/fetchContracts");
+  },
+  computed: {
+    ...mapGetters({
+      contracts: "contract/getContracts"
+    })
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
