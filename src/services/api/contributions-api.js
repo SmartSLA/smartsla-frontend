@@ -17,6 +17,10 @@ export default {
     return this.post(`/ticketing/api/contributions/${contributionId}`, options);
   },
 
+  updateContributionStatus(contributionId, options) {
+    return this.post(`/ticketing/api/contributions/${contributionId}/status`, options);
+  },
+
   deleteContribution(contributionId) {
     return this.delete(`/ticketing/api/contributions/${contributionId}`);
   }

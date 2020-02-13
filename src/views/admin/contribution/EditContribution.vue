@@ -9,7 +9,7 @@
           <v-card-title primary-title class="px-4">
             <div>
               <h3 class="display-1 font-weight-medium mb-0">
-                {{ isNew ? $t("Edit Contribution") : $t("New Contribution") }}
+                {{ isEditing ? $t("Edit Contribution") : $t("New Contribution") }}
               </h3>
             </div>
           </v-card-title>
@@ -83,14 +83,7 @@
                 <strong>{{ $t("Patched in version") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field
-                  v-model="contribution.patchedInVersion"
-                  :rules="[
-                    () =>
-                      (contribution.patchedInVersion && contribution.patchedInVersion.length > 0) ||
-                      $i18n.t('Required field')
-                  ]"
-                ></v-text-field>
+                <v-text-field v-model="contribution.fixedInVersion"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -185,7 +178,7 @@
               <v-flex xs1></v-flex>
               <v-flex xs5></v-flex>
               <v-flex xs2>
-                <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
+                <v-btn class="success" @click="validateFrom">{{ $t("Submit") }}</v-btn>
               </v-flex>
             </v-layout>
           </v-form>
@@ -225,7 +218,7 @@ export default {
     };
   },
   computed: {
-    isNew() {
+    isEditing() {
       return this.$route.params.id;
     }
   },
@@ -250,13 +243,6 @@ export default {
     },
 
     create() {
-      this.contribution.links = this.contribution.links.map(link => {
-        return {
-          name: link.othername || link.name,
-          url: link.url
-        };
-      });
-
       this.$http
         .createContribution(this.contribution)
         .then(() => {
@@ -274,9 +260,34 @@ export default {
         });
     },
 
+    update() {
+      this.$http
+        .updateContribution(this.contribution._id, this.contribution)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("contribution updated"),
+            color: "success"
+          });
+          this.$router.push({ name: routeNames.ADMINCONTRIBUTIONS });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to update contribution"),
+            color: "error"
+          });
+        });
+    },
+
     validateFrom() {
       if (this.$refs.form.validate()) {
-        this.create();
+        this.contribution.links = this.contribution.links.map(link => {
+          return {
+            name: link.othername || link.name,
+            url: link.url
+          };
+        });
+
+        this.isEditing ? this.update() : this.create();
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("the required fields must be filled"),
@@ -285,6 +296,7 @@ export default {
       }
     }
   },
+
   created() {
     this.$http
       .listSoftware({})
@@ -309,6 +321,42 @@ export default {
           color: "error"
         });
       });
+
+    if (this.$route.params.id) {
+      this.$http
+        .getContributionById(this.$route.params.id)
+        .then(({ data }) => {
+          const { software, author, links } = data;
+
+          this.contribution = {
+            ...data,
+            author: author._id,
+            software: software._id,
+            links: links.map(link => {
+              let { url, name } = link;
+              let existingLinkType = this.linkNames.find(linkName => linkName.key === link.name);
+
+              return existingLinkType
+                ? {
+                    url,
+                    name: existingLinkType.key,
+                    value: existingLinkType.value
+                  }
+                : {
+                    url,
+                    name: "Other",
+                    othername: name
+                  };
+            })
+          };
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            color: "error",
+            message: this.$i18n.t("cannot fetch contribution")
+          });
+        });
+    }
   }
 };
 </script>
@@ -324,13 +372,11 @@ export default {
   padding-right: 0px;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat):not(.error) {
-  background-color: #2195f2 !important;
-}
 .container {
   max-width: 100% !important;
   padding: 0px;
 }
+
 @media only screen and (min-width: 1264px) {
   .container {
   max-width: 100% !important;

@@ -1,12 +1,19 @@
 <template lang="">
-  <v-card class="px-1 pt-4 mt-4 pb-4 pl-4">
-    <v-layout justify-center row fill-height wrap ml-3>
-      <fieldDisplay label="Contributor" :value="contribution.author.name"></fieldDisplay>
-      <fieldDisplay label="Proposition date" :value="contribution.deposedAt"></fieldDisplay>
-      <fieldDisplay label="Software" :value="contribution.software.name"></fieldDisplay>
-      <fieldDisplay label="Type" :value="contribution.type"></fieldDisplay>
-      <fieldDisplay label="Version" :value="contribution.version"></fieldDisplay>
-      <fieldDisplay label="Fixed in version" :value="contribution.patchedInversion"></fieldDisplay>
+  <v-card class="px-1 pt-4 mt-4 pb-4 pl-4" v-if="contribution">
+    <v-layout row wrap>
+      <v-flex xs11>
+        <v-layout justify-center row fill-height wrap ml-3>
+          <fieldDisplay label="Contributor" :value="contribution.author.name"></fieldDisplay>
+          <fieldDisplay label="Proposition date" :value="contribution.deposedAt"></fieldDisplay>
+          <fieldDisplay label="Software" :value="contribution.software.name"></fieldDisplay>
+          <fieldDisplay label="Type" :value="contribution.type"></fieldDisplay>
+          <fieldDisplay label="Version" :value="contribution.version"></fieldDisplay>
+          <fieldDisplay label="Fixed in version" :value="contribution.fixedInVersion"></fieldDisplay>
+        </v-layout>
+      </v-flex>
+      <v-flex xs1>
+        <contributionEditButton :contributionId="contribution._id"></contributionEditButton>
+      </v-flex>
     </v-layout>
     <v-divider class="mt-2"></v-divider>
     <v-card-title primary-title>
@@ -32,13 +39,15 @@
 </template>
 <script>
 import fieldDisplay from "@/components/cardText/FieldDisplay";
+import contributionEditButton from "@/components/contribution/ContributionEditButton";
 
 export default {
   name: "contributionDetail",
   props: {
-    contribution: Object
+    contribution: null
   },
   components: {
+    contributionEditButton,
     fieldDisplay
   }
 };

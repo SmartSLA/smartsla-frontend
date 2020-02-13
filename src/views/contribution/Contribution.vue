@@ -4,18 +4,21 @@
       >&lt; {{ $t("contributions") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs7>
+      <v-flex xs7 class="pr-4">
         <contributionDetail :contribution="contribution"></contributionDetail>
       </v-flex>
-      <v-flex xs4>
-        <contributionProgress :contribution="contribution"></contributionProgress>
+      <v-flex xs5 class="pl-4">
+        <editContributionStatus
+          :contribution="contribution"
+          @contributionUpdate="fetchContribution"
+        ></editContributionStatus>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
 import contributionDetail from "@/components/contribution/ContributionDetail";
-import contributionProgress from "@/components/contribution/ContributionProgress";
+import editContributionStatus from "@/components/contribution/EditContributionStatus";
 
 export default {
   data: () => ({
@@ -23,21 +26,26 @@ export default {
   }),
   components: {
     contributionDetail,
-    contributionProgress
+    editContributionStatus
+  },
+  methods: {
+    fetchContribution() {
+      this.$http
+        .getContributionById(this.$route.params.id)
+        .then(({ data }) => {
+          this.contribution = data;
+        })
+        .catch(err => {
+          console.log(err);
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("failed to fetch contribution"),
+            color: "error"
+          });
+        });
+    }
   },
   created() {
-    this.$http
-      .getContributionById(this.$route.params.id)
-      .then(({ data }) => {
-        this.contribution = data;
-      })
-      .catch(err => {
-        console.log(err);
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contribution"),
-          color: "error"
-        });
-      });
+    this.fetchContribution();
   }
 };
 </script>
