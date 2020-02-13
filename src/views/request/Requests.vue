@@ -283,6 +283,7 @@
                   name: 'Client',
                   params: { id: props.item.request.contract && props.item.request.contract.clientId }
                 }"
+                target="_blank"
               >
                 <span class="blue-color">
                   <text-highlight :queries="highlightSearch">{{
@@ -300,6 +301,7 @@
                   name: 'Contract',
                   params: { id: props.item.request.contract && props.item.request.contract._id }
                 }"
+                target="_blank"
               >
                 <span class="blue-color">
                   <text-highlight :queries="highlightSearch">{{
