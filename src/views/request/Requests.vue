@@ -7,9 +7,6 @@
             <v-icon class="mr-2">format_list_numbered</v-icon>
             <span>{{ pageTitle }}</span>
           </span>
-          <v-btn flat small color="error" @click="deleteDialog = true" v-show="showDeleteBtn">
-            <v-icon class="mr-2">delete_outline</v-icon> {{ $t("Delete filter") }}
-          </v-btn>
         </v-layout>
       </v-flex>
       <v-flex xs6>
@@ -22,182 +19,19 @@
         </v-layout>
       </v-flex>
     </v-layout>
-
-    <v-layout column mb-2 mt-4 class="filter_layout">
-      <v-flex xs12 md4 mb-2>
-        <v-toolbar flat dense>
-          <v-toolbar-title class="pl-2 pr-2 grey--text hidden-sm-and-down">{{ $t("Filter by:") }}</v-toolbar-title>
-          <v-divider vertical></v-divider>
-          <v-overflow-btn
-            :items="categories"
-            :label="$i18n.t('Categories')"
-            class="py-0"
-            hide-details
-            flat
-            overflow
-            item-text="value"
-            item-value="key"
-            v-model="categoriesFilter"
-          ></v-overflow-btn>
-          <v-divider vertical></v-divider>
-        </v-toolbar>
-      </v-flex>
-      <v-flex xs12 md4 mb-4>
-        <v-toolbar flat dense v-if="!showStoredFilters">
-          <v-layout align-center justify-end>
-            <v-overflow-btn
-              v-if="translatedFilter"
-              :items="values"
-              :label="$i18n.t('Values')"
-              v-model="valuesFilter"
-              class="pa-0"
-              overflow
-              flat
-              item-text="value"
-              item-value="key"
-              hide-details
-              hide-selected
-            ></v-overflow-btn>
-            <v-overflow-btn
-              v-else
-              :items="values"
-              :label="$i18n.t('Values')"
-              :no-data-text="$i18n.t('No data available')"
-              v-model="valuesFilter"
-              flat
-              hide-details
-              hide-selected
-              class="pa-0"
-              overflow
-            ></v-overflow-btn>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-toolbar-side-icon v-on="on" @click="addNewFilter">
-                  <v-icon dark>add</v-icon>
-                </v-toolbar-side-icon>
-              </template>
-              <span>
-                {{ $i18n.t("This button allows you to add an additional filter to the ticket board") }}
-              </span>
-            </v-tooltip>
-          </v-layout>
-        </v-toolbar>
-        <v-toolbar flat dense v-else>
-          <v-layout align-center justify-end>
-            <v-overflow-btn
-              :items="savedFilters"
-              :label="$i18n.t('Values')"
-              v-model="storedSelectionsFilterHolder"
-              hide-selected
-              hide-details
-              class="truncated pa-0"
-              overflow
-              flat
-              return-object
-              item-text="name"
-            ></v-overflow-btn>
-            <v-tooltip top v-if="!!savedFilters.length">
-              <template v-slot:activator="{ on }">
-                <v-toolbar-side-icon v-on="on" @click="loadFilter">
-                  <v-icon dark>add</v-icon>
-                </v-toolbar-side-icon>
-              </template>
-              <span>
-                {{ $i18n.t("This button allows you to load a saved filter") }}
-              </span>
-            </v-tooltip>
-          </v-layout>
-        </v-toolbar>
-      </v-flex>
-      <v-flex md4 sm3 mb-4 class="hidden-xs-only"></v-flex>
-      <v-flex xs12 md4>
-        <v-toolbar flat dense>
-          <v-layout align-center justify-end>
-            <v-text-field
-              v-model="search"
-              prepend-inner-icon="search"
-              :placeholder="$i18n.t('Search')"
-              clearable
-              solo
-              class="mt-2"
-              flat
-            ></v-text-field>
-          </v-layout>
-        </v-toolbar>
-      </v-flex>
-    </v-layout>
-
-    <v-layout justify-space-between row class="actions_filters">
-      <div>
-        <ul>
-          <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
-            <v-chip @input="removeFilter(filter)" close
-              >{{ $i18n.t(filter.category) }} : {{ $i18n.t(capitalize(filter.value)) }}</v-chip
-            >
-          </li>
-        </ul>
-      </div>
-      <div v-if="customFilters.length > 0" class="filter-save mt-2">
-        <v-dialog v-model="dialog" width="500">
-          <template v-slot:activator="{ on }">
-            <v-layout align-center justify-space-between row>
-              <div>
-                <v-btn flat small color="default" v-on="on" v-show="isNewFilter || updateBtn">
-                  <v-icon class="mr-2">playlist_add</v-icon> {{ $i18n.t("Create new filter") }}
-                </v-btn>
-                <a
-                  href="#"
-                  @click="updateCurrectFilter"
-                  v-show="updateBtn"
-                  class="font-italic action-links warning--text ml-2"
-                >
-                  <v-icon class="mr-2 warning--text">save_alt</v-icon>
-                  {{ $i18n.t("save") }}
-                </a>
-              </div>
-              <div>
-                <v-btn flat small color="default" @click="resetFilters" v-on="on">
-                  <v-icon class="mr-2">refresh</v-icon> {{ $i18n.t("reset") }}
-                </v-btn>
-              </div>
-            </v-layout>
-          </template>
-
-          <v-card class="px-0">
-            <v-card-title class="headline grey lighten-3" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12>
-                    <v-text-field :label="$i18n.t('Filter name')" v-model="newFilterName"></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("Save") }}</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
-    </v-layout>
-
-    <v-dialog v-model="deleteDialog" persistent max-width="290" v-if="storedSelectionsFilter.name">
-      <v-card class="px-4 pt-2">
-        <v-card-text>
-          <span class="body-2"
-            >{{ $t("are you sure you want to remove the filter") }} "{{ storedSelectionsFilter.name }}"?</span
-          >
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="deleteCurrentFilter">{{ $t("confirm") }}</v-btn>
-          <v-btn color="error" @click="deleteDialog = false">{{ $t("cancel") }}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
+    <dataTableFilter
+      :categories="categories"
+      :values="values"
+      :categoriesFilter="categoriesFilter"
+      :translatedFilter="translatedFilter"
+      :savedFilters="savedFilters"
+      @filterCategoryChanged="changeFilterCategory"
+      @filterSearchInputChanged="changeSearchTerm"
+      @filterReset="filterReset"
+      @customFiltersUpdated="updateCustomFilters"
+      @savedFilterLoaded="changePageTitle"
+      @savedFiltersUpdate="fetchUserFilters"
+    ></dataTableFilter>
     <v-layout>
       <v-data-table
         :loading="loading"
@@ -371,6 +205,7 @@ import moment from "moment-timezone";
 import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
+import dataTableFilter from "@/components/filter/Filter";
 import { OSSA_IDS } from "@/constants.js";
 const { mapState } = createNamespacedHelpers("ticket");
 
@@ -385,10 +220,8 @@ const CNS_STATUS = {
 export default {
   data() {
     return {
-      showStoredFilters: false,
       loading: true,
       dialog: false,
-      deleteDialog: false,
       pageTitle: this.$i18n.t("All requests"),
       storedFilterUpdated: false,
       filterGroups: ["Ticket", "Client / Contract", "Software"],
@@ -530,16 +363,10 @@ export default {
       ],
       translatedFilter: false,
       customFilters: [],
-      customFiltersCategories: [],
       softwareList: [],
       userList: [],
       contractClientList: [],
-      newFilterName: "",
       savedFilters: [],
-      storedSelectionsFilter: {},
-      storedSelectionsFilterHolder: {},
-      deleteBtn: false,
-      updateBtn: false,
       collectedCNS: [],
       csvFileName: `08000linux_${moment()
         .lang(this.$i18n.locale)
@@ -565,9 +392,8 @@ export default {
         this.contractClientList.push(contract.name);
       });
     });
-    this.$http.listFilters().then(response => {
-      this.savedFilters = response.data;
-    });
+
+    this.fetchUserFilters();
   },
   computed: {
     ...mapGetters({
@@ -634,14 +460,6 @@ export default {
       return !!this.centralSearch;
     },
 
-    isNewFilter() {
-      return Object.keys(this.storedSelectionsFilter).length === 0;
-    },
-
-    showDeleteBtn() {
-      return this.deleteBtn;
-    },
-
     exportData() {
       return this.allRequests.map(request => ({
         [this.$i18n.t("Id")]: request._id,
@@ -656,7 +474,6 @@ export default {
         [this.$i18n.t("Assigned to")]:
           (request.assignedTo && request.assignedTo.name) || this.$i18n.t("Not assigned yet"),
         [this.$i18n.t("Created by")]: request.author.name,
-        //[this.$i18n.t("Service (of author)")]: request.author.service || 'N/A',
         [this.$i18n.t("Contract")]: request.contract && request.contract.client,
         [this.$i18n.t("Beneficiary")]: request.beneficiary.name,
         [this.$i18n.t("Last update")]: moment(request.timestamps.updatedAt)
@@ -670,12 +487,6 @@ export default {
         [this.$i18n.t("SLA bypass")]: this.cns(request._id, "bypassed"),
         [this.$i18n.t("SLA resolution")]: this.cns(request._id, "resolved"),
         [this.$i18n.t("BH / NBH")]: request.createdDuringBusinessHours ? this.$i18n.t("BH") : this.$i18n.t("NBH")
-        //[this.$i18n.t("TPC")]: 'N/A',
-        //[this.$i18n.t("TCt")]: 'N/A',
-        //[this.$i18n.t("TCt / TCt target in %age")]: 'N/A',
-        //[this.$i18n.t("TCr")]: 'N/A',
-        //[this.$i18n.t("TCr / TCr target in %age")]: 'N/A',
-        //[this.$i18n.t("TA")]: 'N/A',
       }));
     }
   },
@@ -719,15 +530,11 @@ export default {
       } catch (err) {
         // continue regardless of error
       } finally {
-        this.showStoredFilters = this.categoriesFilter === "stored_selections" ? true : false;
         let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
         this.values = this.values.filter(value => {
           return selectedValues.filter(filter => filter.value == value).length == 0;
         });
       }
-    },
-    search: function(newValue) {
-      this.centralSearch = newValue;
     },
     pagination: {
       handler() {
@@ -754,21 +561,14 @@ export default {
           this.loading = false;
         });
     },
+
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
         items = items.filter(item => item.request.team.toLowerCase() == this.ticketsFilter);
       }
       return items.filter(item => Filter(item, search.toLowerCase()));
     },
-    checkStoredFilterUpdate() {
-      if (this.storedSelectionsFilter.items) {
-        if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
-          this.updateBtn = true;
-        } else {
-          this.updateBtn = JSON.stringify(this.storedSelectionsFilter.items) !== JSON.stringify(this.customFilters);
-        }
-      }
-    },
+
     requestFilterByGroup(item) {
       const request = item.request;
       let match = false;
@@ -914,121 +714,7 @@ export default {
 
       return match;
     },
-    addNewFilter() {
-      if (this.categoriesFilter && this.valuesFilter) {
-        var filter = {
-          category: this.categoriesFilter,
-          value: this.valuesFilter
-        };
-        this.centralSearch = this.valuesFilter.toLowerCase();
-        this.customFilters.push(filter);
-        this.categoriesFilter = "";
-        this.valuesFilter = "";
-        this.values = [];
-        this.checkStoredFilterUpdate();
-      }
-    },
-    saveCurrentFilter() {
-      var filterToSave = {
-        name: this.newFilterName,
-        items: this.customFilters,
-        user: this.$store.state.user.user._id
-      };
-      this.$http
-        .createFilters(filterToSave)
-        .then(() => {
-          this.dialog = false;
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Filter saved"),
-            color: "success"
-          });
-          this.$http.listFilters().then(response => {
-            this.savedFilters = response.data;
-          });
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
-    },
-    updateCurrectFilter() {
-      var filterToUpdate = Object.assign({}, this.storedSelectionsFilter);
-      filterToUpdate.items = [...this.customFilters];
-      this.$http
-        .updateFilters(filterToUpdate._id, filterToUpdate)
-        .then(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            color: "success",
-            message: this.$i18n.t("Filter updated")
-          });
-          this.updateBtn = false;
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
-    },
-    deleteCurrentFilter() {
-      this.$http
-        .deleteFilters(this.storedSelectionsFilter._id)
-        .then(() => {
-          this.customFilters = [];
-          this.deleteBtn = false;
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Filter deleted")
-          });
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
-      this.deleteDialog = false;
-      this.resetFilters();
-      this.$http.listFilters().then(response => {
-        this.savedFilters = response.data;
-      });
-    },
-    loadFilter() {
-      this.storedSelectionsFilter = Object.assign({}, this.storedSelectionsFilterHolder);
-      this.storedSelectionsFilterHolder = {};
-      this.customFilters = [...this.storedSelectionsFilter.items];
-      this.deleteBtn = true;
-      if (this.customFilters.length) {
-        this.centralSearch = this.customFilters[0].value;
-      }
-      this.categoriesFilter = "";
-      this.valuesFilter = "";
-      this.pageTitle = this.storedSelectionsFilter.name;
-    },
-    removeFilter(filter) {
-      this.customFilters = this.customFilters.filter(customFilter => {
-        return JSON.stringify(customFilter) !== JSON.stringify(filter);
-      });
-      if (this.customFilters.length == 0) {
-        this.pageTitle = this.$i18n.t("All requests");
-        this.deleteBtn = false;
-        this.storedSelectionsFilter = {};
-      } else {
-        this.centralSearch = this.customFilters[0].value;
-      }
-      this.checkStoredFilterUpdate();
-    },
-    resetFilters() {
-      this.customFilters = [];
-      this.centralSearch = "";
-      this.categoriesFilter = "";
-      this.valuesFilter = "";
-      this.search = "";
-      this.pageTitle = this.$i18n.t("All requests");
-      this.storedSelectionsFilterHolder = {};
-      this.deleteBtn = false;
-    },
+
     calculateCnsType(status) {
       if (!status) return "new";
       if (status === "new") return "supported";
@@ -1036,6 +722,7 @@ export default {
       if (status === "bypassed") return "resolved";
       else return "";
     },
+
     displayCnsProgressBar(item) {
       return (
         item.status !== "closed" &&
@@ -1053,6 +740,7 @@ export default {
     cnsWording(status) {
       return CNS_STATUS[status] || status;
     },
+
     cns(ticketId, type) {
       if (this.collectedCNS[ticketId]) {
         return this.$i18n.t("{hours}WH / {duration}WH", {
@@ -1063,14 +751,55 @@ export default {
 
       return "";
     },
+
     collectCNS(value) {
       this.collectedCNS[value.ticketId] = value;
     },
+
     capitalize(value) {
       return capitalize(value);
     },
+
     openTicket(ticketId) {
       this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
+    },
+
+    changeFilterCategory(category) {
+      this.categoriesFilter = category;
+    },
+
+    changeSearchTerm(searchTerm) {
+      this.search = searchTerm;
+      this.centralSearch = searchTerm;
+    },
+
+    filterReset() {
+      this.customFilters = [];
+      this.centralSearch = "";
+      this.categoriesFilter = "";
+      this.valuesFilter = "";
+      this.search = "";
+      this.pageTitle = this.$i18n.t("All requests");
+    },
+
+    updateCustomFilters(customFilters) {
+      this.customFilters = customFilters;
+      if (this.customFilters.length) {
+        this.centralSearch = this.customFilters[0].value;
+      } else {
+        this.centralSearch = "";
+        this.pageTitle = this.$i18n.t("All requests");
+      }
+    },
+
+    changePageTitle(newTitle) {
+      this.pageTitle = newTitle;
+    },
+
+    fetchUserFilters() {
+      this.$http.listFilters().then(response => {
+        this.savedFilters = response.data;
+      });
     }
   },
   created() {
@@ -1080,7 +809,8 @@ export default {
   },
   components: {
     "cns-progress-bar": cnsProgressBar,
-    SoftwareListDetail
+    SoftwareListDetail,
+    dataTableFilter
   }
 };
 </script>
@@ -1115,11 +845,6 @@ export default {
 .v-input.pa-0.v-text-field.v-select.v-select--is-menu-active.v-autocomplete.v-input--is-focused.primary--text,
 .v-input.pa-0.v-text-field.v-select {
   width: 200px !important;
-}
-
-.tickets-search {
-  display: inline-flex;
-  margin-bottom: 20px;
 }
 
 .v-item-group.transparent.theme--light.v-btn-toggle.v-btn-toggle--only-child.v-btn-toggle--selected {
@@ -1165,10 +890,6 @@ th.column.sortable.text-xs-left {
   text-align: center !important;
 }
 
-.scoped-requests-search {
-  padding-top: 10px !important;
-}
-
 div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placeholder,
 > div, > div, > div.v-input__append-inner,
 > div,
@@ -1202,21 +923,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-select {
   color: grey;
 }
 
-.requests-filter-add {
-  margin-top: 10px;
-  height: 48px;
-  margin-left: 0px;
-}
-
-.requests-filter-label {
-  padding-top: 25px;
-  color: #777;
-}
-
-.tickets-search {
-  width: 100% !important;
-}
-
 .v-card__text {
   padding-left: 0px;
   padding-bottom: 24px;
@@ -1227,16 +933,6 @@ div.v-input.scoped-requests-searchv-text-field--enclosed.v-select {
 .v-card__text {
   padding: 0px;
   width: 100%;
-}
-
-.tickets-search {
-  margin-bottom: 0px;
-  padding-bottom: 24px;
-}
-
-span.v-chip:nth-child(3), span.v-chip:nth-child(4) {
-  padding-bottom: 0px;
-  margin-bottom: 24px;
 }
 
 .v-card__text {
@@ -1253,17 +949,6 @@ div.v-input:nth-child(14) {
 
 .text-lg-left > span:nth-child(2) {
   margin-top: 2px;
-}
-
-.chips-elements {
-  list-style: none;
-  float: left;
-}
-
-#filter-chips {
-  display: block;
-  clear: both;
-  max-width: 100%;
 }
 
 div.layout:nth-child(5) {
@@ -1293,15 +978,11 @@ nav.v-toolbar .v-toolbar__content {
   }
 }
 
-@media only screen and (min-width: 600px) {
-  .filter_layout {
-    flex-direction: row !important;
-  }
-}
 .item-id {
   font-size: 13px;
   font-weight: 500;
 }
+
 .truncated &::v-deep div.v-select__selection--comma{
   white-space: nowrap;
   overflow: hidden;
