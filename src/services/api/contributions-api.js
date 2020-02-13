@@ -1,10 +1,12 @@
 export default {
-  getContributionById(contributionId) {
-    return this.get(`/ticketing/api/contributions/${contributionId}`);
+  getContributions({ limit = 50, offset = 0 }) {
+    return this.get(`/ticketing/api/contributions`, { params: { limit, offset } });
   },
 
-  getContributions() {
-    return this.get(`/ticketing/api/contributions`);
+  countContributions() {
+    return this.head(`/ticketing/api/contributions`, { params: { limit: 1 } }).then(response => {
+      return response.headers["x-esn-items-count"] || 0;
+    });
   },
 
   createContribution(options) {

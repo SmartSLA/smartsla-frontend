@@ -122,7 +122,7 @@ export default {
         name: routeNames.CONTRIBUTIONS,
         text: this.$i18n.t("Contributions"),
         icon: "format_line_spacing",
-        show: false
+        show: true
       },
       {
         name: routeNames.ADMINISTRATION,

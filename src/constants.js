@@ -21,7 +21,13 @@ export const OSSA_IDS = [
   }
 ];
 
-export const CONTRIBUTION_STATUS_LIST = ["Dev", "Reversed", "Integrated", "Published", "Rejected"];
+export const CONTRIBUTION_STATUS_LIST = {
+  DEVELOP: "Dev",
+  REVERSED: "Reversed",
+  INTEGRATED: "Integrated",
+  PUBLISHED: "Published",
+  REJECTED: "Rejected"
+};
 
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
 

@@ -188,6 +188,7 @@
     "Error while deleting role": "Erreur lors de la suppression du role",
     "Error while loading administrators": "Erreur lors du chargement des roles",
     "Error while loading tickets": "Erreur lors du chargement des tickets",
+    "Error while loading contributions": "Erreur lors du chargement des contributions",
     "Evolution": "Évolution",
     "exchanges with communities about the contribution": "échanges avec les communautés sur la contribution",
     "expert": "Expert",

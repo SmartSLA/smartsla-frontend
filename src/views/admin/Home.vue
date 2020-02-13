@@ -136,7 +136,7 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.ADMINCONTRIBUTIONS }">
+            <v-btn icon fab :to="{ name: routeNames.CONTRIBUTIONS }">
               <v-icon>list</v-icon>
             </v-btn>
             <v-btn icon fab :to="{ name: routeNames.NEWCONTRIBUTION }">
@@ -180,7 +180,7 @@ export default {
       teamCount: 0,
       softwareCount: 0,
       clientCount: 0,
-      contributionCount: 0
+      contractCount: 0
     };
   },
   mounted() {
@@ -248,6 +248,10 @@ export default {
 
     routeNames() {
       return routeNames;
+    },
+
+    contributionCount() {
+      return this.$store.getters["contribution/getContributionsCount"];
     }
   }
 };
