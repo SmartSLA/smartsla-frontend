@@ -276,14 +276,13 @@
             <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-on:click.stop>
               <router-link
                 v-if="$auth.check('admin')"
                 :to="{
                   name: 'Client',
                   params: { id: props.item.request.contract && props.item.request.contract.clientId }
                 }"
-                target="_blank"
               >
                 <span class="blue-color">
                   <text-highlight :queries="highlightSearch">{{
@@ -301,7 +300,6 @@
                   name: 'Contract',
                   params: { id: props.item.request.contract && props.item.request.contract._id }
                 }"
-                target="_blank"
               >
                 <span class="blue-color">
                   <text-highlight :queries="highlightSearch">{{
