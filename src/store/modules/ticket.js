@@ -8,7 +8,8 @@ function initialState() {
       rowsPerPage: 10,
       rowsPerPageItems: [10, 25, 50, 100],
       totalItems: null,
-      descending: true
+      descending: false,
+      sortBy: "createdAt"
     },
     length: 0,
     tickets: {},
