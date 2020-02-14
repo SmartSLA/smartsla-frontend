@@ -664,14 +664,7 @@ export default {
     },
 
     displayCnsProgressBar(item) {
-      return (
-        item.status !== "closed" &&
-        item.status !== "resolved" &&
-        item.request.software &&
-        item.request.software.software &&
-        item.request.contract && // FIXME
-        item.request.contract.clientId // FIXME
-      );
+      return item.status !== "closed" && item.status !== "resolved" && item.request.cns.bypassed;
     },
     getOssaConfById(ossaId) {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
