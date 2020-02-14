@@ -109,6 +109,7 @@
   "This option allows customers to create tickets in non-business hours subject to SLA": "This option allows customers to create tickets in non-business hours subject to SLA",
   "Ticket assigned to {assignedTo}": "Ticket assigned to {assignedTo}",
   "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}": "Ticket contractual engagements: Supported in {supported}, bypass in {bypassed}, and resolution in {resolved}",
+  "There is no service deadline for this ticket": "There is no service deadline for this ticket",
   "Ticket passed in status {status}": "Ticket passed in status {status}",
   "User role can create and comment tickets": "User role can create and comment tickets",
   "Viewer role can only see tickets": "Viewer role can only see tickets",

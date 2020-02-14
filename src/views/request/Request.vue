@@ -433,12 +433,15 @@
                 <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
               </v-card-title>
               <v-divider></v-divider>
-              {{ $t("Supported") }}
-              <cns-progress-bar :ticket="request" :cnsType="'supported'" class="pt-1"></cns-progress-bar>
-              {{ $t("Bypass") }}
-              <cns-progress-bar :ticket="request" :cnsType="'bypassed'"></cns-progress-bar>
-              {{ $t("Solution") }}
-              <cns-progress-bar :ticket="request" :cnsType="'resolved'"></cns-progress-bar>
+              <v-container v-if="request.contract && request.software && request.severity">
+                {{ $t("Supported") }}
+                <cns-progress-bar :ticket="request" :cnsType="'supported'" class="pt-1"></cns-progress-bar>
+                {{ $t("Bypass") }}
+                <cns-progress-bar :ticket="request" :cnsType="'bypassed'"></cns-progress-bar>
+                {{ $t("Solution") }}
+                <cns-progress-bar :ticket="request" :cnsType="'resolved'"></cns-progress-bar>
+              </v-container>
+              <v-container v-else>{{ $t("There is no service deadline for this ticket") }}</v-container>
             </v-card>
           </v-flex>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
@@ -447,7 +450,7 @@
             </h4>
             <v-card class="pt-2 px-5 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
-              <v-layout ml-5 pl-5 row class="center-avatar">
+              <v-layout row class="center-avatar">
                 <v-flex shrink px-1 xs12 v-if="request.responsible">
                   <v-avatar size="60" class="pt-0">
                     <v-img :src="`${apiUrl}/api/users/${request.responsible._id}/profile/avatar`"></v-img>
@@ -480,7 +483,7 @@
             </h4>
             <v-card class="pt-2 px-5">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
-              <v-layout ml-5 pl-5 row class="center-avatar">
+              <v-layout row class="center-avatar">
                 <v-flex shrink px-1 xs12>
                   <v-avatar size="60" class="pt-0" v-if="request.beneficiary">
                     <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
