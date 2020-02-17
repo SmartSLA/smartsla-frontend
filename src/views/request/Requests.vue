@@ -276,7 +276,7 @@
             <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-on:click.stop>
               <router-link
                 v-if="$auth.check('admin')"
                 :to="{
