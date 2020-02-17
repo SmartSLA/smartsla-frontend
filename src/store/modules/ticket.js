@@ -109,21 +109,25 @@ const getters = {
     }
     return ticket;
   },
-  getCurrentPageRequests: state => {
+  getCurrentPageRequests: (state, getters, rootState, rootGetters) => {
     const { sortBy, descending, page, rowsPerPage } = state.pagination;
-    let result = Object.values(state.tickets).map(request => ({
-      ...request,
-      authorName: request.author && request.author.name,
-      softwareName: request.software && request.software.software && request.software.software.name,
-      responsibleName: request.responsible && request.responsible.name,
-      assignedToName: request.assignedTo && request.assignedTo.name,
-      id_ossa: request.idOssa.id,
-      // FIXME
-      // organizationLabel:
-      //   request.assignedTo && request.assignedTo.type === "beneficiary" ? request.contract.client[0] : "L",
-      createdAt: request.timestamps.createdAt,
-      updatedAt: request.timestamps.updatedAt
-    }));
+    let result = Object.values(state.tickets).map(request => {
+      const contract = rootGetters["contract/getContractById"](request.contract);
+
+      return {
+        ...request,
+        contract: contract && contract._id,
+        contractName: contract && contract.name,
+        clientName: contract && contract.client,
+        authorName: request.author && request.author.name,
+        softwareName: request.software && request.software.software && request.software.software.name,
+        responsibleName: request.responsible && request.responsible.name,
+        assignedToName: request.assignedTo && request.assignedTo.name,
+        id_ossa: request.idOssa.id,
+        createdAt: request.timestamps.createdAt,
+        updatedAt: request.timestamps.updatedAt
+      };
+    });
 
     if (sortBy) {
       result = result.sort((a, b) => {

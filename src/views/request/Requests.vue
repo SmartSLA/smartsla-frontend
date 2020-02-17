@@ -516,7 +516,7 @@ export default {
       let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assign to");
       let responsibleFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "responsible");
       let transmitterFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "transmitter");
-      // let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "client / contract");
+      let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "client / contract");
       let statusFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "status");
 
       let typesFilterMatch = true;
@@ -600,20 +600,15 @@ export default {
         });
       }
 
-      // FIXME: Fix after merging filters sub component
-      /*if (clientFilter.length) {
+      if (clientFilter.length) {
         clientFilterMatch = false;
 
         clientFilter.forEach(currentFilter => {
-          if (
-            request.contract &&
-            request.contract.name &&
-            request.contract.name.toLowerCase() == currentFilter.value.toLowerCase()
-          ) {
+          if (request.contractName && request.contractName.toLowerCase() == currentFilter.value.toLowerCase()) {
             clientFilterMatch = true;
           }
         });
-      }*/
+      }
 
       if (statusFilter.length) {
         statusFilterMatch = false;
@@ -640,9 +635,8 @@ export default {
           (request.softwareName && request.softwareName.toLowerCase().includes(this.search)) ||
           request.description.toLowerCase().includes(this.search) ||
           request.title.toLowerCase().includes(this.search) ||
-          // FIXME
-          // (request.contract && request.contract.client.toLowerCase().includes(this.search)) ||
-          // (request.contract && request.contract.name.toLowerCase().includes(this.search)) ||
+          (request.clientName && request.clientName.toLowerCase().includes(this.search)) ||
+          (request.contractName && request.contractName.toLowerCase().includes(this.search)) ||
           request.status.toLowerCase().includes(this.search) ||
           (request.assignedToName && request.assignedToName.toLowerCase().includes(this.search)) ||
           (request.responsibleName && request.responsibleName.toLowerCase().includes(this.search)) ||
