@@ -3,8 +3,12 @@ export default {
     return this.get(`/ticketing/api/contributions`, { params: { limit, offset } });
   },
 
+  getContributionById(contributionId) {
+    return this.get(`/ticketing/api/contributions/${contributionId}`);
+  },
+
   countContributions() {
-    return this.head(`/ticketing/api/contributions`, { params: { limit: 1 } }).then(response => {
+    return this.head(`/ticketing/api/contributions`).then(response => {
       return response.headers["x-esn-items-count"] || 0;
     });
   },

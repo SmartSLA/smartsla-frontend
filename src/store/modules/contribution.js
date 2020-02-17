@@ -16,6 +16,7 @@ function initialState() {
 
 const types = {
   SET_CONTRIBUTIONS: "SET_CONTRIBUTIONS",
+  SET_CONTRIBUTION: "SET_CONTRIBUTION",
   SET_CONTRIBUTIONS_LENGTH: "SET_CONTRIBUTIONS_LENGTH",
   SET_PAGINATION: "SET_PAGINATION"
 };
@@ -27,9 +28,15 @@ const actions = {
         limit: state.pagination.rowsPerPage,
         offset: (state.pagination.page - 1) * state.pagination.rowsPerPage
       })
-      .then(response => {
-        commit(types.SET_CONTRIBUTIONS, response.data);
+      .then(({ data }) => {
+        commit(types.SET_CONTRIBUTIONS, data);
       });
+  },
+
+  fetchContributionById: ({ commit }, contributionId) => {
+    return Vue.axios.getContributionById(contributionId).then(({ data }) => {
+      commit(types.SET_CONTRIBUTION, data);
+    });
   },
 
   countContributions: ({ commit }) => {
@@ -41,6 +48,22 @@ const actions = {
       });
   },
 
+  createContribution: ({ commit }, contribution) => {
+    return Vue.axios.createContribution(contribution).then(({ data }) => commit(types.SET_CONTRIBUTION, data));
+  },
+
+  updateContribution: ({ dispatch }, { contributionId, contribution }) => {
+    return Vue.axios
+      .updateContribution(contributionId, contribution)
+      .then(() => dispatch("fetchContributionById", contributionId));
+  },
+
+  updateContributionStatus: ({ dispatch }, { contributionId, options }) => {
+    return Vue.axios
+      .updateContributionStatus(contributionId, options)
+      .then(() => dispatch("fetchContributionById", contributionId));
+  },
+
   setPagination: ({ commit }, pagination) => {
     commit(types.SET_PAGINATION, pagination);
   }
@@ -49,6 +72,10 @@ const actions = {
 const mutations = {
   [types.SET_CONTRIBUTIONS](state, contributions) {
     (contributions || []).forEach(contribution => Vue.set(state.contributions, contribution._id, contribution));
+  },
+
+  [types.SET_CONTRIBUTION](state, contribution) {
+    Vue.set(state.contributions, contribution._id, contribution);
   },
 
   [types.SET_CONTRIBUTIONS_LENGTH](state, length) {

@@ -63,15 +63,16 @@ export default {
         stepValue
       };
 
-      this.$http
-        .updateContributionStatus(this.contribution._id, contributionStatus)
+      this.$store
+        .dispatch("contribution/updateContributionStatus", {
+          contributionId: this.contribution._id,
+          options: contributionStatus
+        })
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             color: "success",
             message: this.$i18n.t("Contribution status updated")
           });
-
-          this.$emit("contributionUpdate");
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {

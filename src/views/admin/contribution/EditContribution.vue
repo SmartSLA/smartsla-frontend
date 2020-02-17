@@ -243,14 +243,14 @@ export default {
     },
 
     create() {
-      this.$http
-        .createContribution(this.contribution)
+      this.$store
+        .dispatch("contribution/createContribution", this.contribution)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("contribution created"),
             color: "success"
           });
-          this.$router.push({ name: routeNames.ADMINCONTRIBUTIONS });
+          this.$router.push({ name: routeNames.CONTRIBUTIONS });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -261,14 +261,17 @@ export default {
     },
 
     update() {
-      this.$http
-        .updateContribution(this.contribution._id, this.contribution)
+      this.$store
+        .dispatch("contribution/updateContribution", {
+          contributionId: this.contribution._id,
+          contribution: this.contribution
+        })
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("contribution updated"),
             color: "success"
           });
-          this.$router.push({ name: routeNames.ADMINCONTRIBUTIONS });
+          this.$router.push({ name: routeNames.CONTRIBUTIONS });
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -323,39 +326,30 @@ export default {
       });
 
     if (this.$route.params.id) {
-      this.$http
-        .getContributionById(this.$route.params.id)
-        .then(({ data }) => {
-          const { software, author, links } = data;
+      let data = this.$store.getters["contribution/getContributionById"](this.$route.params.id);
+      const { software, author, links } = data;
 
-          this.contribution = {
-            ...data,
-            author: author._id,
-            software: software._id,
-            links: links.map(link => {
-              let { url, name } = link;
-              let existingLinkType = this.linkNames.find(linkName => linkName.key === link.name);
+      this.contribution = {
+        ...data,
+        author: author._id,
+        software: software._id,
+        links: links.map(link => {
+          let { url, name } = link;
+          let existingLinkType = this.linkNames.find(linkName => linkName.key === link.name);
 
-              return existingLinkType
-                ? {
-                    url,
-                    name: existingLinkType.key,
-                    value: existingLinkType.value
-                  }
-                : {
-                    url,
-                    name: "Other",
-                    othername: name
-                  };
-            })
-          };
+          return existingLinkType
+            ? {
+                url,
+                name: existingLinkType.key,
+                value: existingLinkType.value
+              }
+            : {
+                url,
+                name: "Other",
+                othername: name
+              };
         })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            color: "error",
-            message: this.$i18n.t("cannot fetch contribution")
-          });
-        });
+      };
     }
   }
 };

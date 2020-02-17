@@ -184,6 +184,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.dispatch("contribution/countContributions");
     this.$http
       .listUsers()
       .then(response => {

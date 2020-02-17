@@ -8,10 +8,7 @@
         <contributionDetail :contribution="contribution"></contributionDetail>
       </v-flex>
       <v-flex xs5 class="pl-4">
-        <editContributionStatus
-          :contribution="contribution"
-          @contributionUpdate="fetchContribution"
-        ></editContributionStatus>
+        <editContributionStatus :contribution="contribution"></editContributionStatus>
       </v-flex>
     </v-layout>
   </v-container>
@@ -21,31 +18,17 @@ import contributionDetail from "@/components/contribution/ContributionDetail";
 import editContributionStatus from "@/components/contribution/EditContributionStatus";
 
 export default {
-  data: () => ({
-    contribution: null
-  }),
   components: {
     contributionDetail,
     editContributionStatus
   },
-  methods: {
-    fetchContribution() {
-      this.$http
-        .getContributionById(this.$route.params.id)
-        .then(({ data }) => {
-          this.contribution = data;
-        })
-        .catch(err => {
-          console.log(err);
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("failed to fetch contribution"),
-            color: "error"
-          });
-        });
+  computed: {
+    contribution() {
+      return this.$store.getters["contribution/getContributionById"](this.$route.params.id);
     }
   },
-  created() {
-    this.fetchContribution();
+  mounted() {
+    this.$store.dispatch("contribution/fetchContributionById", this.$route.params.id);
   }
 };
 </script>
