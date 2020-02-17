@@ -32,5 +32,9 @@ export default {
     return this.head("/ticketing/api/tickets", { params: { limit: 1 } }).then(response => {
       return response.headers["x-esn-items-count"] || 0;
     });
+  },
+
+  exportTickets(exportType = "csv") {
+    return this.get("/ticketing/api/tickets", { params: { export: exportType } });
   }
 };
