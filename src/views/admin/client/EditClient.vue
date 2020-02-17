@@ -118,7 +118,9 @@ export default {
     return {
       valid: false,
       openDialog: false,
-      client: {}
+      client: {
+        active: true
+      }
     };
   },
   methods: {
