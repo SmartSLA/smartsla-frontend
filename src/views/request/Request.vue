@@ -312,7 +312,7 @@
                   <v-tabs v-model="isPrivateTab">
                     <v-tabs-slider color="primary"></v-tabs-slider>
                     <v-tab>{{ $t("Public comments") }}</v-tab>
-                    <v-tab v-if="this.getUser.type === 'expert'">
+                    <v-tab v-if="isUserExpert()">
                       {{ $t("Private Comments") }}
                     </v-tab>
                   </v-tabs>
@@ -375,16 +375,33 @@
                             </v-list-tile-content>
                           </template>
                         </v-autocomplete>
-                        <v-layout class="font-weight-medium" xs6 md6>
+                        <v-layout class="font-weight-medium btn-actions" xs6 md6>
                           <v-flex text-xs-left pa-0>
-                            <router-link class="action-link" @click.native.prevent="assignCustomer" to="">{{
-                              $t("Assign the customer")
-                            }}</router-link>
+                            <span v-if="isUserBeneficiary()">
+                              <v-btn
+                                class="px-1 mt-1 text-transform"
+                                :disabled="canAssign()"
+                                flat
+                                color="primary"
+                                @click.prevent="assignTo('expert')"
+                                >{{ $t("Assign the expert") }}
+                              </v-btn>
+                            </span>
+                            <span v-else>
+                              <v-btn class="px-1 mt-1" flat color="primary" @click.prevent="assignTo('beneficiary')"
+                                >{{ $t("Assign the customer") }}
+                              </v-btn>
+                            </span>
                           </v-flex>
                           <v-flex text-xs-right pa-0>
-                            <router-link class="action-link" @click.native.prevent="assignSelf" to="">{{
-                              $t("Take it")
-                            }}</router-link>
+                            <v-btn
+                              :disabled="canTakeIt()"
+                              class="px-1 mt-1"
+                              flat
+                              color="primary"
+                              @click.prevent="assignSelf"
+                              >{{ $t("Take it") }}
+                            </v-btn>
                           </v-flex>
                         </v-layout>
                       </v-flex>
@@ -630,6 +647,26 @@ export default {
     }
   },
   methods: {
+    canAssign() {
+      const ticketStatus = ["resolved", "closed"].includes(this.currentStatus);
+      if (ticketStatus || !this.request.responsible) {
+        return true;
+      }
+      return false;
+    },
+    canTakeIt() {
+      const ticketStatus = ["resolved", "closed"].includes(this.currentStatus);
+      if (this.isUserExpert() && ticketStatus) {
+        return true;
+      }
+      return false;
+    },
+    isUserBeneficiary() {
+      return this.getUser && this.getUser.type === "beneficiary";
+    },
+    isUserExpert() {
+      return this.getUser && this.getUser.type === "expert";
+    },
     scrollToEvent(event) {
       const element = this.$refs[`event-${event._id}`];
 
@@ -764,8 +801,9 @@ export default {
     assignSelf() {
       this.newResponsible = this.getUser;
     },
-    assignCustomer() {
-      this.newResponsible = this.request.author;
+    assignTo(userType) {
+      console.log("userType ", userType, this.allowedAssigneeList);
+      this.newResponsible = userType === "beneficiary" ? this.request.author : this.request.responsible;
     }
   },
   created() {
@@ -1046,7 +1084,15 @@ export default {
   }
 }
 
-.action-link {
-  text-decoration: none;
+.btn-actions .v-btn {
+  text-transform: initial;
+}
+
+.btn-actions .v-btn:hover {
+  text-decoration: underline;
+}
+
+.btn-actions .v-btn:hover:before {
+  background-color: transparent;
 }
 </style>
