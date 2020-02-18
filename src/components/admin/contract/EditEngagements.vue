@@ -81,6 +81,18 @@
           >
           </FormEngagement>
         </v-dialog>
+        <v-dialog v-model="deleteModal" persistent max-width="300">
+          <v-card class="px-4 pt-2">
+            <v-card-text>
+              <span class="body-2">{{ $t("Are you sure you want to remove this item") }} ?</span>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="confirmDeleteCommitment">{{ $t("confirm") }}</v-btn>
+              <v-btn color="error" @click="deleteModal = false">{{ $t("cancel") }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-flex>
     </v-layout>
   </v-card>
@@ -146,7 +158,8 @@ export default {
       requestTypes: REQUEST_TYPES.map(requestType => ({ key: requestType, value: this.$i18n.t(requestType) })),
       severityTypes: SEVERITY_TYPES.map(severityType => ({ key: severityType, value: this.$i18n.t(severityType) })),
       ossaIds: OSSA_IDS,
-      isEdit: false
+      isEdit: false,
+      deleteModal: false
     };
   },
   components: {
@@ -164,9 +177,15 @@ export default {
       return this.ossaIds.find(ossaId => ossaId.key == key);
     },
     removeCommitment(commitment) {
+      this.deleteModal = true;
+      this.selectedItem = commitment;
+    },
+    confirmDeleteCommitment() {
+      this.deleteModal = false;
       this.engagementList.engagements = this.engagementList.engagements.filter(
-        item => JSON.stringify(item) != JSON.stringify(commitment)
+        item => JSON.stringify(item) != JSON.stringify(this.selectedItem)
       );
+      this.validate("Deleted");
     },
     editCommitment(commitment) {
       this.formDialog = true;
