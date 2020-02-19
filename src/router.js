@@ -14,7 +14,6 @@ import Orders from "@/views/order/Orders.vue";
 import Profile from "@/views/profile/Profile.vue";
 import Settings from "@/views/settings/Settings.vue";
 import ApplicationSettings from "@/services/application-settings";
-import CreateClient from "@/views/admin/client/CreateClient.vue";
 import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/user/Users.vue";
 import User from "@/views/admin/user/User.vue";
@@ -44,7 +43,6 @@ Vue.use(Router);
 export const routeNames = Object.freeze({
   HOME: "Home",
   CREATEREQUEST: "New issue",
-  CREATECLIENT: "Create Client",
   REQUESTS: "Requests",
   REQUEST: "Request",
   EDITREQUEST: "EditRequest",
@@ -102,14 +100,6 @@ export default new Router({
       path: "/create-request",
       name: routeNames.CREATEREQUEST,
       component: CreateRequest,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/create-client",
-      name: routeNames.CREATECLIENT,
-      component: CreateClient,
       meta: {
         auth: true
       }
@@ -276,17 +266,17 @@ export default new Router({
           }
         },
         {
-          path: "teams",
-          name: routeNames.TEAMS,
-          component: Teams,
+          path: "teams/new",
+          name: routeNames.NEWTEAM,
+          component: EditTeam,
           meta: {
             auth: true
           }
         },
         {
-          path: "teams/new",
-          name: routeNames.NEWTEAM,
-          component: EditTeam,
+          path: "teams",
+          name: routeNames.TEAMS,
+          component: Teams,
           meta: {
             auth: true
           }
@@ -303,6 +293,15 @@ export default new Router({
           path: "teams/:id/edit",
           name: routeNames.EDITTEAM,
           component: EditTeam,
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: "software/new",
+          name: routeNames.NEWSOFTWARE,
+          component: EditSoftware,
+          exact: true,
           meta: {
             auth: true
           }
@@ -332,9 +331,9 @@ export default new Router({
           }
         },
         {
-          path: "software/new",
-          name: routeNames.NEWSOFTWARE,
-          component: EditSoftware,
+          path: "clients/new",
+          name: routeNames.NEWCLIENT,
+          component: EditClient,
           meta: {
             auth: true
           }
@@ -358,14 +357,6 @@ export default new Router({
         {
           path: "clients/:id/edit",
           name: routeNames.EDITCLIENT,
-          component: EditClient,
-          meta: {
-            auth: true
-          }
-        },
-        {
-          path: "clients/new",
-          name: routeNames.NEWCLIENT,
           component: EditClient,
           meta: {
             auth: true
