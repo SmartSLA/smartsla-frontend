@@ -114,12 +114,13 @@
                           <v-select
                             prepend-icon="storage"
                             :disabled="!ticket.contract._id"
-                            :items="[...typeList]"
+                            :items="typeList"
                             v-model="ticket.type"
                             :label="$i18n.t('Type')"
                             :no-data-text="$i18n.t('No data available')"
-                            :rules="[() => ticket.type.length > 0 || $i18n.t('Required field')]"
+                            :rules="[() => !!ticket.type.length || $i18n.t('Required field')]"
                             class="required-element"
+                            @change="typeChanged"
                             return-object
                           >
                             <template slot="selection" slot-scope="{ item }">
@@ -137,11 +138,12 @@
                             :label="$i18n.t('Software')"
                             prepend-icon="laptop"
                             background-color="white"
-                            :items="[...sortedListOfSoftware]"
+                            :items="sortedListOfSoftware"
                             v-model="ticket.software"
                             :filter="searchSoftware"
                             :rules="[isSoftwareValid || isAnomalyTicket || $i18n.t('Required field')]"
                             :class="{ 'required-element': isAnomalyTicket }"
+                            @change="softwareChanged"
                             return-object
                           >
                             <template v-slot:item="data">
@@ -164,7 +166,7 @@
                         <v-flex xs12 md3 sm12 lg0 xl3>
                           <v-select
                             prepend-icon="report"
-                            :items="[...severityList]"
+                            :items="severityList"
                             :disabled="!ticket.type"
                             v-model="ticket.severity"
                             :label="$i18n.t('Severity')"
@@ -380,8 +382,6 @@ export default {
       beneficiaryList: [],
       responsibleList: [],
       contractList: [],
-      engagementsCategory: [],
-      selectedTypes: [],
       // eslint-disable-next-line max-len,no-useless-escape
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       emailVerfication: [],
@@ -456,11 +456,11 @@ export default {
         this.ticket.events = [event];
       }
 
-      if (this.ticket.hasOwnProperty("software") && !this.ticket.software.software) {
+      if (this.ticket.hasOwnProperty("software") && !this.ticket.software) {
         delete this.ticket.software;
       }
 
-      if (this.ticket.hasOwnProperty("severity") && !this.ticket.severity.length) {
+      if (this.ticket.hasOwnProperty("severity") && !this.ticket.severity) {
         delete this.ticket.severity;
       }
 
@@ -582,6 +582,15 @@ export default {
       const diff = moment().diff(expirationDate);
 
       return Math.sign(diff) === 1;
+    },
+
+    softwareChanged() {
+      this.$set(this.ticket, "severity", null);
+    },
+
+    typeChanged() {
+      this.$set(this.ticket, "software", null);
+      this.$set(this.ticket, "severity", null);
     }
   },
   computed: {
@@ -638,15 +647,13 @@ export default {
 
     typeList() {
       var engagements = [];
-      if (this.ticket.contract && Object.keys(this.ticket.contract).length) {
+      if (this.ticket.contract && this.ticket.contract && this.ticket.contract._id) {
         engagements.push(...(this.ticket.contract.Engagements.critical.engagements || []));
         engagements.push(...(this.ticket.contract.Engagements.sensible.engagements || []));
         engagements.push(...(this.ticket.contract.Engagements.standard.engagements || []));
         return engagements.map(engagement => engagement.request);
       }
 
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.selectedTypes = []; // FIXME Fix this
       return [];
     },
 
@@ -670,13 +677,18 @@ export default {
     },
 
     severityList() {
-      if (this.ticket.type.length && Object.keys(this.ticket.software || {}).length) {
+      if (this.ticket.type.length && this.ticket.software && this.ticket.software.software) {
         const engagements = this.ticket.contract.Engagements[this.ticket.software.critical].engagements;
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.engagementsCategory = engagements.slice(); // FIXME Fix this
+
         return engagements.filter(engagement => engagement.request == this.ticket.type).map(item => item.severity);
       }
 
+      return [];
+    },
+    engagementsCategory() {
+      if (this.ticket.type.length && this.ticket.software && this.ticket.software.software) {
+        return this.ticket.contract.Engagements[this.ticket.software.critical].engagements;
+      }
       return [];
     },
     selectedEngagement() {
@@ -719,11 +731,13 @@ export default {
     },
     requiredUnfilled() {
       return (
-        !Object.keys(this.ticket.contract || {}).length ||
+        !this.ticket.contract._id ||
         !this.ticket.title.length ||
         !this.ticket.type.length ||
         !this.ticket.description.length ||
-        (this.isAnomalyTicket && (!Object.keys(this.ticket.software || {}).length || !this.ticket.severity.length))
+        (this.isAnomalyTicket &&
+          (!(this.ticket.software && this.ticket.software.software) ||
+            !(this.ticket.severity && this.ticket.severity.length)))
       );
     }
   },
@@ -742,21 +756,10 @@ export default {
           });
         });
 
-      if (Object.keys(oldContract).length !== 0) {
-        this.ticket.type = "";
-        this.ticket.software = {};
-        this.ticket.severity = "";
-      }
-    },
-    "ticket.type": function(newType, oldType) {
-      if (oldType.length !== 0) {
-        this.ticket.software = {};
-        this.ticket.severity = "";
-      }
-    },
-    "ticket.software": function(newSoftware, oldSoftware) {
-      if (Object.keys(oldSoftware).length !== 0) {
-        this.ticket.severity = "";
+      if (oldContract && oldContract._id && oldContract._id !== newContract._id) {
+        this.$set(this.ticket, "type", "");
+        this.$set(this.ticket, "software", null);
+        this.$set(this.ticket, "severity", null);
       }
     },
     participants(participants) {
