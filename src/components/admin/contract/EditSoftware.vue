@@ -24,10 +24,6 @@
             $t(props.item.critical)
           }}</v-chip>
         </td>
-        <td class="text-xs-center">
-          <span v-if="props.item.generic == 'yes'">{{ $t("yes") }}</span>
-          <router-link v-else to="#">repo</router-link>
-        </td>
         <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
         <td class="text-xs-center">
           <v-btn color="primary" flat small @click="editSoftware(props)">
@@ -85,7 +81,6 @@ export default {
       newSoftware: {
         software: {},
         critical: "standard",
-        generic: false,
         technicalReferent: "",
         os: "",
         version: "",
@@ -195,7 +190,6 @@ export default {
           value: "supportDate"
         },
         { text: this.$i18n.t("Critical"), value: "critical" },
-        { text: this.$i18n.t("Generic"), value: "generic" },
         {
           text: this.$i18n.t("Tech. referent"),
           value: "technicalReferent"

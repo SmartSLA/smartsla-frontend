@@ -206,10 +206,6 @@
                         >{{ $t(props.item.critical) }}</v-chip
                       >
                     </td>
-                    <td class="text-xs-center">
-                      <span v-if="props.item.generic == 'yes'">{{ $t(props.item.generic) }}</span>
-                      <router-link v-else to="#">repo</router-link>
-                    </td>
                     <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
                   </template>
                 </v-data-table>
@@ -528,7 +524,6 @@ export default {
           sortable: false
         },
         { text: this.$i18n.t("Critical"), value: "critical", sortable: false },
-        { text: this.$i18n.t("Generic"), value: "generic", sortable: false },
         {
           text: this.$i18n.t("Tech. referent"),
           value: "technicalReferent",

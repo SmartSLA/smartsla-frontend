@@ -114,19 +114,6 @@
               :search-input.sync="syncTechnical"
             ></v-autocomplete>
           </v-flex>
-          <v-flex xs3 class="pt-3">{{ $t("Generic") }}</v-flex>
-          <v-flex xs9>
-            <v-radio-group v-model="software.generic" row>
-              <v-radio :label="$i18n.t('yes')" value="yes"></v-radio>
-              <v-radio :label="$i18n.t('no')" value="repo"></v-radio>
-            </v-radio-group>
-          </v-flex>
-          <v-flex xs3 class="pt-3" v-if="software.generic && software.generic != 'yes'">
-            {{ $t("repo link") }}
-          </v-flex>
-          <v-flex xs9 v-if="software.generic && software.generic != 'yes'">
-            <v-text-field v-model="software.generic.repo"></v-text-field>
-          </v-flex>
         </v-layout>
       </v-form>
     </v-card-text>
@@ -188,7 +175,6 @@ export default {
       this.software = {
         software: {},
         critical: "standard",
-        generic: false,
         technicalReferent: "",
         os: "",
         version: "",
