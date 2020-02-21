@@ -74,7 +74,9 @@ export const UPDATE_COMMENT = {
     changed: "{author} changed the meeting ID from {oldValue} to {newValue}."
   },
   participants: {
-    changed: "{author} changed the participants list."
+    changed: "{author} changed the participants list from {oldValue} to {newValue}.",
+    added: "{author} added {newValue} to the participants list",
+    removed: "{author} removed {oldValue} from the participants list"
   },
   type: {
     changed: "{author} changed the type from {oldValue} to {newValue}."
@@ -92,8 +94,10 @@ export const UPDATE_COMMENT = {
   description: {
     changed: "{author} changed the description."
   },
-  relatedrequests: {
-    changed: "{author} changed the related requests."
+  relatedRequests: {
+    changed: "{author} changed the related requests from {oldValue} to {newValue}.",
+    added: "{author} added {newValue} to the related requests",
+    removed: "{author} removed {oldValue} from the related requests"
   }
 };
 export const UNDEFINED_DURATION = "P0D";
