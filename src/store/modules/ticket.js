@@ -22,7 +22,8 @@ const types = {
   SET_TICKET_LENGTH: "SET_TICKET_LENGTH",
   SET_PAGINATION: "SET_PAGINATION",
   SET_SEARCH: "SET_SEARCH",
-  UPDATE_TICKET: "UPDATE_TICKET"
+  UPDATE_TICKET: "UPDATE_TICKET",
+  ADD_EVENT: "ADD_EVENT"
 };
 
 const actions = {
@@ -84,6 +85,15 @@ const actions = {
       .catch(err => {
         console.log(err);
       });
+  },
+
+  addEvent: ({ dispatch }, { ticketId, event }) => {
+    return Vue.axios
+      .addTicketEvent(ticketId, event)
+      .then(() => dispatch("fetchTicketById", ticketId))
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 
@@ -106,7 +116,7 @@ const mutations = {
   },
 
   [types.UPDATE_TICKET](state, ticket) {
-    const { _id } = state.tickets[ticket._id];
+    const { _id } = ticket;
     Vue.set(state.tickets, _id, ticket);
   }
 };
