@@ -177,11 +177,14 @@
           </v-flex>
           <v-flex xs3>{{ $t("External links") }}</v-flex>
           <v-flex xs8>
-            <external-links
-              :externalLinks="externalLinks"
-              @add-external-link="addExternalLink"
-              @remove-external-link="removeExternalLink"
-            ></external-links>
+            <external-links :externalLinks="externalLinks" @remove-link="removeExternalLink">
+              <div>
+                {{ $t("Add an external link") }}
+                <v-btn @click="addExternalLink()" flat icon color="primary">
+                  <v-icon>add_circle</v-icon>
+                </v-btn>
+              </div>
+            </external-links>
           </v-flex>
           <v-flex xs12 class="text-xs-center">
             <br />
@@ -422,12 +425,10 @@ export default {
           });
         });
     },
-    addExternalLink(name, url) {
-      this.externalLinks.push({
-        name: name,
-        url: url
-      });
+    addExternalLink(link = { name: "", url: "" }) {
+      this.externalLinks.push(link);
     },
+
     removeExternalLink(index) {
       this.externalLinks.splice(index, 1);
     }
