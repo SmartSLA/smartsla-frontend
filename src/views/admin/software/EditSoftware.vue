@@ -70,6 +70,16 @@
               <v-flex xs8>
                 <v-select :items="groups"></v-select>
               </v-flex>
+              <v-flex xs3 class="pt-4">
+                <strong>{{ $t("External Links") }} :</strong>
+              </v-flex>
+              <v-flex xs8>
+                <external-links
+                  :externalLinks="externalLinks"
+                  @add-external-link="addExternalLink"
+                  @remove-external-link="removeExternalLink"
+                ></external-links>
+              </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs5></v-flex>
               <v-flex xs5>
@@ -104,6 +114,7 @@
 </template>
 <script>
 import { routeNames } from "@/router";
+import ExternalLinks from "@/components/ExternalLinks.vue";
 
 export default {
   data() {
@@ -158,8 +169,12 @@ export default {
         "Outils et langages",
         "Bureautique",
         "Serveurs web"
-      ]
+      ],
+      externalLinks: []
     };
+  },
+  components: {
+    ExternalLinks
   },
   computed: {
     isNew() {
@@ -190,6 +205,7 @@ export default {
 
     validateFrom() {
       if (this.$refs.form.validate()) {
+        this.software.externalLinks = this.externalLinks;
         if (!this.isNew) {
           this.createSoftware();
         } else {
@@ -233,14 +249,24 @@ export default {
             color: "error"
           });
         });
+    },
+    addExternalLink(name, url) {
+      this.externalLinks.push({
+        name: name,
+        url: url
+      });
+    },
+    removeExternalLink(index) {
+      this.externalLinks.splice(index, 1);
     }
   },
   mounted() {
     if (this.$route.params.id) {
       this.$http
         .getSoftwareById(this.$route.params.id)
-        .then(response => {
-          this.software = response.data;
+        .then(({ data }) => {
+          this.software = data;
+          this.externalLinks = data.externalLinks;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
