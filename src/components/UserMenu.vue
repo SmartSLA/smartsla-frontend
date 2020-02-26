@@ -16,6 +16,10 @@
                 </v-list-tile-content>
               </v-list-tile>
               <v-divider />
+              <v-list-tile :to="{ name: routeNames.PROFILE, params: { id: getId } }">
+                <v-list-tile-title>{{ $t("Profil") }}</v-list-tile-title>
+              </v-list-tile>
+              <v-divider />
               <v-list-tile :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
                 <v-list-tile-title>{{ $t("Change Password") }}</v-list-tile-title>
               </v-list-tile>
@@ -61,7 +65,8 @@ export default {
     ...mapGetters({
       getAvatarUrl: "user/getAvatarUrl",
       getDisplayName: "user/getDisplayName",
-      getEmail: "user/getEmail"
+      getEmail: "user/getEmail",
+      getId: "user/getId"
     }),
     routeNames() {
       return routeNames;

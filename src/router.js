@@ -36,6 +36,7 @@ import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 
 import { requireRead } from "@/guards/ticket-guards";
+import { canViewProfile } from "@/guards/user-guards";
 
 Vue.use(Router);
 
@@ -186,9 +187,10 @@ export default new Router({
       }
     },
     {
-      path: "/profile",
+      path: "/profile/:id",
       name: routeNames.PROFILE,
       component: Profile,
+      beforeEnter: canViewProfile,
       meta: {
         auth: true
       }
@@ -253,6 +255,7 @@ export default new Router({
           path: "users/:id",
           name: routeNames.USER,
           component: User,
+          beforeEnter: canViewProfile,
           meta: {
             auth: true
           }

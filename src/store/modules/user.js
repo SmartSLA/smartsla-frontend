@@ -52,6 +52,10 @@ const getters = {
     return state.user && state.user.preferredEmail;
   },
 
+  getId(state) {
+    return state.user && state.user.id;
+  },
+
   getPhone(state) {
     return state.user && (state.user.main_phone || (state.user.ticketing && state.user.ticketing.phone));
   },
@@ -62,7 +66,7 @@ const getters = {
 
   getUser(state, getters) {
     return {
-      id: state.user.id,
+      id: getters.getId,
       name: getters.getDisplayName,
       email: getters.getEmail,
       type: getters.getType,

@@ -1,13 +1,13 @@
 <template>
-  <div>{{ msg }}</div>
+  <user-profile></user-profile>
 </template>
+
 <script>
+import userProfile from "@/components/user/userProfile.vue";
 export default {
-  data() {
-    return {
-      msg: this.$i18n.t("Welcome to profile!!")
-    };
+  name: "profile",
+  components: {
+    userProfile: userProfile
   }
 };
 </script>
-<style lang="stylus"></style>
