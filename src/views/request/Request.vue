@@ -805,7 +805,6 @@ export default {
       this.newResponsible = this.getUser;
     },
     assignTo(userType) {
-      console.log("userType ", userType, this.allowedAssigneeList);
       this.newResponsible = userType === "beneficiary" ? this.request.author : this.request.responsible;
     }
   },
