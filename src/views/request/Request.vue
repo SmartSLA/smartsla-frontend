@@ -734,9 +734,12 @@ export default {
         }));
       }
 
-      this.newEvent.status = this.newStatus;
-      this.newEvent.target = this.newResponsible;
-      this.newEvent.isPrivate = this.isPrivateTab;
+      this.newEvent.isPrivate = !!this.isPrivateTab;
+
+      if (!this.newEvent.isPrivate) {
+        this.newEvent.status = this.newStatus;
+        this.newEvent.target = this.newResponsible;
+      }
 
       return this.$http.addTicketEvent(this.request._id, this.newEvent);
     },
