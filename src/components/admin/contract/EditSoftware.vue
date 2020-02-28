@@ -5,10 +5,10 @@
         <h3 class="title mb-0">{{ $t("Software") }}</h3>
       </div>
     </v-card-title>
-    <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
+    <v-data-table :items="software" :headers="softwareHeaders" hide-actions>
       <template v-slot:items="props">
         <td class="text-xs-center">
-          {{ props.item.software.name }}
+          {{ props.item.name }}
           <expired-label :expirationDate="props.item.SupportDate.end"></expired-label>
         </td>
         <td class="text-xs-center">{{ props.item.version }}</td>
@@ -72,9 +72,11 @@
 <script>
 import FormSoftware from "@/components/admin/contract/FormSoftware.vue";
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import SoftwareMixin from "@/mixins/SortContractSoftware";
 
 export default {
   name: "edit-contract-software",
+  mixins: [SoftwareMixin],
   data() {
     return {
       formDialog: false,
@@ -182,7 +184,7 @@ export default {
   computed: {
     softwareHeaders() {
       return [
-        { text: this.$i18n.t("Software"), value: "software" },
+        { text: this.$i18n.t("Software"), value: "name" },
         { text: this.$i18n.t("Version"), value: "version" },
         { text: this.$i18n.t("OS"), value: "os" },
         {
@@ -196,6 +198,9 @@ export default {
         },
         { text: "", value: "delete" }
       ];
+    },
+    software() {
+      return this.sortSoftware(this.contract.software).map(item => ({ ...item, name: item.software.name }));
     }
   },
   mounted() {

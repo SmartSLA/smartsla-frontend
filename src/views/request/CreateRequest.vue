@@ -344,8 +344,10 @@ import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import moment from "moment-timezone";
 import { REQUEST_TYPE } from "@/constants";
+import SoftwareMixin from "@/mixins/SortContractSoftware";
 
 export default {
+  mixins: [SoftwareMixin],
   data() {
     return {
       valid: true,
@@ -720,11 +722,8 @@ export default {
     },
     sortedListOfSoftware() {
       if (this.ticket.contract.software) {
-        // FIXME Fix this
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        return this.ticket.contract.software
-          .filter(software => !this.isExpired(software.SupportDate.end))
-          .sort((a, b) => a.software.name.localeCompare(b.software.name));
+        const software = this.ticket.contract.software.filter(software => !this.isExpired(software.SupportDate.end));
+        return this.sortSoftware(software);
       }
 
       return [];

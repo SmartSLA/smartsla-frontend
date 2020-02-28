@@ -176,7 +176,7 @@
               </v-card-title>
               <v-card-text>
                 <v-divider class="ml-1 mr-1"></v-divider>
-                <v-data-table :items="contract.software" :headers="softwareHeaders" hide-actions>
+                <v-data-table :items="software" :headers="softwareHeaders" hide-actions>
                   <template v-slot:items="props">
                     <td class="text-xs-center">
                       <router-link
@@ -485,8 +485,10 @@ import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilt
 import UsersList from "@/components/user/UsersList.vue";
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import CopyEngagementsForm from "@/components/admin/contract/CopyEngagementsForm.vue";
+import SoftwareMixin from "@/mixins/SortContractSoftware";
 
 export default {
+  mixins: [SoftwareMixin],
   data() {
     return {
       contract: {
@@ -513,6 +515,9 @@ export default {
     };
   },
   computed: {
+    software() {
+      return this.sortSoftware(this.contract.software);
+    },
     softwareHeaders() {
       return [
         { text: this.$i18n.t("Software"), value: "software", sortable: false },
