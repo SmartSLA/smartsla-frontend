@@ -19,13 +19,17 @@
               item-value="key"
               flat
               single-line
+              @change="resetRequestType"
               :rules="[() => commitment.request.length > 0 || $i18n.t('Required field')]"
             ></v-select>
           </v-flex>
 
           <v-flex xs4 v-if="commitment.request === 'Other'"></v-flex>
           <v-flex xs6 v-if="commitment.request === 'Other'">
-            <v-text-field v-model="commitment.custom_request" requried></v-text-field>
+            <v-text-field
+              v-model="commitment.custom_request"
+              :rules="[val => !!val || $i18n.t('Required field')]"
+            ></v-text-field>
           </v-flex>
 
           <v-flex xs4 class="required-label">{{ $t("Severity") }}</v-flex>
@@ -314,6 +318,9 @@ export default {
         },
         description: ""
       };
+    },
+    resetRequestType() {
+      this.commitment.custom_request = "";
     }
   },
   watch: {
