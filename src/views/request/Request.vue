@@ -247,8 +247,35 @@
                       <v-card-title primary-title class="pt-3">
                         <div class="flex">
                           <div class="subheading font-weight-medium">{{ event.author.name }}</div>
-                          <div class="body-1">{{ event.timestamps.createdAt | calendarTimeFilter }}</div>
+                          <div class="body-1">
+                            <v-tooltip bottom>
+                              <template v-slot:activator="{ on }">
+                                <a
+                                  v-on="on"
+                                  class="event-time"
+                                  :href="`#event-${event._id}`"
+                                  @click.stop="scrollToEvent(event)"
+                                >
+                                  {{ event.timestamps.createdAt | relativeTime }}
+                                </a>
+                              </template>
+                              <span>{{ event.timestamps.createdAt | formatDateFilter("llll") }}</span>
+                            </v-tooltip>
+                          </div>
                         </div>
+                        <v-spacer></v-spacer>
+                        <v-menu offset-y>
+                          <template v-slot:activator="{ on }">
+                            <v-btn icon v-on="on">
+                              <v-icon color="grey">mdi-dots-vertical</v-icon>
+                            </v-btn>
+                          </template>
+                          <v-list>
+                            <v-list-tile @click="copyEventLink(event._id)">
+                              <v-list-tile-title>{{ $t("Copy link") }}</v-list-tile-title>
+                            </v-list-tile>
+                          </v-list>
+                        </v-menu>
                       </v-card-title>
                       <v-card-text v-if="event.comment" v-html="event.comment" class="pt-0" />
                       <v-card-text v-if="(event.target && event.target.name) || event.status" class="grey--text pt-0">
@@ -699,6 +726,12 @@ export default {
     },
     fetchTicket() {
       this.$store.dispatch("ticket/fetchTicketById", this.$route.params.id);
+    },
+    copyEventLink(eventId) {
+      const element = `event-${eventId}`;
+      const baseUrl = `${window.location.origin}${this.$route.path}`;
+
+      this.$copyText(`${baseUrl}#${element}`);
     }
   },
   created() {
@@ -984,5 +1017,16 @@ export default {
 
 .btn-actions .v-btn:hover:before {
   background-color: transparent;
+}
+
+.event-time {
+  color: inherit;
+  text-decoration: none;
+}
+
+.event-time:hover {
+  color:#00A0C6;
+  text-decoration: underline
+  cursor:pointer;
 }
 </style>
