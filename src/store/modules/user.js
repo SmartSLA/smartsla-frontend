@@ -15,9 +15,12 @@ const types = {
 
 const actions = {
   fetchUser({ commit }) {
-    Vue.axios.get("ticketing/api/user").then(response => {
-      commit(types.SET_USER, response.data);
-    });
+    Vue.axios
+      .get("ticketing/api/user")
+      .then(response => {
+        commit(types.SET_USER, response.data);
+      })
+      .catch(() => {});
   },
 
   resetUser({ commit }) {

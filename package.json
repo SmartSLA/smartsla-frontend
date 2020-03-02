@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@mdi/font": "^3.5.95",
-    "@websanova/vue-auth": "^2.21.14-beta",
+    "@websanova/vue-auth": "^2.21.16-beta",
     "axios": "^0.18.0",
     "hash-sum": "^1.0.2",
     "lodash": "^4.17.15",

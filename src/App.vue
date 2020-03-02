@@ -46,11 +46,6 @@ export default {
     LoggedMainNavigation,
     Snackbar
   },
-  created() {
-    this.$auth.ready(() => {
-      this.$store.dispatch("user/fetchUser");
-    });
-  },
   computed: {
     showNavigation() {
       return this.$route.matched.some(route => route.meta.showSideBar);
