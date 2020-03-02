@@ -266,7 +266,7 @@
                 }}</span>
               </v-tooltip>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-left">
               <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
             </td>
             <td class="text-xs-center">
