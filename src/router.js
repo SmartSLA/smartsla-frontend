@@ -33,7 +33,7 @@ import AdministrationHome from "@/views/admin/Home.vue";
 import Settings from "@/views/Settings.vue";
 
 import { requireRead } from "@/guards/ticket-guards";
-import { canViewProfile } from "@/guards/user-guards";
+import { canViewProfile, canEditProfile } from "@/guards/user-guards";
 import { canListContracts, canViewContract } from "@/guards/contract-guards";
 
 Vue.use(Router);
@@ -52,6 +52,7 @@ export const routeNames = Object.freeze({
   CONTRIBUTIONS: "Contributions",
   ORDERS: "Orders",
   PROFILE: "Profile",
+  EDITPROFILE: "EditProfile",
   SETTINGS: "Settings",
   RESET_PASSWORD: "ResetPassword",
   LOGIN: "Login",
@@ -187,6 +188,15 @@ export default new Router({
       }
     },
     {
+      path: "/profile/:id/edit",
+      name: routeNames.EDITPROFILE,
+      component: EditUser,
+      beforeEnter: canEditProfile,
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: "/reset-password",
       name: routeNames.RESET_PASSWORD,
       beforeEnter: () => {
@@ -237,7 +247,6 @@ export default new Router({
           path: "users/:id",
           name: routeNames.USER,
           component: User,
-          beforeEnter: canViewProfile,
           meta: {
             auth: true
           }

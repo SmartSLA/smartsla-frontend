@@ -1,6 +1,6 @@
 <template>
   <v-container class="pt-0 px-0 mx-1 my-3">
-    <router-link :to="{ name: 'Users' }">
+    <router-link :to="{ name: isProfilePage ? routeNames.HOME : routeNames.USERS }">
       <button><v-icon>arrow_back</v-icon></button>
     </router-link>
     <v-layout row justify-center mx-2>
@@ -13,7 +13,13 @@
               </v-card-title>
             </v-flex>
             <v-layout justify-end align-center my-0 mr-2>
-              <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: reqParamId } }">
+              <v-btn
+                color="primary"
+                fab
+                small
+                dark
+                :to="{ name: isProfilePage ? routeNames.EDITPROFILE : routeNames.EDITUSER, params: { id: reqParamId } }"
+              >
                 <v-icon>edit</v-icon>
               </v-btn>
             </v-layout>
@@ -59,6 +65,8 @@
 </template>
 <script>
 import { capitalize } from "lodash";
+import { routeNames } from "@/router";
+
 export default {
   data() {
     return {
@@ -74,6 +82,7 @@ export default {
         case "phone":
         case "team":
         case "role":
+        case "jobTitle":
           return index;
       }
     },
@@ -99,6 +108,12 @@ export default {
         ...user,
         client
       };
+    },
+    isProfilePage() {
+      return this.$route.name === routeNames.PROFILE;
+    },
+    routeNames() {
+      return routeNames;
     }
   },
   created() {

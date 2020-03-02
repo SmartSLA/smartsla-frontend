@@ -1,8 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Users' }"
-      >&lt; {{ $t("Return to users list") }}</router-link
-    >
+    <router-link class="action-links" :to="{ name: isEditProfilePage ? routeNames.PROFILE : routeNames.USERS }">
+      <v-icon>chevron_left</v-icon>
+      {{ isEditProfilePage ? $t("Return to profile") : $t("Return to users list") }}
+    </router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-4 mt-4 pb-4">
@@ -23,6 +24,7 @@
                   row
                   color="primary"
                   @change="initRole"
+                  :disabled="!isAdmin"
                   :rules="[() => (user.type && user.type.length > 0) || $i18n.t('Required field')]"
                 >
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
@@ -109,7 +111,7 @@
                 <strong>{{ $t("Job title") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field v-model="user.job_title" disabled></v-text-field>
+                <v-text-field v-model="user.jobTitle"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
@@ -120,6 +122,7 @@
                   v-model="user.role"
                   row
                   color="primary"
+                  :disabled="!isAdmin"
                   :rules="[() => (user.role && user.role.length > 0) || $i18n.t('Required field')]"
                 >
                   <v-radio
@@ -148,7 +151,13 @@
                 <strong>{{ $t("Client") }} :</strong>
               </v-flex>
               <v-flex xs8 v-if="user.type != 'expert'">
-                <v-select :items="clientsList" item-value="_id" item-text="name" v-model="user.client"></v-select>
+                <v-select
+                  :items="clientsList"
+                  item-value="_id"
+                  item-text="name"
+                  v-model="user.client"
+                  :disabled="!isAdmin"
+                ></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
               <v-flex xs3 class="pt-4 hidden-xs-only" v-if="canHaveContracts">
@@ -156,7 +165,7 @@
               </v-flex>
               <v-flex xs12 sm8 md8 lg8 v-if="canHaveContracts">
                 <v-card>
-                  <v-list subheader two-line>
+                  <v-list subheader two-line :disabled="!isAdmin">
                     <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id">
                       <v-flex xs2 sm2 md1 lg1>
                         <v-list-tile-action>
@@ -237,7 +246,7 @@ export default {
         client: "",
         role: "",
         phone: "",
-        job_title: ""
+        jobTitle: ""
       },
       openDialog: false,
       contractRoles: USER_ROLES.beneficiary.map(role => ({ text: this.$i18n.t(role), value: role }))
@@ -268,10 +277,14 @@ export default {
   computed: {
     ...mapGetters({
       contractList: "contract/getContracts",
-      clientsList: "client/getClients"
+      clientsList: "client/getClients",
+      currentUserId: "currentUser/getId"
     }),
+    isAdmin() {
+      return this.$auth.check(USER_TYPE.ADMIN);
+    },
     roles() {
-      return this.user.type === "beneficiary" ? USER_ROLES.beneficiary : USER_ROLES.expert;
+      return this.user.type === USER_TYPE.BENEFICIARY ? USER_ROLES.beneficiary : USER_ROLES.expert;
     },
     isEdit() {
       return !!this.$route.params.id;
@@ -288,13 +301,18 @@ export default {
         });
       return contracts;
     },
-
     canHaveContracts() {
       return (
         this.user.type !== USER_TYPE.EXPERT &&
         this.user.client &&
         this.user.role !== BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER
       );
+    },
+    isEditProfilePage() {
+      return this.$route.name === routeNames.EDITPROFILE;
+    },
+    routeNames() {
+      return routeNames;
     }
   },
   created() {
@@ -357,6 +375,8 @@ export default {
         contracts
       };
 
+      let route = {};
+
       this.$store
         .dispatch("users/updateUser", {
           userId: this.user._id,
@@ -367,7 +387,11 @@ export default {
             message: this.$i18n.t("updated"),
             color: "success"
           });
-          this.$router.push({ name: routeNames.USERS });
+          this.currentUserId === this.$route.params.id
+            ? (route = { name: routeNames.PROFILE })
+            : (route = { name: routeNames.USER, params: { id: this.user.user } });
+
+          this.$router.push(route);
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
