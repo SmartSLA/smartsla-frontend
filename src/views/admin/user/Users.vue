@@ -180,7 +180,7 @@ export default {
       })
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch users"),
+          message: this.$i18n.t("Failed to fetch users"),
           color: "error"
         });
       });
