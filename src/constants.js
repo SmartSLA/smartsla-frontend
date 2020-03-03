@@ -21,12 +21,12 @@ export const OSSA_IDS = [
   }
 ];
 
-export const CONTRIBUTION_STATUS_LIST = {
-  DEVELOP: "Dev",
-  REVERSED: "Reversed",
-  INTEGRATED: "Integrated",
-  PUBLISHED: "Published",
-  REJECTED: "Rejected"
+export const CONTRIBUTION_STATUS = {
+  DEVELOP: "develop",
+  REVERSED: "reversed",
+  INTEGRATED: "integrated",
+  PUBLISHED: "published",
+  REJECTED: "rejected"
 };
 
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
@@ -52,6 +52,11 @@ export const CONTRIBUTION_LINK_TYPES = ["Patch link", "binary link with the path
 export const USER_TYPE = {
   EXPERT: "expert",
   BENEFICIARY: "beneficiary"
+};
+
+export const EXPERT_TYPE = {
+  ADMIN: "admin",
+  EXPERT: "expert"
 };
 
 const BENEFICIARY_ROLES = ["customer", "viewer"];

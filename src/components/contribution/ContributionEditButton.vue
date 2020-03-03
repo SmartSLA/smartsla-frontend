@@ -9,6 +9,7 @@
 </template>
 <script>
 import { routeNames } from "@/router";
+import { EXPERT_TYPE } from "@/constants";
 
 export default {
   name: "editContribtion",
@@ -21,7 +22,7 @@ export default {
     },
 
     canEdit() {
-      return this.$auth.check("admin") || this.$auth.check("expert");
+      return this.$auth.check(EXPERT_TYPE.ADMIN) || this.$auth.check(EXPERT_TYPE.EXPERT);
     }
   }
 };
