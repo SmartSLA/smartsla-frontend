@@ -82,6 +82,8 @@
   "Failed to create Ticketing user": "Failed to create Ticketing user",
   "Failed to fetch contract tickets": "Failed to fetch contract tickets",
   "Failed to fetch contribution": "failed to fetch contribution",
+  "Failed to fetch softwares": "failed to fetch software list",
+  "Failed to fetch users": "Failed to fetch users",
   "Failed to update contribution": "Failed to update contribution",
   "Failed to update contribution status": "Failed to update contribution status",
   "Failed to update the contract": "Failed to update the contract",

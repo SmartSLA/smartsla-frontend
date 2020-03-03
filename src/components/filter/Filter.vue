@@ -8,7 +8,7 @@
         <v-toolbar flat dense v-if="!showStoredFilters">
           <v-layout align-center justify-end>
             <v-overflow-btn
-              v-if="translatedFilter"
+              v-if="keyValueFilter"
               :items="values"
               :label="$t('Values')"
               v-model="valuesFilter"
@@ -91,7 +91,7 @@ export default {
   props: {
     categoriesFilter: null,
     categories: null,
-    translatedFilter: false,
+    keyValueFilter: false,
     values: null,
     savedFilters: null
   },

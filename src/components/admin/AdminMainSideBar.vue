@@ -84,15 +84,6 @@
                 <v-icon>web</v-icon>
               </v-list-tile-action>
             </v-list-tile>
-
-            <v-list-tile :to="{ name: routeNames.ADMINCONTRIBUTIONS }" active-class="primary">
-              <v-list-tile-content>
-                <v-list-tile-title class="pl-2">{{ $t("Contributions") }}</v-list-tile-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-icon>library_add</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
           </v-list-group>
         </v-list>
       </v-flex>

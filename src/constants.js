@@ -29,6 +29,13 @@ export const CONTRIBUTION_STATUS = {
   REJECTED: "rejected"
 };
 
+export const CONTRIBUTION_FILTERS = {
+  TYPE: "Type",
+  SOFTWARE: "Software",
+  AUTHOR: "Author",
+  STATUS: "Status"
+};
+
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
 
 export const REQUEST_TYPE = {

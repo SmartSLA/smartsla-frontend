@@ -1,10 +1,20 @@
 <template>
   <v-container grid-list-md>
+    <dataTableFilter
+      :categories="categories"
+      :values="filterValues"
+      :categoriesFilter="selectedCategory"
+      :keyValueFilter="keyValueFilter"
+      @customFiltersUpdated="updateCustomFilters"
+      @filterCategoryChanged="changeFilterCategory"
+      @filterSearchInputChanged="changeSearchTerm"
+      @filterReset="filterReset"
+    ></dataTableFilter>
     <v-data-table
       :loading="loading"
       :total-items="contributionsCount"
       :pagination.sync="pagination"
-      :items="contributions"
+      :items="contributionList"
       :headers="headers"
       class="elevation-1 pb-0"
       :rows-per-page-items="rowsPerPageItems"
@@ -39,8 +49,12 @@
 
 <script>
 import contributionStatus from "@/components/contribution/ContributionStatus";
-
+import dataTableFilter from "@/components/filter/Filter";
+import { CONTRIBUTION_TYPES, CONTRIBUTION_STATUS_LIST, USER_TYPE, CONTRIBUTION_FILTERS } from "@/constants";
+import { getContributionStatus } from "@/services/helpers/contribution";
+import { isInsensitiveEqual, InsensitiveInclude } from "@/services/helpers/string";
 import { mapGetters, createNamespacedHelpers } from "vuex";
+
 const { mapState } = createNamespacedHelpers("contribution");
 
 export default {
@@ -53,10 +67,25 @@ export default {
         { text: this.$i18n.t("Software"), value: "software" },
         { text: this.$i18n.t("Title"), value: "name" },
         { text: this.$i18n.t("Author"), value: "author" },
-        { text: this.$i18n.t("MAJ"), value: "updatedAt" },
+        { text: this.$i18n.t("Updated"), value: "updatedAt" },
         { text: this.$i18n.t("Created"), value: "createdAt" },
         { text: this.$i18n.t("Status"), value: "status" }
-      ]
+      ],
+      categories: Object.keys(CONTRIBUTION_FILTERS).map(category => ({
+        key: CONTRIBUTION_FILTERS[category],
+        value: this.$i18n.t(CONTRIBUTION_FILTERS[category])
+      })),
+      statusList: Object.keys(CONTRIBUTION_STATUS_LIST).map(statusName => ({
+        key: CONTRIBUTION_STATUS_LIST[statusName],
+        value: this.$i18n.t(CONTRIBUTION_STATUS_LIST[statusName])
+      })),
+      software: [],
+      users: [],
+      selectedCategory: null,
+      keyValueFilter: false,
+      filterValues: [],
+      search: null,
+      customFilters: []
     };
   },
   methods: {
@@ -77,6 +106,24 @@ export default {
 
     visitContribution(id) {
       this.$router.push({ name: "Contribution", params: { id } });
+    },
+
+    changeFilterCategory(category) {
+      this.selectedCategory = category;
+    },
+
+    changeSearchTerm(searchTerm) {
+      this.search = searchTerm;
+    },
+
+    filterReset() {
+      this.customFilters = [];
+      this.search = null;
+      this.selectedCategory = null;
+    },
+
+    updateCustomFilters(customFilters) {
+      this.customFilters = customFilters;
     }
   },
   computed: {
@@ -96,10 +143,54 @@ export default {
 
     ...mapState({
       rowsPerPageItems: state => state.pagination.rowsPerPageItems
-    })
+    }),
+
+    contributionList() {
+      let contributionList = [...this.contributions];
+
+      if (this.customFilters.length) {
+        this.customFilters.map(customFilter => {
+          if (customFilter.category === CONTRIBUTION_FILTERS.TYPE) {
+            contributionList = contributionList.filter(contribution => contribution.type === customFilter.value);
+          }
+
+          if (customFilter.category === CONTRIBUTION_FILTERS.SOFTWARE) {
+            contributionList = contributionList.filter(
+              contribution =>
+                contribution.software && isInsensitiveEqual(contribution.software.name, customFilter.value)
+            );
+          }
+
+          if (customFilter.category === CONTRIBUTION_FILTERS.AUTHOR) {
+            contributionList = contributionList.filter(
+              contribution => contribution.author && isInsensitiveEqual(contribution.author, customFilter.value)
+            );
+          }
+
+          if (customFilter.category === CONTRIBUTION_FILTERS.STATUS) {
+            contributionList = contributionList.filter(
+              contribution => getContributionStatus(contribution.status) === customFilter.value
+            );
+          }
+        });
+      }
+
+      if (this.search && this.search.length) {
+        contributionList = contributionList.filter(contribution => {
+          return (
+            InsensitiveInclude(contribution.name, this.search) ||
+            InsensitiveInclude(contribution.software.name, this.search) ||
+            InsensitiveInclude(contribution.author.name, this.search)
+          );
+        });
+      }
+
+      return contributionList;
+    }
   },
   components: {
-    contributionStatus
+    contributionStatus,
+    dataTableFilter
   },
   watch: {
     pagination: {
@@ -107,7 +198,68 @@ export default {
         this.loadContributions();
       },
       deep: true
+    },
+
+    selectedCategory() {
+      try {
+        switch (this.selectedCategory) {
+          case CONTRIBUTION_FILTERS.TYPE:
+            this.keyValueFilter = true;
+            this.filterValues = CONTRIBUTION_TYPES;
+            break;
+          case CONTRIBUTION_FILTERS.SOFTWARE:
+            this.keyValueFilter = false;
+            this.filterValues = [...this.software];
+            break;
+          case CONTRIBUTION_FILTERS.AUTHOR:
+            this.keyValueFilter = false;
+            this.filterValues = [...this.users];
+            break;
+          case CONTRIBUTION_FILTERS.STATUS:
+            this.keyValueFilter = true;
+            this.filterValues = [...this.statusList];
+            break;
+        }
+      } catch (error) {
+        // Continue
+      } finally {
+        let selectedCategoryCustomFilters = this.customFilters.filter(
+          filter => filter.category === this.selectedCategory
+        );
+
+        this.filterValues = this.filterValues.filter(value => {
+          return !selectedCategoryCustomFilters.find(
+            loadedCustomFilter =>
+              loadedCustomFilter.value === value || (value.key && value.key === loadedCustomFilter.value)
+          );
+        });
+      }
     }
+  },
+  mounted() {
+    this.$http
+      .listSoftware({})
+      .then(({ data }) => {
+        this.software = data.map(software => software.name);
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          color: "error",
+          message: this.$i18n.t("Failed to fetch softwares")
+        });
+      });
+
+    this.$http
+      .listUsers(USER_TYPE.EXPERT)
+      .then(({ data }) => {
+        this.users = data.map(user => user.name);
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          color: "error",
+          message: this.$i18n.t("Failed to fetch users")
+        });
+      });
   }
 };
 </script>

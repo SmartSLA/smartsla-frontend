@@ -21,7 +21,7 @@
       :categories="categories"
       :values="values"
       :categoriesFilter="categoriesFilter"
-      :translatedFilter="translatedFilter"
+      :keyValueFilter="keyValueFilter"
       :savedFilters="savedFilters"
       @filterCategoryChanged="changeFilterCategory"
       @filterSearchInputChanged="changeSearchTerm"
@@ -322,7 +322,7 @@ export default {
           value: this.$i18n.t("Closed")
         }
       ],
-      translatedFilter: false,
+      keyValueFilter: false,
       customFilters: [],
       softwareList: [],
       userList: [],
@@ -433,35 +433,35 @@ export default {
       try {
         switch (this.categoriesFilter) {
           case "Type":
-            this.translatedFilter = true;
+            this.keyValueFilter = true;
             this.values = [...this.types];
             break;
           case "Severity":
-            this.translatedFilter = true;
+            this.keyValueFilter = true;
             this.values = [...this.severities];
             break;
           case "Software":
-            this.translatedFilter = false;
+            this.keyValueFilter = false;
             this.values = [...this.softwareList];
             break;
           case "Assign to":
-            this.translatedFilter = false;
+            this.keyValueFilter = false;
             this.values = [...this.userList].map(user => user.name);
             break;
           case "Responsible":
-            this.translatedFilter = false;
+            this.keyValueFilter = false;
             this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
             break;
           case "Transmitter":
-            this.translatedFilter = false;
+            this.keyValueFilter = false;
             this.values = [...this.userList].map(user => user.name);
             break;
           case "Client / Contract":
-            this.translatedFilter = false;
+            this.keyValueFilter = false;
             this.values = [...this.contractsName];
             break;
           case "Status":
-            this.translatedFilter = true;
+            this.keyValueFilter = true;
             this.values = [...this.status];
             break;
         }
