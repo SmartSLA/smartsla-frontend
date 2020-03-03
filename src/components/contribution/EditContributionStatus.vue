@@ -11,32 +11,10 @@
         <v-stepper class="noshadow">
           <v-stepper-header>
             <contributionStep
-              stepName="Develop"
-              :statusStepDate="contribution.status.develop"
-              @statusChange="updateStatus"
-            ></contributionStep>
-            <v-divider></v-divider>
-            <contributionStep
-              stepName="Reversed"
-              :statusStepDate="contribution.status.reversed"
-              @statusChange="updateStatus"
-            ></contributionStep>
-            <v-divider></v-divider>
-            <contributionStep
-              stepName="Published"
-              :statusStepDate="contribution.status.published"
-              @statusChange="updateStatus"
-            ></contributionStep>
-            <v-divider></v-divider>
-            <contributionStep
-              stepName="Integrated"
-              :statusStepDate="contribution.status.integrated"
-              @statusChange="updateStatus"
-            ></contributionStep>
-            <v-divider vertical></v-divider>
-            <contributionStep
-              stepName="Rejected"
-              :statusStepDate="contribution.status.rejected"
+              v-for="(stage, index) in contributionStages"
+              :key="index"
+              :stepName="stage"
+              :statusStepDate="contribution.status[stage]"
               @statusChange="updateStatus"
             ></contributionStep>
           </v-stepper-header>
@@ -47,6 +25,7 @@
 </template>
 <script>
 import contributionStep from "@/components/contribution/ContributionStep";
+import { CONTRIBUTION_STATUS } from "@/constants";
 
 export default {
   name: "editContributionStatus",
@@ -80,6 +59,11 @@ export default {
             message: this.$i18n.t("Failed to update contribution status")
           });
         });
+    }
+  },
+  computed: {
+    contributionStages() {
+      return Object.values(CONTRIBUTION_STATUS);
     }
   }
 };
