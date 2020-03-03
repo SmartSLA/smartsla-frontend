@@ -11,7 +11,7 @@
       </div>
     </v-layout>
     <v-layout row wrap justify-space-between>
-      <v-flex xs12 md12 sm12 xl8 lg8 pl-3 pr-3 pt-4>
+      <v-flex xs12 md12 sm12 xl7 lg8 pl-3 pr-3 pt-4>
         <v-card light color="white">
           <v-layout row wrap>
             <v-flex xs12 md1 sm1 lg1 xl1 class="mt-4 lbl_ticket_status">
@@ -382,7 +382,7 @@
           </v-card>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 xl4 lg4 sm12 pt-0 pl-2 pr-2>
+      <v-flex xs12 md12 xl5 lg4 sm12 pt-0 pl-2>
         <v-layout row wrap pt-0>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4>
             <v-card light color="white" class="px-4 pb-3">
@@ -471,6 +471,13 @@
               </v-layout>
             </v-card>
           </v-flex>
+          <v-flex xs12 md12 sm12 xl12 lg12 pt-4>
+            <RelatedContributions
+              :contributions="request.relatedContributions"
+              :ticketId="request._id"
+              @update="getData"
+            ></RelatedContributions>
+          </v-flex>
         </v-layout>
       </v-flex>
     </v-layout>
@@ -491,6 +498,7 @@ import { mapActions } from "vuex";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import AssignedToUser from "@/components/request/AssignedToUser";
 import UserListAssignment from "@/components/request/UserListAssignment";
+import RelatedContributions from "@/components/request/RelatedContributions";
 
 const NEXT_STATUS = {
   new: "supported",
@@ -544,7 +552,8 @@ export default {
     "cns-progress-bar": cnsProgressBar,
     ClientContractLinks,
     AssignedToUser,
-    UserListAssignment
+    UserListAssignment,
+    RelatedContributions
   },
   computed: {
     ...mapGetters({

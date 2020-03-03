@@ -58,7 +58,8 @@ export const CONTRIBUTION_LINK_TYPES = ["Patch link", "binary link with the path
 
 export const USER_TYPE = {
   EXPERT: "expert",
-  BENEFICIARY: "beneficiary"
+  BENEFICIARY: "beneficiary",
+  ADMIN: "admin"
 };
 
 export const EXPERT_TYPE = {
