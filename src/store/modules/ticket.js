@@ -71,6 +71,15 @@ const actions = {
     // set length to be able to display filtered list...
     // if not, the list is not emptied
     dispatch("setTicketsLength", 0);
+  },
+
+  updateRelatedContributions: ({ dispatch }, { ticketId, contributions = [] }) => {
+    return Vue.axios
+      .updateRelatedContributions(ticketId, contributions)
+      .then(() => dispatch("fetchTicketById", ticketId))
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 

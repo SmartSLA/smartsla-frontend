@@ -184,9 +184,4 @@ export default {
   list-style: none;
   float: left;
 }
-
-span.v-chip:nth-child(3), span.v-chip:nth-child(4) {
-  padding-bottom: 0px;
-  margin-bottom: 24px;
-}
 </style>
