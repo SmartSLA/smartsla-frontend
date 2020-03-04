@@ -50,7 +50,7 @@
 <script>
 import contributionStatus from "@/components/contribution/ContributionStatus";
 import dataTableFilter from "@/components/filter/Filter";
-import { CONTRIBUTION_TYPES, CONTRIBUTION_STATUS_LIST, USER_TYPE, CONTRIBUTION_FILTERS } from "@/constants";
+import { CONTRIBUTION_TYPES, CONTRIBUTION_STATUS, USER_TYPE, CONTRIBUTION_FILTERS } from "@/constants";
 import { getContributionStatus } from "@/services/helpers/contribution";
 import { isInsensitiveEqual, InsensitiveInclude } from "@/services/helpers/string";
 import { mapGetters, createNamespacedHelpers } from "vuex";
@@ -75,9 +75,9 @@ export default {
         key: CONTRIBUTION_FILTERS[category],
         value: this.$i18n.t(CONTRIBUTION_FILTERS[category])
       })),
-      statusList: Object.keys(CONTRIBUTION_STATUS_LIST).map(statusName => ({
-        key: CONTRIBUTION_STATUS_LIST[statusName],
-        value: this.$i18n.t(CONTRIBUTION_STATUS_LIST[statusName])
+      statusList: Object.keys(CONTRIBUTION_STATUS).map(statusName => ({
+        key: CONTRIBUTION_STATUS[statusName],
+        value: this.$i18n.t(CONTRIBUTION_STATUS[statusName])
       })),
       software: [],
       users: [],
