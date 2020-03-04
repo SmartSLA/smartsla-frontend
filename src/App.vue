@@ -54,6 +54,11 @@ export default {
     routeNames() {
       return routeNames;
     }
+  },
+  created() {
+    this.$auth.ready(() => {
+      this.$store.dispatch("user/fetchUser");
+    });
   }
 };
 </script>
