@@ -192,7 +192,7 @@
                     lg12
                     sm12
                     xl12
-                    v-if="Object.keys(selectedEngagement).length"
+                    v-if="selectedEngagement && Object.keys(selectedEngagement).length"
                   >
                     <span>
                       <v-icon>mdi-file-document-edit-outline</v-icon>
