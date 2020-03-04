@@ -1,6 +1,11 @@
 import moment from "moment-timezone";
 
-export { convertIsoDurationInDaysHoursMinutes, convertIsoDurationInHours, getHoursValue };
+export {
+  convertIsoDurationInDaysHoursMinutes,
+  convertIsoDurationInHours,
+  getHoursValue,
+  convertCnsValueInDaysHoursMinutes
+};
 
 function convertIsoDurationInDaysHoursMinutes(duration) {
   const momentDuration = moment.duration(duration);
@@ -22,4 +27,13 @@ function convertIsoDurationInHours(duration, workingHours) {
 
 function getHoursValue(workingHours, days, hours = 0, minutes = 0) {
   return days * workingHours + hours + minutes / 60;
+}
+
+function convertCnsValueInDaysHoursMinutes(cnsValue) {
+  const d = cnsValue.elapsedMinutes / (cnsValue.workingHours * 60);
+  const days = Math.floor(d);
+  const hours = Math.floor((d - days) * cnsValue.workingHours);
+  const minutes = Math.round(cnsValue.elapsedMinutes) % 60;
+
+  return { days, hours, minutes };
 }

@@ -5,20 +5,20 @@
         <text-highlight :queries="query">{{ $t(request.severity) }}</text-highlight>
       </span>
     </template>
-    <span v-if="engagements">
+    <span v-if="request.cns.supported">
       <b>{{ $t("Engagements") }} {{ $t(request.severity) }} :</b>
       <ul>
         <li>
           {{ $t("Support") }} :
-          <b>{{ parseDuration(engagements.supported) }}</b>
+          <b>{{ parseDuration(request.cns.supported) }}</b>
         </li>
         <li>
           {{ $t("Bypass") }} :
-          <b>{{ parseDuration(engagements.bypassed) }}</b>
+          <b>{{ parseDuration(request.cns.bypassed) }}</b>
         </li>
         <li>
           {{ $t("Resolution") }} :
-          <b>{{ parseDuration(engagements.resolved) }}</b>
+          <b>{{ parseDuration(request.cns.resolved) }}</b>
         </li>
       </ul>
     </span>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import { getTicketSoftwareEngagement } from "@/services/helpers/ticket";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 
@@ -36,16 +35,11 @@ export default {
     request: Object,
     query: String
   },
-  computed: {
-    engagements: function() {
-      return getTicketSoftwareEngagement(this.request);
-    }
-  },
   methods: {
-    parseDuration(engagement) {
-      const { days, hours } = convertIsoDurationInDaysHoursMinutes(engagement.hours);
+    parseDuration(cnsValue) {
+      const { days, hours } = convertIsoDurationInDaysHoursMinutes(cnsValue.engagement);
 
-      return humanizeHoursDurationFilter({ days, hours }, engagement.businessHours);
+      return humanizeHoursDurationFilter({ days, hours }, !cnsValue.isNonBusinessHours);
     }
   }
 };

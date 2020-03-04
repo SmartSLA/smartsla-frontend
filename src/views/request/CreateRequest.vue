@@ -25,7 +25,7 @@
                   <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
-                      :items="contractList"
+                      :items="activeContracts"
                       :disabled="isInEdit"
                       :label="$i18n.t('Contract')"
                       prepend-icon="note"
@@ -381,7 +381,7 @@ export default {
       submitRequest: false,
       beneficiaryList: [],
       responsibleList: [],
-      contractList: [],
+      selectedTypes: [],
       // eslint-disable-next-line max-len,no-useless-escape
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       emailVerfication: [],
@@ -599,7 +599,8 @@ export default {
       requests: "ticket/getTickets",
       displayName: "user/getDisplayName",
       avatarUrl: "user/getAvatarUrl",
-      userPhone: "user/getPhone"
+      userPhone: "user/getPhone",
+      activeContracts: "contract/activeContracts"
     }),
 
     isInEdit() {
@@ -767,13 +768,14 @@ export default {
     }
   },
   created() {
-    this.$http.getContracts().then(({ data }) => {
-      this.contractList = data.filter(contract => contract.status);
-    });
+    if (!this.activeContracts.length) {
+      this.$store.dispatch("contract/fetchContracts");
+    }
 
     if (this.$route.params.id) {
       this.$http.getTicketById(this.$route.params.id).then(({ data }) => {
         this.ticket = Object.assign({}, data);
+        this.ticket.contract = this.$store.getters["contract/getContractById"](this.ticket.contract);
         this.linkedRequests = data.relatedRequests;
         this.participants = data.participants;
         this.callNumber = data.callNumber;
@@ -785,9 +787,6 @@ export default {
       this.beneficiaryList = data;
       this.responsibleList = data.filter(user => user.type === USER_TYPE.EXPERT);
     });
-  },
-  mounted() {
-    this.$store.dispatch("ticket/fetchTickets");
   }
 };
 </script>

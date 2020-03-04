@@ -12,6 +12,8 @@ import ui from "./modules/ui";
 import user from "./modules/user";
 import sidebar from "./modules/sidebar";
 import ticket from "./modules/ticket";
+import contract from "./modules/contract";
+import contribution from "./modules/contribution";
 import listeners from "./listeners";
 
 Vue.use(Vuex);
@@ -23,7 +25,9 @@ const store = new Vuex.Store({
     ui,
     user,
     sidebar,
-    ticket
+    ticket,
+    contract,
+    contribution
   },
   actions,
   getters,

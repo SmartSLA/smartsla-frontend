@@ -29,7 +29,6 @@ import SoftwareList from "@/views/admin/software/Softwares.vue";
 import Software from "@/views/admin/software/Software.vue";
 import EditSoftware from "@/views/admin/software/EditSoftware.vue";
 import Contract from "@/views/admin/contract/Contract.vue";
-import AdminContributions from "@/views/admin/contribution/Contributions.vue";
 import EditContribution from "@/views/admin/contribution/EditContribution.vue";
 import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdminRoles from "@/views/admin/roles/Main.vue";
@@ -64,7 +63,6 @@ export const routeNames = Object.freeze({
   SOFTWARELIST: "Softwares",
   CONTRACTS: "Contracts",
   CONTRACT: "Contract",
-  ADMINCONTRIBUTIONS: "AdminContributions",
   EDITCONTRIBUTION: "EditContribution",
   NEWCONTRIBUTION: "NewContribution",
   EDITCONTRACT: "Edit Contract",
@@ -361,14 +359,6 @@ export default new Router({
           path: "clients/:id/edit",
           name: routeNames.EDITCLIENT,
           component: EditClient,
-          meta: {
-            auth: true
-          }
-        },
-        {
-          path: "admincontributions",
-          name: routeNames.ADMINCONTRIBUTIONS,
-          component: AdminContributions,
           meta: {
             auth: true
           }

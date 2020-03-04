@@ -78,7 +78,7 @@
           <v-card-title>
             <v-badge left>
               <template v-slot:badge>
-                <span>{{ contractCount }}</span>
+                <span>{{ contracts.length }} </span>
               </template>
               <div>
                 <h3 class="headline mb-0">
@@ -136,7 +136,7 @@
               </div>
             </v-badge>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.ADMINCONTRIBUTIONS }">
+            <v-btn icon fab :to="{ name: routeNames.CONTRIBUTIONS }">
               <v-icon>list</v-icon>
             </v-btn>
             <v-btn icon fab :to="{ name: routeNames.NEWCONTRIBUTION }">
@@ -165,13 +165,14 @@
 
 <script>
 import { routeNames } from "@/router";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       msg: this.$i18n.t("Administration"),
       users: [],
       teams: [],
-      contracts: [],
       clients: [],
       contributions: [],
       softwares: [],
@@ -179,11 +180,11 @@ export default {
       teamCount: 0,
       softwareCount: 0,
       clientCount: 0,
-      contractCount: 0,
-      contributionCount: 0
+      contractCount: 0
     };
   },
   mounted() {
+    this.$store.dispatch("contribution/countContributions");
     this.$http
       .listUsers()
       .then(response => {
@@ -192,7 +193,7 @@ export default {
       })
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch users"),
+          message: this.$i18n.t("Failed to fetch users"),
           color: "error"
         });
       });
@@ -224,19 +225,6 @@ export default {
       });
 
     this.$http
-      .getContracts()
-      .then(response => {
-        this.contracts = response.data;
-        this.contractCount = response.data.length;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contracts"),
-          color: "error"
-        });
-      });
-
-    this.$http
       .listSoftware({})
       .then(response => {
         this.softwares = response.data;
@@ -244,7 +232,7 @@ export default {
       })
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch softwares"),
+          message: this.$i18n.t("Failed to fetch softwares"),
           color: "error"
         });
       });
@@ -255,8 +243,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      contracts: "contract/getContracts"
+    }),
+
     routeNames() {
       return routeNames;
+    },
+
+    contributionCount() {
+      return this.$store.getters["contribution/getContributionsCount"];
     }
   }
 };

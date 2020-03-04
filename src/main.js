@@ -1,6 +1,5 @@
 import Vue from "vue";
 import { applicationInit, getApplication } from "@/application-init";
-import JsonCsv from "vue-json-csv";
 import TextHighlight from "vue-text-highlight";
 
 import "@mdi/font/css/materialdesignicons.css";
@@ -17,4 +16,3 @@ Vue.component("text-highlight", TextHighlight);
 Vue.filter("humanizeHoursDurationFilter", humanizeHoursDurationFilter);
 
 window.Application = getApplication(applicationInit(Vue));
-Vue.component("downloadCsv", JsonCsv);

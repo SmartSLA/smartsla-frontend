@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     contract: Object,
@@ -71,7 +73,6 @@ export default {
   data: () => ({
     dialog: false,
     contractToCopyFrom: null,
-    contractsList: [],
     withSoftwares: true,
     withEngagements: false
   }),
@@ -101,18 +102,15 @@ export default {
       this.contractToCopyFrom = null;
     }
   },
-  created() {
-    this.$http
-      .getContracts()
-      .then(({ data }) => {
-        this.contractsList = data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch contracts list"),
-          color: "error"
-        });
-      });
+  mounted() {
+    if (!this.contractsList.length) {
+      this.$store.dispatch("contract/fetchContracts");
+    }
+  },
+  computed: {
+    ...mapGetters({
+      contractsList: "contract/getContracts"
+    })
   }
 };
 </script>

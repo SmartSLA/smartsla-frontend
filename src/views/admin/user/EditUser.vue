@@ -206,6 +206,7 @@
 import { routeNames } from "@/router";
 import { USER_TYPE, USER_ROLES } from "@/constants.js";
 import Vue from "vue";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -215,7 +216,6 @@ export default {
       items: [],
       search: null,
       clientsList: [],
-      contractList: [],
       valid: true,
       user: {
         type: "",
@@ -254,6 +254,9 @@ export default {
     "user.client": "resetUserContracts"
   },
   computed: {
+    ...mapGetters({
+      contractList: "contract/getContracts"
+    }),
     roles() {
       return this.user.type === "beneficiary" ? USER_ROLES.beneficiary : USER_ROLES.expert;
     },
@@ -318,7 +321,7 @@ export default {
       return role;
     },
     fetchData() {
-      return Promise.all([this.getContracts(), this.getClients()]);
+      this.getClients();
     },
     initRole() {
       this.user.role = "";
@@ -405,19 +408,6 @@ export default {
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Can not delete user"),
-            color: "error"
-          });
-        });
-    },
-    getContracts() {
-      this.$http
-        .getContracts()
-        .then(({ data }) => {
-          this.contractList = data || [];
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("failed to fetch contracts list"),
             color: "error"
           });
         });

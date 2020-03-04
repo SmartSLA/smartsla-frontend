@@ -6,12 +6,12 @@
           <span v-on="on">
             <v-progress-linear
               height="18"
-              :value="currentCnsValue.getPercentageElapsed()"
+              :value="currentCnsValue.percentageElapsed"
               :color="currentCnsValueColor"
               class="mt-0 white--text font-weight-bold"
             >
               <span>
-                {{ currentCnsValue | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
+                {{ currentCnsValueInMHD | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
                 <span v-if="!hideClock">
                   / {{ currentCnsValueEngagement | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
                 </span>
@@ -21,10 +21,10 @@
         </template>
         <span>
           {{ $t("Time spent : ") }}
-          {{ currentCnsValue | humanizeHoursDurationFilter(currentCnsValue.isNonBusinessHours) }}
+          {{ currentCnsValueInMHD | humanizeHoursDurationFilter(currentCnsValue.isNonBusinessHours) }}
           /
           {{ currentCnsValueEngagement | humanizeHoursDurationFilter(currentCnsValue.isNonBusinessHours) }}
-          ({{ currentCnsValue && `${Math.trunc(currentCnsValue.getPercentageElapsed())}%` }})
+          ({{ currentCnsValue && `${Math.trunc(currentCnsValue.percentageElapsed)}%` }})
         </span>
       </v-tooltip>
     </v-flex>
@@ -40,8 +40,7 @@
 </template>
 
 <script>
-import { computeCns } from "@/services/cns";
-import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
+import { convertIsoDurationInDaysHoursMinutes, convertCnsValueInDaysHoursMinutes } from "@/services/helpers/duration";
 
 export default {
   name: "cns-progress-bar",
@@ -70,6 +69,9 @@ export default {
         this.ticket.status === "closed"
       );
     },
+    currentCnsValueInMHD() {
+      return convertCnsValueInDaysHoursMinutes(this.currentCnsValue);
+    },
     currentCnsValueColor() {
       if (this.isPreviousStep || this.isCurrentStep) {
         return this.isCurrentEngagementFulfilled() ? "success" : "error";
@@ -86,16 +88,11 @@ export default {
   },
   methods: {
     isCurrentEngagementFulfilled() {
-      return !this.currentCnsValue.getEngagementInHours() || this.currentCnsValue.getPercentageElapsed() < 100;
+      return !this.currentCnsValue.percentageElapsed || this.currentCnsValue.percentageElapsed < 100;
     }
   },
   created() {
-    this.cns = computeCns(this.ticket);
-    this.currentCnsValue = this.cns[this.cnsType];
-    this.$emit("cns-calculated", {
-      ticketId: this.ticket._id,
-      cns: this.cns
-    });
+    this.currentCnsValue = this.ticket.cns[this.cnsType];
   }
 };
 </script>
