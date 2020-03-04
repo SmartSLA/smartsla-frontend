@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list-tile v-for="user in users" :key="user._id" avatar>
+    <v-list-tile v-for="user in users" :key="user._id" @click="goToUser(user._id)" avatar>
       <v-list-tile-avatar class="mr-3">
         <img :src="getAvatarUrl(user)" />
       </v-list-tile-avatar>
@@ -16,6 +16,7 @@
 
 <script>
 import { getUserAvatarUrl } from "@/services/helpers/user";
+import { routeNames } from "@/router";
 
 export default {
   props: {
@@ -24,6 +25,9 @@ export default {
   methods: {
     getAvatarUrl(user) {
       return getUserAvatarUrl(user);
+    },
+    goToUser(userID) {
+      this.$router.push({ name: routeNames.USER, params: { id: userID } });
     }
   }
 };
