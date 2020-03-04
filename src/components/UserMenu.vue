@@ -61,11 +61,6 @@ export default {
       return this.$router.push({ name: routeNames.SETTINGS });
     }
   },
-  created() {
-    this.$auth.ready(() => {
-      this.$store.dispatch("user/fetchUser");
-    });
-  },
   computed: {
     ...mapGetters({
       getAvatarUrl: "user/getAvatarUrl",
