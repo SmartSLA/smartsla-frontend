@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'AdminContributions' }"
+    <router-link class="text-lg-left action-links" :to="{ name: 'Contributions' }"
       >&lt; {{ $t("Return to contributions list") }}</router-link
     >
     <v-layout row wrap justify-space-between>
