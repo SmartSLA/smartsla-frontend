@@ -22,7 +22,7 @@ export default {
       return this.user && this.user.type === "beneficiary";
     },
     organizationLabel() {
-      return this.isUserBeneficiary ? this.contract.client[0] : "L";
+      return this.isUserBeneficiary ? this.contract && this.contract.client[0] : "L";
     }
   }
 };
