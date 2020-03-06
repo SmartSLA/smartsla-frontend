@@ -321,9 +321,6 @@ export default {
       });
     });
     this.fetchUserFilters();
-    this.$http.listFilters().then(response => {
-      this.savedFilters = response.data;
-    });
   },
   computed: {
     ...mapGetters({
