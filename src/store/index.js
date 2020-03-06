@@ -10,7 +10,6 @@ import applicationConfiguration from "./modules/application-configuration";
 import session from "./modules/session";
 import ui from "./modules/ui";
 import user from "./modules/user";
-import sidebar from "./modules/sidebar";
 import ticket from "./modules/ticket";
 import contract from "./modules/contract";
 import contribution from "./modules/contribution";
@@ -24,7 +23,6 @@ const store = new Vuex.Store({
     session,
     ui,
     user,
-    sidebar,
     ticket,
     contract,
     contribution
