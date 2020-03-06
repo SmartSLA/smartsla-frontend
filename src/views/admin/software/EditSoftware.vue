@@ -20,7 +20,7 @@
               <v-flex xs8>
                 <v-text-field
                   v-model="software.name"
-                  :rules="[() => software.name.length > 0 || $i18n.t('Required field')]"
+                  :rules="[() => (software.name && !!software.name.length) || $i18n.t('Required field')]"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
@@ -39,46 +39,36 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("Logo") }} :</strong>
-              </v-flex>
-              <v-flex xs8>
-                <file-upload
-                  prepend-icon="attach_file"
-                  class="file pt-2"
-                  url
-                  :btn-label="$i18n.t('Attach file')"
-                  btn-uploading-label="Uploading file"
-                ></file-upload>
-              </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Licence") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-select :items="licenceList"></v-select>
+                <v-select :items="licenceList" v-model="software.licence"></v-select>
               </v-flex>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Technology") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-select :items="technologies"></v-select>
+                <v-select :items="technologies" v-model="software.technology"></v-select>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("Groupes") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-select :items="groups"></v-select>
+                <v-select :items="groups" v-model="software.group"></v-select>
               </v-flex>
               <v-flex xs3 class="pt-4">
                 <strong>{{ $t("External Links") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <external-links
-                  :externalLinks="externalLinks"
-                  @add-external-link="addExternalLink"
-                  @remove-external-link="removeExternalLink"
-                ></external-links>
+                <external-links :externalLinks="externalLinks" @remove-link="removeExternalLink">
+                  <div>
+                    {{ $t("Add an external link") }}
+                    <v-btn @click="addExternalLink()" flat icon color="primary">
+                      <v-icon>add_circle</v-icon>
+                    </v-btn>
+                  </div>
+                </external-links>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs5></v-flex>
@@ -119,6 +109,7 @@ import ExternalLinks from "@/components/ExternalLinks.vue";
 export default {
   data() {
     return {
+      valid: false,
       openDialog: false,
       software: {},
       licenceList: [
