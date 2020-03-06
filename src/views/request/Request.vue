@@ -493,32 +493,18 @@ import AttachmentsCreation from "@/components/attachments/creation/Attachments.v
 import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
-import { UPDATE_COMMENT } from "@/constants.js";
 import { mapActions } from "vuex";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import AssignedToUser from "@/components/request/AssignedToUser";
 import UserListAssignment from "@/components/request/UserListAssignment";
 import RelatedContributions from "@/components/request/RelatedContributions";
-
-const NEXT_STATUS = {
-  new: "supported",
-  supported: "bypassed",
-  bypassed: "resolved",
-  resolved: "closed"
-};
+import { UPDATE_COMMENT, NEXT_STATUS } from "@/constants.js";
 
 export default {
   data() {
     return {
-      apiUrl: "",
       attachments: [],
       commentCreationAttachments: [],
-      cnsSupported: 0,
-      cnsBypassed: 0,
-      cnsResolved: 0,
-      supportedDuration: 0,
-      resolvedDuration: 0,
-      bypassedDuration: 0,
       currentStatus: "",
       applicationSettings: {},
       selectedEditor: "wysiwyg",
@@ -528,15 +514,6 @@ export default {
       newEvent: {},
       request: null,
       comment: "",
-      options: {
-        lineNumbers: true,
-        styleActiveLine: true,
-        styleSelectedText: true,
-        lineWrapping: true,
-        indentWithTabs: true,
-        tabSize: 2,
-        indentUnit: 2
-      },
       contractUsers: [],
       connectedUser: {
         type: "expert"
@@ -598,6 +575,10 @@ export default {
     },
     isAdmin() {
       return this.$auth.check("admin");
+    },
+
+    apiUrl() {
+      return ApplicationSettings.VUE_APP_OPENPAAS_URL;
     }
   },
   methods: {
@@ -765,7 +746,6 @@ export default {
   created() {
     this.$store.dispatch("contract/fetchContracts");
     this.getData();
-    this.apiUrl = ApplicationSettings.VUE_APP_OPENPAAS_URL;
   }
 };
 </script>

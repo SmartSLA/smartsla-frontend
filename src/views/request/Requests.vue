@@ -165,18 +165,10 @@ import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import dataTableFilter from "@/components/filter/Filter";
-import { OSSA_IDS } from "@/constants.js";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
+import { OSSA_IDS, CNS_STATUS } from "@/constants.js";
 const { mapState } = createNamespacedHelpers("ticket");
-
-const CNS_STATUS = {
-  new: "cns.state.support",
-  supported: "cns.state.bypass",
-  bypassed: "cns.state.resolution",
-  resolved: "cns.state.closure",
-  closed: "cns.state.closed"
-};
 
 export default {
   data() {
@@ -184,29 +176,7 @@ export default {
       loading: true,
       dialog: false,
       pageTitle: this.$i18n.t("All requests"),
-      storedFilterUpdated: false,
-      filterGroups: ["Ticket", "Client / Contract", "Software"],
-      tickets: [
-        {
-          text: this.$i18n.t("All tickets"),
-          value: ""
-        },
-        {
-          text: this.$i18n.t("ossa"),
-          value: "ossa"
-        },
-        {
-          text: this.$i18n.t("Support"),
-          value: "support"
-        },
-        {
-          text: this.$i18n.t("Hosting"),
-          value: "hosting"
-        }
-      ],
-      searchCriteria: "Ticket",
       search: null,
-      toggle_multiple: "2",
       ticketsFilter: {
         text: this.$i18n.t("All tickets"),
         value: ""

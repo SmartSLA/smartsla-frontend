@@ -120,3 +120,18 @@ export const UPDATE_COMMENT = {
   }
 };
 export const UNDEFINED_DURATION = "P0D";
+
+export const NEXT_STATUS = {
+  new: "supported",
+  supported: "bypassed",
+  bypassed: "resolved",
+  resolved: "closed"
+};
+
+export const CNS_STATUS = {
+  new: "cns.state.support",
+  supported: "cns.state.bypass",
+  bypassed: "cns.state.resolution",
+  resolved: "cns.state.closure",
+  closed: "cns.state.closed"
+};
