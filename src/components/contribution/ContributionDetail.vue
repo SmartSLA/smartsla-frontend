@@ -11,7 +11,7 @@
           <fieldDisplay label="Fixed in version" :value="contribution.fixedInVersion"></fieldDisplay>
         </v-layout>
       </v-flex>
-      <v-flex xs1>
+      <v-flex xs1 v-if="canEdit">
         <contributionEditButton :contributionId="contribution._id"></contributionEditButton>
       </v-flex>
     </v-layout>
@@ -40,6 +40,7 @@
 <script>
 import fieldDisplay from "@/components/cardText/FieldDisplay";
 import contributionEditButton from "@/components/contribution/ContributionEditButton";
+import { EXPERT_TYPE } from "@/constants";
 
 export default {
   name: "contributionDetail",
@@ -49,6 +50,11 @@ export default {
   components: {
     contributionEditButton,
     fieldDisplay
+  },
+  computed: {
+    canEdit() {
+      return this.$auth.check(EXPERT_TYPE.ADMIN) || this.$auth.check(EXPERT_TYPE.EXPERT);
+    }
   }
 };
 </script>

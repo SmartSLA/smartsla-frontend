@@ -98,8 +98,10 @@
                           :items="linkNames"
                           v-model="contribution.links[index].name"
                           item-text="value"
+                          item-value="key"
                           prepend-icon="link"
                           :label="$t('Link Name')"
+                          :rules="[name => !!name || $i18n.t('Required field')]"
                         ></v-select>
                       </v-flex>
                       <v-flex>
@@ -107,12 +109,17 @@
                           v-if="contribution.links[index].name === 'Other'"
                           v-model="contribution.links[index].othername"
                           :label="$t('Link Name')"
+                          :rules="[name => !!name || $i18n.t('Required field')]"
                         ></v-text-field>
                       </v-flex>
                     </v-layout>
                   </v-flex>
                   <v-flex>
-                    <v-text-field v-model="contribution.links[index].url" :label="$t('External Link')"></v-text-field>
+                    <v-text-field
+                      v-model="contribution.links[index].url"
+                      :label="$t('External Link')"
+                      :rules="[url => isUrl(url) || $i18n.t('Required field')]"
+                    ></v-text-field>
                   </v-flex>
                   <v-flex shrink>
                     <v-btn flat icon color="red lighten-2" @click="removeLink(index)">
@@ -242,6 +249,16 @@ export default {
       this.contribution.links.splice(index, 1);
     },
 
+    isUrl(uri) {
+      const pattern = /(http|https|ftp):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-/]))?/;
+
+      if (uri) {
+        return pattern.test(uri);
+      }
+
+      return false;
+    },
+
     create() {
       this.$store
         .dispatch("contribution/createContribution", this.contribution)
@@ -326,30 +343,33 @@ export default {
       });
 
     if (this.$route.params.id) {
-      let data = this.$store.getters["contribution/getContributionById"](this.$route.params.id);
-      const { software, author, links } = data;
+      const { id } = this.$route.params;
+      this.$store.dispatch("contribution/fetchContributionById", id).then(() => {
+        const data = this.$store.getters["contribution/getContributionById"](id);
+        const { software, author, links } = data;
 
-      this.contribution = {
-        ...data,
-        author: author._id,
-        software: software._id,
-        links: links.map(link => {
-          let { url, name } = link;
-          let existingLinkType = this.linkNames.find(linkName => linkName.key === link.name);
+        this.contribution = {
+          ...data,
+          author: author._id,
+          software: software._id,
+          links: links.map(link => {
+            let { url, name } = link;
+            let existingLinkType = this.linkNames.find(linkName => linkName.key === name);
 
-          return existingLinkType
-            ? {
-                url,
-                name: existingLinkType.key,
-                value: existingLinkType.value
-              }
-            : {
-                url,
-                name: "Other",
-                othername: name
-              };
-        })
-      };
+            return existingLinkType
+              ? {
+                  url,
+                  name: existingLinkType.key,
+                  value: existingLinkType.value
+                }
+              : {
+                  url,
+                  name: "Other",
+                  othername: name
+                };
+          })
+        };
+      });
     }
   }
 };
