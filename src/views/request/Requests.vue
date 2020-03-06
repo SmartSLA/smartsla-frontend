@@ -867,4 +867,8 @@ nav.v-toolbar .v-toolbar__content {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+&::v-deep table.v-table  tr:nth-child(1) td {
+padding: 0 5px;
+font-size: 12px;
+}
 </style>
