@@ -339,9 +339,10 @@
                         <user-list-assignment
                           :users="allowedAssigneeList"
                           :responsible.sync="newResponsible"
-                          :contractId="request.contract"
+                          :request="request"
                           @assignCustomer="assignCustomer"
                           @assignSelf="assignSelf"
+                          @assignTo="assignTo"
                         >
                         </user-list-assignment>
                       </v-flex>
@@ -498,7 +499,7 @@ import ClientContractLinks from "@/components/request/ClientContractLinks";
 import AssignedToUser from "@/components/request/AssignedToUser";
 import UserListAssignment from "@/components/request/UserListAssignment";
 import RelatedContributions from "@/components/request/RelatedContributions";
-import { UPDATE_COMMENT, NEXT_STATUS } from "@/constants.js";
+import { UPDATE_COMMENT, NEXT_STATUS, USER_TYPE } from "@/constants.js";
 
 export default {
   data() {
@@ -583,23 +584,6 @@ export default {
   },
   methods: {
     ...mapActions("ticket", ["fetchTicketById"]),
-    canAssign() {
-      const ticketStatus = ["resolved", "closed"].includes(this.currentStatus);
-      if (ticketStatus || !this.request.responsible) {
-        return true;
-      }
-      return false;
-    },
-    canTakeIt() {
-      const ticketStatus = ["resolved", "closed"].includes(this.currentStatus);
-      if (this.isUserExpert() && ticketStatus) {
-        return true;
-      }
-      return false;
-    },
-    isUserBeneficiary() {
-      return this.getUser && this.getUser.type === "beneficiary";
-    },
     isUserExpert() {
       return this.getUser && this.getUser.type === "expert";
     },
@@ -741,6 +725,9 @@ export default {
     },
     assignCustomer() {
       this.newResponsible = this.request.author;
+    },
+    assignTo(userType) {
+      this.newResponsible = userType === USER_TYPE.BENEFICIARY ? this.request.author : this.request.responsible;
     }
   },
   created() {

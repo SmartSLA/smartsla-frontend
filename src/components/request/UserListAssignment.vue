@@ -21,30 +21,56 @@
         </v-list-tile-content>
       </template>
     </v-autocomplete>
-    <v-layout class="font-weight-medium" xs6 md6>
+    <v-layout class="font-weight-medium btn-actions" xs6 md6>
       <v-flex text-xs-left pa-0>
-        <router-link class="action-link" @click.native.prevent="assignCustomer" to="">{{
-          $t("Assign the customer")
-        }}</router-link>
+        <span v-if="isUserBeneficiary">
+          <v-btn
+            class="px-1 mt-1 text-transform"
+            :disabled="canAssign()"
+            flat
+            color="primary"
+            @click="assignTo('expert')"
+            >{{ $t("Assign the expert") }}
+          </v-btn>
+        </span>
+        <span v-else>
+          <v-btn class="px-1 mt-1" flat color="primary" @click="assignTo('beneficiary')"
+            >{{ $t("Assign the customer") }}
+          </v-btn>
+        </span>
       </v-flex>
       <v-flex text-xs-right pa-0>
-        <router-link class="action-link" @click.native.prevent="assignSelf" to="">{{ $t("Take it") }}</router-link>
+        <v-btn :disabled="canTakeIt()" class="px-1 mt-1" flat color="primary" @click="assignSelf">
+          {{ $t("Take it") }}
+        </v-btn>
       </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { USER_TYPE } from "@/constants.js";
+
 export default {
   name: "user-list-assignment",
   props: {
     users: Array,
     responsible: Object,
-    contractId: String
+    request: Object
   },
   computed: {
+    ...mapGetters({
+      getUser: "user/getUser"
+    }),
     contract() {
-      return this.$store.getters["contract/getContractById"](this.contractId);
+      return this.$store.getters["contract/getContractById"](this.request.contract);
+    },
+    isUserBeneficiary() {
+      return this.getUser && this.getUser.type === USER_TYPE.BENEFICIARY;
+    },
+    isUserExpert() {
+      return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     }
   },
   methods: {
@@ -56,13 +82,38 @@ export default {
     },
     assignSelf() {
       this.$emit("assignSelf");
+    },
+    canAssign() {
+      const ticketStatus = ["resolved", "closed"].includes(this.request.status);
+      if (ticketStatus || !this.request.responsible) {
+        return true;
+      }
+      return false;
+    },
+    canTakeIt() {
+      const ticketStatus = ["resolved", "closed"].includes(this.request.status);
+      if (this.isUserExpert && ticketStatus) {
+        return true;
+      }
+      return false;
+    },
+    assignTo(userType) {
+      this.$emit("assignTo", userType);
     }
   }
 };
 </script>
 
-<style scoped>
-.action-link {
-  text-decoration: none;
+<style lang="stylus" scoped>
+.btn-actions .v-btn {
+  text-transform: initial;
+}
+
+.btn-actions .v-btn:hover {
+  text-decoration: underline;
+}
+
+.btn-actions .v-btn:hover:before {
+  background-color: transparent;
 }
 </style>
