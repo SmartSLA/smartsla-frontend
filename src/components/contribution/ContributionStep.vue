@@ -5,6 +5,7 @@
         step=""
         :color="isRejected ? 'error' : 'success'"
         :complete-icon="isRejected ? 'close' : 'check'"
+        class="select-step"
         complete
         v-on="on"
         v-if="completed"
@@ -71,3 +72,10 @@ export default {
   }
 };
 </script>
+<style lang="stylus" scoped>
+.select-step:hover {
+   background: rgba(0,0,0,0.06);
+   text-shadow: 0px 0px 0px #000;
+   cursor: pointer;
+}
+</style>
