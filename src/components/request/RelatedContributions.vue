@@ -3,7 +3,7 @@
     <v-card-title primary-title>
       <h3 class="headline mb-0">{{ $t("Related contributions") }}</h3>
       <v-spacer></v-spacer>
-      <v-btn v-if="!isAdmin" color="primary" fab small dark @click="showEditForm = true">
+      <v-btn v-if="canEdit" color="primary" fab small dark @click="showEditForm = true">
         <v-icon>edit</v-icon>
       </v-btn>
     </v-card-title>
@@ -42,8 +42,8 @@ export default {
     };
   },
   computed: {
-    isAdmin() {
-      return this.$auth.check(USER_TYPE.ADMIN);
+    canEdit() {
+      return this.$auth.check(USER_TYPE.ADMIN) || this.$auth.check(USER_TYPE.EXPERT);
     }
   },
   methods: {
