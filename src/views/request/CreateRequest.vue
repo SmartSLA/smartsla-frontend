@@ -310,6 +310,15 @@
                         )
                       }}
                     </div>
+                    <div
+                      v-if="contractIsExpired"
+                      class="text-xs-center warning-expired"
+                      v-html="
+                        $t('Warning : The contract {contractName} has expired', {
+                          contractName: ticket.contract.name
+                        })
+                      "
+                    ></div>
                   </v-flex>
                   <v-flex xs12>
                     <v-btn
@@ -739,6 +748,9 @@ export default {
           (!(this.ticket.software && this.ticket.software.software) ||
             !(this.ticket.severity && this.ticket.severity.length)))
       );
+    },
+    contractIsExpired() {
+      return this.moment().diff(this.ticket.contract.endDate) > 0;
     }
   },
   watch: {
@@ -746,8 +758,7 @@ export default {
       this.$http
         .getContractTicketsById(newContract._id)
         .then(({ data }) => {
-          this.contractTicketsCount = data.list.length;
-          this.ticketsContract = data.list;
+          this.contractTicketsCount = data.size;
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -942,5 +953,9 @@ button.ml-0 {
   margin-left: .1em;
   content: '*';
   color: red;
+}
+
+.warning-expired span {
+  font-weight: bold;
 }
 </style>
