@@ -337,7 +337,6 @@
                       </v-flex>
                       <v-flex v-if="!isPrivateTab" xs12 md6>
                         <user-list-assignment
-                          :users="allowedAssigneeList"
                           :responsible.sync="newResponsible"
                           :request="request"
                           @assignCustomer="assignCustomer"
@@ -367,9 +366,6 @@
                         :loading="isSubmitting"
                         >{{ $t("Add comment") }}</v-btn
                       >
-                    </v-flex>
-                    <v-flex xs4 md4 sm4 lg4 xl4>
-                      {{ request.events.length }}
                     </v-flex>
                   </v-layout>
                 </v-form>
@@ -511,7 +507,6 @@ export default {
       newStatus: "",
       newResponsible: {},
       comment: "",
-      contractUsers: [],
       UPDATE_COMMENT: UPDATE_COMMENT,
       isPrivateTab: null
     };
@@ -532,8 +527,7 @@ export default {
     }),
 
     request() {
-      const id = this.$route.params.id;
-      return this.$store.getters["ticket/getTicketById"](id);
+      return this.$store.getters["ticket/getTicketById"](this.$route.params.id);
     },
 
     lastUpdate() {
@@ -561,7 +555,7 @@ export default {
 
     ticketStatusId() {
       if (this.request.status) {
-        switch (this.request.status.toLowerCase()) {
+        switch (this.request.status) {
           case "new":
             return 0;
           case "supported":
@@ -579,22 +573,15 @@ export default {
     },
 
     allowedStatusList() {
-      const currentStatus = this.request.status.toLowerCase();
+      const currentStatus = this.request.status;
 
       return NEXT_STATUS[currentStatus];
-    },
-
-    allowedAssigneeList() {
-      const assignees = this.contractUsers.map(this.getContractUserAsAssignee);
-
-      return ["resolved", "closed"].includes(this.request.status)
-        ? assignees.filter(assignee => assignee.type === "beneficiary")
-        : assignees;
     },
 
     editorToolbar() {
       return editorToolbar;
     },
+
     isAdmin() {
       return this.$auth.check("admin");
     },
@@ -605,7 +592,7 @@ export default {
   },
   methods: {
     isUserExpert() {
-      return this.getUser && this.getUser.type === "expert";
+      return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     },
     scrollToEvent(event) {
       const element = this.$refs[`event-${event._id}`];
@@ -613,16 +600,6 @@ export default {
       if (element && element[0] && element[0].$el) {
         this.$scrollTo(element[0].$el, { offset: -80 });
       }
-    },
-    getContractUserAsAssignee(contractUser) {
-      return {
-        type: contractUser.type,
-        role: contractUser.role,
-        id: contractUser.user._id,
-        _id: contractUser.user._id,
-        email: contractUser.user.preferredEmail,
-        name: contractUser.user.displayName || contractUser.user.preferredEmail
-      };
     },
 
     addEvent() {
@@ -653,21 +630,28 @@ export default {
             }));
           }
 
-          this.$store.dispatch("ticket/addEvent", {
-            ticketId: this.request._id,
-            event
-          });
-
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("updated"),
-            color: "success"
-          });
-
-          this.resetComment();
+          this.$store
+            .dispatch("ticket/addEvent", {
+              ticketId: this.request._id,
+              event
+            })
+            .then(() => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("updated"),
+                color: "success"
+              });
+              this.resetComment();
+            })
+            .catch(() => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("Error while updating ticket"),
+                color: "error"
+              });
+            });
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: "Error while updating ticket",
+            message: this.$i18n.t("Error while uploading attachments"),
             color: "error"
           });
         })
@@ -710,8 +694,8 @@ export default {
     assignCustomer() {
       this.newResponsible = this.request.author;
     },
-    assignTo(userType) {
-      this.newResponsible = userType === USER_TYPE.BENEFICIARY ? this.request.author : this.request.responsible;
+    assignTo(user) {
+      this.newResponsible = user;
     },
     fetchTicket() {
       this.$store.dispatch("ticket/fetchTicketById", this.$route.params.id);
@@ -720,7 +704,6 @@ export default {
   created() {
     this.$store.dispatch("contract/fetchContracts");
     this.fetchTicket();
-    this.$http.getContractUsers(this.request.contract).then(contractUsers => (this.contractUsers = contractUsers));
   }
 };
 </script>

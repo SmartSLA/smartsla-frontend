@@ -88,12 +88,7 @@ const actions = {
   },
 
   addEvent: ({ dispatch }, { ticketId, event }) => {
-    return Vue.axios
-      .addTicketEvent(ticketId, event)
-      .then(() => dispatch("fetchTicketById", ticketId))
-      .catch(err => {
-        console.log(err);
-      });
+    return Vue.axios.addTicketEvent(ticketId, event).then(() => dispatch("fetchTicketById", ticketId));
   }
 };
 
