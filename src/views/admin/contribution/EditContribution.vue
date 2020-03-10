@@ -197,6 +197,7 @@
 <script>
 import { USER_TYPE, CONTRIBUTION_TYPES, CONTRIBUTION_LINK_TYPES } from "@/constants.js";
 import { routeNames } from "@/router";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -225,6 +226,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      software: "software/getSoftwareList"
+    }),
+
     isEditing() {
       return this.$route.params.id;
     }
@@ -318,18 +323,7 @@ export default {
   },
 
   created() {
-    this.$http
-      .listSoftware({})
-      .then(({ data }) => {
-        this.software = data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("cannot fetch software list"),
-          color: "error"
-        });
-      });
-
+    this.$store.dispatch("software/fetchSoftwareList");
     this.$http
       .listUsers(USER_TYPE.EXPERT)
       .then(({ data }) => {

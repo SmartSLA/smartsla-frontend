@@ -294,7 +294,6 @@ export default {
       ],
       keyValueFilter: false,
       customFilters: [],
-      softwareList: [],
       userList: [],
       newFilterName: "",
       savedFilters: [],
@@ -306,15 +305,12 @@ export default {
   },
   mounted() {
     this.$store.dispatch("contract/fetchContracts");
+    this.$store.dispatch("software/fetchSoftwareList");
 
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
-    this.$http.listSoftware({}).then(({ data }) => {
-      data.map(software => {
-        this.softwareList.push(software.name);
-      });
-    });
+
     this.$http.listUsers().then(response => {
       response.data.forEach(user => {
         this.userList.push(user);
@@ -329,7 +325,8 @@ export default {
       totalRequests: "ticket/getNbOfTickets",
       allRequests: "ticket/getTickets",
       userContracts: "user/getContracts",
-      contractsList: "contract/getContracts"
+      contractsList: "contract/getContracts",
+      software: "software/getSoftwareList"
     }),
 
     contractsName() {
@@ -337,6 +334,10 @@ export default {
         acc.push(curr.name);
         return acc;
       }, []);
+    },
+
+    softwareList() {
+      return (this.software || []).map(software => software.name);
     },
 
     highlightSearch() {

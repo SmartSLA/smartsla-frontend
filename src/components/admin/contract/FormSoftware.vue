@@ -128,6 +128,7 @@
 
 <script>
 import { USER_TYPE } from "@/constants.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "form-software",
@@ -139,7 +140,6 @@ export default {
   data: () => ({
     startDateModel: "",
     endDateModel: "",
-    softwareList: [],
     valid: true,
     referents: [],
     syncTechnical: null
@@ -156,6 +156,11 @@ export default {
         this.software.technicalReferent = "";
       }
     }
+  },
+  computed: {
+    ...mapGetters({
+      softwareList: "software/getSoftwareList"
+    })
   },
   methods: {
     cancel() {
@@ -191,18 +196,7 @@ export default {
     }
   },
   created() {
-    this.$http
-      .listSoftware({})
-      .then(response => {
-        this.softwareList = response.data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: "cannot fetch software list",
-          color: "error"
-        });
-      });
-
+    this.$store.dispatch("software/fetchSoftwareList");
     this.$http
       .listUsers(USER_TYPE.EXPERT)
       .then(({ data }) => {

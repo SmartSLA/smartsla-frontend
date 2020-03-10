@@ -169,24 +169,9 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      software: {}
-    };
-  },
   created() {
     if (this.$route.params.id) {
-      this.$http
-        .getSoftwareById(this.$route.params.id)
-        .then(response => {
-          this.software = response.data;
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: "Failed to fetch software",
-            color: "error"
-          });
-        });
+      this.$store.dispatch("software/fetchSoftwareById", this.$route.params.id);
     }
   },
   computed: {
@@ -196,6 +181,10 @@ export default {
         { text: this.$i18n.t("Version"), value: "version" },
         { text: this.$i18n.t("Summary"), value: "summary" }
       ];
+    },
+
+    software() {
+      return this.$store.getters["software/getSoftwareById"](this.$route.params.id);
     }
   }
 };

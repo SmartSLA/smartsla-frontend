@@ -27,7 +27,7 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="softwares"
+        :items="software"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -95,18 +97,13 @@ export default {
       softwares: []
     };
   },
+  computed: {
+    ...mapGetters({
+      software: "software/getSoftwareList"
+    })
+  },
   mounted() {
-    this.$http
-      .listSoftware({ sortBy: "name" })
-      .then(response => {
-        this.softwares = response.data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch software list"),
-          color: "error"
-        });
-      });
+    this.$store.dispatch("software/fetchSoftwareList", { sortBy: "name" });
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
