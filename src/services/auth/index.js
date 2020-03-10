@@ -1,4 +1,6 @@
 import jwt from "./jwt";
+import utils from "@websanova/vue-auth/src/lib/utils";
+import { EXPERT_ROLE } from "@/constants";
 
 export default {
   auth: jwt,
@@ -12,18 +14,26 @@ export default {
     method: "GET",
     enabled: true
   },
-  rolesVar: "roles",
+  rolesVar: {
+    entity: "ticketing",
+    key: "role"
+  },
   parseUserData(data) {
     return data;
   },
   check(role) {
     if (this.watch.authenticated === true) {
-      if (role === "admin") {
-        return (
-          this.watch.data.roles.isApplicationAdmin ||
-          this.watch.data.roles.isDomainAdmin ||
-          this.watch.data.roles.isPlatformAdmin
-        );
+      if (role) {
+        if (role === EXPERT_ROLE.ADMIN) {
+          return (
+            this.watch.data.roles.isApplicationAdmin ||
+            this.watch.data.roles.isDomainAdmin ||
+            this.watch.data.roles.isPlatformAdmin
+          );
+        }
+        const { entity, key } = this.options.rolesVar;
+
+        return utils.compare(role, this.watch.data[entity][key]);
       }
 
       return true;
