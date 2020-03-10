@@ -40,7 +40,7 @@
 <script>
 import fieldDisplay from "@/components/cardText/FieldDisplay";
 import contributionEditButton from "@/components/contribution/ContributionEditButton";
-import { EXPERT_TYPE } from "@/constants";
+import { EXPERT_ROLE } from "@/constants";
 
 export default {
   name: "contributionDetail",
@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     canEdit() {
-      return this.$auth.check(EXPERT_TYPE.ADMIN) || this.$auth.check(EXPERT_TYPE.EXPERT);
+      return this.$auth.check(EXPERT_ROLE.ADMIN) || this.$auth.check(EXPERT_ROLE.EXPERT);
     }
   }
 };

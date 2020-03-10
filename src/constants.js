@@ -62,7 +62,7 @@ export const USER_TYPE = {
   ADMIN: "admin"
 };
 
-export const EXPERT_TYPE = {
+export const EXPERT_ROLE = {
   ADMIN: "admin",
   EXPERT: "expert"
 };

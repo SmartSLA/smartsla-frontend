@@ -23,7 +23,7 @@
   </v-menu>
 </template>
 <script>
-import { EXPERT_TYPE, CONTRIBUTION_STATUS } from "@/constants";
+import { EXPERT_ROLE, CONTRIBUTION_STATUS } from "@/constants";
 
 export default {
   name: "contributionStep",
@@ -47,7 +47,7 @@ export default {
     },
 
     canEdit() {
-      return this.$auth.check(EXPERT_TYPE.ADMIN) || this.$auth.check(EXPERT_TYPE.EXPERT);
+      return this.$auth.check(EXPERT_ROLE.ADMIN) || this.$auth.check(EXPERT_ROLE.EXPERT);
     },
 
     isRejected() {
