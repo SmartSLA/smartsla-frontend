@@ -11,9 +11,7 @@
       </v-flex>
       <v-flex xs6>
         <v-layout justify-end row>
-          <div>
-            <v-btn flat small color="default"> <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }} </v-btn>
-          </div>
+          <export-csv-button></export-csv-button>
         </v-layout>
       </v-flex>
     </v-layout>
@@ -160,13 +158,13 @@
 <script>
 import { mapGetters, createNamespacedHelpers } from "vuex";
 import { capitalize } from "lodash";
-import moment from "moment-timezone";
 import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import dataTableFilter from "@/components/filter/Filter";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
+import ExportCsvButton from "@/components/request/ExportCsvButton";
 import { OSSA_IDS, CNS_STATUS } from "@/constants.js";
 const { mapState } = createNamespacedHelpers("ticket");
 
@@ -297,10 +295,7 @@ export default {
       userList: [],
       newFilterName: "",
       savedFilters: [],
-      collectedCNS: [],
-      csvFileName: `08000linux_${moment()
-        .lang(this.$i18n.locale)
-        .format("LLL")}.csv`
+      collectedCNS: []
     };
   },
   mounted() {
@@ -686,6 +681,7 @@ export default {
     });
   },
   components: {
+    ExportCsvButton,
     "cns-progress-bar": cnsProgressBar,
     SoftwareListDetail,
     dataTableFilter,

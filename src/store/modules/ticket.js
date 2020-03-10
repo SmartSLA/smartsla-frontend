@@ -26,6 +26,10 @@ const types = {
 };
 
 const actions = {
+  exportTickets: () => {
+    return Vue.axios.exportTickets("csv");
+  },
+
   fetchTickets: ({ commit, dispatch, state }) => {
     return Vue.axios
       .listTickets({
