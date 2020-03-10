@@ -17,5 +17,9 @@ export default {
 
   deleteSoftware(softwareId) {
     return this.delete(`/ticketing/api/software/${softwareId}`);
+  },
+
+  countSoftware() {
+    return this.head("/ticketing/api/software").then(({ headers }) => headers["x-esn-items-count"] || 0);
   }
 };

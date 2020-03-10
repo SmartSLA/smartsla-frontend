@@ -105,6 +105,7 @@
 <script>
 import { routeNames } from "@/router";
 import ExternalLinks from "@/components/ExternalLinks.vue";
+import { cloneDeep } from "lodash";
 
 export default {
   data() {
@@ -174,17 +175,15 @@ export default {
   },
   methods: {
     createSoftware() {
-      this.$http
-        .createSoftware(this.software)
-        .then(response => {
-          if (response.data && response.status === 201) {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("Software created"),
-              color: "success"
-            });
-            this.software = {};
-            this.$router.push({ name: routeNames.SOFTWARELIST });
-          }
+      this.$store
+        .dispatch("software/createSoftware", this.software)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Software created"),
+            color: "success"
+          });
+          this.software = {};
+          this.$router.push({ name: routeNames.SOFTWARELIST });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -200,8 +199,11 @@ export default {
         if (!this.isNew) {
           this.createSoftware();
         } else {
-          this.$http
-            .updateSoftware(this.software._id, this.software)
+          this.$store
+            .dispatch("software/updateSoftware", {
+              softwareId: this.software._id,
+              software: this.software
+            })
             .then(() => {
               this.$store.dispatch("ui/displaySnackbar", {
                 message: this.$i18n.t("updated"),
@@ -225,8 +227,8 @@ export default {
     },
 
     deleteSoftware() {
-      this.$http
-        .deleteSoftware(this.$route.params.id)
+      this.$store
+        .dispatch("software/deleteSoftware", this.$route.params.id)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Software deleted"),
@@ -251,20 +253,13 @@ export default {
       this.externalLinks.splice(index, 1);
     }
   },
-  mounted() {
+  created() {
     if (this.$route.params.id) {
-      this.$http
-        .getSoftwareById(this.$route.params.id)
-        .then(({ data }) => {
-          this.software = data;
-          this.externalLinks = data.externalLinks;
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
+      const { id } = this.$route.params;
+      this.$store.dispatch("software/fetchSoftwareById", id).then(() => {
+        const data = this.$store.getters["software/getSoftwareById"](id);
+        this.software = cloneDeep(data);
+      });
     }
   }
 };
