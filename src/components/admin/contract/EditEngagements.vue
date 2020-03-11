@@ -69,7 +69,7 @@
       <v-flex xs12>
         <v-dialog scrollable v-model="formDialog" :fullscreen="$vuetify.breakpoint.xs" persistent max-width="600px">
           <FormEngagement
-            :commitment="newCommitment"
+            :commitment="commitment"
             :editing="isEdit"
             :isModalOpen="formDialog"
             :requestTypes="requestTypes"
@@ -78,6 +78,8 @@
             :contract="contract"
             @submit="submit"
             @closeFormModal="closeFormModal"
+            @resetRequestType="resetRequestType"
+            @resetOnCancel="resetOnCancel"
           >
           </FormEngagement>
         </v-dialog>
@@ -117,7 +119,7 @@ export default {
         schedule: {},
         engagements: []
       },
-      newCommitment: {
+      commitment: {
         supported: {
           businessHours: {
             days: "",
@@ -166,6 +168,47 @@ export default {
     FormEngagement
   },
   methods: {
+    resetOnCancel() {
+      this.commitment = {
+        request: "",
+        severity: "",
+        idOssa: "",
+        supported: {
+          businessHours: {
+            days: "",
+            hours: ""
+          },
+          nonBusinessHours: {
+            days: "",
+            hours: ""
+          }
+        },
+        bypassed: {
+          businessHours: {
+            days: "",
+            hours: ""
+          },
+          nonBusinessHours: {
+            days: "",
+            hours: ""
+          }
+        },
+        resolved: {
+          businessHours: {
+            days: "",
+            hours: ""
+          },
+          nonBusinessHours: {
+            days: "",
+            hours: ""
+          }
+        },
+        description: ""
+      };
+    },
+    resetRequestType() {
+      this.commitment.custom_request = "";
+    },
     closeFormModal() {
       this.formDialog = false;
     },
@@ -191,7 +234,7 @@ export default {
       this.formDialog = true;
       this.isEdit = true;
       this.selectedItem = commitment;
-      this.newCommitment = {
+      this.commitment = {
         ...this.selectedItem,
         request: this.isCustomRequestType(commitment.request) ? "Other" : commitment.request,
         custom_request: commitment.request === "Other" ? commitment.request : commitment.request,

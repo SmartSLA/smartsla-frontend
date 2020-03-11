@@ -20,7 +20,7 @@
               flat
               single-line
               @change="resetRequestType"
-              :rules="[() => commitment.request.length > 0 || $i18n.t('Required field')]"
+              :rules="[val => !!val || $i18n.t('Required field')]"
             ></v-select>
           </v-flex>
 
@@ -41,7 +41,7 @@
               item-value="key"
               flat
               single-line
-              :rules="[() => commitment.severity.length > 0 || $i18n.t('Required field')]"
+              :rules="[val => !!val || $i18n.t('Required field')]"
             >
             </v-select>
           </v-flex>
@@ -54,7 +54,7 @@
               item-value="key"
               flat
               single-line
-              :rules="[() => commitment.idOssa.length > 0 || $i18n.t('Required field')]"
+              :rules="[val => !!val || $i18n.t('Required field')]"
             >
               <template slot="item" slot-scope="data">
                 <v-avatar :color="data.item.color" size="25">
@@ -282,45 +282,10 @@ export default {
       }
     },
     resetOnCancel() {
-      this.commitment = {
-        request: "",
-        severity: "",
-        idOssa: "",
-        supported: {
-          businessHours: {
-            days: "",
-            hours: ""
-          },
-          nonBusinessHours: {
-            days: "",
-            hours: ""
-          }
-        },
-        bypassed: {
-          businessHours: {
-            days: "",
-            hours: ""
-          },
-          nonBusinessHours: {
-            days: "",
-            hours: ""
-          }
-        },
-        resolved: {
-          businessHours: {
-            days: "",
-            hours: ""
-          },
-          nonBusinessHours: {
-            days: "",
-            hours: ""
-          }
-        },
-        description: ""
-      };
+      this.$emit("resetOnCancel");
     },
     resetRequestType() {
-      this.commitment.custom_request = "";
+      this.$emit("resetRequestType");
     }
   },
   watch: {
