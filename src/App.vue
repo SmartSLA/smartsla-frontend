@@ -64,6 +64,8 @@ export default {
 </script>
 
 <style lang="stylus">
+openpaas-login-color = #394556
+
 .white-color {
   color: #ffffff !important;
 }
@@ -191,7 +193,12 @@ th.column.sortable.text-xs-left {
 }
 
 .login-bar .v-toolbar__content {
-  background-color: #2195f2;
+  background-color: openpaas-login-color;
+}
+
+#login button.v-btn.theme--light {
+  background-color: openpaas-login-color !important;
+  color: #fff;
 }
 
 th {
