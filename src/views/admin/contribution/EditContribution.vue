@@ -185,9 +185,24 @@
               <v-flex xs1></v-flex>
               <v-flex xs5></v-flex>
               <v-flex xs2>
-                <v-btn class="success" @click="validateFrom">{{ $t("Submit") }}</v-btn>
+                <v-card-actions>
+                  <v-btn class="success" @click="validateFrom">{{ $t("Submit") }}</v-btn>
+                  <v-btn class="error" v-if="isEditing" @click="deleteDialog = true">{{ $t("Delete") }}</v-btn>
+                </v-card-actions>
               </v-flex>
             </v-layout>
+            <v-dialog v-model="deleteDialog" persistent max-width="290">
+              <v-card>
+                <v-card-text>
+                  {{ $t("Are you sure you want to delete this contribution?") }}
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary darken-1" solo @click="deleteContribution">{{ $t("Confirm") }}</v-btn>
+                  <v-btn color="error darken-1" solo @click="deleteDialog = false">{{ $t("Cancel") }}</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-form>
         </v-card>
       </v-flex>
@@ -203,6 +218,7 @@ export default {
   data() {
     return {
       valid: true,
+      deleteDialog: false,
       startDateModel: "",
       contribution: {
         links: [
@@ -319,6 +335,24 @@ export default {
           color: "error"
         });
       }
+    },
+
+    deleteContribution() {
+      this.$store
+        .dispatch("contribution/deleteContribution", this.$route.params.id)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("contribution deleted"),
+            color: "success"
+          });
+          this.$router.push({ name: routeNames.CONTRIBUTIONS });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to delete contribution"),
+            color: "error"
+          });
+        });
     }
   },
 
