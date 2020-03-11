@@ -18,7 +18,8 @@ const types = {
   SET_CONTRIBUTIONS: "SET_CONTRIBUTIONS",
   SET_CONTRIBUTION: "SET_CONTRIBUTION",
   SET_CONTRIBUTIONS_LENGTH: "SET_CONTRIBUTIONS_LENGTH",
-  SET_PAGINATION: "SET_PAGINATION"
+  SET_PAGINATION: "SET_PAGINATION",
+  REMOVE_CONTRIBUTION: "REMOVE_CONTRIBUTION"
 };
 
 const actions = {
@@ -66,6 +67,10 @@ const actions = {
 
   setPagination: ({ commit }, pagination) => {
     commit(types.SET_PAGINATION, pagination);
+  },
+
+  deleteContribution: ({ commit }, contributionId) => {
+    return Vue.axios.deleteContribution(contributionId).then(() => commit(types.REMOVE_CONTRIBUTION, contributionId));
   }
 };
 
@@ -85,6 +90,10 @@ const mutations = {
 
   [types.SET_PAGINATION](state, pagination) {
     state.pagination = { ...state.pagination, ...pagination };
+  },
+
+  [types.REMOVE_CONTRIBUTION](state, contributionId) {
+    Vue.delete(state.contributions, contributionId);
   }
 };
 
