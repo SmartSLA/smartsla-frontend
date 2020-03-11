@@ -237,7 +237,6 @@ export default {
         key: contributionLinkType,
         value: this.$i18n.t(contributionLinkType)
       })),
-      software: [],
       users: []
     };
   },
