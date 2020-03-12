@@ -115,7 +115,7 @@
             </v-flex>
             <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
-              {{ request.ticketDate | formatDateFilter("llll") }}
+              {{ ticketDate | formatDateFilter("llll") }}
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
               <strong>{{ $t("Created by") }} :</strong>
@@ -131,9 +131,9 @@
               <strong>{{ $t("Last update") }} :</strong>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <span v-on="on"> {{ request.lastUpdate | relativeTime }}</span>
+                  <span v-on="on"> {{ lastUpdate | relativeTime }}</span>
                 </template>
-                <span> {{ request.lastUpdate | formatDateFilter("llll") }}</span>
+                <span> {{ lastUpdate | formatDateFilter("llll") }}</span>
               </v-tooltip>
             </v-flex>
             <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
@@ -337,7 +337,6 @@
                       </v-flex>
                       <v-flex v-if="!isPrivateTab" xs12 md6>
                         <user-list-assignment
-                          :users="allowedAssigneeList"
                           :responsible.sync="newResponsible"
                           :request="request"
                           @assignCustomer="assignCustomer"
@@ -368,7 +367,6 @@
                         >{{ $t("Add comment") }}</v-btn
                       >
                     </v-flex>
-                    <v-flex xs4 md4 sm4 lg4 xl4></v-flex>
                   </v-layout>
                 </v-form>
               </v-tab-item>
@@ -476,7 +474,7 @@
             <RelatedContributions
               :contributions="request.relatedContributions"
               :ticketId="request._id"
-              @update="getData"
+              @update="fetchTicket"
             ></RelatedContributions>
           </v-flex>
         </v-layout>
@@ -494,7 +492,6 @@ import AttachmentsCreation from "@/components/attachments/creation/Attachments.v
 import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
-import { mapActions } from "vuex";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import AssignedToUser from "@/components/request/AssignedToUser";
 import UserListAssignment from "@/components/request/UserListAssignment";
@@ -504,21 +501,12 @@ import { UPDATE_COMMENT, NEXT_STATUS, USER_TYPE } from "@/constants.js";
 export default {
   data() {
     return {
-      attachments: [],
       commentCreationAttachments: [],
-      currentStatus: "",
-      applicationSettings: {},
       selectedEditor: "wysiwyg",
       isSubmitting: false,
       newStatus: "",
       newResponsible: {},
-      newEvent: {},
-      request: null,
       comment: "",
-      contractUsers: [],
-      connectedUser: {
-        type: "expert"
-      },
       UPDATE_COMMENT: UPDATE_COMMENT,
       isPrivateTab: null
     };
@@ -538,9 +526,36 @@ export default {
       getUser: "user/getUser"
     }),
 
+    request() {
+      return this.$store.getters["ticket/getTicketById"](this.$route.params.id);
+    },
+
+    lastUpdate() {
+      return new Date(this.request.timestamps.updatedAt);
+    },
+
+    ticketDate() {
+      return new Date(this.request.timestamps.createdAt);
+    },
+
+    attachments() {
+      const attachments =
+        this.request.events &&
+        this.request.events.map(event => {
+          return (event.attachments || []).map(attachment => {
+            attachment.timestamps = event.timestamps;
+            attachment.event = event;
+
+            return attachment;
+          });
+        });
+
+      return flatten(attachments);
+    },
+
     ticketStatusId() {
       if (this.request.status) {
-        switch (this.request.status.toLowerCase()) {
+        switch (this.request.status) {
           case "new":
             return 0;
           case "supported":
@@ -558,22 +573,15 @@ export default {
     },
 
     allowedStatusList() {
-      const currentStatus = this.currentStatus.toLowerCase();
+      const currentStatus = this.request.status;
 
       return NEXT_STATUS[currentStatus];
-    },
-
-    allowedAssigneeList() {
-      const assignees = this.contractUsers.map(this.getContractUserAsAssignee);
-
-      return ["resolved", "closed"].includes(this.currentStatus)
-        ? assignees.filter(assignee => assignee.type === "beneficiary")
-        : assignees;
     },
 
     editorToolbar() {
       return editorToolbar;
     },
+
     isAdmin() {
       return this.$auth.check("admin");
     },
@@ -583,9 +591,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions("ticket", ["fetchTicketById"]),
     isUserExpert() {
-      return this.getUser && this.getUser.type === "expert";
+      return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     },
     scrollToEvent(event) {
       const element = this.$refs[`event-${event._id}`];
@@ -593,16 +600,6 @@ export default {
       if (element && element[0] && element[0].$el) {
         this.$scrollTo(element[0].$el, { offset: -80 });
       }
-    },
-    getContractUserAsAssignee(contractUser) {
-      return {
-        type: contractUser.type,
-        role: contractUser.role,
-        id: contractUser.user._id,
-        _id: contractUser.user._id,
-        email: contractUser.user.preferredEmail,
-        name: contractUser.user.displayName || contractUser.user.preferredEmail
-      };
     },
 
     addEvent() {
@@ -612,19 +609,49 @@ export default {
         : Promise.resolve([]);
 
       attachmentsPromise
-        .then(attachments => this.postEvent(attachments))
-        .then(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("updated"),
-            color: "success"
-          });
-          this.resetComment();
-          this.getData();
+        .then(attachments => {
+          const event = {
+            author: {
+              id: this.$store.state.user.user._id,
+              name: this.getUser.name,
+              type: this.getUser.type
+            },
+            comment: this.comment,
+            status: this.newStatus,
+            target: this.newResponsible,
+            isPrivate: this.isPrivateTab
+          };
+
+          if (attachments.length) {
+            event.attachments = attachments.map(attachment => ({
+              _id: attachment._id,
+              name: attachment.name,
+              mimeType: attachment.type
+            }));
+          }
+
+          this.$store
+            .dispatch("ticket/addEvent", {
+              ticketId: this.request._id,
+              event
+            })
+            .then(() => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("updated"),
+                color: "success"
+              });
+              this.resetComment();
+            })
+            .catch(() => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("Error while updating ticket"),
+                color: "error"
+              });
+            });
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: "Error while updating ticket",
+            message: this.$i18n.t("Error while uploading attachments"),
             color: "error"
           });
         })
@@ -632,34 +659,7 @@ export default {
           this.isSubmitting = false;
         });
     },
-    postEvent(attachments = []) {
-      this.newEvent = {
-        author: {
-          id: this.$store.state.user.user._id,
-          name: this.getUser.name,
-          type: this.getUser.type
-        }
-      };
 
-      this.newEvent.comment = this.comment;
-
-      if (attachments.length) {
-        this.newEvent.attachments = attachments.map(attachment => ({
-          _id: attachment._id,
-          name: attachment.name,
-          mimeType: attachment.type
-        }));
-      }
-
-      this.newEvent.isPrivate = !!this.isPrivateTab;
-
-      if (!this.newEvent.isPrivate) {
-        this.newEvent.status = this.newStatus;
-        this.newEvent.target = this.newResponsible;
-      }
-
-      return this.$http.addTicketEvent(this.request._id, this.newEvent);
-    },
     downloadFile({ _id, name }) {
       this.$http.downloadFile(_id).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -671,38 +671,6 @@ export default {
       });
     },
 
-    getData() {
-      const ticketId = this.$route.params.id;
-      this.fetchTicketById(ticketId).then(() => {
-        this.request = this.$store.getters["ticket/getTicketById"](ticketId);
-        const contractId = this.request.contract;
-        const attachments =
-          this.request.events &&
-          this.request.events.map(event => {
-            return (event.attachments || []).map(attachment => {
-              attachment.timestamps = event.timestamps;
-              attachment.event = event;
-
-              return attachment;
-            });
-          });
-
-        this.attachments = flatten(attachments);
-        this.currentStatus = this.request.status;
-        this.request.lastUpdate = new Date(this.request.timestamps.updatedAt);
-        this.request.ticketDate = new Date(this.request.timestamps.createdAt);
-
-        this.$http.getContractUsers(contractId).then(contractUsers => (this.contractUsers = contractUsers));
-      });
-
-      this.$http.getConnectedUserId().then(res => {
-        this.$http.getUserById(res.data._id).then(user => {
-          if (user.data) {
-            this.connectedUser = user.data;
-          }
-        });
-      });
-    },
     resetComment() {
       this.newStatus = "";
       this.comment = "";
@@ -726,13 +694,16 @@ export default {
     assignCustomer() {
       this.newResponsible = this.request.author;
     },
-    assignTo(userType) {
-      this.newResponsible = userType === USER_TYPE.BENEFICIARY ? this.request.author : this.request.responsible;
+    assignTo(user) {
+      this.newResponsible = user;
+    },
+    fetchTicket() {
+      this.$store.dispatch("ticket/fetchTicketById", this.$route.params.id);
     }
   },
   created() {
     this.$store.dispatch("contract/fetchContracts");
-    this.getData();
+    this.fetchTicket();
   }
 };
 </script>

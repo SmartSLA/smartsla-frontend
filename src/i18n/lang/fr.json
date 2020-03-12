@@ -192,6 +192,8 @@
     "Error while loading administrators": "Erreur lors du chargement des roles",
     "Error while loading tickets": "Erreur lors du chargement des tickets",
     "Error while loading contributions": "Erreur lors du chargement des contributions",
+    "Error while updating ticket": "Erreur lors de la mise à jour du ticket",
+    "Error while uploading attachments": "Erreur de téléchargement des pièces jointes",
     "Evolution": "Évolution",
     "exchanges with communities about the contribution": "échanges avec les communautés sur la contribution",
     "expert": "Expert",

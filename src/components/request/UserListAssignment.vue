@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-autocomplete
-      :items="users"
+      :items="contractUsers"
       item-text="name"
       :value="responsible"
       :label="$t('Assigned to')"
@@ -55,9 +55,11 @@ import { USER_TYPE } from "@/constants.js";
 export default {
   name: "user-list-assignment",
   props: {
-    users: Array,
     responsible: Object,
     request: Object
+  },
+  created() {
+    this.$store.dispatch("contract/fetchContractUsers", this.request.contract);
   },
   computed: {
     ...mapGetters({
@@ -71,34 +73,54 @@ export default {
     },
     isUserExpert() {
       return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
+    },
+    contractUsers() {
+      const users = this.$store.getters["contract/getContractUsers"](this.request.contract);
+      const assignees = (users || []).map(this.getContractUserAsAssignee);
+
+      return this.ticketPostResolved
+        ? assignees.filter(assignee => assignee.type === USER_TYPE.BENEFICIARY)
+        : assignees;
+    },
+    ticketPostResolved() {
+      return ["resolved", "closed"].includes(this.request.status);
     }
   },
   methods: {
+    getContractUserAsAssignee(contractUser) {
+      return {
+        type: contractUser.type,
+        role: contractUser.role,
+        id: contractUser.user._id,
+        _id: contractUser.user._id,
+        email: contractUser.user.preferredEmail,
+        name: contractUser.user.displayName || contractUser.user.preferredEmail
+      };
+    },
+
     setResponsible(user) {
       this.$emit("update:responsible", user);
     },
+
     assignCustomer() {
       this.$emit("assignCustomer");
     },
+
     assignSelf() {
       this.$emit("assignSelf");
     },
+
     canAssign() {
-      const ticketStatus = ["resolved", "closed"].includes(this.request.status);
-      if (ticketStatus || !this.request.responsible) {
-        return true;
-      }
-      return false;
+      return this.ticketPostResolved || !this.request.responsible;
     },
+
     canTakeIt() {
-      const ticketStatus = ["resolved", "closed"].includes(this.request.status);
-      if (this.isUserExpert && ticketStatus) {
-        return true;
-      }
-      return false;
+      return this.ticketPostResolved && this.isUserExpert;
     },
+
     assignTo(userType) {
-      this.$emit("assignTo", userType);
+      const user = userType === USER_TYPE.BENEFICIARY ? this.request.author : this.request.responsible;
+      this.$emit("assignTo", user);
     }
   }
 };
