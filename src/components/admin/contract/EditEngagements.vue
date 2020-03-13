@@ -102,7 +102,7 @@
 
 <script>
 import { OSSA_IDS, SEVERITY_TYPES, REQUEST_TYPES } from "@/constants.js";
-import FormEngagement from "@/components/admin/contract/FormEngagement.vue";
+import FormEngagement from "@/components/admin/contract/FormEngagement";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 

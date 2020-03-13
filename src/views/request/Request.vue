@@ -490,7 +490,7 @@ import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
 import { flatten, capitalize } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
-import AttachmentsCreation from "@/components/attachments/creation/Attachments.vue";
+import AttachmentsCreation from "@/components/attachments/creation/Attachments";
 import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";

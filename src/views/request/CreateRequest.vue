@@ -337,7 +337,7 @@ import { routeNames } from "@/router";
 import momentBusiness from "moment-business";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import { VueEditor } from "vue2-editor";
-import Attachments from "@/components/attachments/creation/Attachments.vue";
+import Attachments from "@/components/attachments/creation/Attachments";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import { USER_TYPE } from "@/constants.js";
 import { getEngagementHours } from "@/services/helpers/ticket";

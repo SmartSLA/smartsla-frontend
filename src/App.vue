@@ -36,9 +36,9 @@
 
 <script>
 import { routeNames } from "@/router";
-import UserMenu from "@/components/UserMenu.vue";
-import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
-import Snackbar from "@/components/Snackbar.vue";
+import UserMenu from "@/components/UserMenu";
+import LoggedMainNavigation from "@/components/LoggedMainNavigation";
+import Snackbar from "@/components/Snackbar";
 
 export default {
   components: {

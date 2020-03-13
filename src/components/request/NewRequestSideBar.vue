@@ -8,7 +8,7 @@
   </v-container>
 </template>
 <script>
-import sideBarLinks from "@/components/SideBarLinks.vue";
+import sideBarLinks from "@/components/SideBarLinks";
 export default {
   name: "new-request-side-bar",
   components: {

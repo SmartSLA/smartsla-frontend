@@ -219,8 +219,8 @@
 
 <script>
 import { routeNames } from "@/router";
-import TimezonePicker from "@/components/timezone-picker/timezone.vue";
-import ExternalLinks from "@/components/ExternalLinks.vue";
+import TimezonePicker from "@/components/timezone-picker/timezone";
+import ExternalLinks from "@/components/ExternalLinks";
 
 export default {
   name: "edit-contract-information",
