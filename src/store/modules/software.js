@@ -30,17 +30,11 @@ const actions = {
   },
 
   createSoftware: ({ commit }, software) => {
-    return Vue.axios
-      .createSoftware(software)
-      .then(({ data }) => commit(types.UPDATE_SOFTWARE, data))
-      .catch(console.log);
+    return Vue.axios.createSoftware(software).then(({ data }) => commit(types.UPDATE_SOFTWARE, data));
   },
 
   updateSoftware: ({ dispatch }, { softwareId, software }) => {
-    return Vue.axios
-      .updateSoftware(softwareId, software)
-      .then(() => dispatch("fetchSoftwareById", softwareId))
-      .catch(console.log);
+    return Vue.axios.updateSoftware(softwareId, software).then(() => dispatch("fetchSoftwareById", softwareId));
   },
 
   deleteSoftware: ({ commit }, softwareId) => {
