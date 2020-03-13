@@ -39,7 +39,7 @@
 import { mapGetters } from "vuex";
 import { OPAvatar } from "vue-openpaas-components";
 import { routeNames } from "@/router";
-import globalSearch from "@/components/search/GlobalSearch.vue";
+import globalSearch from "@/components/search/GlobalSearch";
 export default {
   name: "op-user-menu",
   components: {

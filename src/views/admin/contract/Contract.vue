@@ -482,9 +482,9 @@ import { OSSA_IDS, DEFAULT_TIMEZONE } from "@/constants.js";
 import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
-import UsersList from "@/components/user/UsersList.vue";
-import ExpiredLabel from "@/components/ExpiredLabel.vue";
-import CopyEngagementsForm from "@/components/admin/contract/CopyEngagementsForm.vue";
+import UsersList from "@/components/user/UsersList";
+import ExpiredLabel from "@/components/ExpiredLabel";
+import CopyEngagementsForm from "@/components/admin/contract/CopyEngagementsForm";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
 
 export default {

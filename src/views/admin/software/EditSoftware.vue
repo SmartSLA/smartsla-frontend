@@ -104,7 +104,7 @@
 </template>
 <script>
 import { routeNames } from "@/router";
-import ExternalLinks from "@/components/ExternalLinks.vue";
+import ExternalLinks from "@/components/ExternalLinks";
 import { cloneDeep } from "lodash";
 
 export default {

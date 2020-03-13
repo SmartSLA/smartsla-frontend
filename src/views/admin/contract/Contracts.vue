@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import ExpiredLabel from "@/components/ExpiredLabel";
 import { mapGetters } from "vuex";
 
 export default {

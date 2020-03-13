@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import FormSoftware from "@/components/admin/contract/FormSoftware.vue";
-import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import FormSoftware from "@/components/admin/contract/FormSoftware";
+import ExpiredLabel from "@/components/ExpiredLabel";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
 
 export default {

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import ExpiredLabel from "@/components/ExpiredLabel";
 
 export default {
   data() {

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import sideBarLinks from "@/components/SideBarLinks.vue";
+import sideBarLinks from "@/components/SideBarLinks";
 export default {
   name: "main-side-bar",
   components: {
