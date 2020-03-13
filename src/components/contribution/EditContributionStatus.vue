@@ -8,7 +8,7 @@
     </v-card-title>
     <v-divider class="mx-1"></v-divider>
     <v-layout v-if="contribution">
-      <v-flex xs12 md11 sm11 xl11 lg11>
+      <v-flex xs12 md12 sm12 xl12 lg12>
         <v-stepper class="noshadow">
           <v-stepper-header>
             <contributionStep
