@@ -5,15 +5,16 @@
         step=""
         :color="isRejected ? 'error' : 'success'"
         :complete-icon="isRejected ? 'close' : 'check'"
-        class="select-step"
         complete
         v-on="on"
         v-if="completed"
       >
-        {{ $t(stepName) }}
+        <span class="select-step"> {{ $t(stepName) }}</span>
         <small class="grey--text" v-if="date.length">{{ moment(date).format("L") }}</small>
       </v-stepper-step>
-      <v-stepper-step step="" v-on="on" v-else>{{ $t(stepName) }} </v-stepper-step>
+      <v-stepper-step step="" v-on="on" v-else
+        ><span class="select-step"> {{ $t(stepName) }}</span></v-stepper-step
+      >
       <v-divider :vertical="isPublished" v-if="!isRejected"></v-divider>
     </template>
     <v-date-picker v-model="pickerDate" no-title @change="showDatePicker = false" v-if="canEdit"></v-date-picker>
