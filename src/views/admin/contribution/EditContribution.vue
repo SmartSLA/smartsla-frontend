@@ -87,7 +87,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("links") }} :</strong>
+                <strong>{{ $t("Links") }} :</strong>
               </v-flex>
               <v-flex xs8>
                 <v-layout row wrap v-for="(link, index) in contribution.links" :key="index">
@@ -100,7 +100,7 @@
                           item-text="value"
                           item-value="key"
                           prepend-icon="link"
-                          :label="$t('Link Name')"
+                          :label="$t('Link type')"
                           :rules="[name => !!name || $i18n.t('Required field')]"
                         ></v-select>
                       </v-flex>
@@ -108,7 +108,7 @@
                         <v-text-field
                           v-if="contribution.links[index].name === 'Other'"
                           v-model="contribution.links[index].othername"
-                          :label="$t('Link Name')"
+                          :label="$t('Link name')"
                           :rules="[name => !!name || $i18n.t('Required field')]"
                         ></v-text-field>
                       </v-flex>
@@ -117,7 +117,7 @@
                   <v-flex>
                     <v-text-field
                       v-model="contribution.links[index].url"
-                      :label="$t('External Link')"
+                      :label="$t('External link')"
                       :rules="[url => isUrl(url) || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
@@ -130,7 +130,7 @@
                 <v-btn flat icon color="green lighten-2" @click="addLink">
                   <v-icon>add_circle</v-icon>
                 </v-btn>
-                {{ $t("add a new link") }}
+                {{ $t("Add a new link") }}
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">

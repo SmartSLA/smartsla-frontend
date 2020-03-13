@@ -58,7 +58,7 @@
                 <v-select :items="groups" v-model="software.group"></v-select>
               </v-flex>
               <v-flex xs3 class="pt-4">
-                <strong>{{ $t("External Links") }} :</strong>
+                <strong>{{ $t("External links") }} :</strong>
               </v-flex>
               <v-flex xs8>
                 <external-links :externalLinks="externalLinks" @remove-link="removeExternalLink">
