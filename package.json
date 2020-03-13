@@ -1,6 +1,6 @@
 {
   "name": "ticketing08000linux",
-  "version": "1.6.0-dev",
+  "version": "1.6.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
