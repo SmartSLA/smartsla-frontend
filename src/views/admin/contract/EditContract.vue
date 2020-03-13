@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import EditContractInformation from "@/components/admin/contract/EditInformation";
-import EditContractHR from "@/components/admin/contract/EditHR";
-import EditContractSoftware from "@/components/admin/contract/EditSoftware";
-import EditContractEngagements from "@/components/admin/contract/EditEngagements";
+import EditContractInformation from "@/components/admin/contract/EditInformation.vue";
+import EditContractHR from "@/components/admin/contract/EditHR.vue";
+import EditContractSoftware from "@/components/admin/contract/EditSoftware.vue";
+import EditContractEngagements from "@/components/admin/contract/EditEngagements.vue";
 export default {
   name: "edit-contract",
   components: {
