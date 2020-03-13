@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import sideBarLinks from "@/components/SideBarLinks";
+import sideBarLinks from "@/components/SideBarLinks.vue";
 export default {
   name: "issue-detail-side-bar",
   components: {

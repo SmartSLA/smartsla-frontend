@@ -24,7 +24,7 @@
 
 <script>
 import UploadButton from "vuetify-upload-button";
-import Attachment from "./Attachment";
+import Attachment from "./Attachment.vue";
 
 export default {
   props: {

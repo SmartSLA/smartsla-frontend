@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import userProfile from "@/components/user/userProfile";
+import userProfile from "@/components/user/userProfile.vue";
 export default {
   name: "profile",
   components: {
