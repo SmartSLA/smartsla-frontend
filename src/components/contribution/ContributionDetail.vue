@@ -3,12 +3,12 @@
     <v-layout row wrap>
       <v-flex xs11>
         <v-layout justify-center row fill-height wrap ml-3>
-          <fieldDisplay label="Contributor" :value="contribution.author.name"></fieldDisplay>
-          <fieldDisplay label="Proposition date" :value="contribution.deposedAt"></fieldDisplay>
-          <fieldDisplay label="Software" :value="contribution.software.name"></fieldDisplay>
-          <fieldDisplay label="Type" :value="contribution.type"></fieldDisplay>
-          <fieldDisplay label="Version" :value="contribution.version"></fieldDisplay>
-          <fieldDisplay label="Fixed in version" :value="contribution.fixedInVersion"></fieldDisplay>
+          <fieldDisplay :label="$t('Contributor')" :value="contribution.author.name"></fieldDisplay>
+          <fieldDisplay :label="$t('Proposition date')" :value="contribution.deposedAt"></fieldDisplay>
+          <fieldDisplay :label="$t('Software')" :value="contribution.software.name"></fieldDisplay>
+          <fieldDisplay :label="$t('Type')" :value="contribution.type"></fieldDisplay>
+          <fieldDisplay :label="$t('Version')" :value="contribution.version"></fieldDisplay>
+          <fieldDisplay :label="$t('Patched in version')" :value="contribution.fixedInVersion"></fieldDisplay>
         </v-layout>
       </v-flex>
       <v-flex xs1 v-if="canEdit">

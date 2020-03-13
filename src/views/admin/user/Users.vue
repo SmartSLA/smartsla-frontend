@@ -77,7 +77,7 @@
             </router-link>
           </td>
           <td class="text-xs-center">{{ $t(capitalize(props.item.type)) }}</td>
-          <td class="text-xs-center">{{ $t(capitalize(props.item.role)) }}</td>
+          <td class="text-xs-center">{{ capitalize($t(props.item.role)) }}</td>
           <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
           <td class="text-xs-center">
             <a :href="`tel://${props.item.phone}`">
