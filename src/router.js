@@ -210,6 +210,7 @@ export default new Router({
     },
     {
       path: "/administration",
+      redirect: { path: "/" },
       components: {
         default: Administration,
         sidebar: () => import("@/components/admin/AdminMainSideBar.vue")
@@ -221,7 +222,7 @@ export default new Router({
       },
       children: [
         {
-          path: "",
+          path: "/",
           name: routeNames.ADMINHOME,
           component: AdministrationHome
         },

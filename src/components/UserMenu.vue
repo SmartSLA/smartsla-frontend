@@ -16,7 +16,7 @@
                 </v-list-tile-content>
               </v-list-tile>
               <v-divider />
-              <v-list-tile :to="{ name: routeNames.PROFILE, params: { id: getId } }">
+              <v-list-tile v-if="getId" :to="{ name: routeNames.PROFILE, params: { id: getId } }">
                 <v-list-tile-title>{{ $t("Profil") }}</v-list-tile-title>
               </v-list-tile>
               <v-divider />
