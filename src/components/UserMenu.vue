@@ -1,13 +1,13 @@
 <template>
   <v-layout row>
-    <v-flex xs8>
+    <v-flex xs9 sm10 md8>
       <global-search />
     </v-flex>
-    <v-flex xs4>
+    <v-flex xs3 sm2 md4>
       <v-layout row justify-end>
         <v-flex xs5>
           <v-menu offset-y class="pt-3 user-menu-item">
-            <op-avatar slot="activator" class="mr-3"></op-avatar>
+            <op-avatar slot="activator" class="pr-3"></op-avatar>
             <v-list>
               <v-list-tile>
                 <v-list-tile-content>

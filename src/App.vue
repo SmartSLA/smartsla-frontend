@@ -5,16 +5,16 @@
         <router-view name="sidebar" />
       </v-navigation-drawer>
       <v-toolbar clipped-left app fixed color="primary">
-        <v-toolbar-title style="width: 275px" class="ml-0 pl-3">
+        <v-toolbar-title style="width: 275px" class="hidden-sm-and-down ml-0 pl-3">
           <router-link :to="{ name: routeNames.REQUESTS }">
-            <img class="hidden-sm-and-down" id="header-logo" src="@/assets/logo_ossa.png" />
+            <img id="header-logo" src="@/assets/logo_ossa.png" />
           </router-link>
         </v-toolbar-title>
         <v-layout row justify-space-between>
-          <v-flex grow>
+          <v-flex grow xs2 sm2 md10>
             <logged-main-navigation v-if="$auth.check()" />
           </v-flex>
-          <v-flex shrink>
+          <v-flex shrink xs10 sm10>
             <user-menu v-if="$auth.check()" />
           </v-flex>
         </v-layout>
