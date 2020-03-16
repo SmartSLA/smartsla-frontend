@@ -5,13 +5,13 @@
         <span>{{ $t("Software list") }}</span>
       </div>
       <div class="softwares-search">
-        <span class="softwares-search-span">{{ $t("Search by:") }}</span>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Search')"
           single-line
           hide-details
           solo
+          append-icon="search"
           class="softwares-search-name"
         ></v-text-field>
         <div class="softwares-operations">
@@ -42,7 +42,7 @@
             }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.description }}</td>
-          <td class="text-xs-center">{{ props.item.technologies }}</td>
+          <td class="text-xs-center">{{ props.item.technology || $t("Not specified") }}</td>
           <td class="text-xs-center">{{ props.item.group }}</td>
         </template>
       </v-data-table>
