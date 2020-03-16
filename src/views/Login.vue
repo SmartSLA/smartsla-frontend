@@ -62,6 +62,8 @@ export default {
   },
   methods: {
     login() {
+      const redirectTo = this.$auth.redirect();
+
       this.logMeIn = true;
       this.$auth
         .login({
@@ -71,7 +73,7 @@ export default {
             password: this.password
           },
           rememberMe: false,
-          redirect: { name: routeNames.HOME }
+          redirect: redirectTo ? { path: redirectTo.from.path } : { name: routeNames.HOME }
         })
         .then(response => {
           this.$store.dispatch("session/setJWTToken", response.data);
