@@ -134,6 +134,7 @@
   "Ticket passed in status {status}": "Ticket passed in status {status}",
   "User role can create and comment tickets": "User role can create and comment tickets",
   "Viewer role can only see tickets": "Viewer role can only see tickets",
+  "Warning : The contract {contractName} has expired": "Warning : The contract <span> {contractName} </span> has expired",
   "Warning : Your contract has only {credits} credits and you already consumed {consumed} credits": "Warning : Your contract has only {credits} credits and you already consumed {consumed} credits",
   "Welcome to Your OpenPaaS Vue.js App": "Welcome to Your OpenPaaS Vue.js App",
   "You are about to delete:": "You are about to delete:",

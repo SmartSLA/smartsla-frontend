@@ -449,6 +449,7 @@
     "View": "Voir",
     "viewer": "Observateur",
     "Viewer role can only see tickets": "Le rôle du visualiseur ne peut voir que les tickets",
+    "Warning : The contract {contractName} has expired": "Attention : Le contrat <span> {contractName} </span> a expiré",
     "Warning : Your contract has only {credits} credits and you already consumed {consumed} credits": "Attention : Votre contrat a seulement {credits} credits et vous avez déjà consommé {consumed} crédits",
     "Watches": "Veilles",
     "Welcome to 08000": "Bienvenue sur 08000",

@@ -126,7 +126,7 @@
                       <v-flex xs6>{{ $t("Consumed") }}</v-flex>
                       <v-flex xs6>{{ consumedCredits }}</v-flex>
                       <v-flex xs6>{{ $t("Remaining") }}</v-flex>
-                      <v-flex xs6>{{ contract.credits - this.consumedCredits }}</v-flex>
+                      <v-flex xs6>{{ remaining }}</v-flex>
                     </v-layout>
                   </v-flex>
                   <v-flex v-else xs8>{{ contract.type }}</v-flex>
@@ -552,6 +552,9 @@ export default {
     },
     customers() {
       return this.getUsersWithRole("customer");
+    },
+    remaining() {
+      return this.contract.credits - this.consumedCredits;
     }
   },
   created() {
@@ -582,7 +585,7 @@ export default {
       .getContractTicketsById(contractId)
       .then(({ data }) => {
         this.contractTickets = data.list;
-        this.consumedCredits = data.list.length;
+        this.consumedCredits = data.size;
       })
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
