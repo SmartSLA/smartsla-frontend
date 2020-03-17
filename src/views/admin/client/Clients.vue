@@ -38,7 +38,7 @@
           <!-- <td class="text-xs-center">{{ props.item.logo }}</td> -->
           <td class="text-xs-center">
             <router-link :to="{ name: 'Client', params: { id: props.item._id } }" class="blue-color">
-              {{ props.item.name }}
+              <status-name :name="props.item.name" :active="props.item.active" />
             </router-link>
             <expired-label
               :expirationDate="props.item.endDate"
@@ -55,6 +55,7 @@
 
 <script>
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import StatusName from "@/components/StatusName";
 
 export default {
   data() {
@@ -89,7 +90,8 @@ export default {
     };
   },
   components: {
-    ExpiredLabel
+    ExpiredLabel,
+    StatusName
   },
   mounted() {
     this.$http
