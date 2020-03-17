@@ -14,7 +14,7 @@
           <v-chip v-if="data.item.type === 'beneficiary'" color="#174dc5" class="ma-2" label text-color="white"
             >{{ contract && contract.client && contract.client[0] }}
           </v-chip>
-          <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">L</v-chip>
+          <support-account v-else></support-account>
         </v-list-tile-avatar>
         <v-list-tile-content>
           {{ data.item.name }}
@@ -51,7 +51,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { USER_TYPE } from "@/constants.js";
-
+import SupportAccount from "@/components/SupportAccount";
 export default {
   name: "user-list-assignment",
   props: {
@@ -122,6 +122,9 @@ export default {
       const user = userType === USER_TYPE.BENEFICIARY ? this.request.author : this.request.responsible;
       this.$emit("assignTo", user);
     }
+  },
+  components: {
+    SupportAccount
   }
 };
 </script>
