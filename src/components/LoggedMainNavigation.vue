@@ -25,7 +25,7 @@
       </v-list-tile>
     </v-toolbar-items>
     <v-menu class="hidden-md-and-up">
-      <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
+      <v-toolbar-side-icon class="mr-5" slot="activator"></v-toolbar-side-icon>
       <v-list class="logged-main-navigation">
         <v-list-tile
           v-for="menuItem in filteredMenuItems"
@@ -37,14 +37,14 @@
           }"
           :dark="menuItem.name == currentActiveMenu"
         >
-          <v-badge color="red" v-if="menuItem.count">
+          <v-badge color="red" class="mr-2 mt-1" v-if="menuItem.count">
             <span slot="badge">{{ menuItem.count }}</span>
-            <v-list-tile-title>
+            <v-list-tile-title class="pb-4">
               <v-icon :dark="menuItem.name == currentActiveMenu">{{ menuItem.icon }}</v-icon>
               {{ menuItem.text }}
             </v-list-tile-title>
           </v-badge>
-          <v-list-tile-title v-else>
+          <v-list-tile-title class="pb-4 pt-1" v-else>
             <v-icon>{{ menuItem.icon }}</v-icon>
             {{ menuItem.text }}
           </v-list-tile-title>
