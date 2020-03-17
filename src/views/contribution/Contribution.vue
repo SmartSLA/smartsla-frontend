@@ -7,7 +7,7 @@
       <v-flex xs12 sm12 md12 lg7 xl7 class="pr-4">
         <contributionDetail :contribution="contribution"></contributionDetail>
       </v-flex>
-      <v-flex xs12 sm12 md12 lg5 xl5>
+      <v-flex xs12 sm12 md12 lg5 xl5 mt-4>
         <editContributionStatus :contribution="contribution"></editContributionStatus>
       </v-flex>
     </v-layout>

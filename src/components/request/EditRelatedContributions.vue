@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="mt-4 pb-2" row wrap align-center>
+  <v-layout row wrap align-center>
     <v-dialog v-model="show" scrollable :fullscreen="$vuetify.breakpoint.xs" persistent max-width="600px">
       <v-card>
         <v-card-title class="light-blue lighten-1">

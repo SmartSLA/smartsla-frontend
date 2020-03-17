@@ -8,13 +8,6 @@
       </v-btn>
     </v-card-title>
     <v-divider></v-divider>
-    <EditRelatedContributions
-      :ticketId="ticketId"
-      :contributions="contributions"
-      :show="showEditForm"
-      @close="showEditForm = false"
-      @updated="updateHandler"
-    ></EditRelatedContributions>
     <EditContributionStatus
       v-for="contribution in contributions"
       :contribution="contribution"
@@ -22,6 +15,13 @@
       :key="contribution._id"
       class="noshadow"
     ></EditContributionStatus>
+    <EditRelatedContributions
+      :ticketId="ticketId"
+      :contributions="contributions"
+      :show="showEditForm"
+      @close="showEditForm = false"
+      @updated="updateHandler"
+    ></EditRelatedContributions>
   </v-card>
 </template>
 
