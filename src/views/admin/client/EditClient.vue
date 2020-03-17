@@ -112,6 +112,7 @@
 </template>
 <script>
 import { routeNames } from "@/router";
+import { cloneDeep } from "lodash";
 
 export default {
   data() {
@@ -125,17 +126,15 @@ export default {
   },
   methods: {
     createClient() {
-      this.$http
-        .createClient(this.client)
-        .then(response => {
-          if (response.data && response.status === 201) {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("Client created"),
-              color: "success"
-            });
-            this.client = {};
-            this.$router.push({ name: routeNames.CLIENTS });
-          }
+      this.$store
+        .dispatch("client/createClient", this.client)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Client created"),
+            color: "success"
+          });
+          this.client = {};
+          this.$router.push({ name: routeNames.CLIENTS });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -150,8 +149,11 @@ export default {
         if (!this.isNew) {
           this.createClient();
         } else {
-          this.$http
-            .updateClient(this.client._id, this.client)
+          this.$store
+            .dispatch("client/updateClient", {
+              clientId: this.client._id,
+              client: this.client
+            })
             .then(() => {
               this.$store.dispatch("ui/displaySnackbar", {
                 message: this.$i18n.t("updated"),
@@ -175,8 +177,8 @@ export default {
     },
 
     deleteClient() {
-      this.$http
-        .deleteClient(this.$route.params.id)
+      this.$store
+        .dispatch("client/deleteClient", this.$route.params.id)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("client deleted"),
@@ -199,17 +201,11 @@ export default {
   },
   mounted() {
     if (this.$route.params.id) {
-      this.$http
-        .getClientById(this.$route.params.id)
-        .then(response => {
-          this.client = response.data;
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
+      const { id } = this.$route.params;
+      this.$store.dispatch("client/fetchClientById", id).then(() => {
+        const data = this.$store.getters["client/getClientById"](id);
+        this.client = cloneDeep(data);
+      });
     }
   }
 };

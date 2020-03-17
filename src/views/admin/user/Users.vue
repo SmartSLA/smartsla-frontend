@@ -138,7 +138,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      contracts: "contract/getContracts"
+      contracts: "contract/getContracts",
+      clients: "clients/getClients"
     }),
 
     roles() {
@@ -185,12 +186,7 @@ export default {
         });
       });
 
-    this.$http
-      .listClients()
-      .then(({ data }) => {
-        this.clients = data;
-      })
-      .catch(console.log);
+    this.$store.dispatch("client/fetchClients");
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {

@@ -173,17 +173,16 @@ export default {
       msg: this.$i18n.t("Administration"),
       users: [],
       teams: [],
-      clients: [],
       contributions: [],
       userCount: 0,
       teamCount: 0,
-      clientCount: 0,
       contractCount: 0
     };
   },
   mounted() {
     this.$store.dispatch("contribution/countContributions");
     this.$store.dispatch("software/countSoftware");
+    this.$store.dispatch("client/countClients");
     this.$http
       .listUsers()
       .then(response => {
@@ -209,19 +208,6 @@ export default {
           color: "error"
         });
       });
-
-    this.$http
-      .listClients()
-      .then(response => {
-        this.clients = response.data;
-        this.clientCount = response.data.length;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch clients"),
-          color: "error"
-        });
-      });
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
@@ -231,7 +217,8 @@ export default {
   computed: {
     ...mapGetters({
       contracts: "contract/getContracts",
-      softwareCount: "software/getSoftwareCount"
+      softwareCount: "software/getSoftwareCount",
+      clientCount: "client/getClientsCount"
     }),
 
     routeNames() {

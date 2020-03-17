@@ -17,5 +17,9 @@ export default {
 
   deleteClient(clientId) {
     return this.delete(`/ticketing/api/client/${clientId}`);
+  },
+
+  countClients() {
+    return this.head("/ticketing/api/client").then(({ headers }) => headers["x-esn-items-count"] || 0);
   }
 };

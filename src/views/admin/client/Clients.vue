@@ -56,11 +56,11 @@
 <script>
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import StatusName from "@/components/StatusName";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      clients: [],
       search: "",
       rowsPerPageItems: [10, 25, 50],
       pagination: {
@@ -89,22 +89,17 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapGetters({
+      clients: "client/getClients"
+    })
+  },
   components: {
     ExpiredLabel,
     StatusName
   },
-  mounted() {
-    this.$http
-      .listClients()
-      .then(response => {
-        this.clients = response.data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch clients list"),
-          color: "error"
-        });
-      });
+  created() {
+    this.$store.dispatch("client/fetchClients");
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {

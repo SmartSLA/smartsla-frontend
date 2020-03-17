@@ -255,7 +255,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      contractList: "contract/getContracts"
+      contractList: "contract/getContracts",
+      clientsList: "client/getClients"
     }),
     roles() {
       return this.user.type === "beneficiary" ? USER_ROLES.beneficiary : USER_ROLES.expert;
@@ -277,7 +278,8 @@ export default {
     }
   },
   created() {
-    this.fetchData();
+    this.$store.dispatch("client/fetchClients");
+
     if (this.$route.params.id) {
       this.$http
         .getUserById(this.$route.params.id)
@@ -319,9 +321,6 @@ export default {
     getRoleByContractId(id) {
       const { role } = this.user.contracts.find(contract => contract.contract === id) || { role: "viewer" };
       return role;
-    },
-    fetchData() {
-      this.getClients();
     },
     initRole() {
       this.user.role = "";
@@ -408,19 +407,6 @@ export default {
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Can not delete user"),
-            color: "error"
-          });
-        });
-    },
-    getClients() {
-      this.$http
-        .listClients()
-        .then(({ data }) => {
-          this.clientsList = data || [];
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: "cannot fetch clients",
             color: "error"
           });
         });

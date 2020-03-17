@@ -271,7 +271,6 @@ export default {
       startDateModel: false,
       endDateModel: false,
       valid: true,
-      clients: [],
       hoursRules: {
         required: value => !!value || this.$i18n.t("Required field")
       },
@@ -294,6 +293,12 @@ export default {
         !Object.keys(this.contract.client).length ||
         !this.contract.name.length
       );
+    },
+
+    clients() {
+      const clients = this.$store.getters["client/getClients"];
+
+      return clients.map(client => ({ name: client.name, clientId: client._id }));
     }
   },
   mounted() {
@@ -322,18 +327,7 @@ export default {
           });
         });
     }
-
-    this.$http
-      .listClients()
-      .then(response => {
-        this.clients = response.data.map(client => ({ name: client.name, clientId: client._id }));
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: "cannot fetch clients",
-          color: "error"
-        });
-      });
+    this.$store.dispatch("client/fetchClients");
   },
   methods: {
     parseDate(date) {
