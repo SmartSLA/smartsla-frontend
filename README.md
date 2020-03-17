@@ -1,10 +1,12 @@
-# 08000 STAGING BRANCH
+# TICKETING 08000LINUX
 
 ## Project configuration
 
-You can update the `.env` file to define the OpenPaaS instance to reach, or override it in a new `.env.development.local` file. Current environment variables are:
+You can update the `public/env/openpaas.js` file to define the OpenPaaS instance to reach. Current environment variables are:
 
 - `VUE_APP_OPENPAAS_URL`: route to your OpenPaaS instance. Needs to be `http://localhost:8080` in development mode.
+
+- `SSP_URL`: route to the SSP to be used to reset user password. ie `https://ssp.localhost:8080` 
 
 
 ## Project setup
@@ -27,12 +29,12 @@ npm run build
 npm run lint
 ```
 
-### Run your unit tests
+### TESTS
+ unit
 ```
 npm run test:unit
 ```
-
-### Run your end-to-end tests
+end-to-end
 ```
 npm run test:e2e
 ```
