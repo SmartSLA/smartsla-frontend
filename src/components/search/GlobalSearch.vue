@@ -30,7 +30,6 @@ export default {
     return {
       search: null,
       searchResults: [],
-      clients: [],
       contracts: []
     };
   },
