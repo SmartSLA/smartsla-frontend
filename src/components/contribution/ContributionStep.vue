@@ -30,7 +30,11 @@ export default {
   name: "contributionStep",
   props: {
     stepName: null,
-    statusStepDate: null
+    statusStepDate: null,
+    editable: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -48,7 +52,7 @@ export default {
     },
 
     canEdit() {
-      return this.$auth.check(EXPERT_ROLE.ADMIN) || this.$auth.check(EXPERT_ROLE.EXPERT);
+      return this.editable && (this.$auth.check(EXPERT_ROLE.ADMIN) || this.$auth.check(EXPERT_ROLE.EXPERT));
     },
 
     isRejected() {

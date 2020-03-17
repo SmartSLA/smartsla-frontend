@@ -1,8 +1,14 @@
 <template>
-  <v-card class="pt-1 mt-4 pb-4">
+  <v-card class="pt-0 pb-0">
     <v-card-title primary-title class="px-4 text-capitalize">
       <div>
-        <span class="subtitle-2 font-weight-bold mb-0" v-if="showTitle">{{ contribution.name }}</span>
+        <router-link
+          v-if="showTitle"
+          class="subtitle-2 font-weight-bold mb-0 action-links"
+          :to="{ name: routeNames.CONTRIBUTION, params: { id: contribution._id } }"
+        >
+          {{ contribution.name }}
+        </router-link>
         <h3 class="headline mb-0" v-else>{{ $t("contribution status") }}</h3>
       </div>
     </v-card-title>
@@ -15,6 +21,7 @@
               v-for="(stage, index) in contributionStages"
               :key="index"
               :stepName="stage"
+              :editable="!showTitle"
               :statusStepDate="contribution.status[stage]"
               @statusChange="updateStatus"
             ></contributionStep>
@@ -27,6 +34,7 @@
 <script>
 import contributionStep from "@/components/contribution/ContributionStep";
 import { CONTRIBUTION_STATUS } from "@/constants";
+import { routeNames } from "@/router";
 
 export default {
   name: "editContributionStatus",
@@ -66,6 +74,10 @@ export default {
   computed: {
     contributionStages() {
       return Object.values(CONTRIBUTION_STATUS);
+    },
+
+    routeNames() {
+      return routeNames;
     }
   }
 };
@@ -75,5 +87,10 @@ export default {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+}
+
+.action-links {
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
