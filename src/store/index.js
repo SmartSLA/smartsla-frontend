@@ -12,6 +12,7 @@ import ui from "./modules/ui";
 import user from "./modules/user";
 import software from "./modules/software";
 import ticket from "./modules/ticket";
+import client from "./modules/client";
 import contract from "./modules/contract";
 import contribution from "./modules/contribution";
 import listeners from "./listeners";
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
     user,
     software,
     ticket,
+    client,
     contract,
     contribution
   },

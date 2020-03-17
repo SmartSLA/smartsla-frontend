@@ -39,16 +39,15 @@ export default {
       this.$http.getContracts().then(response => {
         this.contracts = response.data;
       });
-      this.$http.listClients().then(response => {
-        this.clients = response.data;
-      });
+      this.$store.dispatch("client/fetchClients");
     }
     this.$store.dispatch("ticket/fetchTickets");
   },
   computed: {
     ...mapGetters({
       userType: "user/getType",
-      tickets: "ticket/getTickets"
+      tickets: "ticket/getTickets",
+      clients: "client/getClients"
     })
   },
   methods: {

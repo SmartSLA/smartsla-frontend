@@ -81,23 +81,19 @@
 <script>
 export default {
   name: "client-detail",
-  data() {
-    return {
-      client: {}
-    };
+  computed: {
+    client() {
+      const { id } = this.$route.params;
+      return this.$store.getters["client/getClientById"](id);
+    }
   },
   created() {
-    this.$http
-      .getClientById(this.$route.params.id)
-      .then(response => {
-        this.client = response.data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("Failed to fetch client"),
-          color: "error"
-        });
+    this.$store.dispatch("client/fetchClientById", this.$route.params.id).catch(() => {
+      this.$store.dispatch("ui/displaySnackbar", {
+        message: this.$i18n.t("Failed to fetch client"),
+        color: "error"
       });
+    });
   }
 };
 </script>
