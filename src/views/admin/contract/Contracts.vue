@@ -67,7 +67,7 @@
               class="contracts-actions blue-color"
               :to="{ name: 'Contract', params: { id: props.item._id } }"
             >
-              {{ props.item.name }}
+              <status-name :name="props.item.name" :active="props.item.status" />
               <expired-label
                 :expirationDate="props.item.endDate"
                 :status="props.item.status"
@@ -94,6 +94,7 @@
 
 <script>
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
+import StatusName from "@/components/StatusName";
 import { mapGetters } from "vuex";
 
 export default {
@@ -129,7 +130,8 @@ export default {
     }
   },
   components: {
-    ExpiredLabel
+    ExpiredLabel,
+    StatusName
   }
 };
 </script>
