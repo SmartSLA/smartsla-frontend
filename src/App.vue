@@ -11,10 +11,10 @@
           </router-link>
         </v-toolbar-title>
         <v-layout row justify-space-between>
-          <v-flex grow xs2 sm2 md10>
+          <v-flex grow xs2 sm2 md8>
             <logged-main-navigation v-if="$auth.check()" />
           </v-flex>
-          <v-flex shrink xs10 sm10>
+          <v-flex shrink xs10 sm10 md4>
             <user-menu v-if="$auth.check()" />
           </v-flex>
         </v-layout>
