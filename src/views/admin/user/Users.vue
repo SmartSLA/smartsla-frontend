@@ -95,7 +95,6 @@ export default {
   data() {
     return {
       search: "",
-      clients: [],
       client: null,
       contract: null,
       role: null,
@@ -135,7 +134,7 @@ export default {
   computed: {
     ...mapGetters({
       contracts: "contract/getContracts",
-      clients: "clients/getClients"
+      clients: "client/getClients"
     }),
 
     roles() {
