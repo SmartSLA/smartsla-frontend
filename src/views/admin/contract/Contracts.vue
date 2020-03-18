@@ -46,10 +46,6 @@
             <v-icon>add_circle</v-icon>
             <span>{{ $t("Add contract") }}</span>
           </router-link>
-          <a href="#" class="contracts-actions blue-color">
-            <v-icon>arrow_downward</v-icon>
-            <span>{{ $t("Export") }}</span>
-          </a>
         </div>
       </div>
       <v-data-table

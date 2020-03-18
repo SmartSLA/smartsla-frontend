@@ -19,10 +19,6 @@
             <v-icon>add_circle</v-icon>
             <span>{{ $t("Add team") }}</span>
           </router-link>
-          <a href="#" class="teams-actions blue-color">
-            <v-icon>arrow_downward</v-icon>
-            <span>{{ $t("Export") }}</span>
-          </a>
         </div>
       </div>
       <v-data-table
