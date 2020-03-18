@@ -19,10 +19,6 @@
             <v-icon>add_circle</v-icon>
             <span>{{ $t("Add new software") }}</span>
           </router-link>
-          <a href="#" class="softwares-actions blue-color">
-            <v-icon>arrow_downward</v-icon>
-            <span>{{ $t("Export") }}</span>
-          </a>
         </div>
       </div>
       <v-data-table

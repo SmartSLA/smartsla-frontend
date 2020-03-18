@@ -19,10 +19,6 @@
             <v-icon>add_circle</v-icon>
             <router-link :to="{ name: 'NewClient' }" class="blue-color">{{ $t("Add client") }}</router-link>
           </a>
-          <a href="#" class="clients-actions blue-color">
-            <v-icon>arrow_downward</v-icon>
-            <span>{{ $t("Export") }}</span>
-          </a>
         </div>
       </div>
       <v-data-table

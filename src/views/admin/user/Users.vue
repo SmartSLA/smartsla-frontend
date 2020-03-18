@@ -52,10 +52,6 @@
             <v-icon>add_circle</v-icon>
             <span>{{ $t("Add user") }}</span>
           </router-link>
-          <a href="#" class="users-actions blue-color">
-            <v-icon>arrow_downward</v-icon>
-            <span>{{ $t("Export") }}</span>
-          </a>
         </div>
       </div>
       <v-data-table
