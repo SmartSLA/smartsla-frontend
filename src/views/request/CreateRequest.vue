@@ -11,7 +11,7 @@
             <v-card>
               <v-card-text>
                 <v-layout wrap row>
-                  <v-flex xs6 md6 lg6 xl20 sm2>
+                  <v-flex xs12 sm12 md12 lg12 xl12>
                     <v-text-field
                       prepend-icon="create"
                       name="Title"
@@ -22,8 +22,7 @@
                       class="required-element"
                     ></v-text-field>
                   </v-flex>
-                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
-                  <v-flex xs6 md6 lg6 xl4 sm2>
+                  <v-flex xs12 sm12 md12 lg12 xl12>
                     <v-autocomplete
                       :items="activeContracts"
                       :disabled="isInEdit"
@@ -37,7 +36,6 @@
                       return-object
                     ></v-autocomplete>
                   </v-flex>
-                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
                       v-if="isInEdit"
@@ -52,13 +50,12 @@
                       return-object
                     ></v-autocomplete>
                   </v-flex>
-                  <v-flex xs6 md4 lg12 xl6 sm9></v-flex>
-                  <v-flex xs12 v-if="!userPhone">
-                    <span class="ml-4">
+                  <v-flex xs12 sm12 md12 v-if="!userPhone">
+                    <span class="caption ml-4">
                       {{ $t("You must fill a call number in order to let the support join you") }}
                     </span>
                   </v-flex>
-                  <v-flex xs6 md4 lg12 xl6 sm9>
+                  <v-flex xs6 sm6 md6 lg6 xl6>
                     <v-text-field
                       v-if="!userPhone"
                       prepend-icon="phone"
@@ -71,7 +68,7 @@
                       persistent-hint
                     ></v-text-field>
                   </v-flex>
-                  <v-flex xs6 md4 lg12 xl6 sm9>
+                  <v-flex xs6 sm6 md6 lg6 xl6>
                     <v-text-field
                       v-if="!userPhone"
                       prepend-icon="meeting_room"
@@ -85,7 +82,7 @@
                       persistent-hint
                     ></v-text-field>
                   </v-flex>
-                  <v-flex xs12 md12 lg12 sm12 xl12>
+                  <v-flex xs12 sm12 md12 lg12 xl12>
                     <v-combobox
                       prepend-icon="mail"
                       v-model="participants"
@@ -107,7 +104,7 @@
                       </template>
                     </v-combobox>
                   </v-flex>
-                  <v-flex xs12 md12 lg12 sm12 xl12>
+                  <v-flex xs12 sm12 md12 lg12 xl12>
                     <v-container grid-list-md>
                       <v-layout row wrap>
                         <v-flex xs12 md3 sm12 lg0 xl3>
@@ -132,7 +129,7 @@
                           </v-select>
                         </v-flex>
                         <v-flex xs1></v-flex>
-                        <v-flex xs12 md3 sm12 lg0 xl3>
+                        <v-flex xs12 md3 sm12 lg3 xl3>
                           <v-autocomplete
                             :disabled="!ticket.type.length"
                             :label="$i18n.t('Software')"
@@ -163,7 +160,7 @@
                           </v-autocomplete>
                         </v-flex>
                         <v-flex xs1></v-flex>
-                        <v-flex xs12 md3 sm12 lg0 xl3>
+                        <v-flex xs12 md3 sm12 lg3 xl3>
                           <v-select
                             prepend-icon="report"
                             :items="severityList"
@@ -209,7 +206,7 @@
                       }}
                     </span>
                   </v-flex>
-                  <v-flex xs12 md12 lg12 sm12 xl12>
+                  <v-flex xs12 sm12 md12 lg12 xl12>
                     <v-input
                       prepend-icon="notes"
                       :rules="[() => ticket.description.length > 0 || $i18n.t('Required field')]"
