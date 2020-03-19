@@ -57,7 +57,7 @@
                     </v-flex>
                     <v-flex xs6>
                       <ul>
-                        <li v-for="(techno, index) in software.technologies" :key="index">{{ techno }}</li>
+                        <li v-for="(techno, index) in software.technology" :key="index">{{ techno }}</li>
                       </ul>
                     </v-flex>
                   </v-layout>
