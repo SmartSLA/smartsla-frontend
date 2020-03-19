@@ -1,13 +1,12 @@
 <template>
   <v-chip v-if="isUserBeneficiary" color="#174dc5" class="ma-2" label text-color="white"
-    >{{ organizationLabel }}
+    >{{ contract && contract.client[0] }}
   </v-chip>
-  <v-chip v-else color="#d32f2f" class="ma-2" label text-color="white">
-    {{ organizationLabel }}
-  </v-chip>
+  <support-account v-else></support-account>
 </template>
 
 <script>
+import SupportAccount from "@/components/SupportAccount";
 export default {
   name: "organization-label",
   props: {
@@ -20,11 +19,10 @@ export default {
     },
     isUserBeneficiary() {
       return this.user && this.user.type === "beneficiary";
-    },
-    organizationLabel() {
-      return this.isUserBeneficiary ? this.contract && this.contract.client[0] : "L";
     }
+  },
+  components: {
+    SupportAccount
   }
 };
 </script>
-<style lang="stylus"></style>

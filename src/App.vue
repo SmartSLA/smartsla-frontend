@@ -7,7 +7,7 @@
       <v-toolbar clipped-left app fixed color="primary">
         <v-toolbar-title style="width: 275px" class="hidden-sm-and-down ml-0 pl-3">
           <router-link :to="{ name: routeNames.REQUESTS }">
-            <img id="header-logo" src="@/assets/logo_ossa.png" />
+            <img class="hidden-sm-and-down" id="header-logo" :src="logo" />
           </router-link>
         </v-toolbar-title>
         <v-layout row justify-space-between>
@@ -36,9 +36,10 @@
 
 <script>
 import { routeNames } from "@/router";
-import UserMenu from "@/components/UserMenu.vue";
-import LoggedMainNavigation from "@/components/LoggedMainNavigation.vue";
-import Snackbar from "@/components/Snackbar.vue";
+import ApplicationSettings from "@/services/application-settings";
+import UserMenu from "@/components/UserMenu";
+import LoggedMainNavigation from "@/components/LoggedMainNavigation";
+import Snackbar from "@/components/Snackbar";
 
 export default {
   components: {
@@ -53,6 +54,12 @@ export default {
 
     routeNames() {
       return routeNames;
+    },
+    defaultCompany() {
+      return ApplicationSettings.SUPPORT_ACCOUNT;
+    },
+    logo() {
+      return require("@/assets/" + this.defaultCompany.logo);
     }
   },
   created() {

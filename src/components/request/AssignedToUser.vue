@@ -5,7 +5,7 @@
     </v-chip>
     <span v-else>
       <span v-if="user">
-        <v-chip small class="my-0" color="#d32f2f" label text-color="white">L</v-chip>
+        <support-account></support-account>
       </span>
     </span>
     {{ (user && user.name) || $t("Not assigned yet") }}
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import SupportAccount from "@/components/SupportAccount";
 export default {
   name: "assigned-to-user",
   props: {
@@ -23,7 +24,9 @@ export default {
     contract() {
       return this.$store.getters["contract/getContractById"](this.contractId);
     }
+  },
+  components: {
+    SupportAccount
   }
 };
 </script>
-<style lang="stylus"></style>
