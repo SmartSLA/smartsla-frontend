@@ -7,12 +7,9 @@ import Request from "@/views/request/Request.vue";
 import Login from "@/views/Login.vue";
 import Dashboard from "@/views/dashboard/Dashboard.vue";
 import Satisfaction from "@/views/satisfaction/Satisfaction.vue";
-import Historic from "@/views/history/Historic.vue";
 import Contribution from "@/views/contribution/Contribution.vue";
 import Contributions from "@/views/contribution/Contributions.vue";
-import Orders from "@/views/order/Orders.vue";
 import Profile from "@/views/profile/Profile.vue";
-import Settings from "@/views/settings/Settings.vue";
 import ApplicationSettings from "@/services/application-settings";
 import Administration from "@/views/admin/Administration.vue";
 import Users from "@/views/admin/user/Users.vue";
@@ -153,14 +150,6 @@ export default new Router({
       }
     },
     {
-      path: "/historic",
-      name: routeNames.HISTORIC,
-      component: Historic,
-      meta: {
-        auth: true
-      }
-    },
-    {
       path: "/contributions",
       name: routeNames.CONTRIBUTIONS,
       component: Contributions,
@@ -172,14 +161,6 @@ export default new Router({
       path: "/contributions/:id",
       name: routeNames.CONTRIBUTION,
       component: Contribution,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/orders",
-      name: routeNames.ORDERS,
-      component: Orders,
       meta: {
         auth: true
       }
@@ -198,14 +179,6 @@ export default new Router({
       name: routeNames.RESET_PASSWORD,
       beforeEnter: () => {
         window.location.href = ApplicationSettings.SSP_URL;
-      }
-    },
-    {
-      path: "/settings",
-      name: routeNames.SETTINGS,
-      component: Settings,
-      meta: {
-        auth: true
       }
     },
     {
