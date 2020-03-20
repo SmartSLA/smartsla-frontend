@@ -5,6 +5,7 @@
         <v-card-text>
           <v-autocomplete
             v-model="users"
+            @input="searchUsers = null"
             :items="items"
             :loading="isLoading"
             :search-input.sync="searchUsers"
@@ -45,7 +46,6 @@
             </template>
           </v-autocomplete>
         </v-card-text>
-        <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :disabled="isCreating || !users || !users.length" @click="createAdministrators">
