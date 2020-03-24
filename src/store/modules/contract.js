@@ -16,7 +16,7 @@ const types = {
 
 const actions = {
   fetchContracts: ({ commit }) => {
-    return Vue.axios.getContracts().then(response => commit(types.SET_CONTRACTS, response.data));
+    return Vue.axios.getContracts().then(({ data }) => commit(types.SET_CONTRACTS, data));
   },
 
   fetchContractUsers: ({ commit }, contractId) => {
@@ -28,6 +28,12 @@ const actions = {
   fetchContractTickets: ({ commit }, contractId) => {
     return Vue.axios.getContractTicketsById(contractId).then(({ data }) => {
       commit(types.SET_CONTRACT_TICKETS, { contractId, tickets: data.list });
+    });
+  },
+
+  addUsersToContract: ({ dispatch }, { contractId, users }) => {
+    return Vue.axios.addUsersToContract(contractId, users).then(() => {
+      dispatch("fetchContractUsers", contractId);
     });
   }
 };
