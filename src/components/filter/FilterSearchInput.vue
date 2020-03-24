@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs12 md4>
+  <v-flex xs12 sm6 md8>
     <v-toolbar flat dense>
       <v-layout align-center justify-end>
         <v-text-field
@@ -10,6 +10,7 @@
           solo
           class="mt-2"
           flat
+          background-color="#eee"
           @input="searchInputChanged"
         ></v-text-field>
       </v-layout>

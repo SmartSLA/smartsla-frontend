@@ -1,7 +1,7 @@
 <template>
   <v-toolbar flat dense>
-    <v-toolbar-title class="pl-2 pr-2 grey--text hidden-sm-and-down">{{ $t("Filter by:") }}</v-toolbar-title>
-    <v-divider vertical></v-divider>
+    <v-toolbar-title class="subheading hidden-xs-only">{{ $t("Filter by:") }}</v-toolbar-title>
+    <v-divider vertical class="hidden-xs-only"></v-divider>
     <v-overflow-btn
       :items="categoriesList"
       :label="$t('Categories')"
@@ -14,7 +14,7 @@
       v-model="categoriesFilter"
       @change="categorySelected"
     ></v-overflow-btn>
-    <v-divider vertical></v-divider>
+    <v-divider vertical class="hidden-xs-only"></v-divider>
   </v-toolbar>
 </template>
 <script>

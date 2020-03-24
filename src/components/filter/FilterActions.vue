@@ -10,54 +10,67 @@
           </li>
         </ul>
       </div>
-      <div v-if="customFilters.length" class="filter-save mt-2">
-        <v-dialog v-model="dialog" :fullscreen="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm" max-width="500">
-          <template v-slot:activator="{ on }">
-            <v-layout align-center justify-space-between row>
-              <div>
-                <v-btn flat small color="default" v-on="on" v-show="isNewFilter || canUpdate">
-                  <v-icon class="mr-2">playlist_add</v-icon> {{ $i18n.t("Create new filter") }}
-                </v-btn>
-                <v-btn flat small color="warning" @click="updateCurrectFilter" v-show="canUpdate">
-                  <v-icon class="mr-2">save_alt</v-icon> {{ $i18n.t("save") }}
-                </v-btn>
-                <v-btn flat small color="error" @click="deleteDialog = true" v-show="canDelete">
-                  <v-icon class="mr-2">delete_outline</v-icon> {{ $t("Delete filter") }}
-                </v-btn>
-              </div>
-              <div>
-                <v-btn flat small color="default" @click="resetFilters">
-                  <v-icon class="mr-2">refresh</v-icon> {{ $i18n.t("reset") }}
-                </v-btn>
-              </div>
-            </v-layout>
-          </template>
-
-          <v-card class="px-0">
-            <v-card-title class="headline grey lighten-3" primary-title>
-              {{ $i18n.t("Save filter") }}
-              <v-spacer></v-spacer>
-              <v-btn icon @click="dialog = false">
-                <v-icon>close</v-icon>
-              </v-btn>
-            </v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12>
-                    <v-text-field :label="$i18n.t('Filter name')" v-model="newFilterName"></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("Save") }}</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
     </v-layout>
+    <v-dialog v-if="customFilters.length" class="d-flex" v-model="dialog" max-width="500">
+      <template v-slot:activator="{ on }">
+        <v-layout :justify-center="buttonAttributes.center" :justify-end="buttonAttributes.end">
+          <v-btn
+            :flat="buttonAttributes.flat"
+            :fab="buttonAttributes.fab"
+            small
+            color="primary"
+            v-on="on"
+            v-show="isNewFilter || canUpdate"
+          >
+            <v-icon>add</v-icon>
+            <div class="ml-2 hidden-sm-and-down">{{ $i18n.t("Create new filter") }}</div>
+          </v-btn>
+          <v-btn
+            :flat="buttonAttributes.flat"
+            :fab="buttonAttributes.fab"
+            small
+            color="success"
+            @click="updateCurrectFilter"
+            v-show="canUpdate"
+          >
+            <v-icon>done</v-icon>
+            <div class="ml-2 hidden-sm-and-down">{{ $i18n.t("save") }}</div>
+          </v-btn>
+          <v-btn
+            :flat="buttonAttributes.flat"
+            :fab="buttonAttributes.fab"
+            small
+            color="error"
+            @click="deleteDialog = true"
+            v-show="canDelete"
+          >
+            <v-icon>delete</v-icon>
+            <div class="ml-2 hidden-sm-and-down">{{ $t("Delete filter") }}</div>
+          </v-btn>
+          <v-btn :flat="buttonAttributes.flat" :fab="buttonAttributes.fab" small color="warning" @click="resetFilters">
+            <v-icon>refresh</v-icon>
+            <div class="ml-2 hidden-sm-and-down">{{ $i18n.t("reset") }}</div>
+          </v-btn>
+        </v-layout>
+      </template>
+
+      <v-card class="px-0">
+        <v-card-title class="headline grey lighten-3" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field :label="$i18n.t('Filter name')" v-model="newFilterName"></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("Save") }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-dialog
       v-model="deleteDialog"
@@ -102,6 +115,18 @@ export default {
   computed: {
     isNewFilter() {
       return !(this.storedSelectionsFilter && Object.keys(this.storedSelectionsFilter));
+    },
+    buttonAttributes() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return { fab: true, flat: true, center: true, end: false };
+        case "sm":
+          return { fab: true, flat: true, center: false, end: true };
+        case "md":
+        case "lg":
+        case "xl":
+          return { fab: false, flat: true, center: false, end: true };
+      }
     }
   },
   methods: {
