@@ -215,7 +215,6 @@ export default {
       isLoading: false,
       items: [],
       search: null,
-      clientsList: [],
       valid: true,
       user: {
         type: "",
