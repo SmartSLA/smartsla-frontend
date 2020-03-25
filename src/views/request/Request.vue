@@ -11,7 +11,7 @@
       </div>
     </v-layout>
     <v-layout row wrap justify-space-between>
-      <v-flex xs12 md12 sm12 xl7 lg8 pl-3 pr-3 pt-4>
+      <v-flex xs12 md12 sm12 xl7 lg7 pl-3 pr-3 pt-4>
         <v-card light color="white">
           <v-layout row wrap>
             <v-flex xs12 md1 sm1 lg1 xl1 class="mt-4 lbl_ticket_status">
@@ -408,7 +408,7 @@
           </v-card>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 xl5 lg4 sm12 pt-0 pl-2>
+      <v-flex xs12 md12 xl5 lg5 sm12 pt-0 pl-2>
         <v-layout row wrap pt-0>
           <v-flex xs12 md12 sm12 xl12 lg12 pt-4>
             <v-card light color="white" class="px-4 pb-3">

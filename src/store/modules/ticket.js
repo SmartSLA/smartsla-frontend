@@ -81,10 +81,7 @@ const actions = {
   updateRelatedContributions: ({ dispatch }, { ticketId, contributions = [] }) => {
     return Vue.axios
       .updateRelatedContributions(ticketId, contributions)
-      .then(() => dispatch("fetchTicketById", ticketId))
-      .catch(err => {
-        console.log(err);
-      });
+      .then(() => dispatch("fetchTicketById", ticketId));
   },
 
   addEvent: ({ dispatch }, { ticketId, event }) => {

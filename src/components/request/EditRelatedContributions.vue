@@ -69,6 +69,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
+import { isEqual } from "lodash";
 
 export default {
   name: "editRelatedContributions",
@@ -95,27 +96,28 @@ export default {
     },
 
     updateRelatedContributions() {
-      const contributionIds = this.relatedContributionList.map(contribution => contribution._id);
+      if (this.contributionsChanged) {
+        const contributionIds = this.relatedContributionList.map(contribution => contribution._id);
+        this.$store
+          .dispatch("ticket/updateRelatedContributions", {
+            ticketId: this.ticketId,
+            contributions: contributionIds
+          })
+          .then(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              color: "success",
+              message: this.$i18n.t("Related contributions updated")
+            });
 
-      this.$store
-        .dispatch("ticket/updateRelatedContributions", {
-          ticketId: this.ticketId,
-          contributions: contributionIds
-        })
-        .then(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            color: "success",
-            message: this.$i18n.t("Related contributions updated")
+            this.$emit("updated");
+          })
+          .catch(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              color: "error",
+              message: this.$i18n.t("Failed to update related contributions")
+            });
           });
-
-          this.$emit("updated");
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            color: "error",
-            message: this.$i18n.t("Failed to update related contributions")
-          });
-        });
+      }
     },
 
     removeRelatedContribution(contributionId) {
@@ -137,6 +139,10 @@ export default {
 
     routeNames() {
       return routeNames;
+    },
+
+    contributionsChanged() {
+      return !isEqual(this.contributions, this.relatedContributionList);
     }
   },
   mounted() {
