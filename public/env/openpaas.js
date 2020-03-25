@@ -5,5 +5,6 @@ window.openpaas = {
     name: "08000Linux",
     color: "#d32f2f",
     logo: "logo.png"
-  }
+  },
+  LIMESURVEY_URL: "http://limesurvey.localhost:8080/"
 };
