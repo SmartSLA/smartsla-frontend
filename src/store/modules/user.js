@@ -73,7 +73,8 @@ const getters = {
       name: getters.getDisplayName,
       email: getters.getEmail,
       type: getters.getType,
-      image: getters.getAvatarUrl
+      image: getters.getAvatarUrl,
+      phone: getters.getPhone
     };
   }
 };
