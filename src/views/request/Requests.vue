@@ -120,7 +120,7 @@
               <text-highlight :queries="highlightSearch">{{ $t(capitalize(props.item.status)) }}</text-highlight>
             </td>
             <td class="text-xs-center">
-              <span>{{ $t(cnsWording(props.item)) }}</span>
+              <span>{{ $t(capitalize(cnsWording(props.item))) }}</span>
               <cns-progress-bar
                 v-if="displayCnsProgressBar(props.item)"
                 :ticket="props.item.request"
@@ -162,7 +162,7 @@ import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import dataTableFilter from "@/components/filter/Filter";
-import { OSSA_IDS, ANOMALY_CNS_STATUS, CNS_STATUS, REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
+import { OSSA_IDS, ANOMALY_NEXT_STATUS, NEXT_STATUS, REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
@@ -630,7 +630,7 @@ export default {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
     },
     cnsWording({ status, type }) {
-      const wording = type === REQUEST_TYPE.ANOMALY ? ANOMALY_CNS_STATUS[status] : CNS_STATUS[status];
+      const wording = type === REQUEST_TYPE.ANOMALY ? ANOMALY_NEXT_STATUS[status] : NEXT_STATUS[status];
       return wording || status;
     },
     capitalize(value) {
