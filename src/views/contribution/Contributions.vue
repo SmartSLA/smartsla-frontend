@@ -64,11 +64,11 @@ export default {
       headers: [
         { text: this.$i18n.t("Contribution N°"), value: "_id" },
         { text: this.$i18n.t("Type"), value: "type" },
-        { text: this.$i18n.t("Software"), value: "software" },
+        { text: this.$i18n.t("Software"), value: "software.name" },
         { text: this.$i18n.t("Title"), value: "name" },
-        { text: this.$i18n.t("Author"), value: "author" },
-        { text: this.$i18n.t("Updated"), value: "updatedAt" },
-        { text: this.$i18n.t("Created"), value: "createdAt" },
+        { text: this.$i18n.t("Author"), value: "author.name" },
+        { text: this.$i18n.t("Updated"), value: "update" },
+        { text: this.$i18n.t("Created"), value: "creation" },
         { text: this.$i18n.t("Status"), value: "status" }
       ],
       categories: Object.keys(CONTRIBUTION_FILTERS).map(category => ({
