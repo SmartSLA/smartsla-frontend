@@ -32,3 +32,10 @@ export default {
   }
 };
 </script>
+<style lang="stylus" scoped>
+.action-links {
+  text-decoration: none;
+  color: grey;
+  cursor: pointer;
+}
+</style>
