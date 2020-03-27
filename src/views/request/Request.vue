@@ -13,71 +13,7 @@
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl7 lg7 pl-3 pr-3 pt-4>
         <v-card light color="white">
-          <v-layout row wrap>
-            <v-flex xs12 md1 sm1 lg1 xl1 class="mt-4 lbl_ticket_status">
-              <strong class="pt-4 pl-4">{{ $t("Status") }}:</strong>
-            </v-flex>
-            <v-flex xs12 md11 sm11 xl11 lg11>
-              <v-stepper class="noshadow" alt-labels>
-                <v-stepper-header>
-                  <v-stepper-step step="1" color="success" complete>{{ $t("New") }}</v-stepper-step>
-                  <v-divider v-if="ticketStatusId < 1"></v-divider>
-                  <v-divider v-else color="success"></v-divider>
-
-                  <v-stepper-step
-                    v-if="ticketStatusId < 1"
-                    step
-                    complete
-                    color="primary"
-                    complete-icon="access_time"
-                    class="current_step"
-                    >{{ $t("Supported") }}</v-stepper-step
-                  >
-                  <v-stepper-step v-else step complete color="success">{{ $t("Supported") }}</v-stepper-step>
-
-                  <v-divider v-if="ticketStatusId < 2"></v-divider>
-                  <v-divider v-else color="success"></v-divider>
-                  <v-stepper-step
-                    v-if="ticketStatusId == 1"
-                    step
-                    complete
-                    color="primary"
-                    complete-icon="access_time"
-                    class="current_step"
-                    >{{ $t("Bypassed") }}</v-stepper-step
-                  >
-                  <v-stepper-step v-else-if="ticketStatusId < 2" step>{{ $t("Bypassed") }}</v-stepper-step>
-                  <v-stepper-step v-else step complete color="success">{{ $t("Bypassed") }}</v-stepper-step>
-                  <v-divider v-if="ticketStatusId < 3"></v-divider>
-                  <v-divider v-else color="success"></v-divider>
-                  <v-stepper-step
-                    v-if="ticketStatusId == 2"
-                    step
-                    complete
-                    color="primary"
-                    complete-icon="access_time"
-                    class="current_step"
-                    >{{ $t("Resolved") }}</v-stepper-step
-                  >
-                  <v-stepper-step v-else-if="ticketStatusId < 3" step>{{ $t("Resolved") }}</v-stepper-step>
-                  <v-stepper-step v-else step complete color="success">{{ $t("Resolved") }}</v-stepper-step>
-                  <v-divider v-if="ticketStatusId < 4"></v-divider>
-                  <v-divider v-else color="success"></v-divider>
-                  <v-stepper-step
-                    v-if="ticketStatusId == 3"
-                    step
-                    complete
-                    color="primary"
-                    complete-icon="access_time"
-                    class="current_step"
-                    >{{ $t("Closed") }}</v-stepper-step
-                  >
-                  <v-stepper-step v-else-if="ticketStatusId < 4" step>{{ $t("Closed") }}</v-stepper-step>
-                  <v-stepper-step v-else step complete color="success">{{ $t("Closed") }}</v-stepper-step>
-                </v-stepper-header>
-              </v-stepper>
-            </v-flex>
-          </v-layout>
+          <ticket-status :status="request.status" :type="request.type"></ticket-status>
           <v-divider />
           <v-layout wrap>
             <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
@@ -535,12 +471,13 @@ import AttachmentsCreation from "@/components/attachments/creation/Attachments.v
 import ApplicationSettings from "@/services/application-settings";
 import editorToolbar from "@/services/helpers/default-toolbar";
 import cnsProgressBar from "@/components/CnsProgressBar";
+import { UPDATE_COMMENT, ANOMALY_NEXT_STATUS, NEXT_STATUS, REQUEST_TYPE, USER_TYPE } from "@/constants.js";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import AssignedToUser from "@/components/request/AssignedToUser";
 import UserListAssignment from "@/components/request/UserListAssignment";
 import RelatedContributions from "@/components/request/RelatedContributions";
-import { UPDATE_COMMENT, NEXT_STATUS, USER_TYPE } from "@/constants.js";
 import surveyUrl from "@/services/limesurvey/limesurvey.js";
+import TicketStatus from "@/components/request/TicketStatus";
 
 export default {
   data() {
@@ -563,7 +500,8 @@ export default {
     ClientContractLinks,
     AssignedToUser,
     UserListAssignment,
-    RelatedContributions
+    RelatedContributions,
+    TicketStatus
   },
   computed: {
     ...mapGetters({
@@ -601,29 +539,11 @@ export default {
       return this.request.survey && !!Object.values(this.request.survey).length;
     },
 
-    ticketStatusId() {
-      if (this.request.status) {
-        switch (this.request.status) {
-          case "new":
-            return 0;
-          case "supported":
-            return 1;
-          case "bypassed":
-            return 2;
-          case "resolved":
-            return 3;
-          case "closed":
-            return 4;
-        }
-      } else {
-        return 0;
-      }
-    },
-
     allowedStatusList() {
-      const currentStatus = this.request.status;
-
-      return NEXT_STATUS[currentStatus];
+      const currentStatus = this.currentStatus.toLowerCase();
+      return this.request.type === REQUEST_TYPE.ANOMALY
+        ? ANOMALY_NEXT_STATUS[currentStatus]
+        : NEXT_STATUS[currentStatus];
     },
 
     editorToolbar() {
@@ -1026,22 +946,6 @@ export default {
 
 .custom-ticket-bl {
   margin-left: 16px !important;
-}
-
-@media screen and (max-width: 780px) {
-
-  .lbl_ticket_status {
-    display: none;
-  }
-
-  .v-stepper__step {
-    padding: 24px 0 !important;;
-    flex-basis: 10px !important;;
-  }
-
-  .v-stepper__header {
-    height: 82px !important;
-  }
 }
 
 .btn-actions .v-btn {

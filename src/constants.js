@@ -121,14 +121,49 @@ export const UPDATE_COMMENT = {
 };
 export const UNDEFINED_DURATION = "P0D";
 
-export const NEXT_STATUS = {
+export const TICKET_STATUS = {
+  NEW: "new",
+  SUPPORTED: "supported",
+  BYPASSED: "bypassed",
+  RESOLVED: "resolved",
+  CLOSED: "closed"
+};
+
+export const TICKET_STATUS_ID = {
+  NEW: 0,
+  SUPPORTED: 1,
+  BYPASSED: 2,
+  RESOLVED: 3,
+  CLOSED: 4
+};
+
+export const ANOMALY_NEXT_STATUS = {
   new: "supported",
   supported: "bypassed",
   bypassed: "resolved",
   resolved: "closed"
 };
 
+export const NEXT_STATUS = {
+  new: "supported",
+  supported: "resolved",
+  resolved: "closed"
+};
+
+export const CNS_TYPES = {
+  SUPPORT: "supported",
+  BYPASS: "bypassed",
+  RESOLUTION: "resolved"
+};
+
 export const CNS_STATUS = {
+  new: "cns.state.support",
+  supported: "cns.state.resolution",
+  resolved: "cns.state.closure",
+  closed: "cns.state.closed"
+};
+
+export const ANOMALY_CNS_STATUS = {
   new: "cns.state.support",
   supported: "cns.state.bypass",
   bypassed: "cns.state.resolution",
