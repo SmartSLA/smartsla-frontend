@@ -120,7 +120,7 @@
               <text-highlight :queries="highlightSearch">{{ $t(capitalize(props.item.status)) }}</text-highlight>
             </td>
             <td class="text-xs-center">
-              <span>{{ $t(cnsWording(props.item.status)) }}</span>
+              <span>{{ $t(cnsWording(props.item)) }}</span>
               <cns-progress-bar
                 v-if="displayCnsProgressBar(props.item)"
                 :ticket="props.item.request"
@@ -162,10 +162,10 @@ import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import dataTableFilter from "@/components/filter/Filter";
+import { OSSA_IDS, ANOMALY_CNS_STATUS, CNS_STATUS, REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
-import { OSSA_IDS, CNS_STATUS } from "@/constants.js";
 const { mapState } = createNamespacedHelpers("ticket");
 
 export default {
@@ -360,7 +360,7 @@ export default {
         updatedAt: request.timestamps.updatedAt,
         createdAt: request.timestamps.createdAt,
         status: request.status,
-        cnsType: this.calculateCnsType(request.status),
+        cnsType: this.calculateCnsType(request),
         request
       }));
     },
@@ -612,11 +612,14 @@ export default {
       return match;
     },
 
-    calculateCnsType(status) {
-      if (!status) return "new";
-      if (status === "new") return "supported";
-      if (status === "supported") return "bypassed";
-      if (status === "bypassed") return "resolved";
+    calculateCnsType({ status, type }) {
+      if (!status) return TICKET_STATUS.NEW;
+      if (type !== REQUEST_TYPE.ANOMALY && status === TICKET_STATUS.SUPPORTED) {
+        return CNS_TYPES.RESOLUTION;
+      }
+      if (status === TICKET_STATUS.SUPPORTED) return CNS_TYPES.BYPASS;
+      if (status === TICKET_STATUS.NEW) return CNS_TYPES.SUPPORT;
+      if (status === TICKET_STATUS.BYPASSED) return CNS_TYPES.RESOLUTION;
       else return "";
     },
 
@@ -626,8 +629,9 @@ export default {
     getOssaConfById(ossaId) {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
     },
-    cnsWording(status) {
-      return CNS_STATUS[status] || status;
+    cnsWording({ status, type }) {
+      const wording = type === REQUEST_TYPE.ANOMALY ? ANOMALY_CNS_STATUS[status] : CNS_STATUS[status];
+      return wording || status;
     },
     capitalize(value) {
       return capitalize(value);
