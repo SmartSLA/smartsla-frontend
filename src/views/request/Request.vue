@@ -540,7 +540,7 @@ export default {
     },
 
     allowedStatusList() {
-      const currentStatus = this.currentStatus.toLowerCase();
+      const currentStatus = this.request.status.toLowerCase();
       return this.request.type === REQUEST_TYPE.ANOMALY
         ? ANOMALY_NEXT_STATUS[currentStatus]
         : NEXT_STATUS[currentStatus];
