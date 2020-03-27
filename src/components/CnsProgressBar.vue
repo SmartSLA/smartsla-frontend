@@ -20,7 +20,7 @@
           </span>
         </template>
         <span>
-          {{ $t("Time spent : ") }}
+          {{ $t("Time spent") + ": " }}
           {{ currentCnsValueInMHD | humanizeHoursDurationFilter(currentCnsValue.isNonBusinessHours) }}
           /
           {{ currentCnsValueEngagement | humanizeHoursDurationFilter(currentCnsValue.isNonBusinessHours) }}
