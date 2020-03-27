@@ -11,7 +11,7 @@
         </ul>
       </div>
       <div v-if="customFilters.length" class="filter-save mt-2">
-        <v-dialog v-model="dialog" width="500">
+        <v-dialog v-model="dialog" :fullscreen="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm" max-width="500">
           <template v-slot:activator="{ on }">
             <v-layout align-center justify-space-between row>
               <div>
@@ -34,7 +34,13 @@
           </template>
 
           <v-card class="px-0">
-            <v-card-title class="headline grey lighten-3" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
+            <v-card-title class="headline grey lighten-3" primary-title>
+              {{ $i18n.t("Save filter") }}
+              <v-spacer></v-spacer>
+              <v-btn icon @click="dialog = false">
+                <v-icon>close</v-icon>
+              </v-btn>
+            </v-card-title>
             <v-card-text>
               <v-container grid-list-md>
                 <v-layout wrap>
