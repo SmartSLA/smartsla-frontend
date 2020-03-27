@@ -95,7 +95,11 @@ export default {
     },
 
     canbeShown() {
-      return this.ticket.type !== REQUEST_TYPE.ANOMALY || this.cnsType !== CNS_TYPES.BYPASS;
+      if (this.ticket.type !== REQUEST_TYPE.ANOMALY) {
+        return this.cnsType !== CNS_TYPES.BYPASS;
+      }
+
+      return true;
     }
   },
   methods: {
