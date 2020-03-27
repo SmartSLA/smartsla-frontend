@@ -9,11 +9,11 @@
         v-on="on"
         v-if="completed"
       >
-        <span class="select-step"> {{ $t(stepName) }}</span>
+        <span :class="{ 'select-step': canEdit }"> {{ $t(stepName) }}</span>
         <small class="grey--text" v-if="date.length">{{ moment(date).format("L") }}</small>
       </v-stepper-step>
       <v-stepper-step step="" v-on="on" v-else
-        ><span class="select-step"> {{ $t(stepName) }}</span></v-stepper-step
+        ><span :class="{ 'select-step': canEdit }"> {{ $t(stepName) }}</span></v-stepper-step
       >
       <v-divider :vertical="isPublished" v-if="!isRejected"></v-divider>
     </template>
