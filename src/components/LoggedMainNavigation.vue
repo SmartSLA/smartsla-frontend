@@ -125,8 +125,7 @@ export default {
         show: true
       },
       {
-        name: routeNames.ADMINISTRATION,
-        path: routeNames.ADMINHOME,
+        name: routeNames.ADMINHOME,
         text: this.$i18n.t("Administration"),
         icon: "mdi-tune",
         show: this.$auth.check("admin")
