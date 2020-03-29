@@ -6,7 +6,7 @@ export const DEFAULT_TIMEZONE = {
 export const OSSA_IDS = [
   {
     id: 3,
-    color: "#dbc1ff",
+    color: "#512da8",
     key: "Blocking"
   },
   {
@@ -16,7 +16,7 @@ export const OSSA_IDS = [
   },
   {
     id: 1,
-    color: "#512da8",
+    color: "#dbc1ff",
     key: "Information"
   }
 ];
