@@ -16,7 +16,7 @@
             </v-flex>
             <v-flex xs2>
               <div class="text-xs-right grey--text pt-3">
-                <v-btn color="primary" fab small dark disabled :to="{ name: 'UserEdit', params: { id: reqParamId } }">
+                <v-btn color="primary" fab small dark :to="{ name: 'UserEdit', params: { id: reqParamId } }">
                   <v-icon>edit</v-icon>
                 </v-btn>
               </div>
