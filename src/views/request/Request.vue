@@ -285,6 +285,14 @@
                     <vue-editor v-model="comment" :editorToolbar="editorToolbar" v-else> </vue-editor>
                     <br />
                   </v-input>
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <attachments-creation
+                        v-bind:attachments.sync="commentCreationAttachments"
+                        :disabled="isSubmitting"
+                      />
+                    </v-flex>
+                  </v-layout>
                   <v-input prepend-icon="no-icon" class="pt-2">
                     <v-layout row wrap>
                       <v-flex xs12 md6>
@@ -315,14 +323,6 @@
                       </v-flex>
                     </v-layout>
                   </v-input>
-                  <v-layout row wrap>
-                    <v-flex xs12>
-                      <attachments-creation
-                        v-bind:attachments.sync="commentCreationAttachments"
-                        :disabled="isSubmitting"
-                      />
-                    </v-flex>
-                  </v-layout>
                   <v-layout row wrap id="submission">
                     <v-flex md4 class="hidden-sm-and-down"></v-flex>
                     <v-flex xs6 md4>
