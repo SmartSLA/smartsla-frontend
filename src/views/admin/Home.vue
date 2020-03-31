@@ -1,162 +1,41 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap>
-      <v-flex xs12 md12 lg4 pr-4 pb-4>
-        <v-card>
-          <v-card-title>
-            <v-badge left>
-              <template v-slot:badge>
-                <span>{{ userCount }}</span>
-              </template>
-              <div>
-                <h3 class="headline mb-0">
-                  <v-icon x-large>people</v-icon>
-                  {{ $t("Users") }}
-                </h3>
-              </div>
-            </v-badge>
+      <v-flex v-for="card in cards" :key="card.name" xs12 sm6 md4 lg4 xl4>
+        <v-card hover>
+          <v-card-title class="pb-0">
+            <v-icon :size="40" :color="card.icon.color">
+              {{ card.icon.value }}
+            </v-icon>
             <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.USERS }">
-              <v-icon>list</v-icon>
-            </v-btn>
-            <v-btn icon fab :to="{ name: routeNames.NEWUSER }">
-              <v-icon>add</v-icon>
-            </v-btn>
+            <v-card-title>
+              <v-layout column align-end>
+                <span class="grey--text title">
+                  {{ $t(card.name) }}
+                </span>
+                <span v-if="card.count != undefined" class="display-1 pr-4">
+                  {{ card.count }}
+                </span>
+              </v-layout>
+            </v-card-title>
           </v-card-title>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md12 lg4 pr-4 pb-4>
-        <v-card>
-          <v-card-title>
-            <v-badge left>
-              <template v-slot:badge>
-                <span>{{ teamCount }}</span>
-              </template>
-              <div>
-                <h3 class="headline mb-0">
-                  <v-icon x-large>people_outline</v-icon>
-                  {{ $t("Teams") }}
-                </h3>
-              </div>
-            </v-badge>
-            <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.TEAMS }">
-              <v-icon>list</v-icon>
-            </v-btn>
-            <v-btn icon fab :to="{ name: routeNames.NEWTEAM }">
-              <v-icon>add</v-icon>
-            </v-btn>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md12 lg4 pr-4 pb-4>
-        <v-card>
-          <v-card-title>
-            <v-badge left>
-              <template v-slot:badge>
-                <span>{{ clientCount }}</span>
-              </template>
-              <div>
-                <h3 class="headline mb-0">
-                  <v-icon x-large>account_box</v-icon>
-                  {{ $t("Clients") }}
-                </h3>
-              </div>
-            </v-badge>
-            <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.CLIENTS }">
-              <v-icon>list</v-icon>
-            </v-btn>
-            <v-btn icon fab :to="{ name: routeNames.NEWCLIENT }">
-              <v-icon>add</v-icon>
-            </v-btn>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md12 lg4 pr-4 pb-4>
-        <v-card>
-          <v-card-title>
-            <v-badge left>
-              <template v-slot:badge>
-                <span>{{ contracts.length }} </span>
-              </template>
-              <div>
-                <h3 class="headline mb-0">
-                  <v-icon x-large>assignment</v-icon>
-                  {{ $t("Contracts") }}
-                </h3>
-              </div>
-            </v-badge>
-            <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.CONTRACTS }">
-              <v-icon>list</v-icon>
-            </v-btn>
-            <v-btn icon fab :to="{ name: routeNames.NEWCONTRACT }">
-              <v-icon>add</v-icon>
-            </v-btn>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md12 lg4 pr-4 pb-4>
-        <v-card>
-          <v-card-title>
-            <v-badge left>
-              <template v-slot:badge>
-                <span>{{ softwareCount }}</span>
-              </template>
-              <div>
-                <h3 class="headline mb-0">
-                  <v-icon x-large>web</v-icon>
-                  {{ $t("Softwares") }}
-                </h3>
-              </div>
-            </v-badge>
-            <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.SOFTWARELIST }">
-              <v-icon>list</v-icon>
-            </v-btn>
-            <v-btn icon fab :to="{ name: routeNames.NEWSOFTWARE }">
-              <v-icon>add</v-icon>
-            </v-btn>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md12 lg4 pr-4 pb-4>
-        <v-card>
-          <v-card-title>
-            <v-badge left>
-              <template v-slot:badge>
-                <span>{{ contributionCount }}</span>
-              </template>
-              <div>
-                <h3 class="headline mb-0">
-                  <v-icon x-large>library_add</v-icon>
-                  {{ $t("Contributions") }}
-                </h3>
-              </div>
-            </v-badge>
-            <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.CONTRIBUTIONS }">
-              <v-icon>list</v-icon>
-            </v-btn>
-            <v-btn icon fab :to="{ name: routeNames.NEWCONTRIBUTION }">
-              <v-icon>add</v-icon>
-            </v-btn>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md12 lg4 pr-4 pb-4>
-        <v-card>
-          <v-card-title>
-            <h3 class="headline mb-0">
-              <v-icon x-large>verified_user</v-icon>
-              {{ $t("Roles") }}
-            </h3>
-            <v-spacer></v-spacer>
-            <v-btn icon fab :to="{ name: routeNames.ADMIN_ROLES }">
-              <v-icon>build</v-icon>
-            </v-btn>
-          </v-card-title>
+          <v-divider class="mx-3"></v-divider>
+          <v-card-actions class="py-3">
+            <v-layout justify-end>
+              <v-btn v-if="card.actions.list" small flat :to="{ name: card.actions.list }">
+                <v-icon>list</v-icon>
+                <div>list</div>
+              </v-btn>
+              <v-btn v-if="card.actions.add" small flat :to="{ name: card.actions.add }">
+                <v-icon>add</v-icon>
+                <div>create</div>
+              </v-btn>
+              <v-btn v-if="card.actions.roles" small flat :to="{ name: card.actions.roles }">
+                <v-icon small>build</v-icon>
+                <div>edit</div>
+              </v-btn>
+            </v-layout>
+          </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
@@ -175,8 +54,7 @@ export default {
       teams: [],
       contributions: [],
       userCount: 0,
-      teamCount: 0,
-      contractCount: 0
+      teamCount: 0
     };
   },
   mounted() {
@@ -227,40 +105,94 @@ export default {
 
     contributionCount() {
       return this.$store.getters["contribution/getContributionsCount"];
+    },
+
+    cards() {
+      return [
+        {
+          name: "Users",
+          count: this.userCount,
+          icon: {
+            color: "",
+            value: "people"
+          },
+          actions: {
+            add: this.routeNames.NEWUSER,
+            list: this.routeNames.USERS
+          }
+        },
+        {
+          name: "Teams",
+          count: this.teamCount,
+          icon: {
+            color: "",
+            value: "people_outline"
+          },
+          actions: {
+            add: this.routeNames.NEWTEAM,
+            list: this.routeNames.TEAMS
+          }
+        },
+        {
+          name: "Clients",
+          count: this.clientCount,
+          icon: {
+            color: "warning",
+            value: "account_box"
+          },
+          actions: {
+            add: this.routeNames.NEWCLIENT,
+            list: this.routeNames.CLIENTS
+          }
+        },
+        {
+          name: "Contracts",
+          count: this.contracts.length,
+          icon: {
+            color: "error",
+            value: "assignment"
+          },
+          actions: {
+            add: this.routeNames.NEWCONTRACT,
+            list: this.routeNames.CONTRACTS
+          }
+        },
+        {
+          name: "Softwares",
+          count: this.softwareCount,
+          icon: {
+            color: "primary",
+            value: "web"
+          },
+          actions: {
+            add: this.routeNames.NEWSOFTWARE,
+            list: this.routeNames.SOFTWARELIST
+          }
+        },
+        {
+          name: "Contributions",
+          count: this.contributionCount,
+          icon: {
+            color: "secondary",
+            value: "library_add"
+          },
+          actions: {
+            add: this.routeNames.NEWCONTRIBUTION,
+            list: this.routeNames.CONTRIBUTIONS
+          }
+        },
+        {
+          name: "Roles",
+          icon: {
+            color: "success",
+            value: "verified_user"
+          },
+          actions: {
+            roles: this.routeNames.ADMIN_ROLES
+          }
+        }
+      ];
     }
   }
 };
 </script>
-
-<style lang="stylus" scoped>
-.v-card__title--primary {
-  cursor: pointer;
-
-  .v-icon {
-    padding-right: 10px;
-    color: rgba(0, 0, 0, 0.87);
-  }
-}
-
-.v-card {
-  ul {
-    margin-left: 30px;
-  }
-}
-
-li {
-  padding-top: 24px !important;
-}
-
-.custom-btn-action {
-  padding-top: 9px !important;
-  margin-right: auto !important;
-  margin-left: auto !important;
-  display: block !important;
-  width: 50%;
-}
-
-.v-card__actions {
-  padding-top: 30px !important;
-}
-</style>
