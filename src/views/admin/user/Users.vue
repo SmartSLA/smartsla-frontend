@@ -64,6 +64,7 @@
         :rows-per-page-text="$t('Rows per page:')"
       >
         <template slot="items" slot-scope="props">
+          <td class="text-xs-center">{{ $t(capitalize(props.item.type)) }}</td>
           <td class="text-xs-center">
             <router-link :to="{ name: 'User', params: { id: props.item.user._id } }" class="blue-color">
               <div v-if="props.item.isdisabled == 'yes'">
@@ -72,7 +73,6 @@
               <div v-else>{{ props.item.name }}</div>
             </router-link>
           </td>
-          <td class="text-xs-center">{{ $t(capitalize(props.item.type)) }}</td>
           <td class="text-xs-center">{{ capitalize($t(props.item.role)) }}</td>
           <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
           <td class="text-xs-center">
@@ -105,11 +105,15 @@ export default {
       },
       headers: [
         {
+          text: this.$i18n.t("Type"),
+          value: "type",
+          class: "text-xs-center"
+        },
+        {
           text: this.$i18n.t("Name"),
           value: "name",
           class: "text-xs-center"
         },
-        { text: this.$i18n.t("Type"), value: "type", class: "text-xs-center" },
         {
           text: this.$i18n.t("Role"),
           value: "role",
