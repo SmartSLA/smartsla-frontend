@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     canEdit() {
-      return this.$auth.check(EXPERT_ROLE.ADMIN) || this.$auth.check(EXPERT_ROLE.EXPERT);
+      return this.$auth.check(EXPERT_ROLE.ADMIN);
     }
   }
 };
