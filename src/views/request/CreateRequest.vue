@@ -62,7 +62,7 @@
                       v-model="callNumber"
                       :label="$i18n.t('Call number')"
                       type="tel"
-                      :rules="[() => callNumber.length > 0 || $i18n.t('Required field')]"
+                      :rules="[() => (callNumber && callNumber.length > 0) || $i18n.t('Required field')]"
                       class="required-element"
                       :hint="$t('For example, +33.1.84.88.01010')"
                       persistent-hint
@@ -76,7 +76,7 @@
                       :label="$i18n.t('Meeting ID')"
                       type="text"
                       mask="###########"
-                      :rules="[() => meetingId.length > 0 || $i18n.t('Required field')]"
+                      :rules="[() => (meetingId && meetingId.length > 0) || $i18n.t('Required field')]"
                       class="required-element"
                       :hint="$t('For example, 0123456')"
                       persistent-hint
@@ -250,10 +250,10 @@
                           solo
                         >
                           <template v-slot:selection="data">
-                            {{ `#${data.item.id} - ${data.item.title}` }}
+                            {{ `#${data.item._id} - ${data.item.title}` }}
                           </template>
                           <template v-slot:item="data">
-                            {{ `#${data.item.id} - ${data.item.title}` }}
+                            {{ `#${data.item._id} - ${data.item.title}` }}
                           </template>
                           <template v-slot:append-outer>
                             <v-btn
@@ -271,16 +271,16 @@
                     </v-layout>
                     <v-layout column class="d-inline-flex ml-4 link-type">
                       <div v-for="(link, key) in linkedRequests" :key="key">
-                        <v-chip close @input="resetRelatedRequest(link.request.id)">
+                        <v-chip close @input="resetRelatedRequest(link.request._id)">
                           <v-avatar>
                             <router-link
-                              :to="{ name: routeNames.REQUEST, params: { id: link.request.id } }"
+                              :to="{ name: routeNames.REQUEST, params: { id: link.request._id } }"
                               target="_blank"
                             >
                               <v-icon small>open_in_new</v-icon>
                             </router-link>
                           </v-avatar>
-                          {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
+                          {{ `${link.link} : #${link.request._id} - ${link.request.title}` }}
                         </v-chip>
                       </div>
                     </v-layout>
@@ -710,15 +710,15 @@ export default {
       }
       return {};
     },
-    filtredRelated: function() {
-      let filtredList = this.relatedRequests;
+    filtredRelated() {
+      let filtredList = this.requests;
       const store = [];
       this.linkedRequests.forEach(storedItem => {
         store.push(storedItem.request);
       });
 
       filtredList = filtredList.filter(item => {
-        return !store.filter(request => request.id === item.id && request.title === item.title).length;
+        return !store.filter(request => request._id === item._id && request.title === item.title).length;
       });
 
       return filtredList;
@@ -752,22 +752,24 @@ export default {
   },
   watch: {
     "ticket.contract": function(newContract, oldContract) {
-      this.$http
-        .getContractTicketsById(newContract._id)
-        .then(({ data }) => {
-          this.contractTicketsCount = data.size;
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Failed to fetch contract tickets"),
-            color: "error"
+      if (newContract && newContract._id) {
+        this.$http
+          .getContractTicketsById(newContract._id)
+          .then(({ data }) => {
+            this.contractTicketsCount = data.size;
+          })
+          .catch(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Failed to fetch contract tickets"),
+              color: "error"
+            });
           });
-        });
 
-      if (oldContract && oldContract._id && oldContract._id !== newContract._id) {
-        this.$set(this.ticket, "type", "");
-        this.$set(this.ticket, "software", null);
-        this.$set(this.ticket, "severity", null);
+        if (oldContract && oldContract._id && oldContract._id !== newContract._id) {
+          this.$set(this.ticket, "type", "");
+          this.$set(this.ticket, "software", null);
+          this.$set(this.ticket, "severity", null);
+        }
       }
     },
     participants(participants) {
