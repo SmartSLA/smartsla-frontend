@@ -145,8 +145,8 @@
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.relatedRequests">
                         <li v-for="(link, key) in request.relatedRequests" :key="key">
-                          <router-link target="_blank" :to="{ name: 'Request', params: { id: link.request.id } }">
-                            {{ `${link.link} : #${link.request.id} - ${link.request.title}` }}
+                          <router-link target="_blank" :to="{ name: 'Request', params: { id: link.request._id } }">
+                            {{ `${link.link} : #${link.request._id} - ${link.request.title}` }}
                           </router-link>
                         </li>
                       </ul>
