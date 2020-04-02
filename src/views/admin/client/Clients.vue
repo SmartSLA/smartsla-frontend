@@ -36,11 +36,6 @@
             <router-link :to="{ name: 'Client', params: { id: props.item._id } }" class="blue-color">
               <status-name :name="props.item.name" :active="props.item.active" />
             </router-link>
-            <expired-label
-              :expirationDate="props.item.endDate"
-              :status="props.item.active"
-              :haveAStatus="true"
-            ></expired-label>
           </td>
           <td class="text-xs-center">{{ props.item.active ? $t("Yes") : $t("No") }}</td>
         </template>
@@ -50,7 +45,6 @@
 </template>
 
 <script>
-import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import StatusName from "@/components/StatusName";
 import { mapGetters } from "vuex";
 
@@ -91,7 +85,6 @@ export default {
     })
   },
   components: {
-    ExpiredLabel,
     StatusName
   },
   created() {
