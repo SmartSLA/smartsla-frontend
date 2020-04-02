@@ -16,8 +16,10 @@
         ></v-text-field>
         <v-select
           solo
-          :items="clients"
-          v-model="clients"
+          :items="statusList"
+          item-text="label"
+          item-value="value"
+          v-model="status"
           hide-details
           :label="$i18n.t('Status')"
           :no-data-text="$i18n.t('No data available')"
@@ -26,20 +28,11 @@
         <v-select
           solo
           :items="clients"
-          v-model="clients"
+          v-model="client"
           hide-details
-          :label="$i18n.t('Team')"
+          :label="$i18n.t('Client')"
           :no-data-text="$i18n.t('No data available')"
-          class="contracts-search-team"
-        ></v-select>
-        <v-select
-          solo
-          :items="roles"
-          v-model="roles"
-          hide-details
-          :label="$i18n.t('Commercial')"
-          :no-data-text="$i18n.t('No data available')"
-          class="contracts-search-commercial"
+          class="contracts-search-client"
         ></v-select>
         <div class="contracts-operations">
           <router-link class="contracts-actions blue-color" :to="{ name: 'NewContract' }">
@@ -48,9 +41,13 @@
           </router-link>
         </div>
       </div>
+      <div v-if="status || client" class="contracts-filters">
+        <v-chip v-if="status" @input="status = null" close>{{ $i18n.t("status") }} : {{ $i18n.t(status) }}</v-chip>
+        <v-chip v-if="client" @input="client = ''" close>{{ $i18n.t("client") }} : {{ $i18n.t(client) }}</v-chip>
+      </div>
       <v-data-table
         :headers="headers"
-        :items="contracts"
+        :items="contractsList"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
@@ -92,12 +89,15 @@
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import StatusName from "@/components/StatusName";
 import { mapGetters } from "vuex";
+import { CONTRACT_STATUS } from "@/constants.js";
 
 export default {
   data() {
     return {
       search: "",
-      clients: [],
+      client: "",
+      status: null,
+      statusList: Object.values(CONTRACT_STATUS).map(status => ({ label: this.$i18n.t(status), value: status })),
       rowsPerPageItems: [10, 25, 50],
       pagination: {
         page: 1,
@@ -117,8 +117,29 @@ export default {
   },
   computed: {
     ...mapGetters({
-      contracts: "contract/getContracts"
-    })
+      contracts: "contract/getContracts",
+      clients: "contract/getClients"
+    }),
+    contractsList() {
+      let filtered = this.contracts;
+      if (this.client) {
+        filtered = filtered.filter(item => item.client === this.client);
+      }
+      if (this.status) {
+        switch (this.status) {
+          case CONTRACT_STATUS.EXPIRED:
+            filtered = filtered.filter(item => this.moment().diff(item.endDate) > 0);
+            break;
+          case CONTRACT_STATUS.ACTIVE:
+            filtered = filtered.filter(item => item.status);
+            break;
+          case CONTRACT_STATUS.INACTIVE:
+            filtered = filtered.filter(item => !item.status);
+            break;
+        }
+      }
+      return filtered;
+    }
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
@@ -163,12 +184,11 @@ export default {
 
 .contracts-search-name,
 .contracts-search-status,
-.contracts-search-tam,
-.contracts-search-commercial,
-.contracts-search-team {
+.contracts-search-client {
   width: 200px;
 }
 
+.contracts-filters,
 .contracts-search {
   display: inline-flex !important;
   margin-bottom: 24px;

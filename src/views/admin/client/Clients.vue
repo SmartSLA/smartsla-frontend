@@ -14,6 +14,17 @@
           solo
           class="clients-search-name"
         ></v-text-field>
+        <v-select
+          solo
+          :items="statusList"
+          item-text="label"
+          item-value="value"
+          v-model="status"
+          hide-details
+          :label="$i18n.t('Status')"
+          :no-data-text="$i18n.t('No data available')"
+          class="clients-search-status"
+        ></v-select>
         <div class="clients-operations">
           <a href="#" class="clients-actions">
             <v-icon>add_circle</v-icon>
@@ -21,9 +32,12 @@
           </a>
         </div>
       </div>
+      <div v-if="status" class="clients-filters">
+        <v-chip @input="status = null" close>{{ $i18n.t("status") }} : {{ $i18n.t(status) }}</v-chip>
+      </div>
       <v-data-table
         :headers="headers"
-        :items="clients"
+        :items="clientsList"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         class="elevation-1"
@@ -53,11 +67,17 @@
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import StatusName from "@/components/StatusName";
 import { mapGetters } from "vuex";
+import { CLIENT_STATUS } from "@/constants.js";
 
 export default {
   data() {
     return {
       search: "",
+      status: null,
+      statusList: [
+        { label: this.$i18n.t(CLIENT_STATUS.ACTIVE), value: CLIENT_STATUS.ACTIVE },
+        { label: this.$i18n.t(CLIENT_STATUS.INACTIVE), value: CLIENT_STATUS.INACTIVE }
+      ],
       rowsPerPageItems: [10, 25, 50],
       pagination: {
         rowsPerPage: 10
@@ -88,7 +108,18 @@ export default {
   computed: {
     ...mapGetters({
       clients: "client/getClients"
-    })
+    }),
+    clientsList() {
+      if (this.status) {
+        switch (this.status) {
+          case CLIENT_STATUS.ACTIVE:
+            return this.clients.filter(item => item.active);
+          case CLIENT_STATUS.INACTIVE:
+            return this.clients.filter(item => !item.active);
+        }
+      }
+      return [...this.clients];
+    }
   },
   components: {
     ExpiredLabel,
@@ -139,7 +170,8 @@ export default {
   width: 300px;
 }
 
-.clients-search {
+.clients-filters,
+.clients-filters.clients-search {
   display: inline-flex !important;
   margin-bottom: 24px;
 }
