@@ -2,20 +2,27 @@
   <v-autocomplete
     :items="searchResults"
     :label="$i18n.t('Search for a client, contract or a ticket')"
-    class="pt-2 global-search-box"
-    append-icon="search"
-    background-color="white"
+    class="pt-2"
+    light
+    flat
     solo
+    clearable
+    append-icon
     hide-no-data
     item-text="name"
+    color="secondary"
+    :background-color="backgroundColor"
+    :prepend-icon="preprendIcon"
+    :prepend-inner-icon="prependInnerIcon"
     :filter="filterByGroup"
     :search-input.sync="search"
     @input="selectedItem"
+    @click:prepend="emitHiddenValue"
     return-object
   >
-    <template v-slot:item="dada">
+    <template v-slot:item="data">
       <v-list-tile-content>
-        <v-list-tile-title v-html="dada.item.name"></v-list-tile-title>
+        <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
       </v-list-tile-content>
     </template>
   </v-autocomplete>
@@ -26,6 +33,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "global-search",
+  props: ["isMobile", "hidden"],
   data() {
     return {
       search: null,
@@ -47,7 +55,16 @@ export default {
       userType: "user/getType",
       tickets: "ticket/getTickets",
       clients: "client/getClients"
-    })
+    }),
+    backgroundColor() {
+      return this.isMobile ? "" : "#eee";
+    },
+    preprendIcon() {
+      return this.isMobile ? "arrow_back" : undefined;
+    },
+    prependInnerIcon() {
+      return this.isMobile ? undefined : "search";
+    }
   },
   methods: {
     filterByGroup(item, queryText, itemText) {
@@ -67,6 +84,7 @@ export default {
           this.$router.push({ name: "Request", params: { id: item.id } });
           break;
       }
+      return this.emitHiddenValue();
     },
 
     buildSearchItems() {
@@ -101,6 +119,9 @@ export default {
       });
 
       return searchItems;
+    },
+    emitHiddenValue() {
+      this.$emit("updated-hidden", false);
     }
   },
   watch: {
@@ -114,8 +135,3 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
-.global-search-box .v-icon {
-  transform: rotate(0deg) !important;
-}
-</style>

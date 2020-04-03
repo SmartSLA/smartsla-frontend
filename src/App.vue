@@ -2,15 +2,34 @@
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
       <logged-main-navigation v-if="$auth.check()" />
-      <v-toolbar app :fixed="toolbar.fixed" :clipped-left="toolbar.clippedLeft" class="elevation-2">
-        <v-toolbar-side-icon v-if="$auth.check()" class="ml-2" @click.stop="toggleDrawer()"></v-toolbar-side-icon>
-        <v-toolbar-title style="width: 275px" class="hidden-sm-and-down ml-0 pl-3">
-          <router-link :to="{ name: routeNames.REQUESTS }">
-            <img class="hidden-sm-and-down" id="header-logo" :src="logo" />
+      <v-toolbar app light color="white" class="elevation-2" :fixed="toolbar.fixed" :clipped-left="toolbar.clippedLeft">
+        <v-toolbar-title class="d-flex align-center">
+          <v-toolbar-side-icon
+            v-if="$auth.check() && !hidden"
+            class="mx-2"
+            @click.stop="toggleDrawer()"
+          ></v-toolbar-side-icon>
+          <router-link v-if="!hidden" :to="{ name: routeNames.REQUESTS }">
+            <v-img width="150" max-height="38" class="hidden-sm-and-down" :src="logo" />
+            <v-img width="120" max-height="30" class="hidden-md-and-up" :src="logo" />
           </router-link>
         </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <user-menu v-if="$auth.check()" />
+        <v-spacer v-if="!hidden"></v-spacer>
+        <v-slide-x-reverse-transition>
+          <global-search
+            class="mx-2"
+            v-if="$auth.check()"
+            v-show="hidden || !isMobile"
+            :isMobile="isMobile"
+            :hidden="hidden"
+            @updated-hidden="getHiddenValue"
+          />
+        </v-slide-x-reverse-transition>
+        <v-spacer v-if="!hidden"></v-spacer>
+        <v-btn v-if="isMobile && $auth.check() && !hidden" icon @click="hidden = !hidden">
+          <v-icon>search</v-icon>
+        </v-btn>
+        <user-menu v-if="$auth.check() && !hidden" />
       </v-toolbar>
       <v-content>
         <v-container fluid fill-height>
@@ -33,13 +52,18 @@ import ApplicationSettings from "@/services/application-settings";
 import UserMenu from "@/components/UserMenu";
 import LoggedMainNavigation from "@/components/LoggedMainNavigation";
 import Snackbar from "@/components/Snackbar";
+import GlobalSearch from "@/components/search/GlobalSearch.vue";
 
 export default {
   components: {
     UserMenu,
     LoggedMainNavigation,
-    Snackbar
+    Snackbar,
+    GlobalSearch
   },
+  data: () => ({
+    hidden: false
+  }),
   computed: {
     routeNames() {
       return routeNames;
@@ -52,11 +76,25 @@ export default {
     },
     toolbar() {
       return this.$store.state.ui.toolbar;
+    },
+    isMobile() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return true;
+        case "sm":
+        case "md":
+        case "lg":
+        case "xl":
+          return false;
+      }
     }
   },
   methods: {
     toggleDrawer() {
       this.$store.dispatch("ui/toggleDrawer");
+    },
+    getHiddenValue(event) {
+      this.hidden = event;
     }
   },
   created() {
@@ -102,25 +140,8 @@ openpaas-login-color = #394556
   background-color: #76c43d !important;
 }
 
-.v-list.logged-main-navigation.theme--light {
-  background-color: #EEEEEE;
-  margin: -20px;
-  padding: 0px;
-}
 
-#header-logo {
-  height: 34px;
-  width: 138px;
-  margin-top: 10px;
-}
 
-.v-toolbar__title.ml-0.pl-3 {
-  width: 230px !important;
-}
-
-.v-toolbar__content {
-  background-color: #eee;
-}
 
 .file-upload .input-wrapper {
   background-color: #eee !important;
