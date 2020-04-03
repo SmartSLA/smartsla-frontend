@@ -42,7 +42,8 @@ const getters = {
   getContracts: state => Object.values(state.contracts) || [],
   getContractById: state => id => state.contracts[id],
   activeContracts: state => (Object.values(state.contracts) || []).filter(c => c.status),
-  getContractUsers: state => contractId => state.contractUsers[contractId] || []
+  getContractUsers: state => contractId => state.contractUsers[contractId] || [],
+  getClients: state => (Object.values(state.contracts) || []).map(item => item.client)
 };
 
 export default {

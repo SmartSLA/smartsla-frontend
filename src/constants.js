@@ -52,6 +52,17 @@ export const REQUEST_TYPES = [
   REQUEST_TYPE.OTHER
 ];
 
+export const CONTRACT_STATUS = {
+  EXPIRED: "expired",
+  ACTIVE: "active",
+  INACTIVE: "inactive"
+};
+
+export const CLIENT_STATUS = {
+  ACTIVE: "active",
+  INACTIVE: "inactive"
+};
+
 export const CONTRIBUTION_TYPES = ["Backport", "Correction", "Evolution"];
 
 export const CONTRIBUTION_LINK_TYPES = ["Patch link", "binary link with the path", "Other"];
