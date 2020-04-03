@@ -52,28 +52,22 @@
               <v-flex xs1 class="text-xs-right mr-4">{{ $t("From") }}</v-flex>
               <v-flex xs1>
                 <v-text-field
-                  v-model="contract.businessHours.start"
+                  v-model.number="contract.businessHours.start"
                   required
-                  type="number"
                   class="required-label"
                   mask="##"
-                  min="0"
-                  max="23"
-                  :rules="[hoursRules.required]"
+                  :rules="[hoursRules.required, hoursRules.inRange]"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>{{ $t("h") }}</v-flex>
               <v-flex xs1 class="text-xs-right mr-4">{{ $t("to") }}</v-flex>
               <v-flex xs1>
                 <v-text-field
-                  v-model="contract.businessHours.end"
+                  v-model.number="contract.businessHours.end"
                   required
-                  type="number"
                   class="required-label"
                   mask="##"
-                  min="0"
-                  max="23"
-                  :rules="[hoursRules.required]"
+                  :rules="[hoursRules.required, hoursRules.inRange]"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>{{ $t("h") }}</v-flex>
@@ -109,14 +103,14 @@
                   prepend-icon="event"
                   @blur="contract.startDate = parseDate(contract.startDate)"
                   v-on="on"
-                  :rules="[() => contract.startDate.length > 0 || $i18n.t('Required field')]"
+                  :rules="[() => (contract.startDate && contract.startDate.length > 0) || $i18n.t('Required field')]"
                 ></v-text-field>
               </template>
               <v-date-picker
                 v-model="contract.startDate"
                 no-title
                 @input="startDateModel = false"
-                :rules="[() => contract.startDate.length > 0 || $i18n.t('Required field')]"
+                :rules="[() => (contract.startDate && contract.startDate.length > 0) || $i18n.t('Required field')]"
               ></v-date-picker>
             </v-menu>
           </v-flex>
@@ -140,14 +134,14 @@
                   prepend-icon="event"
                   @blur="contract.endDate = parseDate(contract.endDate)"
                   v-on="on"
-                  :rules="[() => contract.endDate.length > 0 || $i18n.t('Required field')]"
+                  :rules="[() => (contract.endDate && contract.endDate.length > 0) || $i18n.t('Required field')]"
                 ></v-text-field>
               </template>
               <v-date-picker
                 v-model="contract.endDate"
                 no-title
                 @input="endDateModel = false"
-                :rules="[() => contract.endDate.length > 0 || $i18n.t('Required field')]"
+                :rules="[() => (contract.endDate && contract.endDate.length > 0) || $i18n.t('Required field')]"
               ></v-date-picker>
             </v-menu>
           </v-flex>
@@ -272,7 +266,8 @@ export default {
       endDateModel: false,
       valid: true,
       hoursRules: {
-        required: value => !!value || this.$i18n.t("Required field")
+        required: value => !!value || this.$i18n.t("Required field"),
+        inRange: value => (value >= 0 && value <= 23) || this.$i18n.t("invalid range")
       },
       credits: 0,
       externalLinks: []
@@ -288,10 +283,10 @@ export default {
     },
     requiredUnfilled() {
       return (
-        !this.contract.endDate.length ||
-        !this.contract.startDate.length ||
-        !Object.keys(this.contract.client).length ||
-        !this.contract.name.length
+        !(this.contract.endDate && this.contract.endDate.length) ||
+        !(this.contract.startDate && this.contract.startDate.length) ||
+        !Object.keys(this.contract.client || {}).length ||
+        !(this.contract.name && this.contract.name.length)
       );
     },
 
