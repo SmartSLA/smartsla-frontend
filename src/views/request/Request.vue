@@ -366,11 +366,11 @@
               </v-card-title>
               <v-divider></v-divider>
               <v-container v-if="request.contract && request.software && request.severity">
-                {{ $t("Supported") }}
+                {{ $t("cns.state.support") }}
                 <cns-progress-bar :ticket="request" :cnsType="'supported'" class="pt-1"></cns-progress-bar>
-                {{ $t("Bypass") }}
+                {{ $t("cns.state.bypass") }}
                 <cns-progress-bar :ticket="request" :cnsType="'bypassed'"></cns-progress-bar>
-                {{ $t("Solution") }}
+                {{ $t("cns.state.resolution") }}
                 <cns-progress-bar :ticket="request" :cnsType="'resolved'"></cns-progress-bar>
               </v-container>
               <v-container v-else>{{ $t("There is no service deadline for this ticket") }}</v-container>
