@@ -119,9 +119,8 @@ export default {
             message: this.$i18n.t("Filter saved"),
             color: "success"
           });
-          this.$http.listFilters().then(response => {
-            this.savedFilters = response.data;
-          });
+
+          this.$emit("filterCreated");
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {

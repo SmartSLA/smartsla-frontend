@@ -59,6 +59,7 @@
       @removeFilter="removeFilter"
       @filterUpdated="handleFilterUpdate"
       @filterDeleted="handleFilterDeletion"
+      @filterCreated="handleFilterCreation"
     ></FilterActions>
   </div>
 </template>
@@ -162,6 +163,10 @@ export default {
       this.canDeleteFilter = false;
       this.customFilters = [];
       this.$emit("savedFiltersUpdate");
+    },
+
+    handleFilterCreation() {
+      this.$emit("filterCreated");
     }
   },
   watch: {
