@@ -29,8 +29,8 @@ export default {
   },
 
   countTickets() {
-    return this.head("/ticketing/api/tickets", { params: { limit: 1 } }).then(response => {
-      return response.headers["x-esn-items-count"] || 0;
+    return this.head("/ticketing/api/tickets").then(({ headers }) => {
+      return headers["x-esn-items-count"] || 0;
     });
   },
 
