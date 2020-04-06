@@ -27,6 +27,7 @@
       @customFiltersUpdated="updateCustomFilters"
       @savedFilterLoaded="changePageTitle"
       @savedFiltersUpdate="fetchUserFilters"
+      @filterCreated="fetchUserFilters"
     ></dataTableFilter>
     <v-layout>
       <v-data-table
@@ -540,7 +541,7 @@ export default {
         assignedFilterMatch = false;
 
         assignedFilter.forEach(currentFilter => {
-          if (request.assignedTo) {
+          if (request.assignedTo && request.assignedTo.name) {
             assignedFilterMatch = request.assignedTo.name.toLowerCase() === currentFilter.value.toLowerCase();
           }
         });
@@ -674,8 +675,8 @@ export default {
     },
 
     fetchUserFilters() {
-      this.$http.listFilters().then(response => {
-        this.savedFilters = response.data;
+      this.$http.listFilters().then(({ data }) => {
+        this.savedFilters = data;
       });
     }
   },
