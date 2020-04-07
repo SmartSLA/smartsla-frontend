@@ -98,7 +98,7 @@
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="contract.startDate"
+                  v-model="contractStartDate"
                   persistent-hint
                   prepend-icon="event"
                   @blur="contract.startDate = parseDate(contract.startDate)"
@@ -129,7 +129,7 @@
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="contract.endDate"
+                  v-model="contractEndDate"
                   persistent-hint
                   prepend-icon="event"
                   @blur="contract.endDate = parseDate(contract.endDate)"
@@ -294,6 +294,12 @@ export default {
       const clients = this.$store.getters["client/getClients"];
 
       return clients.map(client => ({ name: client.name, clientId: client._id }));
+    },
+    contractStartDate() {
+      return this.formatDate(this.contract.startDate);
+    },
+    contractEndDate() {
+      return this.formatDate(this.contract.endDate);
     }
   },
   mounted() {
@@ -328,8 +334,7 @@ export default {
     parseDate(date) {
       if (!date) return null;
 
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      return this.moment(date).format("YYYY-MM-DD");
     },
 
     validate() {
@@ -420,6 +425,9 @@ export default {
 
     removeExternalLink(index) {
       this.externalLinks.splice(index, 1);
+    },
+    formatDate(date) {
+      return this.$options.filters.formatDateFilter(date);
     }
   }
 };
