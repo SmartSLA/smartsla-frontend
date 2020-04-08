@@ -185,13 +185,11 @@ export default new Router({
       path: "/administration",
       redirect: { path: "/" },
       components: {
-        default: Administration,
-        sidebar: () => import("@/components/admin/AdminMainSideBar.vue")
+        default: Administration
       },
       name: routeNames.ADMINISTRATION,
       meta: {
-        auth: true,
-        showSideBar: true
+        auth: true
       },
       children: [
         {

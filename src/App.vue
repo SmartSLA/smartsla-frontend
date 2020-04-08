@@ -1,23 +1,16 @@
 <template>
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
-      <v-navigation-drawer clipped fixed app v-if="$auth.check() && showNavigation">
-        <router-view name="sidebar" />
-      </v-navigation-drawer>
-      <v-toolbar clipped-left app fixed color="primary">
+      <logged-main-navigation v-if="$auth.check()" />
+      <v-toolbar app :fixed="toolbar.fixed" :clipped-left="toolbar.clippedLeft" class="elevation-2">
+        <v-toolbar-side-icon v-if="$auth.check()" class="ml-2" @click.stop="toggleDrawer()"></v-toolbar-side-icon>
         <v-toolbar-title style="width: 275px" class="hidden-sm-and-down ml-0 pl-3">
           <router-link :to="{ name: routeNames.REQUESTS }">
             <img class="hidden-sm-and-down" id="header-logo" :src="logo" />
           </router-link>
         </v-toolbar-title>
-        <v-layout row justify-space-between>
-          <v-flex grow xs2 sm2 md8>
-            <logged-main-navigation v-if="$auth.check()" />
-          </v-flex>
-          <v-flex shrink xs10 sm10 md4>
-            <user-menu v-if="$auth.check()" />
-          </v-flex>
-        </v-layout>
+        <v-spacer></v-spacer>
+        <user-menu v-if="$auth.check()" />
       </v-toolbar>
       <v-content>
         <v-container fluid fill-height>
@@ -48,10 +41,6 @@ export default {
     Snackbar
   },
   computed: {
-    showNavigation() {
-      return this.$route.matched.some(route => route.meta.showSideBar);
-    },
-
     routeNames() {
       return routeNames;
     },
@@ -60,6 +49,14 @@ export default {
     },
     logo() {
       return require("@/assets/" + this.defaultCompany.logo);
+    },
+    toolbar() {
+      return this.$store.state.ui.toolbar;
+    }
+  },
+  methods: {
+    toggleDrawer() {
+      this.$store.dispatch("ui/toggleDrawer");
     }
   },
   created() {
@@ -105,12 +102,6 @@ openpaas-login-color = #394556
   background-color: #76c43d !important;
 }
 
-.elevation-1 {
-  width: 100% !important;
-  padding-bottom: 50px;
-  background-color: #ffffff;
-}
-
 .v-list.logged-main-navigation.theme--light {
   background-color: #EEEEEE;
   margin: -20px;
@@ -129,31 +120,6 @@ openpaas-login-color = #394556
 
 .v-toolbar__content {
   background-color: #eee;
-}
-
-.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open.theme--light {
-  background-color: #2b303c;
-  width: 280px !important;
-}
-
-.v-list__tile {
-  font-size: 14px !important;
-}
-
-.v-navigation-drawer .v-icon, .v-toolbar.v-toolbar--clipped.v-toolbar--fixed.theme--light.primary .v-icon {
-  font-size: 21px !important;
-}
-
-.v-list__tile__action, .v-list__tile__avatar {
-  min-width: 40px !important;
-}
-
-.v-list.v-list--subheader.v-list--three-line.theme--light .v-list__tile__content {
-  padding-left: 15px !important;
-}
-
-.v-icon.pl-4 {
-  padding-left: 15px !important;
 }
 
 .file-upload .input-wrapper {
@@ -193,10 +159,6 @@ openpaas-login-color = #394556
 th.column.sortable.text-xs-left {
   padding: 15px !important;
   text-align: center !important;
-}
-
-.active-menu-link a {
-  color: white !important;
 }
 
 .login-bar .v-toolbar__content {
