@@ -29,7 +29,7 @@
       @savedFiltersUpdate="fetchUserFilters"
       @filterCreated="fetchUserFilters"
     ></dataTableFilter>
-    <v-layout>
+    <v-container grid-list-md class="pa-0">
       <v-data-table
         :loading="loading"
         :total-items="totalRequests"
@@ -152,7 +152,7 @@
           </v-layout>
         </template>
       </v-data-table>
-    </v-layout>
+    </v-container>
   </div>
 </template>
 
