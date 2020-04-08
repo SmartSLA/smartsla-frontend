@@ -509,9 +509,7 @@ export default {
         externalLinks: []
       },
       formDialog: false,
-      contractUsers: null,
-      contractTickets: null,
-      consumedCredits: 0
+      contractUsers: null
     };
   },
   computed: {
@@ -555,6 +553,12 @@ export default {
     },
     remaining() {
       return this.contract.credits - this.consumedCredits;
+    },
+
+    consumedCredits() {
+      const tickets = this.$store.getters["contract/getContractTickets"](this.$route.params.id);
+
+      return tickets.length;
     }
   },
   created() {
@@ -581,18 +585,12 @@ export default {
         });
       });
 
-    this.$http
-      .getContractTicketsById(contractId)
-      .then(({ data }) => {
-        this.contractTickets = data.list;
-        this.consumedCredits = data.size;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("Failed to fetch contract tickets"),
-          color: "error"
-        });
+    this.$store.dispatch("contract/fetchContractTickets", contractId).catch(() => {
+      this.$store.dispatch("ui/displaySnackbar", {
+        message: this.$i18n.t("Failed to fetch contract tickets"),
+        color: "error"
       });
+    });
   },
   methods: {
     timezone() {
