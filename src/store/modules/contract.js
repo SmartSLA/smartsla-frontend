@@ -2,14 +2,16 @@ import Vue from "vue";
 
 const state = {
   contracts: {},
-  contractUsers: {}
+  contractUsers: {},
+  contractTickets: {}
 };
 
 const types = {
   SET_CONTRACTS: "SET_CONTRACTS",
   NEW_CONTRACT: "NEW_CONTRACT",
   GET_CONTRACT: "GET_CONTRACT",
-  SET_CONTRACT_USERS: "SET_CONTRACT_USERS"
+  SET_CONTRACT_USERS: "SET_CONTRACT_USERS",
+  SET_CONTRACT_TICKETS: "SET_CONTRACT_TICKETS"
 };
 
 const actions = {
@@ -20,6 +22,12 @@ const actions = {
   fetchContractUsers: ({ commit }, contractId) => {
     return Vue.axios.getContractUsers(contractId).then(users => {
       commit(types.SET_CONTRACT_USERS, { contractId, users });
+    });
+  },
+
+  fetchContractTickets: ({ commit }, contractId) => {
+    return Vue.axios.getContractTicketsById(contractId).then(({ data }) => {
+      commit(types.SET_CONTRACT_TICKETS, { contractId, tickets: data.list });
     });
   }
 };
@@ -35,6 +43,10 @@ const mutations = {
 
   [types.SET_CONTRACT_USERS](state, { contractId, users }) {
     Vue.set(state.contractUsers, contractId, users);
+  },
+
+  [types.SET_CONTRACT_TICKETS](state, { contractId, tickets }) {
+    Vue.set(state.contractTickets, contractId, tickets);
   }
 };
 
@@ -43,6 +55,7 @@ const getters = {
   getContractById: state => id => state.contracts[id],
   activeContracts: state => (Object.values(state.contracts) || []).filter(c => c.status),
   getContractUsers: state => contractId => state.contractUsers[contractId] || [],
+  getContractTickets: state => contractId => state.contractTickets[contractId] || [],
   getClients: state => (Object.values(state.contracts) || []).map(item => item.client)
 };
 

@@ -753,10 +753,12 @@ export default {
   watch: {
     "ticket.contract": function(newContract, oldContract) {
       if (newContract && newContract._id) {
-        this.$http
-          .getContractTicketsById(newContract._id)
-          .then(({ data }) => {
-            this.contractTicketsCount = data.size;
+        this.$store
+          .dispatch("contract/fetchContractTickets", newContract._id)
+          .then(() => {
+            const tickets = this.$store.getters["contract/getContractTickets"](newContract._id);
+
+            this.contractTicketsCount = tickets.length;
           })
           .catch(() => {
             this.$store.dispatch("ui/displaySnackbar", {
