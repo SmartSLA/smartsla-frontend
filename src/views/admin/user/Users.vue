@@ -131,8 +131,7 @@ export default {
           sortable: false,
           class: "text-xs-center"
         }
-      ],
-      users: []
+      ]
     };
   },
   computed: {
