@@ -141,7 +141,6 @@ export default {
     startDateModel: "",
     endDateModel: "",
     valid: true,
-    referents: [],
     syncTechnical: null
   }),
   watch: {
@@ -160,7 +159,11 @@ export default {
   computed: {
     ...mapGetters({
       softwareList: "software/getSoftwareList"
-    })
+    }),
+
+    referents() {
+      return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
+    }
   },
   methods: {
     cancel() {
@@ -197,17 +200,12 @@ export default {
   },
   created() {
     this.$store.dispatch("software/fetchSoftwareList");
-    this.$http
-      .listUsers(USER_TYPE.EXPERT)
-      .then(({ data }) => {
-        this.referents = data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("cannot fetch experts list"),
-          color: "error"
-        });
+    this.$store.dispatch("users/fetchUsersList").catch(() => {
+      this.$store.dispatch("ui/displaySnackbar", {
+        message: this.$i18n.t("cannot fetch experts list"),
+        color: "error"
       });
+    });
   }
 };
 </script>

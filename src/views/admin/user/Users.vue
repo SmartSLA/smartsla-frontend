@@ -138,7 +138,8 @@ export default {
   computed: {
     ...mapGetters({
       contracts: "contract/getContracts",
-      clients: "client/getClients"
+      clients: "client/getClients",
+      users: "users/getUsers"
     }),
 
     roles() {
@@ -173,18 +174,7 @@ export default {
     }
   },
   mounted() {
-    this.$http
-      .listUsers()
-      .then(({ data }) => {
-        this.users = data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("Failed to fetch users"),
-          color: "error"
-        });
-      });
-
+    this.$store.dispatch("users/fetchUsers");
     this.$store.dispatch("client/fetchClients");
   },
   beforeCreate() {

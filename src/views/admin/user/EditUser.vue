@@ -207,6 +207,7 @@ import { routeNames } from "@/router";
 import { USER_TYPE, USER_ROLES } from "@/constants.js";
 import Vue from "vue";
 import { mapGetters } from "vuex";
+import { cloneDeep } from "lodash";
 
 export default {
   data() {
@@ -277,32 +278,31 @@ export default {
     }
   },
   created() {
+    const { id } = this.$route.params.id;
     this.$store.dispatch("client/fetchClients");
-
-    if (this.$route.params.id) {
-      this.$http
-        .getUserById(this.$route.params.id)
-        .then(({ data }) => {
-          this.user = data;
-          if (this.user.contracts && !!this.user.contracts.length) {
-            this.user = {
-              ...this.user,
-              client: this.user.contracts[0].contract.clientId,
-              contracts: this.user.contracts.map(({ contract, role }) => ({
-                contract: contract._id,
-                role,
-                selected: true
-              }))
-            };
-          }
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Can not fetech user"),
-            color: "error"
-          });
+    this.$store
+      .dispatch("fetchUserById", id)
+      .then(() => {
+        const data = this.$store.getters["users/getUserById"](id);
+        this.user = cloneDeep(data);
+        if (this.user.contracts && !!this.user.contracts.length) {
+          this.user = {
+            ...this.user,
+            client: this.user.contracts[0].contract.clientId,
+            contracts: this.user.contracts.map(({ contract, role }) => ({
+              contract: contract._id,
+              role,
+              selected: true
+            }))
+          };
+        }
+      })
+      .catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("Can not fetech user"),
+          color: "error"
         });
-    }
+      });
   },
   methods: {
     setUser(value) {
@@ -335,8 +335,11 @@ export default {
         contracts
       };
 
-      this.$http
-        .updateUser(this.user._id, this.user)
+      this.$store
+        .dispatch("user/updateUser", {
+          userId: this.user._id,
+          user: this.user
+        })
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("updated"),
@@ -374,16 +377,15 @@ export default {
           .filter(({ selected }) => selected === true)
           .map(({ contract_id, role }) => ({ contract_id, role }));
       }
-      this.$http
-        .createUser(this.user)
-        .then(({ data, status }) => {
-          if (data && status === 201) {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("User created"),
-              color: "success"
-            });
-            this.user = {};
-          }
+
+      this.$store
+        .dispatch("users/createUser", this.user)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("User created"),
+            color: "success"
+          });
+          this.user = {};
           this.$router.push({ name: routeNames.USERS });
         })
         .catch(error => {
@@ -394,8 +396,8 @@ export default {
         });
     },
     deleteUser() {
-      this.$http
-        .deleteUser(this.$route.params.id)
+      this.$store
+        .dispatch("user/deleteUser", this.$route.params.id)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("User deleted"),
