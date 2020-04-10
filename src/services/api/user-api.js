@@ -7,8 +7,8 @@ export default {
     return this.post(`/ticketing/api/users`, options);
   },
 
-  listUsers(type) {
-    return this.get(`/ticketing/api/users`, { params: { type } });
+  listUsers() {
+    return this.get(`/ticketing/api/users`);
   },
 
   getConnectedUserId() {

@@ -50,29 +50,17 @@ export default {
   data() {
     return {
       msg: this.$i18n.t("Administration"),
-      users: [],
       teams: [],
       contributions: [],
-      userCount: 0,
-      teamCount: 0
+      teamCount: 0,
+      contractCount: 0
     };
   },
   mounted() {
     this.$store.dispatch("contribution/countContributions");
     this.$store.dispatch("software/countSoftware");
     this.$store.dispatch("client/countClients");
-    this.$http
-      .listUsers()
-      .then(response => {
-        this.users = response.data;
-        this.userCount = response.data.length;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("Failed to fetch users"),
-          color: "error"
-        });
-      });
+    this.$store.dispatch("users/fetchUsers");
 
     this.$http
       .listTeam()
@@ -96,7 +84,8 @@ export default {
     ...mapGetters({
       contracts: "contract/getContracts",
       softwareCount: "software/getSoftwareCount",
-      clientCount: "client/getClientsCount"
+      clientCount: "client/getClientsCount",
+      userCount: "users/getUserCount"
     }),
 
     routeNames() {

@@ -80,7 +80,6 @@ export default {
         value: this.$i18n.t(CONTRIBUTION_STATUS[statusName])
       })),
       software: [],
-      users: [],
       selectedCategory: null,
       keyValueFilter: false,
       filterValues: [],
@@ -186,6 +185,10 @@ export default {
       }
 
       return contributionList;
+    },
+
+    users() {
+      return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
     }
   },
   components: {
@@ -249,17 +252,7 @@ export default {
         });
       });
 
-    this.$http
-      .listUsers(USER_TYPE.EXPERT)
-      .then(({ data }) => {
-        this.users = data.map(user => user.name);
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          color: "error",
-          message: this.$i18n.t("Failed to fetch users")
-        });
-      });
+    this.$store.dispatch("users/fetchUsers");
   }
 };
 </script>

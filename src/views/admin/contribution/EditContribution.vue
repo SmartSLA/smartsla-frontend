@@ -236,8 +236,7 @@ export default {
       linkNames: CONTRIBUTION_LINK_TYPES.map(contributionLinkType => ({
         key: contributionLinkType,
         value: this.$i18n.t(contributionLinkType)
-      })),
-      users: []
+      }))
     };
   },
   computed: {
@@ -247,6 +246,10 @@ export default {
 
     isEditing() {
       return this.$route.params.id;
+    },
+
+    users() {
+      return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
     }
   },
   methods: {
@@ -357,17 +360,7 @@ export default {
 
   created() {
     this.$store.dispatch("software/fetchSoftwareList");
-    this.$http
-      .listUsers(USER_TYPE.EXPERT)
-      .then(({ data }) => {
-        this.users = data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("cannot fetch experts list"),
-          color: "error"
-        });
-      });
+    this.$store.dispatch("users/fetchUsers");
 
     if (this.$route.params.id) {
       const { id } = this.$route.params;

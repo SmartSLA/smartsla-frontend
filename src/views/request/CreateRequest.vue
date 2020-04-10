@@ -39,7 +39,7 @@
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
                       v-if="isInEdit"
-                      :items="beneficiaryList"
+                      :items="allUsers"
                       :label="$i18n.t('Beneficiary')"
                       prepend-icon="people"
                       background-color="white"
@@ -387,8 +387,6 @@ export default {
       ],
       linkedRequests: [],
       submitRequest: false,
-      beneficiaryList: [],
-      responsibleList: [],
       selectedTypes: [],
       // eslint-disable-next-line max-len,no-useless-escape
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
@@ -608,7 +606,8 @@ export default {
       displayName: "user/getDisplayName",
       avatarUrl: "user/getAvatarUrl",
       userPhone: "user/getPhone",
-      activeContracts: "contract/activeContracts"
+      activeContracts: "contract/activeContracts",
+      allUsers: "users/getUsers"
     }),
 
     isInEdit() {
@@ -748,6 +747,10 @@ export default {
     },
     contractIsExpired() {
       return this.moment().diff(this.ticket.contract.endDate) > 0;
+    },
+
+    responsibleList() {
+      return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
     }
   },
   watch: {
@@ -794,10 +797,7 @@ export default {
       });
     }
 
-    this.$http.listUsers().then(({ data }) => {
-      this.beneficiaryList = data;
-      this.responsibleList = data.filter(user => user.type === USER_TYPE.EXPERT);
-    });
+    this.$store.dispatch("users/fetchUsers");
   }
 };
 </script>

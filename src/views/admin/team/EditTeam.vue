@@ -99,7 +99,6 @@ export default {
       member: "",
       valid: true,
       users: {},
-      expertUsers: {},
       contract: "",
       contracts: {},
       team: {
@@ -118,6 +117,10 @@ export default {
   computed: {
     isNew() {
       return this.$route.params.id;
+    },
+
+    expertUsers() {
+      return this.$store.getters["users/getUserByType"](USER_TYPE.EXPERT);
     }
   },
   methods: {
@@ -184,13 +187,8 @@ export default {
           });
         });
     }
-    this.$http
-      .listUsers()
-      .then(({ data }) => {
-        this.users = data;
-        this.expertUsers = data.filter(user => user.type == USER_TYPE.EXPERT);
-      })
-      .catch(console.log);
+
+    this.$store.dispatch("users/fetchUsers");
 
     this.$http
       .getContracts()

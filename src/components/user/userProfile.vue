@@ -82,43 +82,31 @@
   </v-container>
 </template>
 <script>
-import { routeNames } from "@/router";
-
 export default {
   data() {
     return {
-      ticketingUser: {},
       reqParamId: this.$route.params.id
     };
   },
-  methods: {
-    getUser() {
-      this.$http
-        .getUserById(this.$route.params.id)
-        .then(response => {
-          this.ticketingUser = response.data;
-          if (this.ticketingUser.contracts && !!this.ticketingUser.contracts.length) {
-            this.ticketingUser = {
-              ...this.ticketingUser,
-              client: {
-                name: this.ticketingUser.contracts[0].contract.client,
-                id: this.ticketingUser.contracts[0].contract.clientId
-              }
-            };
-          }
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("failed to fetch the user"),
-            color: "error"
-          });
+  computed: {
+    ticketingUser() {
+      const { id } = this.$route.params;
+      const user = this.$store.getters["users/getUserById"](id);
+      const { contracts } = user;
+      const firstContract = contracts && contracts[0];
+      const client = {
+        name: firstContract && firstContract.client,
+        id: firstContract && firstContract.clientId
+      };
 
-          this.$router.push({ name: routeNames.REQUESTS });
-        });
+      return {
+        ...user,
+        client
+      };
     }
   },
   created() {
-    this.getUser();
+    this.$store.dispatch("fetchUserById", this.$route.params.id);
   }
 };
 </script>

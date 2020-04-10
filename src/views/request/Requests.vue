@@ -293,7 +293,6 @@ export default {
       ],
       keyValueFilter: false,
       customFilters: [],
-      userList: [],
       newFilterName: "",
       savedFilters: [],
       collectedCNS: []
@@ -302,16 +301,11 @@ export default {
   mounted() {
     this.$store.dispatch("contract/fetchContracts");
     this.$store.dispatch("software/fetchSoftwareList");
+    this.$store.dispatch("users/fetchUsers");
 
     if (this.$auth.ready() && !this.$auth.check("admin")) {
       this.headers = this.headers.filter(header => header.value != "id_ossa");
     }
-
-    this.$http.listUsers().then(response => {
-      response.data.forEach(user => {
-        this.userList.push(user);
-      });
-    });
     this.fetchUserFilters();
   },
   computed: {
@@ -322,7 +316,8 @@ export default {
       allRequests: "ticket/getTickets",
       userContracts: "user/getContracts",
       contractsList: "contract/getContracts",
-      software: "software/getSoftwareList"
+      software: "software/getSoftwareList",
+      userList: "users/getUsers"
     }),
 
     contractsName() {
