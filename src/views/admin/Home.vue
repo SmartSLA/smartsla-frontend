@@ -85,7 +85,7 @@ export default {
       contracts: "contract/getContracts",
       softwareCount: "software/getSoftwareCount",
       clientCount: "client/getClientsCount",
-      userCount: "users/getUserCount"
+      userCount: "users/getUsersCount"
     }),
 
     routeNames() {
