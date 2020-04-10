@@ -69,7 +69,9 @@
               <v-flex xs5></v-flex>
               <v-flex xs5>
                 <v-btn class="success" @click="validateFrom">{{ $t("validate") }}</v-btn>
-                <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
+                <v-btn color="error" @click="openDialog = true" v-if="isNew" :disabled="cannotBeDeleted">{{
+                  $t("Delete")
+                }}</v-btn>
               </v-flex>
             </v-layout>
           </v-form>
@@ -101,7 +103,9 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="grey darken-1" flat @click="openDialog = false">{{ $t("Close") }}</v-btn>
-                <v-btn color="error darken-1" flat @click="deleteClient">{{ $t("Delete") }}</v-btn>
+                <v-btn color="error darken-1" flat @click="deleteClient" :disabled="cannotBeDeleted">{{
+                  $t("Delete")
+                }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -177,26 +181,43 @@ export default {
     },
 
     deleteClient() {
-      this.$store
-        .dispatch("client/deleteClient", this.$route.params.id)
-        .then(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("client deleted"),
-            color: "success"
+      if (!this.cannotBeDeleted) {
+        this.$store
+          .dispatch("client/deleteClient", this.$route.params.id)
+          .then(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("client deleted"),
+              color: "success"
+            });
+            this.$router.push({ name: routeNames.CLIENTS });
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
           });
-          this.$router.push({ name: routeNames.CLIENTS });
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
+      }
+
+      this.$store.dispatch("ui/displaySnackbar", {
+        message: this.$i18n.t("client has related contracts"),
+        color: "error"
+      });
     }
   },
   computed: {
     isNew() {
       return this.$route.params.id;
+    },
+
+    cannotBeDeleted() {
+      if (this.$route.params.id) {
+        const { id } = this.$route.params;
+
+        return !!this.$store.getters["contract/getContractsByClient"](id).length;
+      }
+
+      return false;
     }
   },
   mounted() {
@@ -206,6 +227,8 @@ export default {
         const data = this.$store.getters["client/getClientById"](id);
         this.client = cloneDeep(data);
       });
+
+      this.$store.dispatch("contract/fetchContracts");
     }
   }
 };
