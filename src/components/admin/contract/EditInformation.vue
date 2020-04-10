@@ -187,7 +187,9 @@
             <v-btn :disabled="!valid || requiredUnfilled" color="success" @click="validateForm">{{
               isNew ? $t("Validate changes") : $t("Create")
             }}</v-btn>
-            <v-btn color="error" @click="openDialog = true" v-if="isNew">{{ $t("Delete") }}</v-btn>
+            <v-btn color="error" @click="openDialog = true" v-if="isNew" :disabled="cannotBeDeleted">{{
+              $t("Delete")
+            }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -203,7 +205,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="grey darken-1" flat @click="openDialog = false">close</v-btn>
-            <v-btn color="error darken-1" flat @click="deleteContract">Delete</v-btn>
+            <v-btn color="error darken-1" flat :disabled="cannotBeDeleted" @click="deleteContract">Delete</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -300,12 +302,21 @@ export default {
     },
     contractEndDate() {
       return this.formatDate(this.contract.endDate);
+    },
+
+    cannotBeDeleted() {
+      if (this.$route.params.id) {
+        return !!this.$store.getters["contract/getContractTickets"](this.$route.params.id).length;
+      }
+
+      return true;
     }
   },
   mounted() {
     if (this.$route.params.id) {
+      const { id } = this.$route.params;
       this.$http
-        .getContractById(this.$route.params.id)
+        .getContractById(id)
         .then(({ data }) => {
           this.contract = data;
           this.externalLinks = data.externalLinks;
@@ -327,6 +338,13 @@ export default {
             color: "error"
           });
         });
+
+      this.$store.dispatch("contract/fetchContractTickets", id).catch(() => {
+        this.$store.dispatch("ui/displaySnackbar", {
+          message: this.$i18n.t("Failed to fetch contract tickets"),
+          color: "error"
+        });
+      });
     }
     this.$store.dispatch("client/fetchClients");
   },
@@ -403,21 +421,23 @@ export default {
     },
 
     deleteContract() {
-      this.$http
-        .deleteContract(this.contract._id)
-        .then(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("contract deleted"),
-            color: "success"
+      if (!this.cannotBeDeleted) {
+        this.$http
+          .deleteContract(this.contract._id)
+          .then(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("contract deleted"),
+              color: "success"
+            });
+            this.$router.push({ name: routeNames.CONTRACTS });
+          })
+          .catch(error => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: error.response.data.error.details,
+              color: "error"
+            });
           });
-          this.$router.push({ name: routeNames.CONTRACTS });
-        })
-        .catch(error => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: error.response.data.error.details,
-            color: "error"
-          });
-        });
+      }
     },
     addExternalLink(link = { name: "", url: "" }) {
       this.externalLinks.push(link);
