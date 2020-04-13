@@ -10,8 +10,8 @@
             @click.stop="toggleDrawer()"
           ></v-toolbar-side-icon>
           <router-link v-if="!hidden" :to="{ name: routeNames.REQUESTS }">
-            <v-img width="150" max-height="38" class="hidden-sm-and-down" :src="logo" />
-            <v-img width="120" max-height="30" class="hidden-md-and-up" :src="logo" />
+            <v-img width="180" max-height="38" class="hidden-sm-and-down" :src="logo" />
+            <v-img width="140" max-height="30" class="hidden-md-and-up" :src="logo" />
           </router-link>
         </v-toolbar-title>
         <v-spacer v-if="!hidden"></v-spacer>
