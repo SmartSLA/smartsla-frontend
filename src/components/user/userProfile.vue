@@ -106,7 +106,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("fetchUserById", this.$route.params.id);
+    this.$store.dispatch("users/fetchUserById", this.$route.params.id);
   }
 };
 </script>

@@ -23,7 +23,7 @@
                   row
                   color="primary"
                   @change="initRole"
-                  :rules="[() => user.type.length > 0 || $i18n.t('Required field')]"
+                  :rules="[() => (user.type && user.type.length > 0) || $i18n.t('Required field')]"
                 >
                   <v-radio :label="$t('Beneficiary')" value="beneficiary"></v-radio>
                   <v-radio :label="$t('Expert')" value="expert"></v-radio>
@@ -82,7 +82,7 @@
               <v-flex xs8>
                 <v-text-field
                   v-model="user.name"
-                  :rules="[() => user.name.length > 0 || $i18n.t('Required field')]"
+                  :rules="[() => (user.name && user.name.length > 0) || $i18n.t('Required field')]"
                   disabled
                 ></v-text-field>
               </v-flex>
@@ -120,7 +120,7 @@
                   v-model="user.role"
                   row
                   color="primary"
-                  :rules="[() => user.role.length > 0 || $i18n.t('Required field')]"
+                  :rules="[() => (user.role && user.role.length > 0) || $i18n.t('Required field')]"
                 >
                   <v-radio v-for="role in roles" :key="role" :label="$t(role)" :value="role"></v-radio>
                 </v-radio-group>
@@ -278,10 +278,10 @@ export default {
     }
   },
   created() {
-    const { id } = this.$route.params.id;
+    const { id } = this.$route.params;
     this.$store.dispatch("client/fetchClients");
     this.$store
-      .dispatch("fetchUserById", id)
+      .dispatch("users/fetchUserById", id)
       .then(() => {
         const data = this.$store.getters["users/getUserById"](id);
         this.user = cloneDeep(data);
@@ -299,7 +299,7 @@ export default {
       })
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("Can not fetech user"),
+          message: this.$i18n.t("Cannot fetch user"),
           color: "error"
         });
       });

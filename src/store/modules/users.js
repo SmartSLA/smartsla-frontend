@@ -41,12 +41,11 @@ const actions = {
 
 const mutations = {
   [types.SET_USERS](state, users) {
-    (users || []).map(user => Vue.set(state.users, user._id, user));
+    (users || []).map(user => Vue.set(state.users, user.user, user));
   },
 
   [types.UPDATE_USER](state, user) {
-    const { _id } = user;
-    Vue.set(state.users, _id, user);
+    Vue.set(state.users, user.user, user);
   },
 
   [types.REMOVE_USER](state, userId) {
