@@ -3,11 +3,11 @@ import { cloneDeep, keyBy } from "lodash";
 
 const { mutations, getters, state } = store;
 const users = [
-  { _id: 1, name: "user1", type: "expert" },
-  { _id: 2, name: "user2", type: "expert" },
-  { _id: 3, name: "user3", type: "beneficiary" },
-  { _id: 4, name: "user3", type: "expert" },
-  { _id: 5, name: "user4", type: "beneficiary" }
+  { _id: 11, name: "user1", type: "expert", user: "1" },
+  { _id: 22, name: "user2", type: "expert", user: "2" },
+  { _id: 33, name: "user3", type: "beneficiary", user: "3" },
+  { _id: 44, name: "user3", type: "expert", user: "4" },
+  { _id: 55, name: "user4", type: "beneficiary", user: "5" }
 ];
 let stateMock;
 
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 describe("SET_USERS mutation", () => {
   it("should put the users correctly in the store", () => {
-    const expected = keyBy(users, "_id");
+    const expected = keyBy(users, "user");
 
     mutations.SET_USERS(stateMock, users);
     expect(stateMock.users instanceof Object).toBeTruthy();
@@ -29,7 +29,7 @@ describe("UPDATE_USER mutation", () => {
   it("should update the user correctly in store", () => {
     const _id = 1;
     const name = "updated user 1";
-    const user = { _id, name, type: "expert" };
+    const user = { _id, name, type: "expert", user: "1" };
 
     mutations.UPDATE_USER(stateMock, user);
     expect(stateMock.users[_id]).toBeDefined();
@@ -38,7 +38,7 @@ describe("UPDATE_USER mutation", () => {
   });
 
   it("should set the user in store if it doesn't exist", () => {
-    const newUser = { _id: 99, name: "user 99", type: "expert" };
+    const newUser = { _id: 999, name: "user 99", type: "expert", user: "99" };
 
     mutations.UPDATE_USER(stateMock, newUser);
     expect(stateMock.users[99]).toBeDefined();
@@ -103,7 +103,7 @@ describe("getUserById getter", () => {
   it("should return the requested user correctly", () => {
     mutations.SET_USERS(stateMock, users);
     const user = getters.getUserById(stateMock)(1);
-    const expected = { _id: 1, name: "user1", type: "expert" };
+    const expected = { _id: 11, name: "user1", type: "expert", user: "1" };
 
     expect(user).toBeDefined();
     expect(user instanceof Object).toBeTruthy();
