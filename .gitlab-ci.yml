@@ -163,18 +163,22 @@ docker-feature:
     variables:
       - $SKIP_BUILD_DOCKER
 
+####### Build & publish release
+
 docker-release:
   <<: *build-docker-tpl
   stage: release
   variables:
       DOCKER_HOST: "tcp://docker-dind"
       DOCKER_IMAGE_PRIVATE: "docker-registry.linagora.com:5000/smartsla-releases/smartsla-frontend"
+      DOCKER_IMAGE_PUBLIC: "smartsla/smartsla-frontend"
   script:
     - docker-tag-computing.sh ${CI_COMMIT_TAG} docker-tag-and-push.env
     - docker login -u ${REGISTRY_USER_RELEASE} -p ${REGISTRY_TOKEN_RELEASE} docker-registry.linagora.com:5000
-    - docker build . -t build:latest
-    - docker-tag-and-push.sh build:latest ${DOCKER_IMAGE_PRIVATE}
-    - docker logout docker-registry.linagora.com:5000
+    - docker login -u ${HUB_DOCKER_USER} -p ${HUB_DOCKER_TOKEN}
+    - docker build . -t localimage
+    - docker-tag-and-push.sh localimage ${DOCKER_IMAGE_PRIVATE} ${DOCKER_IMAGE_PUBLIC}
+    - docker logout
   only:
     - tags@linagora/lgs/smartsla/smartsla-frontend
   except:
@@ -189,14 +193,16 @@ mark-as-latest:
       GIT_STRATEGY: none
       DOCKER_HOST: "tcp://docker-dind"
       DOCKER_IMAGE_PRIVATE: "docker-registry.linagora.com:5000/smartsla-releases/smartsla-frontend"
+      DOCKER_IMAGE_PUBLIC: "smartsla/smartsla-frontend"
   script:
     - docker login -u ${REGISTRY_USER_RELEASE} -p ${REGISTRY_TOKEN_RELEASE} docker-registry.linagora.com:5000
+    - docker login -u ${HUB_DOCKER_USER} -p ${HUB_DOCKER_TOKEN}
     - docker-tag-computing.sh ${CI_COMMIT_TAG} docker-tags.env
     - source docker-tags.env
     - docker pull ${DOCKER_IMAGE_PRIVATE}:${DOCKER_TAG}
     - export DOCKER_TAGS=latest
-    - docker-tag-and-push.sh ${DOCKER_IMAGE_PRIVATE}:${DOCKER_TAG} ${DOCKER_IMAGE_PRIVATE}
-    - docker logout docker-registry.linagora.com:5000
+    - docker-tag-and-push.sh ${DOCKER_IMAGE_PRIVATE}:${DOCKER_TAG} ${DOCKER_IMAGE_PRIVATE} ${DOCKER_IMAGE_PUBLIC}
+    - docker logout
   when: manual
   only:
     - tags@linagora/lgs/smartsla/smartsla-frontend
