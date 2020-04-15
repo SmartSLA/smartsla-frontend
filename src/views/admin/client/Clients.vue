@@ -1,19 +1,14 @@
 <template>
-  <div v-if="$auth.ready() && $auth.check('admin')">
-    <div class="clients-list">
-      <div class="page-title">
-        <span>{{ $t("Clients list") }}</span>
-      </div>
-      <div class="clients-search">
-        <span class="clients-search-span">{{ $t("Search by:") }}</span>
-        <v-text-field
-          v-model="search"
-          :placeholder="$i18n.t('Name')"
-          single-line
-          hide-details
-          solo
-          class="clients-search-name"
-        ></v-text-field>
+  <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
+    <div class="page-title">
+      <span>{{ $t("Clients list") }}</span>
+    </div>
+    <span class="clients-search-span hidden-xs-only">{{ $t("Search by:") }}</span>
+    <v-layout row wrap>
+      <v-flex xs6 sm6 md6 lg6 xl6 pr-1 mb-1>
+        <v-text-field v-model="search" :placeholder="$i18n.t('Name')" single-line hide-details solo></v-text-field>
+      </v-flex>
+      <v-flex xs6 sm6 md6 lg6 xl6 mb-1>
         <v-select
           solo
           :items="statusList"
@@ -23,39 +18,38 @@
           hide-details
           :label="$i18n.t('Status')"
           :no-data-text="$i18n.t('No data available')"
-          class="clients-search-status"
         ></v-select>
-        <div class="clients-operations">
-          <a href="#" class="clients-actions">
-            <v-icon>add_circle</v-icon>
-            <router-link :to="{ name: 'NewClient' }" class="blue-color">{{ $t("Add client") }}</router-link>
-          </a>
-        </div>
-      </div>
-      <div v-if="status" class="clients-filters">
-        <v-chip @input="status = null" close>{{ $i18n.t("status") }} : {{ $i18n.t(status) }}</v-chip>
-      </div>
-      <v-data-table
-        :headers="headers"
-        :items="clientsList"
-        :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
-        class="elevation-1"
-        :search="search"
-        :rows-per-page-text="$t('Rows per page:')"
-      >
-        <template slot="items" slot-scope="props">
-          <!-- <td class="text-xs-center">{{ props.item.logo }}</td> -->
-          <td class="text-xs-center">
-            <router-link :to="{ name: 'Client', params: { id: props.item._id } }" class="blue-color">
-              <status-name :name="props.item.name" :active="props.item.active" />
-            </router-link>
-          </td>
-          <td class="text-xs-center">{{ props.item.active ? $t("Yes") : $t("No") }}</td>
-        </template>
-      </v-data-table>
+      </v-flex>
+    </v-layout>
+    <v-layout justify-end>
+      <v-btn flat :to="{ name: 'NewClient' }">
+        <v-icon class="mr-2">add_circle</v-icon>
+        {{ $t("Add client") }}
+      </v-btn>
+    </v-layout>
+    <div v-if="status" class="clients-filters">
+      <v-chip @input="status = null" close>{{ $i18n.t("status") }} : {{ $i18n.t(status) }}</v-chip>
     </div>
-  </div>
+    <v-data-table
+      :headers="headers"
+      :items="clientsList"
+      :rows-per-page-items="rowsPerPageItems"
+      :pagination.sync="pagination"
+      class="elevation-1"
+      :search="search"
+      :rows-per-page-text="$t('Rows per page:')"
+    >
+      <template slot="items" slot-scope="props">
+        <!-- <td class="text-xs-center">{{ props.item.logo }}</td> -->
+        <td class="text-xs-center">
+          <router-link :to="{ name: 'Client', params: { id: props.item._id } }" class="blue-color">
+            <status-name :name="props.item.name" :active="props.item.active" />
+          </router-link>
+        </td>
+        <td class="text-xs-center">{{ props.item.active ? $t("Yes") : $t("No") }}</td>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -139,10 +133,6 @@ export default {
   color: #000000;
 }
 
-.clients-list {
-  width: 100% !important;
-}
-
 .container.fluid.fill-height {
   padding: 50px;
   width: 100%;
@@ -159,19 +149,12 @@ export default {
   color: #777;
 }
 
-.clients-search-name, .clients-search-client, .clients-search-roles {
-  width: 300px;
-}
-
 .clients-filters,
 .clients-filters.clients-search {
   display: inline-flex !important;
   margin-bottom: 24px;
 }
 
-.v-input.clients-search-name, .v-input.clients-search-client {
-  margin-right: 20px !important;
-}
 
 .client-mail {
   color: #2195f2 !important;
