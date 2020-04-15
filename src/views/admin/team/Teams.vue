@@ -1,47 +1,40 @@
 <template>
-  <div v-if="$auth.ready() && $auth.check('admin')">
-    <div class="teams-list">
-      <div class="page-title">
-        <span>{{ $t("Teams list") }}</span>
-      </div>
-      <div class="teams-search">
-        <span class="teams-search-span">{{ $t("Search by:") }}</span>
-        <v-text-field
-          v-model="search"
-          :placeholder="$i18n.t('Search')"
-          single-line
-          hide-details
-          solo
-          class="teams-search-name"
-        ></v-text-field>
-        <div class="teams-operations">
-          <router-link :to="{ name: 'NewTeam' }" class="teams-actions blue-color">
-            <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add team") }}</span>
-          </router-link>
-        </div>
-      </div>
-      <v-data-table
-        :headers="headers"
-        :items="teams"
-        :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
-        class="elevation-1"
-        :search="search"
-        :rows-per-page-text="$t('Rows per page:')"
-      >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-center">
-            <router-link :to="{ name: 'Team', params: { id: props.item._id } }" class="blue-color">{{
-              props.item.name
-            }}</router-link>
-          </td>
-          <td class="text-xs-center">{{ props.item.contact }}</td>
-          <td class="text-xs-center">{{ props.item.devise }}</td>
-        </template>
-      </v-data-table>
+  <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
+    <div class="page-title">
+      <span>{{ $t("Teams list") }}</span>
     </div>
-  </div>
+    <span class="teams-search-span hidden-sm-and-down">{{ $t("Search by:") }}</span>
+    <v-layout row wrap>
+      <v-flex xs12 sm12 md12 lg12 xl12 pr-1 mb-1>
+        <v-text-field v-model="search" :placeholder="$i18n.t('Search')" single-line hide-details solo></v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout justify-end>
+      <v-btn flat :to="{ name: 'NewTeam' }">
+        <v-icon class="mr-2">add_circle</v-icon>
+        {{ $t("Add team") }}
+      </v-btn>
+    </v-layout>
+    <v-data-table
+      :headers="headers"
+      :items="teams"
+      :rows-per-page-items="rowsPerPageItems"
+      :pagination.sync="pagination"
+      class="elevation-1"
+      :search="search"
+      :rows-per-page-text="$t('Rows per page:')"
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-center">
+          <router-link :to="{ name: 'Team', params: { id: props.item._id } }" class="blue-color">{{
+            props.item.name
+          }}</router-link>
+        </td>
+        <td class="text-xs-center">{{ props.item.contact }}</td>
+        <td class="text-xs-center">{{ props.item.devise }}</td>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -110,10 +103,6 @@ export default {
   color: #000000;
 }
 
-.teams-list {
-  width: 100% !important;
-}
-
 .container.fluid.fill-height {
   padding: 50px;
   width: 100%;
@@ -128,10 +117,6 @@ export default {
   padding-top: 15px;
   width: 150px;
   color: #777;
-}
-
-.teams-search-name, .teams-search-contact, .teams-search-devise {
-  width: 300px;
 }
 
 .teams-search {
