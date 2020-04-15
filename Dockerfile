@@ -9,7 +9,7 @@ RUN npm run build
 
 # Production stage
 FROM nginx:1.13.12-alpine as production-stage
-COPY --from=build-stage /app/dist /var/www/ticketing
+COPY --from=build-stage /app/dist /var/www/smartsla
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
