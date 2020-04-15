@@ -1,4 +1,4 @@
-# TICKETING 08000LINUX
+# SmartSLA
 
 ## Project configuration
 

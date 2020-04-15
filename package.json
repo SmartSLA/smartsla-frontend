@@ -1,7 +1,10 @@
 {
-  "name": "ticketing08000linux",
+  "name": "smartsla-frontend",
   "version": "1.6.1-dev",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://ci.linagora.com/linagora/lgs/linagora/lgs/smartsla/smartsla-frontend.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
