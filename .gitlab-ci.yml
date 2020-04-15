@@ -171,7 +171,7 @@ deploy_dev:
     - npm install
     - npm update
     - git checkout -- .
-    - BASE_URL=/08000linux/ npm run build
+    - BASE_URL=/smartsla/ npm run build
     - rm -fr /srv/vue-apps/${CI_PROJECT_NAME}/*
     - cp -fr /srv/${CI_PROJECT_NAME}/dist/* /srv/vue-apps/${CI_PROJECT_NAME}/
     - cp -fr /srv/${CI_PROJECT_NAME}/production/openpaas.js /srv/vue-apps/${CI_PROJECT_NAME}/env/openpaas.js
