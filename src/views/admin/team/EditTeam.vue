@@ -120,7 +120,7 @@ export default {
     },
 
     expertUsers() {
-      return this.$store.getters["users/getUserByType"](USER_TYPE.EXPERT);
+      return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
     }
   },
   methods: {
