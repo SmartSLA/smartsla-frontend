@@ -136,9 +136,7 @@
               <v-layout>
                 <v-flex xs12 md11 sm8 xl10 lg10 pl-0>
                   <v-layout row wrap>
-                    <v-flex xs6 md2 sm6 lg2 xl2 pl-0>
-                      <strong>{{ $t("Related requests") }}:</strong>
-                    </v-flex>
+                    <v-flex xs6 md2 sm6 lg2 xl2 pl-0> </v-flex>
                     <v-flex xs10 md8 sm6 lg8 xl6 pl-0>
                       <ul v-if="request.relatedRequests">
                         <li v-for="(link, key) in request.relatedRequests" :key="key">
