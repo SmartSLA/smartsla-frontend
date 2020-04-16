@@ -13,10 +13,10 @@
       </div>
     </v-card-title>
     <v-divider class="mx-1"></v-divider>
-    <v-layout v-if="contribution">
-      <v-flex xs12 md12 sm12 xl12 lg12>
-        <v-stepper class="noshadow">
-          <v-stepper-header>
+    <v-container class="pa-0" v-if="contribution">
+      <v-stepper alt-labels class="noshadow">
+        <v-stepper-header>
+          <v-layout row justify-center>
             <contributionStep
               v-for="(stage, index) in contributionStages"
               :key="index"
@@ -25,10 +25,10 @@
               :statusStepDate="contribution.status[stage]"
               @statusChange="updateStatus"
             ></contributionStep>
-          </v-stepper-header>
-        </v-stepper>
-      </v-flex>
-    </v-layout>
+          </v-layout>
+        </v-stepper-header>
+      </v-stepper>
+    </v-container>
   </v-card>
 </template>
 <script>
