@@ -25,5 +25,9 @@ export default {
 
   getContractUsers(contractId) {
     return this.get(`/ticketing/api/contracts/${contractId}/users`).then(result => result.data || []);
+  },
+
+  addUsersToContract(contractId, users) {
+    return this.post(`/ticketing/api/contracts/${contractId}/users`, users).then(result => result.data || []);
   }
 };

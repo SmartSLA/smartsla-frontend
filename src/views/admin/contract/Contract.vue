@@ -448,16 +448,28 @@
                 <h3 class="headline">{{ $t("Human resources") }}</h3>
               </v-flex>
               <v-flex xs2>
-                <div class="text-xs-right grey--text">
-                  <v-btn
-                    color="primary"
-                    disabled
-                    fab
-                    small
-                    dark
-                    :to="{ name: 'Edit Contract', params: { id: contract._id, section: 'hr', type: 'hr' } }"
-                  >
-                    <v-icon>edit</v-icon>
+                <div class="text-xs-right">
+                  <v-dialog v-model="usersDialog" width="700">
+                    <v-card>
+                      <v-toolbar flat>
+                        <v-btn @click="usersDialog = false" fab flat small class="ml-3">
+                          <v-icon>close</v-icon>
+                        </v-btn>
+                        <v-toolbar-title>{{ $t("Add user") }}</v-toolbar-title>
+                      </v-toolbar>
+                      <v-card-text>
+                        <contract-add-users
+                          :contract="contract"
+                          :contractUsers="contractUsers"
+                          :key="ContractAddUsersComponentKey"
+                          @close="usersDialog = false"
+                          @user:added="forceRerender"
+                        />
+                      </v-card-text>
+                    </v-card>
+                  </v-dialog>
+                  <v-btn color="primary" fab small dark @click="usersDialog = true">
+                    <v-icon>add</v-icon>
                   </v-btn>
                 </div>
               </v-flex>
@@ -469,6 +481,12 @@
                 {{ $t("Beneficiaries") }}
               </v-subheader>
               <users-list :users="customers" />
+            </template>
+            <template v-if="viewers.length">
+              <v-subheader>
+                {{ $t("Viewers") }}
+              </v-subheader>
+              <users-list :users="viewers" />
             </template>
           </v-list>
         </v-card>
@@ -485,12 +503,14 @@ import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilt
 import UsersList from "@/components/user/UsersList.vue";
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import CopyEngagementsForm from "@/components/admin/contract/CopyEngagementsForm.vue";
+import ContractAddUsers from "@/components/contract/ContractAddUsers.vue";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
 
 export default {
   mixins: [SoftwareMixin],
   data() {
     return {
+      contractId: null,
       contract: {
         timezone: null,
         contact: {
@@ -509,7 +529,8 @@ export default {
         externalLinks: []
       },
       formDialog: false,
-      contractUsers: null
+      usersDialog: false,
+      ContractAddUsersComponentKey: 0
     };
   },
   computed: {
@@ -551,6 +572,9 @@ export default {
     customers() {
       return this.getUsersWithRole("customer");
     },
+    viewers() {
+      return this.getUsersWithRole("viewer");
+    },
     remaining() {
       return this.contract.credits - this.consumedCredits;
     },
@@ -559,15 +583,19 @@ export default {
       const tickets = this.$store.getters["contract/getContractTickets"](this.$route.params.id);
 
       return tickets.length;
+    },
+    contractUsers() {
+      const users = this.$store.getters["contract/getContractUsers"](this.contractId);
+
+      return users;
     }
   },
   created() {
-    var contractId = this.$route.params.id || "";
+    this.contractId = this.$route.params.id || "";
+
     this.$http
-      .getContractById(contractId)
-      .then(response => {
-        this.contract = response.data;
-      })
+      .getContractById(this.contractId)
+      .then(({ data }) => (this.contract = data))
       .catch(() => {
         this.$store.dispatch("ui/displaySnackbar", {
           message: this.$i18n.t("failed to fetch contract"),
@@ -575,17 +603,14 @@ export default {
         });
       });
 
-    this.$http
-      .getContractUsers(contractId)
-      .then(users => (this.contractUsers = users))
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("Failed to fetch users"),
-          color: "error"
-        });
+    this.$store.dispatch("contract/fetchContractTickets", this.contractId).catch(() => {
+      this.$store.dispatch("ui/displaySnackbar", {
+        message: this.$i18n.t("Failed to fetch contract tickets"),
+        color: "error"
       });
+    });
 
-    this.$store.dispatch("contract/fetchContractTickets", contractId).catch(() => {
+    this.$store.dispatch("contract/fetchContractUsers", this.contractId).catch(() => {
       this.$store.dispatch("ui/displaySnackbar", {
         message: this.$i18n.t("Failed to fetch contract tickets"),
         color: "error"
@@ -687,6 +712,9 @@ export default {
             color: "error"
           });
         });
+    },
+    forceRerender() {
+      this.ContractAddUsersComponentKey += 1;
     }
   },
   beforeCreate() {
@@ -697,7 +725,8 @@ export default {
   components: {
     UsersList,
     ExpiredLabel,
-    CopyEngagementsForm
+    CopyEngagementsForm,
+    ContractAddUsers
   }
 };
 </script>
