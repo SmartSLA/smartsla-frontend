@@ -157,7 +157,13 @@
               <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
-                  <v-timeline-item v-for="event in request.events" :key="event._id" large :ref="`event-${event._id}`">
+                  <v-timeline-item
+                    v-for="event in request.events"
+                    :key="event._id"
+                    large
+                    :ref="`event-${event._id}`"
+                    :id="`event-${event._id}`"
+                  >
                     <template v-slot:icon>
                       <v-avatar>
                         <v-img :src="`${apiUrl}/api/users/${event.author.id}/profile/avatar`"></v-img>
