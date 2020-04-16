@@ -1,11 +1,11 @@
 <template>
-  <div v-if="$auth.ready() && $auth.check('admin')">
-    <div class="contracts-list">
-      <div class="page-title">
-        <span>{{ $t("Contracts list") }}</span>
-      </div>
-      <div class="contracts-search">
-        <span class="contracts-search-span">{{ $t("Search by:") }}</span>
+  <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
+    <div class="page-title">
+      <span>{{ $t("Contracts list") }}</span>
+    </div>
+    <span class="contracts-search-span hidden-xs-only">{{ $t("Search by:") }}</span>
+    <v-layout row wrap>
+      <v-flex xs12 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Name')"
@@ -14,6 +14,8 @@
           solo
           class="contracts-search-name"
         ></v-text-field>
+      </v-flex>
+      <v-flex xs6 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-select
           solo
           :items="statusList"
@@ -25,6 +27,8 @@
           :no-data-text="$i18n.t('No data available')"
           class="contracts-search-status"
         ></v-select>
+      </v-flex>
+      <v-flex xs6 sm4 md4 lg4 xl4 mb-1>
         <v-select
           solo
           :items="clients"
@@ -34,55 +38,52 @@
           :no-data-text="$i18n.t('No data available')"
           class="contracts-search-client"
         ></v-select>
-        <div class="contracts-operations">
-          <router-link class="contracts-actions blue-color" :to="{ name: 'NewContract' }">
-            <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add contract") }}</span>
-          </router-link>
-        </div>
-      </div>
-      <div v-if="status || client" class="contracts-filters">
-        <v-chip v-if="status" @input="status = null" close>{{ $i18n.t("status") }} : {{ $i18n.t(status) }}</v-chip>
-        <v-chip v-if="client" @input="client = ''" close>{{ $i18n.t("client") }} : {{ $i18n.t(client) }}</v-chip>
-      </div>
-      <v-data-table
-        :headers="headers"
-        :items="contractsList"
-        :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
-        class="elevation-1"
-        :search="search"
-        :rows-per-page-text="$t('Rows per page:')"
-      >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-center">
-            <router-link
-              class="contracts-actions blue-color"
-              :to="{ name: 'Contract', params: { id: props.item._id } }"
-            >
-              <status-name :name="props.item.name" :active="props.item.status" />
-              <expired-label
-                :expirationDate="props.item.endDate"
-                :status="props.item.status"
-                :haveAStatus="true"
-              ></expired-label>
-            </router-link>
-          </td>
-          <td class="text-xs-center">
-            <router-link
-              v-if="$auth.check('admin')"
-              class="blue-color"
-              :to="{ name: 'Client', params: { id: props.item.clientId } }"
-              >{{ props.item.client }}
-            </router-link>
-            <span v-else> {{ props.item.client }} </span>
-          </td>
-          <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>
-          <td class="text-xs-center">{{ new Date(props.item.endDate).toDateString() }}</td>
-        </template>
-      </v-data-table>
+      </v-flex>
+    </v-layout>
+    <v-layout justify-end>
+      <v-btn flat :to="{ name: 'NewContract' }">
+        <v-icon class="mr-2">add_circle</v-icon>
+        {{ $t("Add contract") }}
+      </v-btn>
+    </v-layout>
+    <div v-if="status || client" class="contracts-filters">
+      <v-chip v-if="status" @input="status = null" close>{{ $i18n.t("status") }} : {{ $i18n.t(status) }}</v-chip>
+      <v-chip v-if="client" @input="client = ''" close>{{ $i18n.t("client") }} : {{ $i18n.t(client) }}</v-chip>
     </div>
-  </div>
+    <v-data-table
+      :headers="headers"
+      :items="contractsList"
+      :rows-per-page-items="rowsPerPageItems"
+      :pagination.sync="pagination"
+      class="elevation-1"
+      :search="search"
+      :rows-per-page-text="$t('Rows per page:')"
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-center">
+          <router-link class="contracts-actions blue-color" :to="{ name: 'Contract', params: { id: props.item._id } }">
+            <status-name :name="props.item.name" :active="props.item.status" />
+            <expired-label
+              :expirationDate="props.item.endDate"
+              :status="props.item.status"
+              :haveAStatus="true"
+            ></expired-label>
+          </router-link>
+        </td>
+        <td class="text-xs-center">
+          <router-link
+            v-if="$auth.check('admin')"
+            class="blue-color"
+            :to="{ name: 'Client', params: { id: props.item.clientId } }"
+            >{{ props.item.client }}
+          </router-link>
+          <span v-else> {{ props.item.client }} </span>
+        </td>
+        <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>
+        <td class="text-xs-center">{{ new Date(props.item.endDate).toDateString() }}</td>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -180,12 +181,6 @@ export default {
   padding-top: 15px;
   width: 100px;
   color: #777;
-}
-
-.contracts-search-name,
-.contracts-search-status,
-.contracts-search-client {
-  width: 200px;
 }
 
 .contracts-filters,

@@ -1,20 +1,14 @@
 <template>
-  <div v-if="$auth.ready() && $auth.check('admin')">
-    <div class="users-list">
-      <div class="page-title">
-        <span>{{ $t("Users list") }}</span>
-      </div>
-      <div class="users-search">
-        <span class="users-search-span">{{ $t("Search by:") }}</span>
-        <v-text-field
-          v-model="search"
-          :placeholder="$i18n.t('Name')"
-          single-line
-          hide-details
-          solo
-          class="users-filter-field"
-        >
-        </v-text-field>
+  <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
+    <div class="page-title">
+      <span>{{ $t("Users list") }}</span>
+    </div>
+    <span class="users-search-span hidden-sm-and-down">{{ $t("Search by:") }}</span>
+    <v-layout row wrap>
+      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+        <v-text-field v-model="search" :placeholder="$i18n.t('Name')" single-line hide-details solo> </v-text-field>
+      </v-flex>
+      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
         <v-select
           solo
           :items="clients"
@@ -23,9 +17,9 @@
           :label="$t('Client')"
           item-text="name"
           item-value="_id"
-          class="users-filter-field"
         ></v-select>
-
+      </v-flex>
+      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
         <v-select
           solo
           :items="contracts"
@@ -34,56 +28,52 @@
           :label="$t('Contract')"
           item-text="name"
           item-value="_id"
-          class="users-filter-field"
         ></v-select>
+      </v-flex>
+      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+        <v-select solo :items="roles" v-model="role" hide-details :label="$i18n.t('Roles')"></v-select>
+      </v-flex>
+    </v-layout>
+    <v-layout justify-end>
+      <v-btn flat @click="resetFilters">
+        <v-icon class="mr-2">refresh</v-icon>
+        {{ $i18n.t("reset") }}
+      </v-btn>
 
-        <v-select solo :items="roles" v-model="role" hide-details :label="$i18n.t('Roles')" class="users-filter-field">
-        </v-select>
-
-        <div>
-          <v-btn flat @click="resetFilters">
-            <v-icon class="mr-2">refresh</v-icon>
-            {{ $i18n.t("reset") }}
-          </v-btn>
-        </div>
-
-        <div class="users-operations">
-          <router-link :to="{ name: 'NewUser' }" class="users-actions blue-color">
-            <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add user") }}</span>
+      <v-btn flat :to="{ name: 'NewUser' }">
+        <v-icon class="mr-2">add_circle</v-icon>
+        {{ $t("Add user") }}
+      </v-btn>
+    </v-layout>
+    <v-data-table
+      :headers="headers"
+      :items="usersList"
+      :rows-per-page-items="rowsPerPageItems"
+      :pagination.sync="pagination"
+      class="elevation-1"
+      :search="search"
+      :rows-per-page-text="$t('Rows per page:')"
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-center">{{ $t(capitalize(props.item.type)) }}</td>
+        <td class="text-xs-center">
+          <router-link :to="{ name: 'User', params: { id: props.item.user._id } }" class="blue-color">
+            <div v-if="props.item.isdisabled == 'yes'">
+              <strike>{{ props.item.name }}</strike>
+            </div>
+            <div v-else>{{ props.item.name }}</div>
           </router-link>
-        </div>
-      </div>
-      <v-data-table
-        :headers="headers"
-        :items="usersList"
-        :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
-        class="elevation-1"
-        :search="search"
-        :rows-per-page-text="$t('Rows per page:')"
-      >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ $t(capitalize(props.item.type)) }}</td>
-          <td class="text-xs-center">
-            <router-link :to="{ name: 'User', params: { id: props.item.user._id } }" class="blue-color">
-              <div v-if="props.item.isdisabled == 'yes'">
-                <strike>{{ props.item.name }}</strike>
-              </div>
-              <div v-else>{{ props.item.name }}</div>
-            </router-link>
-          </td>
-          <td class="text-xs-center">{{ capitalize($t(props.item.role)) }}</td>
-          <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
-          <td class="text-xs-center">
-            <a :href="`tel://${props.item.phone}`">
-              {{ props.item.phone }}
-            </a>
-          </td>
-        </template>
-      </v-data-table>
-    </div>
-  </div>
+        </td>
+        <td class="text-xs-center">{{ capitalize($t(props.item.role)) }}</td>
+        <td class="text-xs-center user-mail blue-color">{{ props.item.email }}</td>
+        <td class="text-xs-center">
+          <a :href="`tel://${props.item.phone}`">
+            {{ props.item.phone }}
+          </a>
+        </td>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -192,10 +182,6 @@ export default {
 .page-title {
   color: #777777;
   margin-bottom: 20px;
-}
-
-.users-list {
-  width: 100% !important;
 }
 
 .container.fluid.fill-height {

@@ -1,10 +1,10 @@
 <template>
-  <div v-if="$auth.ready() && $auth.check('admin')">
-    <div class="softwares-list">
-      <div class="page-title">
-        <span>{{ $t("Software list") }}</span>
-      </div>
-      <div class="softwares-search">
+  <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
+    <div class="page-title">
+      <span>{{ $t("Software list") }}</span>
+    </div>
+    <v-layout row wrap>
+      <v-flex xs12 sm12 md12 lg12 xl12 mb-1>
         <v-text-field
           v-model="search"
           :placeholder="$i18n.t('Search')"
@@ -14,36 +14,36 @@
           append-icon="search"
           class="softwares-search-name"
         ></v-text-field>
-        <div class="softwares-operations">
-          <router-link :to="{ name: 'NewSoftware' }" class="softwares-actions blue-color">
-            <v-icon>add_circle</v-icon>
-            <span>{{ $t("Add new software") }}</span>
-          </router-link>
-        </div>
-      </div>
-      <v-data-table
-        :headers="headers"
-        :items="software"
-        :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
-        class="elevation-1"
-        :search="search"
-        :rows-per-page-text="$t('Rows per page:')"
-      >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.logo }}</td>
-          <td class="text-xs-center">
-            <router-link :to="{ name: 'Software', params: { id: props.item._id } }" class="blue-color">{{
-              props.item.name
-            }}</router-link>
-          </td>
-          <td class="text-xs-center">{{ props.item.description }}</td>
-          <td class="text-xs-center">{{ props.item.technology || $t("Not specified") }}</td>
-          <td class="text-xs-center">{{ props.item.group }}</td>
-        </template>
-      </v-data-table>
-    </div>
-  </div>
+      </v-flex>
+    </v-layout>
+    <v-layout justify-end>
+      <v-btn flat :to="{ name: 'NewSoftware' }">
+        <v-icon class="mr-2">add_circle</v-icon>
+        {{ $t("Add new software") }}
+      </v-btn>
+    </v-layout>
+    <v-data-table
+      :headers="headers"
+      :items="software"
+      :rows-per-page-items="rowsPerPageItems"
+      :pagination.sync="pagination"
+      class="elevation-1"
+      :search="search"
+      :rows-per-page-text="$t('Rows per page:')"
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-center">{{ props.item.logo }}</td>
+        <td class="text-xs-center">
+          <router-link :to="{ name: 'Software', params: { id: props.item._id } }" class="blue-color">{{
+            props.item.name
+          }}</router-link>
+        </td>
+        <td class="text-xs-center">{{ props.item.description }}</td>
+        <td class="text-xs-center">{{ props.item.technology || $t("Not specified") }}</td>
+        <td class="text-xs-center">{{ props.item.group }}</td>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -139,17 +139,9 @@ export default {
   color: #777;
 }
 
-.softwares-search-name, .softwares-search-contact {
-  width: 300px;
-}
-
 .softwares-search {
   display: inline-flex !important;
   margin-bottom: 24px;
-}
-
-.v-input.softwares-search-name, .v-input.softwares-search-contact {
-  margin-right: 20px !important;
 }
 
 .user-mail {
