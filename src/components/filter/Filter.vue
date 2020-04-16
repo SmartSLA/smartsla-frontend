@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-layout column mb-2 mt-4 class="filter_layout">
-      <v-flex xs12 md4 mb-2>
+      <v-flex xs12 sm11 md9 lg6 mb-2>
         <FilterCategories :categories="categories" @filterCategoryChanged="changeFilterCategory"></FilterCategories>
       </v-flex>
-      <v-flex xs12 md4 mb-4>
+      <v-flex xs12 sm9 md9 lg5 mb-4>
         <v-toolbar flat dense v-if="!showStoredFilters">
           <v-layout align-center justify-end>
             <v-overflow-btn
@@ -46,7 +46,7 @@
         </v-toolbar>
         <FilterLoader v-else :savedFilters="savedFilters" @filterLoaded="loadFilter"></FilterLoader>
       </v-flex>
-      <v-flex md4 sm3 mb-4 class="hidden-xs-only"></v-flex>
+      <v-flex sm1 md1 lg2 mb-4 class="hidden-xs-only"></v-flex>
       <FilterSearchInput @filterSearchInputChanged="changeFilterSearch"></FilterSearchInput>
     </v-layout>
     <FilterActions
