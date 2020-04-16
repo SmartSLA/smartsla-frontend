@@ -26,8 +26,8 @@ const actions = {
     return Vue.axios.getUserById(userId).then(({ data }) => commit(types.UPDATE_USER, data));
   },
 
-  createUser: ({ commit }, user) => {
-    return Vue.axios.createUser(user).then(({ data }) => commit(types.UPDATE_USER, data));
+  createUser: ({ dispatch }, user) => {
+    return Vue.axios.createUser(user).then(({ data }) => dispatch("fetchUserById", data._id));
   },
 
   updateUser: ({ dispatch }, { userId, user }) => {
@@ -41,7 +41,7 @@ const actions = {
 
 const mutations = {
   [types.SET_USERS](state, users) {
-    (users || []).map(user => Vue.set(state.users, user.user, user));
+    (users || []).map(user => Vue.set(state.users, user.user._id, user));
   },
 
   [types.UPDATE_USER](state, user) {

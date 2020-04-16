@@ -280,29 +280,31 @@ export default {
   created() {
     const { id } = this.$route.params;
     this.$store.dispatch("client/fetchClients");
-    this.$store
-      .dispatch("users/fetchUserById", id)
-      .then(() => {
-        const data = this.$store.getters["users/getUserById"](id);
-        this.user = cloneDeep(data);
-        if (this.user.contracts && !!this.user.contracts.length) {
-          this.user = {
-            ...this.user,
-            client: this.user.contracts[0].contract.clientId,
-            contracts: this.user.contracts.map(({ contract, role }) => ({
-              contract: contract._id,
-              role,
-              selected: true
-            }))
-          };
-        }
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("Cannot fetch user"),
-          color: "error"
+    if (id) {
+      this.$store
+        .dispatch("users/fetchUserById", id)
+        .then(() => {
+          const data = this.$store.getters["users/getUserById"](id);
+          this.user = cloneDeep(data);
+          if (this.user.contracts && !!this.user.contracts.length) {
+            this.user = {
+              ...this.user,
+              client: this.user.contracts[0].contract.clientId,
+              contracts: this.user.contracts.map(({ contract, role }) => ({
+                contract: contract._id,
+                role,
+                selected: true
+              }))
+            };
+          }
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Cannot fetch user"),
+            color: "error"
+          });
         });
-      });
+    }
   },
   methods: {
     setUser(value) {
