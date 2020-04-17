@@ -174,7 +174,7 @@ export default {
           { text: this.$i18n.t("Roles"), path: routeNames.ADMIN_ROLES },
           { text: this.$i18n.t("Clients"), path: routeNames.CLIENTS },
           { text: this.$i18n.t("Contracts"), path: routeNames.CONTRACTS },
-          { text: this.$i18n.t("Sofware"), path: routeNames.SOFTWARELIST }
+          { text: this.$i18n.t("Softwares"), path: routeNames.SOFTWARELIST }
         ]
       }
     ];
