@@ -30,11 +30,14 @@
         :disabled="!drawer.mini && !menuItem.subMenuItems"
         style="width:100%"
         content-class="elevation-1"
+        close-on-click
+        close-on-content-click
       >
         <v-list class="pt-0" slot="activator" style="width:100%">
           <v-list-tile
             :class="{ 'active-menu-link': menuItem.name == currentActiveMenu }"
             :to="{ name: menuItem.path || menuItem.name }"
+            :disabled="menuItem.subMenuItems && $vuetify.breakpoint.width <= '768'"
           >
             <v-list-tile-action>
               <v-icon>{{ menuItem.icon }}</v-icon>
@@ -48,7 +51,7 @@
           </v-list-tile>
         </v-list>
         <v-list dense>
-          <v-list-tile :to="{ name: menuItem.path || menuItem.name }" v-if="drawer.mini">
+          <v-list-tile :to="{ name: menuItem.path || menuItem.name }">
             <v-list-tile-title :class="{ 'with-badge': menuItem.count }" class="font-weight-bold">
               {{ menuItem.text }}
             </v-list-tile-title>
@@ -56,7 +59,7 @@
               <v-chip small>{{ menuItem.count }}</v-chip>
             </v-list-tile-avatar>
           </v-list-tile>
-          <v-divider v-if="drawer.mini && menuItem.subMenuItems"></v-divider>
+          <v-divider v-if="menuItem.subMenuItems"></v-divider>
           <v-list-tile
             v-for="subMenuItem in menuItem.subMenuItems"
             :key="subMenuItem.icon"
@@ -240,9 +243,17 @@ ticketing-color = #2196f3
   margin-left: 4px !important;
 }
 
-.v-navigation-drawer  .v-list__tile--active {
+.v-navigation-drawer .v-list__tile--active {
   background: rgba(0,0,0,0.04);
   box-shadow: inset 3px 0 0 ticketing-color;
+}
+
+.v-navigation-drawer .theme--light.v-list .v-list--disabled {
+  color: inherit;
+}
+
+.v-navigation-drawer .v-menu__activator--active .theme--light.v-list:hover .v-list--disabled {
+  background: rgba(0,0,0,0.04);
 }
 
 .v-navigation-drawer > .v-list .v-list__tile--active .v-list__tile__title {
