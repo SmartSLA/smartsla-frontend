@@ -29,8 +29,8 @@ describe("The CNS humanize duration filter", () => {
   });
 
   it("should handle no value passed", () => {
-    expect(humanizeHoursDurationFilter({}, false)).toEqual(0);
-    expect(humanizeHoursDurationFilter(undefined, false)).toEqual(0);
-    expect(humanizeHoursDurationFilter("", false)).toEqual(0);
+    expect(humanizeHoursDurationFilter({}, false)).toEqual("0");
+    expect(humanizeHoursDurationFilter(undefined, false)).toEqual("0");
+    expect(humanizeHoursDurationFilter("", false)).toEqual("0");
   });
 });
