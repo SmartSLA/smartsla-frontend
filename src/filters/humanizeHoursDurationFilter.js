@@ -17,5 +17,5 @@ export function humanizeHoursDurationFilter(value, isInBusinessHours) {
     }
   }
 
-  return humanizedDuration;
+  return humanizedDuration.toString();
 }
