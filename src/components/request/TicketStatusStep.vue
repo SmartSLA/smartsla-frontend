@@ -1,17 +1,22 @@
 <template>
   <v-menu v-if="canBeDisplayed">
     <template v-slot:activator="{}">
-      <v-stepper-step
-        v-if="ticketStatusId < stepKey"
-        step
-        :complete="nextStatus === stepKey"
-        color="primary"
-        complete-icon="access_time"
-        class="current_step"
-        >{{ $t(statusNameDisplay) }}</v-stepper-step
-      >
-      <v-stepper-step v-else step complete color="success">{{ $t(statusNameDisplay) }}</v-stepper-step>
-      <v-divider v-if="!isClosed" :class="{ success: ticketStatusId > stepKey }"></v-divider>
+      <v-flex v-if="ticketStatusId < stepKey" xs1 sm4 md3 lg3>
+        <v-stepper-step
+          step
+          :complete="nextStatus === stepKey"
+          color="primary"
+          complete-icon="access_time"
+          class="px-0 caption"
+          >{{ $t(statusNameDisplay) }}</v-stepper-step
+        >
+      </v-flex>
+      <v-flex v-else xs1 sm4 md3 lg3>
+        <v-stepper-step step complete color="success" class="px-0 ml-2 caption">
+          {{ $t(statusNameDisplay) }}
+        </v-stepper-step>
+      </v-flex>
+      <v-divider v-if="!isClosed" :class="{ success: ticketStatusId > stepKey }" class="hidden-xs-only"></v-divider>
     </template>
   </v-menu>
 </template>

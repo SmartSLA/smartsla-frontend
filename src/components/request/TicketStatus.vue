@@ -1,9 +1,7 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12 md1 sm1 lg1 xl1 class="mt-4 lbl_ticket_status">
-      <strong class="pt-4 pl-4">{{ $t("Status") }}</strong>
-    </v-flex>
-    <v-flex xs12 md11 sm11 xl11 lg11>
+  <v-layout row align-center>
+    <strong class="hidden-sm-and-down ml-5 mb-3">{{ $t("Status") }}:</strong>
+    <v-flex xs12 sm12 md12 lg12 xl12 pb-2>
       <v-stepper class="noshadow" alt-labels>
         <v-stepper-header>
           <ticket-status-step
@@ -64,10 +62,6 @@ export default {
 }
 
 @media screen and (max-width: 780px) {
-
-  .lbl_ticket_status {
-    display: none;
-  }
 
   .v-stepper__step {
     padding: 24px 0 !important;

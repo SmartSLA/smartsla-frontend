@@ -8,7 +8,7 @@
       </div>
     </v-layout>
     <v-layout row wrap justify-space-between>
-      <v-flex xs12 md12 sm12 xl7 lg7 pl-3 pr-3 pt-4>
+      <v-flex xs12 md12 sm12 xl7 lg7 pt-4 px-0>
         <v-card light color="white">
           <ticket-status :status="request.status" :type="request.type"></ticket-status>
           <v-divider />
