@@ -13,7 +13,7 @@ export default {
   name: "ExportCsvButton",
   methods: {
     exportData() {
-      const fileName = `${ApplicationSettings.SUPPORT_ACCOUNT}_${this.moment().format("YYYY_MM_DD")}.csv`;
+      const fileName = `${ApplicationSettings.SUPPORT_ACCOUNT.name}_${this.moment().format("YYYY_MM_DD")}.csv`;
 
       this.$store.dispatch("ticket/exportTickets").then(({ data }) => {
         var fileURL = window.URL.createObjectURL(new Blob([data]));
