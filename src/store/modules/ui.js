@@ -35,7 +35,7 @@ function initialState() {
 
 const types = {
   SHOW_SNACKBAR: "SHOW_SNACKBAR",
-  SET_DRAWER_PERMANENT: "SET_DRAWER_PERMANENT",
+  TOGGLE_DRAWER_PERMANENT: "TOGGLE_DRAWER_PERMANENT",
   SHOW_DRAWER: "SHOW_DRAWER",
   TOGGLE_MINI_DRAWER: "TOGGLE_MINI_DRAWER",
   TOGGLE_DRAWER: "TOGGLE_DRAWER"
@@ -45,8 +45,8 @@ const actions = {
   displaySnackbar({ commit }, snackbar) {
     commit(types.SHOW_SNACKBAR, snackbar);
   },
-  setDrawerPermanent({ commit }) {
-    commit(types.SET_DRAWER_PERMANENT);
+  toggleDrawerPermanent({ commit }) {
+    commit(types.TOGGLE_DRAWER_PERMANENT);
   },
   toggleMiniDrawer({ commit }) {
     commit(types.TOGGLE_MINI_DRAWER);
@@ -60,12 +60,12 @@ const actions = {
 };
 
 const mutations = {
-  [types.SET_DRAWER_PERMANENT](state) {
+  [types.TOGGLE_DRAWER_PERMANENT](state) {
     // changes the drawer to permanent
-    state.drawer.permanent = true;
+    state.drawer.permanent = !state.drawer.permanent;
     // set the clipped state of the drawer and toolbar
-    state.drawer.clipped = false;
-    state.toolbar.clippedLeft = false;
+    state.drawer.clipped = !state.drawer.permanent;
+    state.toolbar.clippedLeft = !state.drawer.permanent;
     localStorage.setItem(DRAWER_LOCALSTORAGE_KEY, JSON.stringify({ drawer: state.drawer, toolbar: state.toolbar }));
   },
   [types.TOGGLE_MINI_DRAWER](state) {

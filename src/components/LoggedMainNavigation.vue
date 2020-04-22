@@ -12,16 +12,7 @@
     app
     v-if="$auth.check()"
   >
-    <v-list v-if="!drawer.permanent">
-      <v-list-tile @click="setDrawerPermanent">
-        <v-list-tile-action><v-icon>menu_open</v-icon></v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ $t("Static menu") }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-list>
-    <v-divider class="d-block" v-if="!drawer.permanent"></v-divider>
-    <v-list>
+    <v-list class="navigation-drawer-scroll">
       <v-menu
         v-for="menuItem in filteredMenuItems"
         :key="menuItem.icon"
@@ -70,8 +61,23 @@
         </v-list>
       </v-menu>
     </v-list>
-    <v-divider class="d-block"></v-divider>
-    <v-list>
+    <v-list class="navigation-drawer-bottom">
+      <v-divider
+        class="d-block"
+        v-show="(drawer.permanent && $vuetify.breakpoint.width <= '768') || $vuetify.breakpoint.width >= '768'"
+      ></v-divider>
+      <v-list-tile
+        @click="toggleDrawerPermanent"
+        v-show="(drawer.permanent && $vuetify.breakpoint.width <= '768') || $vuetify.breakpoint.width >= '768'"
+      >
+        <v-list-tile-action>
+          <v-icon :class="drawer.permanent ? 'rotate-vertical' : ''">menu_open</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ drawer.permanent ? $t("Cancel static menu") : $t("Static menu") }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-divider class="d-block"></v-divider>
       <v-list-tile @click="toggleMiniDrawer">
         <v-list-tile-action name="Toggle menu">
           <v-icon>{{ drawer.mini ? "chevron_right" : "chevron_left" }}</v-icon>
@@ -125,8 +131,8 @@ export default {
     }
   },
   methods: {
-    setDrawerPermanent() {
-      this.$store.dispatch("ui/setDrawerPermanent");
+    toggleDrawerPermanent() {
+      this.$store.dispatch("ui/toggleDrawerPermanent");
     },
     toggleMiniDrawer() {
       this.$store.dispatch("ui/toggleMiniDrawer");
@@ -263,5 +269,24 @@ ticketing-color = #2196f3
 .v-list__tile--active .v-chip__content {
   color: ticketing-color;
   font-weight: 600;
+}
+
+.v-navigation-drawer {
+  overflow-y: hidden;
+}
+
+.navigation-drawer-scroll {
+  overflow-y: auto;
+}
+
+.navigation-drawer-bottom {
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  padding: 0;
+}
+
+.v-icon.rotate-vertical {
+  transform: rotate(0.5turn);
 }
 </style>
