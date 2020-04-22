@@ -1,21 +1,36 @@
 <template>
-  <v-menu v-model="showDatePicker" :close-on-content-click="false" full-width max-width="290">
+  <v-menu
+    class="px-1"
+    v-if="stepName !== null"
+    v-model="showDatePicker"
+    :close-on-content-click="false"
+    full-width
+    max-width="290"
+  >
     <template v-slot:activator="{ on }">
-      <v-stepper-step
-        step=""
-        :color="isRejected ? 'error' : 'success'"
-        :complete-icon="isRejected ? 'close' : 'check'"
-        complete
-        v-on="on"
-        v-if="completed"
-      >
-        <span :class="{ 'select-step': canEdit }"> {{ $t(stepName) }}</span>
-        <small class="grey--text" v-if="date.length">{{ moment(date).format("L") }}</small>
-      </v-stepper-step>
-      <v-stepper-step step="" v-on="on" v-else
-        ><span :class="{ 'select-step': canEdit }"> {{ $t(stepName) }}</span></v-stepper-step
-      >
-      <v-divider :vertical="isPublished" v-if="!isRejected"></v-divider>
+      <v-flex v-if="statusStepDate !== null" xs2 sm2 md2 lg2 xl2 class="px-0 mx-0">
+        <v-stepper-step
+          v-if="completed"
+          step=""
+          :color="isRejected ? 'error' : 'success'"
+          :complete-icon="isRejected ? 'close' : 'check'"
+          complete
+          v-on="on"
+        >
+          <v-layout column>
+            <span :class="{ 'select-step': canEdit }">{{ $t(stepName) }}</span>
+            <small class="grey--text" v-if="date.length">{{ moment(date).format("L") }}</small>
+          </v-layout>
+        </v-stepper-step>
+      </v-flex>
+      <v-flex v-else xs2 sm2 md2 lg2 xl2 class="px-0 mr-0">
+        <v-stepper-step v-if="!completed" step="" v-on="on">
+          <v-layout column>
+            <span :class="{ 'select-step': canEdit }">{{ $t(stepName) }}</span>
+          </v-layout>
+        </v-stepper-step>
+      </v-flex>
+      <v-divider vertical class="ml-2 mr-0 mt-3" v-if="!isRejected && isPublished"></v-divider>
     </template>
     <v-date-picker v-model="pickerDate" no-title @change="showDatePicker = false" v-if="canEdit"></v-date-picker>
     <v-btn flat color="error" v-if="completed && canEdit" @click="removeStatus">
