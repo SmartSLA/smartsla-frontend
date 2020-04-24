@@ -32,8 +32,8 @@
         <user-menu v-if="$auth.check() && !hidden" />
       </v-toolbar>
       <v-content>
-        <v-container fluid fill-height>
-          <v-layout justify-center align-center>
+        <v-container fluid fill-height :class="isMobile ? 'px-1' : ''">
+          <v-layout row justify-center align-center>
             <router-view />
           </v-layout>
         </v-container>

@@ -1,14 +1,7 @@
 <template>
-  <v-menu
-    class="px-1"
-    v-if="stepName !== null"
-    v-model="showDatePicker"
-    :close-on-content-click="false"
-    full-width
-    max-width="290"
-  >
+  <v-menu v-if="stepName !== null" v-model="showDatePicker" :close-on-content-click="false" full-width max-width="290">
     <template v-slot:activator="{ on }">
-      <v-flex v-if="statusStepDate !== null" xs2 sm2 md2 lg2 xl2 class="px-0 mx-0">
+      <v-flex v-if="statusStepDate !== null" xs2 sm2 md2 lg2 xl2 class="px-0 mx-1">
         <v-stepper-step
           v-if="completed"
           step=""
@@ -17,16 +10,16 @@
           complete
           v-on="on"
         >
-          <v-layout column>
-            <span :class="{ 'select-step': canEdit }">{{ $t(stepName) }}</span>
-            <small class="grey--text" v-if="date.length">{{ moment(date).format("L") }}</small>
+          <v-layout column justify-center align-center>
+            <span class="caption" :class="{ 'select-step': canEdit }">{{ $t(stepName) }}</span>
+            <span class="grey--text caption" v-if="date.length">{{ moment(date).format("L") }}</span>
           </v-layout>
         </v-stepper-step>
       </v-flex>
-      <v-flex v-else xs2 sm2 md2 lg2 xl2 class="px-0 mr-0">
+      <v-flex v-else xs2 sm2 md2 lg2 xl2 class="px-0">
         <v-stepper-step v-if="!completed" step="" v-on="on">
           <v-layout column>
-            <span :class="{ 'select-step': canEdit }">{{ $t(stepName) }}</span>
+            <span class="caption" :class="{ 'select-step': canEdit }">{{ $t(stepName) }}</span>
           </v-layout>
         </v-stepper-step>
       </v-flex>

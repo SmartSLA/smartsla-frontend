@@ -384,7 +384,7 @@
             <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
               {{ $t("interlocutor in charge of the request") }}
             </h4>
-            <v-card class="pt-2 px-5 nobottomshadow">
+            <v-card class="pt-2 px-3 nobottomshadow">
               <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
               <v-layout row class="center-avatar">
                 <v-flex shrink px-1 xs12 v-if="request.responsible">
@@ -393,8 +393,8 @@
                   </v-avatar>
                 </v-flex>
 
-                <v-flex grow pa-1 xs12>
-                  <v-card-text v-if="request.responsible">
+                <v-flex grow xs8 class="px-0">
+                  <v-card-text class="px-0" v-if="request.responsible">
                     <strong>{{ $t("Contact") }} :</strong>
                     {{ request.responsible && request.responsible.name }}
                     <br />
@@ -417,7 +417,7 @@
             <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
               {{ $t("Beneficiary") }}
             </h4>
-            <v-card class="pt-2 px-5">
+            <v-card class="pt-2 px-3">
               <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
               <v-layout row class="center-avatar">
                 <v-flex shrink px-1 xs12>
@@ -425,8 +425,8 @@
                     <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
                   </v-avatar>
                 </v-flex>
-                <v-flex grow pa-1 xs12>
-                  <v-card-text>
+                <v-flex grow xs8 class="px-0">
+                  <v-card-text class="px-0">
                     <span class="d-block">
                       <strong>{{ $t("Contact") }} :</strong>
                       {{ request.beneficiary && request.beneficiary.name }}
