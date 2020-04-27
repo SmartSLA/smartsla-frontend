@@ -83,9 +83,7 @@ export default {
       showStoredFilters: false,
       valuesFilter: null,
       customFilters: [],
-      storedSelectionsFilter: null,
-      canDeleteFilter: false,
-      canUpdateFilter: false
+      storedSelectionsFilter: null
     };
   },
 
@@ -106,14 +104,12 @@ export default {
         };
         this.customFilters.push(filter);
         this.valuesFilter = "";
-        this.checkStoredFilterUpdate();
       }
     },
 
     loadFilter(filter) {
       this.storedSelectionsFilter = Object.assign({}, filter);
       this.customFilters = [...this.storedSelectionsFilter.items];
-      this.canDeleteFilter = true;
       this.valuesFilter = "";
       this.$emit("savedFilterLoaded", this.storedSelectionsFilter.name);
     },
@@ -124,25 +120,13 @@ export default {
       });
 
       if (this.customFilters.length == 0) {
-        this.canDeleteFilter = false;
         this.storedSelectionsFilter = {};
-      }
-      this.checkStoredFilterUpdate();
-    },
-
-    checkStoredFilterUpdate() {
-      if (this.storedSelectionsFilter && this.storedSelectionsFilter.items) {
-        if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
-          this.canUpdateFilter = true;
-        } else {
-          this.canUpdateFilter =
-            JSON.stringify(this.storedSelectionsFilter.items) !== JSON.stringify(this.customFilters);
-        }
       }
     },
 
     resetFilters() {
       this.customFilters = [];
+      this.storedSelectionsFilter = null;
     },
 
     changeFilterCategory(selectedCategory) {
@@ -155,18 +139,33 @@ export default {
     },
 
     handleFilterUpdate() {
-      this.canUpdateFilter = false;
       this.$emit("savedFiltersUpdate");
     },
 
     handleFilterDeletion() {
-      this.canDeleteFilter = false;
       this.customFilters = [];
       this.$emit("savedFiltersUpdate");
     },
 
     handleFilterCreation() {
       this.$emit("filterCreated");
+    }
+  },
+  computed: {
+    canUpdateFilter() {
+      if (this.storedSelectionsFilter && this.storedSelectionsFilter.items) {
+        if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
+          return true;
+        } else {
+          return JSON.stringify(this.storedSelectionsFilter.items) !== JSON.stringify(this.customFilters);
+        }
+      }
+
+      return false;
+    },
+
+    canDeleteFilter() {
+      return this.storedSelectionsFilter && this.storedSelectionsFilter.items;
     }
   },
   watch: {
