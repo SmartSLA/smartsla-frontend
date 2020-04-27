@@ -7,6 +7,7 @@
       :label="$t('Assigned to')"
       return-object
       hide-details
+      :disabled="isSubmitting"
       @change="setResponsible"
     >
       <template slot="item" slot-scope="data">
@@ -56,7 +57,8 @@ export default {
   name: "user-list-assignment",
   props: {
     responsible: Object,
-    request: Object
+    request: Object,
+    isSubmitting: Boolean
   },
   created() {
     this.$store.dispatch("contract/fetchContractUsers", this.request.contract);
