@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     isNewFilter() {
-      return !(this.storedSelectionsFilter && Object.keys(this.storedSelectionsFilter));
+      return !(this.storedSelectionsFilter && Object.keys(this.storedSelectionsFilter).length);
     },
     buttonAttributes() {
       switch (this.$vuetify.breakpoint.name) {
