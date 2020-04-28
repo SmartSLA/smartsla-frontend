@@ -5,7 +5,7 @@
     >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
-        <v-card class="px-1 mt-4 pb-4 pl-4">
+        <v-card class="px-4 mt-4 pb-4">
           <v-card-title primary-title class="px-4">
             <div>
               <h3 class="display-1 font-weight-medium mb-0">{{ isEdit ? $t("Edit User") : $t("New user") }}</h3>
@@ -145,10 +145,10 @@
                 <v-select :items="clientsList" item-value="_id" item-text="name" v-model="user.client"></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
-              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert' && user.client">
+              <v-flex xs3 class="pt-4 hidden-xs-only" v-if="user.type !== 'expert' && user.client">
                 <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
-              <v-flex xs8 v-if="user.type !== 'expert' && user.client">
+              <v-flex xs12 sm8 md8 lg8 v-if="user.type !== 'expert' && user.client">
                 <v-card>
                   <v-list subheader two-line>
                     <v-list-tile
@@ -156,16 +156,22 @@
                       :key="contract._id"
                       @click="contract.selected != contract.selected"
                     >
-                      <v-list-tile-action>
-                        <v-checkbox v-model="contract.selected" color="success"></v-checkbox>
-                      </v-list-tile-action>
-                      <v-list-tile-content>
-                        <v-list-tile-title>{{ contract.name }}</v-list-tile-title>
-                        <v-list-tile-sub-title>{{ contract.client }}</v-list-tile-sub-title>
-                      </v-list-tile-content>
-                      <v-list-tile-action>
-                        <v-select :items="contractRoles" :label="$t('Role')" v-model="contract.role"></v-select>
-                      </v-list-tile-action>
+                      <v-flex xs2 sm2 md1 lg1>
+                        <v-list-tile-action>
+                          <v-checkbox v-model="contract.selected" color="success"></v-checkbox>
+                        </v-list-tile-action>
+                      </v-flex>
+                      <v-flex xs5 sm6 md5 lg7>
+                        <v-list-tile-content>
+                          <v-list-tile-title>{{ contract.name }}</v-list-tile-title>
+                          <v-list-tile-sub-title>{{ contract.client }}</v-list-tile-sub-title>
+                        </v-list-tile-content>
+                      </v-flex>
+                      <v-flex xs6 sm4 md8 lg4 px-0>
+                        <v-list-tile-action>
+                          <v-select dense :items="contractRoles" :label="$t('Role')" v-model="contract.role"></v-select>
+                        </v-list-tile-action>
+                      </v-flex>
                     </v-list-tile>
                   </v-list>
                 </v-card>
