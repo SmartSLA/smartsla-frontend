@@ -4,7 +4,7 @@
       >&lt; {{ $t("contributions") }}</router-link
     >
     <v-layout row wrap justify-space-between>
-      <v-flex xs12 sm12 md12 lg7 xl7 class="pr-4">
+      <v-flex xs12 sm12 md12 lg7 xl7>
         <contributionDetail :contribution="contribution"></contributionDetail>
       </v-flex>
       <v-flex xs12 sm12 md12 lg5 xl5 mt-4>

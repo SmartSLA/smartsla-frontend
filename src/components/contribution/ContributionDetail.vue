@@ -1,8 +1,8 @@
 <template lang="">
-  <v-card class="px-1 pt-4 mt-4 pb-4 pl-4" v-if="contribution">
-    <v-layout row wrap>
+  <v-card class="mt-4 pb-4" v-if="contribution">
+    <v-layout row>
       <v-flex xs11>
-        <v-layout justify-center row fill-height wrap ml-3>
+        <v-layout justify-center row fill-height wrap ml-3 pt-4>
           <fieldDisplay :label="$t('Contributor')" :value="contribution.author.name"></fieldDisplay>
           <fieldDisplay :label="$t('Proposition date')" :value="contribution.deposedAt"></fieldDisplay>
           <fieldDisplay :label="$t('Software')" :value="contribution.software.name"></fieldDisplay>
@@ -11,7 +11,7 @@
           <fieldDisplay :label="$t('Patched in version')" :value="contribution.fixedInVersion"></fieldDisplay>
         </v-layout>
       </v-flex>
-      <v-flex xs1 v-if="canEdit">
+      <v-flex justify-end v-if="canEdit">
         <contributionEditButton :contributionId="contribution._id"></contributionEditButton>
       </v-flex>
     </v-layout>
