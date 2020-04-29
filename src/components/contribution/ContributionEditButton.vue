@@ -1,10 +1,8 @@
 <template>
   <v-flex xs6 md4 sm3 lg4 xl4 pt0>
-    <div class="text-xs-right grey--text justify-end">
-      <v-btn color="primary" fab small dark :to="{ name: routeNames.EDITCONTRIBUTION, params: { id: contributionId } }">
-        <v-icon>edit</v-icon>
-      </v-btn>
-    </div>
+    <v-btn color="primary" fab small dark :to="{ name: routeNames.EDITCONTRIBUTION, params: { id: contributionId } }">
+      <v-icon>edit</v-icon>
+    </v-btn>
   </v-flex>
 </template>
 <script>
