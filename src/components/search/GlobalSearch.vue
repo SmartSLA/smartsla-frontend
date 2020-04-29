@@ -6,8 +6,8 @@
     light
     flat
     solo
-    clearable
-    append-icon
+    :append-icon="clearIcon"
+    @click:append="search = null"
     hide-no-data
     item-text="name"
     color="secondary"
@@ -64,6 +64,9 @@ export default {
     },
     prependInnerIcon() {
       return this.isMobile ? undefined : "search";
+    },
+    clearIcon() {
+      return this.search ? "clear" : "undefined";
     }
   },
   methods: {
