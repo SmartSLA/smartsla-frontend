@@ -350,6 +350,7 @@ import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { REQUEST_TYPE } from "@/constants";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
+import { cloneDeep } from "lodash";
 
 export default {
   mixins: [SoftwareMixin],
@@ -485,8 +486,11 @@ export default {
 
       if (this.$route.params.id) {
         // TODO: Prevent to send event when nothing has been added
-        this.$http
-          .updateTicket(this.$route.params.id, ticket)
+        this.$store
+          .dispatch("ticket/updateTicket", {
+            ticketId: ticket._id,
+            ticket
+          })
           .then(() => {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("Ticket updated"),
@@ -503,18 +507,13 @@ export default {
           })
           .finally(() => (this.submitRequest = false));
       } else {
-        this.$http
-          .createTicket(ticket)
-          .then(response => {
-            const ticketId = response.data;
-
+        this.$store
+          .dispatch("ticket/createTicket", ticket)
+          .then(ticketId => {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("ticket created"),
               color: "success"
             });
-
-            // TODO: Move to store once the store is used to create requests
-            this.$store.dispatch("ticket/countTickets");
 
             this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
           })
@@ -785,14 +784,21 @@ export default {
     }
 
     if (this.$route.params.id) {
-      this.$http.getTicketById(this.$route.params.id).then(({ data }) => {
-        this.ticket = Object.assign({}, data);
-        this.ticket.contract = this.$store.getters["contract/getContractById"](this.ticket.contract);
-        this.linkedRequests = data.relatedRequests;
-        this.participants = data.participants;
-        this.callNumber = data.callNumber;
-        this.meetingId = data.meetingId;
-      });
+      const { id } = this.$route.params;
+
+      this.submitRequest = true;
+      this.$store
+        .dispatch("ticket/fetchTicketById", id)
+        .then(() => {
+          const data = this.$store.getters["ticket/getTicketById"](id);
+
+          this.ticket = cloneDeep(data);
+          this.ticket.contract = this.$store.getters["contract/getContractById"](this.ticket.contract);
+          this.participants = data.participants;
+          this.callNumber = data.callNumber;
+          this.meetingId = data.meetingId;
+        })
+        .finally(() => (this.submitRequest = false));
     }
 
     this.$store.dispatch("users/fetchUsers");
