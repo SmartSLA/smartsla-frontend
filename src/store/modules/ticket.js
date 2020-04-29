@@ -86,6 +86,18 @@ const actions = {
 
   addEvent: ({ dispatch }, { ticketId, event }) => {
     return Vue.axios.addTicketEvent(ticketId, event).then(() => dispatch("fetchTicketById", ticketId));
+  },
+
+  createTicket: ({ dispatch, commit }, ticket) => {
+    return Vue.axios.createTicket(ticket).then(({ data }) => {
+      commit(types.UPDATE_TICKET, data);
+      dispatch("countTickets");
+      return data;
+    });
+  },
+
+  updateTicket: ({ commit }, { ticketId, ticket }) => {
+    return Vue.axios.updateTicket(ticketId, ticket).then(({ data }) => commit(types.UPDATE_TICKET, data));
   }
 };
 
