@@ -10,7 +10,7 @@ import softwareFunctions from "./software-api";
 import clientFunctions from "./client-api";
 import userFunctions from "./user-api";
 import teamFunctions from "./team-api";
-import filterFunctions from "./filter-api";
+import customFilterFunctions from "./custom-filter-api";
 import filesFunctions from "./file-api";
 import holidaysFunctions from "./holidays-api";
 import peopleAPI from "./people-api";
@@ -31,7 +31,7 @@ function Api(config) {
   Object.assign(instance, clientFunctions);
   Object.assign(instance, userFunctions);
   Object.assign(instance, teamFunctions);
-  Object.assign(instance, filterFunctions);
+  Object.assign(instance, customFilterFunctions);
   Object.assign(instance, filesFunctions);
   Object.assign(instance, holidaysFunctions);
   Object.assign(instance, peopleAPI);
