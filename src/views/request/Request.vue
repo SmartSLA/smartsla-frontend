@@ -282,8 +282,14 @@
                       :preview="true"
                       v-model="comment"
                       v-if="selectedEditor == 'markdown'"
+                      :disabled="isSubmitting"
                     />
-                    <vue-editor v-model="comment" :editorToolbar="editorToolbar" v-else> </vue-editor>
+                    <vue-editor
+                      v-model="comment"
+                      :disabled="isSubmitting"
+                      :editorToolbar="editorToolbar"
+                      v-else
+                    ></vue-editor>
                     <br />
                   </v-input>
                   <v-layout row wrap>
@@ -301,7 +307,7 @@
                           v-if="!isPrivateTab"
                           :items="[allowedStatusList]"
                           v-model="newStatus"
-                          :disabled="!allowedStatusList"
+                          :disabled="!allowedStatusList || isSubmitting"
                           :label="$t('Status')"
                         >
                           <template slot="item" slot-scope="{ item }">
@@ -316,6 +322,7 @@
                         <user-list-assignment
                           :responsible.sync="newResponsible"
                           :request="request"
+                          :isSubmitting="isSubmitting"
                           @assignCustomer="assignCustomer"
                           @assignSelf="assignSelf"
                           @assignTo="assignTo"
