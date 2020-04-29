@@ -348,7 +348,6 @@ import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilt
 import { USER_TYPE } from "@/constants.js";
 import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
-import moment from "moment-timezone";
 import { REQUEST_TYPE } from "@/constants";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
 
@@ -584,7 +583,7 @@ export default {
       return newResponsible;
     },
     isExpired(expirationDate) {
-      const diff = moment().diff(expirationDate);
+      const diff = this.moment().diff(expirationDate);
 
       return Math.sign(diff) === 1;
     },
