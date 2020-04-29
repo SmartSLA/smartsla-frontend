@@ -670,7 +670,7 @@ export default {
     },
 
     fetchUserFilters() {
-      this.$http.listFilters().then(({ data }) => {
+      this.$http.listCustomFilters().then(({ data }) => {
         this.savedFilters = data;
       });
     }
