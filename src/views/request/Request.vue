@@ -6,9 +6,12 @@
           <button><v-icon>arrow_back</v-icon></button>
         </router-link>
       </div>
+      <v-btn flat icon v-if="isMobile && !hideRequestNavigationDrawer" @click="hideRequestNavigationDrawer = true">
+        <v-icon>menu_open</v-icon>
+      </v-btn>
     </v-layout>
     <v-layout row wrap justify-space-between>
-      <v-flex xs12 md12 sm12 xl7 lg7 pt-4 px-0>
+      <v-flex xs12 md12 sm12 xl12 lg12 pt-4 px-0>
         <v-card light color="white">
           <ticket-status :status="request.status" :type="request.type"></ticket-status>
           <v-divider />
@@ -384,97 +387,15 @@
           </v-card>
         </v-card>
       </v-flex>
-      <v-flex xs12 md12 xl5 lg5 sm12 pt-0 pl-2>
-        <v-layout row wrap pt-0>
-          <v-flex xs12 md12 sm12 xl12 lg12 pt-4>
-            <v-card light color="white" class="px-4 pb-3">
-              <v-card-title primary-title>
-                <h3 class="headline mb-0">{{ $t("Service deadlines") }}</h3>
-              </v-card-title>
-              <v-divider></v-divider>
-              <v-container v-if="request.contract && request.software && request.severity">
-                {{ $t("cns.state.support") }}
-                <cns-progress-bar :ticket="request" :cnsType="'supported'" class="pt-1"></cns-progress-bar>
-                {{ $t("cns.state.bypass") }}
-                <cns-progress-bar :ticket="request" :cnsType="'bypassed'"></cns-progress-bar>
-                {{ $t("cns.state.resolution") }}
-                <cns-progress-bar :ticket="request" :cnsType="'resolved'"></cns-progress-bar>
-              </v-container>
-              <v-container v-else>{{ $t("There is no service deadline for this ticket") }}</v-container>
-            </v-card>
-          </v-flex>
-          <v-flex xs12 md12 sm12 xl12 lg12 pt-4 align-center justify-center>
-            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
-              {{ $t("interlocutor in charge of the request") }}
-            </h4>
-            <v-card class="pt-2 px-3 nobottomshadow">
-              <v-icon large color="blue" class="arrow-down pr-5 pt-1">play_arrow</v-icon>
-              <v-layout row class="center-avatar">
-                <v-flex shrink px-1 xs12 v-if="request.responsible">
-                  <v-avatar size="60" class="pt-0">
-                    <v-img :src="`${apiUrl}/api/users/${request.responsible._id}/profile/avatar`"></v-img>
-                  </v-avatar>
-                </v-flex>
-
-                <v-flex grow xs8 class="px-0">
-                  <v-card-text class="px-0" v-if="request.responsible">
-                    <strong>{{ $t("Contact") }} :</strong>
-                    {{ request.responsible && request.responsible.name }}
-                    <br />
-                    <strong>{{ $t("E-mail") }} :</strong>
-                    {{ request.responsible && request.responsible.email }}
-                    <br />
-                    <span v-if="request.responsible && request.responsible.phone">
-                      <strong>{{ $t("Phone") }} :</strong>
-                      <a :href="`tel://${request.responsible.phone}`">
-                        {{ request.responsible.phone }}
-                      </a>
-                    </span>
-                  </v-card-text>
-                  <v-card-text v-else>
-                    <h4>{{ $t("No interlocutor in charge of the request at the moment") }}</h4>
-                  </v-card-text>
-                </v-flex>
-              </v-layout>
-            </v-card>
-            <h4 class="text-uppercase text-md-center text-xs-center blue white--text pt-2 pb-1">
-              {{ $t("Beneficiary") }}
-            </h4>
-            <v-card class="pt-2 px-3">
-              <v-icon large class="arrow-down pr-5 pt-1 blue-color">play_arrow</v-icon>
-              <v-layout row class="center-avatar">
-                <v-flex shrink px-1 xs12>
-                  <v-avatar size="60" class="pt-0" v-if="request.beneficiary">
-                    <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
-                  </v-avatar>
-                </v-flex>
-                <v-flex grow xs8 class="px-0">
-                  <v-card-text class="px-0">
-                    <span class="d-block">
-                      <strong>{{ $t("Contact") }} :</strong>
-                      {{ request.beneficiary && request.beneficiary.name }}
-                    </span>
-                    <span class="d-block">
-                      <span class="body-2">{{ $t("Client") }} / {{ $t("Contract") }} :&nbsp;</span>
-                      <client-contract-links :contractId="request.contract"></client-contract-links>
-                    </span>
-                    <span v-if="request.beneficiary">
-                      <strong>{{ $t("Phone") }} :</strong>
-                      <a :href="`tel://${request.beneficiary.phone || request.callNumber}`">
-                        {{ request.beneficiary.phone || request.callNumber }}
-                      </a>
-                    </span>
-                    <span v-if="request.meetingId && request.meetingId.length">
-                      <strong>{{ $t("meeting ID") }} :</strong>
-                      {{ request.meetingId }}
-                    </span>
-                  </v-card-text>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-flex>
+      <RequestNavigationDrawer
+        v-if="(isMobile && hideRequestNavigationDrawer) || !isMobile"
+        :apiUrl="apiUrl"
+        :contributions="request.relatedContributions"
+        :isMobile="isMobile"
+        :request="request"
+        :getUser="getUser"
+        @update-sidebar-status="setRequestNavigationDrawerStatus"
+      />
     </v-layout>
   </v-container>
 </template>
@@ -495,6 +416,7 @@ import UserListAssignment from "@/components/request/UserListAssignment";
 import RelatedContributions from "@/components/request/RelatedContributions";
 import surveyUrl from "@/services/limesurvey/limesurvey.js";
 import TicketStatus from "@/components/request/TicketStatus";
+import RequestNavigationDrawer from "@/components/request/RequestNavigationDrawer";
 
 export default {
   data() {
@@ -506,7 +428,8 @@ export default {
       newResponsible: {},
       comment: "",
       UPDATE_COMMENT: UPDATE_COMMENT,
-      isPrivateTab: null
+      isPrivateTab: null,
+      hideRequestNavigationDrawer: false
     };
   },
   components: {
@@ -518,7 +441,8 @@ export default {
     AssignedToUser,
     UserListAssignment,
     RelatedContributions,
-    TicketStatus
+    TicketStatus,
+    RequestNavigationDrawer
   },
   computed: {
     ...mapGetters({
@@ -570,6 +494,18 @@ export default {
 
     isAdmin() {
       return this.$auth.check("admin");
+    },
+
+    isMobile() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return true;
+        case "sm":
+        case "md":
+        case "lg":
+        case "xl":
+          return false;
+      }
     },
 
     apiUrl() {
@@ -699,6 +635,10 @@ export default {
       const { token, id } = this.request.survey;
       const { absoluteUrl } = surveyUrl(id);
       return new URL(`?token=${token}`, absoluteUrl).toString();
+    },
+
+    setRequestNavigationDrawerStatus() {
+      this.hideRequestNavigationDrawer = false;
     }
   },
   created() {

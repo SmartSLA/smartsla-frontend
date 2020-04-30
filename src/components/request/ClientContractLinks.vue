@@ -8,9 +8,7 @@
       }"
       target="_blank"
     >
-      <span class="blue-color">
-        <text-highlight :queries="query">{{ contract && contract.client }}</text-highlight>
-      </span>
+      <text-highlight :queries="query">{{ contract && contract.client }}</text-highlight>
     </router-link>
     <text-highlight v-else :queries="query">{{ contract && contract.client }}</text-highlight>
     <span class="px-1">/</span>
@@ -22,9 +20,7 @@
       }"
       target="_blank"
     >
-      <span class="blue-color">
-        <text-highlight :queries="query">{{ contract && contract.name }}</text-highlight>
-      </span>
+      <text-highlight :queries="query">{{ contract && contract.name }}</text-highlight>
     </router-link>
     <text-highlight v-else :queries="query">{{ contract && contract.name }}</text-highlight>
   </v-layout>
@@ -47,4 +43,3 @@ export default {
   }
 };
 </script>
-<style lang="stylus"></style>
