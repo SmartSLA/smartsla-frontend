@@ -21,7 +21,7 @@ const DEFAULT_TOOLBAR = {
 };
 
 function initialState() {
-  const localStorageDrawer = {};
+  const localStorageDrawer = JSON.parse(localStorage.getItem(DRAWER_LOCALSTORAGE_KEY)) || {};
   return {
     snackbar: {
       color: "red",
