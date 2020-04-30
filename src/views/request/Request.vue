@@ -152,7 +152,7 @@
             </v-card-text>
           </v-card>
           <v-card>
-            <v-tabs icons-and-text class="ml-3 mr-3">
+            <v-tabs icons-and-text class="comment-padding">
               <v-tabs-slider color="primary"></v-tabs-slider>
               <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
               <v-tab-item value="comment" class="mt-1">
@@ -160,12 +160,13 @@
                   <v-timeline-item
                     v-for="event in request.events"
                     :key="event._id"
-                    large
+                    medium
                     :ref="`event-${event._id}`"
                     :id="`event-${event._id}`"
+                    :hide-dot="$vuetify.breakpoint.name === 'xs' ? true : false"
                   >
-                    <template v-slot:icon>
-                      <v-avatar>
+                    <template v-slot:icon v-if="$vuetify.breakpoint.name !== 'xs'">
+                      <v-avatar size="30">
                         <v-img :src="`${apiUrl}/api/users/${event.author.id}/profile/avatar`"></v-img>
                       </v-avatar>
                     </template>
@@ -854,6 +855,10 @@ export default {
   background-color: #f5f5f5 !important;
 }
 
+.comment-padding {
+  margin: 0 20px 0 20px;
+}
+
 .comment-mine div {
   background-color: #eaf6ff !important;
 }
@@ -992,5 +997,26 @@ export default {
   border-bottom-right-radius: 0px;
   box-shadow: none;
   border-right: 1px solid rgba(1, 9, 16, 0.1);
+}
+
+@media only screen and (max-width: 599px) {
+  .comment-padding {
+    margin: 0;
+  }
+
+  .v-timeline--dense:before,
+  .v-timeline-item .v-card:before,
+  .v-timeline-item .v-card:after {
+    display: none;
+  }
+
+  .v-timeline-item {
+    display: flex;
+    justify-content: center;
+  }
+
+  .v-timeline-item >>> .v-timeline-item__body {
+    max-width: calc(100% - 20px);
+  }
 }
 </style>
