@@ -63,6 +63,7 @@ const mutations = {
   },
   [types.TOGGLE_DRAWER](state) {
     // toggles the temporary drawer(shows/hides)
+    state.drawer.mini = false;
     state.drawer.open = !state.drawer.open;
     localStorage.setItem(DRAWER_LOCALSTORAGE_KEY, JSON.stringify({ drawer: state.drawer, toolbar: state.toolbar }));
   },
