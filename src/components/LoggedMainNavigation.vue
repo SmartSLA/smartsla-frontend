@@ -2,7 +2,6 @@
   <v-navigation-drawer
     :clipped="drawer.clipped"
     :fixed="drawer.fixed"
-    :permanent="drawer.permanent"
     :mini-variant="drawer.mini"
     :value="drawer.open"
     @input="showDrawer($event)"
@@ -61,22 +60,7 @@
         </v-list>
       </v-menu>
     </v-list>
-    <v-list class="navigation-drawer-bottom">
-      <v-divider
-        class="d-block"
-        v-show="(drawer.permanent && $vuetify.breakpoint.width <= '768') || $vuetify.breakpoint.width >= '768'"
-      ></v-divider>
-      <v-list-tile
-        @click="toggleDrawerPermanent"
-        v-show="(drawer.permanent && $vuetify.breakpoint.width <= '768') || $vuetify.breakpoint.width >= '768'"
-      >
-        <v-list-tile-action>
-          <v-icon :class="drawer.permanent ? 'rotate-vertical' : ''">menu_open</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ drawer.permanent ? $t("Cancel static menu") : $t("Static menu") }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+    <v-list class="navigation-drawer-bottom" v-show="$vuetify.breakpoint.width >= '768'">
       <v-divider class="d-block"></v-divider>
       <v-list-tile @click="toggleMiniDrawer">
         <v-list-tile-action name="Toggle menu">
@@ -131,9 +115,6 @@ export default {
     }
   },
   methods: {
-    toggleDrawerPermanent() {
-      this.$store.dispatch("ui/toggleDrawerPermanent");
-    },
     toggleMiniDrawer() {
       this.$store.dispatch("ui/toggleMiniDrawer");
     },
@@ -283,7 +264,7 @@ ticketing-color = #2196f3
   bottom: 0;
   position: fixed;
   width: 100%;
-  padding: 0;
+  padding: 0 !important;
 }
 
 .v-icon.rotate-vertical {

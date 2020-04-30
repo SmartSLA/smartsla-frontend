@@ -8,8 +8,9 @@
             v-if="$auth.check() && !hidden"
             class="mx-2"
             @click.stop="toggleDrawer()"
+            v-show="$vuetify.breakpoint.width <= '768'"
           ></v-toolbar-side-icon>
-          <router-link v-if="!hidden" :to="{ name: routeNames.REQUESTS }">
+          <router-link v-if="!hidden" :to="{ name: routeNames.REQUESTS }" class="mx-2">
             <v-img width="180" max-height="38" class="hidden-sm-and-down" :src="logo" />
             <v-img width="140" max-height="30" class="hidden-md-and-up" :src="logo" />
           </router-link>
