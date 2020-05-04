@@ -14,6 +14,7 @@ import filesFunctions from "./file-api";
 import holidaysFunctions from "./holidays-api";
 import peopleAPI from "./people-api";
 import rolesAPI from "./roles-api";
+import filterFunctions from "./filter-api";
 
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
@@ -34,6 +35,7 @@ function Api(config) {
   Object.assign(instance, holidaysFunctions);
   Object.assign(instance, peopleAPI);
   Object.assign(instance, rolesAPI);
+  Object.assign(instance, filterFunctions);
 
   instance.interceptors.request.use(
     function(config) {

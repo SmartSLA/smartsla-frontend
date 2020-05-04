@@ -17,6 +17,7 @@ import client from "./modules/client";
 import contract from "./modules/contract";
 import contribution from "./modules/contribution";
 import listeners from "./listeners";
+import filter from "./modules/filter";
 
 Vue.use(Vuex);
 
@@ -31,7 +32,8 @@ const store = new Vuex.Store({
     ticket,
     client,
     contract,
-    contribution
+    contribution,
+    filter
   },
   actions,
   getters,
