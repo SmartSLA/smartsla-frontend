@@ -154,7 +154,10 @@
           <v-card>
             <v-tabs icons-and-text class="comment-padding">
               <v-tabs-slider color="primary"></v-tabs-slider>
-              <v-tab href="#comment">{{ $t("Comments") }}</v-tab>
+              <v-tab href="#comment">
+                {{ $t("Comments") }}
+                <v-chip small>{{ request.events.length }}</v-chip>
+              </v-tab>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
                   <v-timeline-item
@@ -712,6 +715,14 @@ export default {
 
 .btn-action-list span {
   font-weight: bold;
+}
+
+.v-tabs__item  .v-chip__content {
+  font-weight: 600;
+}
+
+.v-tabs__container--icons-and-text .v-tabs__item {
+  flex-direction: initial !important;
 }
 </style>
 
