@@ -345,7 +345,7 @@
                         >
                           {{ $t("Submit") }}
                         </v-btn>
-                        <v-menu top pl-0 offset-y v-if="getUser.type === 'expert'">
+                        <v-menu top pl-0 offset-y v-if="configuration.isLimesurveyEnabled && isUserExpert()">
                           <template v-slot:activator="{ on }">
                             <v-btn color="info" v-on="on" class="ml-0 px-1 btn-list">
                               <v-icon>arrow_drop_down</v-icon>
@@ -514,7 +514,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUser: "user/getUser"
+      getUser: "user/getUser",
+      configuration: "configuration/getConfiguration"
     }),
 
     request() {
