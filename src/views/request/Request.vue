@@ -289,6 +289,7 @@
                       v-model="comment"
                       :disabled="isSubmitting"
                       :editorToolbar="editorToolbar"
+                      :class="{ 'is-private-tab': isPrivateTab }"
                       v-else
                     ></vue-editor>
                     <br />
@@ -712,6 +713,10 @@ export default {
 
 .btn-action-list span {
   font-weight: bold;
+}
+
+.is-private-tab .ql-container {
+  background-color: #ffcdd2;
 }
 </style>
 
