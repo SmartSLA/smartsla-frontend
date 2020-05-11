@@ -2,6 +2,7 @@ import Axios from "axios";
 import store from "@/store";
 
 // Import your API functions here
+import settings from "./configuration-api";
 import ticketsFunctions from "./tickets-api";
 import contributionFunctions from "./contributions-api";
 import contractsFunctions from "./contract-api";
@@ -22,6 +23,7 @@ const defaults = {
 function Api(config) {
   const instance = Axios.create(Object.assign({}, defaults, config));
   // Assign them to your Axios instance here
+  Object.assign(instance, settings);
   Object.assign(instance, ticketsFunctions);
   Object.assign(instance, contributionFunctions);
   Object.assign(instance, contractsFunctions);
