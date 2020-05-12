@@ -32,7 +32,7 @@
             </v-card-text>
             <v-card-actions>
               <v-layout justify-space-between>
-                <router-link :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
+                <router-link v-if="sspEnabled" :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
                   {{ $t("Reset Password") }}
                 </router-link>
                 <v-btn :disabled="logMeIn" :loading="logMeIn" @click="login">{{ $t("Login") }}</v-btn>
@@ -47,17 +47,23 @@
 
 <script>
 import { routeNames } from "@/router";
+import ApplicationSettings from "@/services/application-settings";
+
 export default {
   data() {
     return {
       logMeIn: false,
       email: null,
-      password: null
+      password: null,
+      features: ApplicationSettings.FEATURES
     };
   },
   computed: {
     routeNames() {
       return routeNames;
+    },
+    sspEnabled() {
+      return this.features.SSP_ENABLED;
     }
   },
   methods: {

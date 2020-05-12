@@ -8,7 +8,10 @@ export const ApplicationSettings = Object.freeze({
       color: "#d32f2f",
       logo: "logo.png"
     },
-    LIMESURVEY_URL: "http://limesurvey.localhost:8080/"
+    LIMESURVEY_URL: "http://limesurvey.localhost:8080/",
+    FEATURES: {
+      SSP_ENABLED: false
+    }
   },
   ...process.env,
   ...window.openpaas

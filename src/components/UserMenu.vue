@@ -13,7 +13,7 @@
         <v-list-tile-title>{{ $t("Profil") }}</v-list-tile-title>
       </v-list-tile>
       <v-divider />
-      <v-list-tile :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
+      <v-list-tile v-if="sspEnabled" :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
         <v-list-tile-title>{{ $t("Change Password") }}</v-list-tile-title>
       </v-list-tile>
       <v-divider />
@@ -28,8 +28,12 @@
 import { mapGetters } from "vuex";
 import { OPAvatar } from "vue-openpaas-components";
 import { routeNames } from "@/router";
+import ApplicationSettings from "@/services/application-settings";
 export default {
   name: "op-user-menu",
+  data: () => ({
+    features: ApplicationSettings.FEATURES
+  }),
   components: {
     "op-avatar": OPAvatar
   },
@@ -57,6 +61,9 @@ export default {
     }),
     routeNames() {
       return routeNames;
+    },
+    sspEnabled() {
+      return this.features.SSP_ENABLED;
     }
   }
 };
