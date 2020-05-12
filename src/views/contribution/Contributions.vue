@@ -17,6 +17,7 @@
       :items="contributionList"
       :headers="headers"
       class="elevation-1 pb-0"
+      ref="contributionTable"
       :rows-per-page-items="rowsPerPageItems"
       :rows-per-page-text="$t('Rows per page:')"
       item-key="_id"
@@ -29,15 +30,15 @@
             }}</router-link>
           </td>
           <td class="text-xs-center">{{ props.item.type }}</td>
-          <td class="text-xs-center">{{ props.item.software.name }}</td>
+          <td class="text-xs-center">{{ props.item.software }}</td>
           <td>
             <router-link :to="{ name: 'Contribution', params: { id: props.item._id } }" class="blue-color">{{
               props.item.name
             }}</router-link>
           </td>
-          <td class="text-xs-center">{{ props.item.author && props.item.author.name }}</td>
-          <td class="text-xs-center">{{ props.item.timestamps.update }}</td>
-          <td class="text-xs-center">{{ props.item.timestamps.creation | formatDateFilter("ll") }}</td>
+          <td class="text-xs-center">{{ props.item.author }}</td>
+          <td class="text-xs-center">{{ props.item.update }}</td>
+          <td class="text-xs-center">{{ props.item.creation | formatDateFilter("ll") }}</td>
           <td class="text-xs-center">
             <contributionStatus :status="props.item.status"></contributionStatus>
           </td>
@@ -64,9 +65,9 @@ export default {
       headers: [
         { text: this.$i18n.t("Contribution N°"), value: "_id" },
         { text: this.$i18n.t("Type"), value: "type" },
-        { text: this.$i18n.t("Software"), value: "software.name" },
+        { text: this.$i18n.t("Software"), value: "software" },
         { text: this.$i18n.t("Title"), value: "name" },
-        { text: this.$i18n.t("Author"), value: "author.name" },
+        { text: this.$i18n.t("Author"), value: "author" },
         { text: this.$i18n.t("Updated"), value: "update" },
         { text: this.$i18n.t("Created"), value: "creation" },
         { text: this.$i18n.t("Status"), value: "status" }
@@ -251,7 +252,6 @@ export default {
           message: this.$i18n.t("Failed to fetch softwares")
         });
       });
-
     this.$store.dispatch("users/fetchUsers");
   }
 };
