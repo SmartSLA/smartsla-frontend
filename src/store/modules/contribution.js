@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { isString, isNumber, isUndefined } from "lodash";
 
 function initialState() {
   return {
@@ -7,7 +8,8 @@ function initialState() {
       rowsPerPage: 10,
       rowsPerPageItems: [10, 25, 50, 100],
       totalItems: null,
-      descending: true
+      descending: false,
+      sortBy: "_id"
     },
     length: 0,
     contributions: {}
@@ -98,10 +100,41 @@ const mutations = {
 };
 
 const getters = {
-  getContributions: state => Object.values(state.contributions) || [],
   getContributionById: state => id => state.contributions[id],
   getContributionsCount: state => Number(state.length),
-  pagination: state => state.pagination
+  pagination: state => state.pagination,
+  getContributions: state => {
+    const { sortBy, descending, page, rowsPerPage } = state.pagination;
+    let result = (Object.values(state.contributions) || []).map(contribution => {
+      const { software, author, timestamps } = contribution;
+
+      return {
+        ...contribution,
+        software: software.name,
+        author: author.name,
+        creation: timestamps.creation
+      };
+    });
+
+    if (sortBy) {
+      result = result.sort((a, b) => {
+        const valueA = !isUndefined(a[sortBy]) ? a[sortBy] : "";
+        const valueB = !isUndefined(b[sortBy]) ? b[sortBy] : "";
+
+        if (isString(valueA) && isString(valueB)) {
+          return descending
+            ? valueA.localeCompare(valueB, "fr", { ignorePunctuation: true })
+            : valueB.localeCompare(valueA, "fr", { ignorePunctuation: true });
+        }
+
+        let sortResult = isNumber(valueA) && isNumber(valueB) ? valueB - valueA : b - a;
+
+        return descending ? sortResult : -sortResult;
+      });
+    }
+
+    return result.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  }
 };
 
 export default {
