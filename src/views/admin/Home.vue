@@ -52,7 +52,6 @@ export default {
       msg: this.$i18n.t("Administration"),
       teams: [],
       contributions: [],
-      teamCount: 0,
       contractCount: 0
     };
   },
@@ -61,19 +60,7 @@ export default {
     this.$store.dispatch("software/countSoftware");
     this.$store.dispatch("client/countClients");
     this.$store.dispatch("users/fetchUsers");
-
-    this.$http
-      .listTeam()
-      .then(response => {
-        this.teams = response.data;
-        this.teamCount = response.data.length;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch teams"),
-          color: "error"
-        });
-      });
+    this.$store.dispatch("team/countTeams");
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
@@ -85,12 +72,9 @@ export default {
       contracts: "contract/getContracts",
       softwareCount: "software/getSoftwareCount",
       clientCount: "client/getClientsCount",
-      userCount: "users/getUsersCount"
+      userCount: "users/getUsersCount",
+      teamCount: "team/getTeamsCount"
     }),
-
-    routeNames() {
-      return routeNames;
-    },
 
     contributionCount() {
       return this.$store.getters["contribution/getContributionsCount"];
@@ -181,6 +165,9 @@ export default {
           }
         }
       ];
+    },
+    routeNames() {
+      return routeNames;
     }
   }
 };

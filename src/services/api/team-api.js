@@ -17,5 +17,9 @@ export default {
 
   deleteTeam(teamId) {
     return this.delete(`/ticketing/api/team/${teamId}`);
+  },
+
+  countTeams() {
+    return this.head("ticketing/api/team").then(({ headers }) => headers["x-esn-items-count"] || 0);
   }
 };

@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -68,22 +70,16 @@ export default {
           sortable: false,
           class: "text-xs-center"
         }
-      ],
-      teams: []
+      ]
     };
   },
-  mounted() {
-    this.$http
-      .listTeam()
-      .then(response => {
-        this.teams = response.data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: this.$i18n.t("failed to fetch teams"),
-          color: "error"
-        });
-      });
+  created() {
+    this.$store.dispatch("team/fetchTeams");
+  },
+  computed: {
+    ...mapGetters({
+      teams: "team/getTeams"
+    })
   },
   beforeCreate() {
     if (!this.$auth.ready() || !this.$auth.check("admin")) {
