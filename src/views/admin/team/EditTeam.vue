@@ -20,7 +20,7 @@
               <v-flex xs8>
                 <v-text-field
                   v-model="team.name"
-                  :rules="[() => team.name.length > 0 || $i18n.t('Required field')]"
+                  :rules="[() => (team.name && !!team.name) || $i18n.t('Required field')]"
                 ></v-text-field>
               </v-flex>
               <v-flex xs3 class="pt-4">
@@ -91,6 +91,7 @@
 <script>
 import { USER_TYPE } from "@/constants.js";
 import { routeNames } from "@/router";
+import { cloneDeep } from "lodash";
 
 export default {
   data() {
@@ -125,16 +126,14 @@ export default {
   },
   methods: {
     createTeam() {
-      this.$http
-        .createTeam(this.team)
-        .then(response => {
-          if (response.data && response.status === 201) {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("Team created"),
-              color: "success"
-            });
-            this.team = {};
-          }
+      this.$store
+        .dispatch("team/createTeam", this.team)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Team created"),
+            color: "success"
+          });
+          this.$router.push({ name: routeNames.TEAMS });
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -156,8 +155,8 @@ export default {
     },
 
     deleteTeam() {
-      this.$http
-        .deleteTeam(this.team._id)
+      this.$store
+        .dispatch("team/deleteTeam", this.team._id)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("team deleted"),
@@ -175,17 +174,11 @@ export default {
   },
   created() {
     if (this.$route.params.id) {
-      this.$http
-        .getTeamById(this.$route.params.id)
-        .then(response => {
-          this.team = response.data;
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: "failed to fetch team",
-            color: "error"
-          });
-        });
+      const { id } = this.$route.params;
+      this.$store.dispatch("team/fetchTeamById", id).then(() => {
+        const team = this.$store.getters["team/getTeamById"](id);
+        this.team = cloneDeep(team);
+      });
     }
 
     this.$store.dispatch("users/fetchUsers");

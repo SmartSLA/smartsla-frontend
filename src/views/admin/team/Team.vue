@@ -73,23 +73,19 @@
 <script>
 export default {
   name: "team-detail",
-  data() {
-    return {
-      team: {}
-    };
+  computed: {
+    team() {
+      const { id } = this.$route.params;
+
+      return this.$store.getters["team/getTeamById"](id);
+    }
   },
   created() {
-    this.$http
-      .getTeamById(this.$route.params.id)
-      .then(response => {
-        this.team = response.data;
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          message: "failed to fetch team",
-          color: "error"
-        });
-      });
+    const { id } = this.$route.params;
+
+    if (id) {
+      this.$store.dispatch("team/fetchTeamById", id);
+    }
   }
 };
 </script>

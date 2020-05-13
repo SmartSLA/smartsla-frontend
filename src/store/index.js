@@ -16,6 +16,7 @@ import ticket from "./modules/ticket";
 import client from "./modules/client";
 import contract from "./modules/contract";
 import contribution from "./modules/contribution";
+import team from "./modules/team";
 import listeners from "./listeners";
 import configuration from "./modules/configuration";
 
@@ -31,6 +32,7 @@ const store = new Vuex.Store({
     software,
     ticket,
     client,
+    team,
     contract,
     contribution,
     configuration
