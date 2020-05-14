@@ -31,7 +31,7 @@ const actions = {
   },
 
   updateUser: ({ dispatch }, { userId, user }) => {
-    return Vue.axios.updateUser(userId, user).then(() => dispatch("fetchUserById", userId));
+    return Vue.axios.updateUser(userId, user).then(() => dispatch("fetchUserById", user.user));
   },
 
   deleteUser: ({ commit }, userId) => {
