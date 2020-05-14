@@ -344,7 +344,7 @@ export default {
       };
 
       this.$store
-        .dispatch("user/updateUser", {
+        .dispatch("users/updateUser", {
           userId: this.user._id,
           user: this.user
         })
@@ -357,7 +357,7 @@ export default {
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Can not update user"),
+            message: this.$i18n.t("Cannot update user"),
             color: "error"
           });
         });
