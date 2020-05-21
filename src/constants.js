@@ -181,3 +181,8 @@ export const ANOMALY_CNS_STATUS = {
   resolved: "cns.state.closure",
   closed: "cns.state.closed"
 };
+
+export const INITIAL_FILTER = {
+  name: "All requests",
+  _id: ""
+};

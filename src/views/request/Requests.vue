@@ -1,11 +1,10 @@
 <template>
   <div class="requests-list">
     <v-layout align-center justify-space-between row mb-2>
-      <v-flex xs6>
+      <v-flex xs4 pt-4>
         <v-layout align-center row>
           <span class="action-links">
-            <v-icon class="mr-2">format_list_numbered</v-icon>
-            <span>{{ pageTitle }}</span>
+            <request-filter-list></request-filter-list>
           </span>
         </v-layout>
       </v-flex>
@@ -167,6 +166,7 @@ import { OSSA_IDS, ANOMALY_NEXT_STATUS, NEXT_STATUS, REQUEST_TYPE, TICKET_STATUS
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
+import RequestFilterList from "@/components/request/RequestFilterList";
 const { mapState } = createNamespacedHelpers("ticket");
 
 export default {
@@ -686,7 +686,8 @@ export default {
     SoftwareListDetail,
     dataTableFilter,
     ClientContractLinks,
-    OrganizationLabel
+    OrganizationLabel,
+    RequestFilterList
   }
 };
 </script>
