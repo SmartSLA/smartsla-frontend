@@ -679,6 +679,7 @@ export default {
     this.$auth.ready(() => {
       this.$store.dispatch("user/fetchUser");
     });
+    this.$store.dispatch("ticket/setFilter", this.$route.query.filter);
   },
   components: {
     ExportCsvButton,

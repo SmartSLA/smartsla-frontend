@@ -24,8 +24,8 @@ export default {
     return this.post(`/ticketing/api/tickets/${ticketId}`);
   },
 
-  listTickets({ limit = 50, offset = 0 }) {
-    return this.get("/ticketing/api/tickets", { params: { limit, offset } });
+  listTickets({ limit = 50, offset = 0, filter }) {
+    return this.get("/ticketing/api/tickets", { params: { limit, offset, filter } });
   },
 
   countTickets() {

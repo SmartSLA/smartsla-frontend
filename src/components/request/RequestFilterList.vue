@@ -6,7 +6,7 @@
     background-color="transparent"
     :items="filters"
     class="filter-menu"
-    v-model="selectedFilter"
+    v-model="currentlySelectedFilter"
     item-text="name"
     item-value="_id"
   >
@@ -26,20 +26,32 @@
 <script>
 import { INITIAL_FILTER } from "@/constants";
 import { mapGetters } from "vuex";
+import { routeNames } from "@/router";
 
 export default {
   name: "request-filter-list",
   data: () => ({
-    selectedFilter: INITIAL_FILTER
+    selectedFilter: null
   }),
   computed: {
     ...mapGetters({
       storedFilters: "filter/getFilterList",
-      ticketsCount: "ticket/getNbOfTickets"
+      ticketsCount: "ticket/getNbOfTickets",
+      filter: "ticket/filter"
     }),
 
     filters() {
       return [INITIAL_FILTER, ...this.storedFilters];
+    },
+
+    currentlySelectedFilter: {
+      get: function() {
+        return this.filter || INITIAL_FILTER;
+      },
+
+      set: function(value) {
+        this.selectedFilter = value;
+      }
     }
   },
   created() {
@@ -47,7 +59,9 @@ export default {
   },
   watch: {
     selectedFilter(filter) {
-      this.$emit("filter:select", filter);
+      this.$store.dispatch("ticket/setFilter", filter);
+      this.$store.dispatch("ticket/fetchTickets");
+      this.$router.push({ name: routeNames.REQUESTS, query: { filter } });
     }
   }
 };
