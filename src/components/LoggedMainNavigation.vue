@@ -26,7 +26,6 @@
       >
         <v-list class="pt-0" slot="activator" style="width:100%">
           <v-list-tile
-            :class="{ 'active-menu-link': menuItem.name == currentActiveMenu }"
             :to="{ name: menuItem.path || menuItem.name }"
             :disabled="menuItem.subMenuItems && $vuetify.breakpoint.width <= '768'"
           >
@@ -54,7 +53,8 @@
           <v-list-tile
             v-for="subMenuItem in menuItem.subMenuItems"
             :key="subMenuItem.icon"
-            :to="{ name: subMenuItem.path || subMenuItem.name }"
+            :to="getPath(subMenuItem)"
+            :class="{ 'active-menu-link': getPath(subMenuItem) === currentActivePath, 'query-link': subMenuItem.query }"
           >
             <v-list-tile-title>{{ subMenuItem.text }}</v-list-tile-title>
           </v-list-tile>
@@ -95,20 +95,12 @@ import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
 export default {
   name: "logged-main-navigation",
-  data() {
-    return {
-      menuItems: []
-    };
-  },
   computed: {
     ...mapGetters({
       ticketsSize: "ticket/getNbOfTickets",
-      contributionsSize: "contribution/getContributionsCount"
+      contributionsSize: "contribution/getContributionsCount",
+      filters: "filter/getFilterList"
     }),
-
-    currentActiveMenu() {
-      return (this.$route.matched.length && this.$route.matched[0].name) || this.$route.name;
-    },
 
     filteredMenuItems() {
       return (
@@ -128,6 +120,59 @@ export default {
     },
     drawer() {
       return this.$store.state.ui.drawer;
+    },
+
+    menuItems() {
+      return [
+        {
+          name: routeNames.DASHBOARD,
+          text: this.$i18n.t("Dashboard"),
+          icon: "dashboard",
+          show: false
+        },
+        {
+          name: routeNames.CREATEREQUEST,
+          text: this.$i18n.t("New issue"),
+          icon: "create",
+          show: true
+        },
+        {
+          name: [routeNames.REQUESTS, routeNames.REQUEST, routeNames.EDITREQUEST],
+          path: routeNames.REQUESTS,
+          text: this.$i18n.t("Requests"),
+          icon: "format_list_numbered",
+          show: true,
+          subMenuItems: this.filters.map(filter => ({
+            text: this.$i18n.t(filter.name),
+            name: routeNames.REQUESTS,
+            query: `?filter=${filter._id}`
+          }))
+        },
+        {
+          name: routeNames.CONTRIBUTIONS,
+          text: this.$i18n.t("Contributions"),
+          icon: "format_line_spacing",
+          show: true
+        },
+        {
+          name: routeNames.ADMINHOME,
+          text: this.$i18n.t("Administration"),
+          icon: "mdi-tune",
+          show: this.$auth.check("admin"),
+          subMenuItems: [
+            { text: this.$i18n.t("Users"), path: routeNames.USERS },
+            { text: this.$i18n.t("Teams"), path: routeNames.TEAMS },
+            { text: this.$i18n.t("Roles"), path: routeNames.ADMIN_ROLES },
+            { text: this.$i18n.t("Clients"), path: routeNames.CLIENTS },
+            { text: this.$i18n.t("Contracts"), path: routeNames.CONTRACTS },
+            { text: this.$i18n.t("Softwares"), path: routeNames.SOFTWARELIST }
+          ]
+        }
+      ];
+    },
+
+    currentActivePath() {
+      return this.$route.fullPath;
     }
   },
   methods: {
@@ -139,54 +184,22 @@ export default {
     },
     showDrawer(value) {
       this.$store.dispatch("ui/showDrawer", value);
+    },
+
+    getPath(item) {
+      if (!item.query) {
+        return { name: item.path || item.name };
+      }
+
+      const { route } = this.$router.resolve({ name: item.path || item.name });
+
+      return `${route.path}${item.query}`;
     }
   },
   created() {
     this.$store.dispatch("ticket/countTickets");
     this.$store.dispatch("contribution/countContributions");
-  },
-  mounted() {
-    this.menuItems = [
-      {
-        name: routeNames.DASHBOARD,
-        text: this.$i18n.t("Dashboard"),
-        icon: "dashboard",
-        show: false
-      },
-      {
-        name: routeNames.CREATEREQUEST,
-        text: this.$i18n.t("New issue"),
-        icon: "create",
-        show: true
-      },
-      {
-        name: [routeNames.REQUESTS, routeNames.REQUEST, routeNames.EDITREQUEST],
-        path: routeNames.REQUESTS,
-        text: this.$i18n.t("Requests"),
-        icon: "format_list_numbered",
-        show: true
-      },
-      {
-        name: routeNames.CONTRIBUTIONS,
-        text: this.$i18n.t("Contributions"),
-        icon: "format_line_spacing",
-        show: true
-      },
-      {
-        name: routeNames.ADMINHOME,
-        text: this.$i18n.t("Administration"),
-        icon: "mdi-tune",
-        show: this.$auth.check("admin"),
-        subMenuItems: [
-          { text: this.$i18n.t("Users"), path: routeNames.USERS },
-          { text: this.$i18n.t("Teams"), path: routeNames.TEAMS },
-          { text: this.$i18n.t("Roles"), path: routeNames.ADMIN_ROLES },
-          { text: this.$i18n.t("Clients"), path: routeNames.CLIENTS },
-          { text: this.$i18n.t("Contracts"), path: routeNames.CONTRACTS },
-          { text: this.$i18n.t("Softwares"), path: routeNames.SOFTWARELIST }
-        ]
-      }
-    ];
+    this.$store.dispatch("filter/fetchFilters");
   }
 };
 </script>
@@ -258,6 +271,10 @@ ticketing-color = #2196f3
   color: inherit;
 }
 
+.query-link .v-list__tile--active {
+  color: inherit !important;
+}
+
 .v-navigation-drawer .v-menu__activator--active .theme--light.v-list:hover .v-list--disabled {
   background: rgba(0,0,0,0.04);
 }
@@ -266,7 +283,7 @@ ticketing-color = #2196f3
   font-weight: 600;
 }
 
-.v-list__tile--active .v-chip__content {
+.v-list__tile--active .v-chip__content, .active-menu-link {
   color: ticketing-color;
   font-weight: 600;
 }
