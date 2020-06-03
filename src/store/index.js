@@ -19,6 +19,7 @@ import contribution from "./modules/contribution";
 import team from "./modules/team";
 import listeners from "./listeners";
 import configuration from "./modules/configuration";
+import filter from "./modules/filter";
 
 Vue.use(Vuex);
 
@@ -35,7 +36,8 @@ const store = new Vuex.Store({
     team,
     contract,
     contribution,
-    configuration
+    configuration,
+    filter
   },
   actions,
   getters,

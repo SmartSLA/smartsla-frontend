@@ -13,7 +13,8 @@ function initialState() {
     },
     length: 0,
     tickets: {},
-    search: null
+    search: null,
+    filter: null
   };
 }
 
@@ -23,7 +24,9 @@ const types = {
   SET_PAGINATION: "SET_PAGINATION",
   SET_SEARCH: "SET_SEARCH",
   UPDATE_TICKET: "UPDATE_TICKET",
-  ADD_EVENT: "ADD_EVENT"
+  ADD_EVENT: "ADD_EVENT",
+  SET_FILTER: "SET_FILTER",
+  RESET_TICKETS: "RESET_TICKETS"
 };
 
 const actions = {
@@ -35,7 +38,8 @@ const actions = {
     return Vue.axios
       .listTickets({
         limit: state.pagination.rowsPerPage,
-        offset: (state.pagination.page - 1) * state.pagination.rowsPerPage
+        offset: (state.pagination.page - 1) * state.pagination.rowsPerPage,
+        filter: state.filter
       })
       .then(response => {
         dispatch("countTickets");
@@ -98,6 +102,11 @@ const actions = {
 
   updateTicket: ({ commit }, { ticketId, ticket }) => {
     return Vue.axios.updateTicket(ticketId, ticket).then(({ data }) => commit(types.UPDATE_TICKET, data));
+  },
+
+  setFilter: ({ commit }, filter) => {
+    commit(types.RESET_TICKETS);
+    commit(types.SET_FILTER, filter);
   }
 };
 
@@ -122,6 +131,14 @@ const mutations = {
   [types.UPDATE_TICKET](state, ticket) {
     const { _id } = ticket;
     Vue.set(state.tickets, _id, ticket);
+  },
+
+  [types.SET_FILTER](state, filter) {
+    state.filter = filter;
+  },
+
+  [types.RESET_TICKETS](state) {
+    state.tickets = {};
   }
 };
 
@@ -177,7 +194,8 @@ const getters = {
 
     return result.slice((page - 1) * rowsPerPage, page * rowsPerPage);
   },
-  pagination: state => state.pagination
+  pagination: state => state.pagination,
+  filter: state => state.filter
 };
 
 export default {

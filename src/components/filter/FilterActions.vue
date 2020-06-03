@@ -137,7 +137,7 @@ export default {
         user: this.$store.state.user.user._id
       };
       this.$http
-        .createFilters(filterToSave)
+        .createCustomFilter(filterToSave)
         .then(() => {
           this.dialog = false;
           this.$store.dispatch("ui/displaySnackbar", {
@@ -161,7 +161,7 @@ export default {
 
     deleteCurrentFilter() {
       this.$http
-        .deleteFilters(this.storedSelectionsFilter._id)
+        .deleteCustomFilter(this.storedSelectionsFilter._id)
         .then(() => {
           this.$emit("filterDeleted");
           this.$store.dispatch("ui/displaySnackbar", {
@@ -183,7 +183,7 @@ export default {
       var filterToUpdate = Object.assign({}, this.storedSelectionsFilter);
       filterToUpdate.items = [...this.customFilters];
       this.$http
-        .updateFilters(filterToUpdate._id, filterToUpdate)
+        .updateCustomFilter(filterToUpdate._id, filterToUpdate)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             color: "success",
