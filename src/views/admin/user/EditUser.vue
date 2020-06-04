@@ -405,7 +405,7 @@ export default {
     },
     deleteUser() {
       this.$store
-        .dispatch("user/deleteUser", this.$route.params.id)
+        .dispatch("users/deleteUser", this.$route.params.id)
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("User deleted"),
