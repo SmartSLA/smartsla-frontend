@@ -9,7 +9,7 @@ import plugins from "./plugins";
 import applicationConfiguration from "./modules/application-configuration";
 import session from "./modules/session";
 import ui from "./modules/ui";
-import user from "./modules/user";
+import currentUser from "./modules/currentUser";
 import users from "./modules/users";
 import software from "./modules/software";
 import ticket from "./modules/ticket";
@@ -28,7 +28,7 @@ const store = new Vuex.Store({
     applicationConfiguration,
     session,
     ui,
-    user,
+    currentUser,
     users,
     software,
     ticket,

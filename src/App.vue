@@ -100,7 +100,7 @@ export default {
   },
   created() {
     this.$auth.ready(() => {
-      this.$store.dispatch("user/fetchUser");
+      this.$store.dispatch("currentUser/fetchUser");
     });
   }
 };

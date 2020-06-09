@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUser: "user/getUser"
+      getUser: "currentUser/getUser"
     }),
     contract() {
       return this.$store.getters["contract/getContractById"](this.request.contract);
