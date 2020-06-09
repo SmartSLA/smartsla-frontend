@@ -55,7 +55,7 @@
             :to="getPath(subMenuItem)"
             :class="{ 'active-menu-link': getPath(subMenuItem) === currentActivePath, 'query-link': subMenuItem.query }"
           >
-            <v-list-tile-title>{{ subMenuItem.text }}</v-list-tile-title>
+            <v-list-tile-title>{{ $t(subMenuItem.text) }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>

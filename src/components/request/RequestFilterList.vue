@@ -20,6 +20,9 @@
         </v-flex>
       </v-layout>
     </template>
+    <template v-slot:selection="{ item }">
+      <span>{{ $t(item.name) }}</span>
+    </template>
   </v-select>
 </template>
 
