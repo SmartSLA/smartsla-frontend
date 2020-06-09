@@ -186,3 +186,10 @@ export const INITIAL_FILTER = {
   name: "All requests",
   _id: ""
 };
+
+export const WIDGET_DURATION_INTERVAL = {
+  LAST_WEEK: "Last 7 days",
+  LAST_TWO_WEEK: "Last 15 days",
+  LAST_MONTH: "Last month",
+  LAST_YEAR: "Year"
+};
