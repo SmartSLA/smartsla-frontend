@@ -310,11 +310,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      email: "user/getEmail",
+      email: "currentUser/getEmail",
       requests: "ticket/getCurrentPageRequests",
       totalRequests: "ticket/getNbOfTickets",
       allRequests: "ticket/getTickets",
-      userContracts: "user/getContracts",
+      userContracts: "currentUser/getContracts",
       contractsList: "contract/getContracts",
       software: "software/getSoftwareList",
       userList: "users/getUsers"
@@ -677,7 +677,7 @@ export default {
   },
   created() {
     this.$auth.ready(() => {
-      this.$store.dispatch("user/fetchUser");
+      this.$store.dispatch("currentUser/fetchUser");
     });
   },
   components: {

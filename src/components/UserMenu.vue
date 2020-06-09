@@ -54,10 +54,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getAvatarUrl: "user/getAvatarUrl",
-      getDisplayName: "user/getDisplayName",
-      getEmail: "user/getEmail",
-      getId: "user/getId"
+      getAvatarUrl: "currentUser/getAvatarUrl",
+      getDisplayName: "currentUser/getDisplayName",
+      getEmail: "currentUser/getEmail",
+      getId: "currentUser/getId"
     }),
     routeNames() {
       return routeNames;

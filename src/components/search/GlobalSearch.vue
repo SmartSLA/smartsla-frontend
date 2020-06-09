@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userType: "user/getType",
+      userType: "currentUser/getType",
       tickets: "ticket/getTickets",
       clients: "client/getClients"
     }),
