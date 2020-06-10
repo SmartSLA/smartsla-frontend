@@ -16,7 +16,7 @@ const types = {
 const actions = {
   fetchUser({ commit, dispatch }) {
     Vue.axios
-      .get("ticketing/api/user")
+      .getCurrentTicketingUser()
       .then(response => {
         commit(types.SET_USER, response.data);
         dispatch("configuration/fetchConfig", null, { root: true });
