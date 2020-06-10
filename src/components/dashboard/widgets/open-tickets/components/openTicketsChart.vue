@@ -13,7 +13,7 @@ export default {
         labels: [],
         datasets: [
           {
-            label: "Tickets ouverts",
+            label: this.$t("openedTickets"),
             type: "bar",
             order: 1,
             borderColor: "rgb(142, 171, 104, 1)",
@@ -22,7 +22,7 @@ export default {
             fill: false
           },
           {
-            label: "Tickets résolus",
+            label: this.$t("closedTickets"),
             type: "line",
             order: 0,
             borderColor: "rgb(255, 99, 132)",
@@ -62,7 +62,7 @@ export default {
         title: {
           display: true,
           position: "bottom",
-          text: "Total des tickets ouverts & tickets résolus"
+          text: this.$t("chartTitleOpenTickets")
         }
       }
     };

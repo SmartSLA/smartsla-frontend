@@ -10,7 +10,7 @@ import router from "@/router";
 import { api, auth as servicesAuth } from "@/services";
 import ApplicationSettings from "@/services/application-settings";
 import store from "@/store";
-import i18n from "@/i18n";
+import { i18n } from "@/i18n";
 import moment from "moment-timezone";
 import { DEFAULT_TIMEZONE } from "@/constants.js";
 
@@ -47,7 +47,7 @@ function getApplication(VueInstance) {
   const Application = new VueInstance({
     router,
     store,
-    i18n: i18n(VueInstance),
+    i18n: i18n(),
     render: h => h(App)
   }).$mount("#app");
 
