@@ -1,6 +1,6 @@
 <template>
   <v-menu offset-y class="my-3 mx-2 user-menu-item">
-    <op-avatar slot="activator"></op-avatar>
+    <userAvatar slot="activator"></userAvatar>
     <v-list>
       <v-list-tile>
         <v-list-tile-content>
@@ -26,16 +26,17 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { OPAvatar } from "vue-openpaas-components";
+import userAvatar from "@/components/user/userAvatar";
 import { routeNames } from "@/router";
 import ApplicationSettings from "@/services/application-settings";
+
 export default {
   name: "op-user-menu",
   data: () => ({
     features: ApplicationSettings.FEATURES
   }),
   components: {
-    "op-avatar": OPAvatar
+    userAvatar
   },
   methods: {
     logout() {
@@ -54,7 +55,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getAvatarUrl: "currentUser/getAvatarUrl",
       getDisplayName: "currentUser/getDisplayName",
       getEmail: "currentUser/getEmail",
       getId: "currentUser/getId"
