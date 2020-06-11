@@ -1,15 +1,17 @@
 <template>
-  <v-flex xs12 sm6 md8>
+  <v-flex>
     <v-toolbar flat dense>
-      <v-layout align-center justify-end>
+      <v-layout>
         <v-text-field
           v-model="search"
-          prepend-inner-icon="search"
+          :prepend-inner-icon="prependInnerIcon"
+          @click:prepend-inner="hideTextField"
           :placeholder="$t('Search')"
           clearable
           solo
           class="mt-2"
           flat
+          autofocus
           background-color="#eee"
           @input="searchInputChanged"
         ></v-text-field>
@@ -25,9 +27,18 @@ export default {
       search: null
     };
   },
+  props: ["hideSearchFilter"],
+  computed: {
+    prependInnerIcon() {
+      return this.hideSearchFilter ? "arrow_back" : "undefined";
+    }
+  },
   methods: {
     searchInputChanged() {
       this.$emit("filterSearchInputChanged", this.search);
+    },
+    hideTextField() {
+      this.$emit("updatedHideSearchFilter");
     }
   }
 };

@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-layout column mb-2 mt-4 class="filter_layout">
-      <v-flex xs12 sm11 md9 lg6 mb-2>
+      <v-flex xs12 sm11 md9 lg3 mb-2>
         <FilterCategories :categories="categories" @filterCategoryChanged="changeFilterCategory"></FilterCategories>
       </v-flex>
-      <v-flex xs12 sm9 md9 lg5 mb-4>
+      <v-flex xs12 sm9 md9 lg3 mb-4>
         <v-toolbar flat dense v-if="!showStoredFilters">
           <v-layout align-center justify-end>
             <v-overflow-btn
@@ -46,8 +46,20 @@
         </v-toolbar>
         <FilterLoader v-else :savedFilters="savedFilters" @filterLoaded="loadFilter"></FilterLoader>
       </v-flex>
-      <v-flex sm1 md1 lg2 mb-4 class="hidden-xs-only"></v-flex>
-      <FilterSearchInput @filterSearchInputChanged="changeFilterSearch"></FilterSearchInput>
+      <v-spacer v-if="hideSearchFilter"></v-spacer>
+      <v-layout row justify-end>
+        <v-btn v-if="!hideSearchFilter" icon @click="hideSearchFilter = true">
+          <v-icon>search</v-icon>
+        </v-btn>
+        <FilterSearchInput
+          @filterSearchInputChanged="changeFilterSearch"
+          class="mx-2"
+          v-else
+          :hideSearchFilter="hideSearchFilter"
+          @updatedHideSearchFilter="hideSearchInput"
+        ></FilterSearchInput>
+        <ExportCsvButton v-if="!hideSearchFilter || this.$vuetify.breakpoint.name != 'xs'"></ExportCsvButton>
+      </v-layout>
     </v-layout>
     <FilterActions
       :savedFilters="savedFilters"
@@ -68,6 +80,7 @@ import FilterActions from "@/components/filter/FilterActions";
 import FilterSearchInput from "@/components/filter/FilterSearchInput";
 import FilterLoader from "@/components/filter/FilterLoader";
 import FilterCategories from "@/components/filter/FilterCategories";
+import ExportCsvButton from "@/components/request/ExportCsvButton";
 
 export default {
   name: "dataTableFilter",
@@ -75,7 +88,8 @@ export default {
     FilterActions,
     FilterSearchInput,
     FilterLoader,
-    FilterCategories
+    FilterCategories,
+    ExportCsvButton
   },
 
   data() {
@@ -83,7 +97,8 @@ export default {
       showStoredFilters: false,
       valuesFilter: null,
       customFilters: [],
-      storedSelectionsFilter: null
+      storedSelectionsFilter: null,
+      hideSearchFilter: false
     };
   },
 
@@ -149,6 +164,9 @@ export default {
 
     handleFilterCreation() {
       this.$emit("filterCreated");
+    },
+    hideSearchInput() {
+      this.hideSearchFilter = false;
     }
   },
   computed: {
