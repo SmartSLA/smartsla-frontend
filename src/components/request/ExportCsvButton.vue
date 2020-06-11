@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-btn flat small color="default" @click="exportData">
-      <v-icon class="mr-2">backup</v-icon> {{ $t("Export sheet") }}
+    <v-btn flat fab small color="default" @click="exportData">
+      <v-icon>backup</v-icon>
     </v-btn>
   </div>
 </template>

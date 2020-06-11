@@ -1,16 +1,11 @@
 <template>
   <div class="requests-list">
     <v-layout align-center justify-space-between row mb-2>
-      <v-flex xs4 pt-4>
+      <v-flex xs12 pt-4 md4 lg4>
         <v-layout align-center row>
           <span class="action-links">
             <request-filter-list></request-filter-list>
           </span>
-        </v-layout>
-      </v-flex>
-      <v-flex xs6>
-        <v-layout justify-end row>
-          <export-csv-button></export-csv-button>
         </v-layout>
       </v-flex>
     </v-layout>
