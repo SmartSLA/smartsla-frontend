@@ -17,8 +17,8 @@ const actions = {
   fetchUser({ commit, dispatch }) {
     Vue.axios
       .getCurrentTicketingUser()
-      .then(response => {
-        commit(types.SET_USER, response.data);
+      .then(user => {
+        commit(types.SET_USER, user);
         dispatch("configuration/fetchConfig", null, { root: true });
       })
       .catch(() => {});
