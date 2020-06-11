@@ -29,8 +29,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      avatarUrl: "user/getAvatarUrl",
-      displayName: "user/getDisplayName"
+      avatarUrl: "currentUser/getAvatarUrl",
+      displayName: "currentUser/getDisplayName"
     })
   }
 };

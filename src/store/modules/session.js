@@ -17,7 +17,7 @@ const actions = {
   },
 
   async resetSession({ dispatch }) {
-    await dispatch("user/resetUser", null, { root: true });
+    await dispatch("currentUser/resetUser", null, { root: true });
     return dispatch("setJWTToken", "");
   }
 };

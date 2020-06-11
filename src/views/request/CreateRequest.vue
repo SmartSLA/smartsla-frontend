@@ -598,11 +598,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUser: "user/getUser",
+      getUser: "currentUser/getUser",
       requests: "ticket/getTickets",
-      displayName: "user/getDisplayName",
-      avatarUrl: "user/getAvatarUrl",
-      userPhone: "user/getPhone",
+      displayName: "currentUser/getDisplayName",
+      avatarUrl: "currentUser/getAvatarUrl",
+      userPhone: "currentUser/getPhone",
       activeContracts: "contract/activeContracts",
       allUsers: "users/getUsers"
     }),

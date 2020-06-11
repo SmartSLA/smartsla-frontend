@@ -518,7 +518,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUser: "user/getUser",
+      getUser: "currentUser/getUser",
       configuration: "configuration/getConfiguration"
     }),
 

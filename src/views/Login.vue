@@ -83,7 +83,7 @@ export default {
         })
         .then(response => {
           this.$store.dispatch("session/setJWTToken", response.data);
-          this.$store.dispatch("user/fetchUser");
+          this.$store.dispatch("currentUser/fetchUser");
 
           return response.data;
         })
