@@ -115,7 +115,6 @@
                       persistent-hint
                       v-model="commitment.supported.nonBusinessHours.days"
                       mask="###"
-                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -125,7 +124,6 @@
                       persistent-hint
                       v-model="commitment.supported.nonBusinessHours.hours"
                       mask="##"
-                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -167,7 +165,6 @@
                       persistent-hint
                       v-model="commitment.bypassed.nonBusinessHours.days"
                       mask="###"
-                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -177,7 +174,6 @@
                       persistent-hint
                       v-model="commitment.bypassed.nonBusinessHours.hours"
                       mask="##"
-                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -219,7 +215,6 @@
                       persistent-hint
                       v-model="commitment.resolved.nonBusinessHours.days"
                       mask="###"
-                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs1></v-flex>
@@ -229,7 +224,6 @@
                       persistent-hint
                       v-model="commitment.resolved.nonBusinessHours.hours"
                       mask="##"
-                      :rules="[v => !!v || $i18n.t('Required field')]"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -251,6 +245,8 @@
 </template>
 
 <script>
+import { CNS_TYPES } from "@/constants";
+
 export default {
   name: "form-engagement",
   props: {
@@ -273,6 +269,7 @@ export default {
     },
     submit() {
       if (this.$refs.form.validate()) {
+        this.processNonBusinessHours();
         this.$emit("submit", this.commitment);
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -286,6 +283,18 @@ export default {
     },
     resetRequestType() {
       this.$emit("resetRequestType");
+    },
+
+    processNonBusinessHours() {
+      Object.values(CNS_TYPES).map(phase => {
+        let nbh = this.commitment[phase].nonBusinessHours;
+
+        nbh = {
+          days: nbh.days || 0,
+          hours: nbh.hours || 0
+        };
+        this.$set(this.commitment[phase], "nonBusinessHours", { ...nbh });
+      });
     }
   },
   watch: {
