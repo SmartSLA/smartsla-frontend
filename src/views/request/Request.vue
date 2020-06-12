@@ -158,6 +158,17 @@
                 {{ $t("Comments") }}
                 <v-chip small>{{ request.events.length }}</v-chip>
               </v-tab>
+              <v-tab href="#contributions">
+                {{ $t("Contributions") }}
+                <v-chip small>{{ request.relatedContributions && request.relatedContributions.length }}</v-chip>
+              </v-tab>
+              <v-tab-item value="contributions" class="mt-1">
+                <RelatedContributions
+                  :contributions="request.relatedContributions"
+                  :ticketId="request._id"
+                  @update="fetchTicket"
+                ></RelatedContributions>
+              </v-tab-item>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
                   <v-timeline-item
@@ -461,13 +472,6 @@
                 </v-flex>
               </v-layout>
             </v-card>
-          </v-flex>
-          <v-flex xs12 md12 sm12 xl12 lg12 pt-4>
-            <RelatedContributions
-              :contributions="request.relatedContributions"
-              :ticketId="request._id"
-              @update="fetchTicket"
-            ></RelatedContributions>
           </v-flex>
         </v-layout>
       </v-flex>
