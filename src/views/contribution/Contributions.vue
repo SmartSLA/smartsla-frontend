@@ -179,8 +179,8 @@ export default {
         contributionList = contributionList.filter(contribution => {
           return (
             InsensitiveInclude(contribution.name, this.search) ||
-            InsensitiveInclude(contribution.software.name, this.search) ||
-            InsensitiveInclude(contribution.author.name, this.search)
+            InsensitiveInclude(contribution.software, this.search) ||
+            InsensitiveInclude(contribution.author, this.search)
           );
         });
       }
