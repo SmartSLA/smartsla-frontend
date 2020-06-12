@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-md>
+  <v-container>
     <dataTableFilter
       :categories="categories"
       :values="filterValues"

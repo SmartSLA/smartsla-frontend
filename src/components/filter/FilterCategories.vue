@@ -1,6 +1,6 @@
 <template>
   <v-toolbar flat dense>
-    <v-toolbar-title class="subheading hidden-xs-only">{{ $t("Filter by:") }}</v-toolbar-title>
+    <v-toolbar-title class="subheading hidden-sm-and-down">{{ $t("Filter by:") }}</v-toolbar-title>
     <v-divider vertical class="hidden-xs-only"></v-divider>
     <v-overflow-btn
       :items="categoriesList"

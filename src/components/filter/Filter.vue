@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-layout column mb-2 mt-4 class="filter_layout">
-      <v-flex xs12 sm11 md9 lg3 mb-2>
+      <v-flex xs12 sm5 md4 lg3>
         <FilterCategories :categories="categories" @filterCategoryChanged="changeFilterCategory"></FilterCategories>
       </v-flex>
-      <v-flex xs12 sm9 md9 lg3 mb-4>
+      <v-flex xs12 sm5 md4 lg3 mb-4>
         <v-toolbar flat dense v-if="!showStoredFilters">
           <v-layout align-center justify-end>
             <v-overflow-btn
