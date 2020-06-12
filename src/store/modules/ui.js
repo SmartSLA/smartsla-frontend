@@ -17,7 +17,8 @@ const DEFAULT_DRAWER = {
 const DEFAULT_TOOLBAR = {
   fixed: true,
   // sets if the toolbar contents is leaving space for drawer (false) or not (true)
-  clippedLeft: true
+  clippedLeft: true,
+  clippedRight: true
 };
 
 function initialState() {

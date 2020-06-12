@@ -2,7 +2,15 @@
   <v-app id="openpaas">
     <div v-if="$auth.ready()">
       <logged-main-navigation v-if="$auth.check()" />
-      <v-toolbar app light color="white" class="elevation-2" :fixed="toolbar.fixed" :clipped-left="toolbar.clippedLeft">
+      <v-toolbar
+        app
+        light
+        color="white"
+        class="elevation-2"
+        :fixed="toolbar.fixed"
+        :clipped-left="toolbar.clippedLeft"
+        :clipped-right="toolbar.clippedRight"
+      >
         <v-toolbar-title class="d-flex align-center">
           <v-toolbar-side-icon
             v-if="$auth.check() && !hidden"
