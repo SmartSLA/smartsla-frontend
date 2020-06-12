@@ -597,11 +597,7 @@ export default {
       attachmentsPromise
         .then(attachments => {
           const event = {
-            author: {
-              id: this.$store.state.user.user._id,
-              name: this.getUser.name,
-              type: this.getUser.type
-            },
+            author: this.getUser,
             comment: this.comment,
             status: this.newStatus,
             target: this.newResponsible,
