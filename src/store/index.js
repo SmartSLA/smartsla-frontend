@@ -22,11 +22,13 @@ import configuration from "./modules/configuration";
 import filter from "./modules/filter";
 
 import openTickets from "@/components/dashboard/widgets/open-tickets/store/";
+import criticalityTickets from "@/components/dashboard/widgets/criticality-tickets/store/";
 
 Vue.use(Vuex);
 
 const dashboardModules = {
-  openTickets
+  openTickets,
+  criticalityTickets
 };
 
 const store = new Vuex.Store({

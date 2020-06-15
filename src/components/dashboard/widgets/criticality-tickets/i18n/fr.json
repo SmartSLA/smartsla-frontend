@@ -1,0 +1,5 @@
+{
+    "chartTitle": "Total des tickets par type de sévérité",
+    "labelCritical": "Critique",
+    "labelNotCritical": "Non Critique"
+}
