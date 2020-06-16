@@ -1,0 +1,5 @@
+{
+    "chartTitle": "Total tickets by severity type",
+    "labelCritical": "Critical",
+    "labelNotCritical": "Not Critical"
+}

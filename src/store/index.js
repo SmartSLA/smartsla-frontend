@@ -21,7 +21,15 @@ import listeners from "./listeners";
 import configuration from "./modules/configuration";
 import filter from "./modules/filter";
 
+import openTickets from "@/components/dashboard/widgets/open-tickets/store/";
+import criticalityTickets from "@/components/dashboard/widgets/criticality-tickets/store/";
+
 Vue.use(Vuex);
+
+const dashboardModules = {
+  openTickets,
+  criticalityTickets
+};
 
 const store = new Vuex.Store({
   modules: {
@@ -37,7 +45,12 @@ const store = new Vuex.Store({
     contract,
     contribution,
     configuration,
-    filter
+    filter,
+    dashboard: {
+      modules: {
+        ...dashboardModules
+      }
+    }
   },
   actions,
   getters,

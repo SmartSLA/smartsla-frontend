@@ -16,6 +16,7 @@ import holidaysFunctions from "./holidays-api";
 import peopleAPI from "./people-api";
 import rolesAPI from "./roles-api";
 import filterFunctions from "./filter-api";
+import dashboardFunctions from "./dashboard-api";
 
 const defaults = {
   baseURL: store.state.applicationConfiguration.baseUrl
@@ -38,6 +39,7 @@ function Api(config) {
   Object.assign(instance, peopleAPI);
   Object.assign(instance, rolesAPI);
   Object.assign(instance, filterFunctions);
+  Object.assign(instance, dashboardFunctions);
 
   instance.interceptors.request.use(
     function(config) {

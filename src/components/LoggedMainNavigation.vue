@@ -83,7 +83,8 @@ export default {
     ...mapGetters({
       ticketsSize: "ticket/getNbOfTickets",
       contributionsSize: "contribution/getContributionsCount",
-      filters: "filter/getFilterList"
+      filters: "filter/getFilterList",
+      configuration: "configuration/getConfiguration"
     }),
 
     filteredMenuItems() {
@@ -112,7 +113,7 @@ export default {
           name: routeNames.DASHBOARD,
           text: this.$i18n.t("Dashboard"),
           icon: "dashboard",
-          show: false
+          show: this.configuration.isDashboardEnabled
         },
         {
           name: routeNames.CREATEREQUEST,
