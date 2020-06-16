@@ -29,7 +29,7 @@ function loadWidgetsMessage() {
 
     if (matched && matched.length > 1) {
       const locale = matched[1];
-      messages[locale] = locales(key);
+      messages[locale] = Object.assign({}, messages[locale], locales(key));
     }
   });
 
