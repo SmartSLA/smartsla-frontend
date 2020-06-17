@@ -509,13 +509,13 @@ export default {
       } else {
         this.$store
           .dispatch("ticket/createTicket", ticket)
-          .then(ticketId => {
+          .then(createdTicket => {
             this.$store.dispatch("ui/displaySnackbar", {
               message: this.$i18n.t("ticket created"),
               color: "success"
             });
 
-            this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
+            this.$router.push({ name: routeNames.REQUEST, params: { id: createdTicket._id } });
           })
           .catch(() => {
             this.$store.dispatch("ui/displaySnackbar", {
