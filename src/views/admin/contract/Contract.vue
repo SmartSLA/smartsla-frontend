@@ -140,13 +140,6 @@
                   </v-flex>
                 </v-layout>
               </v-card-text>
-              <v-layout row wrap align-end>
-                <v-flex xs12 text-xs-center align-end>
-                  <div>
-                    <v-btn primary color="primary">{{ $t("Renew this contract") }}</v-btn>
-                  </div>
-                </v-flex>
-              </v-layout>
             </v-card>
           </v-flex>
           <v-flex xs12>
