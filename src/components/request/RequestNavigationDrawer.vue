@@ -12,57 +12,60 @@
     mobile-break-point="450"
     right
   >
-    <v-list>
+    <v-list class="py-0">
       <v-list-tile v-if="!isMobile" @click="drawer.mini = !drawer.mini">
         <v-list-tile-content v-if="!drawer.mini">
-          <v-list-tile-title class="pl-2 body-1">{{ $t("Collapse menu") }}</v-list-tile-title>
+          <v-list-tile-title class="body-1 ml-2">{{ $t("Collapse menu") }}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
           <v-icon>{{ drawer.mini ? "chevron_left" : "chevron_right" }}</v-icon>
         </v-list-tile-action>
       </v-list-tile>
-      <v-list-tile v-else @click="emitSidebarStatus">
+      <v-list-tile v-else @click="emitRequestNavigationDrawerStatus">
         <v-list-tile-content>
-          <v-list-tile-title class="pl-2 ml-1 body-1">{{ $t("Collapse menu") }}</v-list-tile-title>
+          <v-list-tile-title class="body-1">{{ $t("Collapse menu") }}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
           <v-icon>chevron_right</v-icon>
         </v-list-tile-action>
       </v-list-tile>
-      <v-divider :class="drawer.mini || !request.responsible ? 'd-block' : 'mx-3 mb-2'"></v-divider>
     </v-list>
-    <v-list two-line subheader>
-      <v-layout column>
-        <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" class="my-2" size="24">
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <v-img
-                v-if="request.responsible"
-                v-on="on"
-                :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"
-              ></v-img>
-              <v-icon v-else large>person</v-icon>
-            </template>
+    <v-divider class="d-block"></v-divider>
 
-            <span>
-              <b>{{ $t("Interlocutor") }}</b>
-              <br />
-              {{ request.responsible && request.responsible.name }}
-            </span>
-          </v-tooltip>
-        </v-list-tile-avatar>
-        <v-list-tile v-if="!drawer.mini" class="ml-2">
-          <v-layout column align-center px-0>
-            <v-list-tile-title class="body-1 ml-4">
-              {{ $t("Interlocutor") }}
-            </v-list-tile-title>
-            <v-layout mr-5>
-              <v-list-tile-avatar v-if="request.responsible">
-                <v-avatar size="30">
-                  <v-img :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"></v-img>
-                </v-avatar>
+    <v-list two-line subheader class="py-0">
+      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24">
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-img
+              v-if="request.responsible"
+              v-on="on"
+              :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"
+            ></v-img>
+            <v-icon v-else medium size="24" v-on="on">account_circle</v-icon>
+          </template>
+          <span>
+            <b>{{ $t("Interlocutor") }}</b>
+            <br />
+            {{
+              request.responsible && request.responsible.name
+                ? request.responsible.name
+                : $t("No interlocutor in charge")
+            }}
+          </span>
+        </v-tooltip>
+      </v-list-tile-avatar>
+      <v-list-tile v-if="!drawer.mini">
+        <v-layout column align-center justify-center px-0>
+          <v-list-tile-title class="body-1">
+            {{ $t("Interlocutor") }}
+          </v-list-tile-title>
+          <v-layout row align-center>
+            <v-flex>
+              <v-list-tile-avatar v-if="request.responsible" size="30" class="px-0">
+                <v-img :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"></v-img>
               </v-list-tile-avatar>
-
+            </v-flex>
+            <v-flex>
               <v-list-tile-content v-if="request.responsible">
                 <v-list-tile-title class="body-1">
                   {{ request.responsible && request.responsible.name }}
@@ -81,43 +84,43 @@
                   {{ $t("No interlocutor in charge") }}
                 </v-list-tile-sub-title>
               </v-list-tile-content>
-            </v-layout>
+            </v-flex>
           </v-layout>
-        </v-list-tile>
-      </v-layout>
-      <v-divider class="mx-3 mt-2" :class="request.reponsible ? 'mt-2 mb-0' : ''"></v-divider>
+        </v-layout>
+      </v-list-tile>
 
-      <v-layout column :class="drawer.mini ? '' : 'my-2'">
-        <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" class="my-2" size="24">
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <v-img
-                v-if="request.beneficiary"
-                v-on="on"
-                :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"
-              ></v-img>
-              <v-icon v-else large>person</v-icon>
-            </template>
+      <v-divider class="mx-3 my-1"></v-divider>
 
-            <span>
-              <b>{{ $t("Beneficiary") }}</b>
-              <br />
-              {{ request.beneficiary && request.beneficiary.name }}
-            </span>
-          </v-tooltip>
-        </v-list-tile-avatar>
-        <v-list-tile v-if="!drawer.mini" class="ml-2">
-          <v-layout column align-center px-0>
-            <v-list-tile-title class="body-1 ml-4">
-              {{ $t("Beneficiary") }}
-            </v-list-tile-title>
-            <v-layout mr-5>
-              <v-list-tile-avatar v-if="request.beneficiary">
-                <v-avatar size="30">
-                  <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
-                </v-avatar>
+      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-img
+              v-if="request.beneficiary"
+              v-on="on"
+              :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"
+            ></v-img>
+            <v-icon v-else large>person</v-icon>
+          </template>
+
+          <span>
+            <b>{{ $t("Beneficiary") }}</b>
+            <br />
+            {{ request.beneficiary && request.beneficiary.name }}
+          </span>
+        </v-tooltip>
+      </v-list-tile-avatar>
+      <v-list-tile v-if="!drawer.mini">
+        <v-layout column align-center justify-center px-0>
+          <v-list-tile-title class="body-1">
+            {{ $t("Beneficiary") }}
+          </v-list-tile-title>
+          <v-layout row align-center>
+            <v-flex>
+              <v-list-tile-avatar v-if="request.beneficiary" size="30" class="px-0">
+                <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
               </v-list-tile-avatar>
-
+            </v-flex>
+            <v-flex>
               <v-list-tile-content v-if="request.beneficiary">
                 <v-list-tile-title class="body-1">
                   {{ request.beneficiary && request.beneficiary.name }}
@@ -136,92 +139,93 @@
                   {{ $t("No beneficiary in charge") }}
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-layout>
-          </v-layout>
-        </v-list-tile>
-        <v-container py-0 mt-2 ml-4 v-if="!drawer.mini">
-          <v-layout row align-center justify-center>
-            <v-flex v-if="request.beneficiary.phone || request.callNumber" class="caption">
-              <v-icon small class="mr-1">phone</v-icon>
-              <a :href="`tel:${request.beneficiary.phone || request.callNumber}`">{{
-                request.beneficiary.phone || request.callNumber
-              }}</a>
-            </v-flex>
-            <v-flex v-if="request.meetingId" class="caption">
-              <v-tooltip left>
-                <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" small class="mr-1">duo</v-icon>
-                </template>
-                <b>Meeting ID</b>
-              </v-tooltip>
-              {{ request.meetingId }}
             </v-flex>
           </v-layout>
-          <v-flex v-if="request.contract" class="caption">
-            <client-contract-links :contractId="request.contract" />
+        </v-layout>
+      </v-list-tile>
+      <v-container v-if="!drawer.mini" class="py-2">
+        <v-layout row>
+          <v-flex xs6 v-if="beneficiaryPhoneNumber" class="caption">
+            <v-icon small class="mr-1">phone</v-icon>
+            <a :href="`tel:${beneficiaryPhoneNumber}`">{{ beneficiaryPhoneNumber }}</a>
           </v-flex>
-        </v-container>
-      </v-layout>
-      <v-divider class="mx-3 mt-2" :class="request.cns.bypassed ? 'mb-5 pb-2' : ''"></v-divider>
+          <v-flex xs6 v-if="request.meetingId" class="caption">
+            <v-tooltip left>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" small class="mr-1">duo</v-icon>
+              </template>
+              <b>Meeting ID</b>
+            </v-tooltip>
+            {{ request.meetingId }}
+          </v-flex>
+        </v-layout>
+        <v-flex v-if="request.contract" class="caption ml-3 mt-1">
+          <client-contract-links :contractId="request.contract" />
+        </v-flex>
+      </v-container>
 
-      <v-layout column>
-        <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" class="my-2" size="24">
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on" medium>schedule</v-icon>
-            </template>
-            <span>
-              <b>{{ $t("Service deadlines") }}</b>
-              <br />
-              {{ $t(capitalize(calculateCnsType(request))) }}
-              <br />
-              <cns-progress-bar
-                :ticket="request"
-                :cnsType="calculateCnsType(request)"
-                :hideClock="true"
-              ></cns-progress-bar>
-            </span>
-          </v-tooltip>
-        </v-list-tile-avatar>
-        <v-list-tile v-if="!drawer.mini">
-          <v-layout column px-0 v-if="request.cns.bypassed">
-            <v-list-tile-title class="ml-4 body-1">{{ $t("Service deadlines") }}</v-list-tile-title>
+      <v-divider class="mx-3 my-1"></v-divider>
 
-            <v-list-tile-sub-title class="ml-4 caption">{{ $t("cns.state.support") }} </v-list-tile-sub-title>
-            <cns-progress-bar :ticket="request" :cnsType="'supported'" class="mx-4"></cns-progress-bar>
+      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24">
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" medium>schedule</v-icon>
+          </template>
+          <span>
+            <b>{{ $t("Service deadlines") }}</b>
+            <br />
+            {{
+              !isEmpty(request.cns)
+                ? $t(capitalize(calculateCnsType(request)))
+                : $t("There is no service deadline for this ticket")
+            }}
+            <br />
+            <cns-progress-bar
+              v-if="!isEmpty(request.cns)"
+              :ticket="request"
+              :cnsType="calculateCnsType(request)"
+              :hideClock="true"
+            ></cns-progress-bar>
+          </span>
+        </v-tooltip>
+      </v-list-tile-avatar>
+      <v-container v-if="!drawer.mini && !isEmpty(request.cns)" class="pa-2">
+        <v-list-tile-title class="body-1">{{ $t("Service deadlines") }}</v-list-tile-title>
 
-            <v-list-tile-sub-title class="ml-4 caption">{{ $t("cns.state.bypass") }}</v-list-tile-sub-title>
-            <cns-progress-bar :ticket="request" :cnsType="'bypassed'" class="mx-4"></cns-progress-bar>
+        <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.support") }} </v-list-tile-sub-title>
+        <cns-progress-bar :ticket="request" :cnsType="'supported'" class="mx-4"></cns-progress-bar>
 
-            <v-list-tile-sub-title class="ml-4 caption">{{ $t("cns.state.resolution") }}</v-list-tile-sub-title>
-            <cns-progress-bar :ticket="request" :cnsType="'resolved'" class="mx-4"></cns-progress-bar>
-          </v-layout>
-          <v-layout column v-else>
-            <v-list-tile-title class="ml-4 body-1">{{ $t("Service deadlines") }}</v-list-tile-title>
-            <v-list-tile-sub-title class="ml-4 caption"
-              >{{ $t("There is no service deadline for this ticket") }}
-            </v-list-tile-sub-title>
-          </v-layout>
-        </v-list-tile>
-      </v-layout>
-      <v-divider class="mx-3" :class="request.cns.bypassed ? 'pt-5 mt-5' : ''"></v-divider>
+        <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.bypass") }}</v-list-tile-sub-title>
+        <cns-progress-bar :ticket="request" :cnsType="'bypassed'" class="mx-4"></cns-progress-bar>
+
+        <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.resolution") }}</v-list-tile-sub-title>
+        <cns-progress-bar :ticket="request" :cnsType="'resolved'" class="mx-4"></cns-progress-bar>
+      </v-container>
+      <v-list-tile v-if="!drawer.mini && isEmpty(request.cns)">
+        <v-layout column justify-center align-center class="mx-1">
+          <v-list-tile-title class="body-1">{{ $t("Service deadlines") }}</v-list-tile-title>
+          <v-list-tile-sub-title class="caption">{{
+            $t("There is no service deadline for this ticket")
+          }}</v-list-tile-sub-title>
+        </v-layout>
+      </v-list-tile>
+
+      <v-divider class="mx-3 my-1"></v-divider>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
 import { REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
-import { capitalize } from "lodash";
+import { capitalize, isEmpty } from "lodash";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import cnsProgressBar from "@/components/CnsProgressBar";
-import RelatedContributions from "@/components/request/RelatedContributions";
 
 export default {
-  props: ["request", "apiUrl", "contributions", "fetchTicket", "isMobile", "getUser"],
+  props: ["request", "apiUrl", "isMobile", "getUser"],
   components: {
     ClientContractLinks,
-    cnsProgressBar,
-    RelatedContributions
+    cnsProgressBar
   },
   data() {
     return {
@@ -248,12 +252,16 @@ export default {
       return capitalize(value);
     },
 
-    emitSidebarStatus() {
-      return this.$emit("update-sidebar-status");
+    isEmpty(value) {
+      return isEmpty(value);
+    },
+
+    emitRequestNavigationDrawerStatus() {
+      return this.$emit("update-request-drawer-status");
     }
   },
   computed: {
-    beneficiaryNumber() {
+    beneficiaryPhoneNumber() {
       if (this.request.callNumber) {
         return this.request.callNumber;
       }
@@ -274,5 +282,24 @@ a:hover {
 }
 .small-icon-width {
   width: 16px;
+}
+.v-list__tile__avatar,
+.flex {
+  display: flex;
+  justify-content: center;
+}
+.container .layout .flex,
+.v-list__tile__action,
+.v-list__tile__avatar {
+  padding: 0 !important;
+}
+.v-divider .mx-3 {
+  margin-left: 0 !important;
+}
+.v-navigation-drawer--mini-variant > .v-divider {
+  margin: 0 0 16px 0;
+}
+.v-navigation-drawer:not(.v-navigation-drawer--mini-variant) > .v-list--two-line {
+  margin-left: 16px;
 }
 </style>

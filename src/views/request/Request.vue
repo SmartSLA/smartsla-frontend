@@ -390,11 +390,10 @@
       <RequestNavigationDrawer
         v-if="(isMobile && hideRequestNavigationDrawer) || !isMobile"
         :apiUrl="apiUrl"
-        :contributions="request.relatedContributions"
         :isMobile="isMobile"
         :request="request"
         :getUser="getUser"
-        @update-sidebar-status="setRequestNavigationDrawerStatus"
+        @update-request-drawer-status="setRequestNavigationDrawerStatus"
       />
     </v-layout>
   </v-container>
