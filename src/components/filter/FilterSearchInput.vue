@@ -1,5 +1,5 @@
 <template>
-  <v-flex>
+  <v-flex sm10>
     <v-toolbar flat dense>
       <v-layout>
         <v-text-field
