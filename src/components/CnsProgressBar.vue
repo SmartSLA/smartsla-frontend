@@ -8,7 +8,7 @@
               height="18"
               :value="currentCnsValue.percentageElapsed"
               :color="currentCnsValueColor"
-              class="mt-0 white--text font-weight-bold"
+              class="my-0 white--text font-weight-bold"
             >
               <span>
                 {{ currentCnsValueInMHD | humanizeHoursDurationFilter(!currentCnsValue.isNonBusinessHours) }}
