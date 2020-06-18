@@ -24,13 +24,15 @@ import filter from "./modules/filter";
 import openTickets from "@/components/dashboard/widgets/open-tickets/store/";
 import criticalityTickets from "@/components/dashboard/widgets/criticality-tickets/store/";
 import counterCards from "@/components/dashboard/widgets/counter-cards/store/";
+import topTenSoftware from "@/components/dashboard/widgets/software/store/";
 
 Vue.use(Vuex);
 
 const dashboardModules = {
   openTickets,
   criticalityTickets,
-  counterCards
+  counterCards,
+  topTenSoftware
 };
 
 const store = new Vuex.Store({
