@@ -37,6 +37,60 @@
         <v-tooltip left>
           <template v-slot:activator="{ on }">
             <v-img
+              v-if="request.assignedTo"
+              v-on="on"
+              :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"
+            ></v-img>
+            <v-icon v-else medium size="24" v-on="on">account_circle</v-icon>
+          </template>
+          <span>
+            <b>{{ $t("Assignee") }}</b>
+            <br />
+            {{ request.assignedTo && request.assignedTo.name ? request.assignedTo.name : $t("Not assigned yet") }}
+          </span>
+        </v-tooltip>
+      </v-list-tile-avatar>
+      <v-list-tile v-if="!drawer.mini">
+        <v-layout column align-center justify-center px-0>
+          <v-list-tile-title class="body-1">
+            {{ $t("Assignee") }}
+          </v-list-tile-title>
+          <v-layout row align-center>
+            <v-flex>
+              <v-list-tile-avatar v-if="request.assignedTo" size="30" class="px-0">
+                <v-img :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"></v-img>
+              </v-list-tile-avatar>
+            </v-flex>
+            <v-flex>
+              <v-list-tile-content v-if="request.assignedTo">
+                <v-list-tile-title class="body-1">
+                  {{ request.assignedTo && request.assignedTo.name }}
+                </v-list-tile-title>
+                <v-list-tile-sub-title v-if="request.assignedTo.email" class="caption">
+                  <a
+                    :href="`mailto:${request.assignedTo.email}?subject=[${getUser.name}] - ${request.title}`"
+                    class="grey--text text--darken-1"
+                  >
+                    {{ request.assignedTo.email }}
+                  </a>
+                </v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-list-tile-content v-else>
+                <v-list-tile-sub-title class="caption">
+                  {{ $t("Not assigned yet") }}
+                </v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-flex>
+          </v-layout>
+        </v-layout>
+      </v-list-tile>
+
+      <v-divider class="mx-3 my-1"></v-divider>
+
+      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-img
               v-if="request.responsible"
               v-on="on"
               :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"
