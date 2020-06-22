@@ -440,6 +440,7 @@
     "Ticket passed in status {status}": "Ticket passé en statut <strong> {status} </strong>",
     "Ticket status": "Statut du ticket",
     "Ticket updated": "Ticket mis à jour",
+    "Time before next step": "En cours de",
     "Time limit": "Limite de temps",
     "Time spent": "Temps passé",
     "Timezone": "Fuseau horaire",
