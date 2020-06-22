@@ -200,7 +200,7 @@ export default {
   },
   created() {
     this.$store.dispatch("software/fetchSoftwareList");
-    this.$store.dispatch("users/fetchUsersList").catch(() => {
+    this.$store.dispatch("users/fetchUsers").catch(() => {
       this.$store.dispatch("ui/displaySnackbar", {
         message: this.$i18n.t("cannot fetch experts list"),
         color: "error"
