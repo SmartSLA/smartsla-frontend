@@ -130,9 +130,14 @@ export default {
     submit(software) {
       const toastMsg = this.isEdit ? "Updated" : "Added";
       if (this.isEdit) {
+        // eslint-disable-next-line no-unused-vars
+        const { name, ...normalizedSoftware } = this.selectedItem;
         const softwareIdx = this.contract.software.findIndex(
-          software => JSON.stringify(software) == JSON.stringify(this.selectedItem)
+          software => JSON.stringify(software) == JSON.stringify(normalizedSoftware)
         );
+
+        delete software.name;
+
         this.$set(this.contract.software, softwareIdx, software);
       } else {
         this.contract.software.push(Object.assign({}, software));
