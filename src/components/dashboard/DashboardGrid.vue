@@ -1,5 +1,9 @@
 <template>
   <v-container fluid grid-list-md>
+    <v-layout mb-3>
+      <global-filters />
+    </v-layout>
+
     <v-layout row wrap mb-3>
       <counter-card-widget />
     </v-layout>
@@ -28,6 +32,7 @@
 </template>
 
 <script>
+import GlobalFilters from "@/components/dashboard/filters/globalFilters.vue";
 import OpenTicketsWidget from "@/components/dashboard/widgets/open-tickets/components/openTicketsWidget.vue";
 import CriticalityWidget from "@/components/dashboard/widgets/criticality-tickets/components/criticalityWidget.vue";
 import CounterCardWidget from "@/components/dashboard/widgets/counter-cards/components/counterCardWidget.vue";
@@ -38,6 +43,7 @@ import OpenTicketsSoftwareWidget from "@/components/dashboard/widgets/open-ticke
 export default {
   name: "DashboardGrid",
   components: {
+    GlobalFilters,
     OpenTicketsWidget,
     CriticalityWidget,
     CounterCardWidget,
