@@ -157,7 +157,7 @@ import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import dataTableFilter from "@/components/filter/Filter";
-import { OSSA_IDS, ANOMALY_NEXT_STATUS, NEXT_STATUS, REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
+import { OSSA_IDS, ANOMALY_CNS_STATUS, CNS_STATUS, REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
@@ -191,7 +191,7 @@ export default {
         { text: this.$i18n.t("MAJ"), value: "updatedAt" },
         { text: this.$i18n.t("Created"), value: "createdAt" },
         { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("In process of being"), value: "cns_type", sortable: false }
+        { text: this.$i18n.t("Time before next step"), value: "cns_type", sortable: false }
       ],
       categories: [
         {
@@ -621,8 +621,9 @@ export default {
       return OSSA_IDS.find(ossa => ossa.id === ossaId);
     },
     cnsWording({ status, type }) {
-      const wording = type === REQUEST_TYPE.ANOMALY ? ANOMALY_NEXT_STATUS[status] : NEXT_STATUS[status];
-      return wording || status;
+      const wording = type === REQUEST_TYPE.ANOMALY ? ANOMALY_CNS_STATUS[status] : CNS_STATUS[status];
+      if (wording === ANOMALY_CNS_STATUS.closed) return;
+      return this.$i18n.t(wording || status);
     },
     capitalize(value) {
       return capitalize(value);
