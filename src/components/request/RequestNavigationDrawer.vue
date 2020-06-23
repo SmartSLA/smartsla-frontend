@@ -37,6 +37,60 @@
         <v-tooltip left>
           <template v-slot:activator="{ on }">
             <v-img
+              v-if="request.assignedTo.id"
+              v-on="on"
+              :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"
+            ></v-img>
+            <v-icon v-else medium size="24" v-on="on">account_circle</v-icon>
+          </template>
+          <span>
+            <b>{{ $t("Assignee") }}</b>
+            <br />
+            {{ request.assignedTo && request.assignedTo.name ? request.assignedTo.name : $t("Not assigned yet") }}
+          </span>
+        </v-tooltip>
+      </v-list-tile-avatar>
+      <v-list-tile v-if="!drawer.mini">
+        <v-layout column align-center justify-center px-0>
+          <v-list-tile-title class="body-1">
+            {{ $t("Assignee") }}
+          </v-list-tile-title>
+          <v-layout row align-center>
+            <v-flex>
+              <v-list-tile-avatar v-if="request.assignedTo.id" size="30" class="px-0">
+                <v-img :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"></v-img>
+              </v-list-tile-avatar>
+            </v-flex>
+            <v-flex>
+              <v-list-tile-content v-if="request.assignedTo.id">
+                <v-list-tile-title class="body-1">
+                  {{ request.assignedTo && request.assignedTo.name }}
+                </v-list-tile-title>
+                <v-list-tile-sub-title v-if="request.assignedTo.email" class="caption">
+                  <a
+                    :href="`mailto:${request.assignedTo.email}?subject=[${getUser.name}] - ${request.title}`"
+                    class="grey--text text--darken-1"
+                  >
+                    {{ request.assignedTo.email }}
+                  </a>
+                </v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-list-tile-content v-else>
+                <v-list-tile-sub-title class="caption">
+                  {{ $t("Not assigned yet") }}
+                </v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-flex>
+          </v-layout>
+        </v-layout>
+      </v-list-tile>
+
+      <v-divider class="mx-3 my-1"></v-divider>
+
+      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-img
               v-if="request.responsible"
               v-on="on"
               :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"
@@ -95,7 +149,7 @@
         <v-tooltip left>
           <template v-slot:activator="{ on }">
             <v-img
-              v-if="request.beneficiary"
+              v-if="request.beneficiary.id"
               v-on="on"
               :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"
             ></v-img>
@@ -116,7 +170,7 @@
           </v-list-tile-title>
           <v-layout row align-center>
             <v-flex>
-              <v-list-tile-avatar v-if="request.beneficiary" size="30" class="px-0">
+              <v-list-tile-avatar v-if="request.beneficiary.id" size="30" class="px-0">
                 <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
               </v-list-tile-avatar>
             </v-flex>
@@ -166,10 +220,13 @@
 
       <v-divider class="mx-3 my-1"></v-divider>
 
-      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24">
+      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false">
         <v-tooltip left>
           <template v-slot:activator="{ on }">
-            <v-icon v-on="on" medium>schedule</v-icon>
+            <v-layout v-on="on" column align-center>
+              <v-icon size="24">schedule</v-icon>
+              <span class="grey--text letter-spacing">{{ $t(capitalize(calculateCnsType(request))) }}</span>
+            </v-layout>
           </template>
           <span>
             <b>{{ $t("Service deadlines") }}</b>
@@ -189,7 +246,7 @@
           </span>
         </v-tooltip>
       </v-list-tile-avatar>
-      <v-container v-if="!drawer.mini && !isEmpty(request.cns)" class="pa-2">
+      <v-container v-if="!isEmpty(request.cns) && !drawer.mini" class="pa-2">
         <v-list-tile-title class="body-1">{{ $t("Service deadlines") }}</v-list-tile-title>
 
         <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.support") }} </v-list-tile-sub-title>
@@ -216,7 +273,7 @@
 </template>
 
 <script>
-import { REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
+import { REQUEST_TYPE, TICKET_STATUS, CNS_TYPES, ANOMALY_CNS_STATUS } from "@/constants.js";
 import { capitalize, isEmpty } from "lodash";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import cnsProgressBar from "@/components/CnsProgressBar";
@@ -231,9 +288,7 @@ export default {
     return {
       drawer: {
         mini: this.isMobile ? false : true
-      },
-      showBeneficiaryInfo: false,
-      showInterlocutorInfo: false
+      }
     };
   },
   methods: {
@@ -242,10 +297,18 @@ export default {
       if (type !== REQUEST_TYPE.ANOMALY && status === TICKET_STATUS.SUPPORTED) {
         return CNS_TYPES.RESOLUTION;
       }
-      if (status === TICKET_STATUS.SUPPORTED) return CNS_TYPES.BYPASS;
-      if (status === TICKET_STATUS.NEW) return CNS_TYPES.SUPPORT;
-      if (status === TICKET_STATUS.BYPASSED) return CNS_TYPES.RESOLUTION;
-      else return "";
+      switch (status) {
+        case TICKET_STATUS.NEW:
+          return this.$i18n.t(ANOMALY_CNS_STATUS.new);
+        case TICKET_STATUS.SUPPORTED:
+          return this.$i18n.t(ANOMALY_CNS_STATUS.supported);
+        case TICKET_STATUS.BYPASSED:
+          return this.$i18n.t(ANOMALY_CNS_STATUS.bypassed);
+        case TICKET_STATUS.RESOLVED:
+          return this.$i18n.t(ANOMALY_CNS_STATUS.resolved);
+        default:
+          return;
+      }
     },
 
     capitalize(value) {
@@ -282,6 +345,11 @@ a:hover {
 }
 .small-icon-width {
   width: 16px;
+}
+.letter-spacing {
+  font-size: 9px;
+  letter-spacing: -1px;
+  font-weight: bold;
 }
 .v-list__tile__avatar,
 .flex {

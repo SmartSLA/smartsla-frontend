@@ -40,30 +40,23 @@
           </v-layout>
           <v-divider class="pb-2" />
           <v-layout justify-center row fill-height wrap ml-3 class="custom-ticket-bl">
-            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Type") }} :</strong>
               {{ $t(request.type) }}
             </v-flex>
-
-            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Severity") }} :</strong>
               {{ $t(request.severity) }}
             </v-flex>
-            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
               {{ ticketDate | formatDateFilter("llll") }}
             </v-flex>
-            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Created by") }} :</strong>
               {{ request.author && request.author.name }}
             </v-flex>
-
-            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
-              <strong>{{ $t("Assigned to") }} :</strong>
-              <assigned-to-user :user="request.assignedTo" :contractId="request.contract"> </assigned-to-user>
-            </v-flex>
-
-            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Last update") }} :</strong>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
@@ -72,15 +65,15 @@
                 <span> {{ lastUpdate | formatDateFilter("llll") }}</span>
               </v-tooltip>
             </v-flex>
-            <v-flex xs3 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
               {{ request.software && request.software.software && request.software.software.name }}
             </v-flex>
-            <v-flex xs4 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>
               {{ request.software && request.software.software && request.software.version }}
             </v-flex>
-            <v-flex xs5 md4 sm3 lg4 xl4 class="pt-0">
+            <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("OS") }} :</strong>
               {{ request.software && request.software.software && request.software.os }}
             </v-flex>
