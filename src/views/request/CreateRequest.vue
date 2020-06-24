@@ -447,7 +447,7 @@ export default {
       if (attachments.length) {
         const event = {
           author: {
-            id: this.$store.state.user.user._id,
+            id: this.$store.state.currentUser.user._id,
             name: this.displayName,
             image: this.avatarUrl
           },

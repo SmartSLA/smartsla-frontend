@@ -134,7 +134,7 @@ export default {
       var filterToSave = {
         name: this.newFilterName,
         items: this.customFilters,
-        user: this.$store.state.user.user._id
+        user: this.$store.state.currentUser.user._id
       };
       this.$http
         .createFilters(filterToSave)
