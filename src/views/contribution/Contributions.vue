@@ -25,22 +25,38 @@
       <template slot="items" slot-scope="props">
         <tr @click="visitContribution(props.item._id)">
           <td>
-            <router-link :to="{ name: 'Contribution', params: { id: props.item._id } }" class="blue-color">{{
-              props.item._id
-            }}</router-link>
+            <router-link :to="{ name: 'Contribution', params: { id: props.item._id } }" class="blue-color">
+              <text-highlight :queries="highlightSearch">{{ props.item._id }} </text-highlight>
+            </router-link>
           </td>
-          <td class="text-xs-center">{{ props.item.type }}</td>
-          <td class="text-xs-center">{{ props.item.software }}</td>
-          <td>
-            <router-link :to="{ name: 'Contribution', params: { id: props.item._id } }" class="blue-color">{{
-              props.item.name
-            }}</router-link>
-          </td>
-          <td class="text-xs-center">{{ props.item.author }}</td>
-          <td class="text-xs-center">{{ props.item.update }}</td>
-          <td class="text-xs-center">{{ props.item.creation | formatDateFilter("ll") }}</td>
           <td class="text-xs-center">
-            <contributionStatus :status="props.item.status"></contributionStatus>
+            <text-highlight :queries="highlightSearch">{{ props.item.type }}</text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ props.item.software }}</text-highlight>
+          </td>
+          <td>
+            <router-link :to="{ name: 'Contribution', params: { id: props.item._id } }" class="blue-color">
+              <text-highlight :queries="highlightSearch">
+                {{ props.item.name }}
+              </text-highlight>
+            </router-link>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ props.item.author }}</text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{ props.item.update }} </text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch">{{
+              props.item.creation | formatDateFilter("ll")
+            }}</text-highlight>
+          </td>
+          <td class="text-xs-center">
+            <text-highlight :queries="highlightSearch"
+              ><contributionStatus :status="props.item.status"></contributionStatus
+            ></text-highlight>
           </td>
         </tr>
       </template>
@@ -132,6 +148,10 @@ export default {
       contributions: "contribution/getContributions"
     }),
 
+    highlightSearch() {
+      return this.search || "";
+    },
+
     pagination: {
       get: function() {
         return this.$store.getters["contribution/pagination"];
@@ -178,6 +198,8 @@ export default {
       if (this.search && this.search.length) {
         contributionList = contributionList.filter(contribution => {
           return (
+            InsensitiveInclude(contribution._id.toString(), this.search) ||
+            InsensitiveInclude(contribution.type, this.search) ||
             InsensitiveInclude(contribution.name, this.search) ||
             InsensitiveInclude(contribution.software, this.search) ||
             InsensitiveInclude(contribution.author, this.search)
