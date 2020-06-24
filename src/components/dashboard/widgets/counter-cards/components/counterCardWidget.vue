@@ -1,43 +1,41 @@
 <template>
-  <v-container id="dashboard-card-grid">
-    <v-layout row wrap>
-      <v-flex xs6 sm6 md3>
-        <counter-card
-          color-card="primary"
-          icon="mdi-bookmark-outline"
-          :title="$t('openedTicketsLabel')"
-          :value="datasets.openTickets"
-        />
-      </v-flex>
+  <v-layout row wrap>
+    <v-flex xs6 sm6 md3>
+      <counter-card
+        color-card="primary"
+        icon="mdi-bookmark-outline"
+        :title="$t('openedTicketsLabel')"
+        :value="datasets.openTickets"
+      />
+    </v-flex>
 
-      <v-flex xs6 sm6 md3>
-        <counter-card
-          color-card="info"
-          icon="mdi-bookmark-off"
-          :title="$t('closedTicketsLabel')"
-          :value="datasets.closedTickets"
-        />
-      </v-flex>
+    <v-flex xs6 sm6 md3>
+      <counter-card
+        color-card="info"
+        icon="mdi-bookmark-off"
+        :title="$t('closedTicketsLabel')"
+        :value="datasets.closedTickets"
+      />
+    </v-flex>
 
-      <v-flex xs6 sm6 md3>
-        <counter-card
-          color-card="secondary"
-          icon="mdi-book-open"
-          :title="$t('contractsCounterLabel')"
-          :value="datasets.contracts"
-        />
-      </v-flex>
+    <v-flex xs6 sm6 md3>
+      <counter-card
+        color-card="secondary"
+        icon="mdi-book-open"
+        :title="$t('contractsCounterLabel')"
+        :value="datasets.contracts"
+      />
+    </v-flex>
 
-      <v-flex xs6 sm6 md3>
-        <counter-card
-          color-card="critical"
-          icon="mdi-alert"
-          :title="$t('criticalTicketsLabel')"
-          :value="datasets.criticalTickets"
-        />
-      </v-flex>
-    </v-layout>
-  </v-container>
+    <v-flex xs6 sm6 md3>
+      <counter-card
+        color-card="critical"
+        icon="mdi-alert"
+        :title="$t('criticalTicketsLabel')"
+        :value="datasets.criticalTickets"
+      />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

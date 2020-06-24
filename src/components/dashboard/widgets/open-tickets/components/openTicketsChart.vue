@@ -77,6 +77,7 @@ export default {
       this.datacollection.labels = this.labels;
       this.datacollection.datasets[0].data = this.openedRequests;
       this.datacollection.datasets[1].data = this.closedRequests;
+
       this.renderChart(this.datacollection, this.options);
     }
   },
@@ -85,7 +86,12 @@ export default {
   },
   computed: {
     labels() {
-      return this.datasets.map(request => this.$options.filters.formatDateFilter(moment(request._id), "ll"));
+      return this.datasets.map(request => {
+        const { year, month } = request._id;
+        const date = moment().set({ year, month: month - 1, day: 1 });
+
+        return this.$options.filters.formatDateFilter(date, "l");
+      });
     },
     openedRequests() {
       return this.datasets.map(request => request.open);
