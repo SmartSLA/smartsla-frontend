@@ -60,8 +60,12 @@
               </v-flex>
               <v-flex xs8>
                 <v-radio-group v-model="role" row mandatory color="primary">
-                  <v-radio :label="$t('customer')" value="customer"></v-radio>
-                  <v-radio :label="$t('viewer')" value="viewer"></v-radio>
+                  <v-radio
+                    v-for="beneficiaryRole in beneficiaryRoles"
+                    :key="beneficiaryRole"
+                    :label="$t(beneficiaryRole)"
+                    :value="beneficiaryRole"
+                  ></v-radio>
                 </v-radio-group>
               </v-flex>
               <v-flex v-if="members && members.length > 1" class="text--disabled pb-4">
@@ -81,6 +85,7 @@
 </template>
 <script>
 const DEFAULT_ROLE = "customer";
+import { BENEFICIARY_ROLES } from "@/constants.js";
 
 export default {
   props: {
@@ -155,6 +160,11 @@ export default {
     generateItems(results) {
       let destructuredUsers = this.contractUsers.map(user => (user = user.user._id));
       this.items = results.filter(result => ![...destructuredUsers].includes(result.id));
+    }
+  },
+  computed: {
+    beneficiaryRoles() {
+      return BENEFICIARY_ROLES;
     }
   }
 };

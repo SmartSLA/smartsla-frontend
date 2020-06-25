@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0">
     <v-card-text>
-      <router-link class="text-lg-left action-links" :to="{ name: 'Contracts' }">
+      <router-link class="text-lg-left action-links" :to="ContractListPath">
         <v-icon class="mr-2">arrow_back_ios</v-icon>
         {{ $t("Return to contracts list") }}
       </router-link>
@@ -20,9 +20,10 @@
                     <div class="text-xs-right grey--text">
                       <v-btn
                         color="primary"
+                        :disabled="!isAdmin"
                         fab
                         small
-                        dark
+                        :dark="isAdmin"
                         :to="{
                           name: 'Edit Contract',
                           params: { id: contract._id, section: 'information', type: 'information' }
@@ -30,7 +31,15 @@
                       >
                         <v-icon>edit</v-icon>
                       </v-btn>
-                      <v-btn color="primary" depressed fab small dark @click="editEngagment">
+                      <v-btn
+                        color="primary"
+                        :disabled="!isAdmin"
+                        depressed
+                        fab
+                        small
+                        :dark="isAdmin"
+                        @click="editEngagment"
+                      >
                         <v-icon>post_add</v-icon>
                       </v-btn>
                     </div>
@@ -53,7 +62,7 @@
                   </v-flex>
                   <v-flex xs8>
                     <router-link
-                      v-if="$auth.check('admin')"
+                      v-if="isAdmin"
                       :to="{ name: 'Client', params: { id: contract.clientId } }"
                       class="blue-color"
                       >{{ contract.client }}
@@ -155,7 +164,8 @@
                         color="primary"
                         fab
                         small
-                        dark
+                        :disabled="!isAdmin"
+                        :dark="isAdmin"
                         :to="{
                           name: 'Edit Contract',
                           params: { id: contract._id, section: 'software', type: 'software' }
@@ -223,7 +233,8 @@
                         color="primary"
                         fab
                         small
-                        dark
+                        :disabled="!isAdmin"
+                        :dark="isAdmin"
                         :to="{
                           name: 'Edit Contract',
                           params: { id: contract._id, section: 'engagements', type: 'critical' }
@@ -296,7 +307,8 @@
                         color="primary"
                         fab
                         small
-                        dark
+                        :disabled="!isAdmin"
+                        :dark="isAdmin"
                         :to="{
                           name: 'Edit Contract',
                           params: { id: contract._id, section: 'engagements', type: 'sensible' }
@@ -369,7 +381,8 @@
                         color="primary"
                         fab
                         small
-                        dark
+                        :disabled="!isAdmin"
+                        :dark="isAdmin"
                         :to="{
                           name: 'Edit Contract',
                           params: { id: contract._id, section: 'engagements', type: 'standard' }
@@ -461,7 +474,7 @@
                       </v-card-text>
                     </v-card>
                   </v-dialog>
-                  <v-btn color="primary" fab small dark @click="usersDialog = true">
+                  <v-btn color="primary" fab small :disabled="!isAdmin" :dark="isAdmin" @click="usersDialog = true">
                     <v-icon>add</v-icon>
                   </v-btn>
                 </div>
@@ -469,6 +482,18 @@
             </v-layout>
           </v-card-title>
           <v-list two-line dense>
+            <template v-if="contractManagers.length">
+              <v-subheader>
+                {{ $t("contract manager") }}
+              </v-subheader>
+              <users-list :users="contractManagers" />
+            </template>
+            <template v-if="operationalManagers.length">
+              <v-subheader>
+                {{ $t("operational manager") }}
+              </v-subheader>
+              <users-list :users="operationalManagers" />
+            </template>
             <template v-if="customers.length">
               <v-subheader>
                 {{ $t("Beneficiaries") }}
@@ -489,7 +514,7 @@
 </template>
 
 <script>
-import { OSSA_IDS, DEFAULT_TIMEZONE } from "@/constants.js";
+import { OSSA_IDS, DEFAULT_TIMEZONE, BENEFICIARY_ROLE_LIST, USER_TYPE } from "@/constants.js";
 import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
@@ -498,6 +523,7 @@ import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import CopyEngagementsForm from "@/components/admin/contract/CopyEngagementsForm.vue";
 import ContractAddUsers from "@/components/contract/ContractAddUsers.vue";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
+import { routeNames } from "@/router";
 
 export default {
   mixins: [SoftwareMixin],
@@ -563,10 +589,16 @@ export default {
       ];
     },
     customers() {
-      return this.getUsersWithRole("customer");
+      return this.getUsersWithRole(BENEFICIARY_ROLE_LIST.CUSTOMER);
     },
     viewers() {
-      return this.getUsersWithRole("viewer");
+      return this.getUsersWithRole(BENEFICIARY_ROLE_LIST.VIEWER);
+    },
+    contractManagers() {
+      return this.getUsersWithRole(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER);
+    },
+    operationalManagers() {
+      return this.getUsersWithRole(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER);
     },
     remaining() {
       return this.contract.credits - this.consumedCredits;
@@ -581,6 +613,17 @@ export default {
       const users = this.$store.getters["contract/getContractUsers"](this.contractId);
 
       return users;
+    },
+
+    isAdmin() {
+      return this.$auth.check(USER_TYPE.ADMIN);
+    },
+
+    ContractListPath() {
+      return this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
+        ? { name: routeNames.CLIENTCONTRACTS }
+        : { name: routeNames.CONTRACTS };
     }
   },
   created() {
@@ -708,11 +751,6 @@ export default {
     },
     forceRerender() {
       this.ContractAddUsersComponentKey += 1;
-    }
-  },
-  beforeCreate() {
-    if (!this.$auth.ready() || !this.$auth.check("admin")) {
-      this.$router.push("/403");
     }
   },
   components: {

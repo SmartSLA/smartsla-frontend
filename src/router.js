@@ -33,6 +33,7 @@ import AdministrationHome from "@/views/admin/Home.vue";
 
 import { requireRead } from "@/guards/ticket-guards";
 import { canViewProfile } from "@/guards/user-guards";
+import { canListContracts, canViewContract } from "@/guards/contract-guards";
 
 Vue.use(Router);
 
@@ -77,7 +78,9 @@ export const routeNames = Object.freeze({
   EDITSOFTWARE: "EditSoftware",
   NEWSOFTWARE: "NewSoftware",
   SOFTWARE: "Software",
-  ADMIN_ROLES: "AdminRoles"
+  ADMIN_ROLES: "AdminRoles",
+  CLIENTCONTRACTS: "ClientContracts",
+  CLIENTCONTRACT: "ClientContract"
 });
 
 export default new Router({
@@ -384,6 +387,24 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: "/contracts",
+      name: routeNames.CLIENTCONTRACTS,
+      component: Contracts,
+      beforeEnter: canListContracts,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/contracts/:id",
+      name: routeNames.CLIENTCONTRACT,
+      component: Contract,
+      beforeEnter: canViewContract,
+      meta: {
+        auth: true
+      }
     },
     {
       path: "*",

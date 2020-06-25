@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
+  <v-container class="pa-0" v-if="$auth.ready()">
     <div class="page-title">
       <span>{{ $t("Contracts list") }}</span>
     </div>
@@ -9,6 +9,7 @@
       @search-updated="handleSearchUpdate"
       @client-updated="handleClientUpdate"
       @status-updated="handleStatusUpdate"
+      v-if="isAdmin"
     >
     </ContractListFilter>
     <v-data-table
@@ -22,7 +23,7 @@
     >
       <template slot="items" slot-scope="props">
         <td class="text-xs-center">
-          <router-link class="contracts-actions blue-color" :to="{ name: 'Contract', params: { id: props.item._id } }">
+          <router-link class="contracts-actions blue-color" :to="getContractPath(props.item._id)">
             <status-name :name="props.item.name" :active="props.item.status" />
             <expired-label
               :expirationDate="props.item.endDate"
@@ -52,7 +53,8 @@ import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import StatusName from "@/components/StatusName";
 import ContractListFilter from "@/components/admin/contract/ContractListFilter.vue";
 import { mapGetters } from "vuex";
-import { CONTRACT_STATUS } from "@/constants.js";
+import { CONTRACT_STATUS, BENEFICIARY_ROLE_LIST, USER_TYPE } from "@/constants.js";
+import { routeNames } from "@/router";
 
 export default {
   data() {
@@ -102,11 +104,10 @@ export default {
         }
       }
       return filtered;
-    }
-  },
-  beforeCreate() {
-    if (!this.$auth.ready() || !this.$auth.check("admin")) {
-      this.$router.push("/403");
+    },
+
+    isAdmin() {
+      return this.$auth.check(USER_TYPE.ADMIN);
     }
   },
   components: {
@@ -125,6 +126,13 @@ export default {
 
     handleStatusUpdate(status) {
       this.status = status;
+    },
+
+    getContractPath(contractId) {
+      return this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
+        ? { name: routeNames.CLIENTCONTRACT, params: { id: contractId } }
+        : { name: routeNames.CONTRACT, params: { id: contractId } };
     }
   }
 };

@@ -67,6 +67,7 @@
   "cns.state.resolution": "Resolution",
   "cns.state.support": "Support",
   "Collapse menu": "Collapse menu",
+  "contract manager": "contract manager",
   "contribution deleted": "contribution deleted",
   "contribution status": "contribution status",
   "Consumed": "Consumed",
@@ -122,6 +123,7 @@
   "Not specified ": "Not specified",
   "Open tickets": "Open tickets",
   "OpenPaaS Login": "OpenPaaS Login",
+  "operational manager": "operational manager",
   "Other": "Other",
   "otherSoftwareContributions": {
     "message": "other {software} contributions"
