@@ -26,7 +26,6 @@ export default {
     },
     chartOptions: {
       title: {
-        text: "Total tickets by severity type",
         display: true,
         position: "left",
         fontColor: "#5e5252",
@@ -45,6 +44,7 @@ export default {
     renderBarChart() {
       const { labels, criticalCounter, notCriticalCounter } = this.chartValues;
 
+      this.chartOptions.title.text = this.$t("chartTitle");
       this.chartData.labels = labels;
       this.chartData.datasets[0].data = criticalCounter;
       this.chartData.datasets[1].data = notCriticalCounter;

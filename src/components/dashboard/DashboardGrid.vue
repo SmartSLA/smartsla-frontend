@@ -1,15 +1,27 @@
 <template>
-  <v-container fluid>
-    <counter-card-widget />
+  <v-container fluid grid-list-md>
     <v-layout row wrap mb-3>
-      <v-flex d-flex xs12 md12 lg12 mb-3>
+      <counter-card-widget />
+    </v-layout>
+
+    <v-layout row wrap mb-3>
+      <v-flex xs12 md12 mb-3>
         <open-tickets-widget />
       </v-flex>
-      <v-flex d-flex xs12 md12 lg12 mb-3>
+    </v-layout>
+
+    <v-layout row wrap>
+      <v-flex xs12 md6>
         <criticality-widget />
       </v-flex>
-      <v-flex d-flex xs12 md12 lg12 mb-3>
+      <v-flex xs12 md6>
         <software-widget />
+      </v-flex>
+    </v-layout>
+
+    <v-layout row wrap>
+      <v-flex xs12 md6>
+        <open-tickets-software-widget />
       </v-flex>
     </v-layout>
   </v-container>
@@ -20,6 +32,8 @@ import OpenTicketsWidget from "@/components/dashboard/widgets/open-tickets/compo
 import CriticalityWidget from "@/components/dashboard/widgets/criticality-tickets/components/criticalityWidget.vue";
 import CounterCardWidget from "@/components/dashboard/widgets/counter-cards/components/counterCardWidget.vue";
 import SoftwareWidget from "@/components/dashboard/widgets/software/components/softwareWidget.vue";
+// eslint-disable-next-line max-len
+import OpenTicketsSoftwareWidget from "@/components/dashboard/widgets/open-tickets-software/components/openTicketsSoftwareWidget.vue";
 
 export default {
   name: "DashboardGrid",
@@ -27,7 +41,8 @@ export default {
     OpenTicketsWidget,
     CriticalityWidget,
     CounterCardWidget,
-    SoftwareWidget
+    SoftwareWidget,
+    OpenTicketsSoftwareWidget
   }
 };
 </script>
