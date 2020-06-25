@@ -30,6 +30,7 @@ import EditContribution from "@/views/admin/contribution/EditContribution.vue";
 import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
+import Settings from "@/views/Settings.vue";
 
 import { requireRead } from "@/guards/ticket-guards";
 import { canViewProfile } from "@/guards/user-guards";
@@ -173,6 +174,14 @@ export default new Router({
       name: routeNames.PROFILE,
       component: Profile,
       beforeEnter: canViewProfile,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/settings",
+      name: routeNames.SETTINGS,
+      component: Settings,
       meta: {
         auth: true
       }
