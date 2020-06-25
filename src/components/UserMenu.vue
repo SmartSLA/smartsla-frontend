@@ -13,6 +13,10 @@
         <v-list-tile-title>{{ $t("Profil") }}</v-list-tile-title>
       </v-list-tile>
       <v-divider />
+      <v-list-tile v-if="getId" :to="{ name: routeNames.SETTINGS, params: { id: getId } }">
+        <v-list-tile-title>{{ $t("Settings") }}</v-list-tile-title>
+      </v-list-tile>
+
       <v-list-tile v-if="sspEnabled" :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
         <v-list-tile-title>{{ $t("Change Password") }}</v-list-tile-title>
       </v-list-tile>
@@ -47,10 +51,6 @@ export default {
 
     profile() {
       return this.$router.push({ name: routeNames.PROFILE });
-    },
-
-    settings() {
-      return this.$router.push({ name: routeNames.SETTINGS });
     }
   },
   computed: {

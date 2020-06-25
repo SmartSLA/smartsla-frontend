@@ -20,6 +20,7 @@ const actions = {
       .then(user => {
         commit(types.SET_USER, user);
         dispatch("configuration/fetchConfig", null, { root: true });
+        dispatch("configuration/fetchUserLanguage", null, { root: true });
       })
       .catch(() => {});
   },
