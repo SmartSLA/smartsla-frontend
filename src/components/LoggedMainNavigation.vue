@@ -25,7 +25,7 @@
       >
         <v-list class="pt-0" slot="activator" style="width:100%">
           <v-list-tile
-            :to="{ name: menuItem.path || menuItem.name }"
+            :to="getMenuPath(menuItem)"
             :disabled="menuItem.subMenuItems && $vuetify.breakpoint.width <= '768'"
           >
             <v-list-tile-action>
@@ -40,10 +40,10 @@
           </v-list-tile>
         </v-list>
         <v-list dense>
-          <v-list-tile :to="{ name: menuItem.path || menuItem.name }">
-            <v-list-tile-title :class="{ 'with-badge': menuItem.count }" class="font-weight-bold">
-              {{ menuItem.text }}
-            </v-list-tile-title>
+          <v-list-tile :to="getMenuPath(menuItem)">
+            <v-list-tile-title :class="{ 'with-badge': menuItem.count }" class="font-weight-bold">{{
+              menuItem.text
+            }}</v-list-tile-title>
             <v-list-tile-avatar v-if="menuItem.count" style="justify-content: flex-end;">
               <v-chip small>{{ menuItem.count }}</v-chip>
             </v-list-tile-avatar>
@@ -77,6 +77,8 @@
 <script>
 import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
+import { BENEFICIARY_ROLE_LIST } from "@/constants";
+
 export default {
   name: "logged-main-navigation",
   computed: {
@@ -84,7 +86,8 @@ export default {
       ticketsSize: "ticket/getNbOfTickets",
       contributionsSize: "contribution/getContributionsCount",
       filters: "filter/getFilterList",
-      configuration: "configuration/getConfiguration"
+      configuration: "configuration/getConfiguration",
+      contracts: "contract/getContracts"
     }),
 
     filteredMenuItems() {
@@ -93,12 +96,15 @@ export default {
           .filter(item => item.show)
           // this is the only way to make the menu reactive when building it from array like this is done below...
           .map(item => {
-            if (item.name.includes(routeNames.REQUESTS)) {
-              item.count = this.ticketsSize;
-            } else if (item.name.includes(routeNames.CONTRIBUTIONS)) {
-              item.count = this.contributionsSize;
+            if (!item.name.params) {
+              if (item.name.includes(routeNames.REQUESTS)) {
+                item.count = this.ticketsSize;
+              } else if (item.name.includes(routeNames.CONTRIBUTIONS)) {
+                item.count = this.contributionsSize;
+              } else if (item.name.includes(routeNames.CLIENTCONTRACTS)) {
+                item.count = this.contracts.length;
+              }
             }
-
             return item;
           })
       );
@@ -140,6 +146,14 @@ export default {
           show: true
         },
         {
+          name: this.contractMenuRouteName,
+          text: this.$i18n.t("Contracts"),
+          icon: "assignment",
+          show:
+            this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+            this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
+        },
+        {
           name: routeNames.ADMINHOME,
           text: this.$i18n.t("Administration"),
           icon: "mdi-tune",
@@ -158,6 +172,16 @@ export default {
 
     currentActivePath() {
       return this.$route.fullPath;
+    },
+
+    contractMenuRouteName() {
+      if (this.contracts.length === 1) {
+        const contract = this.contracts[0];
+
+        return { name: routeNames.CLIENTCONTRACT, params: { id: contract._id } };
+      }
+
+      return routeNames.CLIENTCONTRACTS;
     }
   },
   methods: {
@@ -176,25 +200,34 @@ export default {
       const { route } = this.$router.resolve({ name: item.path || item.name });
 
       return `${route.path}${item.query}`;
+    },
+
+    getMenuPath(item) {
+      if (item.name && item.name.params) {
+        return item.name;
+      }
+
+      return { name: item.path || item.name };
     }
   },
   created() {
     this.$store.dispatch("ticket/countTickets");
     this.$store.dispatch("contribution/countContributions");
     this.$store.dispatch("filter/fetchFilters");
+    this.$store.dispatch("contract/fetchContracts");
   }
 };
 </script>
 
 <style lang="stylus">
-ticketing-color = #2196f3
+ticketing-color = #2196f3;
 
 .v-navigation-drawer--mini-variant .v-list__tile {
   padding: 0px 6px;
 }
 
 .v-list__tile__action {
-    min-width: 32px;
+  min-width: 32px;
 }
 
 .v-chip--small {
@@ -212,7 +245,7 @@ ticketing-color = #2196f3
 }
 
 .v-navigation-drawer--mini-variant .v-divider.d-block {
-   display: block !important;
+  display: block !important;
 }
 
 .v-navigation-drawer:not(.v-navigation-drawer--mini-variant) > .v-list:not(.v-list--dense) .v-list__tile {
@@ -245,7 +278,7 @@ ticketing-color = #2196f3
 }
 
 .v-navigation-drawer .v-list__tile--active {
-  background: rgba(0,0,0,0.04);
+  background: rgba(0, 0, 0, 0.04);
   box-shadow: inset 3px 0 0 ticketing-color;
 }
 
@@ -258,7 +291,7 @@ ticketing-color = #2196f3
 }
 
 .v-navigation-drawer .v-menu__activator--active .theme--light.v-list:hover .v-list--disabled {
-  background: rgba(0,0,0,0.04);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .v-navigation-drawer > .v-list .v-list__tile--active .v-list__tile__title {

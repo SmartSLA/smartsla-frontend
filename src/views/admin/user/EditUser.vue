@@ -122,7 +122,13 @@
                   color="primary"
                   :rules="[() => (user.role && user.role.length > 0) || $i18n.t('Required field')]"
                 >
-                  <v-radio v-for="role in roles" :key="role" :label="$t(role)" :value="role"></v-radio>
+                  <v-radio
+                    v-for="role in roles"
+                    :key="role"
+                    :label="$t(role)"
+                    :value="role"
+                    @change="resetSelectedContracts"
+                  ></v-radio>
                 </v-radio-group>
                 <label class="v-label theme--light" v-if="user.role === 'viewer'">{{
                   $t("Viewer role can only see tickets")
@@ -145,20 +151,20 @@
                 <v-select :items="clientsList" item-value="_id" item-text="name" v-model="user.client"></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
-              <v-flex xs3 class="pt-4 hidden-xs-only" v-if="user.type !== 'expert' && user.client">
+              <v-flex xs3 class="pt-4 hidden-xs-only" v-if="canHaveContracts">
                 <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
-              <v-flex xs12 sm8 md8 lg8 v-if="user.type !== 'expert' && user.client">
+              <v-flex xs12 sm8 md8 lg8 v-if="canHaveContracts">
                 <v-card>
                   <v-list subheader two-line>
-                    <v-list-tile
-                      v-for="contract in filteredContractsByClient"
-                      :key="contract._id"
-                      @click="contract.selected != contract.selected"
-                    >
+                    <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id">
                       <v-flex xs2 sm2 md1 lg1>
                         <v-list-tile-action>
-                          <v-checkbox v-model="contract.selected" color="success"></v-checkbox>
+                          <v-checkbox
+                            v-model="contract.selected"
+                            color="success"
+                            @change="handleMultipleContractSelection(contract._id)"
+                          ></v-checkbox>
                         </v-list-tile-action>
                       </v-flex>
                       <v-flex xs5 sm6 md5 lg7>
@@ -210,7 +216,7 @@
 </template>
 <script>
 import { routeNames } from "@/router";
-import { USER_TYPE, USER_ROLES } from "@/constants.js";
+import { USER_TYPE, USER_ROLES, BENEFICIARY_ROLE_LIST } from "@/constants.js";
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import { cloneDeep } from "lodash";
@@ -281,6 +287,14 @@ export default {
           return contract;
         });
       return contracts;
+    },
+
+    canHaveContracts() {
+      return (
+        this.user.type !== USER_TYPE.EXPERT &&
+        this.user.client &&
+        this.user.role !== BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER
+      );
     }
   },
   created() {
@@ -421,7 +435,25 @@ export default {
         });
     },
     resetUserContracts(oldVal, newVal) {
-      if (!!oldVal && !!newVal) this.user.contracts = [];
+      if (!!oldVal && !!newVal) {
+        this.$set(this.user, "contracts", []);
+      }
+    },
+
+    handleMultipleContractSelection(contractId) {
+      if (this.user.role === BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER) {
+        this.contractList
+          .filter(contract => contract._id !== contractId)
+          .map(contract => {
+            this.$set(contract, "selected", false);
+          });
+      }
+    },
+
+    resetSelectedContracts() {
+      this.contractList.map(contract => {
+        this.$set(contract, "selected", false);
+      });
     }
   }
 };
