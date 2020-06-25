@@ -46,9 +46,9 @@
         <template slot="items" slot-scope="props">
           <tr @click="openTicket(props.item._id)">
             <td>
-              <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color item-id">{{
-                props.item._id
-              }}</router-link>
+              <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color item-id">
+                <text-highlight :queries="highlightSearch">{{ props.item.request._id }}</text-highlight>
+              </router-link>
             </td>
             <td class="text-xs-center">
               <organization-label
@@ -586,6 +586,7 @@ export default {
 
       if (match && this.search) {
         return (
+          request._id.toString().includes(this.search) ||
           (request.softwareName && request.softwareName.toLowerCase().includes(this.search)) ||
           request.description.toLowerCase().includes(this.search) ||
           request.title.toLowerCase().includes(this.search) ||
