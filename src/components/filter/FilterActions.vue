@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="hideFilter">
     <v-layout justify-space-between row class="actions_filters">
       <div>
         <ul>
@@ -11,7 +11,13 @@
         </ul>
       </div>
     </v-layout>
-    <v-dialog v-if="customFilters.length" class="d-flex" v-model="dialog" max-width="500">
+    <v-dialog
+      v-if="customFilters.length"
+      class="d-flex"
+      v-model="dialog"
+      max-width="500"
+      @hideFilterAction="hideFilter"
+    >
       <template v-slot:activator="{ on }">
         <v-layout :justify-center="buttonAttributes.center" :justify-end="buttonAttributes.end">
           <v-btn
@@ -77,6 +83,7 @@
       persistent
       max-width="290"
       v-if="storedSelectionsFilter && storedSelectionsFilter.name"
+      @hideFilterAction="hideFilter"
     >
       <v-card class="px-4 pt-2">
         <v-card-text>
@@ -102,7 +109,8 @@ export default {
     customFilters: null,
     storedSelectionsFilter: {},
     canDelete: false,
-    canUpdate: false
+    canUpdate: false,
+    hideFilter: Boolean
   },
   data() {
     return {
@@ -130,6 +138,9 @@ export default {
     }
   },
   methods: {
+    hiddenFilter() {
+      this.$emit("hideFilterAction");
+    },
     saveCurrentFilter() {
       var filterToSave = {
         name: this.newFilterName,

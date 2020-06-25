@@ -1,51 +1,7 @@
 <template>
   <div>
-    <v-layout column mb-2 mt-4 class="filter_layout">
-      <v-flex xs12 sm5 md4 lg3>
-        <FilterCategories :categories="categories" @filterCategoryChanged="changeFilterCategory"></FilterCategories>
-      </v-flex>
-      <v-flex xs12 sm5 md4 lg3 mb-4>
-        <v-toolbar flat dense v-if="!showStoredFilters">
-          <v-layout align-center justify-end>
-            <v-overflow-btn
-              v-if="keyValueFilter"
-              :items="values"
-              :label="$t('Values')"
-              v-model="valuesFilter"
-              class="pa-0"
-              overflow
-              flat
-              item-text="value"
-              item-value="key"
-              hide-details
-              hide-selected
-            ></v-overflow-btn>
-            <v-overflow-btn
-              v-else
-              :items="values"
-              :label="$t('Values')"
-              :no-data-text="$t('No data available')"
-              v-model="valuesFilter"
-              flat
-              hide-details
-              hide-selected
-              class="pa-0"
-              overflow
-            ></v-overflow-btn>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-toolbar-side-icon v-on="on" @click="addNewFilter">
-                  <v-icon dark>add</v-icon>
-                </v-toolbar-side-icon>
-              </template>
-              <span>
-                {{ $t("This button allows you to add an additional filter to the board") }}
-              </span>
-            </v-tooltip>
-          </v-layout>
-        </v-toolbar>
-        <FilterLoader v-else :savedFilters="savedFilters" @filterLoaded="loadFilter"></FilterLoader>
-      </v-flex>
+    <v-layout column mb-3 mt-4 class="filter_layout">
+      <v-flex lg3><request-filter-list></request-filter-list></v-flex>
       <v-spacer v-if="hideSearchFilter"></v-spacer>
       <v-layout row justify-end>
         <v-btn v-if="!hideSearchFilter" icon @click="hideSearchFilter = true">
@@ -59,20 +15,88 @@
           @updatedHideSearchFilter="hideSearchInput"
         ></FilterSearchInput>
         <ExportCsvButton v-if="!hideSearchFilter || this.$vuetify.breakpoint.name != 'xs'"></ExportCsvButton>
+        <v-dialog v-model="dialog" width="700" overflow="false" persistent>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="hideFilter = true" :class="{ 'v-btn--active': hideFilter == true }">
+              <v-icon>
+                filter_list
+              </v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-toolbar dark color="light-blue">
+              <v-card-title class="lighten-2" primary-title>
+                {{ $t("Filter by") }}
+              </v-card-title>
+              <v-spacer></v-spacer>
+              <v-btn icon @click="closeFilter" class="mr-3">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <v-card-text>
+              <v-layout :column="!sizeFilterDevice">
+                <v-flex xs12 md6 lg6 v-if="hideFilter == true">
+                  <FilterCategories
+                    :categories="categories"
+                    @filterCategoryChanged="changeFilterCategory"
+                  ></FilterCategories>
+                </v-flex>
+                <v-flex xs12 sm5 md6 lg6 mb-4 v-if="hideFilter == true">
+                  <v-toolbar flat dense v-if="!showStoredFilters">
+                    <v-layout align-center justify-end>
+                      <v-overflow-btn
+                        v-if="keyValueFilter"
+                        :items="values"
+                        :label="$t('Values')"
+                        v-model="valuesFilter"
+                        flat
+                        item-text="value"
+                        item-value="key"
+                        hide-details
+                        hide-selected
+                      ></v-overflow-btn>
+                      <v-overflow-btn
+                        v-else
+                        :items="values"
+                        :label="$t('Values')"
+                        :no-data-text="$t('No data available')"
+                        v-model="valuesFilter"
+                        flat
+                        hide-details
+                        hide-selected
+                      ></v-overflow-btn>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                          <v-toolbar-side-icon v-on="on" @click="addNewFilter">
+                            <v-icon dark>add</v-icon>
+                          </v-toolbar-side-icon>
+                        </template>
+                        <span>
+                          {{ $t("This button allows you to add an additional filter to the board") }}
+                        </span>
+                      </v-tooltip>
+                    </v-layout>
+                  </v-toolbar>
+                  <FilterLoader v-else :savedFilters="savedFilters" @filterLoaded="loadFilter"></FilterLoader> </v-flex
+              ></v-layout>
+              <FilterActions
+                :savedFilters="savedFilters"
+                :customFilters="customFilters"
+                :storedSelectionsFilter="storedSelectionsFilter"
+                :canDelete="canDeleteFilter"
+                :canUpdate="canUpdateFilter"
+                :hideFilter="hideFilter"
+                @filterReset="resetFilters"
+                @removeFilter="removeFilter"
+                @filterUpdated="handleFilterUpdate"
+                @filterDeleted="handleFilterDeletion"
+                @filterCreated="handleFilterCreation"
+              ></FilterActions>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-layout>
-    <FilterActions
-      :savedFilters="savedFilters"
-      :customFilters="customFilters"
-      :storedSelectionsFilter="storedSelectionsFilter"
-      :canDelete="canDeleteFilter"
-      :canUpdate="canUpdateFilter"
-      @filterReset="resetFilters"
-      @removeFilter="removeFilter"
-      @filterUpdated="handleFilterUpdate"
-      @filterDeleted="handleFilterDeletion"
-      @filterCreated="handleFilterCreation"
-    ></FilterActions>
   </div>
 </template>
 <script>
@@ -81,6 +105,7 @@ import FilterSearchInput from "@/components/filter/FilterSearchInput";
 import FilterLoader from "@/components/filter/FilterLoader";
 import FilterCategories from "@/components/filter/FilterCategories";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
+import RequestFilterList from "@/components/request/RequestFilterList";
 
 export default {
   name: "dataTableFilter",
@@ -89,7 +114,8 @@ export default {
     FilterSearchInput,
     FilterLoader,
     FilterCategories,
-    ExportCsvButton
+    ExportCsvButton,
+    RequestFilterList
   },
 
   data() {
@@ -98,7 +124,10 @@ export default {
       valuesFilter: null,
       customFilters: [],
       storedSelectionsFilter: null,
-      hideSearchFilter: false
+      hideSearchFilter: false,
+      hideFilter: false,
+      hasError: false,
+      dialog: false
     };
   },
 
@@ -167,6 +196,9 @@ export default {
     },
     hideSearchInput() {
       this.hideSearchFilter = false;
+    },
+    closeFilter() {
+      this.dialog = this.hideFilter = false;
     }
   },
   computed: {
@@ -184,6 +216,10 @@ export default {
 
     canDeleteFilter() {
       return this.storedSelectionsFilter && this.storedSelectionsFilter.items;
+    },
+
+    sizeFilterDevice() {
+      return this.$vuetify.breakpoint.width >= 960 ? true : false;
     }
   },
   watch: {
@@ -202,4 +238,8 @@ export default {
     flex-direction: row !important;
   }
 }
+ .v-text-field.v-overflow-btn {
+    margin-top: 0;
+    padding-top: 0;
+ }
 </style>
