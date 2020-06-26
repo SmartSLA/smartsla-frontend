@@ -45,12 +45,15 @@
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{ props.item.author }}</text-highlight>
           </td>
+          <td class="text-xs-center">{{ props.item.author }}</td>
+          <td class="text-xs-center">{{ props.item.update }}</td>
+          <td class="text-xs-center">{{ props.item.creation | formatDateFilter("ll", userLanguage) }}</td>
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{ props.item.update }} </text-highlight>
           </td>
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{
-              props.item.creation | formatDateFilter("ll")
+              (props.item.creation | formatDateFilter("ll"), userLanguage)
             }}</text-highlight>
           </td>
           <td class="text-xs-center">
@@ -71,6 +74,7 @@ import { CONTRIBUTION_TYPES, CONTRIBUTION_STATUS, USER_TYPE, CONTRIBUTION_FILTER
 import { getContributionStatus } from "@/services/helpers/contribution";
 import { isInsensitiveEqual, InsensitiveInclude } from "@/services/helpers/string";
 import { mapGetters, createNamespacedHelpers } from "vuex";
+import { LOCALE } from "@/i18n/constants";
 
 const { mapState } = createNamespacedHelpers("contribution");
 
@@ -145,7 +149,8 @@ export default {
   computed: {
     ...mapGetters({
       contributionsCount: "contribution/getContributionsCount",
-      contributions: "contribution/getContributions"
+      contributions: "contribution/getContributions",
+      getUserLanguage: "configuration/getUserLanguage"
     }),
 
     highlightSearch() {
@@ -212,6 +217,9 @@ export default {
 
     users() {
       return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
+    },
+    userLanguage() {
+      return this.getUserLanguage || LOCALE;
     }
   },
   components: {

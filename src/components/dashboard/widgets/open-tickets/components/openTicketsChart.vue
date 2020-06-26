@@ -1,7 +1,9 @@
 <script>
 //Importing Line class from the vue-chartjs wrapper
 import { Line } from "vue-chartjs";
+import { mapGetters } from "vuex";
 import moment from "moment-timezone";
+import { LOCALE } from "@/i18n/constants";
 
 //Exporting this so it can be used in other components
 export default {
@@ -85,12 +87,15 @@ export default {
     this.renderLineChart(this.datacollection, this.options);
   },
   computed: {
+    ...mapGetters({
+      getUserLanguage: "configuration/getUserLanguage"
+    }),
     labels() {
       return this.datasets.map(request => {
         const { year, month } = request._id;
         const date = moment().set({ year, month: month - 1, day: 1 });
 
-        return this.$options.filters.formatDateFilter(date, "l");
+        return this.$options.filters.formatDateFilter(date, "l", this.userLanguage());
       });
     },
     openedRequests() {
@@ -98,6 +103,9 @@ export default {
     },
     closedRequests() {
       return this.datasets.map(request => request.closed);
+    },
+    userLanguage() {
+      return this.getUserLanguage || LOCALE;
     }
   },
   watch: {

@@ -96,12 +96,12 @@
             <td class="text-xs-center">
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <span v-on="on">{{ props.item.updatedAt | relativeTime }}</span>
+                  <span v-on="on">{{ props.item.updatedAt | relativeTime(userLanguage) }}</span>
                 </template>
-                <span>{{ props.item.updatedAt | formatDateFilter("llll") }}</span>
+                <span>{{ props.item.updatedAt | formatDateFilter("llll", userLanguage) }}</span>
               </v-tooltip>
             </td>
-            <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter("ll") }}</td>
+            <td class="text-xs-center">{{ props.item.createdAt | formatDateFilter("ll", userLanguage) }}</td>
             <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ $t(capitalize(props.item.status)) }}</text-highlight>
             </td>
@@ -153,6 +153,7 @@ import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
 const { mapState } = createNamespacedHelpers("ticket");
+import { LOCALE } from "@/i18n/constants";
 
 export default {
   data() {
@@ -302,7 +303,8 @@ export default {
       userContracts: "currentUser/getContracts",
       contractsList: "contract/getContracts",
       software: "software/getSoftwareList",
-      userList: "users/getUsers"
+      userList: "users/getUsers",
+      getUserLanguage: "configuration/getUserLanguage"
     }),
 
     contractsName() {
@@ -370,6 +372,9 @@ export default {
 
     isSearching() {
       return !!this.centralSearch;
+    },
+    userLanguage() {
+      return this.getUserLanguage || LOCALE;
     }
   },
   watch: {

@@ -41,8 +41,8 @@
           </router-link>
           <span v-else> {{ props.item.client }} </span>
         </td>
-        <td class="text-xs-center">{{ new Date(props.item.startDate).toDateString() }}</td>
-        <td class="text-xs-center">{{ new Date(props.item.endDate).toDateString() }}</td>
+        <td class="text-xs-center">{{ props.item.startDate | formatDateFilter("ll", userLanguage) }}</td>
+        <td class="text-xs-center">{{ props.item.endDate | formatDateFilter("ll", userLanguage) }}</td>
       </template>
     </v-data-table>
   </v-container>
@@ -55,6 +55,7 @@ import ContractListFilter from "@/components/admin/contract/ContractListFilter.v
 import { mapGetters } from "vuex";
 import { CONTRACT_STATUS, BENEFICIARY_ROLE_LIST, USER_TYPE } from "@/constants.js";
 import { routeNames } from "@/router";
+import { LOCALE } from "@/i18n/constants";
 
 export default {
   data() {
@@ -83,7 +84,8 @@ export default {
   computed: {
     ...mapGetters({
       contracts: "contract/getContracts",
-      clients: "contract/getClients"
+      clients: "contract/getClients",
+      getUserLanguage: "configuration/getUserLanguage"
     }),
     contractsList() {
       let filtered = this.contracts;
@@ -108,6 +110,14 @@ export default {
 
     isAdmin() {
       return this.$auth.check(USER_TYPE.ADMIN);
+    },
+    userLanguage() {
+      return this.getUserLanguage || LOCALE;
+    }
+  },
+  beforeCreate() {
+    if (!this.$auth.ready() || !this.$auth.check("admin")) {
+      this.$router.push("/403");
     }
   },
   components: {
