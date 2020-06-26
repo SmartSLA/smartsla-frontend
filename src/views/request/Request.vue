@@ -50,7 +50,7 @@
             </v-flex>
             <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Created at") }} :</strong>
-              {{ ticketDate | formatDateFilter("llll") }}
+              {{ ticketDate | formatDateFilter("llll", userLanguage) }}
             </v-flex>
             <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Created by") }} :</strong>
@@ -60,9 +60,9 @@
               <strong>{{ $t("Last update") }} :</strong>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <span v-on="on"> {{ lastUpdate | relativeTime }}</span>
+                  <span v-on="on"> {{ lastUpdate | relativeTime(userLanguage) }}</span>
                 </template>
-                <span> {{ lastUpdate | formatDateFilter("llll") }}</span>
+                <span> {{ lastUpdate | formatDateFilter("llll", userLanguage) }}</span>
               </v-tooltip>
             </v-flex>
             <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
@@ -113,7 +113,7 @@
                     </v-list-tile-content>
                     <v-list-tile-action>
                       <v-list-tile-action-text>{{
-                        attachment.timestamps.createdAt | calendarTimeFilter
+                        attachment.timestamps.createdAt | calendarTimeFilter(userLanguage)
                       }}</v-list-tile-action-text>
                       <v-btn icon ripple class="ma-0" @click.stop="scrollToEvent(attachment.event)">
                         <v-icon color="grey lighten-1">info</v-icon>
@@ -203,10 +203,10 @@
                                   :href="`#event-${event._id}`"
                                   @click.stop="scrollToEvent(event)"
                                 >
-                                  {{ event.timestamps.createdAt | relativeTime }}
+                                  {{ event.timestamps.createdAt | relativeTime(userLanguage) }}
                                 </a>
                               </template>
-                              <span>{{ event.timestamps.createdAt | formatDateFilter("llll") }}</span>
+                              <span>{{ event.timestamps.createdAt | formatDateFilter("llll", userLanguage) }}</span>
                             </v-tooltip>
                           </div>
                         </div>
@@ -409,6 +409,7 @@ import RelatedContributions from "@/components/request/RelatedContributions";
 import surveyUrl from "@/services/limesurvey/limesurvey.js";
 import TicketStatus from "@/components/request/TicketStatus";
 import RequestNavigationDrawer from "@/components/request/RequestNavigationDrawer";
+import { LOCALE } from "@/i18n/constants";
 
 export default {
   data() {
@@ -439,7 +440,8 @@ export default {
   computed: {
     ...mapGetters({
       getUser: "currentUser/getUser",
-      configuration: "configuration/getConfiguration"
+      configuration: "configuration/getConfiguration",
+      getUserLanguage: "configuration/getUserLanguage"
     }),
 
     request() {
@@ -502,6 +504,9 @@ export default {
 
     apiUrl() {
       return ApplicationSettings.VUE_APP_OPENPAAS_URL;
+    },
+    userLanguage() {
+      return this.getUserLanguage || LOCALE;
     }
   },
   methods: {

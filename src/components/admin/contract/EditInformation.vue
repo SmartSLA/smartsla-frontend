@@ -215,8 +215,10 @@
 
 <script>
 import { routeNames } from "@/router";
+import { mapGetters } from "vuex";
 import TimezonePicker from "@/components/timezone-picker/timezone.vue";
 import ExternalLinks from "@/components/ExternalLinks.vue";
+import { LOCALE } from "@/i18n/constants";
 
 export default {
   name: "edit-contract-information",
@@ -280,6 +282,9 @@ export default {
     ExternalLinks
   },
   computed: {
+    ...mapGetters({
+      getUserLanguage: "configuration/getUserLanguage"
+    }),
     isNew() {
       return this.$route.params.id;
     },
@@ -310,6 +315,9 @@ export default {
       }
 
       return true;
+    },
+    userLanguage() {
+      return this.getUserLanguage || LOCALE;
     }
   },
   mounted() {
@@ -447,7 +455,7 @@ export default {
       this.externalLinks.splice(index, 1);
     },
     formatDate(date) {
-      return this.$options.filters.formatDateFilter(date);
+      return this.$options.filters.formatDateFilter(date, null, this.userLanguage());
     }
   }
 };

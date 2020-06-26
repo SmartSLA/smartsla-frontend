@@ -112,11 +112,11 @@
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Start") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ contract.startDate | formatDateFilter }}</v-flex>
+                  <v-flex xs8>{{ contract.startDate | formatDateFilter("ll", userLanguage) }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("End") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ contract.endDate | formatDateFilter }}</v-flex>
+                  <v-flex xs8>{{ contract.endDate | formatDateFilter("ll", userLanguage) }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Timezone") }} :</div>
                   </v-flex>
@@ -515,6 +515,7 @@
 
 <script>
 import { OSSA_IDS, DEFAULT_TIMEZONE, BENEFICIARY_ROLE_LIST, USER_TYPE } from "@/constants.js";
+import { mapGetters } from "vuex";
 import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
@@ -524,6 +525,7 @@ import CopyEngagementsForm from "@/components/admin/contract/CopyEngagementsForm
 import ContractAddUsers from "@/components/contract/ContractAddUsers.vue";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
 import { routeNames } from "@/router";
+import { LOCALE } from "@/i18n/constants";
 
 export default {
   mixins: [SoftwareMixin],
@@ -553,6 +555,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      getUserLanguage: "configuration/getUserLanguage"
+    }),
     software() {
       return this.sortSoftware(this.contract.software);
     },
@@ -624,6 +629,10 @@ export default {
         this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
         ? { name: routeNames.CLIENTCONTRACTS }
         : { name: routeNames.CONTRACTS };
+    },
+
+    userLanguage() {
+      return this.getUserLanguage || LOCALE;
     }
   },
   created() {

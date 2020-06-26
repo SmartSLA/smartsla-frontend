@@ -1,12 +1,11 @@
 import Vue from "vue";
 import moment from "moment-timezone";
-import { LOCALE } from "@/i18n/constants";
 
-Vue.filter("formatDateFilter", function(date, format) {
+Vue.filter("formatDateFilter", function(date, format, lang) {
   format = format ? format : "ll";
   if (date) {
     return moment(String(date))
-      .locale(LOCALE)
+      .locale(lang)
       .format(format);
   }
 });
