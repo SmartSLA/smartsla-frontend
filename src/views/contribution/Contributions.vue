@@ -53,7 +53,7 @@
           </td>
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{
-              (props.item.creation | formatDateFilter("ll"), userLanguage)
+              props.item.creation | formatDateFilter("ll", userLanguage)
             }}</text-highlight>
           </td>
           <td class="text-xs-center">
