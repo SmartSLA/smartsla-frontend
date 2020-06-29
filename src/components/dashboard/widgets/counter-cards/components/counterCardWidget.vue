@@ -1,5 +1,5 @@
 <template>
-  <v-layout row wrap>
+  <v-layout row wrap v-if="datasets">
     <v-flex xs6 sm6 md3>
       <counter-card
         color-card="primary"
@@ -23,7 +23,7 @@
         color-card="secondary"
         icon="mdi-book-open"
         :title="$t('contractsCounterLabel')"
-        :value="datasets.contracts"
+        :value="datasets.activeContracts"
       />
     </v-flex>
 
