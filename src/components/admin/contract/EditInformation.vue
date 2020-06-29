@@ -455,7 +455,7 @@ export default {
       this.externalLinks.splice(index, 1);
     },
     formatDate(date) {
-      return this.$options.filters.formatDateFilter(date, null, this.userLanguage());
+      return this.$options.filters.formatDateFilter(date, null, this.getUserLanguage);
     }
   }
 };
