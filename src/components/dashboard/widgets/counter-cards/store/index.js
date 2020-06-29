@@ -1,6 +1,7 @@
 import Vue from "vue";
 
 const initialState = () => ({
+  interval: "NONE",
   group: "none",
   queryId: "globalStats",
   data: []
@@ -14,7 +15,8 @@ const actions = {
   fetchData: ({ state, commit }) => {
     const filterParams = {
       group: state.group,
-      queryId: state.queryId
+      queryId: state.queryId,
+      interval: state.interval
     };
 
     return Vue.axios.getData(filterParams).then(({ data }) => commit(types.SET_DATA, data));
