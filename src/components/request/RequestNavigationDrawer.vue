@@ -37,7 +37,7 @@
         <v-tooltip left>
           <template v-slot:activator="{ on }">
             <v-img
-              v-if="request.assignedTo.id"
+              v-if="!isEmpty(request.assignedTo) && request.assignedTo.id"
               v-on="on"
               :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"
             ></v-img>
@@ -57,12 +57,12 @@
           </v-list-tile-title>
           <v-layout row align-center>
             <v-flex>
-              <v-list-tile-avatar v-if="request.assignedTo.id" size="30" class="px-0">
+              <v-list-tile-avatar v-if="!isEmpty(request.assignedTo) && request.assignedTo.id" size="30" class="px-0">
                 <v-img :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"></v-img>
               </v-list-tile-avatar>
             </v-flex>
             <v-flex>
-              <v-list-tile-content v-if="request.assignedTo.id">
+              <v-list-tile-content v-if="!isEmpty(request.assignedTo) && request.assignedTo.id">
                 <v-list-tile-title class="body-1">
                   {{ request.assignedTo && request.assignedTo.name }}
                 </v-list-tile-title>
