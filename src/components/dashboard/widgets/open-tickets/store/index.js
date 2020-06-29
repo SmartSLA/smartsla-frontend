@@ -3,7 +3,7 @@ import Vue from "vue";
 const initialState = () => ({
   group: "",
   queryId: "ticketByOpenClosed",
-  interval: "LAST_WEEK",
+  interval: "LAST_YEAR",
   data: []
 });
 
