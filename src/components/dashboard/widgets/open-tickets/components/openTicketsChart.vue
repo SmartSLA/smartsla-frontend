@@ -95,7 +95,7 @@ export default {
         const { year, month } = request._id;
         const date = moment().set({ year, month: month - 1, day: 1 });
 
-        return this.$options.filters.formatDateFilter(date, "l", this.userLanguage());
+        return this.$options.filters.formatDateFilter(date, "l", this.userLanguage);
       });
     },
     openedRequests() {
