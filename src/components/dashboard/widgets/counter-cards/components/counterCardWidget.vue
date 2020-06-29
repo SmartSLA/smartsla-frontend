@@ -45,7 +45,7 @@ export default {
   name: "CounterCardGrid",
   computed: {
     datasets() {
-      return this.$store.getters["counterCards/getData"];
+      return this.$store.getters["counterCards/getData"][0];
     },
     isMobile() {
       switch (this.$vuetify.breakpoint.name) {
