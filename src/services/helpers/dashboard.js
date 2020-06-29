@@ -4,17 +4,30 @@ const IntervalType = {
   LAST_WEEK: "LAST_WEEK",
   LAST_TWO_WEEK: "LAST_TWO_WEEK",
   LAST_MONTH: "LAST_MONTH",
-  LAST_YEAR: "LAST_YEAR"
+  LAST_YEAR: "LAST_YEAR",
+  NONE: "NONE"
 };
 
 function formatDate(date) {
   return moment(date).format("YYYY-MM-DD");
 }
 
+function getDateInterval(intervalType, start, end) {
+  let interval = {};
+
+  if (IntervalType.NONE !== intervalType) {
+    interval.start = formatDate(start);
+    interval.end = formatDate(end);
+  }
+
+  return interval;
+}
+
 function buildQueryParam(filterParams) {
   let { queryId, group, interval } = filterParams;
   let end = moment();
   let start;
+  let queryParams = {};
 
   switch (interval) {
     case IntervalType.LAST_WEEK:
@@ -35,10 +48,20 @@ function buildQueryParam(filterParams) {
       break;
   }
 
-  start = formatDate(start);
-  end = formatDate(end);
+  const intervalPeriod = getDateInterval(interval, start, end);
 
-  return { queryId, start, end, group };
+  if (intervalPeriod.start) {
+    queryParams.start = intervalPeriod.start;
+  }
+
+  if (intervalPeriod.end) {
+    queryParams.end = intervalPeriod.end;
+  }
+
+  queryParams.queryId = queryId;
+  queryParams.group = group;
+
+  return queryParams;
 }
 
 export { buildQueryParam };
