@@ -152,9 +152,6 @@ export default {
             message: this.$i18n.t(toastMsg),
             color: "success"
           });
-          this.formDialog = false;
-          this.isEdit = false;
-          this.deleteModal = false;
         })
         .catch(error => {
           this.$store.dispatch("ui/displaySnackbar", {
@@ -162,6 +159,9 @@ export default {
             color: "error"
           });
         });
+      this.formDialog = false;
+      this.isEdit = false;
+      this.deleteModal = false;
     },
     critColor(critLevel) {
       switch (critLevel) {
