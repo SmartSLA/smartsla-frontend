@@ -12,56 +12,40 @@ function formatDate(date) {
   return moment(date).format("YYYY-MM-DD");
 }
 
-function getDateInterval(intervalType, start, end) {
-  let interval = {};
-
-  if (IntervalType.NONE !== intervalType) {
-    interval.start = formatDate(start);
-    interval.end = formatDate(end);
-  }
-
-  return interval;
-}
-
-function buildQueryParam(filterParams) {
-  let { queryId, group, interval } = filterParams;
+function buildIntervalQueryParams(interval) {
   let end = moment();
   let start;
+  let group;
   let queryParams = {};
 
   switch (interval) {
     case IntervalType.LAST_WEEK:
       start = moment(end).add(-1, "weeks");
-      group = group || "day";
+      group = "day";
       break;
     case IntervalType.LAST_TWO_WEEK:
       start = moment(end).add(-2, "weeks");
-      group = group || "day";
+      group = "day";
       break;
     case IntervalType.LAST_MONTH:
       start = moment(end).add(-1, "months");
-      group = group || "day";
+      group = "day";
       break;
     case IntervalType.LAST_YEAR:
       start = moment(end).add(-1, "years");
-      group = group || "month";
+      group = "month";
       break;
+    case IntervalType.NONE:
+      group = "none";
   }
 
-  const intervalPeriod = getDateInterval(interval, start, end);
-
-  if (intervalPeriod.start) {
-    queryParams.start = intervalPeriod.start;
-  }
-
-  if (intervalPeriod.end) {
-    queryParams.end = intervalPeriod.end;
-  }
-
-  queryParams.queryId = queryId;
   queryParams.group = group;
+  if (start && end) {
+    queryParams.start = formatDate(start);
+    queryParams.end = formatDate(end);
+  }
 
   return queryParams;
 }
 
-export { buildQueryParam };
+export { buildIntervalQueryParams };
