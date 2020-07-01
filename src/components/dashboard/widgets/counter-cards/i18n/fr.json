@@ -1,6 +1,6 @@
 {
     "closedTicketsLabel": "Tickets clôturés",
-    "contractsCounterLabel": "Contrats actives",
+    "supportAssignedTicketsLabel": "Tickets assignés au support",
     "criticalTicketsLabel": "Tickets critiques",
     "openedTicketsLabel": "Tickets ouverts"
 }

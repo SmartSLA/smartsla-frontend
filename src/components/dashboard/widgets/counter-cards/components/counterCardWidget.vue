@@ -21,9 +21,9 @@
     <v-flex xs6 sm6 md3>
       <counter-card
         color-card="secondary"
-        icon="mdi-book-open"
-        :title="$t('contractsCounterLabel')"
-        :value="datasets.activeContracts"
+        icon="mdi-progress-clock"
+        :title="$t('supportAssignedTicketsLabel')"
+        :value="datasets.supportAssignedTickets"
       />
     </v-flex>
 
