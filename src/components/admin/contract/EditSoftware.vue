@@ -122,9 +122,11 @@ export default {
       this.selectedItem = selectedSoftware;
     },
     confirmDeleteSoftware() {
-      this.contract.software = this.contract.software.filter(
-        software => JSON.stringify(software) != JSON.stringify(this.selectedItem)
+      const filteredList = this.contract.software.filter(
+        softwareItem => softwareItem.software._id !== this.selectedItem.software._id
       );
+
+      this.$set(this.contract, "software", filteredList);
       this.doRequest("Deleted");
     },
     submit(software) {
