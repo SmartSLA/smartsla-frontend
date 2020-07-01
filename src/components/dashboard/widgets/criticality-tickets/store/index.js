@@ -1,37 +1,46 @@
 import Vue from "vue";
+import { buildIntervalQueryParams } from "@/services/helpers/dashboard";
 
 const initialState = () => ({
-  group: "none",
   queryId: "ticketByType",
   interval: "LAST_YEAR",
+  filters: buildIntervalQueryParams("LAST_YEAR"),
   data: []
 });
 
 const types = {
   SET_DATA: "SET_DATA",
+  SET_FILTERS: "SET_FILTERS",
   SET_INTERVAL: "SET_INTERVAL"
 };
 
 const actions = {
   fetchData: ({ state, commit }) => {
-    const filterParams = {
-      group: state.group,
-      queryId: state.queryId,
-      interval: state.interval
-    };
-
-    return Vue.axios.getData(filterParams).then(({ data }) => commit(types.SET_DATA, data));
+    return Vue.axios.getDashboardData(state.queryId, state.filters).then(({ data }) => commit(types.SET_DATA, data));
   },
 
-  updateInterval: ({ dispatch, commit }, value) => {
-    commit(types.SET_INTERVAL, value);
+  updateFilter: ({ dispatch, commit }, filters) => {
+    commit(types.SET_FILTERS, filters);
+
     dispatch("fetchData");
+  },
+
+  updateInterval: ({ dispatch, commit, state }, interval) => {
+    const filters = { ...state.filter, ...buildIntervalQueryParams(interval) };
+
+    commit(types.SET_INTERVAL, interval);
+
+    dispatch("updateFilter", filters);
   }
 };
 
 const mutations = {
   [types.SET_DATA](state, data) {
     state.data = data;
+  },
+
+  [types.SET_FILTERS](state, filters) {
+    state.filters = filters;
   },
 
   [types.SET_INTERVAL](state, interval) {

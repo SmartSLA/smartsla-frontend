@@ -1,8 +1,9 @@
 import Vue from "vue";
+import { buildIntervalQueryParams } from "@/services/helpers/dashboard";
 
 const initialState = () => ({
   interval: "NONE",
-  group: "none",
+  filters: buildIntervalQueryParams("NONE"),
   queryId: "globalStats",
   data: []
 });
@@ -13,13 +14,7 @@ const types = {
 
 const actions = {
   fetchData: ({ state, commit }) => {
-    const filterParams = {
-      group: state.group,
-      queryId: state.queryId,
-      interval: state.interval
-    };
-
-    return Vue.axios.getData(filterParams).then(({ data }) => commit(types.SET_DATA, data));
+    return Vue.axios.getDashboardData(state.queryId, state.filters).then(({ data }) => commit(types.SET_DATA, data));
   }
 };
 
