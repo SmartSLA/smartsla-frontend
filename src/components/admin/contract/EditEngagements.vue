@@ -401,7 +401,7 @@ export default {
       return [
         { text: this.$i18n.t("Request"), value: "request" },
         { text: this.$i18n.t("Severity"), value: "severity" },
-        { text: this.$i18n.t("Id OSSA"), value: "idOssa" },
+        { text: this.$i18n.t("support priority"), value: "idOssa" },
         {
           text: this.$i18n.t("Supported"),
           value: "supported"

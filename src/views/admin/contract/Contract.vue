@@ -583,7 +583,7 @@ export default {
       return [
         { text: this.$i18n.t("Request"), value: "request", sortable: false },
         { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
-        { text: this.$i18n.t("Id OSSA"), value: "idOssa", sortable: false },
+        { text: this.$i18n.t("support priority"), value: "idOssa", sortable: false },
         {
           text: this.$i18n.t("Support"),
           value: "supported",
