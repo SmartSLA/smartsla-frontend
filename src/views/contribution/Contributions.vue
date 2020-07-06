@@ -1,5 +1,8 @@
 <template>
   <v-container>
+    <div>
+      <span>{{ $t("Contributions") }}</span>
+    </div>
     <dataTableFilter
       :categories="categories"
       :values="filterValues"
