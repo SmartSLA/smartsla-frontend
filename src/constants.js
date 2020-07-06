@@ -201,3 +201,13 @@ export const WIDGET_DURATION_INTERVAL = {
   LAST_MONTH: "Last month",
   LAST_YEAR: "Year"
 };
+
+export const RELATED_REQUEST_TYPES = [
+  "Linked at",
+  "Duplicated",
+  "Duplicated by",
+  "Blocked",
+  "Blocked by",
+  "Previous",
+  "Next"
+];
