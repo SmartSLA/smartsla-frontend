@@ -1,19 +1,26 @@
 <template>
   <div class="requests-list">
-    <dataTableFilter
-      :categories="categories"
-      :values="values"
-      :categoriesFilter="categoriesFilter"
-      :keyValueFilter="keyValueFilter"
-      :savedFilters="savedFilters"
-      @filterCategoryChanged="changeFilterCategory"
-      @filterSearchInputChanged="changeSearchTerm"
-      @filterReset="filterReset"
-      @customFiltersUpdated="updateCustomFilters"
-      @savedFilterLoaded="changePageTitle"
-      @savedFiltersUpdate="fetchUserFilters"
-      @filterCreated="fetchUserFilters"
-    ></dataTableFilter>
+    <v-layout align-center justify-space-between row mb-2>
+      <v-flex xs4 pt-4>
+        <request-filter-list></request-filter-list>
+      </v-flex>
+      <v-flex xs6>
+        <dataTableFilter
+          :categories="categories"
+          :values="values"
+          :categoriesFilter="categoriesFilter"
+          :keyValueFilter="keyValueFilter"
+          :savedFilters="savedFilters"
+          @filterCategoryChanged="changeFilterCategory"
+          @filterSearchInputChanged="changeSearchTerm"
+          @filterReset="filterReset"
+          @customFiltersUpdated="updateCustomFilters"
+          @savedFilterLoaded="changePageTitle"
+          @savedFiltersUpdate="fetchUserFilters"
+          @filterCreated="fetchUserFilters"
+        ></dataTableFilter>
+      </v-flex>
+    </v-layout>
     <v-container grid-list-md class="pa-0">
       <v-data-table
         :loading="loading"
@@ -154,6 +161,7 @@ import OrganizationLabel from "@/components/request/OrganizationLabel";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
 const { mapState } = createNamespacedHelpers("ticket");
 import { LOCALE } from "@/i18n/constants";
+import RequestFilterList from "@/components/request/RequestFilterList";
 
 export default {
   data() {
@@ -679,7 +687,8 @@ export default {
     SoftwareListDetail,
     dataTableFilter,
     ClientContractLinks,
-    OrganizationLabel
+    OrganizationLabel,
+    RequestFilterList
   }
 };
 </script>

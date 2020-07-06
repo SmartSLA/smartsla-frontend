@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-layout column mb-3 mt-4 class="filter_layout">
-      <v-flex lg3><request-filter-list></request-filter-list></v-flex>
       <v-spacer v-if="hideSearchFilter"></v-spacer>
       <v-layout row justify-end>
         <v-btn v-if="!hideSearchFilter" icon @click="hideSearchFilter = true">
@@ -105,7 +104,6 @@ import FilterSearchInput from "@/components/filter/FilterSearchInput";
 import FilterLoader from "@/components/filter/FilterLoader";
 import FilterCategories from "@/components/filter/FilterCategories";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
-import RequestFilterList from "@/components/request/RequestFilterList";
 
 export default {
   name: "dataTableFilter",
@@ -114,8 +112,7 @@ export default {
     FilterSearchInput,
     FilterLoader,
     FilterCategories,
-    ExportCsvButton,
-    RequestFilterList
+    ExportCsvButton
   },
 
   data() {
