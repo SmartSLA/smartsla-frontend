@@ -220,71 +220,12 @@
                       ></vue-editor>
                     </v-input>
                   </v-flex>
-                  <v-flex>
-                    <v-layout column class="link-type">
-                      <v-flex xs6 md6 mb-2>
-                        <v-select
-                          prepend-icon="link"
-                          :items="linkTypes"
-                          :label="$i18n.t('Link type')"
-                          v-model="linkType"
-                          single-line
-                          hide-details
-                          flat
-                          solo
-                          background-color="grey lighten-5"
-                        ></v-select>
-                      </v-flex>
-                      <v-flex xs6 md6 mb-2>
-                        <v-autocomplete
-                          :disabled="!filtredRelated.length"
-                          :items="filtredRelated"
-                          :filter="searchRequest"
-                          :label="$i18n.t('Related requests')"
-                          hide-details
-                          hide-selected
-                          return-object
-                          v-model="linkedRequest"
-                          background-color="grey lighten-5"
-                          flat
-                          solo
-                        >
-                          <template v-slot:selection="data">
-                            {{ `#${data.item._id} - ${data.item.title}` }}
-                          </template>
-                          <template v-slot:item="data">
-                            {{ `#${data.item._id} - ${data.item.title}` }}
-                          </template>
-                          <template v-slot:append-outer>
-                            <v-btn
-                              :disabled="!(linkType && linkedRequest)"
-                              class="black--text"
-                              @click.native="addRelated"
-                              icon
-                              background-color="grey lighten-5"
-                            >
-                              <v-icon>mdi-plus-circle</v-icon>
-                            </v-btn>
-                          </template>
-                        </v-autocomplete>
-                      </v-flex>
-                    </v-layout>
-                    <v-layout column class="d-inline-flex ml-4 link-type">
-                      <div v-for="(link, key) in linkedRequests" :key="key">
-                        <v-chip close @input="resetRelatedRequest(link.request._id)">
-                          <v-avatar>
-                            <router-link
-                              :to="{ name: routeNames.REQUEST, params: { id: link.request._id } }"
-                              target="_blank"
-                            >
-                              <v-icon small>open_in_new</v-icon>
-                            </router-link>
-                          </v-avatar>
-                          {{ `${link.link} : #${link.request._id} - ${link.request.title}` }}
-                        </v-chip>
-                      </div>
-                    </v-layout>
-                  </v-flex>
+                  <related-requests
+                    :requests="requests"
+                    :linked="ticket.relatedRequests"
+                    @relatedRequest:add="handleAddRelatedRequest"
+                    @relatedRequest:remove="handleRemoveRelatedRequest"
+                  ></related-requests>
                   <v-container>
                     <v-flex xs12>
                       <attachments v-bind:attachments.sync="attachments" :disabled="submitRequest" />
@@ -351,6 +292,7 @@ import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duratio
 import { REQUEST_TYPE } from "@/constants";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
 import { cloneDeep } from "lodash";
+import relatedRequests from "@/components/request/RelatedRequests";
 
 export default {
   mixins: [SoftwareMixin],
@@ -374,18 +316,6 @@ export default {
       contractTicketsCount: 0,
       attachments: [],
       participants: [],
-      linkedRequest: null,
-      linkType: null,
-      linkTypes: [
-        this.$i18n.t("Linked at"),
-        this.$i18n.t("Duplicated"),
-        this.$i18n.t("Duplicated by"),
-        this.$i18n.t("Blocked"),
-        this.$i18n.t("Blocked by"),
-        this.$i18n.t("Previous"),
-        this.$i18n.t("Next")
-      ],
-      linkedRequests: [],
       submitRequest: false,
       selectedTypes: [],
       reg: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
@@ -397,7 +327,8 @@ export default {
   },
   components: {
     VueEditor,
-    Attachments
+    Attachments,
+    relatedRequests
   },
   methods: {
     submit() {
@@ -406,7 +337,6 @@ export default {
       }
       this.submitRequest = true;
       this.ticket.participants = this.participants;
-      this.ticket.relatedRequests = this.linkedRequests;
       if (this.attachments.length) {
         this.$http
           .getUploader()
@@ -424,14 +354,6 @@ export default {
       }
     },
 
-    addRelated() {
-      this.linkedRequests.push({
-        link: this.linkType,
-        request: this.linkedRequest
-      });
-
-      this.linkType = this.linkedRequest = null;
-    },
     validateFrom() {
       if (this.$refs.form.validate()) {
         this.submit();
@@ -550,17 +472,6 @@ export default {
       return true;
     },
 
-    resetRelatedRequest(relatedRequestID) {
-      this.linkedRequests = this.linkedRequests.filter(item => item.request.id !== relatedRequestID);
-    },
-    searchRequest(item, queryText) {
-      const textOne = item.title.toLowerCase();
-      const textTwo = item.id.toLowerCase();
-      const searchText = queryText.toLowerCase();
-
-      return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
-    },
-
     cnsDurationDisplay(engagement) {
       const engagementHours = getEngagementHours(engagement, this.getBusinessHour);
       const { days, hours } = convertIsoDurationInDaysHoursMinutes(engagementHours.hours);
@@ -594,6 +505,16 @@ export default {
     typeChanged() {
       this.$set(this.ticket, "software", null);
       this.$set(this.ticket, "severity", null);
+    },
+
+    handleAddRelatedRequest(related) {
+      this.$set(this.ticket, "relatedRequests", [...this.ticket.relatedRequests, related]);
+    },
+
+    handleRemoveRelatedRequest(relatedId) {
+      const newRelated = this.ticket.relatedRequests.filter(item => item.request._id !== relatedId);
+
+      this.$set(this.ticket, "relatedRequests", newRelated);
     }
   },
   computed: {
@@ -613,10 +534,6 @@ export default {
 
     editorToolbar() {
       return editorToolbar;
-    },
-
-    relatedRequests() {
-      return (this.ticketsContract || []).map(ticket => ({ id: `${ticket._id}`, title: ticket.title }));
     },
 
     routeNames() {
@@ -705,19 +622,6 @@ export default {
         return engagements[0];
       }
       return {};
-    },
-    filtredRelated() {
-      let filtredList = this.requests;
-      const store = [];
-      this.linkedRequests.forEach(storedItem => {
-        store.push(storedItem.request);
-      });
-
-      filtredList = filtredList.filter(item => {
-        return !store.filter(request => request._id === item._id && request.title === item.title).length;
-      });
-
-      return filtredList;
     },
 
     isAnomalyTicket() {
