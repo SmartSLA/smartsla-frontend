@@ -268,7 +268,9 @@
         <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.support") }} </v-list-tile-sub-title>
         <cns-progress-bar :ticket="request" :cnsType="'supported'" class="mx-4"></cns-progress-bar>
 
-        <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.bypass") }}</v-list-tile-sub-title>
+        <v-list-tile-sub-title class="caption ml-2" v-if="canBeBypassed">
+          {{ $t("cns.state.bypass") }}
+        </v-list-tile-sub-title>
         <cns-progress-bar :ticket="request" :cnsType="'bypassed'" class="mx-4"></cns-progress-bar>
 
         <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.resolution") }}</v-list-tile-sub-title>
@@ -382,6 +384,9 @@ export default {
       if (this.request.beneficiary && this.request.beneficiary.phone) {
         return this.request.beneficiary.phone;
       }
+    },
+    canBeBypassed() {
+      return this.request.type === REQUEST_TYPE.ANOMALY;
     }
   }
 };
