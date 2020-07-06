@@ -46,16 +46,25 @@
           <span>
             <b>{{ $t("Assignee") }}</b>
             <br />
-            {{ request.assignedTo && request.assignedTo.name ? request.assignedTo.name : $t("Not assigned yet") }}
+            {{
+              !isEmpty(request.assignedTo) && request.assignedTo.name ? request.assignedTo.name : $t("Not assigned yet")
+            }}
           </span>
         </v-tooltip>
       </v-list-tile-avatar>
       <v-list-tile v-if="!drawer.mini">
         <v-layout column align-center justify-center px-0>
-          <v-list-tile-title class="body-1">
-            {{ $t("Assignee") }}
-          </v-list-tile-title>
-          <v-layout row align-center>
+          <v-layout v-if="!editAssignee" row align-center class="body-1">
+            <v-list-tile-title>
+              {{ $t("Assignee") }}
+            </v-list-tile-title>
+            <v-flex>
+              <a @click="editAssignee = true" class="black--text">
+                {{ $t("Edit") }}
+              </a>
+            </v-flex>
+          </v-layout>
+          <v-layout row align-center v-if="!editAssignee">
             <v-flex>
               <v-list-tile-avatar v-if="!isEmpty(request.assignedTo) && request.assignedTo.id" size="30" class="px-0">
                 <v-img :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"></v-img>
@@ -82,6 +91,13 @@
               </v-list-tile-content>
             </v-flex>
           </v-layout>
+          <v-container v-else>
+            <UserListAssignmentNavigationDrawer
+              :setRequestRole="setRequestRole"
+              :responsible.sync="newResponsible"
+              :request="request"
+            ></UserListAssignmentNavigationDrawer>
+          </v-container>
         </v-layout>
       </v-list-tile>
 
@@ -274,21 +290,25 @@
 
 <script>
 import { REQUEST_TYPE, TICKET_STATUS, CNS_TYPES, ANOMALY_CNS_STATUS } from "@/constants.js";
-import { capitalize, isEmpty } from "lodash";
+import { capitalize, isEmpty, isEqual } from "lodash";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import cnsProgressBar from "@/components/CnsProgressBar";
+import UserListAssignmentNavigationDrawer from "@/components/request/UserListAssignmentNavigationDrawer";
 
 export default {
   props: ["request", "apiUrl", "isMobile", "getUser"],
   components: {
     ClientContractLinks,
-    cnsProgressBar
+    cnsProgressBar,
+    UserListAssignmentNavigationDrawer
   },
   data() {
     return {
       drawer: {
         mini: this.isMobile ? false : true
-      }
+      },
+      editAssignee: false,
+      newResponsible: {}
     };
   },
   methods: {
@@ -321,6 +341,37 @@ export default {
 
     emitRequestNavigationDrawerStatus() {
       return this.$emit("update-request-drawer-status");
+    },
+
+    setRequestRole(user) {
+      const event = { author: this.getUser, target: user };
+
+      if (!isEmpty(this.request.assignedTo) && isEqual(this.request.assignedTo.id, user._id)) {
+        return this.emitEditAssigneeStatus();
+      }
+
+      this.isSubmit = true;
+      this.$store
+        .dispatch("ticket/addEvent", {
+          ticketId: this.request._id,
+          event: event
+        })
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Assignee updated"),
+            color: "success"
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to update assignee"),
+            color: "error"
+          });
+        })
+        .finally(() => {
+          this.isSubmit = false;
+          this.editAssignee = false;
+        });
     }
   },
   computed: {
