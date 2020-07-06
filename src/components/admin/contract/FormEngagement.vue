@@ -45,7 +45,7 @@
             >
             </v-select>
           </v-flex>
-          <v-flex xs4 class="required-label">{{ $t("Ossa identifier") }}</v-flex>
+          <v-flex xs4 class="required-label">{{ $t("support priority") }}</v-flex>
           <v-flex xs6>
             <v-select
               v-model="commitment.idOssa"

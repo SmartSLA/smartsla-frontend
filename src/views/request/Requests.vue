@@ -170,7 +170,7 @@ export default {
       headers: [
         { text: this.$i18n.t("Ticket N°"), value: "_id" },
         { text: this.$i18n.t("Organization"), value: "organizationLabel" },
-        { text: this.$i18n.t("ID OSSA"), value: "id_ossa" },
+        { text: this.$i18n.t("support priority"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "softwareName" },
