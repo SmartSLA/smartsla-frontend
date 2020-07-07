@@ -1,6 +1,6 @@
 <template>
   <span>
-    {{ $t(contributionStatus) }}
+    <text-highlight :queries="query"> {{ $t(contributionStatus) }}</text-highlight>
   </span>
 </template>
 <script>
@@ -9,11 +9,15 @@ import { getContributionStatus } from "@/services/helpers/contribution";
 export default {
   name: "contributionStatus",
   props: {
-    status: null
+    status: null,
+    query: {
+      type: String,
+      default: ""
+    }
   },
   computed: {
     contributionStatus() {
-      return getContributionStatus(status);
+      return getContributionStatus(this.status);
     }
   }
 };
