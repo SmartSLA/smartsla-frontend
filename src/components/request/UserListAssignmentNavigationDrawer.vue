@@ -1,6 +1,6 @@
 <template>
   <v-layout column>
-    <v-layout class="font-weight-medium btn-actions" xs6 md6>
+    <v-layout v-if="assignee" class="font-weight-medium btn-actions" xs6 md6>
       <v-flex text-xs-left pa-0>
         <span v-if="isUserBeneficiary">
           <v-btn
@@ -73,7 +73,8 @@ export default {
   props: {
     setRequestRole: Function,
     responsible: Object,
-    request: Object
+    request: Object,
+    assignee: Boolean
   },
   created() {
     this.$store.dispatch("contract/fetchContractUsers", this.request.contract);
