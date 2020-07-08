@@ -93,9 +93,11 @@
           </v-layout>
           <v-container v-else>
             <UserListAssignmentNavigationDrawer
-              :setRequestRole="setRequestRole"
+              :setRequestRole="setAssignee"
               :responsible.sync="newResponsible"
               :request="request"
+              :displayActionButtons="true"
+              :currentAssignedUser="this.request.assignedTo && this.request.assignedTo.name"
             ></UserListAssignmentNavigationDrawer>
           </v-container>
         </v-layout>
@@ -126,10 +128,17 @@
       </v-list-tile-avatar>
       <v-list-tile v-if="!drawer.mini">
         <v-layout column align-center justify-center px-0>
-          <v-list-tile-title class="body-1">
-            {{ $t("Interlocutor") }}
-          </v-list-tile-title>
-          <v-layout row align-center>
+          <v-layout row>
+            <v-list-tile-title class="body-1">
+              {{ $t("Interlocutor") }}
+            </v-list-tile-title>
+            <v-flex>
+              <a @click="editResponsible = !editResponsible" class="black--text">
+                {{ $t("Edit") }}
+              </a>
+            </v-flex>
+          </v-layout>
+          <v-layout v-if="!editResponsible" row align-center>
             <v-flex>
               <v-list-tile-avatar v-if="request.responsible" size="30" class="px-0">
                 <v-img :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"></v-img>
@@ -156,6 +165,14 @@
               </v-list-tile-content>
             </v-flex>
           </v-layout>
+          <v-container v-else pa-0 mt-2>
+            <UserListAssignmentNavigationDrawer
+              :setRequestRole="setResponsible"
+              :responsible.sync="newResponsible"
+              :request="request"
+              :currentAssignedUser="this.request.responsible && this.request.responsible.name"
+            ></UserListAssignmentNavigationDrawer>
+          </v-container>
         </v-layout>
       </v-list-tile>
 
@@ -181,10 +198,17 @@
       </v-list-tile-avatar>
       <v-list-tile v-if="!drawer.mini">
         <v-layout column align-center justify-center px-0>
-          <v-list-tile-title class="body-1">
-            {{ $t("Beneficiary") }}
-          </v-list-tile-title>
-          <v-layout row align-center>
+          <v-layout row>
+            <v-list-tile-title class="body-1">
+              {{ $t("Beneficiary") }}
+            </v-list-tile-title>
+            <v-flex>
+              <a @click="editBeneficiary = !editBeneficiary" class="black--text">
+                {{ $t("Edit") }}
+              </a>
+            </v-flex>
+          </v-layout>
+          <v-layout v-if="!editBeneficiary" row align-center>
             <v-flex>
               <v-list-tile-avatar v-if="request.beneficiary.id" size="30" class="px-0">
                 <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
@@ -211,10 +235,18 @@
               </v-list-tile-content>
             </v-flex>
           </v-layout>
+          <v-container v-else pa-0 mt-2>
+            <UserListAssignmentNavigationDrawer
+              :setRequestRole="setBeneficiary"
+              :responsible.sync="newResponsible"
+              :request="request"
+              :currentAssignedUser="this.request.beneficiary && this.request.beneficiary.name"
+            ></UserListAssignmentNavigationDrawer>
+          </v-container>
         </v-layout>
       </v-list-tile>
       <v-container v-if="!drawer.mini" class="py-2">
-        <v-layout row>
+        <v-layout v-if="!editBeneficiary" row>
           <v-flex xs6 v-if="beneficiaryPhoneNumber" class="caption">
             <v-icon small class="mr-1">phone</v-icon>
             <a :href="`tel:${beneficiaryPhoneNumber}`">{{ beneficiaryPhoneNumber }}</a>
@@ -308,6 +340,8 @@ export default {
         mini: this.isMobile ? false : true
       },
       editAssignee: false,
+      editBeneficiary: false,
+      editResponsible: false,
       newResponsible: {}
     };
   },
@@ -343,11 +377,11 @@ export default {
       return this.$emit("update-request-drawer-status");
     },
 
-    setRequestRole(user) {
+    setAssignee(user) {
       const event = { author: this.getUser, target: user };
 
       if (!isEmpty(this.request.assignedTo) && isEqual(this.request.assignedTo.id, user._id)) {
-        return this.emitEditAssigneeStatus();
+        return (this.editAssignee = false);
       }
 
       this.isSubmit = true;
@@ -371,6 +405,93 @@ export default {
         .finally(() => {
           this.isSubmit = false;
           this.editAssignee = false;
+        });
+    },
+
+    setBeneficiary(user) {
+      const changes = {
+        field: "beneficiary",
+        oldValue: this.request.beneficiary.name,
+        newValue: user.name,
+        action: "changed"
+      };
+
+      const event = { author: this.getUser, beneficiary: user, changes: changes };
+
+      if (isEqual(this.request.beneficiary.name, user.name)) {
+        return (this.editBeneficiary = false);
+      }
+
+      if (!isEmpty(this.request.beneficiary) && isEqual(this.request.beneficiary.id, user._id)) {
+        return (this.editBeneficiary = false);
+      }
+
+      this.isSubmit = true;
+      this.$store
+        .dispatch("ticket/addEvent", {
+          ticketId: this.request._id,
+          event: event
+        })
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Assignee updated"),
+            color: "success"
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to update assignee"),
+            color: "error"
+          });
+        })
+        .finally(() => {
+          this.isSubmit = false;
+          this.editBeneficiary = false;
+        });
+    },
+
+    setResponsible(user) {
+      let changes = {
+        field: "responsible",
+        oldValue: this.request.responsible ? this.request.responsible.name : "",
+        newValue: user.name,
+        action: "changed"
+      };
+
+      const event = { author: this.getUser, responsible: user, changes: changes };
+
+      if (isEmpty(this.request.responsible)) {
+        changes.action = "added";
+      }
+
+      if (
+        (!isEmpty(this.request.responsible) && isEqual(this.request.responsible.id, user._id)) ||
+        (this.request.responsible && isEqual(this.request.responsible.name, user.name))
+      ) {
+        return (this.editResponsible = false);
+      }
+
+      this.isSubmit = true;
+      this.$store
+        .dispatch("ticket/addEvent", {
+          ticketId: this.request._id,
+          event: event
+        })
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Interlocutor updated"),
+            color: "success"
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to update interlocutor"),
+            color: "error"
+          });
+        })
+        .finally(() => {
+          this.isSubmit = false;
+          this.editResponsible = false;
         });
     }
   },
@@ -398,9 +519,8 @@ a:hover {
   width: 16px;
 }
 .letter-spacing {
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: -1px;
-  font-weight: bold;
 }
 .v-list__tile__avatar,
 .flex {

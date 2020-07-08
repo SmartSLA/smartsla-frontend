@@ -1,6 +1,6 @@
 <template>
   <v-layout column>
-    <v-layout class="font-weight-medium btn-actions" xs6 md6>
+    <v-layout v-if="currentAssignedUser" class="font-weight-medium btn-actions" xs6 md6>
       <v-flex text-xs-left pa-0>
         <span v-if="isUserBeneficiary">
           <v-btn
@@ -47,7 +47,7 @@
         <v-list-tile-content>
           {{ data.item.name }}
         </v-list-tile-content>
-        <v-list-tile-action v-show="request.assignedTo && data.item.name === request.assignedTo.name">
+        <v-list-tile-action v-show="currentAssignedUser && data.item.name === currentAssignedUser">
           <v-icon color="success">done</v-icon>
         </v-list-tile-action>
       </template>
@@ -73,7 +73,9 @@ export default {
   props: {
     setRequestRole: Function,
     responsible: Object,
-    request: Object
+    request: Object,
+    displayActionButtons: false,
+    currentAssignedUser: String
   },
   created() {
     this.$store.dispatch("contract/fetchContractUsers", this.request.contract);
