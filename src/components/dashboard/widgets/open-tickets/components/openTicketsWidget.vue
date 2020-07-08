@@ -1,8 +1,7 @@
 <template>
   <v-card class="rounded-card">
-    <v-card-title primary-title class="pl-0">
-      <v-spacer></v-spacer>
-      <time-duration-changer-dropdown @setDuration="setInterval" :selectedInterval="interval" />
+    <v-card-title primary-title>
+      {{ $t("chartTitleOpenTickets") }}
     </v-card-title>
     <v-card-text>
       <open-tickets-chart :datasets="requests"></open-tickets-chart>
@@ -13,13 +12,11 @@
 <script>
 import { mapGetters } from "vuex";
 import OpenTicketsChart from "@/components/dashboard/widgets/open-tickets/components/openTicketsChart.vue";
-import TimeDurationChangerDropdown from "@/components/dashboard/base/TimeDurationChangerDropdown.vue";
 
 export default {
   data: () => ({}),
   components: {
-    OpenTicketsChart,
-    TimeDurationChangerDropdown
+    OpenTicketsChart
   },
   computed: {
     ...mapGetters({

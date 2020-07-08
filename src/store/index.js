@@ -21,6 +21,7 @@ import listeners from "./listeners";
 import configuration from "./modules/configuration";
 import filter from "./modules/filter";
 
+import dashboard from "./modules/dashboard";
 import openTickets from "@/components/dashboard/widgets/open-tickets/store/";
 import criticalityTickets from "@/components/dashboard/widgets/criticality-tickets/store/";
 import counterCards from "@/components/dashboard/widgets/counter-cards/store/";
@@ -54,6 +55,7 @@ const store = new Vuex.Store({
     filter,
     dashboard: {
       modules: {
+        main: dashboard,
         ...dashboardModules
       }
     }

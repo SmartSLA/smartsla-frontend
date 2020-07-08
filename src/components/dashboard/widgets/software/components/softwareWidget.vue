@@ -2,8 +2,6 @@
   <v-card class="rounded-card">
     <v-card-title primary-title>
       <div class="title">{{ $t("titleWidgetSoftware") }}</div>
-      <v-spacer></v-spacer>
-      <time-duration-changer-dropdown @setDuration="setInterval" :selectedInterval="interval" />
     </v-card-title>
     <v-card-text>
       <div class="body">
@@ -25,7 +23,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import TimeDurationChangerDropdown from "@/components/dashboard/base/TimeDurationChangerDropdown.vue";
 
 export default {
   data() {
@@ -39,9 +36,6 @@ export default {
         { text: this.$i18n.t("ticketCount"), value: "ticketCount" }
       ]
     };
-  },
-  components: {
-    TimeDurationChangerDropdown
   },
   computed: {
     ...mapGetters({

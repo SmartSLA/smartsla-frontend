@@ -26,7 +26,7 @@ const actions = {
   },
 
   updateInterval: ({ dispatch, commit, state }, interval) => {
-    const filters = { ...state.filter, ...buildIntervalQueryParams(interval) };
+    const filters = { ...state.filters, ...buildIntervalQueryParams(interval) };
 
     commit(types.SET_INTERVAL, interval);
 
