@@ -51,7 +51,7 @@ const actions = {
     dispatch("topTenSoftware/updateFilter", state.filters, { root: true });
   },
 
-  setContracts: ({ dispatch, commit, state }, contracts) => {
+  setContracts: ({ commit, state }, contracts) => {
     const filters = { ...state.filters };
 
     if (contracts && contracts.length) {
@@ -61,8 +61,6 @@ const actions = {
     }
 
     commit(types.SET_FILTERS, filters);
-
-    dispatch("updateWidgetFilters");
   }
 };
 
