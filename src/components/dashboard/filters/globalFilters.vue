@@ -34,6 +34,11 @@
                   </v-list-tile>
                   <v-divider class="mt-2"></v-divider>
                 </template>
+                <template v-slot:item="data">
+                  <span>{{ data.item.name }}</span>
+                  <v-spacer></v-spacer>
+                  <span class="grey--text caption">{{ data.item.client }}</span>
+                </template>
                 <template v-slot:selection="data">
                   <v-chip v-if="data.index >= 0 && data.index < 4">
                     <span>{{ data.item.name }} {{ data.index }}</span>
