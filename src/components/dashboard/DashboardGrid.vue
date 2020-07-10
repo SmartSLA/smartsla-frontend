@@ -24,7 +24,7 @@
     </v-layout>
 
     <v-layout row wrap>
-      <v-flex xs12 md6>
+      <v-flex xs12>
         <open-tickets-software-widget />
       </v-flex>
     </v-layout>
