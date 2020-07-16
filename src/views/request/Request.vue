@@ -346,7 +346,7 @@
                   <v-layout row wrap id="submission">
                     <v-flex md4 class="hidden-sm-and-down"></v-flex>
                     <v-flex xs6 md4>
-                      <v-layout row>
+                      <v-layout row justify-center>
                         <v-btn
                           @click="addEvent(false)"
                           :disabled="isSubmitting"
