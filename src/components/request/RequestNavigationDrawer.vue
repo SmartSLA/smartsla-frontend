@@ -411,14 +411,7 @@ export default {
     },
 
     setBeneficiary(user) {
-      const changes = {
-        field: "beneficiary",
-        oldValue: this.request.beneficiary.name,
-        newValue: user.name,
-        action: "changed"
-      };
-
-      const event = { author: this.getUser, beneficiary: user, changes: changes };
+      const event = { author: this.getUser, beneficiary: user };
 
       if (isEqual(this.request.beneficiary.name, user.name)) {
         return (this.editBeneficiary = false);
@@ -453,18 +446,7 @@ export default {
     },
 
     setResponsible(user) {
-      let changes = {
-        field: "responsible",
-        oldValue: this.request.responsible ? this.request.responsible.name : "",
-        newValue: user.name,
-        action: "changed"
-      };
-
-      const event = { author: this.getUser, responsible: user, changes: changes };
-
-      if (isEmpty(this.request.responsible)) {
-        changes.action = "added";
-      }
+      const event = { author: this.getUser, responsible: user };
 
       if (
         (!isEmpty(this.request.responsible) && isEqual(this.request.responsible.id, user._id)) ||
