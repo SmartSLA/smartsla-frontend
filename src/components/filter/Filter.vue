@@ -13,7 +13,6 @@
           :hideSearchFilter="hideSearchFilter"
           @updatedHideSearchFilter="hideSearchInput"
         ></FilterSearchInput>
-        <ExportCsvButton v-if="!hideSearchFilter || this.$vuetify.breakpoint.name != 'xs'"></ExportCsvButton>
         <v-dialog v-model="dialog" width="700" overflow="false" persistent>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on" @click="hideFilter = true" :class="{ 'v-btn--active': hideFilter == true }">
@@ -103,7 +102,6 @@ import FilterActions from "@/components/filter/FilterActions";
 import FilterSearchInput from "@/components/filter/FilterSearchInput";
 import FilterLoader from "@/components/filter/FilterLoader";
 import FilterCategories from "@/components/filter/FilterCategories";
-import ExportCsvButton from "@/components/request/ExportCsvButton";
 
 export default {
   name: "dataTableFilter",
@@ -111,8 +109,7 @@ export default {
     FilterActions,
     FilterSearchInput,
     FilterLoader,
-    FilterCategories,
-    ExportCsvButton
+    FilterCategories
   },
 
   data() {
