@@ -1,6 +1,6 @@
 <template>
-  <v-layout column>
-    <v-layout v-if="currentAssignedUser" class="font-weight-medium btn-actions" xs6 md6>
+  <v-layout column tabindex="0">
+    <v-layout v-if="displayActionButtons && currentAssignedUser" class="font-weight-medium btn-actions" xs6 md6>
       <v-flex text-xs-left pa-0>
         <span v-if="isUserBeneficiary">
           <v-btn
