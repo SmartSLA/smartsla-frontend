@@ -184,8 +184,7 @@ export default {
 
           if (customFilter.category === CONTRIBUTION_FILTERS.SOFTWARE) {
             contributionList = contributionList.filter(
-              contribution =>
-                contribution.software && isInsensitiveEqual(contribution.software.name, customFilter.value)
+              contribution => contribution.software && isInsensitiveEqual(contribution.software, customFilter.value)
             );
           }
 
