@@ -1,10 +1,13 @@
 <template>
   <v-card class="rounded-card">
-    <v-card-title primary-title>
+    <v-card-title primary-title class="title">
       {{ $t("chartTitleOpenTickets") }}
     </v-card-title>
-    <v-card-text>
+    <v-card-text v-if="requests.length">
       <open-tickets-chart :datasets="requests"></open-tickets-chart>
+    </v-card-text>
+    <v-card-text v-else class="text-md-center">
+      {{ $t("No data available") }}
     </v-card-text>
   </v-card>
 </template>

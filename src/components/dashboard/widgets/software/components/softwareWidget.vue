@@ -1,11 +1,11 @@
 <template>
-  <v-card class="rounded-card">
+  <v-card class="rounded-card" height="100%">
     <v-card-title primary-title>
       <div class="title">{{ $t("titleWidgetSoftware") }}</div>
     </v-card-title>
     <v-card-text>
       <div class="body">
-        <v-data-table hide-actions :items="software" :headers="headers">
+        <v-data-table hide-actions :items="software" :headers="headers" :no-data-text="$t('No data available')">
           <template v-slot:items="props">
             <td class="text-xs-center">{{ props.item.softwareName }}</td>
             <td class="text-xs-center">{{ props.item.anomaly }}</td>
