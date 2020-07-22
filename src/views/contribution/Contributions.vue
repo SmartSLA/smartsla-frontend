@@ -38,7 +38,7 @@
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{ props.item.software }}</text-highlight>
           </td>
-          <td>
+          <td class="text-xs-center">
             <router-link :to="{ name: 'Contribution', params: { id: props.item._id } }" class="blue-color">
               <text-highlight :queries="highlightSearch">
                 {{ props.item.name }}
@@ -48,11 +48,13 @@
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{ props.item.author }}</text-highlight>
           </td>
-          <td class="text-xs-center">{{ props.item.author }}</td>
-          <td class="text-xs-center">{{ props.item.update }}</td>
-          <td class="text-xs-center">{{ props.item.creation | formatDateFilter("ll", userLanguage) }}</td>
           <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch">{{ props.item.update }} </text-highlight>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{ props.item.timestamps.updated | relativeTime(userLanguage) }}</span>
+              </template>
+              <span>{{ props.item.timestamps.updated | formatDateFilter("llll", userLanguage) }}</span>
+            </v-tooltip>
           </td>
           <td class="text-xs-center">
             <text-highlight :queries="highlightSearch">{{
@@ -60,9 +62,7 @@
             }}</text-highlight>
           </td>
           <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch"
-              ><contributionStatus :status="props.item.status"></contributionStatus
-            ></text-highlight>
+            <contributionStatus :status="props.item.status" :query="highlightSearch"></contributionStatus>
           </td>
         </tr>
       </template>
@@ -209,7 +209,8 @@ export default {
             InsensitiveInclude(contribution.type, this.search) ||
             InsensitiveInclude(contribution.name, this.search) ||
             InsensitiveInclude(contribution.software, this.search) ||
-            InsensitiveInclude(contribution.author, this.search)
+            InsensitiveInclude(contribution.author, this.search) ||
+            InsensitiveInclude(getContributionStatus(contribution.status), this.search)
           );
         });
       }
