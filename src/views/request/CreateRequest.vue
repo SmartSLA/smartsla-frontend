@@ -525,7 +525,7 @@ export default {
       avatarUrl: "currentUser/getAvatarUrl",
       userPhone: "currentUser/getPhone",
       activeContracts: "contract/activeContracts",
-      allUsers: "users/getUsers"
+      allUsers: "users/getUsersAsTicketUsers"
     }),
 
     isInEdit() {

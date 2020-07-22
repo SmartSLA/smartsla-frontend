@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { formatAsTicketUser } from "@/services/helpers/user";
 
 const state = {
   contracts: {},
@@ -61,6 +62,7 @@ const getters = {
   getContractById: state => id => state.contracts[id],
   activeContracts: state => (Object.values(state.contracts) || []).filter(c => c.status),
   getContractUsers: state => contractId => state.contractUsers[contractId] || [],
+  getContractUsersAsTicketUsers: state => contractId => (state.contractUsers[contractId] || []).map(formatAsTicketUser),
   getContractTickets: state => contractId => state.contractTickets[contractId] || [],
   getClients: state => (Object.values(state.contracts) || []).map(item => item.client),
   getContractsByClient: state => clientId =>

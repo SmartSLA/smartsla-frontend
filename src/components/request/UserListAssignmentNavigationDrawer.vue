@@ -94,28 +94,17 @@ export default {
       return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     },
     contractUsers() {
-      const users = this.$store.getters["contract/getContractUsers"](this.request.contract);
-      const assignees = (users || []).map(this.getContractUserAsAssignee);
+      const ticketUsers = this.$store.getters["contract/getContractUsersAsTicketUsers"](this.request.contract);
 
       return this.ticketPostResolved
-        ? assignees.filter(assignee => assignee.type === USER_TYPE.BENEFICIARY)
-        : assignees;
+        ? ticketUsers.filter(assignee => assignee.type === USER_TYPE.BENEFICIARY)
+        : ticketUsers;
     },
     ticketPostResolved() {
       return [TICKET_STATUS.RESOLVED, TICKET_STATUS.CLOSED].includes(this.request.status);
     }
   },
   methods: {
-    getContractUserAsAssignee(contractUser) {
-      return {
-        type: contractUser.type,
-        role: contractUser.role,
-        id: contractUser.user._id,
-        email: contractUser.user.preferredEmail,
-        name: contractUser.user.displayName || contractUser.user.preferredEmail
-      };
-    },
-
     canAssign() {
       return this.ticketPostResolved || !this.request.responsible;
     },
