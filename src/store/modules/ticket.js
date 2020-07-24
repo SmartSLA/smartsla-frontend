@@ -169,7 +169,8 @@ const getters = {
         assignedToName: request.assignedTo && request.assignedTo.name,
         id_ossa: request.idOssa.id,
         createdAt: request.timestamps.createdAt,
-        updatedAt: request.timestamps.updatedAt
+        updatedAt: request.timestamps.updatedAt,
+        clientContract: contract && contract.client + contract.name
       };
     });
 
