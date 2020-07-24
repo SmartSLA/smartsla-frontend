@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { formatAsTicketUser } from "@/services/helpers/user";
 
 function initialState() {
   return {
@@ -59,6 +60,7 @@ const mutations = {
 
 const getters = {
   getUsers: state => Object.values(state.users) || [],
+  getUsersAsTicketUsers: state => (Object.values(state.users) || []).map(formatAsTicketUser),
   getUsersByType: state => type => Object.values(state.users || []).filter(user => user.type === type),
   getUserById: state => id => state.users[id] || {},
   getUsersCount: state => Number(state.length) || 0
