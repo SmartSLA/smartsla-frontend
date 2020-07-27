@@ -677,7 +677,7 @@ export default {
     },
 
     getUsersWithRole(role) {
-      return (this.contractUsers || []).filter(contractUsers => contractUsers.role === role).map(reader => reader.user);
+      return (this.contractUsers || []).filter(contractUsers => contractUsers.role === role);
     },
 
     critColor(critLevel) {

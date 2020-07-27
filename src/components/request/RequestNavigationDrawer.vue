@@ -373,7 +373,7 @@ export default {
     setAssignee(user) {
       const event = { author: this.getUser, target: user };
 
-      if (!isEmpty(this.request.assignedTo) && isEqual(this.request.assignedTo.id, user._id)) {
+      if (!isEmpty(this.request.assignedTo) && isEqual(this.request.assignedTo.id, user.id)) {
         return (this.editAssignee = false);
       }
 
@@ -408,7 +408,7 @@ export default {
         return (this.editBeneficiary = false);
       }
 
-      if (!isEmpty(this.request.beneficiary) && isEqual(this.request.beneficiary.id, user._id)) {
+      if (!isEmpty(this.request.beneficiary) && isEqual(this.request.beneficiary.id, user.id)) {
         return (this.editBeneficiary = false);
       }
 
@@ -440,7 +440,7 @@ export default {
       const event = { author: this.getUser, responsible: user };
 
       if (
-        (!isEmpty(this.request.responsible) && isEqual(this.request.responsible.id, user._id)) ||
+        (!isEmpty(this.request.responsible) && isEqual(this.request.responsible.id, user.id)) ||
         (this.request.responsible && isEqual(this.request.responsible.name, user.name))
       ) {
         return (this.editResponsible = false);

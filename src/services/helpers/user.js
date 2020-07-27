@@ -8,7 +8,7 @@ function getUserAvatarUrl(userId) {
 
 function formatAsTicketUser(user) {
   return {
-    id: user.user._id,
+    id: user.user,
     name: user.name,
     email: user.email,
     type: user.type
