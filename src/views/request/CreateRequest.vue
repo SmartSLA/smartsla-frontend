@@ -333,7 +333,7 @@ export default {
   methods: {
     submit() {
       if (!this.$route.params.id) {
-        this.ticket.author = this.getUser; // TODO: handle the ticket author in the backend.
+        this.ticket.author = this.currentUser; // TODO: handle the ticket author in the backend.
       }
       this.submitRequest = true;
       this.ticket.participants = this.participants;
@@ -368,11 +368,7 @@ export default {
     postRequest(attachments = []) {
       if (attachments.length) {
         const event = {
-          author: {
-            id: this.$store.state.currentUser.user._id,
-            name: this.displayName,
-            image: this.avatarUrl
-          },
+          author: this.currentUser,
           attachments: attachments.map(attachment => ({
             _id: attachment._id,
             name: attachment.name,
@@ -519,7 +515,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUser: "currentUser/getUser",
+      currentUser: "currentUser/getUser",
       requests: "ticket/getTickets",
       displayName: "currentUser/getDisplayName",
       avatarUrl: "currentUser/getAvatarUrl",
