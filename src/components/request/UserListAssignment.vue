@@ -88,17 +88,6 @@ export default {
     }
   },
   methods: {
-    getContractUserAsAssignee(contractUser) {
-      return {
-        type: contractUser.type,
-        role: contractUser.role,
-        id: contractUser.user._id,
-        _id: contractUser.user._id,
-        email: contractUser.user.preferredEmail,
-        name: contractUser.user.displayName || contractUser.user.preferredEmail
-      };
-    },
-
     setResponsible(user) {
       this.$emit("update:responsible", user);
     },
