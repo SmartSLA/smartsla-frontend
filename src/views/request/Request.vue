@@ -217,7 +217,11 @@
                           </v-list>
                         </v-menu>
                       </v-card-title>
-                      <v-card-text v-if="event.comment" v-html="event.comment" class="pt-0" />
+                      <v-card-text
+                        v-if="event.comment"
+                        v-html="transformToCodeblock(event.comment)"
+                        class="pt-0 comment-content"
+                      />
                       <v-card-text v-if="(event.target && event.target.name) || event.status" class="grey--text pt-0">
                         <p
                           v-if="event.target && event.target.name"
@@ -492,6 +496,9 @@ import RelatedContributions from "@/components/request/RelatedContributions";
 import surveyUrl from "@/services/limesurvey/limesurvey.js";
 import TicketStatus from "@/components/request/TicketStatus";
 
+// const Codeblock = Quill.import("formats/code-block");
+// Codeblock.tagName = "pre";
+
 export default {
   data() {
     return {
@@ -573,6 +580,9 @@ export default {
     }
   },
   methods: {
+    transformToCodeblock(comment) {
+      return comment.replace(new RegExp("<pre[^>]*?>", "gm"), "<code>").replace(new RegExp("</pre>", "gm"), "</code>");
+    },
     isUserExpert() {
       return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     },
@@ -713,6 +723,15 @@ export default {
   .v-stepper__label {
     display: block !important;
   }
+}
+
+.comment-content img {
+  width: 100%;
+}
+
+.comment-content code {
+  background-color: #23241f;
+  color: #f8f8f2;
 }
 
 .btn-action-list span {
