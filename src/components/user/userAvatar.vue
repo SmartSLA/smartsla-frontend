@@ -1,24 +1,29 @@
 <template>
   <v-avatar :size="size">
-    <img v-if="getAvatarUrl" :src="getAvatarUrl" />
-    <v-icon v-else>account_circle</v-icon>
+    <img v-if="userId" :src="avatarUrl" />
+    <v-icon medium v-else>{{ defaultIcon }}</v-icon>
   </v-avatar>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { getUserAvatarUrl } from "@/services/helpers/user";
 
 export default {
   name: "userAvatar",
   computed: {
-    ...mapGetters({
-      getAvatarUrl: "currentUser/getAvatarUrl"
-    })
+    avatarUrl() {
+      return getUserAvatarUrl(this.userId);
+    }
   },
   props: {
+    userId: String,
     size: {
       type: [Number, String],
       default: 32
+    },
+    defaultIcon: {
+      type: String,
+      default: "account_circle"
     }
   }
 };

@@ -35,13 +35,8 @@
     <v-list two-line subheader class="py-0">
       <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24">
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-img
-              v-if="!isEmpty(request.assignedTo) && request.assignedTo.id"
-              v-on="on"
-              :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"
-            ></v-img>
-            <v-icon v-else medium size="24" v-on="on">account_circle</v-icon>
+          <template slot="activator">
+            <userAvatar size="24" :userId="request.assignedTo && request.assignedTo.id"></userAvatar>
           </template>
           <span>
             <b>{{ $t("Assignee") }}</b>
@@ -67,7 +62,7 @@
           <v-layout row align-center v-if="!editAssignee">
             <v-flex>
               <v-list-tile-avatar v-if="!isEmpty(request.assignedTo) && request.assignedTo.id" size="30" class="px-0">
-                <v-img :src="`${apiUrl}/api/users/${request.assignedTo.id}/profile/avatar`"></v-img>
+                <userAvatar :userId="request.assignedTo.id"></userAvatar>
               </v-list-tile-avatar>
             </v-flex>
             <v-flex>
@@ -107,13 +102,8 @@
 
       <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-img
-              v-if="request.responsible"
-              v-on="on"
-              :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"
-            ></v-img>
-            <v-icon v-else medium size="24" v-on="on">account_circle</v-icon>
+          <template slot="activator">
+            <userAvatar size="24" :userId="request.responsible && request.responsible.id"></userAvatar>
           </template>
           <span>
             <b>{{ $t("Interlocutor") }}</b>
@@ -141,7 +131,7 @@
           <v-layout v-if="!editResponsible" row align-center>
             <v-flex>
               <v-list-tile-avatar v-if="request.responsible" size="30" class="px-0">
-                <v-img :src="`${apiUrl}/api/users/${request.responsible.id}/profile/avatar`"></v-img>
+                <userAvatar :userId="request.responsible.id"></userAvatar>
               </v-list-tile-avatar>
             </v-flex>
             <v-flex>
@@ -180,13 +170,12 @@
 
       <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-img
-              v-if="request.beneficiary.id"
-              v-on="on"
-              :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"
-            ></v-img>
-            <v-icon v-else large>person</v-icon>
+          <template slot="activator">
+            <userAvatar
+              size="24"
+              defaultIcon="person"
+              :userId="request.beneficiary && request.beneficiary.id"
+            ></userAvatar>
           </template>
 
           <span>
@@ -210,8 +199,8 @@
           </v-layout>
           <v-layout v-if="!editBeneficiary" row align-center>
             <v-flex>
-              <v-list-tile-avatar v-if="request.beneficiary.id" size="30" class="px-0">
-                <v-img :src="`${apiUrl}/api/users/${request.beneficiary.id}/profile/avatar`"></v-img>
+              <v-list-tile-avatar v-if="request.beneficiary" size="30" class="px-0">
+                <userAvatar :userId="request.beneficiary.id"></userAvatar>
               </v-list-tile-avatar>
             </v-flex>
             <v-flex>
@@ -328,13 +317,15 @@ import { capitalize, isEmpty, isEqual } from "lodash";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import UserListAssignmentNavigationDrawer from "@/components/request/UserListAssignmentNavigationDrawer";
+import userAvatar from "@/components/user/userAvatar";
 
 export default {
   props: ["request", "apiUrl", "isMobile", "getUser"],
   components: {
     ClientContractLinks,
     cnsProgressBar,
-    UserListAssignmentNavigationDrawer
+    UserListAssignmentNavigationDrawer,
+    userAvatar
   },
   data() {
     return {

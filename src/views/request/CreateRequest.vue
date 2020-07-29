@@ -293,6 +293,7 @@ import { REQUEST_TYPE } from "@/constants";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
 import { cloneDeep } from "lodash";
 import relatedRequests from "@/components/request/RelatedRequests";
+import { getUserAvatarUrl } from "@/services/helpers/user";
 
 export default {
   mixins: [SoftwareMixin],
@@ -522,11 +523,14 @@ export default {
       getUser: "currentUser/getUser",
       requests: "ticket/getTickets",
       displayName: "currentUser/getDisplayName",
-      avatarUrl: "currentUser/getAvatarUrl",
       userPhone: "currentUser/getPhone",
       activeContracts: "contract/activeContracts",
       allUsers: "users/getUsersAsTicketUsers"
     }),
+
+    avatarUrl() {
+      return getUserAvatarUrl(this.getUser.id);
+    },
 
     isInEdit() {
       return this.$route.params.id && true;
