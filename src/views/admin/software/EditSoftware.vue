@@ -259,6 +259,7 @@ export default {
       this.$store.dispatch("software/fetchSoftwareById", id).then(() => {
         const data = this.$store.getters["software/getSoftwareById"](id);
         this.software = cloneDeep(data);
+        this.externalLinks = this.software.externalLinks;
       });
     }
   }
