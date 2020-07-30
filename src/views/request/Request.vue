@@ -176,9 +176,7 @@
                     :hide-dot="$vuetify.breakpoint.name === 'xs' ? true : false"
                   >
                     <template v-slot:icon v-if="$vuetify.breakpoint.name !== 'xs'">
-                      <v-avatar size="30">
-                        <v-img :src="`${apiUrl}/api/users/${event.author.id}/profile/avatar`"></v-img>
-                      </v-avatar>
+                      <userAvatar size="30" :userId="event.author.id"></userAvatar>
                     </template>
                     <v-card
                       flat
@@ -410,6 +408,7 @@ import surveyUrl from "@/services/limesurvey/limesurvey.js";
 import TicketStatus from "@/components/request/TicketStatus";
 import RequestNavigationDrawer from "@/components/request/RequestNavigationDrawer";
 import { LOCALE } from "@/i18n/constants";
+import userAvatar from "@/components/user/userAvatar";
 
 export default {
   data() {
@@ -435,7 +434,8 @@ export default {
     UserListAssignment,
     RelatedContributions,
     TicketStatus,
-    RequestNavigationDrawer
+    RequestNavigationDrawer,
+    userAvatar
   },
   computed: {
     ...mapGetters({

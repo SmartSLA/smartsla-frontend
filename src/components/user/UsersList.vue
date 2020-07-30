@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-list-tile v-for="user in users" :key="user.user._id" @click="goToUser(user.user._id)" avatar>
+    <v-list-tile v-for="user in users" :key="user.user" @click="goToUser(user.user)" avatar>
       <v-list-tile-avatar class="mr-3">
-        <img :src="getAvatarUrl(user)" />
+        <img :src="getAvatarUrl(user.user)" />
       </v-list-tile-avatar>
       <v-list-tile-content>
         <v-list-tile-title>{{ user.name }}</v-list-tile-title>
@@ -23,8 +23,8 @@ export default {
     users: Array
   },
   methods: {
-    getAvatarUrl(user) {
-      return getUserAvatarUrl(user);
+    getAvatarUrl(userId) {
+      return getUserAvatarUrl(userId);
     },
     goToUser(userID) {
       this.$router.push({ name: routeNames.USER, params: { id: userID } });

@@ -2,8 +2,8 @@ import ApplicationSettings from "@/services/application-settings";
 
 export { getUserAvatarUrl, formatAsTicketUser };
 
-function getUserAvatarUrl(user) {
-  return new URL(`/api/users/${user.user._id}/profile/avatar`, ApplicationSettings.VUE_APP_OPENPAAS_URL).toString();
+function getUserAvatarUrl(userId) {
+  return new URL(`/api/users/${userId}/profile/avatar`, ApplicationSettings.VUE_APP_OPENPAAS_URL).toString();
 }
 
 function formatAsTicketUser(user) {
