@@ -132,7 +132,7 @@ export default {
       }
       this.isCreating = true;
       this.$http
-        .createRoles(this.users.map(user => ({ role: "administrator", user: user._id })))
+        .createRoles(this.users.map(user => ({ role: "administrator", user: user })))
         .then(() => {
           this.users = null;
           this.fetchRoles();

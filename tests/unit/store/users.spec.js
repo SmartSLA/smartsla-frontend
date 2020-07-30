@@ -3,11 +3,11 @@ import { cloneDeep, keyBy } from "lodash";
 
 const { mutations, getters, state } = store;
 const users = [
-  { _id: 11, name: "user1", type: "expert", user: { _id: "1" } },
-  { _id: 22, name: "user2", type: "expert", user: { _id: "2" } },
-  { _id: 33, name: "user3", type: "beneficiary", user: { _id: "3" } },
-  { _id: 44, name: "user3", type: "expert", user: { _id: "4" } },
-  { _id: 55, name: "user4", type: "beneficiary", user: { _id: "5" } }
+  { _id: 11, name: "user1", type: "expert", user: "1" },
+  { _id: 22, name: "user2", type: "expert", user: "2" },
+  { _id: 33, name: "user3", type: "beneficiary", user: "3" },
+  { _id: 44, name: "user3", type: "expert", user: "4" },
+  { _id: 55, name: "user4", type: "beneficiary", user: "5" }
 ];
 let stateMock;
 
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 describe("SET_USERS mutation", () => {
   it("should put the users correctly in the store", () => {
-    const expected = keyBy(users, "user._id");
+    const expected = keyBy(users, "user");
 
     mutations.SET_USERS(stateMock, users);
     expect(stateMock.users instanceof Object).toBeTruthy();
@@ -103,7 +103,7 @@ describe("getUserById getter", () => {
   it("should return the requested user correctly", () => {
     mutations.SET_USERS(stateMock, users);
     const user = getters.getUserById(stateMock)(1);
-    const expected = { _id: 11, name: "user1", type: "expert", user: { _id: "1" } };
+    const expected = { _id: 11, name: "user1", type: "expert", user: "1" };
 
     expect(user).toBeDefined();
     expect(user instanceof Object).toBeTruthy();

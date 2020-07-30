@@ -158,8 +158,8 @@ export default {
       }
     },
     generateItems(results) {
-      let destructuredUsers = this.contractUsers.map(user => (user = user.user._id));
-      this.items = results.filter(result => ![...destructuredUsers].includes(result.id));
+      let contractUserIds = this.contractUsers.map(user => user.user);
+      this.items = results.filter(result => ![...contractUserIds].includes(result.id));
     }
   },
   computed: {
