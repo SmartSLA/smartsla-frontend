@@ -1,6 +1,6 @@
 <template>
   <v-menu offset-y class="my-3 mx-2 user-menu-item">
-    <userAvatar slot="activator"></userAvatar>
+    <userAvatar slot="activator" :userId="getId"></userAvatar>
     <v-list>
       <v-list-tile>
         <v-list-tile-content>
