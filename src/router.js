@@ -68,6 +68,7 @@ export const routeNames = Object.freeze({
   EDITCONTRACTINFORMATION: "EditContractInformation",
   EDITCONTRACTENGAGEMENTS: "EditContractEngagements",
   EDITCONTRACTSOFTWARES: "EditContractSoftwares",
+  EDITCONTRACT: "EditContract",
   NEWCONTRACT: "NewContract",
   TEAMS: "Teams",
   USER: "User",
