@@ -529,13 +529,19 @@ export default {
 
       attachmentsPromise
         .then(attachments => {
-          const event = {
+          let event = {
             author: this.getUser,
             comment: this.comment,
-            status: this.newStatus,
-            target: this.newResponsible,
             isPrivate: this.isPrivateTab
           };
+
+          if (!this.isPrivateTab) {
+            event = {
+              ...event,
+              status: this.newStatus,
+              target: this.newResponsible
+            };
+          }
 
           if (isSurvey) {
             event.isSurvey = isSurvey;
