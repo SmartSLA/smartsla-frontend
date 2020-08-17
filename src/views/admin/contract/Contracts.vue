@@ -1,8 +1,5 @@
 <template>
   <v-container class="pa-0" v-if="$auth.ready()">
-    <div class="page-title">
-      <span>{{ $t("Contracts list") }}</span>
-    </div>
     <ContractListFilter
       :statusList="statusList"
       :clients="clients"

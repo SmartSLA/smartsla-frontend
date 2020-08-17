@@ -1,8 +1,5 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Teams' }"
-      >&lt; {{ $t("Return to teams list") }}</router-link
-    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-1 mt-4 pb-4">

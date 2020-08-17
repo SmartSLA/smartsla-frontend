@@ -1,11 +1,5 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0">
-    <v-card-text>
-      <router-link class="text-lg-left action-links" :to="ContractListPath">
-        <v-icon class="mr-2">arrow_back_ios</v-icon>
-        {{ $t("Return to contracts list") }}
-      </router-link>
-    </v-card-text>
     <v-layout row wrap justify-space-between>
       <v-flex xs7 pr-4>
         <v-layout row wrap justify-space-between>
