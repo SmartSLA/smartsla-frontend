@@ -6,15 +6,14 @@
 </template>
 
 <script>
+import { routeNames } from "@/router";
 import EditContractInformation from "@/components/admin/contract/EditInformation.vue";
-import EditContractHR from "@/components/admin/contract/EditHR.vue";
 import EditContractSoftware from "@/components/admin/contract/EditSoftware.vue";
 import EditContractEngagements from "@/components/admin/contract/EditEngagements.vue";
 export default {
   name: "edit-contract",
   components: {
     "edit-contract-information": EditContractInformation,
-    "edit-contract-hr": EditContractHR,
     "edit-contract-software": EditContractSoftware,
     "edit-contract-engagements": EditContractEngagements
   },
@@ -24,17 +23,14 @@ export default {
     };
   },
   created() {
-    switch (this.$route.params.section) {
-      case "information":
+    switch (this.$route.name) {
+      case routeNames.EDITCONTRACTINFORMATION:
         this.editSectionComponent = "edit-contract-information";
         break;
-      case "hr":
-        this.editSectionComponent = "edit-contract-hr";
-        break;
-      case "software":
+      case routeNames.EDITCONTRACTSOFTWARES:
         this.editSectionComponent = "edit-contract-software";
         break;
-      case "engagements":
+      case routeNames.EDITCONTRACTENGAGEMENTS:
         this.editSectionComponent = "edit-contract-engagements";
         break;
       default:

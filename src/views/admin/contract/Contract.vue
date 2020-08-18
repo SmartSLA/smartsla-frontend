@@ -25,8 +25,8 @@
                         small
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'information', type: 'information' }
+                          name: routeNames.EDITCONTRACTINFORMATION,
+                          params: { id: contract._id }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -167,8 +167,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'software', type: 'software' }
+                          name: routeNames.EDITCONTRACTSOFTWARES,
+                          params: { id: contract._id }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -236,8 +236,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'critical' }
+                          name: routeNames.EDITCONTRACTENGAGEMENTS,
+                          params: { id: contract._id, type: 'critical' }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -310,8 +310,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'sensible' }
+                          name: routeNames.EDITCONTRACTENGAGEMENTS,
+                          params: { id: contract._id, type: 'sensible' }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -384,8 +384,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'standard' }
+                          name: routeNames.EDITCONTRACTENGAGEMENTS,
+                          params: { id: contract._id, type: 'standard' }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -633,6 +633,9 @@ export default {
 
     userLanguage() {
       return this.getUserLanguage || LOCALE;
+    },
+    routeNames() {
+      return routeNames;
     }
   },
   created() {
