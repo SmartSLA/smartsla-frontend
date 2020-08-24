@@ -167,15 +167,8 @@
               </v-tab-item>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
-                  <v-timeline-item
-                    v-for="event in request.events"
-                    :key="event._id"
-                    medium
-                    :ref="`event-${event._id}`"
-                    :id="`event-${event._id}`"
-                    :hide-dot="$vuetify.breakpoint.name === 'xs' ? true : false"
-                  >
-                    <template v-slot:icon v-if="$vuetify.breakpoint.name !== 'xs'">
+                  <v-timeline-item v-for="event in request.events" :key="event._id" medium :ref="`event-${event._id}`">
+                    <template v-slot:icon>
                       <userAvatar size="30" :userId="event.author.id"></userAvatar>
                     </template>
                     <v-card
@@ -508,6 +501,17 @@ export default {
     userLanguage() {
       return this.getUserLanguage || LOCALE;
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      if (this.$route.hash) {
+        const element = this.$refs[this.$route.hash.slice(1)];
+
+        if (element && element[0] && element[0].$el) {
+          this.$scrollTo(element[0].$el, 2000);
+        }
+      }
+    }, 500);
   },
   methods: {
     isUserExpert() {
