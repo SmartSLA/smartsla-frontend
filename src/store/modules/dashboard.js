@@ -3,6 +3,7 @@ import { buildIntervalQueryParams } from "@/services/helpers/dashboard";
 const initialState = () => ({
   interval: "LAST_YEAR",
   filters: {
+    group: "month",
     contracts: [],
     start: null,
     end: null
@@ -29,6 +30,12 @@ const actions = {
     const filters = { ...state.filters, ...period, ...{ group: "month" } };
 
     commit(types.SET_INTERVAL, "CUSTOM_PERIOD");
+    commit(types.SET_FILTERS, filters);
+  },
+
+  setGroupBy: ({ commit, state }, groupBy) => {
+    const filters = { ...state.filters, ...{ group: groupBy } };
+
     commit(types.SET_FILTERS, filters);
   },
 
@@ -65,7 +72,8 @@ const actions = {
 };
 
 const getters = {
-  getInterval: state => state.interval
+  getInterval: state => state.interval,
+  getGroupBy: state => state.filters.group
 };
 
 export default {
