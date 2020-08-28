@@ -4,7 +4,7 @@
       <v-flex xs4 pt-4>
         <request-filter-list></request-filter-list>
       </v-flex>
-      <v-flex xs6>
+      <v-flex xs6 class="ml-auto">
         <dataTableFilter
           :categories="categories"
           :values="values"
@@ -20,6 +20,7 @@
           @filterCreated="fetchUserFilters"
         ></dataTableFilter>
       </v-flex>
+      <ExportCsvButton></ExportCsvButton>
     </v-layout>
     <v-container grid-list-md class="pa-0">
       <v-data-table
