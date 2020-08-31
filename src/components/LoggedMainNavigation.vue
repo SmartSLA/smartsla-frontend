@@ -10,6 +10,7 @@
     mobile-break-point="768"
     app
     v-if="$auth.check()"
+    id="navigation_drawer"
   >
     <v-list class="navigation-drawer-scroll">
       <v-menu

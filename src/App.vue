@@ -6,7 +6,7 @@
         app
         light
         color="white"
-        class="elevation-2"
+        class="toolbar elevation-2"
         :fixed="toolbar.fixed"
         :clipped-left="toolbar.clippedLeft"
         :clipped-right="toolbar.clippedRight"
