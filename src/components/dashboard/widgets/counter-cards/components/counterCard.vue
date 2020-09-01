@@ -1,11 +1,16 @@
 <template>
   <v-card flat tile class="white--text" :class="cardClass">
     <v-card-text>
-      <div class="display-1 mb-2">
-        <span class="title font-weight-normal mb-2">{{ title }} </span>
-        <v-icon dark right>{{ icon }}</v-icon>
+      <div class="mb-2">
+        <span class="text-truncate d-block font-weight-medium">
+          {{ title }}
+          <v-icon dark right v-show="$vuetify.breakpoint.width >= '768'">
+            {{ icon }}
+          </v-icon>
+        </span>
       </div>
-      <div class="display-1 mb-2">{{ value }}</div>
+      <div class="display-1 mb-2" v-if="$vuetify.breakpoint.width >= '768'">{{ value }}</div>
+      <div v-else class="display-1 mb-2 d-flex justify-center">{{ value }}</div>
     </v-card-text>
   </v-card>
 </template>
