@@ -1,5 +1,5 @@
 <template>
-  <v-layout row pb-2>
+  <v-layout row>
     <v-flex>
       <v-card>
         <v-card-text>

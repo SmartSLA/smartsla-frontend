@@ -211,3 +211,5 @@ export const RELATED_REQUEST_TYPES = [
   "Previous",
   "Next"
 ];
+
+export const DASHBOARD_GROUP_BY_FILTER = ["day", "week", "month", "quarter", "year"];
