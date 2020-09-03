@@ -51,9 +51,9 @@
           <td class="text-xs-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <span v-on="on">{{ props.item.timestamps.updated | relativeTime(userLanguage) }}</span>
+                <span v-on="on">{{ props.item.timestamps.updatedAt | relativeTime(userLanguage) }}</span>
               </template>
-              <span>{{ props.item.timestamps.updated | formatDateFilter("llll", userLanguage) }}</span>
+              <span>{{ props.item.timestamps.updatedAt | formatDateFilter("llll", userLanguage) }}</span>
             </v-tooltip>
           </td>
           <td class="text-xs-center">
