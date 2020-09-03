@@ -2,8 +2,8 @@ import moment from "moment-timezone";
 
 const IntervalType = {
   LAST_WEEK: "LAST_WEEK",
-  LAST_TWO_WEEK: "LAST_TWO_WEEK",
   LAST_MONTH: "LAST_MONTH",
+  LAST_QUARTER: "LAST_QUARTER",
   LAST_YEAR: "LAST_YEAR",
   NONE: "NONE"
 };
@@ -23,13 +23,15 @@ function buildIntervalQueryParams(interval) {
       start = moment(end).add(-1, "weeks");
       group = "day";
       break;
-    case IntervalType.LAST_TWO_WEEK:
-      start = moment(end).add(-2, "weeks");
-      group = "day";
-      break;
     case IntervalType.LAST_MONTH:
       start = moment(end).add(-1, "months");
       group = "day";
+      break;
+    case IntervalType.LAST_QUARTER:
+      start = moment(end)
+        .add(-1, "quarters")
+        .startOf("quarter");
+      group = "month";
       break;
     case IntervalType.LAST_YEAR:
       start = moment(end).add(-1, "years");

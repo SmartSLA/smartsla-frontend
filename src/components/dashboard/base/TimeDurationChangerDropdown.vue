@@ -11,7 +11,9 @@
               <span>{{ $t("Choose a date") }}</span>
             </v-tooltip>
           </v-btn>
-          <span v-if="interval">{{ periodLabel }}</span>
+          <span v-if="interval">
+            <strong>{{ periodLabel }}</strong>
+          </span>
         </template>
 
         <v-card>
@@ -20,12 +22,12 @@
               <v-list-tile-title>{{ $t("Last week") }}</v-list-tile-title>
             </v-list-tile>
 
-            <v-list-tile @click="setIntervalType('LAST_TWO_WEEK')">
-              <v-list-tile-title>{{ $t("Last two weeks") }}</v-list-tile-title>
-            </v-list-tile>
-
             <v-list-tile @click="setIntervalType('LAST_MONTH')">
               <v-list-tile-title>{{ $t("Last month") }}</v-list-tile-title>
+            </v-list-tile>
+
+            <v-list-tile @click="setIntervalType('LAST_QUARTER')">
+              <v-list-tile-title>{{ $t("Last quarter") }}</v-list-tile-title>
             </v-list-tile>
 
             <v-list-tile @click="setIntervalType('LAST_YEAR')">
@@ -160,10 +162,10 @@ export default {
       switch (this.interval) {
         case "LAST_WEEK":
           return `${this.$t("Last week")}`;
-        case "LAST_TWO_WEEK":
-          return `${this.$t("Last two weeks")}`;
         case "LAST_MONTH":
           return `${this.$t("Last month")}`;
+        case "LAST_QUARTER":
+          return `${this.$t("Last quarter")}`;
         case "LAST_YEAR":
           return `${this.$t("Last year")}`;
         default:
