@@ -17,6 +17,7 @@
       no-title-update
       :disabled="disabled"
       @file-update="setAttachments"
+      labelClass="theme--light"
     >
     </upload-button>
   </div>

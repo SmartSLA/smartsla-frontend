@@ -228,7 +228,7 @@
                   ></related-requests>
                   <v-container>
                     <v-flex xs12>
-                      <attachments v-bind:attachments.sync="attachments" :disabled="submitRequest" />
+                      <attachments v-bind:attachments.sync="attachments" :disabled="isInEdit || submitRequest" />
                     </v-flex>
                   </v-container>
                 </v-layout>
