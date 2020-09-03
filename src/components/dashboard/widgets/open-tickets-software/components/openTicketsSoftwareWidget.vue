@@ -1,5 +1,5 @@
 <template>
-  <v-card class="rounded-card" width="100%">
+  <v-card class="rounded-card">
     <v-card-title primary-title class="title">
       {{ $t("chartTitleTicketsSoftware") }}
     </v-card-title>

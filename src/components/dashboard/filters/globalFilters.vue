@@ -49,10 +49,20 @@
                 </template>
               </v-select>
             </v-flex>
-            <v-flex xs12 sm4 md4>
+            <v-flex xs12 sm4 md3>
               <v-btn small color="info" @click="getDashboardData()">
                 {{ $t("Apply") }}
               </v-btn>
+            </v-flex>
+            <v-flex xs12 sm4 md1>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon flat @click="printDashboard()">
+                    <v-icon color="info" v-on="on">print</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $t("Print graphs") }}</span>
+              </v-tooltip>
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -112,7 +122,24 @@ export default {
       } else {
         this.selectedContracts = this.contractsList;
       }
+    },
+    printDashboard() {
+      window.print();
     }
   }
 };
 </script>
+
+<style lang="stylus">
+
+@media print {
+  body { color-adjust: exact; }
+  main.v-content { padding :0 !important; }
+  .toolbar { display: none; }
+  #dashboard_filters, #navigation_drawer { display: none; }
+  .widget { page-break-after: always; }
+  #line-chart { width: 100% !important; }
+  #bar-chart { width: 100% !important; }
+  .widget_tickets_software_widget { width: 100% !important;}
+}
+</style>
