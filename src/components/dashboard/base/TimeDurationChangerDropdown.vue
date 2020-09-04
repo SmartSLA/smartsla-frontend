@@ -18,6 +18,10 @@
 
         <v-card>
           <v-list>
+            <v-list-tile @click="setIntervalType('ANY_TIME')">
+              <v-list-tile-title>{{ $t("Any time") }}</v-list-tile-title>
+            </v-list-tile>
+
             <v-list-tile @click="setIntervalType('LAST_WEEK')">
               <v-list-tile-title>{{ $t("Last week") }}</v-list-tile-title>
             </v-list-tile>
@@ -33,6 +37,8 @@
             <v-list-tile @click="setIntervalType('LAST_YEAR')">
               <v-list-tile-title>{{ $t("Last year") }}</v-list-tile-title>
             </v-list-tile>
+
+            <v-divider></v-divider>
 
             <v-list-tile @click.prevent="showDatePickerModal = true">
               <v-list-tile-title>{{ $t("Choose a period") }}</v-list-tile-title>
@@ -160,6 +166,8 @@ export default {
     }),
     periodLabel() {
       switch (this.interval) {
+        case "ANY_TIME":
+          return `${this.$t("Any time")}`;
         case "LAST_WEEK":
           return `${this.$t("Last week")}`;
         case "LAST_MONTH":

@@ -196,6 +196,7 @@ export const INITIAL_FILTER = {
 };
 
 export const WIDGET_DURATION_INTERVAL = {
+  ANY_TIME: "Any time",
   LAST_WEEK: "Last 7 days",
   LAST_MONTH: "Last month",
   LAST_QUARTER: "Last quarter",

@@ -1,6 +1,7 @@
 import moment from "moment-timezone";
 
 const IntervalType = {
+  ANY_TIME: "ANY_TIME",
   LAST_WEEK: "LAST_WEEK",
   LAST_MONTH: "LAST_MONTH",
   LAST_QUARTER: "LAST_QUARTER",
@@ -36,6 +37,9 @@ function buildIntervalQueryParams(interval) {
     case IntervalType.LAST_YEAR:
       start = moment(end).add(-1, "years");
       group = "month";
+      break;
+    case IntervalType.ANY_TIME:
+      group = "quarter";
       break;
     case IntervalType.NONE:
       group = "none";

@@ -1,9 +1,9 @@
 import { buildIntervalQueryParams } from "@/services/helpers/dashboard";
 
 const initialState = () => ({
-  interval: "LAST_YEAR",
+  interval: "ANY_TIME",
   filters: {
-    group: "month",
+    group: "quarter",
     contracts: [],
     start: null,
     end: null
@@ -21,6 +21,10 @@ const mutations = {
   },
 
   [types.SET_FILTERS](state, filters) {
+    if (state.interval === "ANY_TIME") {
+      delete filters.start;
+      delete filters.end;
+    }
     state.filters = filters;
   }
 };

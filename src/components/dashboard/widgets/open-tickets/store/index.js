@@ -3,8 +3,8 @@ import { buildIntervalQueryParams } from "@/services/helpers/dashboard";
 
 const initialState = () => ({
   queryId: "ticketByOpenClosed",
-  interval: "LAST_YEAR",
-  filters: buildIntervalQueryParams("LAST_YEAR"),
+  interval: "ANY_TIME",
+  filters: buildIntervalQueryParams("ANY_TIME"),
   data: []
 });
 
