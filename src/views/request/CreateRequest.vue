@@ -291,7 +291,7 @@ import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { REQUEST_TYPE } from "@/constants";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
-import { cloneDeep } from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import relatedRequests from "@/components/request/RelatedRequests";
 import { getUserAvatarUrl } from "@/services/helpers/user";
 
@@ -442,7 +442,10 @@ export default {
               color: "error"
             });
           })
-          .finally(() => (this.submitRequest = false));
+          .finally(() => {
+            this.$store.dispatch("ticket/deleteDraft");
+            this.submitRequest = false;
+          });
       }
     },
     remove(item) {
@@ -512,6 +515,25 @@ export default {
       const newRelated = this.ticket.relatedRequests.filter(item => item.request._id !== relatedId);
 
       this.$set(this.ticket, "relatedRequests", newRelated);
+    },
+    initNewTicketAutoSave() {
+      this.$store.dispatch("ticket/fetchDraft").then(draftTicket => {
+        if (draftTicket) {
+          Object.keys(draftTicket).forEach(key => {
+            this.$set(this.ticket, key, draftTicket[key]);
+          });
+        }
+      });
+      this.$watch("ticket.title", debounce(this.updateDaftAutoSave, 500));
+      this.$watch("ticket.description", debounce(this.updateDaftAutoSave, 500));
+    },
+    updateDaftAutoSave() {
+      const draftTicket = {
+        description: this.ticket.description,
+        title: this.ticket.title
+      };
+
+      this.$store.dispatch("ticket/saveDraft", { ticket: draftTicket });
     }
   },
   computed: {
@@ -703,6 +725,8 @@ export default {
           this.meetingId = data.meetingId;
         })
         .finally(() => (this.submitRequest = false));
+    } else {
+      this.initNewTicketAutoSave();
     }
 
     this.$store.dispatch("users/fetchUsers");

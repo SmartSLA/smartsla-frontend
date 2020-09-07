@@ -1,5 +1,6 @@
 import Vue from "vue";
 import { isString, isNumber, isUndefined } from "lodash";
+import { TICKET_DRAFT_STORAGE_KEY_PREFIX } from "@/constants";
 
 function initialState() {
   return {
@@ -61,6 +62,20 @@ const actions = {
         // TODO
         console.log(err);
       });
+  },
+
+  saveDraft: (_, { id, ticket }) => {
+    localStorage.setItem(`${TICKET_DRAFT_STORAGE_KEY_PREFIX}${id || "new"}`, JSON.stringify(ticket));
+  },
+
+  fetchDraft: (_, id) => {
+    const draft = localStorage.getItem(`${TICKET_DRAFT_STORAGE_KEY_PREFIX}${id || "new"}`);
+
+    return JSON.parse(draft);
+  },
+
+  deleteDraft: (_, id) => {
+    localStorage.removeItem(`${TICKET_DRAFT_STORAGE_KEY_PREFIX}${id || "new"}`);
   },
 
   setPagination: ({ commit }, pagination) => {

@@ -213,3 +213,5 @@ export const RELATED_REQUEST_TYPES = [
 ];
 
 export const DASHBOARD_GROUP_BY_FILTER = ["day", "week", "month", "quarter", "year"];
+
+export const TICKET_DRAFT_STORAGE_KEY_PREFIX = "ticketDraft_";
