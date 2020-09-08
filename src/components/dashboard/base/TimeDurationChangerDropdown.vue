@@ -18,29 +18,53 @@
 
         <v-card>
           <v-list>
-            <v-list-tile @click="setIntervalType('ANY_TIME')">
+            <v-list-tile
+              ripple
+              :class="{ current_interval: interval === 'ANY_TIME' }"
+              @click="setIntervalType('ANY_TIME')"
+            >
               <v-list-tile-title>{{ $t("Any time") }}</v-list-tile-title>
             </v-list-tile>
 
-            <v-list-tile @click="setIntervalType('LAST_WEEK')">
+            <v-list-tile
+              :class="{ current_interval: interval === 'LAST_WEEK' }"
+              ripple
+              @click="setIntervalType('LAST_WEEK')"
+            >
               <v-list-tile-title>{{ $t("Last week") }}</v-list-tile-title>
             </v-list-tile>
 
-            <v-list-tile @click="setIntervalType('LAST_MONTH')">
+            <v-list-tile
+              :class="{ current_interval: interval === 'LAST_MONTH' }"
+              ripple
+              @click="setIntervalType('LAST_MONTH')"
+            >
               <v-list-tile-title>{{ $t("Last month") }}</v-list-tile-title>
             </v-list-tile>
 
-            <v-list-tile @click="setIntervalType('LAST_QUARTER')">
+            <v-list-tile
+              ripple
+              :class="{ current_interval: interval === 'LAST_QUARTER' }"
+              @click="setIntervalType('LAST_QUARTER')"
+            >
               <v-list-tile-title>{{ $t("Last quarter") }}</v-list-tile-title>
             </v-list-tile>
 
-            <v-list-tile @click="setIntervalType('LAST_YEAR')">
+            <v-list-tile
+              :class="{ current_interval: interval === 'LAST_YEAR' }"
+              ripple
+              @click="setIntervalType('LAST_YEAR')"
+            >
               <v-list-tile-title>{{ $t("Last year") }}</v-list-tile-title>
             </v-list-tile>
 
             <v-divider></v-divider>
 
-            <v-list-tile @click.prevent="showDatePickerModal = true">
+            <v-list-tile
+              :class="{ current_interval: interval === 'CUSTOM_PERIOD' }"
+              ripple
+              @click.prevent="showDatePickerModal = true"
+            >
               <v-list-tile-title>{{ $t("Choose a period") }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
@@ -63,6 +87,14 @@
           >
             <template v-slot:prepend>
               <v-icon small class="pt-1" v-on="on">mdi-sort</v-icon>
+            </template>
+            <template v-slot:prepend-item>
+              <v-list-tile>
+                <v-list-tile-content>
+                  {{ $t("Group by") }}
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-divider class="mt-2"></v-divider>
             </template>
           </v-select>
         </template>
@@ -183,3 +215,8 @@ export default {
   }
 };
 </script>
+<style lang="stylus" scoped>
+.current_interval {
+  color: #2196f3
+}
+</style>
