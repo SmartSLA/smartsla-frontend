@@ -3,8 +3,8 @@
     <v-flex>
       <v-card>
         <v-card-text>
-          <v-layout row align-center justify-center fill-height>
-            <v-flex xs12 sm4 md2 lg4>
+          <v-layout v-bind:column="isMobile" fill-height>
+            <v-flex xs12 sm4 md4 lg4>
               <time-duration-changer-dropdown />
             </v-flex>
             <v-flex xs12 sm4 md6 lg4>
@@ -40,29 +40,19 @@
                   <span class="grey--text caption">{{ data.item.client }}</span>
                 </template>
                 <template v-slot:selection="data">
-                  <v-chip v-if="data.index >= 0 && data.index < 4">
+                  <v-chip v-if="data.index >= 0 && data.index < maxChips">
                     <span>{{ data.item.name }} {{ data.index }}</span>
                   </v-chip>
-                  <span v-if="data.index === 4" class="grey--text caption"
+                  <span v-if="data.index === maxChips" class="grey--text caption"
                     >(+{{ selectedContracts.length - data.index }} {{ $t("Other") }})</span
                   >
                 </template>
               </v-select>
             </v-flex>
-            <v-flex xs12 sm4 md3>
+            <v-flex xs12 sm4 md3 align-self-end>
               <v-btn small color="info" @click="getDashboardData()">
                 {{ $t("Apply") }}
               </v-btn>
-            </v-flex>
-            <v-flex xs12 sm4 md1>
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <v-btn icon flat @click="printDashboard()">
-                    <v-icon color="info" v-on="on">print</v-icon>
-                  </v-btn>
-                </template>
-                <span>{{ $t("Print graphs") }}</span>
-              </v-tooltip>
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -100,6 +90,20 @@ export default {
     },
     someContracts() {
       return !this.selectedContracts.length && !this.allContracts;
+    },
+    isMobile() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return true;
+        case "sm":
+        case "md":
+        case "lg":
+        case "xl":
+          return false;
+      }
+    },
+    maxChips() {
+      return this.isMobile ? 2 : 4;
     }
   },
   components: {
@@ -122,9 +126,6 @@ export default {
       } else {
         this.selectedContracts = this.contractsList;
       }
-    },
-    printDashboard() {
-      window.print();
     }
   }
 };
@@ -140,6 +141,5 @@ export default {
   .widget { page-break-after: always; }
   #line-chart { width: 100% !important; }
   #bar-chart { width: 100% !important; }
-  .widget_tickets_software_widget { width: 100% !important;}
 }
 </style>

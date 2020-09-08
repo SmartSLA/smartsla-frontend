@@ -1,6 +1,6 @@
 <template>
-  <v-layout row pb-2>
-    <v-flex xs6 sm6 md6>
+  <v-layout row>
+    <v-flex xs10 sm6 md6>
       <v-menu transition="slide-y-transition" :nudge-width="100" offset-x>
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" fab flat small>
@@ -11,9 +11,7 @@
               <span>{{ $t("Choose a date") }}</span>
             </v-tooltip>
           </v-btn>
-          <span v-if="interval">
-            <strong>{{ periodLabel }}</strong>
-          </span>
+          <span v-if="interval">{{ periodLabel }}</span>
         </template>
 
         <v-card>
@@ -71,72 +69,88 @@
         </v-card>
       </v-menu>
     </v-flex>
-    <v-flex xs6 sm3>
-      <v-tooltip bottom>
+    <v-flex xs2 sm3 align-self-end>
+      <v-menu transition="slide-y-transition" :nudge-width="100" offset-x>
         <template v-slot:activator="{ on }">
-          <v-select
-            flat
-            v-model="groupBy"
-            solo
-            persistent-hint
-            :items="groupByItems"
-            hide-details
-            item-value="group"
-            item-text="label"
-            click:prepend
-          >
-            <template v-slot:prepend>
-              <v-icon small class="pt-1" v-on="on">mdi-sort</v-icon>
-            </template>
-            <template v-slot:prepend-item>
-              <v-list-tile>
-                <v-list-tile-content>
-                  {{ $t("Group by") }}
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-divider class="mt-2"></v-divider>
-            </template>
-          </v-select>
+          <v-btn v-on="on" fab flat small>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on">mdi-sort</v-icon>
+              </template>
+              <span>{{ $t("Group by") }}</span>
+            </v-tooltip>
+          </v-btn>
+          <span v-if="!isMobile">{{ $t(groupBy) }}</span>
         </template>
-        <span>{{ $t("Group by") }}</span>
-      </v-tooltip>
+
+        <v-card>
+          <v-list>
+            <v-subheader>{{ $t("Group by") }}</v-subheader>
+            <v-list-tile
+              :class="{ current_interval: groupBy === item.group }"
+              ripple
+              v-for="item in groupByItems"
+              :key="item.group"
+              @click="groupBy = item.group"
+            >
+              <v-list-tile-title>{{ item.label }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-card>
+      </v-menu>
     </v-flex>
-    <v-dialog v-model="showDatePickerModal" scrollable :fullscreen="$vuetify.breakpoint.xs" max-width="600px">
+    <v-dialog v-model="showDatePickerModal" scrollable max-width="600px">
       <v-card class="px-4 pt-2">
         <v-card-title class="headline">{{ $t("Choose a period") }}</v-card-title>
         <v-card-text>
           <v-layout row>
             <v-flex xs12 sm6 md6>
-              <v-menu lazy transition="scale-transition" offset-y full-width min-width="290px">
+              <v-menu
+                v-model="startMenu"
+                :close-on-content-click="false"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+              >
                 <template v-slot:activator="{ on }">
                   <v-text-field
                     v-model="filters.start"
                     :label="$t('From date')"
                     prepend-icon="event"
-                    readonly
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="filters.start" no-title scrollable :max="maxDate">
-                  <v-spacer></v-spacer>
-                </v-date-picker>
+                <v-date-picker
+                  v-model="filters.start"
+                  no-title
+                  :max="maxDate"
+                  @input="startMenu = false"
+                ></v-date-picker>
               </v-menu>
             </v-flex>
 
             <v-flex xs12 sm6 md6>
-              <v-menu lazy transition="scale-transition" offset-y full-width min-width="290px">
+              <v-menu
+                :close-on-content-click="false"
+                v-model="endMenu"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+              >
                 <template v-slot:activator="{ on }">
                   <v-text-field
                     v-model="filters.end"
                     :label="$t('To date')"
                     prepend-icon="event"
-                    readonly
+                    persistent-hint
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="filters.end" no-title scrollable :max="maxDate">
-                  <v-spacer></v-spacer>
-                </v-date-picker>
+                <v-date-picker v-model="filters.end" no-title :max="maxDate" @input="endMenu = false"></v-date-picker>
               </v-menu>
             </v-flex>
           </v-layout>
@@ -210,6 +224,17 @@ export default {
           return `${this.$t("Last year")}`;
         default:
           return `${this.$t("From date")}: ${this.filters.start} ${this.$t("To date")}: ${this.filters.end}`;
+      }
+    },
+    isMobile() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return true;
+        case "sm":
+        case "md":
+        case "lg":
+        case "xl":
+          return false;
       }
     }
   }

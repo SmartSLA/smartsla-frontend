@@ -25,7 +25,7 @@
 
     <v-layout row wrap class="widget">
       <v-flex xs12>
-        <open-tickets-software-widget class="widget_tickets_software_widget" />
+        <open-tickets-software-widget />
       </v-flex>
     </v-layout>
   </v-container>
@@ -52,7 +52,3 @@ export default {
   }
 };
 </script>
-
-<style lang="stylus" scoped>
-.widget_tickets_software_widget { width: 50%; margin: 0 auto; }
-</style>
