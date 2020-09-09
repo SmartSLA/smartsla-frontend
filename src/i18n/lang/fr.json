@@ -446,6 +446,8 @@
     "Technical Contact": "Contact technique",
     "Technologies": "Technologies",
     "Technology": "Technologie",
+    "The beneficiary has been changed to {beneficiary}": "Le bénéficiaire a été remplacé par {beneficiary}",
+    "The responsible has been changed to {responsible}": "L'interlocuteur a été remplacé par  {responsible}",
     "the required fields must be filled": "les champs obligatoires doivent être remplis",
     "There are no administrators": "Il n'y a pas d'administrateurs",
     "There is no service deadline for this ticket": "Pas de niveau de service pour ce ticket",
