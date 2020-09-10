@@ -1,7 +1,9 @@
 <template>
-  <v-card class="rounded-card">
+  <v-card class="rounded-card" id="open-tickets-software">
     <v-card-title primary-title class="title">
       {{ $t("chartTitleTicketsSoftware") }}
+      <v-spacer></v-spacer>
+      <image-download-btn :name="$t('chartTitleTicketsSoftware')"></image-download-btn>
     </v-card-title>
     <v-card-text v-if="requests.length">
       <open-tickets-software-chart :datasets="requests"></open-tickets-software-chart>
@@ -16,10 +18,12 @@
 import { mapGetters } from "vuex";
 // eslint-disable-next-line max-len
 import OpenTicketsSoftwareChart from "@/components/dashboard/widgets/open-tickets-software/components/openTicketsSoftwareChart.vue";
+import ImageDownloadBtn from "@/components/dashboard/base/ImageDownloadBtn.vue";
 
 export default {
   components: {
-    OpenTicketsSoftwareChart
+    OpenTicketsSoftwareChart,
+    ImageDownloadBtn
   },
   computed: {
     ...mapGetters({

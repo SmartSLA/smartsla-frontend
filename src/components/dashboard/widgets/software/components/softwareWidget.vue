@@ -1,7 +1,9 @@
 <template>
-  <v-card class="rounded-card" height="100%">
+  <v-card class="rounded-card" height="100%" id="software-widget-table">
     <v-card-title primary-title>
       <div class="title">{{ $t("titleWidgetSoftware") }}</div>
+      <v-spacer></v-spacer>
+      <image-download-btn type="table" :name="$t('chartTitleTicketsSoftware')"></image-download-btn>
     </v-card-title>
     <v-card-text>
       <div class="body">
@@ -23,6 +25,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ImageDownloadBtn from "@/components/dashboard/base/ImageDownloadBtn.vue";
 
 export default {
   data() {
@@ -36,6 +39,9 @@ export default {
         { text: this.$i18n.t("ticketCount"), value: "ticketCount" }
       ]
     };
+  },
+  components: {
+    ImageDownloadBtn
   },
   computed: {
     ...mapGetters({
