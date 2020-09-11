@@ -38,6 +38,7 @@
                   </v-flex>
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
+                      :disabled="isInEdit"
                       v-if="isInEdit"
                       :items="allUsers"
                       :label="$i18n.t('Beneficiary')"
