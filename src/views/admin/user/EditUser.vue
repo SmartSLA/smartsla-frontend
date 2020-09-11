@@ -1,9 +1,5 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="action-links" :to="{ name: isEditProfilePage ? routeNames.PROFILE : routeNames.USERS }">
-      <v-icon>chevron_left</v-icon>
-      {{ isEditProfilePage ? $t("Return to profile") : $t("Return to users list") }}
-    </router-link>
     <v-layout row wrap justify-space-between>
       <v-flex xs12>
         <v-card class="px-4 mt-4 pb-4">

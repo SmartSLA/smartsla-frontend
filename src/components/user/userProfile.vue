@@ -1,8 +1,5 @@
 <template>
   <v-container class="pt-0 px-0 mx-1 my-3">
-    <router-link :to="{ name: isProfilePage ? routeNames.HOME : routeNames.USERS }">
-      <button><v-icon>arrow_back</v-icon></button>
-    </router-link>
     <v-layout row justify-center mx-2>
       <v-flex xs12 sm12 md12 lg12 xl12>
         <v-card class="mt-4 pb-4">

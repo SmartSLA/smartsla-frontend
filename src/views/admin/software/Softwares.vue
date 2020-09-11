@@ -1,8 +1,5 @@
 <template>
   <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
-    <div class="page-title">
-      <span>{{ $t("Software list") }}</span>
-    </div>
     <v-layout row wrap>
       <v-flex xs12 sm12 md12 lg12 xl12 mb-1>
         <v-text-field
