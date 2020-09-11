@@ -39,6 +39,7 @@ import CounterCardWidget from "@/components/dashboard/widgets/counter-cards/comp
 import SoftwareWidget from "@/components/dashboard/widgets/software/components/softwareWidget.vue";
 // eslint-disable-next-line max-len
 import OpenTicketsSoftwareWidget from "@/components/dashboard/widgets/open-tickets-software/components/openTicketsSoftwareWidget.vue";
+import "chartjs-plugin-datalabels";
 
 export default {
   name: "DashboardGrid",
