@@ -619,7 +619,8 @@ export default {
     },
 
     ContractListPath() {
-      return this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+      return this.$auth.check("admin") ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
         this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
         ? { name: routeNames.CLIENTCONTRACTS }
         : { name: routeNames.CONTRACTS };

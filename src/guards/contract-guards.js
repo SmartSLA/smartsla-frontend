@@ -31,6 +31,7 @@ function userHasPermission() {
   const app = window.Application;
 
   return (
+    app.$auth.check("admin") ||
     app.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
     app.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
   );
