@@ -220,7 +220,15 @@
                         v-html="transformToCodeblock(event.comment)"
                         class="pt-0 comment-content"
                       />
-                      <v-card-text v-if="(event.target && event.target.name) || event.status" class="grey--text pt-0">
+                      <v-card-text
+                        v-if="
+                          (event.target && event.target.name) ||
+                            event.status ||
+                            (event.beneficiary && event.beneficiary.name) ||
+                            (event.responsible && event.responsible.name)
+                        "
+                        class="grey--text pt-0"
+                      >
                         <p
                           v-if="event.target && event.target.name"
                           v-html="
@@ -234,6 +242,22 @@
                           v-html="
                             $t('Ticket passed in status {status}', {
                               status: statusDisplay(event.status)
+                            })
+                          "
+                        ></p>
+                        <p
+                          v-if="event.beneficiary && event.beneficiary.name"
+                          v-html="
+                            $t('The beneficiary has been changed to {beneficiary}', {
+                              beneficiary: event.beneficiary.name
+                            })
+                          "
+                        ></p>
+                        <p
+                          v-if="event.responsible && event.responsible.name"
+                          v-html="
+                            $t('The responsible has been changed to {responsible}', {
+                              responsible: event.responsible.name
                             })
                           "
                         ></p>
