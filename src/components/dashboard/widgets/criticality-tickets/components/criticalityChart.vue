@@ -25,6 +25,18 @@ export default {
       ]
     },
     chartOptions: {
+      plugins: {
+        datalabels: {
+          display: function(context) {
+            return context.dataset.data[context.dataIndex] > 0;
+          },
+          borderRadius: 4,
+          color: "white",
+          font: {
+            weight: "bold"
+          }
+        }
+      },
       title: {
         display: true,
         position: "left",

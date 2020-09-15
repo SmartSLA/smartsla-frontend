@@ -29,6 +29,7 @@ export default {
             order: 0,
             borderColor: "rgb(255, 99, 132)",
             pointBackgroundColor: "white",
+            backgroundColor: "rgb(255, 99, 132)",
             data: [],
             fill: false
           }
@@ -36,15 +37,33 @@ export default {
       },
       //Chart.js options that controls the appearance of the chart
       options: {
+        plugins: {
+          datalabels: {
+            labels: {
+              value: {
+                font: { size: 12, weight: "bold" }
+              }
+            },
+            borderRadius: 4,
+            backgroundColor: function(context) {
+              let chartType = context.dataset.type;
+
+              return chartType === "line" ? context.dataset.backgroundColor : null;
+            },
+            display: function(context) {
+              return context.dataset.data[context.dataIndex] > 0;
+            },
+            color: function(context) {
+              let chartType = context.dataset.type;
+
+              return chartType === "bar" ? "black" : "white";
+            }
+          }
+        },
         scales: {
           yAxes: [
             {
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
-              }
+              stacked: true
             }
           ],
           xAxes: [
