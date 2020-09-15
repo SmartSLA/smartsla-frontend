@@ -6,7 +6,7 @@ function initialState() {
     pagination: {
       page: 1,
       rowsPerPage: 10,
-      rowsPerPageItems: [10, 25, 50, 100],
+      rowsPerPageItems: [10, 25, 50, 100, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       totalItems: null,
       descending: false,
       sortBy: "createdAt"
@@ -37,7 +37,7 @@ const actions = {
   fetchTickets: ({ commit, dispatch, state }) => {
     return Vue.axios
       .listTickets({
-        limit: state.pagination.rowsPerPage,
+        limit: state.pagination.rowsPerPage === -1 ? "all" : state.pagination.rowsPerPage,
         offset: (state.pagination.page - 1) * state.pagination.rowsPerPage,
         filter: state.filter
       })
