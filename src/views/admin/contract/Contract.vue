@@ -1,9 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0">
     <v-layout row wrap justify-space-between>
-      <v-flex xs7 pr-4>
+      <v-flex flex sm7 xs12>
         <v-layout row wrap justify-space-between>
-          <v-flex xs12>
+          <v-flex xs12 mb-2>
             <v-card>
               <v-card-title primary-title class="pb-0">
                 <v-layout>
@@ -440,7 +440,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs5 pt-0>
+      <v-flex flex sm5 :pl-3="!$vuetify.breakpoint.xs">
         <v-card>
           <v-card-title primary-title>
             <v-layout>
@@ -778,64 +778,6 @@ export default {
 .container {
   max-width: 100% !important;
   padding: 0px;
-}
-
-div.v-card__text:nth-child(1) {
-  padding-left: 0px;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 24px;
-}
-
-div.pt-0:nth-child(1) > div:nth-child(2) {
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.xs7 {
-  padding-left: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-div.justify-space-between:nth-child(1) {
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-left: 0px;
-  margin-bottom: 0px;
-}
-
-div.justify-space-between:nth-child(1) > div:nth-child(1) {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-left: 0px;
-  padding-bottom: 0px;
-}
-
-div.pt-0:nth-child(2) {
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-}
-
-div.xs12:nth-child(2) {
-  padding-top: 24px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-  padding-bottom: 0px !important;
-}
-
-div.layout:nth-child(3) {
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-div.xs12:nth-child(3) {
-  padding-top: 24px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-  padding-bottom: 0px !important;
 }
 
 .contractual-commitments {
