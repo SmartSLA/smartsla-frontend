@@ -336,19 +336,21 @@
                       <v-flex xs12 md6>
                         <v-select
                           v-if="!isPrivateTab"
-                          :items="[allowedStatusList]"
                           v-model="newStatus"
-                          :disabled="!allowedStatusList || isSubmitting"
+                          :items="statusItems"
+                          :disabled="isTicketClosed || isSubmitting"
                           :label="$t('Status')"
+                          clearable
                         >
                           <template slot="item" slot-scope="{ item }">
-                            {{ $t(capitalize(item)) }}
+                            {{ $t(capitalize(item.next)) }}
                           </template>
                           <template slot="selection" slot-scope="{ item }">
-                            {{ $t(capitalize(item)) }}
+                            {{ $t(capitalize(item.next)) }}
                           </template>
                         </v-select>
                       </v-flex>
+
                       <v-flex v-if="!isPrivateTab" xs12 md6>
                         <user-list-assignment
                           :responsible.sync="newResponsible"
@@ -440,7 +442,7 @@ export default {
       commentCreationAttachments: [],
       selectedEditor: "wysiwyg",
       isSubmitting: false,
-      newStatus: "",
+      newStatus: null,
       newResponsible: {},
       comment: "",
       UPDATE_COMMENT: UPDATE_COMMENT,
@@ -499,11 +501,19 @@ export default {
       return this.request.survey && !!Object.values(this.request.survey).length;
     },
 
-    allowedStatusList() {
+    isTicketClosed() {
+      return this.request.status.toLowerCase() === "closed";
+    },
+
+    statusItems() {
       const currentStatus = this.request.status.toLowerCase();
-      return this.request.type === REQUEST_TYPE.ANOMALY
-        ? ANOMALY_NEXT_STATUS[currentStatus]
-        : NEXT_STATUS[currentStatus];
+      const items = this.request.type === REQUEST_TYPE.ANOMALY ? ANOMALY_NEXT_STATUS : NEXT_STATUS;
+
+      return Object.entries(items).map(([current, next]) => ({
+        current,
+        next,
+        disabled: currentStatus !== current
+      }));
     },
 
     editorToolbar() {
@@ -576,7 +586,7 @@ export default {
           if (!this.isPrivateTab) {
             event = {
               ...event,
-              status: this.newStatus,
+              status: this.newStatus && this.newStatus.next,
               target: this.newResponsible
             };
           }
@@ -632,7 +642,7 @@ export default {
     },
 
     resetComment() {
-      this.newStatus = "";
+      this.newStatus = null;
       this.comment = "";
       this.newResponsible = {};
       this.commentCreationAttachments = [];
