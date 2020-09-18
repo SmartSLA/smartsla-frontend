@@ -33,7 +33,7 @@ export default {
         }
         const { entity, key } = this.options.rolesVar;
 
-        return utils.compare(role, this.watch.data[entity][key]);
+        return this.watch.data[entity] ? utils.compare(role, this.watch.data[entity][key]) : false;
       }
 
       return true;

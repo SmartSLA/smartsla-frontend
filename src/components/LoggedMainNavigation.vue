@@ -151,7 +151,6 @@ export default {
           text: this.$i18n.t("Contracts"),
           icon: "assignment",
           show:
-            this.$auth.check("admin") ||
             this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
             this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
         },
