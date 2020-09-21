@@ -1,39 +1,31 @@
 <template>
   <v-layout row wrap v-if="datasets">
-    <v-flex xs6 sm6 md3>
-      <counter-card
-        color-card="primary"
-        icon="mdi-bookmark-outline"
-        :title="$t('openedTicketsLabel')"
-        :value="datasets.openTickets"
-      />
+    <v-flex xs4 sm4 md2>
+      <counter-card color-card="total" :title="$t('totalTickets')" :value="datasets.totalTickets" />
     </v-flex>
 
-    <v-flex xs6 sm6 md3>
-      <counter-card
-        color-card="info"
-        icon="mdi-bookmark-off"
-        :title="$t('closedTicketsLabel')"
-        :value="datasets.closedTickets"
-      />
+    <v-flex xs4 sm4 md2>
+      <counter-card color-card="primary" :title="$t('openedTicketsLabel')" :value="datasets.openTickets" />
     </v-flex>
 
-    <v-flex xs6 sm6 md3>
+    <v-flex xs4 sm4 md2>
+      <counter-card color-card="info" :title="$t('closedTicketsLabel')" :value="datasets.closedTickets" />
+    </v-flex>
+
+    <v-flex xs4 sm4 md2>
       <counter-card
         color-card="secondary"
-        icon="mdi-progress-clock"
         :title="$t('supportAssignedTicketsLabel')"
         :value="datasets.supportAssignedTickets"
       />
     </v-flex>
 
-    <v-flex xs6 sm6 md3>
-      <counter-card
-        color-card="critical"
-        icon="mdi-alert"
-        :title="$t('criticalTicketsLabel')"
-        :value="datasets.criticalTickets"
-      />
+    <v-flex xs4 sm4 md2>
+      <counter-card color-card="not-critical" :title="$t('notCriticalTickets')" :value="datasets.notCriticalTickets" />
+    </v-flex>
+
+    <v-flex xs4 sm4 md2>
+      <counter-card color-card="critical" :title="$t('criticalTicketsLabel')" :value="datasets.criticalTickets" />
     </v-flex>
   </v-layout>
 </template>
@@ -46,17 +38,6 @@ export default {
   computed: {
     datasets() {
       return this.$store.getters["counterCards/getData"][0];
-    },
-    isMobile() {
-      switch (this.$vuetify.breakpoint.name) {
-        case "xs":
-          return true;
-        case "sm":
-        case "md":
-        case "lg":
-        case "xl":
-          return false;
-      }
     }
   },
   created() {

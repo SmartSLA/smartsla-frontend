@@ -1,12 +1,9 @@
 <template>
   <v-card flat tile class="white--text" :class="cardClass">
-    <v-card-text>
+    <v-card-text class="pl-2">
       <div class="mb-2">
         <span class="text-truncate d-block font-weight-medium">
           {{ title }}
-          <v-icon dark right v-show="$vuetify.breakpoint.width >= '768'">
-            {{ icon }}
-          </v-icon>
         </span>
       </div>
       <div class="display-1 mb-2" v-if="$vuetify.breakpoint.width >= '768'">{{ value }}</div>
@@ -19,10 +16,6 @@
 export default {
   name: "CounterCard",
   props: {
-    icon: {
-      type: String,
-      required: true
-    },
     title: {
       type: String,
       required: true
@@ -50,6 +43,8 @@ $primary-color = #1f1498;
 $secondary-color = #2982cc;
 $info-color = #f6960b;
 $critical-color = #d93737;
+$total-color = #00b4cc;
+$not-critical-color = #4caf50;
 
 .card-primary
   background: linear-gradient(45deg, #321fdb, $primary-color);
@@ -64,6 +59,14 @@ $critical-color = #d93737;
   border-color: $info-color;
 
 .card-critical
-  background: linear-gradient(45deg, #e55353, $critical-color);
+  background: linear-gradient(45deg, #f4857f, $critical-color);
   border-color: $critical-color;
+
+.card-total
+  background: linear-gradient(45deg, #6ACCDB, $total-color);
+  border-color: $total-color;
+
+.card-not-critical
+  background: linear-gradient(45deg, #abdc28, $not-critical-color);
+  border-color: $not-critical-color;
 </style>

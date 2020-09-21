@@ -2,5 +2,7 @@
     "closedTicketsLabel": "Closed tickets",
     "supportAssignedTicketsLabel": "Ticked assigned to support",
     "criticalTicketsLabel": "Critical tickets",
-    "openedTicketsLabel": "Opened tickets"
+    "notCriticalTickets": "Not critical tickets",
+    "openedTicketsLabel": "Opened tickets",
+    "totalTickets": "Total of tickets"
 }
