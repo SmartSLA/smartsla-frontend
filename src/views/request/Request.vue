@@ -416,7 +416,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
-import { flatten, capitalize } from "lodash";
+import { flatten, capitalize, debounce } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import AttachmentsCreation from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
@@ -543,6 +543,11 @@ export default {
       return this.getUserLanguage || LOCALE;
     }
   },
+  watch: {
+    comment: debounce(function() {
+      this.$store.dispatch("ticket/saveDraft", { id: this.request._id, ticket: { comment: this.comment } });
+    }, 500)
+  },
   mounted() {
     setTimeout(() => {
       if (this.$route.hash) {
@@ -647,6 +652,8 @@ export default {
       this.newResponsible = {};
       this.commentCreationAttachments = [];
       this.commentCreationAttachments.length = 0;
+
+      this.$store.dispatch("ticket/deleteDraft", this.request._id);
     },
 
     capitalize(text) {
@@ -675,6 +682,14 @@ export default {
       this.$store.dispatch("ticket/fetchTicketById", this.$route.params.id);
     },
 
+    initCommentAutoSave() {
+      this.$store.dispatch("ticket/fetchDraft", this.$route.params.id).then(draftTicket => {
+        if (draftTicket && draftTicket.comment) {
+          this.comment = draftTicket.comment;
+        }
+      });
+    },
+
     copyEventLink(eventId) {
       const element = `event-${eventId}`;
       const baseUrl = `${window.location.origin}${this.$route.path}`;
@@ -695,6 +710,7 @@ export default {
   created() {
     this.$store.dispatch("contract/fetchContracts");
     this.fetchTicket();
+    this.initCommentAutoSave();
   }
 };
 </script>
