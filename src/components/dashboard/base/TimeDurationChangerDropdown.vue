@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-flex xs10 sm6 md6>
+    <v-flex xs8 sm8 md8>
       <v-menu transition="slide-y-transition" :nudge-width="100" offset-x>
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" fab flat small>
@@ -69,7 +69,7 @@
         </v-card>
       </v-menu>
     </v-flex>
-    <v-flex xs2 sm3 align-self-end>
+    <v-flex xs4 sm4 md4 align-self-end>
       <v-menu transition="slide-y-transition" :nudge-width="100" offset-x>
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" fab flat small>
@@ -80,7 +80,7 @@
               <span>{{ $t("Group by") }}</span>
             </v-tooltip>
           </v-btn>
-          <span v-if="!isMobile">{{ $t(groupBy) }}</span>
+          <span>{{ $t(groupBy) }}</span>
         </template>
 
         <v-card>

@@ -2,12 +2,12 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-text>
+        <v-card-text class="pa-0">
           <v-layout v-bind:column="isMobile" fill-height>
-            <v-flex xs12 sm4 md4 lg4>
+            <v-flex xs12 sm6 md5 lg5>
               <time-duration-changer-dropdown />
             </v-flex>
-            <v-flex xs12 sm4 md6 lg4>
+            <v-flex xs12 sm4 md5 lg5>
               <v-select
                 flat
                 v-model="selectedContracts"
@@ -49,7 +49,7 @@
                 </template>
               </v-select>
             </v-flex>
-            <v-flex xs12 sm4 md3 align-self-end>
+            <v-flex xs12 sm2 md2 lg2 :class="isMobile ? 'align-self-end' : 'align-self-center'">
               <v-btn small color="info" @click="getDashboardData()">
                 {{ $t("Apply") }}
               </v-btn>
