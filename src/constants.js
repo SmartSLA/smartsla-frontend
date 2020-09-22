@@ -78,7 +78,7 @@ export const EXPERT_ROLE = {
   EXPERT: "expert"
 };
 
-export const BENEFICIARY_ROLES = ["viewer", "customer", "operational manager", "contract manager"];
+export const BENEFICIARY_ROLES = ["viewer", "customer", "operational manager"];
 
 export const BENEFICIARY_ROLE_LIST = {
   VIEWER: "viewer",
