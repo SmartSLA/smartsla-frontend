@@ -109,11 +109,24 @@
               <v-flex xs8>
                 <v-text-field v-model="user.jobTitle"></v-text-field>
               </v-flex>
-              <v-flex xs1></v-flex>
-              <v-flex xs3 class="pt-4">
-                <strong class="required-label">{{ $t("Role") }} :</strong>
+
+              <v-flex xs1 v-if="user.type !== 'expert'"></v-flex>
+              <v-flex xs3 class="pt-4" v-if="user.type !== 'expert'">
+                <strong>{{ $t("Responsible of the contract") }} :</strong>
               </v-flex>
-              <v-flex xs8>
+              <v-flex xs8 v-if="user.type !== 'expert'">
+                <v-checkbox
+                  :label="$t('contract manager')"
+                  v-model="isContractManager"
+                  :value="user.role === 'contract manager'"
+                ></v-checkbox>
+              </v-flex>
+
+              <v-flex xs1 v-if="user.type === 'expert'"></v-flex>
+              <v-flex xs3 class="pt-4" v-if="user.type === 'expert'">
+                <strong>{{ $t("Roles") }} :</strong>
+              </v-flex>
+              <v-flex xs8 v-if="user.type === 'expert'">
                 <v-radio-group
                   v-model="user.role"
                   row
@@ -122,19 +135,13 @@
                   :rules="[() => (user.role && user.role.length > 0) || $i18n.t('Required field')]"
                 >
                   <v-radio
-                    v-for="role in roles"
+                    v-for="role in rolesExpert"
                     :key="role"
                     :label="$t(role)"
                     :value="role"
                     @change="resetSelectedContracts"
                   ></v-radio>
                 </v-radio-group>
-                <label class="v-label theme--light" v-if="user.role === 'viewer'">{{
-                  $t("Viewer role can only see tickets")
-                }}</label>
-                <label class="v-label theme--light" v-if="user.role === 'customer'">{{
-                  $t("User role can create and comment tickets")
-                }}</label>
                 <label class="v-label theme--light" v-if="user.role === 'expert'">{{
                   $t("Expert role can see all tickets")
                 }}</label>
@@ -144,7 +151,7 @@
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4" v-if="user.type != 'expert'">
-                <strong>{{ $t("Client") }} :</strong>
+                <strong class="required-label">{{ $t("Client") }} :</strong>
               </v-flex>
               <v-flex xs8 v-if="user.type != 'expert'">
                 <v-select
@@ -153,13 +160,14 @@
                   item-text="name"
                   v-model="user.client"
                   :disabled="!isAdmin"
+                  :rules="[() => !!user.client || $i18n.t('Required field')]"
                 ></v-select>
               </v-flex>
               <v-flex xs1 v-if="user.type != 'expert'"></v-flex>
-              <v-flex xs3 class="pt-4 hidden-xs-only" v-if="canHaveContracts">
+              <v-flex xs3 class="pt-4 hidden-xs-only" v-if="showContracts">
                 <strong>{{ $t("Contracts") }} :</strong>
               </v-flex>
-              <v-flex xs12 sm8 md8 lg8 v-if="canHaveContracts">
+              <v-flex xs12 sm8 md8 lg8 v-if="showContracts">
                 <v-card>
                   <v-list subheader two-line :disabled="!isAdmin">
                     <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id">
@@ -234,6 +242,7 @@ export default {
       items: [],
       search: null,
       valid: true,
+      isContractManager: false,
       user: {
         type: "",
         name: "",
@@ -267,6 +276,13 @@ export default {
         .catch(console.log)
         .finally(() => (this.isLoading = false));
     },
+    isContractManager(val) {
+      if (val) {
+        this.user.role = BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER;
+      } else {
+        this.user.role = BENEFICIARY_ROLE_LIST.VIEWER;
+      }
+    },
     member: "setUser",
     "user.client": "resetUserContracts"
   },
@@ -279,8 +295,8 @@ export default {
     isAdmin() {
       return this.$auth.check(USER_TYPE.ADMIN);
     },
-    roles() {
-      return this.user.type === USER_TYPE.BENEFICIARY ? USER_ROLES.beneficiary : USER_ROLES.expert;
+    rolesExpert() {
+      return USER_ROLES.expert;
     },
     isEdit() {
       return !!this.$route.params.id;
@@ -297,10 +313,10 @@ export default {
         });
       return contracts;
     },
-    canHaveContracts() {
+    showContracts() {
       return (
-        this.user.type !== USER_TYPE.EXPERT &&
-        this.user.client &&
+        this.user.type === USER_TYPE.BENEFICIARY &&
+        !!this.user.client &&
         this.user.role !== BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER
       );
     },
@@ -350,7 +366,7 @@ export default {
       };
     },
     isContractUser(contract_id) {
-      const userContracts = this.user.contracts.map(({ contract }) => contract);
+      const userContracts = this.user.contracts && this.user.contracts.map(({ contract }) => contract);
       return userContracts.includes(contract_id);
     },
     getRoleByContractId(id) {
@@ -362,16 +378,16 @@ export default {
       this.user.contracts = [];
     },
     updateUser() {
-      const contracts = this.filteredContractsByClient
+      let route = {};
+      let contracts = this.filteredContractsByClient
         .filter(({ selected }) => selected === true)
         .map(({ contract_id, role }) => ({ contract_id, role }));
 
-      this.user = {
-        ...this.user,
-        contracts
-      };
-
-      let route = {};
+      if (this.user.role === BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) {
+        this.user.contracts = [];
+      } else {
+        this.user = { ...this.user, contracts };
+      }
 
       this.$store
         .dispatch("users/updateUser", {
@@ -411,7 +427,11 @@ export default {
       }
     },
     createUser() {
-      if (this.user.type === USER_TYPE.EXPERT) {
+      if (this.isContractManager && this.user.type === USER_TYPE.BENEFICIARY) {
+        this.user.role = BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER;
+      }
+
+      if (this.user.type === USER_TYPE.EXPERT || this.user.role === BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) {
         this.user.client = "";
         this.user.contracts = [];
       } else {
