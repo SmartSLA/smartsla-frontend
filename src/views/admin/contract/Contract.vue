@@ -203,7 +203,9 @@
                         >{{ $t(props.item.critical) }}</v-chip
                       >
                     </td>
-                    <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
+                    <td class="text-xs-center">
+                      {{ props.item.technicalReferent && props.item.technicalReferent.name }}
+                    </td>
                   </template>
                 </v-data-table>
               </v-card-text>
