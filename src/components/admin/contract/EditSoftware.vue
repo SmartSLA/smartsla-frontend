@@ -124,7 +124,9 @@ export default {
     confirmDeleteSoftware() {
       const filteredList = this.contract.software.filter(
         softwareItem =>
-          this.selectedItem.version !== softwareItem.version && this.selectedItem.name !== softwareItem.name
+          this.selectedItem.version !== softwareItem.version ||
+          this.selectedItem.name !== softwareItem.software.name ||
+          this.selectedItem.os !== softwareItem.os
       );
 
       this.$set(this.contract, "software", filteredList);
