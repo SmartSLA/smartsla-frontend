@@ -136,9 +136,9 @@ export default {
     },
 
     getContractPath(contractId) {
-      return this.$auth.check("admin") ||
-        this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
-        this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
+      return (this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)) &&
+        !this.$auth.check("admin")
         ? { name: routeNames.CLIENTCONTRACT, params: { id: contractId } }
         : { name: routeNames.CONTRACT, params: { id: contractId } };
     }
