@@ -78,7 +78,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { routeNames } from "@/router";
-import { BENEFICIARY_ROLE_LIST } from "@/constants";
+import { BENEFICIARY_ROLE_LIST, EXPERT_ROLE } from "@/constants";
 
 export default {
   name: "logged-main-navigation",
@@ -151,8 +151,11 @@ export default {
           text: this.$i18n.t("Contracts"),
           icon: "assignment",
           show:
-            this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
-            this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
+            !this.$auth.check(EXPERT_ROLE.EXPERT) &&
+            !this.$auth.check(EXPERT_ROLE.ADMIN) &&
+            !this.$auth.check(BENEFICIARY_ROLE_LIST.VIEWER) &&
+            (this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER) ||
+              this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER))
         },
         {
           name: routeNames.ADMINHOME,
