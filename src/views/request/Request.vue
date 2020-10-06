@@ -24,18 +24,40 @@
               </v-card-title>
             </v-flex>
             <v-flex xs4 md1 sm1 xl1 lg1 class="pt-0 pb-0">
-              <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn
-                  :disabled="!isAdmin"
-                  color="primary"
-                  fab
-                  small
-                  dark
-                  :to="{ name: 'EditRequest', params: { id: request._id } }"
-                >
-                  <v-icon>edit</v-icon>
-                </v-btn>
+              <div class="text-xs-right grey--text pt-3 justify-end" v-if="isAdmin">
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon v-on="on">
+                      <v-icon color="grey">mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-tile :to="{ name: 'EditRequest', params: { id: request._id } }">
+                      <v-list-tile-title>{{ $t("Edit contract") }}</v-list-tile-title>
+                    </v-list-tile>
+                    <v-list-tile @click="dialogArchive = true" :disabled="request.archived || !isTicketClosed">
+                      <v-list-tile-title>
+                        {{ $t("Archive the ticket") }}
+                      </v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
               </div>
+              <v-dialog v-model="dialogArchive" persistent max-width="350">
+                <v-card>
+                  <v-card-title class="body-2">
+                    {{ $t("You are about to archive ticket") }}: {{ request._id }}
+                  </v-card-title>
+                  <v-card-text>
+                    <span class="body-2">{{ $t("Are you sure?") }}</span>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="grey darken-1" flat @click="dialogArchive = false">{{ $t("Close") }}</v-btn>
+                    <v-btn color="error darken-1" flat @click="archiveTicket">{{ $t("Archive") }}</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-flex>
           </v-layout>
           <v-divider class="pb-2" />
@@ -447,7 +469,8 @@ export default {
       comment: "",
       UPDATE_COMMENT: UPDATE_COMMENT,
       isPrivateTab: null,
-      hideRequestNavigationDrawer: false
+      hideRequestNavigationDrawer: false,
+      dialogArchive: false
     };
   },
   components: {
@@ -572,6 +595,30 @@ export default {
       if (element && element[0] && element[0].$el) {
         this.$scrollTo(element[0].$el, { offset: -80 });
       }
+    },
+
+    archiveTicket() {
+      this.dialogArchive = false;
+
+      const ticket = { ...this.request, archived: true };
+
+      this.$store
+        .dispatch("ticket/updateTicket", {
+          ticketId: ticket._id,
+          ticket
+        })
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Ticket archived"),
+            color: "success"
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to archive the ticket"),
+            color: "error"
+          });
+        });
     },
 
     addEvent(isSurvey = false) {
