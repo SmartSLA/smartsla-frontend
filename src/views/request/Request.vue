@@ -33,7 +33,7 @@
                   </template>
                   <v-list>
                     <v-list-tile :to="{ name: 'EditRequest', params: { id: request._id } }">
-                      <v-list-tile-title>{{ $t("Edit contract") }}</v-list-tile-title>
+                      <v-list-tile-title>{{ $t("Edit request") }}</v-list-tile-title>
                     </v-list-tile>
                     <v-list-tile @click="dialogArchive = true" :disabled="request.archived || !isTicketClosed">
                       <v-list-tile-title>
