@@ -15,8 +15,13 @@
         ></FilterSearchInput>
         <v-dialog v-model="dialog" width="700" overflow="false" persistent>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="hideFilter = true" :class="{ 'v-btn--active': hideFilter == true }">
-              <v-icon>
+            <v-btn
+              icon
+              v-on="on"
+              @click="hideFilter = true"
+              :class="{ 'v-btn--active': hideFilter == true || customFilters.length > 0 }"
+            >
+              <v-icon :color="colorFiltersIcon">
                 filter_list
               </v-icon>
             </v-btn>
@@ -196,6 +201,10 @@ export default {
     }
   },
   computed: {
+    colorFiltersIcon() {
+      return this.customFilters.length ? "primary" : "";
+    },
+
     canUpdateFilter() {
       if (this.storedSelectionsFilter && this.storedSelectionsFilter.items) {
         if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {

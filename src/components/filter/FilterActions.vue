@@ -61,7 +61,13 @@
       </template>
 
       <v-card class="px-0">
-        <v-card-title class="headline grey lighten-3" primary-title>{{ $i18n.t("Save filter") }}</v-card-title>
+        <v-card-title class="headline grey lighten-3" primary-title>
+          {{ $i18n.t("Save filter") }}
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
@@ -73,7 +79,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("Save") }}</v-btn>
+          <v-btn color="blue darken-1" flat @click="saveCurrentFilter">{{ $t("save") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
