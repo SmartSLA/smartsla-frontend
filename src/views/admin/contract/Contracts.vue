@@ -6,7 +6,7 @@
       @search-updated="handleSearchUpdate"
       @client-updated="handleClientUpdate"
       @status-updated="handleStatusUpdate"
-      v-if="isAdmin"
+      v-if="CanListContracts"
     >
     </ContractListFilter>
     <v-data-table
@@ -105,15 +105,24 @@ export default {
       return filtered;
     },
 
-    isAdmin() {
-      return this.$auth.check(USER_TYPE.ADMIN);
+    CanListContracts() {
+      return (
+        this.$auth.check(USER_TYPE.ADMIN) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
+      );
     },
     userLanguage() {
       return this.getUserLanguage || LOCALE;
     }
   },
   beforeCreate() {
-    if (!this.$auth.ready() || !this.$auth.check("admin")) {
+    if (
+      !this.$auth.ready() &&
+      (!this.$auth.check("admin") ||
+        !this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+        !this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER))
+    ) {
       this.$router.push("/403");
     }
   },
