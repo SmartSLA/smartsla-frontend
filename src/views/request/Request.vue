@@ -216,7 +216,7 @@
                                   :href="`#event-${event._id}`"
                                   @click.stop="scrollToEvent(event)"
                                 >
-                                  {{ event.timestamps.createdAt | relativeTime(userLanguage) }}
+                                  {{ createdAt(event.timestamps.createdAt) }}
                                 </a>
                               </template>
                               <span>{{ event.timestamps.createdAt | formatDateFilter("llll", userLanguage) }}</span>
@@ -454,6 +454,7 @@ import TicketStatus from "@/components/request/TicketStatus";
 import RequestNavigationDrawer from "@/components/request/RequestNavigationDrawer";
 import { LOCALE } from "@/i18n/constants";
 import userAvatar from "@/components/user/userAvatar";
+import moment from "moment-timezone";
 
 // const Codeblock = Quill.import("formats/code-block");
 // Codeblock.tagName = "pre";
@@ -752,6 +753,12 @@ export default {
 
     setRequestNavigationDrawerStatus() {
       this.hideRequestNavigationDrawer = false;
+    },
+
+    createdAt(date) {
+      if (moment().diff(date, "months", true) > 1)
+        return this.$options.filters.formatDateFilter(date, "llll", this.userLanguage);
+      return this.$options.filters.relativeTime(date, this.userLanguage);
     }
   },
   created() {
