@@ -24,7 +24,7 @@
             $t(props.item.critical)
           }}</v-chip>
         </td>
-        <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
+        <td class="text-xs-center">{{ props.item.technicalReferent && props.item.technicalReferent.name }}</td>
         <td class="text-xs-center">
           <v-btn color="primary" flat small @click="editSoftware(props)">
             <v-icon>edit</v-icon>
@@ -83,7 +83,7 @@ export default {
       newSoftware: {
         software: {},
         critical: "standard",
-        technicalReferent: "",
+        technicalReferent: {},
         os: "",
         version: "",
         SupportDate: {
