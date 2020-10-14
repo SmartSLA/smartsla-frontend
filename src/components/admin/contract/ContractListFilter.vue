@@ -38,7 +38,7 @@
       </v-flex>
     </v-layout>
     <v-layout justify-end>
-      <v-btn flat :to="{ name: 'NewContract' }">
+      <v-btn flat :to="{ name: 'NewContract' }" v-if="$auth.check('admin')">
         <v-icon class="mr-2">add_circle</v-icon>
         {{ $t("Add contract") }}
       </v-btn>
