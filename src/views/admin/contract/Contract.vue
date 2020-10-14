@@ -177,11 +177,13 @@
                   <template v-slot:items="props">
                     <td class="text-xs-center">
                       <router-link
+                        v-if="isAdmin"
                         :to="{ name: 'Software', params: { id: props.item.software._id } }"
                         class="blue-color"
                       >
                         {{ props.item.software.name }}
                       </router-link>
+                      <span v-else>{{ props.item.software.name }}</span>
                       <expired-label :expirationDate="props.item.SupportDate.end"></expired-label>
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
