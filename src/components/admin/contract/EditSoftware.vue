@@ -49,6 +49,7 @@
           :isModalOpen="formDialog"
           @submit="submit"
           @closeFormModal="closeFormModal"
+          :islinInfoSecEnabled="contract.features && contract.features.linInfoSec"
         ></form-software>
       </v-dialog>
 

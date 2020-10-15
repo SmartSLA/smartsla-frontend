@@ -105,7 +105,7 @@
               :rules="[() => software.os.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3 v-if="configuration.isLinInfoSecEnabled">
+          <v-flex xs3 v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
             {{ $t("Designation CPE") }}
             <v-tooltip max-width="300px" v-model="showCpeDescription" right>
               <template v-slot:activator="{}">
@@ -121,7 +121,7 @@
               </span>
             </v-tooltip>
           </v-flex>
-          <v-flex xs9 v-if="configuration.isLinInfoSecEnabled">
+          <v-flex xs9 v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
             <v-combobox multiple chips v-model="software.lininfosecConfiguration"></v-combobox>
           </v-flex>
           <v-flex xs3>{{ $t("Referent") }}</v-flex>
@@ -154,7 +154,8 @@ export default {
   props: {
     software: Object,
     isModalOpen: Boolean,
-    editing: Boolean
+    editing: Boolean,
+    islinInfoSecEnabled: Boolean
   },
   data: () => ({
     startDateModel: "",
@@ -184,6 +185,10 @@ export default {
 
     referents() {
       return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
+    },
+
+    islinInfoSecEnabledForContract() {
+      return this.islinInfoSecEnabled;
     }
   },
   methods: {
@@ -192,6 +197,13 @@ export default {
     },
     submit() {
       if (this.$refs.form.validate()) {
+        // Delete software.technicalReferent to prevent mongoose from storing an empty object
+        if (
+          this.software.technicalReferent &&
+          (Object.keys(this.software.technicalReferent).length === 0 &&
+            this.software.technicalReferent.constructor === Object)
+        )
+          delete this.software.technicalReferent;
         this.$emit("submit", this.software);
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
