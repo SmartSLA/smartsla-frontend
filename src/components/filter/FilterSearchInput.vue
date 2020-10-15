@@ -6,7 +6,7 @@
           v-model="search"
           :prepend-inner-icon="prependInnerIcon"
           @click:prepend-inner="hideTextField"
-          :placeholder="$t('Search')"
+          :placeholder="$t('Quick search')"
           clearable
           solo
           class="mt-2"
