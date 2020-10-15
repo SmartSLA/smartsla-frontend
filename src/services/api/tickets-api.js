@@ -36,5 +36,9 @@ export default {
 
   exportTickets(exportType = "csv") {
     return this.get("/ticketing/api/tickets", { params: { export: exportType } });
+  },
+
+  searchTickets(query) {
+    return this.get("/ticketing/api/tickets/search", { params: { q: query } });
   }
 };
