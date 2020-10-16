@@ -483,24 +483,28 @@
             <template v-if="contractManagers.length">
               <v-subheader>
                 {{ $t("contract manager") }}
+                <v-chip small>{{ contractManagers.length }}</v-chip>
               </v-subheader>
               <users-list :users="contractManagers" />
             </template>
             <template v-if="operationalManagers.length">
               <v-subheader>
                 {{ $t("operational manager") }}
+                <v-chip small>{{ operationalManagers.length }}</v-chip>
               </v-subheader>
               <users-list :users="operationalManagers" />
             </template>
             <template v-if="customers.length">
               <v-subheader>
                 {{ $t("Beneficiaries") }}
+                <v-chip small>{{ customers.length }}</v-chip>
               </v-subheader>
               <users-list :users="customers" />
             </template>
             <template v-if="viewers.length">
               <v-subheader>
                 {{ $t("Viewers") }}
+                <v-chip small> {{ viewers.length }} </v-chip>
               </v-subheader>
               <users-list :users="viewers" />
             </template>
