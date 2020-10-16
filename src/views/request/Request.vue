@@ -19,7 +19,10 @@
             <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">#{{ request._id }} - {{ request.title }}</h3>
+                  <h3 class="headline mb-0">
+                    #{{ request._id }} - {{ request.title }}
+                    <small v-if="request.archived" class="archived"> {{ $t("Archived") }} </small>
+                  </h3>
                 </div>
               </v-card-title>
             </v-flex>
@@ -35,9 +38,10 @@
                     <v-list-tile :to="{ name: 'EditRequest', params: { id: request._id } }">
                       <v-list-tile-title>{{ $t("Edit request") }}</v-list-tile-title>
                     </v-list-tile>
-                    <v-list-tile @click="dialogArchive = true" :disabled="request.archived || !isTicketClosed">
+                    <v-list-tile @click="dialogArchive = true" :disabled="!isTicketClosed">
                       <v-list-tile-title>
-                        {{ $t("Archive the ticket") }}
+                        <span v-if="!request.archived">{{ $t("Archive the ticket") }}</span>
+                        <span v-else>{{ $t("Unarchive the ticket") }}</span>
                       </v-list-tile-title>
                     </v-list-tile>
                   </v-list>
@@ -46,7 +50,9 @@
               <v-dialog v-model="dialogArchive" persistent max-width="350">
                 <v-card>
                   <v-card-title class="body-2">
-                    {{ $t("You are about to archive ticket") }}: {{ request._id }}
+                    <span v-if="!request.archived">{{ $t("You are about to archive ticket") }}</span>
+                    <span v-else>{{ $t("You are about to unarchive the ticket") }}</span>
+                    : {{ request._id }}
                   </v-card-title>
                   <v-card-text>
                     <span class="body-2">{{ $t("Are you sure?") }}</span>
@@ -54,7 +60,10 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey darken-1" flat @click="dialogArchive = false">{{ $t("Close") }}</v-btn>
-                    <v-btn color="error darken-1" flat @click="archiveTicket">{{ $t("Archive") }}</v-btn>
+                    <v-btn color="error darken-1" flat @click="archiveTicket">
+                      <span v-if="!request.archived">{{ $t("Archive") }}</span>
+                      <span v-else>{{ $t("Unarchive") }}</span>
+                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -601,7 +610,10 @@ export default {
     archiveTicket() {
       this.dialogArchive = false;
 
-      const ticket = { ...this.request, archived: true };
+      const ticket = {
+        ...this.request,
+        archived: this.request.archived ? false : true
+      };
 
       this.$store
         .dispatch("ticket/updateTicket", {
@@ -803,6 +815,13 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
+
+.archived {
+  border: 1px solid;
+  padding: 2px;
+  font-weight: 600;
+  color: #d32f2f;
+}
 
 .center-avatar {
   align-items: center;
