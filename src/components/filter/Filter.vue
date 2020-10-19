@@ -49,7 +49,7 @@
                     <v-layout align-center justify-end>
                       <v-overflow-btn
                         v-if="keyValueFilter"
-                        :items="values"
+                        :items="getSortedValues"
                         :label="$t('Values')"
                         v-model="valuesFilter"
                         flat
@@ -57,16 +57,18 @@
                         item-value="key"
                         hide-details
                         hide-selected
+                        editable
                       ></v-overflow-btn>
                       <v-overflow-btn
                         v-else
-                        :items="values"
+                        :items="getSortedValues"
                         :label="$t('Values')"
                         :no-data-text="$t('No data available')"
                         v-model="valuesFilter"
                         flat
                         hide-details
                         hide-selected
+                        editable
                       ></v-overflow-btn>
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
@@ -107,6 +109,7 @@ import FilterActions from "@/components/filter/FilterActions";
 import FilterSearchInput from "@/components/filter/FilterSearchInput";
 import FilterLoader from "@/components/filter/FilterLoader";
 import FilterCategories from "@/components/filter/FilterCategories";
+import { SORT_FILTERS_KEYS } from "@/constants.js";
 
 export default {
   name: "dataTableFilter",
@@ -223,6 +226,13 @@ export default {
 
     sizeFilterDevice() {
       return this.$vuetify.breakpoint.width >= 960 ? true : false;
+    },
+
+    getSortedValues() {
+      if (SORT_FILTERS_KEYS.includes(this.categoriesFilter)) {
+        return ([...this.values] || []).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+      }
+      return this.values;
     }
   },
   watch: {
