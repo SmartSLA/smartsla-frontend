@@ -397,6 +397,12 @@ export default {
         this.ticket.meetingId = this.meetingId;
       }
 
+      if (
+        this.ticket.software &&
+        (!this.ticket.software.technicalReferent || typeof this.ticket.software.technicalReferent === String)
+      )
+        delete this.ticket.software.technicalReferent;
+
       const ticket = Object.assign({}, this.ticket);
 
       ticket.contract = ticket.contract._id;
