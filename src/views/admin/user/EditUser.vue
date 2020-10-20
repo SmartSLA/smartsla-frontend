@@ -35,7 +35,7 @@
               </v-flex>
               <v-flex xs1 v-if="!isEdit"></v-flex>
               <v-flex xs3 class="pt-4" v-if="!isEdit">
-                <span class="title required-label">{{ $t("Search users") }}</span>
+                <strong class="required-label">{{ $t("Search users") }} :</strong>
               </v-flex>
               <v-flex xs8 v-if="!isEdit">
                 <v-autocomplete
