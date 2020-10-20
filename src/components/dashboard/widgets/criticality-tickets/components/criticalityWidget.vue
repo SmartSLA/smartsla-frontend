@@ -1,7 +1,9 @@
 <template>
-  <v-card class="rounded-card" height="100%">
+  <v-card class="rounded-card" height="100%" id="criticality">
     <v-card-title primary-title class="title">
       {{ $t("chartTitle") }}
+      <v-spacer></v-spacer>
+      <image-download-btn :name="$t('chartTitle')"></image-download-btn>
     </v-card-title>
     <v-card-text v-if="requests.length">
       <criticality-chart :datasets="requests" v-if="requests.length"></criticality-chart>
@@ -15,10 +17,12 @@
 <script>
 import { mapGetters } from "vuex";
 import CriticalityChart from "@/components/dashboard/widgets/criticality-tickets/components/criticalityChart.vue";
+import ImageDownloadBtn from "@/components/dashboard/base/ImageDownloadBtn.vue";
 
 export default {
   components: {
-    CriticalityChart
+    CriticalityChart,
+    ImageDownloadBtn
   },
   computed: {
     ...mapGetters({

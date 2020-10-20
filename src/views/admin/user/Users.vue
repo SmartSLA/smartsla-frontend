@@ -1,14 +1,11 @@
 <template>
   <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
-    <div class="page-title">
-      <span>{{ $t("Users list") }}</span>
-    </div>
     <span class="users-search-span hidden-sm-and-down">{{ $t("Search by:") }}</span>
     <v-layout row wrap>
-      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+      <v-flex xs6 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-text-field v-model="search" :placeholder="$i18n.t('Name')" single-line hide-details solo> </v-text-field>
       </v-flex>
-      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+      <v-flex xs6 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-select
           solo
           :items="clients"
@@ -19,18 +16,7 @@
           item-value="_id"
         ></v-select>
       </v-flex>
-      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
-        <v-select
-          solo
-          :items="contracts"
-          v-model="contract"
-          hide-details
-          :label="$t('Contract')"
-          item-text="name"
-          item-value="_id"
-        ></v-select>
-      </v-flex>
-      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+      <v-flex xs6 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-select solo :items="roles" v-model="role" hide-details :label="$i18n.t('Roles')"></v-select>
       </v-flex>
     </v-layout>
@@ -139,15 +125,11 @@ export default {
       let users = [...(this.users || [])];
 
       if (this.client) {
-        users = users.filter(user => user.contract.client && user.contract.client === this.client);
+        users = users.filter(user => user.client && user.client === this.client);
       }
 
       if (this.role) {
         users = users.filter(user => user.role && user.role === this.role);
-      }
-
-      if (this.contract) {
-        users = users.filter(user => user.contract._id === this.contract._id);
       }
 
       return users;

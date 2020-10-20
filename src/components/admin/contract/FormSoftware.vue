@@ -131,6 +131,7 @@
               v-model="software.technicalReferent"
               item-text="name"
               :search-input.sync="syncTechnical"
+              return-object
             ></v-autocomplete>
           </v-flex>
         </v-layout>
@@ -173,7 +174,7 @@ export default {
     },
     syncTechnical(referent) {
       if (referent === "") {
-        this.software.technicalReferent = "";
+        this.software.technicalReferent = {};
       }
     }
   },
@@ -204,6 +205,7 @@ export default {
             this.software.technicalReferent.constructor === Object)
         )
           delete this.software.technicalReferent;
+
         this.$emit("submit", this.software);
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -216,7 +218,7 @@ export default {
       this.software = {
         software: {},
         critical: "standard",
-        technicalReferent: "",
+        technicalReferent: {},
         os: "",
         version: "",
         SupportDate: {

@@ -1,8 +1,5 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0 mx-4 mt-4 mb-4">
-    <router-link class="text-lg-left action-links" :to="{ name: 'Softwares' }"
-      >&lt; {{ $t("Return to software list") }}</router-link
-    >
     <v-layout row wrap justify-space-between>
       <v-flex xs12 sm12 md12 xl6 lg6 pr-4>
         <v-card class="px-0 mt-4 pb-4 pl-4 pr-2">

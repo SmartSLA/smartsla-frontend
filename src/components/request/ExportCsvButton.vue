@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-2">
     <v-btn flat fab small color="default" @click="exportData">
       <v-icon>backup</v-icon>
     </v-btn>

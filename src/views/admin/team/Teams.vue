@@ -1,8 +1,5 @@
 <template>
   <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
-    <div class="page-title">
-      <span>{{ $t("Teams list") }}</span>
-    </div>
     <span class="teams-search-span hidden-sm-and-down">{{ $t("Search by:") }}</span>
     <v-layout row wrap>
       <v-flex xs12 sm12 md12 lg12 xl12 pr-1 mb-1>

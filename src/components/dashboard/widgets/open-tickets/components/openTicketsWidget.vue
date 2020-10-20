@@ -1,7 +1,9 @@
 <template>
-  <v-card class="rounded-card">
+  <v-card class="rounded-card" id="open-tickets">
     <v-card-title primary-title class="title">
       {{ $t("chartTitleOpenTickets") }}
+      <v-spacer></v-spacer>
+      <image-download-btn :name="$t('chartTitleOpenTickets')"></image-download-btn>
     </v-card-title>
     <v-card-text v-if="requests.length">
       <open-tickets-chart :datasets="requests"></open-tickets-chart>
@@ -15,11 +17,13 @@
 <script>
 import { mapGetters } from "vuex";
 import OpenTicketsChart from "@/components/dashboard/widgets/open-tickets/components/openTicketsChart.vue";
+import ImageDownloadBtn from "@/components/dashboard/base/ImageDownloadBtn.vue";
 
 export default {
   data: () => ({}),
   components: {
-    OpenTicketsChart
+    OpenTicketsChart,
+    ImageDownloadBtn
   },
   computed: {
     ...mapGetters({

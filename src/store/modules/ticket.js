@@ -1,12 +1,13 @@
 import Vue from "vue";
 import { isString, isNumber, isUndefined } from "lodash";
+import { TICKET_DRAFT_STORAGE_KEY_PREFIX } from "@/constants";
 
 function initialState() {
   return {
     pagination: {
       page: 1,
       rowsPerPage: 10,
-      rowsPerPageItems: [10, 25, 50, 100],
+      rowsPerPageItems: [10, 25, 50, 100, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       totalItems: null,
       descending: false,
       sortBy: "createdAt"
@@ -37,7 +38,7 @@ const actions = {
   fetchTickets: ({ commit, dispatch, state }) => {
     return Vue.axios
       .listTickets({
-        limit: state.pagination.rowsPerPage,
+        limit: state.pagination.rowsPerPage === -1 ? "all" : state.pagination.rowsPerPage,
         offset: (state.pagination.page - 1) * state.pagination.rowsPerPage,
         filter: state.filter
       })
@@ -61,6 +62,20 @@ const actions = {
         // TODO
         console.log(err);
       });
+  },
+
+  saveDraft: (_, { id, ticket }) => {
+    localStorage.setItem(`${TICKET_DRAFT_STORAGE_KEY_PREFIX}${id || "new"}`, JSON.stringify(ticket));
+  },
+
+  fetchDraft: (_, id) => {
+    const draft = localStorage.getItem(`${TICKET_DRAFT_STORAGE_KEY_PREFIX}${id || "new"}`);
+
+    return JSON.parse(draft);
+  },
+
+  deleteDraft: (_, id) => {
+    localStorage.removeItem(`${TICKET_DRAFT_STORAGE_KEY_PREFIX}${id || "new"}`);
   },
 
   setPagination: ({ commit }, pagination) => {

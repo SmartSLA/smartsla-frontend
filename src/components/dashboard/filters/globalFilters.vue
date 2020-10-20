@@ -1,13 +1,13 @@
 <template>
-  <v-layout row pb-2>
+  <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-text>
-          <v-layout row align-center justify-center fill-height>
-            <v-flex xs12 sm4 md2 lg4>
+        <v-card-text class="pa-0">
+          <v-layout v-bind:column="isMobile" fill-height>
+            <v-flex xs12 sm6 md5 lg5>
               <time-duration-changer-dropdown />
             </v-flex>
-            <v-flex xs12 sm4 md6 lg4>
+            <v-flex xs12 sm4 md5 lg5>
               <v-select
                 flat
                 v-model="selectedContracts"
@@ -40,16 +40,16 @@
                   <span class="grey--text caption">{{ data.item.client }}</span>
                 </template>
                 <template v-slot:selection="data">
-                  <v-chip v-if="data.index >= 0 && data.index < 4">
+                  <v-chip v-if="data.index >= 0 && data.index < maxChips">
                     <span>{{ data.item.name }} {{ data.index }}</span>
                   </v-chip>
-                  <span v-if="data.index === 4" class="grey--text caption"
+                  <span v-if="data.index === maxChips" class="grey--text caption"
                     >(+{{ selectedContracts.length - data.index }} {{ $t("Other") }})</span
                   >
                 </template>
               </v-select>
             </v-flex>
-            <v-flex xs12 sm4 md4>
+            <v-flex xs12 sm2 md2 lg2 :class="isMobile ? 'align-self-end' : 'align-self-center'">
               <v-btn small color="info" @click="getDashboardData()">
                 {{ $t("Apply") }}
               </v-btn>
@@ -90,6 +90,20 @@ export default {
     },
     someContracts() {
       return !this.selectedContracts.length && !this.allContracts;
+    },
+    isMobile() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return true;
+        case "sm":
+        case "md":
+        case "lg":
+        case "xl":
+          return false;
+      }
+    },
+    maxChips() {
+      return this.isMobile ? 2 : 4;
     }
   },
   components: {
@@ -116,3 +130,16 @@ export default {
   }
 };
 </script>
+
+<style lang="stylus">
+
+@media print {
+  body { color-adjust: exact; }
+  main.v-content { padding :0 !important; }
+  .toolbar { display: none; }
+  #dashboard_filters, #navigation_drawer { display: none; }
+  .widget { page-break-after: always; }
+  #line-chart { width: 100% !important; }
+  #bar-chart { width: 100% !important; }
+}
+</style>

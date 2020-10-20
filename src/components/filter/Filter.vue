@@ -13,11 +13,15 @@
           :hideSearchFilter="hideSearchFilter"
           @updatedHideSearchFilter="hideSearchInput"
         ></FilterSearchInput>
-        <ExportCsvButton v-if="!hideSearchFilter || this.$vuetify.breakpoint.name != 'xs'"></ExportCsvButton>
         <v-dialog v-model="dialog" width="700" overflow="false" persistent>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="hideFilter = true" :class="{ 'v-btn--active': hideFilter == true }">
-              <v-icon>
+            <v-btn
+              icon
+              v-on="on"
+              @click="hideFilter = true"
+              :class="{ 'v-btn--active': hideFilter == true || customFilters.length > 0 }"
+            >
+              <v-icon :color="colorFiltersIcon">
                 filter_list
               </v-icon>
             </v-btn>
@@ -45,7 +49,7 @@
                     <v-layout align-center justify-end>
                       <v-overflow-btn
                         v-if="keyValueFilter"
-                        :items="values"
+                        :items="getSortedValues"
                         :label="$t('Values')"
                         v-model="valuesFilter"
                         flat
@@ -53,16 +57,18 @@
                         item-value="key"
                         hide-details
                         hide-selected
+                        editable
                       ></v-overflow-btn>
                       <v-overflow-btn
                         v-else
-                        :items="values"
+                        :items="getSortedValues"
                         :label="$t('Values')"
                         :no-data-text="$t('No data available')"
                         v-model="valuesFilter"
                         flat
                         hide-details
                         hide-selected
+                        editable
                       ></v-overflow-btn>
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
@@ -103,7 +109,7 @@ import FilterActions from "@/components/filter/FilterActions";
 import FilterSearchInput from "@/components/filter/FilterSearchInput";
 import FilterLoader from "@/components/filter/FilterLoader";
 import FilterCategories from "@/components/filter/FilterCategories";
-import ExportCsvButton from "@/components/request/ExportCsvButton";
+import { SORT_FILTERS_KEYS } from "@/constants.js";
 
 export default {
   name: "dataTableFilter",
@@ -111,8 +117,7 @@ export default {
     FilterActions,
     FilterSearchInput,
     FilterLoader,
-    FilterCategories,
-    ExportCsvButton
+    FilterCategories
   },
 
   data() {
@@ -199,6 +204,10 @@ export default {
     }
   },
   computed: {
+    colorFiltersIcon() {
+      return this.customFilters.length ? "primary" : "";
+    },
+
     canUpdateFilter() {
       if (this.storedSelectionsFilter && this.storedSelectionsFilter.items) {
         if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
@@ -217,6 +226,13 @@ export default {
 
     sizeFilterDevice() {
       return this.$vuetify.breakpoint.width >= 960 ? true : false;
+    },
+
+    getSortedValues() {
+      if (SORT_FILTERS_KEYS.includes(this.categoriesFilter)) {
+        return ([...this.values] || []).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+      }
+      return this.values;
     }
   },
   watch: {

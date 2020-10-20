@@ -15,6 +15,23 @@ export default {
         ]
       },
       options: {
+        plugins: {
+          datalabels: {
+            labels: {
+              index: {
+                align: "end",
+                anchor: "end",
+                formatter: function(value) {
+                  return value;
+                },
+                color: function(ctx) {
+                  return ctx.dataset.backgroundColor;
+                }
+              }
+            },
+            font: { weight: "bold" }
+          }
+        },
         legend: {
           display: true
         },
@@ -24,7 +41,8 @@ export default {
         title: {
           display: true,
           position: "bottom",
-          text: this.$t("chartTitleTicketsSoftware")
+          text: this.$t("chartTitleTicketsSoftware"),
+          padding: 30
         }
       }
     };
@@ -39,6 +57,15 @@ export default {
       this.datacollection.labels = this.labels;
       this.datacollection.datasets[0].data = this.ticketCounter;
       this.datacollection.datasets[0].backgroundColor = this.colors;
+
+      this.addPlugin({
+        id: "spacer",
+        beforeInit: function(chart) {
+          chart.legend.afterFit = function() {
+            this.height = this.height + 20;
+          };
+        }
+      });
 
       this.renderChart(this.datacollection, this.options);
     },

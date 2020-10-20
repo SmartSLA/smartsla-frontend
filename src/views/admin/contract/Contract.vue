@@ -1,15 +1,9 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0">
-    <v-card-text>
-      <router-link class="text-lg-left action-links" :to="ContractListPath">
-        <v-icon class="mr-2">arrow_back_ios</v-icon>
-        {{ $t("Return to contracts list") }}
-      </router-link>
-    </v-card-text>
     <v-layout row wrap justify-space-between>
-      <v-flex xs7 pr-4>
+      <v-flex flex sm7 xs12>
         <v-layout row wrap justify-space-between>
-          <v-flex xs12>
+          <v-flex xs12 mb-2>
             <v-card>
               <v-card-title primary-title class="pb-0">
                 <v-layout>
@@ -25,8 +19,8 @@
                         small
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'information', type: 'information' }
+                          name: routeNames.EDITCONTRACTINFORMATION,
+                          params: { id: contract._id }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -179,8 +173,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'software', type: 'software' }
+                          name: routeNames.EDITCONTRACTSOFTWARES,
+                          params: { id: contract._id }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -195,11 +189,13 @@
                   <template v-slot:items="props">
                     <td class="text-xs-center">
                       <router-link
+                        v-if="isAdmin"
                         :to="{ name: 'Software', params: { id: props.item.software._id } }"
                         class="blue-color"
                       >
                         {{ props.item.software.name }}
                       </router-link>
+                      <span v-else>{{ props.item.software.name }}</span>
                       <expired-label :expirationDate="props.item.SupportDate.end"></expired-label>
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
@@ -221,7 +217,9 @@
                         >{{ $t(props.item.critical) }}</v-chip
                       >
                     </td>
-                    <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
+                    <td class="text-xs-center">
+                      {{ props.item.technicalReferent && props.item.technicalReferent.name }}
+                    </td>
                   </template>
                 </v-data-table>
               </v-card-text>
@@ -248,8 +246,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'critical' }
+                          name: routeNames.EDITCONTRACTENGAGEMENTS,
+                          params: { id: contract._id, type: 'critical' }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -322,8 +320,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'sensible' }
+                          name: routeNames.EDITCONTRACTENGAGEMENTS,
+                          params: { id: contract._id, type: 'sensible' }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -396,8 +394,8 @@
                         :disabled="!isAdmin"
                         :dark="isAdmin"
                         :to="{
-                          name: 'Edit Contract',
-                          params: { id: contract._id, section: 'engagements', type: 'standard' }
+                          name: routeNames.EDITCONTRACTENGAGEMENTS,
+                          params: { id: contract._id, type: 'standard' }
                         }"
                       >
                         <v-icon>edit</v-icon>
@@ -458,7 +456,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs5 pt-0>
+      <v-flex flex sm5 :pl-3="!$vuetify.breakpoint.xs">
         <v-card>
           <v-card-title primary-title>
             <v-layout>
@@ -486,7 +484,15 @@
                       </v-card-text>
                     </v-card>
                   </v-dialog>
-                  <v-btn color="primary" fab small :disabled="!isAdmin" :dark="isAdmin" @click="usersDialog = true">
+                  <v-btn
+                    color="primary"
+                    fab
+                    flat
+                    small
+                    :disabled="!isAdmin"
+                    :dark="isAdmin"
+                    @click="usersDialog = true"
+                  >
                     <v-icon>add</v-icon>
                   </v-btn>
                 </div>
@@ -497,24 +503,28 @@
             <template v-if="contractManagers.length">
               <v-subheader>
                 {{ $t("contract manager") }}
+                <v-chip small>{{ contractManagers.length }}</v-chip>
               </v-subheader>
               <users-list :users="contractManagers" />
             </template>
             <template v-if="operationalManagers.length">
               <v-subheader>
                 {{ $t("operational manager") }}
+                <v-chip small>{{ operationalManagers.length }}</v-chip>
               </v-subheader>
               <users-list :users="operationalManagers" />
             </template>
             <template v-if="customers.length">
               <v-subheader>
                 {{ $t("Beneficiaries") }}
+                <v-chip small>{{ customers.length }}</v-chip>
               </v-subheader>
               <users-list :users="customers" />
             </template>
             <template v-if="viewers.length">
               <v-subheader>
                 {{ $t("Viewers") }}
+                <v-chip small> {{ viewers.length }} </v-chip>
               </v-subheader>
               <users-list :users="viewers" />
             </template>
@@ -637,7 +647,8 @@ export default {
     },
 
     ContractListPath() {
-      return this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+      return this.$auth.check("admin") ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
         this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
         ? { name: routeNames.CLIENTCONTRACTS }
         : { name: routeNames.CONTRACTS };
@@ -645,6 +656,9 @@ export default {
 
     userLanguage() {
       return this.getUserLanguage || LOCALE;
+    },
+    routeNames() {
+      return routeNames;
     }
   },
   created() {
@@ -792,64 +806,6 @@ export default {
 .container {
   max-width: 100% !important;
   padding: 0px;
-}
-
-div.v-card__text:nth-child(1) {
-  padding-left: 0px;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 24px;
-}
-
-div.pt-0:nth-child(1) > div:nth-child(2) {
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.xs7 {
-  padding-left: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-div.justify-space-between:nth-child(1) {
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-left: 0px;
-  margin-bottom: 0px;
-}
-
-div.justify-space-between:nth-child(1) > div:nth-child(1) {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-left: 0px;
-  padding-bottom: 0px;
-}
-
-div.pt-0:nth-child(2) {
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-}
-
-div.xs12:nth-child(2) {
-  padding-top: 24px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-  padding-bottom: 0px !important;
-}
-
-div.layout:nth-child(3) {
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-div.xs12:nth-child(3) {
-  padding-top: 24px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-  padding-bottom: 0px !important;
 }
 
 .contractual-commitments {

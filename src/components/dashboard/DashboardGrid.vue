@@ -1,20 +1,20 @@
 <template>
   <v-container fluid grid-list-md>
-    <v-layout mb-3>
+    <v-layout mb-3 id="dashboard_filters">
       <global-filters />
     </v-layout>
 
-    <v-layout row wrap mb-3>
+    <v-layout row wrap mb-3 id="counter_cards">
       <counter-card-widget />
     </v-layout>
 
-    <v-layout row wrap mb-3>
+    <v-layout row wrap mb-3 class="widget">
       <v-flex xs12 md12 mb-3>
         <open-tickets-widget />
       </v-flex>
     </v-layout>
 
-    <v-layout row wrap>
+    <v-layout row wrap class="widget">
       <v-flex xs12 md6>
         <criticality-widget />
       </v-flex>
@@ -23,7 +23,7 @@
       </v-flex>
     </v-layout>
 
-    <v-layout row wrap>
+    <v-layout row wrap class="widget">
       <v-flex xs12>
         <open-tickets-software-widget />
       </v-flex>
@@ -39,6 +39,7 @@ import CounterCardWidget from "@/components/dashboard/widgets/counter-cards/comp
 import SoftwareWidget from "@/components/dashboard/widgets/software/components/softwareWidget.vue";
 // eslint-disable-next-line max-len
 import OpenTicketsSoftwareWidget from "@/components/dashboard/widgets/open-tickets-software/components/openTicketsSoftwareWidget.vue";
+import "chartjs-plugin-datalabels";
 
 export default {
   name: "DashboardGrid",

@@ -1,9 +1,6 @@
 <template>
   <v-container v-if="$auth.ready() && $auth.check('admin')">
     <div class="clients-list">
-      <div class="page-title">
-        <span>{{ $t("Clients list") }}</span>
-      </div>
       <v-layout row wrap pb-4>
         <v-flex xs12 xl-1 lg-1 md1 sm12 mt-2>
           {{ $t("Search by:") }}

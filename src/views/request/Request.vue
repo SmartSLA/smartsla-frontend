@@ -19,23 +19,54 @@
             <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">#{{ request._id }} - {{ request.title }}</h3>
+                  <h3 class="headline mb-0">
+                    #{{ request._id }} - {{ request.title }}
+                    <small v-if="request.archived" class="archived"> {{ $t("Archived") }} </small>
+                  </h3>
                 </div>
               </v-card-title>
             </v-flex>
             <v-flex xs4 md1 sm1 xl1 lg1 class="pt-0 pb-0">
-              <div class="text-xs-right grey--text pt-3 justify-end">
-                <v-btn
-                  :disabled="!isAdmin"
-                  color="primary"
-                  fab
-                  small
-                  dark
-                  :to="{ name: 'EditRequest', params: { id: request._id } }"
-                >
-                  <v-icon>edit</v-icon>
-                </v-btn>
+              <div class="text-xs-right grey--text pt-3 justify-end" v-if="isAdmin">
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon v-on="on">
+                      <v-icon color="grey">mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-tile :to="{ name: 'EditRequest', params: { id: request._id } }">
+                      <v-list-tile-title>{{ $t("Edit request") }}</v-list-tile-title>
+                    </v-list-tile>
+                    <v-list-tile @click="dialogArchive = true" :disabled="!isTicketClosed">
+                      <v-list-tile-title>
+                        <span v-if="!request.archived">{{ $t("Archive the ticket") }}</span>
+                        <span v-else>{{ $t("Unarchive the ticket") }}</span>
+                      </v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
               </div>
+              <v-dialog v-model="dialogArchive" persistent max-width="350">
+                <v-card>
+                  <v-card-title class="body-2">
+                    <span v-if="!request.archived">{{ $t("You are about to archive ticket") }}</span>
+                    <span v-else>{{ $t("You are about to unarchive the ticket") }}</span>
+                    : {{ request._id }}
+                  </v-card-title>
+                  <v-card-text>
+                    <span class="body-2">{{ $t("Are you sure?") }}</span>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="grey darken-1" flat @click="dialogArchive = false">{{ $t("Close") }}</v-btn>
+                    <v-btn color="error darken-1" flat @click="archiveTicket">
+                      <span v-if="!request.archived">{{ $t("Archive") }}</span>
+                      <span v-else>{{ $t("Unarchive") }}</span>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-flex>
           </v-layout>
           <v-divider class="pb-2" />
@@ -167,15 +198,8 @@
               </v-tab-item>
               <v-tab-item value="comment" class="mt-1">
                 <v-timeline dense clipped>
-                  <v-timeline-item
-                    v-for="event in request.events"
-                    :key="event._id"
-                    medium
-                    :ref="`event-${event._id}`"
-                    :id="`event-${event._id}`"
-                    :hide-dot="$vuetify.breakpoint.name === 'xs' ? true : false"
-                  >
-                    <template v-slot:icon v-if="$vuetify.breakpoint.name !== 'xs'">
+                  <v-timeline-item v-for="event in request.events" :key="event._id" medium :ref="`event-${event._id}`">
+                    <template v-slot:icon>
                       <userAvatar size="30" :userId="event.author.id"></userAvatar>
                     </template>
                     <v-card
@@ -201,7 +225,7 @@
                                   :href="`#event-${event._id}`"
                                   @click.stop="scrollToEvent(event)"
                                 >
-                                  {{ event.timestamps.createdAt | relativeTime(userLanguage) }}
+                                  {{ createdAt(event.timestamps.createdAt) }}
                                 </a>
                               </template>
                               <span>{{ event.timestamps.createdAt | formatDateFilter("llll", userLanguage) }}</span>
@@ -222,8 +246,20 @@
                           </v-list>
                         </v-menu>
                       </v-card-title>
-                      <v-card-text v-if="event.comment" v-html="event.comment" class="pt-0" />
-                      <v-card-text v-if="(event.target && event.target.name) || event.status" class="grey--text pt-0">
+                      <v-card-text
+                        v-if="event.comment"
+                        v-html="transformToCodeblock(event.comment)"
+                        class="pt-0 comment-content"
+                      />
+                      <v-card-text
+                        v-if="
+                          (event.target && event.target.name) ||
+                            event.status ||
+                            (event.beneficiary && event.beneficiary.name) ||
+                            (event.responsible && event.responsible.name)
+                        "
+                        class="grey--text pt-0"
+                      >
                         <p
                           v-if="event.target && event.target.name"
                           v-html="
@@ -237,6 +273,22 @@
                           v-html="
                             $t('Ticket passed in status {status}', {
                               status: statusDisplay(event.status)
+                            })
+                          "
+                        ></p>
+                        <p
+                          v-if="event.beneficiary && event.beneficiary.name"
+                          v-html="
+                            $t('The beneficiary has been changed to {beneficiary}', {
+                              beneficiary: event.beneficiary.name
+                            })
+                          "
+                        ></p>
+                        <p
+                          v-if="event.responsible && event.responsible.name"
+                          v-html="
+                            $t('The responsible has been changed to {responsible}', {
+                              responsible: event.responsible.name
                             })
                           "
                         ></p>
@@ -315,19 +367,21 @@
                       <v-flex xs12 md6>
                         <v-select
                           v-if="!isPrivateTab"
-                          :items="[allowedStatusList]"
                           v-model="newStatus"
-                          :disabled="!allowedStatusList || isSubmitting"
+                          :items="statusItems"
+                          :disabled="isTicketClosed || isSubmitting"
                           :label="$t('Status')"
+                          clearable
                         >
                           <template slot="item" slot-scope="{ item }">
-                            {{ $t(capitalize(item)) }}
+                            {{ $t(capitalize(item.next)) }}
                           </template>
                           <template slot="selection" slot-scope="{ item }">
-                            {{ $t(capitalize(item)) }}
+                            {{ $t(capitalize(item.next)) }}
                           </template>
                         </v-select>
                       </v-flex>
+
                       <v-flex v-if="!isPrivateTab" xs12 md6>
                         <user-list-assignment
                           :responsible.sync="newResponsible"
@@ -393,7 +447,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
-import { flatten, capitalize } from "lodash";
+import { flatten, capitalize, debounce } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import AttachmentsCreation from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
@@ -409,6 +463,10 @@ import TicketStatus from "@/components/request/TicketStatus";
 import RequestNavigationDrawer from "@/components/request/RequestNavigationDrawer";
 import { LOCALE } from "@/i18n/constants";
 import userAvatar from "@/components/user/userAvatar";
+import moment from "moment-timezone";
+
+// const Codeblock = Quill.import("formats/code-block");
+// Codeblock.tagName = "pre";
 
 export default {
   data() {
@@ -416,12 +474,13 @@ export default {
       commentCreationAttachments: [],
       selectedEditor: "wysiwyg",
       isSubmitting: false,
-      newStatus: "",
+      newStatus: null,
       newResponsible: {},
       comment: "",
       UPDATE_COMMENT: UPDATE_COMMENT,
       isPrivateTab: null,
-      hideRequestNavigationDrawer: false
+      hideRequestNavigationDrawer: false,
+      dialogArchive: false
     };
   },
   components: {
@@ -475,11 +534,19 @@ export default {
       return this.request.survey && !!Object.values(this.request.survey).length;
     },
 
-    allowedStatusList() {
+    isTicketClosed() {
+      return this.request.status.toLowerCase() === "closed";
+    },
+
+    statusItems() {
       const currentStatus = this.request.status.toLowerCase();
-      return this.request.type === REQUEST_TYPE.ANOMALY
-        ? ANOMALY_NEXT_STATUS[currentStatus]
-        : NEXT_STATUS[currentStatus];
+      const items = this.request.type === REQUEST_TYPE.ANOMALY ? ANOMALY_NEXT_STATUS : NEXT_STATUS;
+
+      return Object.entries(items).map(([current, next]) => ({
+        current,
+        next,
+        disabled: currentStatus !== current
+      }));
     },
 
     editorToolbar() {
@@ -509,7 +576,26 @@ export default {
       return this.getUserLanguage || LOCALE;
     }
   },
+  watch: {
+    comment: debounce(function() {
+      this.$store.dispatch("ticket/saveDraft", { id: this.request._id, ticket: { comment: this.comment } });
+    }, 500)
+  },
+  mounted() {
+    setTimeout(() => {
+      if (this.$route.hash) {
+        const element = this.$refs[this.$route.hash.slice(1)];
+
+        if (element && element[0] && element[0].$el) {
+          this.$scrollTo(element[0].$el, 2000);
+        }
+      }
+    }, 500);
+  },
   methods: {
+    transformToCodeblock(comment) {
+      return comment.replace(new RegExp("<pre[^>]*?>", "gm"), "<code>").replace(new RegExp("</pre>", "gm"), "</code>");
+    },
     isUserExpert() {
       return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     },
@@ -519,6 +605,33 @@ export default {
       if (element && element[0] && element[0].$el) {
         this.$scrollTo(element[0].$el, { offset: -80 });
       }
+    },
+
+    archiveTicket() {
+      this.dialogArchive = false;
+
+      const ticket = {
+        ...this.request,
+        archived: this.request.archived ? false : true
+      };
+
+      this.$store
+        .dispatch("ticket/updateTicket", {
+          ticketId: ticket._id,
+          ticket
+        })
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Ticket archived"),
+            color: "success"
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Failed to archive the ticket"),
+            color: "error"
+          });
+        });
     },
 
     addEvent(isSurvey = false) {
@@ -538,7 +651,7 @@ export default {
           if (!this.isPrivateTab) {
             event = {
               ...event,
-              status: this.newStatus,
+              status: this.newStatus && this.newStatus.next,
               target: this.newResponsible
             };
           }
@@ -594,11 +707,13 @@ export default {
     },
 
     resetComment() {
-      this.newStatus = "";
+      this.newStatus = null;
       this.comment = "";
       this.newResponsible = {};
       this.commentCreationAttachments = [];
       this.commentCreationAttachments.length = 0;
+
+      this.$store.dispatch("ticket/deleteDraft", this.request._id);
     },
 
     capitalize(text) {
@@ -627,6 +742,14 @@ export default {
       this.$store.dispatch("ticket/fetchTicketById", this.$route.params.id);
     },
 
+    initCommentAutoSave() {
+      this.$store.dispatch("ticket/fetchDraft", this.$route.params.id).then(draftTicket => {
+        if (draftTicket && draftTicket.comment) {
+          this.comment = draftTicket.comment;
+        }
+      });
+    },
+
     copyEventLink(eventId) {
       const element = `event-${eventId}`;
       const baseUrl = `${window.location.origin}${this.$route.path}`;
@@ -642,11 +765,18 @@ export default {
 
     setRequestNavigationDrawerStatus() {
       this.hideRequestNavigationDrawer = false;
+    },
+
+    createdAt(date) {
+      if (moment().diff(date, "months", true) > 1)
+        return this.$options.filters.formatDateFilter(date, "llll", this.userLanguage);
+      return this.$options.filters.relativeTime(date, this.userLanguage);
     }
   },
   created() {
     this.$store.dispatch("contract/fetchContracts");
     this.fetchTicket();
+    this.initCommentAutoSave();
   }
 };
 </script>
@@ -656,6 +786,15 @@ export default {
   .v-stepper__label {
     display: block !important;
   }
+}
+
+.comment-content img {
+  width: 100%;
+}
+
+.comment-content code {
+  background-color: #23241f;
+  color: #f8f8f2;
 }
 
 .btn-action-list span {
@@ -676,6 +815,13 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
+
+.archived {
+  border: 1px solid;
+  padding: 2px;
+  font-weight: 600;
+  color: #d32f2f;
+}
 
 .center-avatar {
   align-items: center;

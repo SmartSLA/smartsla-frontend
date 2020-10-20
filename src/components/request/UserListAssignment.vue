@@ -9,6 +9,7 @@
       hide-details
       :disabled="isSubmitting"
       @change="setResponsible"
+      clearable
     >
       <template slot="item" slot-scope="data">
         <v-list-tile-avatar>

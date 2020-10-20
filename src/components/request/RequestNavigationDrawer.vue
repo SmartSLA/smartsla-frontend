@@ -122,7 +122,7 @@
             <v-list-tile-title class="body-1">
               {{ $t("Interlocutor") }}
             </v-list-tile-title>
-            <v-flex>
+            <v-flex v-if="isUserExpert">
               <a @click="editResponsible = !editResponsible" class="black--text">
                 {{ $t("Edit") }}
               </a>
@@ -312,7 +312,7 @@
 </template>
 
 <script>
-import { REQUEST_TYPE, TICKET_STATUS, CNS_TYPES, ANOMALY_CNS_STATUS } from "@/constants.js";
+import { REQUEST_TYPE, TICKET_STATUS, CNS_TYPES, ANOMALY_CNS_STATUS, USER_TYPE } from "@/constants.js";
 import { capitalize, isEmpty, isEqual } from "lodash";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import cnsProgressBar from "@/components/CnsProgressBar";
@@ -471,6 +471,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$store.getters["currentUser/getUser"];
+    },
     beneficiaryPhoneNumber() {
       if (this.request.callNumber) {
         return this.request.callNumber;
@@ -481,6 +484,9 @@ export default {
     },
     canBeBypassed() {
       return this.request.type === REQUEST_TYPE.ANOMALY;
+    },
+    isUserExpert() {
+      return this.user && this.user.type === USER_TYPE.EXPERT;
     }
   }
 };

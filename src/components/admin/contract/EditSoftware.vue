@@ -24,7 +24,7 @@
             $t(props.item.critical)
           }}</v-chip>
         </td>
-        <td class="text-xs-center">{{ props.item.technicalReferent }}</td>
+        <td class="text-xs-center">{{ props.item.technicalReferent && props.item.technicalReferent.name }}</td>
         <td class="text-xs-center">
           <v-btn color="primary" flat small @click="editSoftware(props)">
             <v-icon>edit</v-icon>
@@ -84,7 +84,7 @@ export default {
       newSoftware: {
         software: {},
         critical: "standard",
-        technicalReferent: "",
+        technicalReferent: {},
         os: "",
         version: "",
         SupportDate: {
@@ -124,7 +124,10 @@ export default {
     },
     confirmDeleteSoftware() {
       const filteredList = this.contract.software.filter(
-        softwareItem => softwareItem.software._id !== this.selectedItem.software._id
+        softwareItem =>
+          this.selectedItem.version !== softwareItem.version ||
+          this.selectedItem.name !== softwareItem.software.name ||
+          this.selectedItem.os !== softwareItem.os
       );
 
       this.$set(this.contract, "software", filteredList);

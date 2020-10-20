@@ -1,8 +1,9 @@
 import { buildIntervalQueryParams } from "@/services/helpers/dashboard";
 
 const initialState = () => ({
-  interval: "LAST_YEAR",
+  interval: "ANY_TIME",
   filters: {
+    group: "quarter",
     contracts: [],
     start: null,
     end: null
@@ -20,6 +21,10 @@ const mutations = {
   },
 
   [types.SET_FILTERS](state, filters) {
+    if (state.interval === "ANY_TIME") {
+      delete filters.start;
+      delete filters.end;
+    }
     state.filters = filters;
   }
 };
@@ -29,6 +34,12 @@ const actions = {
     const filters = { ...state.filters, ...period, ...{ group: "month" } };
 
     commit(types.SET_INTERVAL, "CUSTOM_PERIOD");
+    commit(types.SET_FILTERS, filters);
+  },
+
+  setGroupBy: ({ commit, state }, groupBy) => {
+    const filters = { ...state.filters, ...{ group: groupBy } };
+
     commit(types.SET_FILTERS, filters);
   },
 
@@ -65,7 +76,8 @@ const actions = {
 };
 
 const getters = {
-  getInterval: state => state.interval
+  getInterval: state => state.interval,
+  getGroupBy: state => state.filters.group
 };
 
 export default {

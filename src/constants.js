@@ -78,7 +78,7 @@ export const EXPERT_ROLE = {
   EXPERT: "expert"
 };
 
-export const BENEFICIARY_ROLES = ["viewer", "customer", "operational manager", "contract manager"];
+export const BENEFICIARY_ROLES = ["viewer", "customer"];
 
 export const BENEFICIARY_ROLE_LIST = {
   VIEWER: "viewer",
@@ -196,9 +196,10 @@ export const INITIAL_FILTER = {
 };
 
 export const WIDGET_DURATION_INTERVAL = {
+  ANY_TIME: "Any time",
   LAST_WEEK: "Last 7 days",
-  LAST_TWO_WEEK: "Last 15 days",
   LAST_MONTH: "Last month",
+  LAST_QUARTER: "Last quarter",
   LAST_YEAR: "Year"
 };
 
@@ -211,3 +212,9 @@ export const RELATED_REQUEST_TYPES = [
   "Previous",
   "Next"
 ];
+
+export const DASHBOARD_GROUP_BY_FILTER = ["day", "week", "month", "quarter", "year"];
+
+export const TICKET_DRAFT_STORAGE_KEY_PREFIX = "ticketDraft_";
+
+export const SORT_FILTERS_KEYS = ["Software", "Assign to", "Responsible", "Transmitter", "Client / Contract"];

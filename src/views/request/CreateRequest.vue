@@ -38,6 +38,7 @@
                   </v-flex>
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
+                      :disabled="isInEdit"
                       v-if="isInEdit"
                       :items="allUsers"
                       :label="$i18n.t('Beneficiary')"
@@ -228,7 +229,7 @@
                   ></related-requests>
                   <v-container>
                     <v-flex xs12>
-                      <attachments v-bind:attachments.sync="attachments" :disabled="submitRequest" />
+                      <attachments v-bind:attachments.sync="attachments" :disabled="isInEdit || submitRequest" />
                     </v-flex>
                   </v-container>
                 </v-layout>
@@ -291,7 +292,7 @@ import { getEngagementHours } from "@/services/helpers/ticket";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
 import { REQUEST_TYPE } from "@/constants";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
-import { cloneDeep } from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import relatedRequests from "@/components/request/RelatedRequests";
 import { getUserAvatarUrl } from "@/services/helpers/user";
 
@@ -396,6 +397,12 @@ export default {
         this.ticket.meetingId = this.meetingId;
       }
 
+      if (
+        this.ticket.software &&
+        (!this.ticket.software.technicalReferent || typeof this.ticket.software.technicalReferent === String)
+      )
+        delete this.ticket.software.technicalReferent;
+
       const ticket = Object.assign({}, this.ticket);
 
       ticket.contract = ticket.contract._id;
@@ -442,7 +449,10 @@ export default {
               color: "error"
             });
           })
-          .finally(() => (this.submitRequest = false));
+          .finally(() => {
+            this.$store.dispatch("ticket/deleteDraft");
+            this.submitRequest = false;
+          });
       }
     },
     remove(item) {
@@ -512,6 +522,25 @@ export default {
       const newRelated = this.ticket.relatedRequests.filter(item => item.request._id !== relatedId);
 
       this.$set(this.ticket, "relatedRequests", newRelated);
+    },
+    initNewTicketAutoSave() {
+      this.$store.dispatch("ticket/fetchDraft").then(draftTicket => {
+        if (draftTicket) {
+          Object.keys(draftTicket).forEach(key => {
+            this.$set(this.ticket, key, draftTicket[key]);
+          });
+        }
+      });
+      this.$watch("ticket.title", debounce(this.updateDaftAutoSave, 500));
+      this.$watch("ticket.description", debounce(this.updateDaftAutoSave, 500));
+    },
+    updateDaftAutoSave() {
+      const draftTicket = {
+        description: this.ticket.description,
+        title: this.ticket.title
+      };
+
+      this.$store.dispatch("ticket/saveDraft", { ticket: draftTicket });
     }
   },
   computed: {
@@ -703,6 +732,8 @@ export default {
           this.meetingId = data.meetingId;
         })
         .finally(() => (this.submitRequest = false));
+    } else {
+      this.initNewTicketAutoSave();
     }
 
     this.$store.dispatch("users/fetchUsers");

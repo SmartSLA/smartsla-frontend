@@ -59,14 +59,26 @@
                 <span class="subheading required-label">{{ $t("Role") }}</span>
               </v-flex>
               <v-flex xs8>
-                <v-radio-group v-model="role" row mandatory color="primary">
-                  <v-radio
-                    v-for="beneficiaryRole in beneficiaryRoles"
-                    :key="beneficiaryRole"
-                    :label="$t(beneficiaryRole)"
-                    :value="beneficiaryRole"
-                  ></v-radio>
-                </v-radio-group>
+                <v-select dense :items="beneficiaryRoles" :label="$t('Role')" v-model="role">
+                  <template slot="item" slot-scope="data">
+                    <v-list-tile-content>
+                      <v-list-tile-title>
+                        {{ data.item.text }}
+                      </v-list-tile-title>
+                      <v-list-tile-sub-title>
+                        <template v-if="data.item.value === 'viewer'">
+                          {{ $t("Viewer role can only see tickets") }}
+                        </template>
+                        <template v-if="data.item.value === 'customer'">
+                          {{ $t("User role can create and comment tickets") }}
+                        </template>
+                        <template v-if="data.item.value === 'operational manager'">
+                          {{ $t("Responsible operational in charge of the contract") }}
+                        </template>
+                      </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </v-select>
               </v-flex>
               <v-flex v-if="members && members.length > 1" class="text--disabled pb-4">
                 <span>{{ $t("All selected users will have the same chosen role.") }}</span>
@@ -164,7 +176,7 @@ export default {
   },
   computed: {
     beneficiaryRoles() {
-      return BENEFICIARY_ROLES;
+      return BENEFICIARY_ROLES.map(role => ({ text: this.$i18n.t(role), value: role }));
     }
   }
 };
