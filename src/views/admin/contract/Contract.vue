@@ -80,6 +80,14 @@
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.technical }}</router-link>
                   </v-flex>
                   <v-flex xs4>
+                    <div class="subheading font-weight-medium">{{ $t("Vulnerability contact") }} :</div>
+                  </v-flex>
+                  <v-flex xs8>
+                    <router-link to="#" class="font-weight-bold">
+                      {{ contract.contact.vulneratility }}
+                    </router-link>
+                  </v-flex>
+                  <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Internal mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ contract.mailingList.internal.join(", ") }}</v-flex>
@@ -99,10 +107,18 @@
                     <div class="subheading font-weight-medium">{{ $t("24h/7 option") }} :</div>
                   </v-flex>
                   <v-flex xs8>
-                    <v-flex xs8>{{
-                      $t(contract.features && contract.features.nonBusinessHours) ? $t("active") : $t("Not active")
-                    }}</v-flex>
+                    {{ $t(contract.features && contract.features.nonBusinessHours) ? $t("active") : $t("Not active") }}
                   </v-flex>
+                  <v-flex xs4>
+                    <div class="subheading font-weight-medium">{{ $t("LinInfoSec option") }} :</div>
+                  </v-flex>
+                  <v-flex xs8>
+                    {{ $t(contract.features && contract.features.linInfoSec) ? $t("active") : $t("Not active") }}
+                  </v-flex>
+                  <v-flex xs4>
+                    <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
+                  </v-flex>
+                  <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("Not active") }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Start") }} :</div>
                   </v-flex>
@@ -115,10 +131,6 @@
                     <div class="subheading font-weight-medium">{{ $t("Timezone") }} :</div>
                   </v-flex>
                   <v-flex xs8>{{ timezone() }}</v-flex>
-                  <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $t("Status") }} :</div>
-                  </v-flex>
-                  <v-flex xs8>{{ $t(contract.status) ? $t("active") : $t("not active") }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Type") }} :</div>
                   </v-flex>

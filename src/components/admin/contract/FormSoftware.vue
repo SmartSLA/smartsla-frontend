@@ -105,6 +105,25 @@
               :rules="[() => software.os.length > 0 || $i18n.t('Required field')]"
             ></v-text-field>
           </v-flex>
+          <v-flex xs3 v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
+            {{ $t("Designation CPE") }}
+            <v-tooltip max-width="300px" v-model="showCpeDescription" right>
+              <template v-slot:activator="{}">
+                <v-icon class="informationIcon" @click="showCpeDescription = !showCpeDescription">
+                  mdi-information
+                </v-icon>
+              </template>
+              <span>
+                {{ $t("CPE designation of the software and operating system (if available).") }}
+                {{ $t("The CPE designation of the software can be obtained") }}
+                <a href="https://nvd.nist.gov/products/cpe/search" target="_blank"> {{ $t("Here.") }}</a>
+                {{ $t("Leave empty if the contract does not include security monitoring.") }}
+              </span>
+            </v-tooltip>
+          </v-flex>
+          <v-flex xs9 v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
+            <v-combobox multiple chips v-model="software.lininfosecConfiguration"></v-combobox>
+          </v-flex>
           <v-flex xs3>{{ $t("Referent") }}</v-flex>
           <v-flex xs9>
             <v-autocomplete
@@ -136,13 +155,15 @@ export default {
   props: {
     software: Object,
     isModalOpen: Boolean,
-    editing: Boolean
+    editing: Boolean,
+    islinInfoSecEnabled: Boolean
   },
   data: () => ({
     startDateModel: "",
     endDateModel: "",
     valid: true,
-    syncTechnical: null
+    syncTechnical: null,
+    showCpeDescription: false
   }),
   watch: {
     isModalOpen(value) {
@@ -159,11 +180,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      softwareList: "software/getSoftwareList"
+      softwareList: "software/getSoftwareList",
+      configuration: "configuration/getConfiguration"
     }),
 
     referents() {
       return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
+    },
+
+    islinInfoSecEnabledForContract() {
+      return this.islinInfoSecEnabled;
     }
   },
   methods: {
@@ -174,10 +200,12 @@ export default {
       if (this.$refs.form.validate()) {
         // Delete software.technicalReferent to prevent mongoose from storing an empty object
         if (
-          Object.keys(this.software.technicalReferent).length === 0 &&
-          this.software.technicalReferent.constructor === Object
+          this.software.technicalReferent &&
+          (Object.keys(this.software.technicalReferent).length === 0 &&
+            this.software.technicalReferent.constructor === Object)
         )
           delete this.software.technicalReferent;
+
         this.$emit("submit", this.software);
       } else {
         this.$store.dispatch("ui/displaySnackbar", {
@@ -196,7 +224,8 @@ export default {
         SupportDate: {
           start: "",
           end: ""
-        }
+        },
+        lininfosecConfiguration: []
       };
     },
     parseDate(date) {
@@ -216,3 +245,9 @@ export default {
   }
 };
 </script>
+<style lang="stylus" scoped>
+.informationIcon {
+  height: 17px;
+  width: 22px;
+}
+</style>
