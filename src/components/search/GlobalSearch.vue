@@ -1,7 +1,7 @@
 <template>
   <v-autocomplete
     :items="searchResults"
-    :label="$i18n.t('Search in {application}', { application: SUPPORT_ACCOUNT })"
+    :label="$i18n.t('Search')"
     class="pt-2"
     light
     flat
@@ -32,7 +32,6 @@
 import { mapGetters } from "vuex";
 import { debounce } from "lodash";
 import { EXPERT_ROLE, BENEFICIARY_ROLE_LIST } from "@/constants.js";
-import ApplicationSettings from "@/services/application-settings";
 
 export default {
   name: "global-search",
@@ -41,8 +40,7 @@ export default {
     return {
       search: null,
       searchResults: [],
-      tickets: [],
-      SUPPORT_ACCOUNT: ApplicationSettings.SUPPORT_ACCOUNT && ApplicationSettings.SUPPORT_ACCOUNT.name
+      tickets: []
     };
   },
   mounted() {
