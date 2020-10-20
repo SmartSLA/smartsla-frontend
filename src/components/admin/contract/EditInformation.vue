@@ -34,6 +34,12 @@
           <v-flex xs8>
             <v-text-field v-model="contract.contact.technical"></v-text-field>
           </v-flex>
+          <v-flex xs3>
+            {{ $t("Vulnerability contact") }}
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field v-model="contract.contact.vulneratility"></v-text-field>
+          </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Timezone") }}</v-flex>
           <v-flex xs8>
             <timezone-picker :timezone.sync="contract.timezone"></timezone-picker>
@@ -72,16 +78,6 @@
               </v-flex>
               <v-flex xs1>{{ $t("h") }}</v-flex>
             </v-layout>
-          </v-flex>
-          <v-flex xs3>
-            {{ $t("24h/24 7D/7 option") }}
-          </v-flex>
-          <v-flex xs8>
-            <v-checkbox
-              :label="$t('This option allows customers to create tickets in non-business hours subject to SLA')"
-              v-model="contract.features.nonBusinessHours"
-              :value="true"
-            ></v-checkbox>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Start") }}</v-flex>
           <v-flex xs8>
@@ -145,15 +141,45 @@
               ></v-date-picker>
             </v-menu>
           </v-flex>
-          <v-flex xs12>
-            <br />
+          <v-flex xs3 mt-4>
+            {{ $t("24h/24 7D/7 option") }}
           </v-flex>
-          <v-flex xs3>{{ $t("Status") }}</v-flex>
+          <v-flex xs8>
+            <v-btn-toggle v-model="contract.features.nonBusinessHours">
+              <v-btn :value="true" flat :class="{ success: contract.features.nonBusinessHours }">{{
+                $t("Active")
+              }}</v-btn>
+              <v-btn :value="false" flat :class="{ error: !contract.features.nonBusinessHours }">{{
+                $t("Inactive")
+              }}</v-btn>
+            </v-btn-toggle>
+          </v-flex>
+          <v-flex xs3></v-flex>
+          <v-flex xs8 mt-2 grey--text text--darken-1>
+            {{ $t("This option allows customers to create tickets in non-business hours subject to SLA") }}
+          </v-flex>
+          <v-flex xs3 mt-5>{{ $t("Status") }}</v-flex>
           <v-flex xs8>
             <v-btn-toggle v-model="contract.status">
               <v-btn :value="true" flat :class="{ success: contract.status }">{{ $t("Active") }}</v-btn>
               <v-btn :value="false" flat :class="{ error: !contract.status }">{{ $t("Inactive") }}</v-btn>
             </v-btn-toggle>
+          </v-flex>
+          <v-flex xs3 mt-4>{{ $t("LinInfoSec option") }}</v-flex>
+          <v-flex xs8>
+            <v-btn-toggle v-model="contract.features.linInfoSec">
+              <v-btn :value="true" flat :class="{ success: contract.features.linInfoSec }">{{ $t("Active") }}</v-btn>
+              <v-btn :value="false" flat :class="{ error: !contract.features.linInfoSec }">{{ $t("Inactive") }}</v-btn>
+            </v-btn-toggle>
+          </v-flex>
+          <v-flex xs3></v-flex>
+          <v-flex xs8 mt-2 grey--text text--darken-1>
+            {{
+              $t(
+                // eslint-disable-next-line max-len
+                "This option allows customers to be notified by an automatic creation of a ticket when a CVE hits a software in this contract."
+              )
+            }}
           </v-flex>
           <v-flex xs3>{{ $t("Type") }}</v-flex>
           <v-flex xs8>
@@ -233,7 +259,8 @@ export default {
         },
         contact: {
           commercial: "",
-          technical: ""
+          technical: "",
+          vulneratility: ""
         },
         mailingList: {
           internal: [],
@@ -246,7 +273,8 @@ export default {
           end: ""
         },
         features: {
-          nonBusinessHours: false
+          nonBusinessHours: false,
+          linInfoSec: false
         },
         status: true,
         type: "",
@@ -330,13 +358,22 @@ export default {
           this.externalLinks = data.externalLinks;
           if (!data.hasOwnProperty("businessHours")) {
             this.contract = {
+              ...data,
               businessHours: {
                 businessHours: {
                   start: "",
                   end: ""
                 }
-              },
-              ...data
+              }
+            };
+          }
+          if (!data.features.hasOwnProperty("linInfoSec")) {
+            this.contract = {
+              ...data,
+              features: {
+                ...data.features,
+                linInfoSec: false
+              }
             };
           }
         })
@@ -372,6 +409,7 @@ export default {
         contract.mailingList.internal = contract.mailingList.internal.split(",");
       }
       contract.externalLinks = this.externalLinks;
+
       if (!this.isNew) {
         this.$http
           .createContract(contract)
