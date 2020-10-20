@@ -472,7 +472,15 @@
                       </v-card-text>
                     </v-card>
                   </v-dialog>
-                  <v-btn color="primary" fab small :disabled="!isAdmin" :dark="isAdmin" @click="usersDialog = true">
+                  <v-btn
+                    color="primary"
+                    fab
+                    flat
+                    small
+                    :disabled="!isAdmin"
+                    :dark="isAdmin"
+                    @click="usersDialog = true"
+                  >
                     <v-icon>add</v-icon>
                   </v-btn>
                 </div>
