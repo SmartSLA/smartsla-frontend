@@ -2,10 +2,10 @@
   <v-container class="pa-0" v-if="$auth.ready() && $auth.check('admin')">
     <span class="users-search-span hidden-sm-and-down">{{ $t("Search by:") }}</span>
     <v-layout row wrap>
-      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+      <v-flex xs6 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-text-field v-model="search" :placeholder="$i18n.t('Name')" single-line hide-details solo> </v-text-field>
       </v-flex>
-      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+      <v-flex xs6 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-select
           solo
           :items="clients"
@@ -16,7 +16,7 @@
           item-value="_id"
         ></v-select>
       </v-flex>
-      <v-flex xs6 sm3 md3 lg3 xl3 pr-1 mb-1>
+      <v-flex xs6 sm4 md4 lg4 xl4 pr-1 mb-1>
         <v-select solo :items="roles" v-model="role" hide-details :label="$i18n.t('Roles')"></v-select>
       </v-flex>
     </v-layout>
