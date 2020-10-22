@@ -146,7 +146,7 @@
                   </v-flex>
                   <v-flex v-else xs8>{{ contract.type }}</v-flex>
                   <v-flex v-if="contract.externalLinks && contract.externalLinks.length" xs4>
-                    <div class="subheading font-weight-medium">{{ $t("External Links") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("External links") }} :</div>
                   </v-flex>
                   <v-flex v-if="contract.externalLinks && contract.externalLinks.length" xs8>
                     <li :key="index" v-for="(link, index) in contract.externalLinks">
