@@ -327,9 +327,9 @@
                 <v-form class="comment-form">
                   <v-tabs v-model="isPrivateTab">
                     <v-tabs-slider color="primary"></v-tabs-slider>
-                    <v-tab>{{ $t("Public comments") }}</v-tab>
+                    <v-tab>{{ $t("Public comment") }}</v-tab>
                     <v-tab v-if="isUserExpert()">
-                      {{ $t("Private Comments") }}
+                      {{ $t("Private comment") }}
                     </v-tab>
                   </v-tabs>
                   <v-input prepend-icon="subject">

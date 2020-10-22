@@ -94,7 +94,7 @@
                 <v-flex v-if="software.externalLinks && !!software.externalLinks.length" xs12>
                   <v-layout row wrap>
                     <v-flex xs4>
-                      <strong>{{ $t("External Links") }} :</strong>
+                      <strong>{{ $t("External links") }} :</strong>
                     </v-flex>
                     <v-flex v-if="software.externalLinks && !!software.externalLinks.length" xs6>
                       <li :key="index" v-for="(link, index) in software.externalLinks">
