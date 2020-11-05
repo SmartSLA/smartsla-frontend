@@ -120,7 +120,14 @@ export default {
           name: routeNames.DASHBOARD,
           text: this.$i18n.t("Dashboard"),
           icon: "dashboard",
-          show: this.configuration.isDashboardEnabled
+          show:
+            !this.$auth.check(BENEFICIARY_ROLE_LIST.VIEWER) &&
+            !this.$auth.check(BENEFICIARY_ROLE_LIST.CUSTOMER) &&
+            this.configuration.isDashboardEnabled &&
+            (this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER) ||
+              this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+              this.$auth.check(EXPERT_ROLE.EXPERT) ||
+              this.$auth.check(EXPERT_ROLE.ADMIN))
         },
         {
           name: routeNames.CREATEREQUEST,
