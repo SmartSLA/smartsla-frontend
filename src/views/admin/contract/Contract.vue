@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md class="pt-0 pl-0">
     <v-layout row wrap justify-space-between>
-      <v-flex flex sm7 xs12>
+      <v-flex flex xs12 :class="canViewHumanResources() ? 'sm7' : 'sm12'">
         <v-layout row wrap justify-space-between>
           <v-flex xs12 mb-2>
             <v-card>
@@ -456,7 +456,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex flex sm5 :pl-3="!$vuetify.breakpoint.xs">
+      <v-flex flex sm5 :pl-3="!$vuetify.breakpoint.xs" v-if="canViewHumanResources()">
         <v-card>
           <v-card-title primary-title>
             <v-layout>
@@ -786,6 +786,9 @@ export default {
     },
     forceRerender() {
       this.ContractAddUsersComponentKey += 1;
+    },
+    canViewHumanResources() {
+      return !this.$auth.check(BENEFICIARY_ROLE_LIST.CUSTOMER) && !this.$auth.check(BENEFICIARY_ROLE_LIST.VIEWER);
     }
   },
   components: {

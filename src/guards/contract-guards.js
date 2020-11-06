@@ -1,5 +1,5 @@
 import { routeNames } from "@/router";
-import { BENEFICIARY_ROLE_LIST } from "@/constants";
+import { BENEFICIARY_ROLE_LIST, EXPERT_ROLE } from "@/constants";
 
 export function canListContracts(to, from, next) {
   if (userHasPermission()) {
@@ -32,7 +32,10 @@ function userHasPermission() {
 
   return (
     app.$auth.check("admin") ||
+    app.$auth.check(EXPERT_ROLE.EXPERT) ||
     app.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
-    app.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)
+    app.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER) ||
+    app.$auth.check(BENEFICIARY_ROLE_LIST.CUSTOMER) ||
+    app.$auth.check(BENEFICIARY_ROLE_LIST.VIEWER)
   );
 }

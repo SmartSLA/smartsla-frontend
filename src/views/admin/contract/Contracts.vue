@@ -50,7 +50,7 @@ import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import StatusName from "@/components/StatusName";
 import ContractListFilter from "@/components/admin/contract/ContractListFilter.vue";
 import { mapGetters } from "vuex";
-import { CONTRACT_STATUS, BENEFICIARY_ROLE_LIST, USER_TYPE } from "@/constants.js";
+import { CONTRACT_STATUS, BENEFICIARY_ROLE_LIST, USER_TYPE, EXPERT_ROLE } from "@/constants.js";
 import { routeNames } from "@/router";
 import { LOCALE } from "@/i18n/constants";
 
@@ -145,9 +145,12 @@ export default {
     },
 
     getContractPath(contractId) {
-      return (this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+      return (this.$auth.check(EXPERT_ROLE.EXPERT) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.VIEWER) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.CUSTOMER) ||
+        this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
         this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER)) &&
-        !this.$auth.check("admin")
+        !this.$auth.check(EXPERT_ROLE.ADMIN)
         ? { name: routeNames.CLIENTCONTRACT, params: { id: contractId } }
         : { name: routeNames.CONTRACT, params: { id: contractId } };
     }
