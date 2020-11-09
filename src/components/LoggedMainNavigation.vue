@@ -158,11 +158,12 @@ export default {
           text: this.$i18n.t("Contracts"),
           icon: "assignment",
           show:
-            !this.$auth.check(EXPERT_ROLE.EXPERT) &&
             !this.$auth.check(EXPERT_ROLE.ADMIN) &&
-            !this.$auth.check(BENEFICIARY_ROLE_LIST.VIEWER) &&
-            (this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER) ||
-              this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER))
+            (this.$auth.check(BENEFICIARY_ROLE_LIST.VIEWER) ||
+              this.$auth.check(BENEFICIARY_ROLE_LIST.CUSTOMER) ||
+              this.$auth.check(BENEFICIARY_ROLE_LIST.OPERATIONAL_MANAGER) ||
+              this.$auth.check(BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) ||
+              this.$auth.check(EXPERT_ROLE.EXPERT))
         },
         {
           name: routeNames.ADMINHOME,
