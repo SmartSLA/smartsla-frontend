@@ -20,7 +20,7 @@
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
     "hash-sum": "^1.0.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "marked": "^1.1.0",
     "material-design-icons-iconfont": "^5.0.1",
     "moment-business": "^3.0.1",
