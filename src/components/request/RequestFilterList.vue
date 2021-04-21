@@ -40,7 +40,8 @@ export default {
     ...mapGetters({
       storedFilters: "filter/getFilterList",
       ticketsCount: "ticket/getNbOfTickets",
-      filter: "ticket/filter"
+      filter: "ticket/filter",
+      getQueryAdditionalFilters: "filter/queryAdditionalFilters"
     }),
 
     filters() {
@@ -62,9 +63,15 @@ export default {
   },
   watch: {
     selectedFilter(filter) {
+      const query = { filter };
+
+      if (this.getQueryAdditionalFilters) {
+        query.a = this.getQueryAdditionalFilters;
+      }
+
       this.$store.dispatch("ticket/setFilter", filter);
       this.$store.dispatch("ticket/fetchTickets");
-      this.$router.push({ name: routeNames.REQUESTS, query: { filter } });
+      this.$router.push({ name: routeNames.REQUESTS, query });
     }
   }
 };

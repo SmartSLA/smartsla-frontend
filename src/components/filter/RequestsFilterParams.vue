@@ -19,7 +19,7 @@
               icon
               v-on="on"
               @click="hideFilter = true"
-              :class="{ 'v-btn--active': hideFilter == true || customFilters.length > 0 }"
+              :class="{ 'v-btn--active': hideFilter == true || additionalFilters.length > 0 }"
             >
               <v-icon :color="colorFiltersIcon"> filter_list </v-icon>
             </v-btn>
@@ -73,20 +73,20 @@
               </v-layout>
               <v-layout justify-space-between row>
                 <ul>
-                  <li v-for="(filter, key) in customFilters" :key="key" class="chips-elements">
+                  <li v-for="(filter, key) in additionalFilters" :key="key" class="chips-elements">
                     <v-chip @input="removeFilter(filter)" close
                       >{{ $t(getCategorieLabel(filter.category)) }} : {{ $t(capitalize(filter.value.value)) }}</v-chip
                     >
                   </li>
                 </ul>
               </v-layout>
-              <v-layout justify-space-between row v-show="customFilters.length">
+              <v-layout justify-space-between row>
                 <div>
                   <!-- <v-btn flat small color="primary">
                     <v-icon>add</v-icon>
                     <div class="ml-2 hidden-sm-and-down">{{ $t("Create new filter") }}</div>
                   </v-btn> -->
-                  <v-btn flat small color="warning" @click="resetFilters">
+                  <v-btn flat small color="warning" @click="resetFilters" v-if="!!additionalFilters.length">
                     <v-icon>refresh</v-icon>
                     <div class="ml-2 hidden-sm-and-down">{{ $t("reset") }}</div>
                   </v-btn>
@@ -119,10 +119,7 @@ export default {
 
   data() {
     return {
-      showStoredFilters: false,
       valuesFilter: null,
-      customFilters: [],
-      storedSelectionsFilter: null,
       hideSearchFilter: false,
       hideFilter: false,
       hasError: false,
@@ -133,9 +130,7 @@ export default {
   props: {
     categoriesFilter: null,
     categories: null,
-    keyValueFilter: false,
-    values: null,
-    savedFilters: null
+    values: null
   },
 
   methods: {
@@ -145,7 +140,7 @@ export default {
           category: this.categoriesFilter,
           value: this.valuesFilter
         };
-        this.customFilters.push(filter);
+        this.$store.dispatch("filter/addAdditionalFilter", filter);
       }
     },
 
@@ -154,14 +149,11 @@ export default {
     },
 
     removeFilter(filter) {
-      this.customFilters = this.customFilters.filter(customFilter => {
-        return JSON.stringify(customFilter) !== JSON.stringify(filter);
-      });
+      this.$store.dispatch("filter/removeAdditionalFilter", filter);
     },
 
     resetFilters() {
-      //TODO dispath action
-      this.customFilters = [];
+      this.$store.dispatch("filter/resetAdditionalFilter");
     },
 
     changeFilterCategory(selectedCategory) {
@@ -181,7 +173,7 @@ export default {
     },
 
     submitFilters() {
-      this.$emit("submitFilter", this.customFilters);
+      this.$emit("submitFilter");
     },
 
     capitalize(value) {
@@ -193,24 +185,12 @@ export default {
     }
   },
   computed: {
+    additionalFilters() {
+      return this.$store.getters["filter/additionalFilters"];
+    },
+
     colorFiltersIcon() {
-      return this.customFilters.length ? "primary" : "";
-    },
-
-    canUpdateFilter() {
-      if (this.storedSelectionsFilter && this.storedSelectionsFilter.items) {
-        if (this.storedSelectionsFilter.items.length !== this.customFilters.length) {
-          return true;
-        } else {
-          return JSON.stringify(this.storedSelectionsFilter.items) !== JSON.stringify(this.customFilters);
-        }
-      }
-
-      return false;
-    },
-
-    canDeleteFilter() {
-      return this.storedSelectionsFilter && this.storedSelectionsFilter.items;
+      return this.additionalFilters.length ? "primary" : "";
     },
 
     sizeFilterDevice() {

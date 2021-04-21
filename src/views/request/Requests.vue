@@ -317,7 +317,8 @@ export default {
       contractsList: "contract/getContracts",
       software: "software/getSoftwareList",
       userList: "users/getUsers",
-      getUserLanguage: "configuration/getUserLanguage"
+      getUserLanguage: "configuration/getUserLanguage",
+      getQueryAdditionalFilters: "filter/queryAdditionalFilters"
     }),
 
     contractsListFilter() {
@@ -407,7 +408,7 @@ export default {
           case "software":
             this.values = [...this.softwareList];
             break;
-          case "assignTo":
+          case "assignto":
             this.keyValueFilter = false;
             this.values = [...this.userList].map(user => ({ value: user.name, key: user.user }));
             break;
@@ -469,7 +470,7 @@ export default {
       let typesFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "type");
       let severityFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "severity");
       let softwareFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "software");
-      let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assignTo");
+      let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assignto");
       let responsibleFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "responsible");
       let transmitterFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "author");
       let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "contract");
@@ -674,19 +675,15 @@ export default {
       });
     },
 
-    submitFilter(filters) {
-      const params = filters.reduce((filterList, { category, value }) => {
-        const filterCategory = category.toLowerCase();
+    submitFilter() {
+      const query = {};
 
-        if (!filterList[filterCategory]) {
-          filterList[filterCategory] = [];
-        }
-        filterList[filterCategory].push(value.key);
+      if (this.$route.query.filter) {
+        query.filter = this.$route.query.filter;
+      }
 
-        return filterList;
-      }, {});
-
-      this.$router.push({ name: routeNames.REQUESTS, query: { a: JSON.stringify(params) } });
+      query.a = this.getQueryAdditionalFilters;
+      this.$router.push({ name: routeNames.REQUESTS, query });
     }
   },
   created() {
@@ -694,6 +691,17 @@ export default {
       this.$store.dispatch("currentUser/fetchUser");
     });
     this.$store.dispatch("ticket/setFilter", this.$route.query.filter);
+
+    if (this.$route.query.a) {
+      const filtersParams = JSON.parse(this.$route.query.a);
+      const filters = Object.entries(filtersParams).reduce((filtersList, [category, filters]) => {
+        filtersList = [...filtersList, ...filters.map(filter => ({ category, value: filter }))];
+        return filtersList;
+      }, []);
+
+      this.$store.dispatch("filter/resetAdditionalFilter");
+      filters.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
+    }
   },
   components: {
     ExportCsvButton,

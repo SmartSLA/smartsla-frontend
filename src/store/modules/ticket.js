@@ -35,12 +35,13 @@ const actions = {
     return Vue.axios.exportTickets("csv");
   },
 
-  fetchTickets: ({ commit, dispatch, state }) => {
+  fetchTickets: ({ commit, dispatch, state, rootGetters }) => {
     return Vue.axios
       .listTickets({
         limit: state.pagination.rowsPerPage === -1 ? "all" : state.pagination.rowsPerPage,
         offset: (state.pagination.page - 1) * state.pagination.rowsPerPage,
-        filter: state.filter
+        filter: state.filter,
+        a: rootGetters["filter/queryAdditionalFilters"]
       })
       .then(response => {
         dispatch("countTickets");
