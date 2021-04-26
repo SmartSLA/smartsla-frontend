@@ -43,7 +43,7 @@
                   ></FilterCategories>
                 </v-flex>
                 <v-flex xs12 sm5 md6 lg6 mb-4 v-if="hideFilter == true">
-                  <v-toolbar flat dense>
+                  <v-toolbar v-if="!showCustomFilters" flat dense>
                     <v-layout align-center justify-end>
                       <v-overflow-btn
                         :items="getSortedValues"
@@ -69,6 +69,11 @@
                       </v-tooltip>
                     </v-layout>
                   </v-toolbar>
+                  <FilterLoader
+                    v-else
+                    :savedFilters="customFilters"
+                    @filterLoaded="onCustomFilterSelected"
+                  ></FilterLoader>
                 </v-flex>
               </v-layout>
               <v-layout justify-space-between row>
@@ -82,10 +87,10 @@
               </v-layout>
               <v-layout justify-space-between row>
                 <div>
-                  <!-- <v-btn flat small color="primary">
+                  <v-btn flat small color="primary" @click="createNewFilter = true" v-if="!!additionalFilters.length">
                     <v-icon>add</v-icon>
                     <div class="ml-2 hidden-sm-and-down">{{ $t("Create new filter") }}</div>
-                  </v-btn> -->
+                  </v-btn>
                   <v-btn flat small color="warning" @click="resetFilters" v-if="!!additionalFilters.length">
                     <v-icon>refresh</v-icon>
                     <div class="ml-2 hidden-sm-and-down">{{ $t("reset") }}</div>
@@ -96,6 +101,11 @@
                     <div class="ml-2">{{ $t("Apply") }}</div>
                   </v-btn>
                 </div>
+                <filterModal
+                  v-if="createNewFilter"
+                  :open="createNewFilter"
+                  @closeModalFilter="closeModalFilter"
+                ></filterModal>
               </v-layout>
             </v-card-text>
           </v-card>
@@ -109,12 +119,16 @@ import FilterCategories from "@/components/filter/FilterCategories";
 import FilterSearchInput from "@/components/filter/FilterSearchInput";
 import { SORT_FILTERS_KEYS, CATEGORIES_REQUESTS_FILTERS } from "@/constants.js";
 import { capitalize } from "lodash";
+import FilterModal from "@/components/filter/FilterModal";
+import FilterLoader from "@/components/filter/FilterLoader";
 
 export default {
   name: "requestsFilterParams",
   components: {
     FilterCategories,
-    FilterSearchInput
+    FilterSearchInput,
+    FilterModal,
+    FilterLoader
   },
 
   data() {
@@ -123,14 +137,17 @@ export default {
       hideSearchFilter: false,
       hideFilter: false,
       hasError: false,
-      dialog: false
+      dialog: false,
+      createNewFilter: false,
+      showCustomFilters: false
     };
   },
 
   props: {
     categoriesFilter: null,
     categories: null,
-    values: null
+    values: null,
+    customFilters: null
   },
 
   methods: {
@@ -157,6 +174,7 @@ export default {
     },
 
     changeFilterCategory(selectedCategory) {
+      this.showCustomFilters = selectedCategory === "custom_filters";
       this.$emit("filterCategoryChanged", selectedCategory);
     },
 
@@ -182,6 +200,15 @@ export default {
 
     changeFilterSearch(searchTerm) {
       this.$emit("filterSearchInputChanged", searchTerm);
+    },
+
+    closeModalFilter() {
+      this.createNewFilter = false;
+    },
+
+    onCustomFilterSelected(selectedFilter) {
+      const { items } = selectedFilter;
+      items.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
     }
   },
   computed: {
@@ -203,6 +230,9 @@ export default {
       }
       return this.values;
     }
+  },
+  created() {
+    this.$store.dispatch("filter/fetchCustomFilters");
   }
 };
 </script>

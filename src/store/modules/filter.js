@@ -3,7 +3,8 @@ import Vue from "vue";
 function initialState() {
   return {
     filters: {},
-    additionalFilters: []
+    additionalFilters: [],
+    customFilters: {}
   };
 }
 
@@ -11,7 +12,9 @@ const types = {
   SET_FILTERS: "SET_FILTERS",
   ADD_ADDITIONAL_FILTER: "ADD_ADDITIONAL_FILTER",
   REMOVE_ADDITIONAL_FILTER: "REMOVE_ADDITIONAL_FILTER",
-  RESET_ADDITIONAL_FILTER: "RESET_ADDITIONAL_FILTER"
+  RESET_ADDITIONAL_FILTER: "RESET_ADDITIONAL_FILTER",
+  SET_CUSTOM_FILTERS: "SET_CUSTOM_FILTERS",
+  UPDATE_CUSTOM_FILTER: "UPDATE_CUSTOM_FILTER"
 };
 
 const actions = {
@@ -31,6 +34,16 @@ const actions = {
 
   resetAdditionalFilter: ({ commit }, filter) => {
     commit(types.RESET_ADDITIONAL_FILTER, filter);
+  },
+
+  fetchCustomFilters: ({ commit }) => {
+    return Vue.axios.listCustomFilters().then(({ data }) => commit(types.SET_CUSTOM_FILTERS, data));
+  },
+
+  createCustomFilter: ({ commit }, filter) => {
+    return Vue.axios.createCustomFilter(filter).then(({ data }) => {
+      return commit(types.UPDATE_CUSTOM_FILTER, data);
+    });
   }
 };
 
@@ -54,6 +67,16 @@ const mutations = {
 
   [types.RESET_ADDITIONAL_FILTER](state) {
     state.additionalFilters = [];
+  },
+
+  [types.SET_CUSTOM_FILTERS](state, customFiltersList) {
+    (customFiltersList || []).forEach(filter => Vue.set(state.customFilters, filter._id, filter));
+  },
+
+  [types.UPDATE_CUSTOM_FILTER](state, filter) {
+    const { _id } = filter;
+
+    Vue.set(state.customFilters, _id, filter);
   }
 };
 
@@ -73,7 +96,9 @@ const getters = {
     }, {});
 
     return JSON.stringify(query);
-  }
+  },
+  customFilters: state => Object.values(state.customFilters) || [],
+  getCustomFilter: state => id => state.customFilters[id]
 };
 
 export default {

@@ -13,6 +13,7 @@
           @submitFilter="submitFilter"
           @filterSearchInputChanged="changeSearchTerm"
           @filterReset="filterReset"
+          :customFilters="userCustomFilters"
         ></requestsFilterParams>
       </v-flex>
       <ExportCsvButton></ExportCsvButton>
@@ -239,11 +240,21 @@ export default {
       return (this.contractsList || []).map(({ _id, name }) => ({ id: _id, name }));
     },
 
+    userCustomFilters() {
+      return this.$store.getters["filter/customFilters"];
+    },
+
     categoriesRequestsFilters() {
-      return Object.keys(CATEGORIES_REQUESTS_FILTERS).map(category => ({
+      let categories = Object.keys(CATEGORIES_REQUESTS_FILTERS).map(category => ({
         key: category,
         value: this.$i18n.t(CATEGORIES_REQUESTS_FILTERS[category])
       }));
+
+      if (this.userCustomFilters) {
+        categories.unshift({ key: "custom_filters", value: this.$i18n.t("Stored selections") });
+      }
+
+      return categories;
     },
 
     typesRequestsFilters() {
