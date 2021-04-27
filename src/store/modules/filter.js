@@ -44,7 +44,8 @@ const mutations = {
   },
 
   [types.REMOVE_ADDITIONAL_FILTER](state, filter) {
-    const index = state.additionalFilters.findIndex(f => f.key === filter.key && f.value === filter.value);
+    const { id, name } = filter.value;
+    const index = state.additionalFilters.findIndex(({ value }) => value.id === id && value.name === name);
 
     if (index > -1) {
       Vue.delete(state.additionalFilters, index);

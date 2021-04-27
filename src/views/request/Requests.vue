@@ -242,52 +242,52 @@ export default {
       selections: [],
       types: [
         {
-          key: "Information",
-          value: this.$i18n.t("Information")
+          id: "Information",
+          name: this.$i18n.t("Information")
         },
         {
-          key: "Anomaly",
-          value: this.$i18n.t("Software anomaly")
+          id: "Anomaly",
+          name: this.$i18n.t("Software anomaly")
         },
         {
-          key: "Other",
-          value: this.$i18n.t("Other")
+          id: "Other",
+          name: this.$i18n.t("Other")
         }
       ],
       severities: [
         {
-          key: "Blocking",
-          value: this.$i18n.t("Blocking")
+          id: "Blocking",
+          name: this.$i18n.t("Blocking")
         },
         {
-          key: "Minor",
-          value: this.$i18n.t("Minor")
+          id: "Minor",
+          name: this.$i18n.t("Minor")
         },
         {
-          key: "Major",
-          value: this.$i18n.t("Major")
+          id: "Major",
+          name: this.$i18n.t("Major")
         }
       ],
       status: [
         {
-          key: "new",
-          value: this.$i18n.t("New")
+          id: "new",
+          name: this.$i18n.t("New")
         },
         {
-          key: "supported",
-          value: this.$i18n.t("Supported")
+          id: "supported",
+          name: this.$i18n.t("Supported")
         },
         {
-          key: "bypassed",
-          value: this.$i18n.t("Bypassed")
+          id: "bypassed",
+          name: this.$i18n.t("Bypassed")
         },
         {
-          key: "resolved",
-          value: this.$i18n.t("Resolved")
+          id: "resolved",
+          name: this.$i18n.t("Resolved")
         },
         {
-          key: "closed",
-          value: this.$i18n.t("Closed")
+          id: "closed",
+          name: this.$i18n.t("Closed")
         }
       ],
       keyValueFilter: false,
@@ -322,7 +322,7 @@ export default {
     }),
 
     contractsListFilter() {
-      return (this.contractsList || []).map(({ _id, name }) => ({ key: _id, value: name }));
+      return (this.contractsList || []).map(({ _id, name }) => ({ id: _id, name }));
     },
 
     categoriesRequestsFilters() {
@@ -333,7 +333,7 @@ export default {
     },
 
     softwareList() {
-      return (this.software || []).map(({ _id, name }) => ({ key: _id, value: name }));
+      return (this.software || []).map(({ _id, name }) => ({ id: _id, name }));
     },
 
     highlightSearch() {
@@ -410,15 +410,15 @@ export default {
             break;
           case "assignto":
             this.keyValueFilter = false;
-            this.values = [...this.userList].map(user => ({ value: user.name, key: user.user }));
+            this.values = [...this.userList].map(user => ({ name: user.name, id: user.user }));
             break;
           case "responsible":
             this.values = [...this.userList]
               .filter(user => user.type != "beneficiary")
-              .map(user => ({ value: user.name, key: user.user }));
+              .map(user => ({ name: user.name, id: user.user }));
             break;
           case "author":
-            this.values = [...this.userList].map(user => ({ value: user.name, key: user.user }));
+            this.values = [...this.userList].map(user => ({ name: user.name, id: user.user }));
             break;
           case "contract":
             this.values = [...this.contractsListFilter];

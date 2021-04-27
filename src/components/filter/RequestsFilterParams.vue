@@ -50,7 +50,7 @@
                         :label="$t('Values')"
                         :no-data-text="$t('No data available')"
                         v-model="valuesFilter"
-                        item-text="value"
+                        item-text="name"
                         return-object
                         flat
                         hide-details
@@ -75,7 +75,7 @@
                 <ul>
                   <li v-for="(filter, key) in additionalFilters" :key="key" class="chips-elements">
                     <v-chip @input="removeFilter(filter)" close
-                      >{{ $t(getCategorieLabel(filter.category)) }} : {{ $t(capitalize(filter.value.value)) }}</v-chip
+                      >{{ $t(getCategorieLabel(filter.category)) }} : {{ $t(capitalize(filter.value.name)) }}</v-chip
                     >
                   </li>
                 </ul>
@@ -199,7 +199,7 @@ export default {
 
     getSortedValues() {
       if (SORT_FILTERS_KEYS.includes(this.categoriesFilter)) {
-        return ([...this.values] || []).sort((a, b) => a.value.toLowerCase().localeCompare(b.value.toLowerCase()));
+        return ([...this.values] || []).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
       }
       return this.values;
     }
