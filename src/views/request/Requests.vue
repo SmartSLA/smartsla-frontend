@@ -158,7 +158,10 @@ import {
   REQUEST_TYPE,
   TICKET_STATUS,
   CNS_TYPES,
-  CATEGORIES_REQUESTS_FILTERS
+  CATEGORIES_REQUESTS_FILTERS,
+  TYPES_REQUESTS_FILTERS,
+  SEVERITIES_REQUESTS_FILTERS,
+  STATUS_REQUESTS_FILTERS
 } from "@/constants.js";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
@@ -197,99 +200,10 @@ export default {
         { text: this.$i18n.t("Status"), value: "status" },
         { text: this.$i18n.t("Time before next step"), value: "cns_type", sortable: false }
       ],
-      categories: [
-        {
-          key: "stored_selections",
-          value: this.$i18n.t("Stored selections")
-        },
-        { divider: true },
-        {
-          key: "Type",
-          value: this.$i18n.t("Type")
-        },
-        {
-          key: "Severity",
-          value: this.$i18n.t("Severity")
-        },
-        {
-          key: "Software",
-          value: this.$i18n.t("Software")
-        },
-        {
-          key: "Assign to",
-          value: this.$i18n.t("Assigned to")
-        },
-        {
-          key: "Responsible",
-          value: this.$i18n.t("Responsible")
-        },
-        {
-          key: "Transmitter",
-          value: this.$i18n.t("Author")
-        },
-        {
-          key: "Client / Contract",
-          value: this.$i18n.t("Client / Contract")
-        },
-        {
-          key: "Status",
-          value: this.$i18n.t("Status")
-        }
-      ],
       categoriesFilter: "",
       valuesFilter: "",
       values: [],
       selections: [],
-      types: [
-        {
-          id: "Information",
-          name: this.$i18n.t("Information")
-        },
-        {
-          id: "Anomaly",
-          name: this.$i18n.t("Software anomaly")
-        },
-        {
-          id: "Other",
-          name: this.$i18n.t("Other")
-        }
-      ],
-      severities: [
-        {
-          id: "Blocking",
-          name: this.$i18n.t("Blocking")
-        },
-        {
-          id: "Minor",
-          name: this.$i18n.t("Minor")
-        },
-        {
-          id: "Major",
-          name: this.$i18n.t("Major")
-        }
-      ],
-      status: [
-        {
-          id: "new",
-          name: this.$i18n.t("New")
-        },
-        {
-          id: "supported",
-          name: this.$i18n.t("Supported")
-        },
-        {
-          id: "bypassed",
-          name: this.$i18n.t("Bypassed")
-        },
-        {
-          id: "resolved",
-          name: this.$i18n.t("Resolved")
-        },
-        {
-          id: "closed",
-          name: this.$i18n.t("Closed")
-        }
-      ],
       keyValueFilter: false,
       customFilters: [],
       newFilterName: "",
@@ -329,6 +243,27 @@ export default {
       return Object.keys(CATEGORIES_REQUESTS_FILTERS).map(category => ({
         key: category,
         value: this.$i18n.t(CATEGORIES_REQUESTS_FILTERS[category])
+      }));
+    },
+
+    typesRequestsFilters() {
+      return Object.keys(TYPES_REQUESTS_FILTERS).map(type => ({
+        id: type,
+        name: this.$i18n.t(TYPES_REQUESTS_FILTERS[type])
+      }));
+    },
+
+    severitiesRequestsFilters() {
+      return Object.keys(SEVERITIES_REQUESTS_FILTERS).map(severity => ({
+        id: severity,
+        name: this.$i18n.t(SEVERITIES_REQUESTS_FILTERS[severity])
+      }));
+    },
+
+    statusRequestsFilters() {
+      return Object.keys(STATUS_REQUESTS_FILTERS).map(status => ({
+        id: status,
+        name: this.$i18n.t(STATUS_REQUESTS_FILTERS[status])
       }));
     },
 
@@ -400,10 +335,10 @@ export default {
       try {
         switch (this.categoriesFilter) {
           case "type":
-            this.values = this.types;
+            this.values = this.typesRequestsFilters;
             break;
           case "severity":
-            this.values = this.severities;
+            this.values = this.severitiesRequestsFilters;
             break;
           case "software":
             this.values = [...this.softwareList];
@@ -424,7 +359,7 @@ export default {
             this.values = [...this.contractsListFilter];
             break;
           case "status":
-            this.values = this.status;
+            this.values = this.statusRequestsFilters;
             break;
         }
       } catch (err) {

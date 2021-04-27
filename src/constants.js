@@ -229,3 +229,23 @@ export const CATEGORIES_REQUESTS_FILTERS = {
   author: "Author",
   contract: "Client / Contract"
 };
+
+export const TYPES_REQUESTS_FILTERS = {
+  information: "Information",
+  anomaly: "Software anomaly",
+  other: "Other"
+};
+
+export const SEVERITIES_REQUESTS_FILTERS = {
+  blocking: "Blocking",
+  minor: "Minor",
+  major: "Major"
+};
+
+export const STATUS_REQUESTS_FILTERS = {
+  new: "New",
+  supported: "Supported",
+  bypassed: "Bypassed",
+  resolved: "Resolved",
+  closed: "Closed"
+};
