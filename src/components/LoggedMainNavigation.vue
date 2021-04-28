@@ -88,7 +88,8 @@ export default {
       contributionsSize: "contribution/getContributionsCount",
       filters: "filter/getFilterList",
       configuration: "configuration/getConfiguration",
-      contracts: "contract/getContracts"
+      contracts: "contract/getContracts",
+      getQueryAdditionalFilters: "filter/queryAdditionalFilters"
     }),
 
     filteredMenuItems() {
@@ -141,10 +142,11 @@ export default {
           text: this.$i18n.t("Requests"),
           icon: "format_list_numbered",
           show: true,
+          query: { a: this.getQueryAdditionalFilters },
           subMenuItems: this.filters.map(filter => ({
             text: this.$i18n.t(filter.name),
             name: routeNames.REQUESTS,
-            query: `?filter=${filter._id}`
+            query: `?filter=${filter._id}&a=${this.getQueryAdditionalFilters}`
           }))
         },
         {
@@ -215,11 +217,17 @@ export default {
     },
 
     getMenuPath(item) {
+      const menuPath = { name: item.path || item.name };
+
       if (item.name && item.name.params) {
         return item.name;
       }
 
-      return { name: item.path || item.name };
+      if (item.query) {
+        menuPath.query = item.query;
+      }
+
+      return menuPath;
     }
   },
   created() {

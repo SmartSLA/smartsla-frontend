@@ -217,4 +217,35 @@ export const DASHBOARD_GROUP_BY_FILTER = ["day", "week", "month", "quarter", "ye
 
 export const TICKET_DRAFT_STORAGE_KEY_PREFIX = "ticketDraft_";
 
-export const SORT_FILTERS_KEYS = ["Software", "Assign to", "Responsible", "Transmitter", "Client / Contract"];
+export const SORT_FILTERS_KEYS = ["software", "Assignto", "responsible", "author", "contract"];
+
+export const CATEGORIES_REQUESTS_FILTERS = {
+  type: "Type",
+  status: "Status",
+  severity: "Severity",
+  software: "Software",
+  assignto: "Assign to",
+  responsible: "Responsible",
+  author: "Author",
+  contract: "Client / Contract"
+};
+
+export const TYPES_REQUESTS_FILTERS = {
+  information: "Information",
+  anomaly: "Software anomaly",
+  other: "Other"
+};
+
+export const SEVERITIES_REQUESTS_FILTERS = {
+  blocking: "Blocking",
+  minor: "Minor",
+  major: "Major"
+};
+
+export const STATUS_REQUESTS_FILTERS = {
+  new: "New",
+  supported: "Supported",
+  bypassed: "Bypassed",
+  resolved: "Resolved",
+  closed: "Closed"
+};
