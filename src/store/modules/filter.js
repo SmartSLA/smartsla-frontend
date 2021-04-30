@@ -98,6 +98,8 @@ const getters = {
     return JSON.stringify(query);
   },
   customFilters: state => Object.values(state.customFilters) || [],
+  customFiltersByType: state => type =>
+    Object.values(state.customFilters || []).filter(filter => filter.objectType === type),
   getCustomFilter: state => id => state.customFilters[id]
 };
 

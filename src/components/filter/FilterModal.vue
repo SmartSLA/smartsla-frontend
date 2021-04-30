@@ -29,7 +29,8 @@
 export default {
   name: "filterModal",
   props: {
-    open: false
+    open: false,
+    type: { type: String }
   },
   data: () => ({
     filter: null
@@ -44,7 +45,8 @@ export default {
       const userFilter = {
         items: this.additionalFilters,
         name: this.filter,
-        user: this.$store.state.currentUser.user._id
+        user: this.$store.state.currentUser.user._id,
+        objectType: this.type
       };
 
       this.$store
