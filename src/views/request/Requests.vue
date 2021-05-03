@@ -259,21 +259,21 @@ export default {
 
     typesRequestsFilters() {
       return Object.keys(TYPES_REQUESTS_FILTERS).map(type => ({
-        id: type,
+        id: this.capitalize(type),
         name: this.$i18n.t(TYPES_REQUESTS_FILTERS[type])
       }));
     },
 
     severitiesRequestsFilters() {
       return Object.keys(SEVERITIES_REQUESTS_FILTERS).map(severity => ({
-        id: severity,
+        id: this.capitalize(severity),
         name: this.$i18n.t(SEVERITIES_REQUESTS_FILTERS[severity])
       }));
     },
 
     statusRequestsFilters() {
       return Object.keys(STATUS_REQUESTS_FILTERS).map(status => ({
-        id: status,
+        id: this.capitalize(status),
         name: this.$i18n.t(STATUS_REQUESTS_FILTERS[status])
       }));
     },

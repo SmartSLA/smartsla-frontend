@@ -35,14 +35,14 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <v-layout :column="!sizeFilterDevice">
+              <v-layout :class="{ 'mb-4': !showSelectedFilter }" :column="!sizeFilterDevice">
                 <v-flex xs12 md6 lg6 v-if="hideFilter == true">
                   <FilterCategories
                     :categories="categories"
                     @filterCategoryChanged="changeFilterCategory"
                   ></FilterCategories>
                 </v-flex>
-                <v-flex xs12 sm5 md6 lg6 mb-4 v-if="hideFilter == true">
+                <v-flex xs12 sm5 md6 lg6 v-if="hideFilter == true">
                   <v-toolbar v-if="!showCustomFilters" flat dense>
                     <v-layout align-center justify-end>
                       <v-overflow-btn
@@ -76,14 +76,45 @@
                   ></FilterLoader>
                 </v-flex>
               </v-layout>
+
+              <v-layout row v-if="showSelectedFilter">
+                <div class="font-weight-bold pl-2">
+                  <span>{{ currentCustomFilter.name }}</span>
+                  <v-menu>
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon v-on="on">
+                        <v-badge right v-model="canUpdateCustomFilter">
+                          <template v-slot:badge>
+                            <v-icon dark>notifications</v-icon>
+                          </template>
+                          <v-icon color="grey">mdi-dots-vertical</v-icon>
+                        </v-badge>
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-tile :disabled="!canUpdateCustomFilter" @click="updateCustomFilter()">
+                        <v-list-tile-title>{{ $t("save") }}</v-list-tile-title>
+                      </v-list-tile>
+                      <v-list-tile @click="deleteCustomFilter()">
+                        <v-list-tile-title>
+                          <span>{{ $t("Delete filter") }}</span>
+                        </v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </v-layout>
+
               <v-layout justify-space-between row>
-                <ul>
-                  <li v-for="(filter, key) in additionalFilters" :key="key" class="chips-elements">
-                    <v-chip @input="removeFilter(filter)" close
-                      >{{ $t(getCategorieLabel(filter.category)) }} : {{ $t(capitalize(filter.value.name)) }}</v-chip
-                    >
-                  </li>
-                </ul>
+                <div>
+                  <ul>
+                    <li v-for="(filter, key) in additionalFilters" :key="key" class="chips-elements">
+                      <v-chip @input="removeFilter(filter)" close
+                        >{{ $t(getCategorieLabel(filter.category)) }} : {{ $t(capitalize(filter.value.name)) }}</v-chip
+                      >
+                    </li>
+                  </ul>
+                </div>
               </v-layout>
               <v-layout justify-space-between row>
                 <div>
@@ -103,6 +134,7 @@
                 </div>
                 <filterModal
                   v-if="createNewFilter"
+                  type="REQUEST"
                   :open="createNewFilter"
                   @closeModalFilter="closeModalFilter"
                 ></filterModal>
@@ -171,6 +203,7 @@ export default {
 
     resetFilters() {
       this.$store.dispatch("filter/resetAdditionalFilter");
+      this.$store.dispatch("filter/removeCurrentCustomFilter");
     },
 
     changeFilterCategory(selectedCategory) {
@@ -208,7 +241,53 @@ export default {
 
     onCustomFilterSelected(selectedFilter) {
       const { items } = selectedFilter;
+
+      this.resetFilters();
+      this.$store.dispatch("filter/setCurrentCustomFilter", selectedFilter);
       items.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
+    },
+
+    updateCustomFilter() {
+      const filterUpdate = {
+        ...this.currentCustomFilter,
+        items: this.additionalFilters
+      };
+
+      this.$store
+        .dispatch("filter/updateCustomFilter", filterUpdate)
+        .then(() => {
+          this.$store.dispatch("filter/setCurrentCustomFilter", filterUpdate);
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Filter updated"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+    },
+
+    deleteCustomFilter() {
+      this.$store
+        .dispatch("filter/deleteCustomFilter", this.currentCustomFilter._id)
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Filter deleted"),
+            color: "success"
+          });
+        })
+        .catch(error => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: error.response.data.error.details,
+            color: "error"
+          });
+        });
+
+      this.$store.dispatch("filter/removeCurrentCustomFilter");
+      this.resetFilters();
     }
   },
   computed: {
@@ -229,6 +308,28 @@ export default {
         return ([...this.values] || []).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
       }
       return this.values;
+    },
+
+    canUpdateCustomFilter() {
+      if (this.currentCustomFilter) {
+        if (this.currentCustomFilter.items.length !== this.additionalFilters.length) {
+          return true;
+        } else {
+          return JSON.stringify(this.currentCustomFilter.items) !== JSON.stringify(this.additionalFilters);
+        }
+      }
+
+      return false;
+    },
+
+    currentCustomFilter() {
+      return this.$store.getters["filter/getCurrentCustomFilter"];
+    },
+
+    showSelectedFilter() {
+      return (
+        this.currentCustomFilter && !!Object.keys(this.currentCustomFilter).length && !!this.additionalFilters.length
+      );
     }
   },
   created() {
