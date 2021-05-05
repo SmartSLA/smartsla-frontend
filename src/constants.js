@@ -234,6 +234,7 @@ export const CATEGORIES_REQUESTS_FILTERS = {
 export const TYPES_REQUESTS_FILTERS = {
   information: "Information",
   anomaly: "Software anomaly",
+  administration: "Administration",
   other: "Other"
 };
 
