@@ -227,7 +227,8 @@ export const CATEGORIES_REQUESTS_FILTERS = {
   assignto: "Assign to",
   responsible: "Responsible",
   author: "Author",
-  contract: "Client / Contract"
+  contract: "Contract",
+  client: "Client"
 };
 
 export const TYPES_REQUESTS_FILTERS = {

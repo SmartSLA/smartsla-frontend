@@ -233,8 +233,13 @@ export default {
       software: "software/getSoftwareList",
       userList: "users/getUsers",
       getUserLanguage: "configuration/getUserLanguage",
-      getQueryAdditionalFilters: "filter/queryAdditionalFilters"
+      getQueryAdditionalFilters: "filter/queryAdditionalFilters",
+      clientList: "client/getClients"
     }),
+
+    clientsListFilter() {
+      return (this.clientList || []).map(({ _id, name }) => ({ id: _id, name }));
+    },
 
     contractsListFilter() {
       return (this.contractsList || []).map(({ _id, name }) => ({ id: _id, name }));
@@ -365,6 +370,9 @@ export default {
             break;
           case "author":
             this.values = [...this.userList].map(user => ({ name: user.name, id: user.user }));
+            break;
+          case "client":
+            this.values = [...this.clientsListFilter];
             break;
           case "contract":
             this.values = [...this.contractsListFilter];
@@ -636,6 +644,7 @@ export default {
     this.$auth.ready(() => {
       this.$store.dispatch("currentUser/fetchUser");
     });
+    this.$store.dispatch("client/fetchClients");
     this.$store.dispatch("ticket/setFilter", this.$route.query.filter);
 
     if (this.$route.query.a) {
