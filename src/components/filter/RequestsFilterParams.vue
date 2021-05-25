@@ -134,7 +134,7 @@
                 </div>
                 <filterModal
                   v-if="createNewFilter"
-                  type="REQUEST"
+                  :type="objectType"
                   :open="createNewFilter"
                   @closeModalFilter="closeModalFilter"
                 ></filterModal>
@@ -179,7 +179,8 @@ export default {
     categoriesFilter: null,
     categories: null,
     values: null,
-    customFilters: null
+    customFilters: null,
+    objectType: String
   },
 
   methods: {
@@ -203,7 +204,7 @@ export default {
 
     resetFilters() {
       this.$store.dispatch("filter/resetAdditionalFilter");
-      this.$store.dispatch("filter/removeCurrentCustomFilter");
+      this.$store.dispatch("filter/removeCurrentCustomFilter", this.objectType);
     },
 
     changeFilterCategory(selectedCategory) {
@@ -243,7 +244,7 @@ export default {
       const { items } = selectedFilter;
 
       this.resetFilters();
-      this.$store.dispatch("filter/setCurrentCustomFilter", selectedFilter);
+      this.$store.dispatch("filter/setCurrentCustomFilter", { objectType: this.objectType, filter: selectedFilter });
       items.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
     },
 
@@ -256,7 +257,7 @@ export default {
       this.$store
         .dispatch("filter/updateCustomFilter", filterUpdate)
         .then(() => {
-          this.$store.dispatch("filter/setCurrentCustomFilter", filterUpdate);
+          this.$store.dispatch("filter/setCurrentCustomFilter", { objectType: this.objectType, filter: filterUpdate });
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Filter updated"),
             color: "success"
@@ -286,7 +287,7 @@ export default {
           });
         });
 
-      this.$store.dispatch("filter/removeCurrentCustomFilter");
+      this.$store.dispatch("filter/removeCurrentCustomFilter", this.objectType);
       this.resetFilters();
     }
   },
@@ -323,7 +324,7 @@ export default {
     },
 
     currentCustomFilter() {
-      return this.$store.getters["filter/getCurrentCustomFilter"];
+      return this.$store.getters["filter/getCurrentCustomFilter"](this.objectType);
     },
 
     showSelectedFilter() {

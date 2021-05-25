@@ -64,12 +64,12 @@ const actions = {
     });
   },
 
-  setCurrentCustomFilter: ({ commit }, filter) => {
-    commit(types.SET_CURRENT_CUSTOM_FILTERS, filter);
+  setCurrentCustomFilter: ({ commit }, payload) => {
+    commit(types.SET_CURRENT_CUSTOM_FILTERS, payload);
   },
 
-  removeCurrentCustomFilter: ({ commit }) => {
-    commit(types.REMOVE_CURRENT_CUSTOM_FILTERS);
+  removeCurrentCustomFilter: ({ commit }, objectType) => {
+    commit(types.REMOVE_CURRENT_CUSTOM_FILTERS, objectType);
   }
 };
 
@@ -109,12 +109,12 @@ const mutations = {
     Vue.delete(state.customFilters, filterId);
   },
 
-  [types.SET_CURRENT_CUSTOM_FILTERS](state, currentCustomFilter) {
-    state.currentCustomFilter = currentCustomFilter;
+  [types.SET_CURRENT_CUSTOM_FILTERS](state, { objectType, filter }) {
+    Vue.set(state.currentCustomFilter, objectType, filter);
   },
 
-  [types.REMOVE_CURRENT_CUSTOM_FILTERS](state) {
-    state.currentCustomFilter = {};
+  [types.REMOVE_CURRENT_CUSTOM_FILTERS](state, objectType) {
+    Vue.delete(state.currentCustomFilter, objectType);
   }
 };
 
@@ -139,7 +139,7 @@ const getters = {
   customFiltersByType: state => type =>
     Object.values(state.customFilters || []).filter(filter => filter.objectType === type),
   getCustomFilter: state => id => state.customFilters[id],
-  getCurrentCustomFilter: state => state.currentCustomFilter
+  getCurrentCustomFilter: state => objectType => state.currentCustomFilter[objectType]
 };
 
 export default {

@@ -14,6 +14,7 @@
           @filterSearchInputChanged="changeSearchTerm"
           @filterReset="filterReset"
           :customFilters="customFiltersByType"
+          objectType="REQUEST"
         ></requestsFilterParams>
       </v-flex>
       <ExportCsvButton></ExportCsvButton>
@@ -656,6 +657,8 @@ export default {
 
       this.$store.dispatch("filter/resetAdditionalFilter");
       filters.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
+    } else {
+      this.$store.dispatch("filter/resetAdditionalFilter");
     }
   },
   components: {

@@ -29,11 +29,11 @@ export const CONTRIBUTION_STATUS = {
   REJECTED: "rejected"
 };
 
-export const CONTRIBUTION_FILTERS = {
-  TYPE: "Type",
-  SOFTWARE: "Software",
-  AUTHOR: "Author",
-  STATUS: "Status"
+export const CATEGORIES_CONTRIBUTIONS_FILTERS = {
+  type: "Type",
+  status: "Status",
+  software: "Software",
+  author: "Author"
 };
 
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
@@ -63,7 +63,11 @@ export const CLIENT_STATUS = {
   INACTIVE: "inactive"
 };
 
-export const CONTRIBUTION_TYPES = ["Backport", "Correction", "Evolution"];
+export const CONTRIBUTION_TYPES = {
+  backport: "Backport",
+  correction: "Correction",
+  evolution: "Evolution"
+};
 
 export const CONTRIBUTION_LINK_TYPES = ["Patch link", "binary link with the path", "Other"];
 
