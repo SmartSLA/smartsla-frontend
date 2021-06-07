@@ -155,7 +155,7 @@ import FilterModal from "@/components/filter/FilterModal";
 import FilterLoader from "@/components/filter/FilterLoader";
 
 export default {
-  name: "requestsFilterParams",
+  name: "additionalFilters",
   components: {
     FilterCategories,
     FilterSearchInput,

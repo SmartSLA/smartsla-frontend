@@ -5,7 +5,7 @@
         <span>{{ $t("Contributions") }}</span>
       </v-flex>
       <v-flex xs6 class="ml-auto">
-        <requestsFilterParams
+        <additionalFilters
           :categories="categories"
           :values="filterValues"
           :categoriesFilter="selectedCategory"
@@ -15,7 +15,7 @@
           @filterReset="filterReset"
           :customFilters="customFiltersByType"
           objectType="CONTRIBUTION"
-        ></requestsFilterParams>
+        ></additionalFilters>
       </v-flex>
     </v-layout>
     <v-data-table
@@ -77,7 +77,6 @@
 
 <script>
 import contributionStatus from "@/components/contribution/ContributionStatus";
-import dataTableFilter from "@/components/filter/Filter";
 import { CONTRIBUTION_TYPES, CONTRIBUTION_STATUS, USER_TYPE, CATEGORIES_CONTRIBUTIONS_FILTERS } from "@/constants";
 import { getContributionStatus } from "@/services/helpers/contribution";
 import { isInsensitiveEqual, InsensitiveInclude } from "@/services/helpers/string";
@@ -85,7 +84,7 @@ import { mapGetters, createNamespacedHelpers } from "vuex";
 import { LOCALE } from "@/i18n/constants";
 import { routeNames } from "@/router";
 const { mapState } = createNamespacedHelpers("contribution");
-import requestsFilterParams from "@/components/filter/RequestsFilterParams";
+import additionalFilters from "@/components/filter/AdditionalFilters";
 
 export default {
   data() {
@@ -271,8 +270,7 @@ export default {
   },
   components: {
     contributionStatus,
-    dataTableFilter,
-    requestsFilterParams
+    additionalFilters
   },
   watch: {
     pagination: {
