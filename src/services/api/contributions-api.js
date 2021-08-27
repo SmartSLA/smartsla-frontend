@@ -1,6 +1,6 @@
 export default {
-  getContributions({ limit = 50, offset = 0 }) {
-    return this.get(`/ticketing/api/contributions`, { params: { limit, offset } });
+  getContributions({ limit = 50, offset = 0, a }) {
+    return this.get(`/ticketing/api/contributions`, { params: { limit, offset, a } });
   },
 
   getContributionById(contributionId) {

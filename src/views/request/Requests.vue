@@ -5,7 +5,7 @@
         <request-filter-list></request-filter-list>
       </v-flex>
       <v-flex xs6 class="ml-auto">
-        <requestsFilterParams
+        <additionalFilters
           :categories="categoriesRequestsFilters"
           :values="values"
           :categoriesFilter="categoriesFilter"
@@ -14,7 +14,8 @@
           @filterSearchInputChanged="changeSearchTerm"
           @filterReset="filterReset"
           :customFilters="customFiltersByType"
-        ></requestsFilterParams>
+          objectType="REQUEST"
+        ></additionalFilters>
       </v-flex>
       <ExportCsvButton></ExportCsvButton>
     </v-layout>
@@ -151,7 +152,6 @@ import { capitalize } from "lodash";
 import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
-import dataTableFilter from "@/components/filter/Filter";
 import {
   OSSA_IDS,
   ANOMALY_CNS_STATUS,
@@ -170,7 +170,7 @@ import ExportCsvButton from "@/components/request/ExportCsvButton";
 const { mapState } = createNamespacedHelpers("ticket");
 import { LOCALE } from "@/i18n/constants";
 import RequestFilterList from "@/components/request/RequestFilterList";
-import requestsFilterParams from "@/components/filter/RequestsFilterParams";
+import additionalFilters from "@/components/filter/AdditionalFilters";
 
 export default {
   data() {
@@ -656,17 +656,18 @@ export default {
 
       this.$store.dispatch("filter/resetAdditionalFilter");
       filters.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
+    } else {
+      this.$store.dispatch("filter/resetAdditionalFilter");
     }
   },
   components: {
     ExportCsvButton,
     "cns-progress-bar": cnsProgressBar,
     SoftwareListDetail,
-    dataTableFilter,
     ClientContractLinks,
     OrganizationLabel,
     RequestFilterList,
-    requestsFilterParams
+    additionalFilters
   }
 };
 </script>

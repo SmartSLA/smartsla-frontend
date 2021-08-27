@@ -1,18 +1,23 @@
 <template>
   <v-container>
-    <div>
-      <span>{{ $t("Contributions") }}</span>
-    </div>
-    <dataTableFilter
-      :categories="categories"
-      :values="filterValues"
-      :categoriesFilter="selectedCategory"
-      :keyValueFilter="keyValueFilter"
-      @customFiltersUpdated="updateCustomFilters"
-      @filterCategoryChanged="changeFilterCategory"
-      @filterSearchInputChanged="changeSearchTerm"
-      @filterReset="filterReset"
-    ></dataTableFilter>
+    <v-layout align-center justify-space-between row mb-2>
+      <v-flex xs4 pt-4>
+        <span>{{ $t("Contributions") }}</span>
+      </v-flex>
+      <v-flex xs6 class="ml-auto">
+        <additionalFilters
+          :categories="categories"
+          :values="filterValues"
+          :categoriesFilter="selectedCategory"
+          @filterCategoryChanged="changeFilterCategory"
+          @submitFilter="submitFilter"
+          @filterSearchInputChanged="changeSearchTerm"
+          @filterReset="filterReset"
+          :customFilters="customFiltersByType"
+          objectType="CONTRIBUTION"
+        ></additionalFilters>
+      </v-flex>
+    </v-layout>
     <v-data-table
       :loading="loading"
       :total-items="contributionsCount"
@@ -72,14 +77,14 @@
 
 <script>
 import contributionStatus from "@/components/contribution/ContributionStatus";
-import dataTableFilter from "@/components/filter/Filter";
-import { CONTRIBUTION_TYPES, CONTRIBUTION_STATUS, USER_TYPE, CONTRIBUTION_FILTERS } from "@/constants";
+import { CONTRIBUTION_TYPES, CONTRIBUTION_STATUS, USER_TYPE, CATEGORIES_CONTRIBUTIONS_FILTERS } from "@/constants";
 import { getContributionStatus } from "@/services/helpers/contribution";
 import { isInsensitiveEqual, InsensitiveInclude } from "@/services/helpers/string";
 import { mapGetters, createNamespacedHelpers } from "vuex";
 import { LOCALE } from "@/i18n/constants";
-
+import { routeNames } from "@/router";
 const { mapState } = createNamespacedHelpers("contribution");
+import additionalFilters from "@/components/filter/AdditionalFilters";
 
 export default {
   data() {
@@ -95,15 +100,6 @@ export default {
         { text: this.$i18n.t("Created"), value: "creation" },
         { text: this.$i18n.t("Status"), value: "status" }
       ],
-      categories: Object.keys(CONTRIBUTION_FILTERS).map(category => ({
-        key: CONTRIBUTION_FILTERS[category],
-        value: this.$i18n.t(CONTRIBUTION_FILTERS[category])
-      })),
-      statusList: Object.keys(CONTRIBUTION_STATUS).map(statusName => ({
-        key: CONTRIBUTION_STATUS[statusName],
-        value: this.$i18n.t(CONTRIBUTION_STATUS[statusName])
-      })),
-      software: [],
       selectedCategory: null,
       keyValueFilter: false,
       filterValues: [],
@@ -125,6 +121,13 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+
+    submitFilter() {
+      const query = {};
+
+      query.a = this.getQueryAdditionalFilters;
+      this.$router.push({ name: routeNames.CONTRIBUTIONS, query });
     },
 
     visitContribution(id) {
@@ -153,8 +156,45 @@ export default {
     ...mapGetters({
       contributionsCount: "contribution/getContributionsCount",
       contributions: "contribution/getContributions",
-      getUserLanguage: "configuration/getUserLanguage"
+      getUserLanguage: "configuration/getUserLanguage",
+      software: "software/getSoftwareList",
+      getQueryAdditionalFilters: "filter/queryAdditionalFilters"
     }),
+
+    customFiltersByType() {
+      return this.$store.getters["filter/customFiltersByType"]("CONTRIBUTION");
+    },
+
+    categories() {
+      let categories = Object.keys(CATEGORIES_CONTRIBUTIONS_FILTERS).map(category => ({
+        key: category,
+        value: this.$i18n.t(CATEGORIES_CONTRIBUTIONS_FILTERS[category])
+      }));
+
+      if (this.customFiltersByType) {
+        categories.unshift({ key: "custom_filters", value: this.$i18n.t("Stored selections") });
+      }
+
+      return categories;
+    },
+
+    softwareList() {
+      return (this.software || []).map(({ _id, name }) => ({ id: _id, name }));
+    },
+
+    statusList() {
+      return Object.keys(CONTRIBUTION_STATUS).map(statusName => ({
+        id: CONTRIBUTION_STATUS[statusName],
+        name: this.$i18n.t(CONTRIBUTION_STATUS[statusName])
+      }));
+    },
+
+    typeList() {
+      return Object.keys(CONTRIBUTION_TYPES).map(type => ({
+        id: type,
+        name: this.$i18n.t(CONTRIBUTION_TYPES[type])
+      }));
+    },
 
     highlightSearch() {
       return this.search || "";
@@ -175,26 +215,27 @@ export default {
 
     contributionList() {
       let contributionList = [...this.contributions];
+      const { type, software, author, status } = CATEGORIES_CONTRIBUTIONS_FILTERS;
 
       if (this.customFilters.length) {
         this.customFilters.map(customFilter => {
-          if (customFilter.category === CONTRIBUTION_FILTERS.TYPE) {
+          if (customFilter.category === type) {
             contributionList = contributionList.filter(contribution => contribution.type === customFilter.value);
           }
 
-          if (customFilter.category === CONTRIBUTION_FILTERS.SOFTWARE) {
+          if (customFilter.category === software) {
             contributionList = contributionList.filter(
               contribution => contribution.software && isInsensitiveEqual(contribution.software, customFilter.value)
             );
           }
 
-          if (customFilter.category === CONTRIBUTION_FILTERS.AUTHOR) {
+          if (customFilter.category === author) {
             contributionList = contributionList.filter(
               contribution => contribution.author && isInsensitiveEqual(contribution.author, customFilter.value)
             );
           }
 
-          if (customFilter.category === CONTRIBUTION_FILTERS.STATUS) {
+          if (customFilter.category === status) {
             contributionList = contributionList.filter(
               contribution => getContributionStatus(contribution.status) === customFilter.value
             );
@@ -219,7 +260,9 @@ export default {
     },
 
     users() {
-      return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
+      const users = this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
+
+      return (users || []).map(user => ({ name: user.name, id: user.user }));
     },
     userLanguage() {
       return this.getUserLanguage || LOCALE;
@@ -227,7 +270,7 @@ export default {
   },
   components: {
     contributionStatus,
-    dataTableFilter
+    additionalFilters
   },
   watch: {
     pagination: {
@@ -240,19 +283,19 @@ export default {
     selectedCategory() {
       try {
         switch (this.selectedCategory) {
-          case CONTRIBUTION_FILTERS.TYPE:
+          case "type":
             this.keyValueFilter = true;
-            this.filterValues = CONTRIBUTION_TYPES;
+            this.filterValues = [...this.typeList];
             break;
-          case CONTRIBUTION_FILTERS.SOFTWARE:
+          case "software":
             this.keyValueFilter = false;
-            this.filterValues = [...this.software];
+            this.filterValues = [...this.softwareList];
             break;
-          case CONTRIBUTION_FILTERS.AUTHOR:
+          case "author":
             this.keyValueFilter = false;
             this.filterValues = [...this.users];
             break;
-          case CONTRIBUTION_FILTERS.STATUS:
+          case "status":
             this.keyValueFilter = true;
             this.filterValues = [...this.statusList];
             break;
@@ -273,19 +316,23 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$http
-      .listSoftware({})
-      .then(({ data }) => {
-        this.software = data.map(software => software.name);
-      })
-      .catch(() => {
-        this.$store.dispatch("ui/displaySnackbar", {
-          color: "error",
-          message: this.$i18n.t("Failed to fetch softwares")
-        });
-      });
+  created() {
     this.$store.dispatch("users/fetchUsers");
+    this.$store.dispatch("software/fetchSoftwareList");
+    this.$store.dispatch("contribution/resetContributions");
+
+    if (this.$route.query.a) {
+      const filtersParams = JSON.parse(this.$route.query.a);
+      const filters = Object.entries(filtersParams).reduce((filtersList, [category, filters]) => {
+        filtersList = [...filtersList, ...filters.map(filter => ({ category, value: filter }))];
+        return filtersList;
+      }, []);
+
+      this.$store.dispatch("filter/resetAdditionalFilter");
+      filters.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
+    } else {
+      this.$store.dispatch("filter/resetAdditionalFilter");
+    }
   }
 };
 </script>

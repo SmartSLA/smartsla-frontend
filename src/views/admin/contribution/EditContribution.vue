@@ -48,7 +48,7 @@
                 <v-select
                   :items="users"
                   item-text="name"
-                  item-value="_id"
+                  item-value="user"
                   v-model="contribution.author"
                   :rules="[() => (contribution.author && contribution.author.length > 0) || $i18n.t('Required field')]"
                 ></v-select>
@@ -229,7 +229,7 @@ export default {
           }
         ]
       },
-      types: CONTRIBUTION_TYPES.map(contributionType => ({
+      types: Object.keys(CONTRIBUTION_TYPES).map(contributionType => ({
         key: contributionType,
         value: this.$i18n.t(contributionType)
       })),
