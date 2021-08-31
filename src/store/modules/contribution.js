@@ -21,17 +21,20 @@ const types = {
   SET_CONTRIBUTION: "SET_CONTRIBUTION",
   SET_CONTRIBUTIONS_LENGTH: "SET_CONTRIBUTIONS_LENGTH",
   SET_PAGINATION: "SET_PAGINATION",
-  REMOVE_CONTRIBUTION: "REMOVE_CONTRIBUTION"
+  REMOVE_CONTRIBUTION: "REMOVE_CONTRIBUTION",
+  RESET_CONTRIBUTIONS: "RESET_CONTRIBUTIONS"
 };
 
 const actions = {
-  fetchContributions: ({ commit, state }) => {
+  fetchContributions: ({ commit, state, dispatch, rootGetters }) => {
     return Vue.axios
       .getContributions({
         limit: state.pagination.rowsPerPage,
-        offset: (state.pagination.page - 1) * state.pagination.rowsPerPage
+        offset: (state.pagination.page - 1) * state.pagination.rowsPerPage,
+        a: rootGetters["filter/queryAdditionalFilters"]
       })
       .then(({ data }) => {
+        dispatch("countContributions");
         commit(types.SET_CONTRIBUTIONS, data);
       });
   },
@@ -73,6 +76,10 @@ const actions = {
 
   deleteContribution: ({ commit }, contributionId) => {
     return Vue.axios.deleteContribution(contributionId).then(() => commit(types.REMOVE_CONTRIBUTION, contributionId));
+  },
+
+  resetContributions: ({ commit }) => {
+    commit(types.RESET_CONTRIBUTIONS);
   }
 };
 
@@ -96,6 +103,10 @@ const mutations = {
 
   [types.REMOVE_CONTRIBUTION](state, contributionId) {
     Vue.delete(state.contributions, contributionId);
+  },
+
+  [types.RESET_CONTRIBUTIONS](state) {
+    state.contributions = {};
   }
 };
 

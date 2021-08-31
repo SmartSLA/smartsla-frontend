@@ -215,11 +215,17 @@ export default {
     },
 
     getMenuPath(item) {
+      const menuPath = { name: item.path || item.name };
+
       if (item.name && item.name.params) {
         return item.name;
       }
 
-      return { name: item.path || item.name };
+      // if (item.query) {
+      //   menuPath.query = item.query;
+      // }
+
+      return menuPath;
     }
   },
   created() {

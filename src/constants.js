@@ -29,11 +29,11 @@ export const CONTRIBUTION_STATUS = {
   REJECTED: "rejected"
 };
 
-export const CONTRIBUTION_FILTERS = {
-  TYPE: "Type",
-  SOFTWARE: "Software",
-  AUTHOR: "Author",
-  STATUS: "Status"
+export const CATEGORIES_CONTRIBUTIONS_FILTERS = {
+  type: "Type",
+  status: "Status",
+  software: "Software",
+  author: "Author"
 };
 
 export const SEVERITY_TYPES = ["Major", "Minor", "Blocking", "None"];
@@ -63,7 +63,11 @@ export const CLIENT_STATUS = {
   INACTIVE: "inactive"
 };
 
-export const CONTRIBUTION_TYPES = ["Backport", "Correction", "Evolution"];
+export const CONTRIBUTION_TYPES = {
+  backport: "Backport",
+  correction: "Correction",
+  evolution: "Evolution"
+};
 
 export const CONTRIBUTION_LINK_TYPES = ["Patch link", "binary link with the path", "Other"];
 
@@ -217,4 +221,37 @@ export const DASHBOARD_GROUP_BY_FILTER = ["day", "week", "month", "quarter", "ye
 
 export const TICKET_DRAFT_STORAGE_KEY_PREFIX = "ticketDraft_";
 
-export const SORT_FILTERS_KEYS = ["Software", "Assign to", "Responsible", "Transmitter", "Client / Contract"];
+export const SORT_FILTERS_KEYS = ["software", "Assignto", "responsible", "author", "contract"];
+
+export const CATEGORIES_REQUESTS_FILTERS = {
+  type: "Type",
+  status: "Status",
+  severity: "Severity",
+  software: "Software",
+  assignto: "Assign to",
+  responsible: "Responsible",
+  author: "Author",
+  contract: "Contract",
+  client: "Client"
+};
+
+export const TYPES_REQUESTS_FILTERS = {
+  information: "Information",
+  anomaly: "Software anomaly",
+  administration: "Administration",
+  other: "Other"
+};
+
+export const SEVERITIES_REQUESTS_FILTERS = {
+  blocking: "Blocking",
+  minor: "Minor",
+  major: "Major"
+};
+
+export const STATUS_REQUESTS_FILTERS = {
+  new: "New",
+  supported: "Supported",
+  bypassed: "Bypassed",
+  resolved: "Resolved",
+  closed: "Closed"
+};

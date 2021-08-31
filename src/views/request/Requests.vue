@@ -5,20 +5,17 @@
         <request-filter-list></request-filter-list>
       </v-flex>
       <v-flex xs6 class="ml-auto">
-        <dataTableFilter
-          :categories="categories"
+        <additionalFilters
+          :categories="categoriesRequestsFilters"
           :values="values"
           :categoriesFilter="categoriesFilter"
-          :keyValueFilter="keyValueFilter"
-          :savedFilters="savedFilters"
           @filterCategoryChanged="changeFilterCategory"
+          @submitFilter="submitFilter"
           @filterSearchInputChanged="changeSearchTerm"
           @filterReset="filterReset"
-          @customFiltersUpdated="updateCustomFilters"
-          @savedFilterLoaded="changePageTitle"
-          @savedFiltersUpdate="fetchUserFilters"
-          @filterCreated="fetchUserFilters"
-        ></dataTableFilter>
+          :customFilters="customFiltersByType"
+          objectType="REQUEST"
+        ></additionalFilters>
       </v-flex>
       <ExportCsvButton></ExportCsvButton>
     </v-layout>
@@ -155,14 +152,25 @@ import { capitalize } from "lodash";
 import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
-import dataTableFilter from "@/components/filter/Filter";
-import { OSSA_IDS, ANOMALY_CNS_STATUS, CNS_STATUS, REQUEST_TYPE, TICKET_STATUS, CNS_TYPES } from "@/constants.js";
+import {
+  OSSA_IDS,
+  ANOMALY_CNS_STATUS,
+  CNS_STATUS,
+  REQUEST_TYPE,
+  TICKET_STATUS,
+  CNS_TYPES,
+  CATEGORIES_REQUESTS_FILTERS,
+  TYPES_REQUESTS_FILTERS,
+  SEVERITIES_REQUESTS_FILTERS,
+  STATUS_REQUESTS_FILTERS
+} from "@/constants.js";
 import ClientContractLinks from "@/components/request/ClientContractLinks";
 import OrganizationLabel from "@/components/request/OrganizationLabel";
 import ExportCsvButton from "@/components/request/ExportCsvButton";
 const { mapState } = createNamespacedHelpers("ticket");
 import { LOCALE } from "@/i18n/constants";
 import RequestFilterList from "@/components/request/RequestFilterList";
+import additionalFilters from "@/components/filter/AdditionalFilters";
 
 export default {
   data() {
@@ -193,99 +201,10 @@ export default {
         { text: this.$i18n.t("Status"), value: "status" },
         { text: this.$i18n.t("Time before next step"), value: "cns_type", sortable: false }
       ],
-      categories: [
-        {
-          key: "stored_selections",
-          value: this.$i18n.t("Stored selections")
-        },
-        { divider: true },
-        {
-          key: "Type",
-          value: this.$i18n.t("Type")
-        },
-        {
-          key: "Severity",
-          value: this.$i18n.t("Severity")
-        },
-        {
-          key: "Software",
-          value: this.$i18n.t("Software")
-        },
-        {
-          key: "Assign to",
-          value: this.$i18n.t("Assigned to")
-        },
-        {
-          key: "Responsible",
-          value: this.$i18n.t("Responsible")
-        },
-        {
-          key: "Transmitter",
-          value: this.$i18n.t("Author")
-        },
-        {
-          key: "Client / Contract",
-          value: this.$i18n.t("Client / Contract")
-        },
-        {
-          key: "Status",
-          value: this.$i18n.t("Status")
-        }
-      ],
       categoriesFilter: "",
       valuesFilter: "",
       values: [],
       selections: [],
-      types: [
-        {
-          key: "Information",
-          value: this.$i18n.t("Information")
-        },
-        {
-          key: "Anomaly",
-          value: this.$i18n.t("Software anomaly")
-        },
-        {
-          key: "Other",
-          value: this.$i18n.t("Other")
-        }
-      ],
-      severities: [
-        {
-          key: "Blocking",
-          value: this.$i18n.t("Blocking")
-        },
-        {
-          key: "Minor",
-          value: this.$i18n.t("Minor")
-        },
-        {
-          key: "Major",
-          value: this.$i18n.t("Major")
-        }
-      ],
-      status: [
-        {
-          key: "new",
-          value: this.$i18n.t("New")
-        },
-        {
-          key: "supported",
-          value: this.$i18n.t("Supported")
-        },
-        {
-          key: "bypassed",
-          value: this.$i18n.t("Bypassed")
-        },
-        {
-          key: "resolved",
-          value: this.$i18n.t("Resolved")
-        },
-        {
-          key: "closed",
-          value: this.$i18n.t("Closed")
-        }
-      ],
       keyValueFilter: false,
       customFilters: [],
       newFilterName: "",
@@ -313,18 +232,59 @@ export default {
       contractsList: "contract/getContracts",
       software: "software/getSoftwareList",
       userList: "users/getUsers",
-      getUserLanguage: "configuration/getUserLanguage"
+      getUserLanguage: "configuration/getUserLanguage",
+      getQueryAdditionalFilters: "filter/queryAdditionalFilters",
+      clientList: "client/getClients"
     }),
 
-    contractsName() {
-      return (this.contractsList || []).reduce((acc, curr) => {
-        acc.push(curr.name);
-        return acc;
-      }, []);
+    clientsListFilter() {
+      return (this.clientList || []).map(({ _id, name }) => ({ id: _id, name }));
+    },
+
+    contractsListFilter() {
+      return (this.contractsList || []).map(({ _id, name }) => ({ id: _id, name }));
+    },
+
+    customFiltersByType() {
+      return this.$store.getters["filter/customFiltersByType"]("REQUEST");
+    },
+
+    categoriesRequestsFilters() {
+      let categories = Object.keys(CATEGORIES_REQUESTS_FILTERS).map(category => ({
+        key: category,
+        value: this.$i18n.t(CATEGORIES_REQUESTS_FILTERS[category])
+      }));
+
+      if (this.customFiltersByType) {
+        categories.unshift({ key: "custom_filters", value: this.$i18n.t("Stored selections") });
+      }
+
+      return categories;
+    },
+
+    typesRequestsFilters() {
+      return Object.keys(TYPES_REQUESTS_FILTERS).map(type => ({
+        id: this.capitalize(type),
+        name: this.$i18n.t(TYPES_REQUESTS_FILTERS[type])
+      }));
+    },
+
+    severitiesRequestsFilters() {
+      return Object.keys(SEVERITIES_REQUESTS_FILTERS).map(severity => ({
+        id: this.capitalize(severity),
+        name: this.$i18n.t(SEVERITIES_REQUESTS_FILTERS[severity])
+      }));
+    },
+
+    statusRequestsFilters() {
+      return Object.keys(STATUS_REQUESTS_FILTERS).map(status => ({
+        id: this.capitalize(status),
+        name: this.$i18n.t(STATUS_REQUESTS_FILTERS[status])
+      }));
     },
 
     softwareList() {
-      return (this.software || []).map(software => software.name);
+      return (this.software || []).map(({ _id, name }) => ({ id: _id, name }));
     },
 
     highlightSearch() {
@@ -390,46 +350,39 @@ export default {
     categoriesFilter: function() {
       try {
         switch (this.categoriesFilter) {
-          case "Type":
-            this.keyValueFilter = true;
-            this.values = [...this.types];
+          case "type":
+            this.values = this.typesRequestsFilters;
             break;
-          case "Severity":
-            this.keyValueFilter = true;
-            this.values = [...this.severities];
+          case "severity":
+            this.values = this.severitiesRequestsFilters;
             break;
-          case "Software":
-            this.keyValueFilter = false;
+          case "software":
             this.values = [...this.softwareList];
             break;
-          case "Assign to":
+          case "assignto":
             this.keyValueFilter = false;
-            this.values = [...this.userList].map(user => user.name);
+            this.values = [...this.userList].map(user => ({ name: user.name, id: user.user }));
             break;
-          case "Responsible":
-            this.keyValueFilter = false;
-            this.values = [...this.userList].filter(user => user.type != "beneficiary").map(user => user.name);
+          case "responsible":
+            this.values = [...this.userList]
+              .filter(user => user.type != "beneficiary")
+              .map(user => ({ name: user.name, id: user.user }));
             break;
-          case "Transmitter":
-            this.keyValueFilter = false;
-            this.values = [...this.userList].map(user => user.name);
+          case "author":
+            this.values = [...this.userList].map(user => ({ name: user.name, id: user.user }));
             break;
-          case "Client / Contract":
-            this.keyValueFilter = false;
-            this.values = [...this.contractsName];
+          case "client":
+            this.values = [...this.clientsListFilter];
             break;
-          case "Status":
-            this.keyValueFilter = true;
-            this.values = [...this.status];
+          case "contract":
+            this.values = [...this.contractsListFilter];
+            break;
+          case "status":
+            this.values = this.statusRequestsFilters;
             break;
         }
       } catch (err) {
         // continue regardless of error
-      } finally {
-        let selectedValues = this.customFilters.filter(filter => filter.category == this.categoriesFilter);
-        this.values = this.values.filter(value => {
-          return selectedValues.filter(filter => filter.value == value).length == 0;
-        });
       }
     },
     pagination: {
@@ -471,10 +424,10 @@ export default {
       let typesFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "type");
       let severityFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "severity");
       let softwareFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "software");
-      let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assign to");
+      let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assignto");
       let responsibleFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "responsible");
-      let transmitterFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "transmitter");
-      let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "client / contract");
+      let transmitterFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "author");
+      let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "contract");
       let statusFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "status");
 
       let typesFilterMatch = true;
@@ -674,22 +627,47 @@ export default {
       this.$http.listCustomFilters().then(({ data }) => {
         this.savedFilters = data;
       });
+    },
+
+    submitFilter() {
+      const query = {};
+
+      if (this.$route.query.filter) {
+        query.filter = this.$route.query.filter;
+      }
+
+      query.a = this.getQueryAdditionalFilters;
+      this.$router.push({ name: routeNames.REQUESTS, query });
     }
   },
   created() {
     this.$auth.ready(() => {
       this.$store.dispatch("currentUser/fetchUser");
     });
+    this.$store.dispatch("client/fetchClients");
     this.$store.dispatch("ticket/setFilter", this.$route.query.filter);
+
+    if (this.$route.query.a) {
+      const filtersParams = JSON.parse(this.$route.query.a);
+      const filters = Object.entries(filtersParams).reduce((filtersList, [category, filters]) => {
+        filtersList = [...filtersList, ...filters.map(filter => ({ category, value: filter }))];
+        return filtersList;
+      }, []);
+
+      this.$store.dispatch("filter/resetAdditionalFilter");
+      filters.map(filter => this.$store.dispatch("filter/addAdditionalFilter", filter));
+    } else {
+      this.$store.dispatch("filter/resetAdditionalFilter");
+    }
   },
   components: {
     ExportCsvButton,
     "cns-progress-bar": cnsProgressBar,
     SoftwareListDetail,
-    dataTableFilter,
     ClientContractLinks,
     OrganizationLabel,
-    RequestFilterList
+    RequestFilterList,
+    additionalFilters
   }
 };
 </script>
