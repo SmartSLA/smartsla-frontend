@@ -2,7 +2,7 @@
   <v-container grid-list-md v-if="request">
     <v-layout align-center justify-space-between row>
       <div>
-        <router-link :to="{ name: 'Requests' }">
+        <router-link :to="toPreviousRoute">
           <button><v-icon>arrow_back</v-icon></button>
         </router-link>
       </div>
@@ -464,6 +464,7 @@ import RequestNavigationDrawer from "@/components/request/RequestNavigationDrawe
 import { LOCALE } from "@/i18n/constants";
 import userAvatar from "@/components/user/userAvatar";
 import moment from "moment-timezone";
+import { routeNames } from "@/router";
 
 // const Codeblock = Quill.import("formats/code-block");
 // Codeblock.tagName = "pre";
@@ -480,7 +481,8 @@ export default {
       UPDATE_COMMENT: UPDATE_COMMENT,
       isPrivateTab: null,
       hideRequestNavigationDrawer: false,
-      dialogArchive: false
+      dialogArchive: false,
+      prevRoute: null
     };
   },
   components: {
@@ -502,6 +504,10 @@ export default {
       configuration: "configuration/getConfiguration",
       getUserLanguage: "configuration/getUserLanguage"
     }),
+
+    toPreviousRoute() {
+      return this.prevRoute ? this.prevRoute.fullPath : { name: routeNames.REQUESTS };
+    },
 
     request() {
       return this.$store.getters["ticket/getTicketById"](this.$route.params.id);
@@ -777,6 +783,12 @@ export default {
     this.$store.dispatch("contract/fetchContracts");
     this.fetchTicket();
     this.initCommentAutoSave();
+  },
+
+  beforeRouteEnter(_, from, next) {
+    next(vm => {
+      vm.prevRoute = from;
+    });
   }
 };
 </script>
