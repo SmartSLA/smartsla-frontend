@@ -11,6 +11,7 @@ function formatAsTicketUser(user) {
     id: user.user,
     name: user.name,
     email: user.email,
-    type: user.type
+    type: user.type,
+    phone: user.phone
   };
 }
