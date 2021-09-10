@@ -166,6 +166,15 @@
         </v-layout>
       </v-list-tile>
 
+      <v-container v-if="!drawer.mini" class="py-2">
+        <v-layout v-if="!editResponsible" row>
+          <v-flex xs6 v-if="request.responsible && request.responsible.phone" class="caption">
+            <v-icon small class="mr-1">phone</v-icon>
+            <a :href="`tel:${request.responsible.phone}`">{{ request.responsible.phone }}</a>
+          </v-flex>
+        </v-layout>
+      </v-container>
+
       <v-divider class="mx-3 my-1"></v-divider>
 
       <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
@@ -475,11 +484,11 @@ export default {
       return this.$store.getters["currentUser/getUser"];
     },
     beneficiaryPhoneNumber() {
-      if (this.request.callNumber) {
-        return this.request.callNumber;
-      }
       if (this.request.beneficiary && this.request.beneficiary.phone) {
         return this.request.beneficiary.phone;
+      }
+      if (this.request.callNumber) {
+        return this.request.callNumber;
       }
     },
     canBeBypassed() {
