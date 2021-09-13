@@ -157,6 +157,7 @@
           </v-layout>
           <v-container v-else pa-0 mt-2>
             <UserListAssignmentNavigationDrawer
+              :userType="expertUserType"
               :setRequestRole="setResponsible"
               :responsible.sync="newResponsible"
               :request="request"
@@ -235,6 +236,7 @@
           </v-layout>
           <v-container v-else pa-0 mt-2>
             <UserListAssignmentNavigationDrawer
+              :userType="beneficiaryUserType"
               :setRequestRole="setBeneficiary"
               :responsible.sync="newResponsible"
               :request="request"
@@ -344,7 +346,9 @@ export default {
       editAssignee: false,
       editBeneficiary: false,
       editResponsible: false,
-      newResponsible: {}
+      newResponsible: {},
+      expertUserType: USER_TYPE.EXPERT,
+      beneficiaryUserType: USER_TYPE.BENEFICIARY
     };
   },
   methods: {
