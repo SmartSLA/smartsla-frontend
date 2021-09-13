@@ -110,7 +110,7 @@ export default {
     },
 
     assignTo(userType) {
-      const user = userType === USER_TYPE.BENEFICIARY ? this.request.author : this.request.responsible;
+      const user = userType === USER_TYPE.BENEFICIARY ? this.request.beneficiary : this.request.responsible;
       this.$emit("assignTo", user);
     }
   },
