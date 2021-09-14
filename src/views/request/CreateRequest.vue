@@ -34,7 +34,19 @@
                       :rules="[() => Object.keys(ticket.contract).length > 0 || $i18n.t('Required field')]"
                       class="required-element"
                       return-object
-                    ></v-autocomplete>
+                    >
+                      <template v-slot:item="{ item }">
+                        <span>{{ item.name }}</span>
+                        <v-spacer></v-spacer>
+                        <span class="grey--text caption">{{ item.client }}</span>
+                      </template>
+                      <template slot="selection" slot-scope="{ item }">
+                        <v-chip color="blue lighten-4" class="ml-0" label small>
+                          {{ item.client }}
+                        </v-chip>
+                        {{ item.name }}
+                      </template>
+                    </v-autocomplete>
                   </v-flex>
                   <v-flex xs6 md6 lg6 xl4 sm2>
                     <v-autocomplete
