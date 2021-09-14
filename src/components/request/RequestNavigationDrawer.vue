@@ -106,12 +106,12 @@
             <userAvatar size="24" :userId="request.responsible && request.responsible.id"></userAvatar>
           </template>
           <span>
-            <b>{{ $t("Interlocutor") }}</b>
+            <b>{{ $t("Responsible") }}</b>
             <br />
             {{
               request.responsible && request.responsible.name
                 ? request.responsible.name
-                : $t("No interlocutor in charge")
+                : $t("No responsible in charge")
             }}
           </span>
         </v-tooltip>
@@ -120,7 +120,7 @@
         <v-layout column align-center justify-center px-0>
           <v-layout row>
             <v-list-tile-title class="body-1">
-              {{ $t("Interlocutor") }}
+              {{ $t("Responsible") }}
             </v-list-tile-title>
             <v-flex v-if="isUserExpert">
               <a @click="editResponsible = !editResponsible" class="black--text">
@@ -150,13 +150,14 @@
               </v-list-tile-content>
               <v-list-tile-content v-else>
                 <v-list-tile-sub-title class="caption">
-                  {{ $t("No interlocutor in charge") }}
+                  {{ $t("No responsible in charge") }}
                 </v-list-tile-sub-title>
               </v-list-tile-content>
             </v-flex>
           </v-layout>
           <v-container v-else pa-0 mt-2>
             <UserListAssignmentNavigationDrawer
+              :userType="expertUserType"
               :setRequestRole="setResponsible"
               :responsible.sync="newResponsible"
               :request="request"
@@ -235,6 +236,7 @@
           </v-layout>
           <v-container v-else pa-0 mt-2>
             <UserListAssignmentNavigationDrawer
+              :userType="beneficiaryUserType"
               :setRequestRole="setBeneficiary"
               :responsible.sync="newResponsible"
               :request="request"
@@ -344,7 +346,9 @@ export default {
       editAssignee: false,
       editBeneficiary: false,
       editResponsible: false,
-      newResponsible: {}
+      newResponsible: {},
+      expertUserType: USER_TYPE.EXPERT,
+      beneficiaryUserType: USER_TYPE.BENEFICIARY
     };
   },
   methods: {
@@ -463,13 +467,13 @@ export default {
         })
         .then(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Interlocutor updated"),
+            message: this.$i18n.t("Responsible updated"),
             color: "success"
           });
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Failed to update interlocutor"),
+            message: this.$i18n.t("Failed to update responsible"),
             color: "error"
           });
         })

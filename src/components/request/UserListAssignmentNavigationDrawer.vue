@@ -75,7 +75,11 @@ export default {
     responsible: Object,
     request: Object,
     displayActionButtons: false,
-    currentAssignedUser: String
+    currentAssignedUser: String,
+    userType: {
+      type: String,
+      required: false
+    }
   },
   created() {
     this.$store.dispatch("contract/fetchContractUsers", this.request.contract);
@@ -94,7 +98,15 @@ export default {
       return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     },
     contractUsers() {
-      const ticketUsers = this.$store.getters["contract/getContractUsersAsTicketUsers"](this.request.contract);
+      let ticketUsers = this.$store.getters["contract/getContractUsersAsTicketUsers"](this.request.contract);
+
+      if (this.userType && this.userType === USER_TYPE.EXPERT) {
+        return ticketUsers.filter(user => user.type === USER_TYPE.EXPERT);
+      }
+
+      if (this.userType && this.userType === USER_TYPE.BENEFICIARY) {
+        return ticketUsers.filter(user => user.type === USER_TYPE.BENEFICIARY);
+      }
 
       return this.ticketPostResolved
         ? ticketUsers.filter(assignee => assignee.type === USER_TYPE.BENEFICIARY)
