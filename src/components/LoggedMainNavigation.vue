@@ -111,7 +111,7 @@ export default {
       );
     },
     drawer() {
-      return this.$store.state.ui.drawer;
+      return this.$store.state.ui.drawerLeft;
     },
 
     menuItems() {
@@ -198,10 +198,10 @@ export default {
   },
   methods: {
     toggleMiniDrawer() {
-      this.$store.dispatch("ui/toggleMiniDrawer");
+      this.$store.dispatch("ui/toggleMiniDrawer", "drawerLeft");
     },
     showDrawer(value) {
-      this.$store.dispatch("ui/showDrawer", value);
+      this.$store.dispatch("ui/showDrawer", { drawer: "drawerLeft", value });
     },
 
     getPath(item) {

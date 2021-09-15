@@ -7,18 +7,19 @@
     :temporary="isMobile ? true : false"
     light
     width="270"
-    :mini-variant="drawer.mini"
+    :mini-variant="drawerMini"
     mini-variant-width="60"
     mobile-break-point="450"
+    @input="showDrawer($event)"
     right
   >
     <v-list class="py-0">
-      <v-list-tile v-if="!isMobile" @click="drawer.mini = !drawer.mini">
-        <v-list-tile-content v-if="!drawer.mini">
+      <v-list-tile v-if="!isMobile" @click="toggleMiniDrawer">
+        <v-list-tile-content v-if="!drawerMini">
           <v-list-tile-title class="body-1 ml-2">{{ $t("Collapse menu") }}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
-          <v-icon>{{ drawer.mini ? "chevron_left" : "chevron_right" }}</v-icon>
+          <v-icon>{{ drawerMini ? "chevron_left" : "chevron_right" }}</v-icon>
         </v-list-tile-action>
       </v-list-tile>
       <v-list-tile v-else @click="emitRequestNavigationDrawerStatus">
@@ -33,7 +34,7 @@
     <v-divider class="d-block"></v-divider>
 
     <v-list two-line subheader class="py-0">
-      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24">
+      <v-list-tile-avatar v-if="drawerMini" size="24" @click="toggleDrawer('drawerRight')">
         <v-tooltip left>
           <template slot="activator">
             <userAvatar size="24" :userId="request.assignedTo && request.assignedTo.id"></userAvatar>
@@ -47,7 +48,7 @@
           </span>
         </v-tooltip>
       </v-list-tile-avatar>
-      <v-list-tile v-if="!drawer.mini">
+      <v-list-tile v-if="!drawerMini">
         <v-layout column align-center justify-center px-0>
           <v-layout v-if="!editAssignee" row align-center class="body-1">
             <v-list-tile-title>
@@ -100,7 +101,7 @@
 
       <v-divider class="mx-3 my-1"></v-divider>
 
-      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
+      <v-list-tile-avatar v-if="drawerMini" size="24" class="my-3" @click="toggleDrawer('drawerRight')">
         <v-tooltip left>
           <template slot="activator">
             <userAvatar size="24" :userId="request.responsible && request.responsible.id"></userAvatar>
@@ -116,7 +117,7 @@
           </span>
         </v-tooltip>
       </v-list-tile-avatar>
-      <v-list-tile v-if="!drawer.mini">
+      <v-list-tile v-if="!drawerMini">
         <v-layout column align-center justify-center px-0>
           <v-layout row>
             <v-list-tile-title class="body-1">
@@ -166,7 +167,7 @@
         </v-layout>
       </v-list-tile>
 
-      <v-container v-if="!drawer.mini" class="py-2">
+      <v-container v-if="!drawerMini" class="py-2">
         <v-layout v-if="!editResponsible" row>
           <v-flex xs6 v-if="request.responsible && request.responsible.phone" class="caption">
             <v-icon small class="mr-1">phone</v-icon>
@@ -177,7 +178,7 @@
 
       <v-divider class="mx-3 my-1"></v-divider>
 
-      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false" size="24" class="my-3">
+      <v-list-tile-avatar v-if="drawerMini" size="24" class="my-3" @click="toggleDrawer('drawerRight')">
         <v-tooltip left>
           <template slot="activator">
             <userAvatar
@@ -194,7 +195,7 @@
           </span>
         </v-tooltip>
       </v-list-tile-avatar>
-      <v-list-tile v-if="!drawer.mini">
+      <v-list-tile v-if="!drawerMini">
         <v-layout column align-center justify-center px-0>
           <v-layout row>
             <v-list-tile-title class="body-1">
@@ -243,7 +244,7 @@
           </v-container>
         </v-layout>
       </v-list-tile>
-      <v-container v-if="!drawer.mini" class="py-2">
+      <v-container v-if="!drawerMini" class="py-2">
         <v-layout v-if="!editBeneficiary" row>
           <v-flex xs6 v-if="beneficiaryPhoneNumber" class="caption">
             <v-icon small class="mr-1">phone</v-icon>
@@ -266,7 +267,7 @@
 
       <v-divider class="mx-3 my-1"></v-divider>
 
-      <v-list-tile-avatar v-if="drawer.mini" @click="drawer.mini = false">
+      <v-list-tile-avatar v-if="drawerMini" @click="toggleDrawer('drawerRight')">
         <v-tooltip left>
           <template v-slot:activator="{ on }">
             <v-layout v-on="on" column align-center>
@@ -292,7 +293,7 @@
           </span>
         </v-tooltip>
       </v-list-tile-avatar>
-      <v-container v-if="!isEmpty(request.cns) && !drawer.mini" class="pa-2">
+      <v-container v-if="!isEmpty(request.cns) && !drawerMini" class="pa-2">
         <v-list-tile-title class="body-1">{{ $t("Service deadlines") }}</v-list-tile-title>
 
         <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.support") }} </v-list-tile-sub-title>
@@ -306,7 +307,7 @@
         <v-list-tile-sub-title class="caption ml-2">{{ $t("cns.state.resolution") }}</v-list-tile-sub-title>
         <cns-progress-bar :ticket="request" :cnsType="'resolved'" class="mx-4"></cns-progress-bar>
       </v-container>
-      <v-list-tile v-if="!drawer.mini && isEmpty(request.cns)">
+      <v-list-tile v-if="!drawerMini && isEmpty(request.cns)">
         <v-layout column justify-center align-center class="mx-1">
           <v-list-tile-title class="body-1">{{ $t("Service deadlines") }}</v-list-tile-title>
           <v-list-tile-sub-title class="caption">{{
@@ -338,9 +339,6 @@ export default {
   },
   data() {
     return {
-      drawer: {
-        mini: this.isMobile ? false : true
-      },
       editAssignee: false,
       editBeneficiary: false,
       editResponsible: false,
@@ -477,9 +475,29 @@ export default {
           this.isSubmit = false;
           this.editResponsible = false;
         });
+    },
+
+    toggleMiniDrawer() {
+      this.$store.dispatch("ui/toggleMiniDrawer", "drawerRight");
+    },
+
+    showDrawer(value) {
+      this.$store.dispatch("ui/showDrawer", { drawer: "drawerRight", value });
+    },
+
+    toggleDrawer(drawer) {
+      this.$store.dispatch("ui/toggleDrawer", drawer);
     }
   },
   computed: {
+    drawer() {
+      return this.$store.state.ui.drawerRight;
+    },
+
+    drawerMini() {
+      return this.$store.getters["ui/drawerRightMini"];
+    },
+
     user() {
       return this.$store.getters["currentUser/getUser"];
     },

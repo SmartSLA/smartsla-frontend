@@ -1,7 +1,7 @@
 import Vue from "vue";
 
 const DRAWER_LOCALSTORAGE_KEY = "drawer";
-const DEFAULT_DRAWER = {
+const LEFT_DRAWER = {
   // sets the open status of the drawer
   open: true,
   // sets if the drawer is shown above (false) or below (true) the toolbar
@@ -14,6 +14,27 @@ const DEFAULT_DRAWER = {
   // or showing the full drawer (false)
   mini: true
 };
+
+const isMobile = () => {
+  switch (Vue.prototype.$vuetify.breakpoint.name) {
+    case "xs":
+      return true;
+    case "sm":
+    case "md":
+    case "lg":
+    case "xl":
+      return false;
+  }
+};
+
+const RIGHT_DRAWER = {
+  open: true,
+  clipped: true,
+  fixed: false,
+  permanent: false,
+  mini: false
+};
+
 const DEFAULT_TOOLBAR = {
   fixed: true,
   // sets if the toolbar contents is leaving space for drawer (false) or not (true)
@@ -22,15 +43,18 @@ const DEFAULT_TOOLBAR = {
 };
 
 function initialState() {
-  const localStorageDrawer = JSON.parse(localStorage.getItem(DRAWER_LOCALSTORAGE_KEY)) || {};
+  const localStorageLeftDrawer = JSON.parse(localStorage.getItem(`${DRAWER_LOCALSTORAGE_KEY}_drawerLeft`)) || {};
+  const localStorageRightDrawer = JSON.parse(localStorage.getItem(`${DRAWER_LOCALSTORAGE_KEY}_drawerRight`)) || {};
+
   return {
     snackbar: {
       color: "red",
       message: null,
       timeout: 5000
     },
-    drawer: localStorageDrawer.drawer || DEFAULT_DRAWER,
-    toolbar: localStorageDrawer.toolbar || DEFAULT_TOOLBAR
+    drawerLeft: localStorageLeftDrawer.drawer || LEFT_DRAWER,
+    drawerRight: localStorageRightDrawer.drawer || RIGHT_DRAWER,
+    toolbar: DEFAULT_TOOLBAR
   };
 }
 
@@ -45,32 +69,32 @@ const actions = {
   displaySnackbar({ commit }, snackbar) {
     commit(types.SHOW_SNACKBAR, snackbar);
   },
-  toggleMiniDrawer({ commit }) {
-    commit(types.TOGGLE_MINI_DRAWER);
+  toggleMiniDrawer({ commit }, drawer) {
+    commit(types.TOGGLE_MINI_DRAWER, drawer);
   },
-  toggleDrawer({ commit }) {
-    commit(types.TOGGLE_DRAWER);
+  toggleDrawer({ commit }, drawer) {
+    commit(types.TOGGLE_DRAWER, drawer);
   },
-  showDrawer({ commit }, value) {
-    commit(types.SHOW_DRAWER, value);
+  showDrawer({ commit }, { drawer, value }) {
+    commit(types.SHOW_DRAWER, { drawer, value });
   }
 };
 
 const mutations = {
-  [types.TOGGLE_MINI_DRAWER](state) {
+  [types.TOGGLE_MINI_DRAWER](state, drawer) {
     // toggles the drawer variant (mini/full)
-    state.drawer.mini = !state.drawer.mini;
-    localStorage.setItem(DRAWER_LOCALSTORAGE_KEY, JSON.stringify({ drawer: state.drawer, toolbar: state.toolbar }));
+    state[drawer].mini = !state[drawer].mini;
+    localStorage.setItem(`${DRAWER_LOCALSTORAGE_KEY}_${drawer}`, JSON.stringify({ drawer: state[drawer] }));
   },
-  [types.TOGGLE_DRAWER](state) {
+  [types.TOGGLE_DRAWER](state, drawer) {
     // toggles the temporary drawer(shows/hides)
-    state.drawer.mini = false;
-    state.drawer.open = !state.drawer.open;
-    localStorage.setItem(DRAWER_LOCALSTORAGE_KEY, JSON.stringify({ drawer: state.drawer, toolbar: state.toolbar }));
+    state[drawer].mini = false;
+    state[drawer].open = !state[drawer].open;
+    localStorage.setItem(`${DRAWER_LOCALSTORAGE_KEY}_${drawer}`, JSON.stringify({ drawer: state[drawer] }));
   },
-  [types.SHOW_DRAWER](state, value) {
-    state.drawer.open = value;
-    localStorage.setItem(DRAWER_LOCALSTORAGE_KEY, JSON.stringify({ drawer: state.drawer, toolbar: state.toolbar }));
+  [types.SHOW_DRAWER](state, { drawer, value }) {
+    state[drawer].open = value;
+    localStorage.setItem(`${DRAWER_LOCALSTORAGE_KEY}_${drawer}`, JSON.stringify({ drawer: state[drawer] }));
   },
   [types.SHOW_SNACKBAR](state, snackbar) {
     snackbar.show = true;
@@ -78,7 +102,9 @@ const mutations = {
   }
 };
 
-const getters = {};
+const getters = {
+  drawerRightMini: state => (isMobile() ? false : state.drawerRight.mini)
+};
 
 export default {
   namespaced: true,

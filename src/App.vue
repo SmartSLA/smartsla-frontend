@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     toggleDrawer() {
-      this.$store.dispatch("ui/toggleDrawer");
+      this.$store.dispatch("ui/toggleDrawer", "drawerLeft");
     },
     getHiddenValue(event) {
       this.hidden = event;
