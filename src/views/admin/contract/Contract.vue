@@ -80,12 +80,10 @@
                     <router-link to="#" class="font-weight-bold">{{ contract.contact.technical }}</router-link>
                   </v-flex>
                   <v-flex xs4>
-                    <div class="subheading font-weight-medium">{{ $t("Vulnerability contact") }} :</div>
+                    <div class="subheading font-weight-medium">{{ $t("Vulnerability mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>
-                    <router-link to="#" class="font-weight-bold">
-                      {{ contract.contact.vulneratility }}
-                    </router-link>
+                    {{ contract.mailingList.vulnerability.join(", ") }}
                   </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Internal mailing list") }} :</div>
@@ -562,7 +560,8 @@ export default {
         },
         mailingList: {
           external: [],
-          internal: []
+          internal: [],
+          vulnerability: []
         },
         Engagements: {
           critical: {},
