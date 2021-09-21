@@ -10,5 +10,8 @@ module.exports = {
         "%utils": path.resolve(__dirname, "tests", "unit", "utils")
       }
     }
+  },
+  devServer: {
+    disableHostCheck: true
   }
 };
