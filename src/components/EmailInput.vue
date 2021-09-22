@@ -1,6 +1,7 @@
 <template>
   <v-combobox
     persistent-hint
+    :prepend-icon="icon"
     hide-selected
     :value="mailItems"
     :label="$t(label)"
@@ -32,7 +33,8 @@ export default {
   }),
   props: {
     label: { type: String },
-    mails: { type: Array }
+    mails: { type: Array },
+    icon: { type: String }
   },
   methods: {
     isValidEmail(email) {
