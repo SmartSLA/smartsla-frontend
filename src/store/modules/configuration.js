@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { LOCALE } from "@/i18n/constants";
 
 function initialState() {
   return {
@@ -57,7 +58,9 @@ const actions = {
   fetchUserLanguage: ({ commit, rootGetters }) => {
     const userId = rootGetters["currentUser/getId"];
 
-    return Vue.axios.getUserLanguage(userId, lngConfig).then(data => commit(types.SET_LNG, data));
+    return Vue.axios.getUserLanguage(userId, lngConfig).then(data => {
+      return commit(types.SET_LNG, data)
+    });
   }
 };
 
@@ -67,7 +70,7 @@ const mutations = {
   },
 
   [types.SET_LNG](state, userLanguage) {
-    state.userLanguage = userLanguage.defaultLanguage;
+    state.userLanguage = userLanguage && userLanguage.defaultLanguage || LOCALE;
   }
 };
 
