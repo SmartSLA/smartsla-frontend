@@ -125,14 +125,12 @@ export default {
         return moment().set({ year, month: month - 1 || 0, date: day || 1 });
       });
 
-      return dates
-        .sort((a, b) => a - b)
-        .map(date => {
-          if (moment(date).isValid()) {
-            return this.$options.filters.formatDateFilter(date, this.labelDates, this.userLanguage);
-          }
-          return date;
-        });
+      return dates.map(date => {
+        if (moment(date).isValid()) {
+          return this.$options.filters.formatDateFilter(date, this.labelDates, this.userLanguage);
+        }
+        return date;
+      });
     },
     openedRequests() {
       return this.datasets.map(request => request.open);
