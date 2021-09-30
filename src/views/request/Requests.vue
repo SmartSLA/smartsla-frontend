@@ -40,7 +40,7 @@
         :no-data-text="$i18n.t('Loading')"
       >
         <template slot="items" slot-scope="props">
-          <tr @click="openTicket(props.item._id)">
+          <tr>
             <td>
               <router-link :to="{ name: 'Request', params: { id: props.item._id } }" class="blue-color item-id">
                 <text-highlight :queries="highlightSearch">{{ props.item.request._id }}</text-highlight>
@@ -585,10 +585,6 @@ export default {
     },
     capitalize(value) {
       return capitalize(value);
-    },
-
-    openTicket(ticketId) {
-      this.$router.push({ name: routeNames.REQUEST, params: { id: ticketId } });
     },
 
     changeFilterCategory(category) {
