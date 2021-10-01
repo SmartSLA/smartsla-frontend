@@ -22,6 +22,7 @@
                 hide-details
                 :label="$i18n.t('Contract')"
                 :no-data-text="$i18n.t('No data available')"
+                @focus="onFocus"
               >
                 <template v-slot:prepend-item>
                   <v-list-tile ripple @click="toggle">
@@ -33,11 +34,27 @@
                     </v-list-tile-content>
                   </v-list-tile>
                   <v-divider class="mt-2"></v-divider>
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-title>
+                        <v-text-field
+                          ref="query"
+                          full-width
+                          v-model="querySearch"
+                          :placeholder="$i18n.t('Please refine your search...')"
+                          @input="filterContracts"
+                        ></v-text-field>
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider class="mt-2"></v-divider>
                 </template>
                 <template v-slot:item="data">
-                  <span>{{ data.item.name }}</span>
+                  <text-highlight :queries="querySearch"> {{ data.item.name }}</text-highlight>
                   <v-spacer></v-spacer>
-                  <span class="grey--text caption">{{ data.item.client }}</span>
+                  <span class="grey--text caption">
+                    <text-highlight :queries="querySearch">{{ data.item.client }}</text-highlight>
+                  </span>
                 </template>
                 <template v-slot:selection="data">
                   <v-chip v-if="data.index >= 0 && data.index < maxChips">
@@ -64,11 +81,14 @@
 <script>
 import { mapGetters } from "vuex";
 import TimeDurationChangerDropdown from "@/components/dashboard/base/TimeDurationChangerDropdown.vue";
+import { InsensitiveInclude } from "@/services/helpers/string";
 
 export default {
   data() {
     return {
-      selectedContracts: []
+      selectedContracts: [],
+      querySearch: "",
+      localContractsClone: []
     };
   },
   created() {
@@ -110,6 +130,12 @@ export default {
     TimeDurationChangerDropdown
   },
   methods: {
+    onFocus() {
+      setTimeout(() => {
+        this.$nextTick(this.$refs.query.focus);
+      }, 100);
+    },
+
     getDashboardData() {
       let contracts = [];
 
@@ -120,13 +146,27 @@ export default {
       this.$store.dispatch("main/setContracts", contracts);
       this.$store.dispatch("main/updateWidgetFilters");
     },
+
     toggle() {
       if (this.allContracts) {
         this.selectedContracts = [];
       } else {
         this.selectedContracts = this.contractsList;
       }
+    },
+
+    filterContracts() {
+      if (!this.querySearch) {
+        this.localContractsClone = this.contractsList;
+      }
+
+      this.localContractsClone = this.contractsList.filter(({ name, client }) => {
+        return InsensitiveInclude(name, this.querySearch) || InsensitiveInclude(client, this.querySearch);
+      });
     }
+  },
+  mounted() {
+    this.localContractsClone = [...this.contractsList];
   }
 };
 </script>
