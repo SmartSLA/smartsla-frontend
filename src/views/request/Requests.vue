@@ -22,7 +22,7 @@
     <v-container grid-list-md class="pa-0">
       <v-data-table
         :loading="loading"
-        :total-items="totalRequests"
+        :total-items="requestsPaginationItems"
         :pagination.sync="pagination"
         :items="requestsAsDataTable"
         :headers="headers"
@@ -226,7 +226,7 @@ export default {
     ...mapGetters({
       email: "currentUser/getEmail",
       requests: "ticket/getCurrentPageRequests",
-      totalRequests: "ticket/getNbOfTickets",
+      requestsPaginationItems: "ticket/getPaginationTotalItems",
       allRequests: "ticket/getTickets",
       userContracts: "currentUser/getContracts",
       contractsList: "contract/getContracts",

@@ -27,7 +27,8 @@ const types = {
   UPDATE_TICKET: "UPDATE_TICKET",
   ADD_EVENT: "ADD_EVENT",
   SET_FILTER: "SET_FILTER",
-  RESET_TICKETS: "RESET_TICKETS"
+  RESET_TICKETS: "RESET_TICKETS",
+  SET_PAGINATION_ITEMS: "SET_PAGINATION_ITEMS"
 };
 
 const actions = {
@@ -35,7 +36,7 @@ const actions = {
     return Vue.axios.exportTickets("csv");
   },
 
-  fetchTickets: ({ commit, dispatch, state, rootGetters }) => {
+  fetchTickets: ({ commit, state, dispatch, rootGetters }) => {
     return Vue.axios
       .listTickets({
         limit: state.pagination.rowsPerPage === -1 ? "all" : state.pagination.rowsPerPage,
@@ -43,9 +44,10 @@ const actions = {
         filter: state.filter,
         a: rootGetters["filter/queryAdditionalFilters"]
       })
-      .then(response => {
+      .then(({ data, headers }) => {
         dispatch("countTickets");
-        commit(types.SET_TICKETS, response.data);
+        commit(types.SET_PAGINATION_ITEMS, headers["x-esn-items-count"]);
+        commit(types.SET_TICKETS, data);
       });
   },
 
@@ -133,6 +135,9 @@ const mutations = {
 
   [types.SET_TICKET_LENGTH](state, length) {
     state.length = length;
+  },
+
+  [types.SET_PAGINATION_ITEMS](state, length) {
     Vue.set(state.pagination, "totalItems", Number(length));
   },
 
@@ -160,6 +165,7 @@ const mutations = {
 
 const getters = {
   getNbOfTickets: state => Number(state.length),
+  getPaginationTotalItems: state => Number(state.pagination.totalItems),
   getSearch: state => state.search,
   getTickets: state => Object.values(state.tickets) || [],
   getTicketById: state => id => {
