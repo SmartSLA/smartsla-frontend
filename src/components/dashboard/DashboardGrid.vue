@@ -16,6 +16,15 @@
 
     <v-layout row wrap class="widget">
       <v-flex xs12 md6>
+        <tickets-volume-type-widget />
+      </v-flex>
+      <v-flex xs12 md6>
+        <tickets-priority-anomalies-widget />
+      </v-flex>
+    </v-layout>
+
+    <v-layout row wrap class="widget">
+      <v-flex xs12 md6>
         <criticality-widget />
       </v-flex>
       <v-flex xs12 md6>
@@ -39,6 +48,11 @@ import CounterCardWidget from "@/components/dashboard/widgets/counter-cards/comp
 import SoftwareWidget from "@/components/dashboard/widgets/software/components/softwareWidget.vue";
 // eslint-disable-next-line max-len
 import OpenTicketsSoftwareWidget from "@/components/dashboard/widgets/open-tickets-software/components/openTicketsSoftwareWidget.vue";
+// eslint-disable-next-line max-len
+import TicketsVolumeTypeWidget from "@/components/dashboard/widgets/tickets-volume-type/components/ticketsVolumeTypeWidget.vue";
+// eslint-disable-next-line max-len
+import TicketsPriorityAnomaliesWidget from "@/components/dashboard/widgets/tickets-priority-anomalies/components/ticketsPriorityAnomaliesWidget.vue";
+
 import "chartjs-plugin-datalabels";
 
 export default {
@@ -49,7 +63,9 @@ export default {
     CriticalityWidget,
     CounterCardWidget,
     SoftwareWidget,
-    OpenTicketsSoftwareWidget
+    OpenTicketsSoftwareWidget,
+    TicketsVolumeTypeWidget,
+    TicketsPriorityAnomaliesWidget
   }
 };
 </script>
