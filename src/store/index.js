@@ -27,6 +27,8 @@ import criticalityTickets from "@/components/dashboard/widgets/criticality-ticke
 import counterCards from "@/components/dashboard/widgets/counter-cards/store/";
 import topTenSoftware from "@/components/dashboard/widgets/software/store/";
 import OpenTicketsBySoftware from "@/components/dashboard/widgets/open-tickets-software/store/";
+import ticketsVolumeByType from "@/components/dashboard/widgets/tickets-volume-type/store/";
+import ticketsPrioritieAnomalies from "@/components/dashboard/widgets/tickets-priority-anomalies/store/";
 
 Vue.use(Vuex);
 
@@ -35,7 +37,9 @@ const dashboardModules = {
   criticalityTickets,
   counterCards,
   topTenSoftware,
-  OpenTicketsBySoftware
+  OpenTicketsBySoftware,
+  ticketsVolumeByType,
+  ticketsPrioritieAnomalies
 };
 
 const store = new Vuex.Store({
