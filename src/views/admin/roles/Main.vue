@@ -176,7 +176,7 @@ export default {
           }))
         )
         .then(results => (this.items = results))
-        .catch(console.log)
+        .catch(console.log) // eslint-disable-line no-console
         .finally(() => (this.isLoading = false));
     }
   }

@@ -26,7 +26,7 @@ const actions = {
     return Vue.axios
       .getSoftwareById(softwareId)
       .then(({ data }) => commit(types.UPDATE_SOFTWARE, data))
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   },
 
   createSoftware: ({ commit }, software) => {

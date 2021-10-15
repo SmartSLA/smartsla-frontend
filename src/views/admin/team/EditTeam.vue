@@ -185,7 +185,7 @@ export default {
       .then(({ data }) => {
         this.contracts = data;
       })
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   }
 };
 </script>
