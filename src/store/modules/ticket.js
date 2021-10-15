@@ -63,7 +63,7 @@ const actions = {
       .then(size => commit(types.SET_TICKET_LENGTH, size))
       .catch(err => {
         // TODO
-        console.log(err);
+        console.log(err); // eslint-disable-line no-console
       });
   },
 

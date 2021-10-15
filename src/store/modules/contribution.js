@@ -50,7 +50,7 @@ const actions = {
       .countContributions()
       .then(size => commit(types.SET_CONTRIBUTIONS_LENGTH, size))
       .catch(err => {
-        console.log(err);
+        console.log(err); // eslint-disable-line no-console
       });
   },
 

@@ -19,14 +19,14 @@ const actions = {
     return Vue.axios
       .listClients()
       .then(({ data }) => commit(types.SET_CLIENTS, data))
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   },
 
   fetchClientById: ({ commit }, clientId) => {
     return Vue.axios
       .getClientById(clientId)
       .then(({ data }) => commit(types.SET_CLIENT, data))
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   },
 
   createClient: ({ commit }, client) => {
@@ -47,7 +47,7 @@ const actions = {
     return Vue.axios
       .countClients()
       .then(size => commit(types.SET_LENGTH, size))
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   }
 };
 

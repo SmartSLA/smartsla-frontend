@@ -22,14 +22,14 @@ const actions = {
         dispatch("countTeams");
         commit(types.SET_TEAMS, data);
       })
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   },
 
   fetchTeamById: ({ commit }, teamId) => {
     return Vue.axios
       .getTeamById(teamId)
       .then(({ data }) => commit(types.UPDATE_TEAM, data))
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   },
 
   createTeam: ({ commit }, team) => {
@@ -48,7 +48,7 @@ const actions = {
     return Vue.axios
       .countTeams()
       .then(size => commit(types.SET_LENGTH, size))
-      .catch(console.log);
+      .catch(console.log); // eslint-disable-line no-console
   }
 };
 
