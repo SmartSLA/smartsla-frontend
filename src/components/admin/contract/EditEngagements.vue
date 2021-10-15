@@ -14,14 +14,6 @@
       <template v-slot:items="props">
         <td class="text-xs-left">{{ $t(props.item.request) }}</td>
         <td class="text-xs-left text-capitalize">{{ $t(props.item.severity) }}</td>
-        <td class="text-xs-left text-capitalize">
-          <span>
-            <v-avatar :color="getOssaByKey(props.item.idOssa).color" size="25">
-              <span class="white--text">{{ getOssaByKey(props.item.idOssa).id }}</span>
-            </v-avatar>
-            <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }} </span>
-          </span>
-        </td>
         <td class="text-xs-center">
           <span>
             {{ $t("BH") }}: {{ cnsDurationDisplay(props.item.supported && props.item.supported.businessHours, true) }}
@@ -74,7 +66,6 @@
             :isModalOpen="formDialog"
             :requestTypes="requestTypes"
             :severityTypes="severityTypes"
-            :ossaIds="ossaIds"
             :contract="contract"
             @submit="submit"
             @closeFormModal="closeFormModal"
@@ -101,7 +92,7 @@
 </template>
 
 <script>
-import { OSSA_IDS, SEVERITY_TYPES, REQUEST_TYPES } from "@/constants.js";
+import { SEVERITY_TYPES, REQUEST_TYPES } from "@/constants.js";
 import FormEngagement from "@/components/admin/contract/FormEngagement.vue";
 import { humanizeHoursDurationFilter } from "@/filters/humanizeHoursDurationFilter";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
@@ -133,7 +124,6 @@ export default {
         custom_request: "",
         request: "",
         severity: "",
-        idOssa: "",
         bypassed: {
           businessHours: {
             days: "",
@@ -159,7 +149,6 @@ export default {
       contract: {},
       requestTypes: REQUEST_TYPES.map(requestType => ({ key: requestType, value: this.$i18n.t(requestType) })),
       severityTypes: SEVERITY_TYPES.map(severityType => ({ key: severityType, value: this.$i18n.t(severityType) })),
-      ossaIds: OSSA_IDS,
       isEdit: false,
       deleteModal: false
     };
@@ -172,7 +161,6 @@ export default {
       this.commitment = {
         request: "",
         severity: "",
-        idOssa: "",
         supported: {
           businessHours: {
             days: "",
@@ -215,9 +203,6 @@ export default {
     openModal() {
       this.isEdit = false;
       this.formDialog = true;
-    },
-    getOssaByKey(key) {
-      return this.ossaIds.find(ossaId => ossaId.key == key);
     },
     removeCommitment(commitment) {
       this.deleteModal = true;
@@ -401,7 +386,6 @@ export default {
       return [
         { text: this.$i18n.t("Request"), value: "request" },
         { text: this.$i18n.t("Severity"), value: "severity" },
-        { text: this.$i18n.t("support priority"), value: "idOssa" },
         {
           text: this.$i18n.t("Supported"),
           value: "supported"

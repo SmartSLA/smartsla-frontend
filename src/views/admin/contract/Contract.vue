@@ -266,7 +266,6 @@
                   <template v-slot:items="props">
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center">
                       <span>
                         {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported, true)) }}
@@ -340,7 +339,6 @@
                   <template v-slot:items="props">
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-center text-capitalize">{{ $t(props.item.idOssa) }}</td>
                     <td class="text-xs-center">
                       <span>
                         {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported, true)) }}
@@ -414,14 +412,6 @@
                   <template v-slot:items="props">
                     <td class="text-xs-center">{{ $t(props.item.request) }}</td>
                     <td class="text-xs-center text-capitalize">{{ $t(props.item.severity) }}</td>
-                    <td class="text-xs-center text-capitalize">
-                      <span>
-                        <v-avatar :color="getOssaByKey(props.item.idOssa).color" size="25">
-                          <span class="white--text">{{ getOssaByKey(props.item.idOssa).id }}</span>
-                        </v-avatar>
-                        <span class="pl-2"> {{ $t(getOssaByKey(props.item.idOssa).key) }} </span>
-                      </span>
-                    </td>
                     <td class="text-xs-center">
                       <span>
                         {{ $t("BH") }}: {{ $t(cnsDurationDisplay(props.item.supported && props.item.supported, true)) }}
@@ -536,7 +526,7 @@
 </template>
 
 <script>
-import { OSSA_IDS, DEFAULT_TIMEZONE, BENEFICIARY_ROLE_LIST, USER_TYPE } from "@/constants.js";
+import { DEFAULT_TIMEZONE, BENEFICIARY_ROLE_LIST, USER_TYPE } from "@/constants.js";
 import { mapGetters } from "vuex";
 import { DATETIME_TIMEZONE } from "@/components/timezone-picker/timezone-data.js";
 import { convertIsoDurationInDaysHoursMinutes } from "@/services/helpers/duration";
@@ -605,7 +595,6 @@ export default {
       return [
         { text: this.$i18n.t("Request"), value: "request", sortable: false },
         { text: this.$i18n.t("Severity"), value: "severity", sortable: false },
-        { text: this.$i18n.t("support priority"), value: "idOssa", sortable: false },
         {
           text: this.$i18n.t("Support"),
           value: "supported",
@@ -694,9 +683,6 @@ export default {
         ? DEFAULT_TIMEZONE
         : DATETIME_TIMEZONE.find(timezone => timezone.value === this.contract.timezone);
       return name;
-    },
-    getOssaByKey(key) {
-      return OSSA_IDS.find(ossaId => ossaId.key == key);
     },
     edit() {
       return;

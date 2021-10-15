@@ -189,7 +189,6 @@ const getters = {
         softwareName: request.software && request.software.software && request.software.software.name,
         responsibleName: request.responsible && request.responsible.name,
         assignedToName: request.assignedTo && request.assignedTo.name,
-        id_ossa: request.idOssa.id,
         createdAt: request.timestamps.createdAt,
         updatedAt: request.timestamps.updatedAt,
         clientContract: contract && contract.client + contract.name
