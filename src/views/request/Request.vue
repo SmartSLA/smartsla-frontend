@@ -13,7 +13,11 @@
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl12 lg12 pt-4 px-0>
         <v-card light color="white">
-          <ticket-status :status="request.status" :type="request.type"></ticket-status>
+          <ticket-status
+            v-if="request.type != 'softwareVulnerability'"
+            :status="request.status"
+            :type="request.type"
+          ></ticket-status>
           <v-divider />
           <v-layout wrap>
             <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
@@ -113,18 +117,50 @@
           <v-card>
             <v-card-text>
               <v-subheader inset class="ml-0">
-                <v-icon>subject</v-icon>
+                <v-icon class="pr-2">subject</v-icon>
                 {{ $t("Description") }}
               </v-subheader>
               <div class="subject-text ml-3" v-html="request.description"></div>
             </v-card-text>
+            <v-card-text
+              v-if="request.vulnInfos && request.vulnInfos.references && request.vulnInfos.references.length"
+            >
+              <v-subheader inset class="ml-0">
+                <v-icon class="pr-2">loupe</v-icon>
+                {{ $t("References") }}
+              </v-subheader>
+              <vuln-list :list="request.vulnInfos.references" :headers="vulnRefHeader" :grid="'1fr 7fr 2fr'">
+                <template #content="item">
+                  <span>{{ item.item.source }} </span>
+                  <span>
+                    <a :href="item.item.URL.url">{{ item.item.URL.name }} </a>
+                  </span>
+                  <span>
+                    <v-chip color="indigo" text-color="white" v-for="(tag, index) of item.item.tags" :key="index">{{ tag }} </v-chip>
+                  </span>
+                </template>
+              </vuln-list>
+            </v-card-text>
+            <v-card-text v-if="request.vulnInfos && request.vulnInfos.cpes && request.vulnInfos.cpes.length">
+              <v-subheader inset class="ml-0">
+                <v-icon class="pr-2">fingerprint</v-icon>
+                {{ $t("Affected versions") }}
+              </v-subheader>
+              <vuln-list :list="request.vulnInfos.cpes" :headers="vulnCpeHeader" :grid="'7fr 2fr 2fr'">
+                <template #content="item">
+                  <span>{{ item.item.cpe23Uri }} </span>
+                  <span v-if="item.item.versionStart"> {{ item.item.versionStart.version }} </span>
+                  <span v-if="item.item.versionEnd"> {{ item.item.versionEnd.version }} </span>
+                </template>
+              </vuln-list>
+            </v-card-text>
             <v-card-text v-if="request.participants && request.participants.length">
               <v-subheader inset class="ml-0">
-                <v-icon>email</v-icon>
+                <v-icon class="pr-2">email</v-icon>
                 {{ $t("Participants E-mails") }}
               </v-subheader>
               <v-layout>
-                <v-flex xs12 class="pt-0 pl-0">
+                <v-flex xs12 class="pt-0 pl-3">
                   <v-chip v-for="(participant, index) in request.participants" :key="index" class="ma-2">
                     <a :href="`mailto:${participant}`">{{ participant }}</a>
                   </v-chip>
@@ -134,7 +170,7 @@
             <v-card-text v-if="attachments && attachments.length">
               <v-list subheader two-line>
                 <v-subheader inset class="ml-0">
-                  <v-icon>attach_file</v-icon>
+                  <v-icon class="pr-2">attach_file</v-icon>
                   {{ $t("Attachments") }}
                 </v-subheader>
                 <template v-for="(attachment, index) in attachments">
@@ -157,7 +193,7 @@
             </v-card-text>
             <v-card-text v-if="request.relatedRequests && request.relatedRequests.length">
               <v-subheader inset class="ml-0">
-                <v-icon>insert_link</v-icon>
+                <v-icon class="pr-2">insert_link</v-icon>
                 {{ $t("Related requests") }}
               </v-subheader>
               <v-layout>
@@ -178,7 +214,7 @@
               </v-layout>
             </v-card-text>
           </v-card>
-          <v-card>
+          <v-card v-if="request.type != 'softwareVulnerability'">
             <v-tabs icons-and-text class="comment-padding">
               <v-tabs-slider color="primary"></v-tabs-slider>
               <v-tab href="#comment">
@@ -254,9 +290,9 @@
                       <v-card-text
                         v-if="
                           (event.target && event.target.name) ||
-                            event.status ||
-                            (event.beneficiary && event.beneficiary.name) ||
-                            (event.responsible && event.responsible.name)
+                          event.status ||
+                          (event.beneficiary && event.beneficiary.name) ||
+                          (event.responsible && event.responsible.name)
                         "
                         class="grey--text pt-0"
                       >
@@ -465,6 +501,7 @@ import { LOCALE } from "@/i18n/constants";
 import userAvatar from "@/components/user/userAvatar";
 import moment from "moment-timezone";
 import { routeNames } from "@/router";
+import vulnList from "@/components/vulnList.vue";
 
 // const Codeblock = Quill.import("formats/code-block");
 // Codeblock.tagName = "pre";
@@ -482,7 +519,9 @@ export default {
       isPrivateTab: null,
       hideRequestNavigationDrawer: false,
       dialogArchive: false,
-      prevRoute: null
+      prevRoute: null,
+      vulnRefHeader: ["Source", "URL", "Tags"],
+      vulnCpeHeader: ["CPE", "Version Start", "Version End"]
     };
   },
   components: {
@@ -496,7 +535,8 @@ export default {
     RelatedContributions,
     TicketStatus,
     RequestNavigationDrawer,
-    userAvatar
+    userAvatar,
+    vulnList
   },
   computed: {
     ...mapGetters({
