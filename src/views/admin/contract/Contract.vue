@@ -83,7 +83,11 @@
                     <div class="subheading font-weight-medium">{{ $t("Vulnerability mailing list") }} :</div>
                   </v-flex>
                   <v-flex xs8>
-                    {{ contract.mailingList.vulnerability.join(", ") }}
+                    {{
+                      contract.mailingList &&
+                        contract.mailingList.vulnerability &&
+                        contract.mailingList.vulnerability.join(", ")
+                    }}
                   </v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("Internal mailing list") }} :</div>

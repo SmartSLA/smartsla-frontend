@@ -29,7 +29,7 @@
 <script>
 export default {
   data: () => ({
-    emailVerfication: []
+    emailValidation: []
   }),
   props: {
     label: { type: String },
@@ -60,7 +60,7 @@ export default {
   },
   watch: {
     mailItems() {
-      this.emailValidation = this.mailItems.map(mail => [this.isValidEmail(mail)]);
+      this.emailValidation = this.mailItems && this.mailItems.map(mail => [this.isValidEmail(mail)]);
     }
   }
 };
