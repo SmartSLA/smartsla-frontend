@@ -48,21 +48,6 @@
                       </template>
                     </v-autocomplete>
                   </v-flex>
-                  <v-flex xs6 md6 lg6 xl4 sm2>
-                    <v-autocomplete
-                      :disabled="isInEdit"
-                      v-if="isInEdit"
-                      :items="allUsers"
-                      :label="$i18n.t('Beneficiary')"
-                      prepend-icon="people"
-                      background-color="white"
-                      v-model="ticket.beneficiary"
-                      item-text="name"
-                      :rules="[() => Object.keys(ticket.beneficiary).length > 0 || $i18n.t('Required field')]"
-                      class="required-element"
-                      return-object
-                    ></v-autocomplete>
-                  </v-flex>
                   <v-flex xs12 sm12 md12 v-if="!$auth.check('expert') && !userPhone">
                     <span class="caption ml-4">
                       {{ $t("You must fill a call number in order to let the support join you") }}
@@ -312,7 +297,6 @@ export default {
         relatedRequests: [],
         status: "new",
         author: {},
-        beneficiary: {},
         Responsible: {}
       },
       contractTicketsCount: 0,
@@ -549,8 +533,7 @@ export default {
       requests: "ticket/getTickets",
       displayName: "currentUser/getDisplayName",
       userPhone: "currentUser/getPhone",
-      activeContracts: "contract/activeContracts",
-      allUsers: "users/getUsersAsTicketUsers"
+      activeContracts: "contract/activeContracts"
     }),
 
     avatarUrl() {
