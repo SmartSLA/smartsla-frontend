@@ -436,7 +436,10 @@ export default {
     },
 
     updateVulnerabilityMailingList(mailingList) {
-      this.contract.mailingList.vulnerability = mailingList;
+      this.contract.mailingList = {
+        ...this.contract.mailingList,
+        vulnerability: mailingList
+      };
     },
 
     removeItemVulnerabilityMailingList(itemIndex) {
