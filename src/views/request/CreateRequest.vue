@@ -63,14 +63,14 @@
                       return-object
                     ></v-autocomplete>
                   </v-flex>
-                  <v-flex xs12 sm12 md12 v-if="!userPhone">
+                  <v-flex xs12 sm12 md12 v-if="!$auth.check('expert') && !userPhone">
                     <span class="caption ml-4">
                       {{ $t("You must fill a call number in order to let the support join you") }}
                     </span>
                   </v-flex>
                   <v-flex xs6 sm6 md6 lg6 xl6>
                     <v-text-field
-                      v-if="!userPhone"
+                      v-if="!$auth.check('expert') && !userPhone"
                       prepend-icon="phone"
                       v-model="callNumber"
                       :label="$i18n.t('Call number')"
@@ -83,7 +83,7 @@
                   </v-flex>
                   <v-flex xs6 sm6 md6 lg6 xl6>
                     <v-text-field
-                      v-if="!userPhone"
+                      v-if="!$auth.check('expert') && !userPhone"
                       prepend-icon="meeting_room"
                       v-model="meetingId"
                       :label="$i18n.t('Meeting ID')"
