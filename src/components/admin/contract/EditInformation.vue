@@ -35,22 +35,37 @@
             <v-text-field v-model="contract.contact.technical"></v-text-field>
           </v-flex>
           <v-flex xs3>
-            {{ $t("Vulnerability contact") }}
+            {{ $t("Vulnerability mailing list") }}
           </v-flex>
           <v-flex xs8>
-            <v-text-field v-model="contract.contact.vulneratility"></v-text-field>
+            <email-input
+              @mails:updated="updateVulnerabilityMailingList"
+              @mails:removed="removeItemVulnerabilityMailingList"
+              label="Vulnerability mailing list"
+              :mails="contract.mailingList.vulnerability"
+            ></email-input>
+          </v-flex>
+          <v-flex xs3>{{ $t("Internal mailing list") }}</v-flex>
+          <v-flex xs8>
+            <email-input
+              @mails:updated="updateInternalMailingList"
+              @mails:removed="removeItemInternalMailingList"
+              label="Internal mailing list"
+              :mails="contract.mailingList.internal"
+            ></email-input>
+          </v-flex>
+          <v-flex xs3>{{ $t("External mailing list") }}</v-flex>
+          <v-flex xs8>
+            <email-input
+              @mails:updated="updateExternalMailingList"
+              @mails:removed="removeItemExternalMailingList"
+              label="External mailing list"
+              :mails="contract.mailingList.external"
+            ></email-input>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Timezone") }}</v-flex>
           <v-flex xs8>
             <timezone-picker :timezone.sync="contract.timezone"></timezone-picker>
-          </v-flex>
-          <v-flex xs3>{{ $t("Internal mailing list") }}</v-flex>
-          <v-flex xs8>
-            <v-text-field v-model="contract.mailingList.internal"></v-text-field>
-          </v-flex>
-          <v-flex xs3>{{ $t("Client mailing list") }}</v-flex>
-          <v-flex xs8>
-            <v-text-field v-model="contract.mailingList.external"></v-text-field>
           </v-flex>
           <v-flex xs3 class="required-label">{{ $t("Business hours") }}</v-flex>
           <v-flex xs8>
@@ -245,6 +260,7 @@ import { mapGetters } from "vuex";
 import TimezonePicker from "@/components/timezone-picker/timezone.vue";
 import ExternalLinks from "@/components/ExternalLinks.vue";
 import { LOCALE } from "@/i18n/constants";
+import EmailInput from "@/components/EmailInput.vue";
 
 export default {
   name: "edit-contract-information",
@@ -259,12 +275,12 @@ export default {
         },
         contact: {
           commercial: "",
-          technical: "",
-          vulneratility: ""
+          technical: ""
         },
         mailingList: {
           internal: [],
-          external: []
+          external: [],
+          vulnerability: []
         },
         startDate: "",
         endDate: "",
@@ -307,7 +323,8 @@ export default {
   },
   components: {
     TimezonePicker,
-    ExternalLinks
+    ExternalLinks,
+    EmailInput
   },
   computed: {
     ...mapGetters({
@@ -346,6 +363,10 @@ export default {
     },
     userLanguage() {
       return this.getUserLanguage || LOCALE;
+    },
+
+    internalMailingList() {
+      return this.contract.mailingList.internal;
     }
   },
   mounted() {
@@ -394,6 +415,38 @@ export default {
     this.$store.dispatch("client/fetchClients");
   },
   methods: {
+    updateInternalMailingList(mailingList) {
+      this.contract.mailingList.internal = mailingList;
+    },
+
+    removeItemInternalMailingList(itemIndex) {
+      const items = this.contract.mailingList.internal;
+
+      this.contract.mailingList.internal = items.slice(0, itemIndex).concat(items.slice(itemIndex + 1, items.length));
+    },
+
+    updateExternalMailingList(mailingList) {
+      this.contract.mailingList.external = mailingList;
+    },
+
+    removeItemExternalMailingList(itemIndex) {
+      const items = this.contract.mailingList.external;
+
+      this.contract.mailingList.external = items.slice(0, itemIndex).concat(items.slice(itemIndex + 1, items.length));
+    },
+
+    updateVulnerabilityMailingList(mailingList) {
+      this.contract.mailingList.vulnerability = mailingList;
+    },
+
+    removeItemVulnerabilityMailingList(itemIndex) {
+      const items = this.contract.mailingList.vulnerability;
+
+      this.contract.mailingList.vulnerability = items
+        .slice(0, itemIndex)
+        .concat(items.slice(itemIndex + 1, items.length));
+    },
+
     parseDate(date) {
       if (!date) return null;
 

@@ -96,26 +96,13 @@
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm12 md12 lg12 xl12>
-                    <v-combobox
-                      prepend-icon="mail"
-                      v-model="participants"
-                      :label="$t('Participants E-mails')"
-                      multiple
-                      chips
-                    >
-                      <template slot="selection" slot-scope="data">
-                        <v-chip
-                          :class="{ validMail: !emailVerfication[data.index][1] }"
-                          :color="emailVerfication[data.index][1] ? 'default' : 'red'"
-                          :text-color="emailVerfication[data.index][1] ? '' : 'white'"
-                          :selected="data.selected"
-                          close
-                          @input="remove(data.item)"
-                        >
-                          {{ data.item }}
-                        </v-chip>
-                      </template>
-                    </v-combobox>
+                    <email-input
+                      @mails:updated="updateParticipants"
+                      @mails:removed="removeItemParticipants"
+                      label="Participants E-mails"
+                      :mails="participants"
+                      icon="mail"
+                    ></email-input>
                   </v-flex>
                   <v-flex xs12 sm12 md12 lg12 xl12>
                     <v-container grid-list-md>
@@ -307,6 +294,7 @@ import SoftwareMixin from "@/mixins/SortContractSoftware";
 import { cloneDeep, debounce } from "lodash";
 import relatedRequests from "@/components/request/RelatedRequests";
 import { getUserAvatarUrl } from "@/services/helpers/user";
+import EmailInput from "@/components/EmailInput.vue";
 
 export default {
   mixins: [SoftwareMixin],
@@ -332,8 +320,6 @@ export default {
       participants: [],
       submitRequest: false,
       selectedTypes: [],
-      reg: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
-      emailVerfication: [],
       meetingId: "",
       callNumber: "",
       ticketsContract: []
@@ -342,9 +328,20 @@ export default {
   components: {
     VueEditor,
     Attachments,
-    relatedRequests
+    relatedRequests,
+    EmailInput
   },
   methods: {
+    updateParticipants(mailingList) {
+      this.participants = mailingList;
+    },
+
+    removeItemParticipants(itemIndex) {
+      const items = this.participants;
+
+      this.participants = items.slice(0, itemIndex).concat(items.slice(itemIndex + 1, items.length));
+    },
+
     submit() {
       if (!this.$route.params.id) {
         this.ticket.author = this.currentUser; // TODO: handle the ticket author in the backend.
@@ -464,13 +461,6 @@ export default {
             this.submitRequest = false;
           });
       }
-    },
-    remove(item) {
-      this.participants.splice(this.participants.indexOf(item), 1);
-      this.participants = [...this.participants];
-    },
-    isValidEmail(email) {
-      return this.reg.test(email);
     },
 
     isSoftwareValid() {
@@ -716,9 +706,6 @@ export default {
           this.$set(this.ticket, "severity", null);
         }
       }
-    },
-    participants(participants) {
-      this.emailVerfication = participants.map(participant => [participant, this.isValidEmail(participant)]);
     }
   },
   created() {
