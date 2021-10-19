@@ -9,6 +9,7 @@
       <div class="body">
         <v-data-table
           hide-actions
+          :loading="loading"
           :items="normalizeTicketsList"
           :headers="headers"
           :no-data-text="$t('No data available')"
@@ -22,14 +23,14 @@
             </td>
           </template>
           <template v-slot:footer>
-            <td class="text-xs-center"></td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length"></td>
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length">
               <v-chip color="primary" outline>{{ footer.totalCritical }}</v-chip>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length">
               <v-chip color="primary" outline>{{ footer.totalNotCritical }}</v-chip>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length">
               <v-chip color="primary" outline>{{ footer.totalAll }}</v-chip>
             </td>
           </template>
@@ -86,7 +87,8 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("ticketsPrioritieAnomalies/fetchData");
+    this.loading = true;
+    this.$store.dispatch("ticketsPrioritieAnomalies/fetchData").then(() => (this.loading = false));
   },
   methods: {
     setInterval(interval) {
