@@ -3,24 +3,6 @@ export const DEFAULT_TIMEZONE = {
   value: "Europe/Paris"
 };
 
-export const OSSA_IDS = [
-  {
-    id: 3,
-    color: "#512da8",
-    key: "Blocking"
-  },
-  {
-    id: 2,
-    color: "#8b60d8",
-    key: "Non-blocking"
-  },
-  {
-    id: 1,
-    color: "#dbc1ff",
-    key: "Information"
-  }
-];
-
 export const CONTRIBUTION_STATUS = {
   DEVELOP: "develop",
   REVERSED: "reversed",

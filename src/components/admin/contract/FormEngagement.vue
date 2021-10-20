@@ -45,31 +45,6 @@
             >
             </v-select>
           </v-flex>
-          <v-flex xs4 class="required-label">{{ $t("support priority") }}</v-flex>
-          <v-flex xs6>
-            <v-select
-              v-model="commitment.idOssa"
-              :items="ossaIds"
-              item-text="value"
-              item-value="key"
-              flat
-              single-line
-              :rules="[val => !!val || $i18n.t('Required field')]"
-            >
-              <template slot="item" slot-scope="data">
-                <v-avatar :color="data.item.color" size="25">
-                  <span class="white--text">{{ data.item.id }}</span>
-                </v-avatar>
-                <span class="pl-2"> {{ $t(data.item.key) }} </span>
-              </template>
-              <template slot="selection" slot-scope="data">
-                <v-avatar :color="data.item.color" size="25">
-                  <span class="white--text">{{ data.item.id }}</span>
-                </v-avatar>
-                <span class="pl-2"> {{ $t(data.item.key) }} </span>
-              </template>
-            </v-select>
-          </v-flex>
 
           <v-flex xs4>{{ $t("Treatment time range") }}</v-flex>
           <v-flex xs8>
@@ -255,7 +230,6 @@ export default {
     commitment: Object,
     requestTypes: Array,
     severityTypes: Array,
-    ossaIds: Array,
     contract: Object
   },
   data() {

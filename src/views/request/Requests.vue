@@ -52,11 +52,6 @@
                 :user="props.item.request.assignedTo"
               ></organization-label>
             </td>
-            <td class="text-xs-center" v-if="$auth.check('admin')">
-              <v-avatar :color="getOssaConfById(props.item.id_ossa || 1).color" size="25">
-                <span class="white--text">{{ props.item.id_ossa || 1 }}</span>
-              </v-avatar>
-            </td>
             <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ $t(props.item.request.type) }}</text-highlight>
             </td>
@@ -153,7 +148,6 @@ import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
 import {
-  OSSA_IDS,
   ANOMALY_CNS_STATUS,
   CNS_STATUS,
   REQUEST_TYPE,
@@ -187,7 +181,6 @@ export default {
       headers: [
         { text: this.$i18n.t("Ticket N°"), value: "_id" },
         { text: this.$i18n.t("Organization"), value: "organizationLabel" },
-        { text: this.$i18n.t("support priority"), value: "id_ossa" },
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "softwareName" },
@@ -217,9 +210,6 @@ export default {
     this.$store.dispatch("software/fetchSoftwareList");
     this.$store.dispatch("users/fetchUsers");
 
-    if (this.$auth.ready() && !this.$auth.check("admin")) {
-      this.headers = this.headers.filter(header => header.value != "id_ossa");
-    }
     this.fetchUserFilters();
   },
   computed: {
@@ -298,7 +288,6 @@ export default {
     requestsAsDataTable() {
       return this.requests.map(request => ({
         _id: request._id,
-        id_ossa: request.idOssa.id,
         organization: request.organization,
         author: request.author && request.author.name,
         type: request.type,
@@ -574,9 +563,6 @@ export default {
 
     displayCnsProgressBar(item) {
       return item.status !== "closed" && item.status !== "resolved" && item.request.cns.bypassed;
-    },
-    getOssaConfById(ossaId) {
-      return OSSA_IDS.find(ossa => ossa.id === ossaId);
     },
     cnsWording({ status, type }) {
       const wording = type === REQUEST_TYPE.ANOMALY ? ANOMALY_CNS_STATUS[status] : CNS_STATUS[status];
