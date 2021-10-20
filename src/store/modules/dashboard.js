@@ -1,7 +1,7 @@
 import { buildIntervalQueryParams } from "@/services/helpers/dashboard";
 
 const initialState = () => ({
-  interval: "ANY_TIME",
+  interval: "LAST_YEAR",
   filters: {
     group: "quarter",
     contracts: [],
