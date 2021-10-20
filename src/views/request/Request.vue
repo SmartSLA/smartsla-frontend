@@ -14,7 +14,7 @@
       <v-flex xs12 md12 sm12 xl12 lg12 pt-4 px-0>
         <v-card light color="white">
           <ticket-status
-            v-if="request.type != 'softwareVulnerability'"
+            v-if="request.type !== 'softwareVulnerability'"
             :status="request.status"
             :type="request.type"
           ></ticket-status>
@@ -136,7 +136,9 @@
                     <a :href="item.item.URL.url">{{ item.item.URL.name }} </a>
                   </span>
                   <span>
-                    <v-chip color="indigo" text-color="white" v-for="(tag, index) of item.item.tags" :key="index">{{ tag }} </v-chip>
+                    <v-chip color="indigo" text-color="white" v-for="(tag, index) of item.item.tags" :key="index">
+                      {{ tag }}
+                    </v-chip>
                   </span>
                 </template>
               </vuln-list>
@@ -214,7 +216,7 @@
               </v-layout>
             </v-card-text>
           </v-card>
-          <v-card v-if="request.type != 'softwareVulnerability'">
+          <v-card v-if="request.type !== 'softwareVulnerability'">
             <v-tabs icons-and-text class="comment-padding">
               <v-tabs-slider color="primary"></v-tabs-slider>
               <v-tab href="#comment">
@@ -290,9 +292,9 @@
                       <v-card-text
                         v-if="
                           (event.target && event.target.name) ||
-                          event.status ||
-                          (event.beneficiary && event.beneficiary.name) ||
-                          (event.responsible && event.responsible.name)
+                            event.status ||
+                            (event.beneficiary && event.beneficiary.name) ||
+                            (event.responsible && event.responsible.name)
                         "
                         class="grey--text pt-0"
                       >

@@ -122,7 +122,11 @@
             </v-tooltip>
           </v-flex>
           <v-flex xs9 v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
-            <v-combobox multiple chips v-model="software.lininfosecConfiguration"></v-combobox>
+            <chip-list-input
+              @CPEList:updated="updateLinifosecConfiguration"
+              @CPEList:removed="deleteFromLinifosecConfiguration"
+              :CPEValidation="software.lininfosecConfiguration"
+            />
           </v-flex>
           <v-flex xs3>{{ $t("Referent") }}</v-flex>
           <v-flex xs9>
@@ -149,6 +153,7 @@
 <script>
 import { USER_TYPE } from "@/constants.js";
 import { mapGetters } from "vuex";
+import ChipListInput from "@/components/ChipListInput.vue";
 
 export default {
   name: "form-software",
@@ -177,6 +182,9 @@ export default {
         this.software.technicalReferent = {};
       }
     }
+  },
+  components: {
+    ChipListInput
   },
   computed: {
     ...mapGetters({
@@ -232,6 +240,15 @@ export default {
       if (!date) return null;
       const [month, day, year] = date.split("/");
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    },
+    updateLinifosecConfiguration(cpeList) {
+      console.log(cpeList);
+      this.software.lininfosecConfiguration = cpeList;
+    },
+    deleteFromLinifosecConfiguration(idx) {
+      const conf = this.software.lininfosecConfiguration;
+      this.software.lininfosecConfiguration = conf.slice(0, idx).concat(conf.slice(idx + 1, conf.length));
+      console.log(this.software.lininfosecConfiguration);
     }
   },
   created() {
