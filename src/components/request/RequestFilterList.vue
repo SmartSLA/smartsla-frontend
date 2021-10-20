@@ -9,6 +9,7 @@
     v-model="currentlySelectedFilter"
     item-text="name"
     item-value="_id"
+    :menu-props="{ maxHeight: 600 }"
   >
     <template v-slot:item="{ item }">
       <v-layout row wrap>
@@ -16,7 +17,7 @@
           <span>{{ $t(item.name) }}</span>
         </v-flex>
         <v-flex xs1>
-          <v-chip small v-if="item._id === ''" align-end>{{ ticketsCount }}</v-chip>
+          <v-chip small v-if="item._id === 'all'" align-end>{{ ticketsCount }}</v-chip>
         </v-flex>
       </v-layout>
     </template>
@@ -45,7 +46,7 @@ export default {
     }),
 
     filters() {
-      return [INITIAL_FILTER, ...this.storedFilters];
+      return this.storedFilters;
     },
 
     currentlySelectedFilter: {

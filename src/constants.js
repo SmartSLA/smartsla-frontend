@@ -195,7 +195,7 @@ export const ANOMALY_CNS_STATUS = {
 };
 
 export const INITIAL_FILTER = {
-  name: "All requests",
+  name: "Open tickets",
   _id: ""
 };
 
