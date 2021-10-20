@@ -221,6 +221,7 @@ export const TYPES_REQUESTS_FILTERS = {
   information: "Information",
   anomaly: "Software anomaly",
   administration: "Administration",
+  softwareVulnerability: "softwareVulnerability",
   other: "Other"
 };
 
