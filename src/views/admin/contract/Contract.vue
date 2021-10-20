@@ -162,9 +162,11 @@
           <v-flex xs12>
             <v-card>
               <v-card-title primary-title>
-                <v-layout>
+                <v-layout row wrap>
                   <v-flex xs10>
-                    <h3 class="headline">{{ $t("Supported software") }}</h3>
+                    <h3 class="headline">
+                      {{ $t("Supported software") }} <v-chip>{{ software.length }} </v-chip>
+                    </h3>
                   </v-flex>
                   <v-flex xs2>
                     <div class="text-xs-right grey--text">
@@ -182,6 +184,21 @@
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </div>
+                  </v-flex>
+
+                  <v-flex xs12>
+                    <v-chip :color="critColor('critical')" :text-color="critTextColor('critical')">
+                      <v-avatar class="red darken-4">{{ softwareCounter.totalCritical }}</v-avatar>
+                      <span>{{ $t("critical") }}</span>
+                    </v-chip>
+                    <v-chip right :color="critColor('sensible')" :text-color="critTextColor('sensible')">
+                      <v-avatar class="orange darken-4">{{ softwareCounter.totalSensible }}</v-avatar>
+                      {{ $t("sensible") }}
+                    </v-chip>
+                    <v-chip :color="critColor('standard')" :text-color="critTextColor('standard')">
+                      <v-avatar class="grey darken-1">{{ softwareCounter.totalStandard }}</v-avatar>
+                      {{ $t("standard") }}
+                    </v-chip>
                   </v-flex>
                 </v-layout>
               </v-card-title>
@@ -463,7 +480,10 @@
           <v-card-title primary-title>
             <v-layout>
               <v-flex xs10>
-                <h3 class="headline">{{ $t("Human resources") }}</h3>
+                <h3 class="headline">
+                  {{ $t("Human resources") }}
+                  <v-chip small>{{ totalUsers }}</v-chip>
+                </h3>
               </v-flex>
               <v-flex xs2>
                 <div class="text-xs-right">
@@ -662,6 +682,22 @@ export default {
     },
     routeNames() {
       return routeNames;
+    },
+    totalUsers() {
+      return (
+        this.contractManagers.length + this.operationalManagers.length + this.customers.length + this.viewers.length
+      );
+    },
+    softwareCounter() {
+      return Object.values(this.software || {}).reduce(
+        (acc, current) => {
+          if (current.critical === "critical") acc.totalCritical += 1;
+          else if (current.critical === "sensible") acc.totalSensible += 1;
+          else acc.totalStandard += 1;
+          return acc;
+        },
+        { totalCritical: 0, totalSensible: 0, totalStandard: 0 }
+      );
     }
   },
   created() {
