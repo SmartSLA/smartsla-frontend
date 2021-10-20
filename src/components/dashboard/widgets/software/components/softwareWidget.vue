@@ -7,7 +7,13 @@
     </v-card-title>
     <v-card-text>
       <div class="body">
-        <v-data-table hide-actions :items="software" :headers="headers" :no-data-text="$t('No data available')">
+        <v-data-table
+          hide-actions
+          :loading="loading"
+          :items="software"
+          :headers="headers"
+          :no-data-text="$t('No data available')"
+        >
           <template v-slot:items="props">
             <td class="text-xs-center">{{ props.item.softwareName }}</td>
             <td class="text-xs-center">{{ props.item.anomaly }}</td>
@@ -52,7 +58,8 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch("topTenSoftware/fetchData");
+    this.loading = true;
+    this.$store.dispatch("topTenSoftware/fetchData").then(() => (this.loading = false));
   },
   methods: {
     setInterval(interval) {

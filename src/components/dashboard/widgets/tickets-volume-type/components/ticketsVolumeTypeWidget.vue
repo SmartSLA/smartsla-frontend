@@ -8,6 +8,7 @@
     <v-card-text>
       <div class="body">
         <v-data-table
+          :loading="loading"
           hide-actions
           :items="normalizeTicketsList"
           :headers="headers"
@@ -22,14 +23,14 @@
             </td>
           </template>
           <template v-slot:footer>
-            <td class="text-xs-center"></td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length"></td>
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length">
               <v-chip color="primary" outline>{{ footer.totalOpened }}</v-chip>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length">
               <v-chip color="primary" outline>{{ footer.totalClosed }}</v-chip>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-center" v-if="!!normalizeTicketsList.length">
               <v-chip color="primary" outline>{{ footer.totalAll }}</v-chip>
             </td>
           </template>
@@ -86,7 +87,8 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("ticketsVolumeByType/fetchData");
+    this.loading = true;
+    this.$store.dispatch("ticketsVolumeByType/fetchData").then(() => (this.loading = false));
   },
   methods: {
     setInterval(interval) {
