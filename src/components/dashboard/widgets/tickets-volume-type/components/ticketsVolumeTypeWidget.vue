@@ -65,14 +65,12 @@ export default {
       interval: "ticketsVolumeByType/getInterval"
     }),
     normalizeTicketsList() {
-      if (this.ticketsData) {
-        const items = [];
+      const items = [];
 
-        for (const [key, value] of Object.entries(this.ticketsData)) {
-          items.push({ type: key, ...value });
-        }
-        return items;
+      for (const [key, value] of Object.entries(this.ticketsData || {})) {
+        items.push({ type: key, ...value });
       }
+      return items;
     },
     footer() {
       return Object.values(this.ticketsData || {}).reduce(

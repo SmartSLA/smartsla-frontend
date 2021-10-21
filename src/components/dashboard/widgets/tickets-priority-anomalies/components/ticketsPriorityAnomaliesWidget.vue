@@ -65,14 +65,12 @@ export default {
       interval: "ticketsPrioritieAnomalies/getInterval"
     }),
     normalizeTicketsList() {
-      if (this.ticketsList) {
-        const items = [];
+      const items = [];
 
-        for (const [key, value] of Object.entries(this.ticketsList)) {
-          items.push({ anomaly: key, ...value });
-        }
-        return items;
+      for (const [key, value] of Object.entries(this.ticketsList || {})) {
+        items.push({ anomaly: key, ...value });
       }
+      return items;
     },
     footer() {
       return Object.values(this.ticketsList || {}).reduce(
