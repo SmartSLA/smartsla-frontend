@@ -232,7 +232,7 @@ export default {
     },
 
     contractsListFilter() {
-      return (this.contractsList || []).map(({ _id, name }) => ({ id: _id, name }));
+      return (this.contractsList || []).map(({ _id, name, client }) => ({ id: _id, name, client }));
     },
 
     customFiltersByType() {
