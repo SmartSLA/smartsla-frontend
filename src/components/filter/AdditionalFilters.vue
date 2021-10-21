@@ -56,7 +56,13 @@
                         hide-details
                         hide-selected
                         editable
-                      ></v-overflow-btn>
+                      >
+                        <template v-slot:item="{ item }">
+                          <span>{{ item.name }}</span>
+                          <v-spacer v-if="item.client"></v-spacer>
+                          <span class="grey--text caption" v-if="item.client">{{ item.client }}</span>
+                        </template>
+                      </v-overflow-btn>
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-toolbar-side-icon v-on="on" @click="addFilter">
