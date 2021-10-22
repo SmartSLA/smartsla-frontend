@@ -121,8 +121,8 @@ const getters = {
 
       return {
         ...contribution,
+        author: author,
         software: software.name,
-        author: author.name,
         creation: timestamps.creation
       };
     });
