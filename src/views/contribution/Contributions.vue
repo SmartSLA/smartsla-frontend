@@ -51,7 +51,7 @@
             </router-link>
           </td>
           <td class="text-xs-center">
-            <text-highlight :queries="highlightSearch">{{ props.item.author }}</text-highlight>
+            <text-highlight :queries="highlightSearch">{{ getUser(props.item.author) }}</text-highlight>
           </td>
           <td class="text-xs-center">
             <v-tooltip top>
@@ -150,6 +150,10 @@ export default {
 
     updateCustomFilters(customFilters) {
       this.customFilters = customFilters;
+    },
+
+    getUser(id) {
+      return this.$store.getters["users/getUserById"](id).name || "";
     }
   },
   computed: {
