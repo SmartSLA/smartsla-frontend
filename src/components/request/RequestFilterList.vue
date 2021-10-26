@@ -71,6 +71,7 @@ export default {
       }
 
       this.$store.dispatch("ticket/setFilter", filter);
+      this.$store.dispatch("ticket/resetTickets");
       this.$store.dispatch("ticket/fetchTickets");
       this.$router.push({ name: routeNames.REQUESTS, query });
     }
