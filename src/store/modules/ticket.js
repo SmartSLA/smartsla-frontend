@@ -123,8 +123,11 @@ const actions = {
   },
 
   setFilter: ({ commit }, filter) => {
-    commit(types.RESET_TICKETS);
     commit(types.SET_FILTER, filter);
+  },
+
+  resetTickets: ({ commit }) => {
+    commit(types.RESET_TICKETS);
   }
 };
 
