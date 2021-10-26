@@ -51,7 +51,7 @@ export default {
     return {
       search: "",
       contact: [],
-      rowsPerPageItems: [10, 25, 50],
+      rowsPerPageItems: [10, 25, 50, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       pagination: {
         rowsPerPage: 10
       },

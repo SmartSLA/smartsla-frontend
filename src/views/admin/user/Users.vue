@@ -75,7 +75,7 @@ export default {
       contract: null,
       role: null,
       relations: [],
-      rowsPerPageItems: [10, 25, 50],
+      rowsPerPageItems: [10, 25, 50, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       pagination: {
         rowsPerPage: 10
       },
