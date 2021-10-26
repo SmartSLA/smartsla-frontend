@@ -178,7 +178,7 @@ export const ANOMALY_CNS_STATUS = {
 
 export const INITIAL_FILTER = {
   name: "Open tickets",
-  _id: ""
+  _id: "open"
 };
 
 export const WIDGET_DURATION_INTERVAL = {
