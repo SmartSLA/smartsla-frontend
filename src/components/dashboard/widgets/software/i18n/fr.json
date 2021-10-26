@@ -5,5 +5,7 @@
     "other": "Autres",
     "software": "Logiciel",
     "ticketCount": "Nombre total des tickets",
-    "titleWidgetSoftware": "Liste des logiciels"
+    "titleWidgetSoftware": "Liste des logiciels",
+    "vulnerability": "Vulnérabilité",
+    "type": "Type"
 }
