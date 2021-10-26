@@ -619,6 +619,7 @@ export default {
       }
 
       query.a = this.getQueryAdditionalFilters;
+      this.$store.dispatch("ticket/resetTickets");
       this.$router.push({ name: routeNames.REQUESTS, query });
     }
   },
