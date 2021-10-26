@@ -5,5 +5,7 @@
     "other": "Other",
     "software": "Software",
     "ticketCount": "Ticket total",
-    "titleWidgetSoftware": "Software list"
+    "titleWidgetSoftware": "Software list",
+    "vulnerability": "Vulnerability",
+    "type": "Type"
 }

@@ -519,6 +519,7 @@
     "Viewers": "Observateurs",
     "Viewer role can only see tickets": "Le rôle du visualiseur ne peut voir que les tickets",
     "Vulnerability mailing list": "Mailing list vulnérabilité",
+    "vulnerability": "Vulnérabilité",
     "Warning : The contract {contractName} has expired": "Attention : Le contrat <span> {contractName} </span> a expiré",
     "Warning : Your contract has only {credits} credits and you already consumed {consumed} credits": "Attention : Votre contrat a seulement {credits} credits et vous avez déjà consommé {consumed} crédits",
     "Watches": "Veilles",
