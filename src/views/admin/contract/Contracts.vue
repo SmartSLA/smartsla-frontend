@@ -61,7 +61,7 @@ export default {
       client: "",
       status: null,
       statusList: Object.values(CONTRACT_STATUS).map(status => ({ label: this.$i18n.t(status), value: status })),
-      rowsPerPageItems: [10, 25, 50],
+      rowsPerPageItems: [10, 25, 50, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       pagination: {
         page: 1,
         rowsPerPage: 10

@@ -70,7 +70,7 @@ export default {
         { label: this.$i18n.t(CLIENT_STATUS.ACTIVE), value: CLIENT_STATUS.ACTIVE },
         { label: this.$i18n.t(CLIENT_STATUS.INACTIVE), value: CLIENT_STATUS.INACTIVE }
       ],
-      rowsPerPageItems: [10, 25, 50],
+      rowsPerPageItems: [10, 25, 50, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       pagination: {
         rowsPerPage: 10
       },

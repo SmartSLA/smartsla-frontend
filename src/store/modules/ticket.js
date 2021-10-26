@@ -7,7 +7,7 @@ function initialState() {
     pagination: {
       page: 1,
       rowsPerPage: 10,
-      rowsPerPageItems: [10, 25, 50, 100, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
+      rowsPerPageItems: [10, 25, 50, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       totalItems: null,
       descending: false,
       sortBy: "createdAt"
