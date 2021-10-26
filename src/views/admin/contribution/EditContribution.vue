@@ -370,7 +370,7 @@ export default {
 
         this.contribution = {
           ...data,
-          author: author._id,
+          author: author,
           software: software._id,
           links: links.map(link => {
             let { url, name } = link;
