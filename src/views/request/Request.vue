@@ -268,6 +268,13 @@
                               </template>
                               <span>{{ event.timestamps.createdAt | formatDateFilter("llll", userLanguage) }}</span>
                             </v-tooltip>
+                            <span v-if="Object.keys(event.deleted || {}).length > 0" class="pt-0 grey--text">
+                              • {{ $t("Comment deleted") }}
+                              <span v-if="getUserById(event.deleted.deletedBy)">
+                                {{ $t("by") }} {{ getUserById(event.deleted.deletedBy) }}
+                                {{ createdAt(event.deleted.deletedAt) }}
+                              </span>
+                            </span>
                           </div>
                         </div>
                         <v-spacer></v-spacer>
@@ -281,14 +288,25 @@
                             <v-list-tile @click="copyEventLink(event._id)">
                               <v-list-tile-title>{{ $t("Copy link") }}</v-list-tile-title>
                             </v-list-tile>
+                            <v-list-tile
+                              v-if="canDeleteComment(event) && Object.keys(event.deleted || {}).length === 0"
+                              @click="deleteComment(event)"
+                            >
+                              <v-list-tile-title>{{ $t("Delete comment") }}</v-list-tile-title>
+                            </v-list-tile>
                           </v-list>
                         </v-menu>
                       </v-card-title>
                       <v-card-text
-                        v-if="event.comment"
+                        v-if="event.comment && Object.keys(event.deleted || {}).length === 0"
                         v-html="transformToCodeblock(event.comment)"
                         class="pt-0 comment-content"
                       />
+                      <v-card-text v-if="Object.keys(event.deleted || {}).length > 0" class="pt-0 grey--text">
+                        <span v-if="isUserExpert() && event.deleted.reason">
+                          {{ $t("Reason for deletion:") }} {{ event.deleted.reason }}
+                        </span>
+                      </v-card-text>
                       <v-card-text
                         v-if="
                           (event.target && event.target.name) ||
@@ -433,6 +451,7 @@
                       </v-flex>
                     </v-layout>
                   </v-input>
+                  <commentModal ref="commentModalRef" />
                   <v-layout row wrap id="submission">
                     <v-flex md4 class="hidden-sm-and-down"></v-flex>
                     <v-flex xs6 md4>
@@ -504,6 +523,7 @@ import userAvatar from "@/components/user/userAvatar";
 import moment from "moment-timezone";
 import { routeNames } from "@/router";
 import vulnList from "@/components/vulnList.vue";
+import commentModal from "@/components/request/commentModal";
 
 // const Codeblock = Quill.import("formats/code-block");
 // Codeblock.tagName = "pre";
@@ -538,13 +558,15 @@ export default {
     TicketStatus,
     RequestNavigationDrawer,
     userAvatar,
-    vulnList
+    vulnList,
+    commentModal
   },
   computed: {
     ...mapGetters({
       getUser: "currentUser/getUser",
       configuration: "configuration/getConfiguration",
-      getUserLanguage: "configuration/getUserLanguage"
+      getUserLanguage: "configuration/getUserLanguage",
+      getUserId: "currentUser/getId"
     }),
 
     toPreviousRoute() {
@@ -639,6 +661,7 @@ export default {
         }
       }
     }, 500);
+    this.$store.dispatch("users/fetchUsers");
   },
   methods: {
     transformToCodeblock(comment) {
@@ -825,6 +848,58 @@ export default {
       if (moment().diff(date, "months", true) > 1)
         return this.$options.filters.formatDateFilter(date, "llll", this.userLanguage);
       return this.$options.filters.relativeTime(date, this.userLanguage);
+    },
+
+    canDeleteComment(event) {
+      if (this.isUserExpert() || this.getUserId === event.author.id) {
+        return true;
+      }
+
+      return false;
+    },
+
+    deleteComment(event) {
+      const { author, _id: eventId } = event;
+
+      this.$refs.commentModalRef
+        .open({
+          title: "Are you sure you want to remove this comment?",
+          placeHolder: "Reason for deletion?",
+          subTitle: "Choose a reason for deleting this comment",
+          paragraph: "The reason will be posted to describe the removal of this comment to other users"
+        })
+        .then(({ confirm, reason }) => {
+          if (confirm) {
+            const eventUpdate = {
+              deleted: {
+                reason: reason,
+                deletedAt: new Date(),
+                deletedBy: author.id
+              }
+            };
+
+            this.$store
+              .dispatch("ticket/deleteComment", { ticketId: this.request._id, eventId, event: eventUpdate })
+              .then(() => {
+                this.$store.dispatch("ui/displaySnackbar", {
+                  message: this.$i18n.t("updated"),
+                  color: "success"
+                });
+              })
+              .catch(() => {
+                this.$store.dispatch("ui/displaySnackbar", {
+                  message: this.$i18n.t("Error while updating ticket"),
+                  color: "error"
+                });
+              });
+          }
+        });
+    },
+
+    getUserById(id) {
+      const user = this.$store.getters["users/getUserById"](id);
+
+      return user.name || null;
     }
   },
   created() {

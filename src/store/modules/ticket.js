@@ -130,6 +130,10 @@ const actions = {
   resetTickets: ({ commit }) => {
     commit(types.RESET_TICKETS);
     commit(types.SET_PAGINATION, { page: 1 });
+  },
+
+  deleteComment: ({ dispatch }, { ticketId, eventId, event }) => {
+    return Vue.axios.deleteComment(ticketId, eventId, event).then(() => dispatch("fetchTicketById", ticketId));
   }
 };
 
