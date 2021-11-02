@@ -18,6 +18,11 @@ npm install
 ```
 npm run serve
 ```
+Define a different port number :
+
+```
+npm run serve -- --port 8081
+```
 
 ### Compiles and minifies for production
 ```
