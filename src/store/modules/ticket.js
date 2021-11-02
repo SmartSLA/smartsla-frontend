@@ -10,7 +10,7 @@ function initialState() {
       rowsPerPageItems: [10, 25, 50, { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }],
       totalItems: null,
       descending: false,
-      sortBy: "createdAt"
+      sortBy: "updatedAt"
     },
     length: 0,
     tickets: {},
