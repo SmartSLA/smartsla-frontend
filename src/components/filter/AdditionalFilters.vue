@@ -66,7 +66,9 @@
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-toolbar-side-icon v-on="on" @click="addFilter">
-                            <v-icon dark>add</v-icon>
+                            <v-btn :dark="canAddFilter" color="primary" fab small :disabled="!canAddFilter">
+                              <v-icon>add</v-icon>
+                            </v-btn>
                           </v-toolbar-side-icon>
                         </template>
                         <span>
@@ -134,7 +136,7 @@
                   </v-btn>
                 </div>
                 <div>
-                  <v-btn small color="primary" @click="submitFilters">
+                  <v-btn small color="primary" @click="submitFilters" :disabled="!additionalFilters.length">
                     <div class="ml-2">{{ $t("Apply") }}</div>
                   </v-btn>
                 </div>
@@ -177,7 +179,8 @@ export default {
       hasError: false,
       dialog: false,
       createNewFilter: false,
-      showCustomFilters: false
+      showCustomFilters: false,
+      canAddFilter: false
     };
   },
 
@@ -197,7 +200,9 @@ export default {
           value: this.valuesFilter
         };
         this.$store.dispatch("filter/addAdditionalFilter", filter);
+        this.valuesFilter = null;
       }
+      this.canAddFilter = false;
     },
 
     getCategorieLabel(category) {
@@ -206,11 +211,17 @@ export default {
 
     removeFilter(filter) {
       this.$store.dispatch("filter/removeAdditionalFilter", filter);
+      if (this.additionalFilters && this.additionalFilters.length === 0) {
+        this.submitFilters();
+      }
     },
 
     resetFilters() {
       this.$store.dispatch("filter/resetAdditionalFilter");
       this.$store.dispatch("filter/removeCurrentCustomFilter", this.objectType);
+      if (this.additionalFilters && this.additionalFilters.length === 0) {
+        this.submitFilters();
+      }
     },
 
     changeFilterCategory(selectedCategory) {
@@ -341,6 +352,15 @@ export default {
   },
   created() {
     this.$store.dispatch("filter/fetchCustomFilters");
+  },
+  watch: {
+    valuesFilter(val) {
+      if (!val || val === null) {
+        return;
+      }
+
+      this.canAddFilter = this.categoriesFilter && !!Object.keys(val).length;
+    }
   }
 };
 </script>
