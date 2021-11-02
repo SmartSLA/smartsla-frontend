@@ -48,9 +48,9 @@
         </v-container>
       </v-content>
     </div>
-    <div v-else>
-      <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
-    </div>
+    <v-layout align-center justify-center row fill-height v-else>
+      <v-progress-circular indeterminate :size="70" color="primary"></v-progress-circular>
+    </v-layout>
     <snackbar />
   </v-app>
 </template>
