@@ -242,13 +242,11 @@ export default {
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     },
     updateLinifosecConfiguration(cpeList) {
-      console.log(cpeList);
       this.software.lininfosecConfiguration = cpeList;
     },
     deleteFromLinifosecConfiguration(idx) {
       const conf = this.software.lininfosecConfiguration;
       this.software.lininfosecConfiguration = conf.slice(0, idx).concat(conf.slice(idx + 1, conf.length));
-      console.log(this.software.lininfosecConfiguration);
     }
   },
   created() {

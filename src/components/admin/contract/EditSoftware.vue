@@ -1,9 +1,13 @@
 <template>
   <v-card class="mt-4 px-4">
     <v-card-title primary-title class="pl-0">
-      <div>
+      <v-layout row justify-space-between>
         <h3 class="title mb-0">{{ $t("Software") }}</h3>
-      </div>
+        <v-btn small flat class="pl-4 success--text" @click="show" v-if="!isEdit">
+          <v-icon class="success--text">add_circle</v-icon>
+          {{ $t("Add") }}
+        </v-btn>
+      </v-layout>
     </v-card-title>
     <v-data-table :items="software" :headers="softwareHeaders" hide-actions>
       <template v-slot:items="props">
@@ -13,17 +17,20 @@
         </td>
         <td class="text-xs-center">{{ props.item.version }}</td>
         <td class="text-xs-center">{{ props.item.os }}</td>
-        <td class="text-xs-center" v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length">
-          {{ $t("S") }}: {{ props.item.SupportDate.start }}
-          <br />
-          {{ $t("E") }}: {{ props.item.SupportDate.end }}
-        </td>
-        <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
         <td class="text-xs-center">
           <v-chip :color="critColor(props.item.critical)" :text-color="critTextColor(props.item.critical)" label>{{
             $t(props.item.critical)
           }}</v-chip>
         </td>
+        <td class="text-xs-center" v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
+          {{ props.item.lininfosecConfiguration.join(", ") }}
+        </td>
+        <td class="text-xs-center" v-if="props.item.SupportDate.start.length && props.item.SupportDate.end.length">
+          {{ $t("S") }}: {{ props.item.SupportDate.start }}
+          <br />
+          {{ $t("E") }}: {{ props.item.SupportDate.end }}
+        </td>
+        <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
         <td class="text-xs-center">{{ props.item.technicalReferent && props.item.technicalReferent.name }}</td>
         <td class="text-xs-center">
           <v-btn color="primary" flat small @click="editSoftware(props)">
@@ -71,6 +78,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import FormSoftware from "@/components/admin/contract/FormSoftware.vue";
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
@@ -193,25 +201,42 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      configuration: "configuration/getConfiguration"
+    }),
     softwareHeaders() {
-      return [
+      let softwareHeaders = [
         { text: this.$i18n.t("Software"), value: "name" },
         { text: this.$i18n.t("Version"), value: "version" },
         { text: this.$i18n.t("OS"), value: "os" },
+        { text: this.$i18n.t("Critical"), value: "critical" },
+        {
+          text: this.$i18n.t("CPE"),
+          value: "lininfosecConfiguration",
+          sortable: false
+        },
         {
           text: this.$i18n.t("Support date"),
           value: "supportDate"
         },
-        { text: this.$i18n.t("Critical"), value: "critical" },
         {
           text: this.$i18n.t("Tech. referent"),
           value: "technicalReferent"
         },
         { text: "", value: "delete" }
       ];
+
+      if (!this.configuration.isLinInfoSecEnabled && !this.islinInfoSecEnabledForContract) {
+        return softwareHeaders.filter(header => header.value != "lininfosecConfiguration");
+      }
+
+      return softwareHeaders;
     },
     software() {
       return this.sortSoftware(this.contract.software).map(item => ({ ...item, name: item.software.name }));
+    },
+    islinInfoSecEnabledForContract() {
+      return this.contract.features && this.contract.features.linInfoSec;
     }
   },
   mounted() {
