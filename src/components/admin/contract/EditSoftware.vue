@@ -226,8 +226,8 @@ export default {
         { text: "", value: "delete" }
       ];
 
-      if (!this.configuration.isLinInfoSecEnabled && !this.islinInfoSecEnabledForContract) {
-        return softwareHeaders.filter(header => header.value != "lininfosecConfiguration");
+      if (this.configuration.isLinInfoSecEnabled && !this.islinInfoSecEnabledForContract) {
+        return softwareHeaders.filter(header => header.value !== "lininfosecConfiguration");
       }
 
       return softwareHeaders;
