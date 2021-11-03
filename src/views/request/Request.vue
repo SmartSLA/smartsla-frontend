@@ -23,7 +23,7 @@
             <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">
+                  <h3 class="title mb-0">
                     #{{ request._id }} - {{ request.title }}
                     <small v-if="request.archived" class="archived"> {{ $t("Archived") }} </small>
                   </h3>

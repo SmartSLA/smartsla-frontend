@@ -219,15 +219,6 @@
                     </td>
                     <td class="text-xs-center">{{ props.item.version }}</td>
                     <td class="text-xs-center">{{ props.item.os }}</td>
-                    <td
-                      class="text-xs-center"
-                      v-if="props.item.SupportDate.start.length && props.item.SupportDate.start.length"
-                    >
-                      {{ $t("S") }}: {{ props.item.SupportDate.start }}
-                      <br />
-                      {{ $t("E") }}: {{ props.item.SupportDate.end }}
-                    </td>
-                    <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
                     <td class="text-xs-center">
                       <v-chip
                         :color="critColor(props.item.critical)"
@@ -236,8 +227,11 @@
                         >{{ $t(props.item.critical) }}</v-chip
                       >
                     </td>
-                    <td class="text-xs-center">
-                      {{ props.item.technicalReferent && props.item.technicalReferent.name }}
+                    <td
+                      class="text-xs-center"
+                      v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract"
+                    >
+                      {{ props.item.lininfosecConfiguration.join(", ") }}
                     </td>
                   </template>
                 </v-data-table>
@@ -498,10 +492,10 @@
                   </v-dialog>
                   <v-btn
                     color="primary"
-                    fab
-                    flat
-                    small
                     :disabled="!isAdmin"
+                    depressed
+                    fab
+                    small
                     :dark="isAdmin"
                     @click="usersDialog = true"
                   >
@@ -591,28 +585,33 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUserLanguage: "configuration/getUserLanguage"
+      getUserLanguage: "configuration/getUserLanguage",
+      configuration: "configuration/getConfiguration"
     }),
+    islinInfoSecEnabledForContract() {
+      return this.contract.features && this.contract.features.linInfoSec;
+    },
     software() {
       return this.sortSoftware(this.contract.software);
     },
     softwareHeaders() {
-      return [
+      let softwareHeaders = [
         { text: this.$i18n.t("Software"), value: "software", sortable: false },
         { text: this.$i18n.t("Version"), value: "version", sortable: false },
         { text: this.$i18n.t("OS"), value: "os", sortable: false },
-        {
-          text: this.$i18n.t("Support date"),
-          value: "supportDate",
-          sortable: false
-        },
         { text: this.$i18n.t("Critical"), value: "critical", sortable: false },
         {
-          text: this.$i18n.t("Tech. referent"),
-          value: "technicalReferent",
+          text: this.$i18n.t("CPE"),
+          value: "lininfosecConfiguration",
           sortable: false
         }
       ];
+
+      if (this.configuration.isLinInfoSecEnabled && !this.islinInfoSecEnabledForContract) {
+        return softwareHeaders.filter(header => header.value !== "lininfosecConfiguration");
+      }
+
+      return softwareHeaders;
     },
     contractualCommitmentsHeaders() {
       return [
