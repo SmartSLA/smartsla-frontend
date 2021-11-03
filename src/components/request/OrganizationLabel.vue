@@ -1,5 +1,5 @@
 <template>
-  <v-chip v-if="isUserBeneficiary" color="#174dc5" class="ma-2" label text-color="white"
+  <v-chip v-if="isUserBeneficiary" small color="#174dc5" class="ma-2" label text-color="white"
     >{{ contract && contract.client[0] }}
   </v-chip>
   <support-account v-else></support-account>
