@@ -47,12 +47,6 @@
               </router-link>
             </td>
             <td class="text-xs-center">
-              <organization-label
-                :contractId="props.item.request.contract"
-                :user="props.item.request.assignedTo"
-              ></organization-label>
-            </td>
-            <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ $t(props.item.request.type) }}</text-highlight>
             </td>
             <td class="text-xs-center">
@@ -79,7 +73,13 @@
               <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
             </td>
             <td class="text-xs-center">
-              <text-highlight :queries="highlightSearch">{{ props.item.request.assignedToName }}</text-highlight>
+              <v-layout align-center justify-center fill-height>
+                <organization-label
+                  :contractId="props.item.request.contract"
+                  :user="props.item.request.assignedTo"
+                ></organization-label>
+                <text-highlight :queries="highlightSearch">{{ props.item.request.assignedToName }}</text-highlight>
+              </v-layout>
             </td>
             <td class="text-xs-center">
               <text-highlight :queries="highlightSearch">{{ props.item.request.responsibleName }}</text-highlight>
@@ -180,11 +180,10 @@ export default {
       isMobile: false,
       headers: [
         { text: this.$i18n.t("Ticket N°"), value: "_id" },
-        { text: this.$i18n.t("Organization"), value: "organizationLabel" },
         { text: this.$i18n.t("Type"), value: "type" },
         { text: this.$i18n.t("Severity"), value: "severity" },
         { text: this.$i18n.t("Software"), value: "softwareName" },
-        { text: this.$i18n.t("Title"), value: "title" },
+        { text: this.$i18n.t("Title"), value: "title", width: "20%" },
         { text: this.$i18n.t("Assigned to"), value: "assignedToName" },
         { text: this.$i18n.t("Responsible"), value: "responsibleName" },
         { text: this.$i18n.t("Author"), value: "authorName" },
@@ -288,7 +287,6 @@ export default {
     requestsAsDataTable() {
       return this.requests.map(request => ({
         _id: request._id,
-        organization: request.organization,
         author: request.author && request.author.name,
         type: request.type,
         severity: request.severity,
