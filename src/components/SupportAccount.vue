@@ -19,7 +19,7 @@ export default {
 .truncate-capitalize span {
   display: inline-block !important;
   font-size: 0px;
-  width: 31px;
+  width: 32px;
   height: 32px;
   padding-top: 5px !important;
 }

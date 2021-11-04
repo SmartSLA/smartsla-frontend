@@ -1,5 +1,5 @@
 <template>
-  <v-layout d-inline>
+  <v-layout align-start justify-center column fill-height>
     <router-link
       v-if="contract && $auth.check('admin')"
       :to="{
@@ -11,7 +11,6 @@
       <text-highlight :queries="query">{{ contract && contract.client }}</text-highlight>
     </router-link>
     <text-highlight v-else :queries="query">{{ contract && contract.client }}</text-highlight>
-    <span class="px-1">/</span>
     <router-link
       v-if="contract && $auth.check('admin')"
       :to="{
