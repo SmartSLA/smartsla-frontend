@@ -72,8 +72,8 @@
             <td class="text-xs-left">
               <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
             </td>
-            <td class="text-xs-center">
-              <v-layout align-center justify-center fill-height>
+            <td class="text-xs-left">
+              <v-layout align-center justify-start fill-height>
                 <organization-label
                   :contractId="props.item.request.contract"
                   :user="props.item.request.assignedTo"
@@ -81,7 +81,7 @@
                 <text-highlight :queries="highlightSearch">{{ props.item.request.assignedToName }}</text-highlight>
               </v-layout>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-left">
               <text-highlight :queries="highlightSearch">{{ props.item.request.responsibleName }}</text-highlight>
             </td>
             <td class="text-xs-center">
@@ -143,7 +143,7 @@
 
 <script>
 import { mapGetters, createNamespacedHelpers } from "vuex";
-import { capitalize } from "lodash";
+import { capitalize, isEmpty } from "lodash";
 import { routeNames } from "@/router";
 import cnsProgressBar from "@/components/CnsProgressBar";
 import SoftwareListDetail from "@/components/request/SoftwareListDetail";
@@ -179,19 +179,19 @@ export default {
       },
       isMobile: false,
       headers: [
-        { text: this.$i18n.t("Ticket N°"), value: "_id" },
-        { text: this.$i18n.t("Type"), value: "type" },
-        { text: this.$i18n.t("Severity"), value: "severity" },
-        { text: this.$i18n.t("Software"), value: "softwareName" },
-        { text: this.$i18n.t("Title"), value: "title", width: "20%" },
-        { text: this.$i18n.t("Assigned to"), value: "assignedToName" },
-        { text: this.$i18n.t("Responsible"), value: "responsibleName" },
-        { text: this.$i18n.t("Author"), value: "authorName" },
-        { text: this.$i18n.t("Client / Contract"), value: "clientContract" },
-        { text: this.$i18n.t("MAJ"), value: "updatedAt" },
-        { text: this.$i18n.t("Created"), value: "createdAt" },
-        { text: this.$i18n.t("Status"), value: "status" },
-        { text: this.$i18n.t("Time before next step"), value: "cns_type", sortable: false }
+        { text: this.$i18n.t("Ticket N°"), value: "_id", align: "center" },
+        { text: this.$i18n.t("Type"), value: "type", align: "center" },
+        { text: this.$i18n.t("Severity"), value: "severity", align: "center" },
+        { text: this.$i18n.t("Software"), value: "softwareName", align: "center" },
+        { text: this.$i18n.t("Title"), value: "title", width: "25%", align: "left" },
+        { text: this.$i18n.t("Assigned to"), value: "assignedToName", align: "left" },
+        { text: this.$i18n.t("Responsible"), value: "responsibleName", align: "left" },
+        { text: this.$i18n.t("Author"), value: "beneficiaryName", align: "left" },
+        { text: this.$i18n.t("Client - Contract"), value: "clientContract", align: "left" },
+        { text: this.$i18n.t("MAJ"), value: "updatedAt", align: "center" },
+        { text: this.$i18n.t("Created"), value: "createdAt", align: "center" },
+        { text: this.$i18n.t("Status"), value: "status", align: "center" },
+        { text: this.$i18n.t("Service deadlines"), value: "cns_type", sortable: false, align: "center" }
       ],
       categoriesFilter: "",
       valuesFilter: "",
@@ -300,6 +300,7 @@ export default {
         createdAt: request.timestamps.createdAt,
         status: request.status,
         cnsType: this.calculateCnsType(request),
+        cns: request.cns,
         request
       }));
     },
@@ -562,9 +563,9 @@ export default {
     displayCnsProgressBar(item) {
       return item.status !== "closed" && item.status !== "resolved" && item.request.cns.bypassed;
     },
-    cnsWording({ status, type }) {
+    cnsWording({ status, type, cns }) {
       const wording = type === REQUEST_TYPE.ANOMALY ? ANOMALY_CNS_STATUS[status] : CNS_STATUS[status];
-      if (wording === ANOMALY_CNS_STATUS.closed) return;
+      if (isEmpty(cns)) return "-";
       return this.$i18n.t(wording || status);
     },
     capitalize(value) {
@@ -721,11 +722,6 @@ td {
   margin: 2px !important;
   padding: 0px 5px !important;
   text-align: center;
-}
-
-th.column.sortable.text-xs-left {
-  padding: 0px 15px !important;
-  text-align: center !important;
 }
 
 div.v-input.scoped-requests-searchv-text-field--enclosed.v-text-field--placeholder,
