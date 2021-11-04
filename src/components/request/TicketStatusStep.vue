@@ -8,7 +8,7 @@
           color="primary"
           complete-icon="access_time"
           class="px-0 caption"
-          >{{ $t(statusNameDisplay) }}</v-stepper-step
+          >{{ nextStatusNameDisplay }}</v-stepper-step
         >
       </v-flex>
       <v-flex v-else xs1 sm4 md3 lg3>
@@ -23,7 +23,7 @@
 
 <script>
 import { capitalize, findKey } from "lodash";
-import { TICKET_STATUS_ID, TICKET_STATUS } from "@/constants";
+import { TICKET_STATUS_ID, TICKET_STATUS, ANOMALY_CNS_STATUS } from "@/constants";
 
 export default {
   name: "ticket-status-step",
@@ -36,7 +36,13 @@ export default {
     statusNameDisplay() {
       return capitalize(this.statusName);
     },
+    nextStatusNameDisplay() {
+      let keys = Object.keys(ANOMALY_CNS_STATUS);
+      let idx = keys.indexOf(this.statusName);
+      let currentState = keys[idx--];
 
+      return capitalize(this.$i18n.t(ANOMALY_CNS_STATUS[currentState]));
+    },
     stepKey() {
       if (this.statusName) {
         const statusKey = findKey(TICKET_STATUS, status => status === this.statusName);
