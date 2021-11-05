@@ -84,10 +84,10 @@
             <td class="text-xs-left">
               <text-highlight :queries="highlightSearch">{{ props.item.request.responsibleName }}</text-highlight>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-left">
               <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
             </td>
-            <td class="text-xs-center">
+            <td class="text-xs-left client-contract-links">
               <client-contract-links
                 :contractId="props.item.request.contract"
                 :query="highlightSearch"
@@ -825,5 +825,9 @@ nav.v-toolbar .v-toolbar__content {
 &::v-deep table.v-table  tr:nth-child(1) td {
 padding: 0 5px;
 font-size: 12px;
+}
+
+.client-contract-links {
+  max-width: 175px;
 }
 </style>
