@@ -26,12 +26,9 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
-.v-chip .v-chip__content {
+<style lang="stylus" scoped>
+.text-uppercase, .text-uppercase span {
   width: 32px;
   height: 32px;
-}
-.v-chip .v-chip__content span::first-letter {
-  font-size: 13px;
 }
 </style>
