@@ -6,9 +6,12 @@
           <v-flex xs12 mb-2>
             <v-card>
               <v-card-title primary-title class="pb-0">
-                <v-layout>
+                <v-layout align-center>
                   <v-flex>
-                    <h3 class="headline">{{ contract.name }}</h3>
+                    <h3 class="headline">
+                      {{ contract.name }}
+                      <expired-label :expirationDate="contract.endDate"></expired-label>
+                    </h3>
                   </v-flex>
                   <v-flex>
                     <div class="text-xs-right grey--text">
