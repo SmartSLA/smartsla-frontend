@@ -60,6 +60,8 @@ const actions = {
     dispatch("counterCards/updateFilter", state.filters, { root: true });
     dispatch("criticalityTickets/updateFilter", state.filters, { root: true });
     dispatch("topTenSoftware/updateFilter", state.filters, { root: true });
+    dispatch("ticketsVolumeByType/updateFilter", state.filters, { root: true });
+    dispatch("ticketsPrioritieAnomalies/updateFilter", state.filters, { root: true });
   },
 
   setContracts: ({ commit, state }, contracts) => {
