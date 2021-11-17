@@ -181,7 +181,7 @@ const getters = {
     return ticket;
   },
   getCurrentPageRequests: (state, getters, rootState, rootGetters) => {
-    const { sortBy, descending, page, rowsPerPage } = state.pagination;
+    const { sortBy, descending, page, rowsPerPage, totalItems } = state.pagination;
     let result = Object.values(state.tickets).map(request => {
       const contract = rootGetters["contract/getContractById"](request.contract);
 
@@ -219,7 +219,9 @@ const getters = {
       });
     }
 
-    return result.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    const rowsPerPageDisplay = rowsPerPage === -1 ? totalItems : rowsPerPage;
+
+    return result.slice((page - 1) * rowsPerPageDisplay, page * rowsPerPageDisplay);
   },
   pagination: state => state.pagination,
   filter: state => state.filter

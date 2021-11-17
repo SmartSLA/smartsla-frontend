@@ -115,7 +115,7 @@ const getters = {
   getContributionsCount: state => Number(state.length),
   pagination: state => state.pagination,
   getContributions: state => {
-    const { sortBy, descending, page, rowsPerPage } = state.pagination;
+    const { sortBy, descending, page, rowsPerPage, totalItems } = state.pagination;
     let result = (Object.values(state.contributions) || []).map(contribution => {
       const { software, author, timestamps } = contribution;
 
@@ -144,7 +144,9 @@ const getters = {
       });
     }
 
-    return result.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    const rowsPerPageDisplay = rowsPerPage === -1 ? totalItems : rowsPerPage;
+
+    return result.slice((page - 1) * rowsPerPageDisplay, page * rowsPerPageDisplay);
   }
 };
 
