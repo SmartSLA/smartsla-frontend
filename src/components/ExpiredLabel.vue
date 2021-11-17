@@ -1,5 +1,5 @@
 <template>
-  <small v-if="isExpired(expirationDate, haveAStatus, status)" class="expired"> Expired </small>
+  <small v-if="isExpired(expirationDate, haveAStatus, status)" class="expired">{{ $t("Expired") }}</small>
 </template>
 
 <script>
