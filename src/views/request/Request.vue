@@ -448,7 +448,7 @@
                         </v-btn>
                         <v-menu top pl-0 offset-y v-if="configuration.isLimesurveyEnabled && isUserExpert()">
                           <template v-slot:activator="{ on }">
-                            <v-btn color="info" v-on="on" class="ml-0 px-1 btn-list">
+                            <v-btn color="info" v-on="on" class="ml-0 px-1 btn-list" :disabled="isSubmitting">
                               <v-icon>arrow_drop_down</v-icon>
                             </v-btn>
                           </template>
@@ -730,8 +730,10 @@ export default {
                 color: "success"
               });
               this.resetComment();
+              this.isSubmitting = false;
             })
             .catch(() => {
+              this.isSubmitting = false;
               this.$store.dispatch("ui/displaySnackbar", {
                 message: this.$i18n.t("Error while updating ticket"),
                 color: "error"
@@ -739,13 +741,11 @@ export default {
             });
         })
         .catch(() => {
+          this.isSubmitting = false;
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Error while uploading attachments"),
             color: "error"
           });
-        })
-        .finally(() => {
-          this.isSubmitting = false;
         });
     },
 
