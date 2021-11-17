@@ -31,6 +31,7 @@
                       background-color="white"
                       v-model="ticket.contract"
                       item-text="name"
+                      item-value="_id"
                       :rules="[() => Object.keys(ticket.contract).length > 0 || $i18n.t('Required field')]"
                       class="required-element"
                       return-object

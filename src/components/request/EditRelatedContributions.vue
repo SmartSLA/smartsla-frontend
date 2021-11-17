@@ -20,6 +20,7 @@
                 :disabled="loading"
                 :items="allowedContributionList"
                 item-text="name"
+                item-value="name"
                 prepend-icon="link"
                 :placeholder="$i18n.t('Related contribution')"
                 return-object

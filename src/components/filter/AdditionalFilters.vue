@@ -51,6 +51,7 @@
                         :no-data-text="$t('No data available')"
                         v-model="valuesFilter"
                         item-text="name"
+                        item-value="name"
                         return-object
                         flat
                         hide-details

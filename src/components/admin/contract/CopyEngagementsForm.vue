@@ -16,6 +16,7 @@
         v-model="contractToCopyFrom"
         :items="contractsList"
         item-text="name"
+        item-value="_id"
         prepend-icon="note"
         :label="$i18n.t('Contract')"
         outlined

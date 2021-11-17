@@ -28,6 +28,7 @@
       class="my-0 py-0"
       :items="contractUsers"
       item-text="name"
+      item-value="name"
       :value="responsible"
       :placeholder="$t('Assign to someone')"
       return-object
