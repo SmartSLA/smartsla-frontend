@@ -127,6 +127,8 @@ export default {
   },
   methods: {
     createClient() {
+      this.client.name.trim();
+
       this.$store
         .dispatch("client/createClient", this.client)
         .then(() => {

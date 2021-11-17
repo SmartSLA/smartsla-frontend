@@ -39,7 +39,7 @@ export default {
     nextStatusNameDisplay() {
       let keys = Object.keys(ANOMALY_CNS_STATUS);
       let idx = keys.indexOf(this.statusName);
-      let currentState = keys[idx--];
+      let currentState = keys[idx - 1];
 
       return capitalize(this.$i18n.t(ANOMALY_CNS_STATUS[currentState]));
     },

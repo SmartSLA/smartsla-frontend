@@ -458,6 +458,7 @@ export default {
 
     validate() {
       let contract = this.contract;
+      contract.name.trim();
       if (contract.mailingList.external.length && !(contract.mailingList.external instanceof Array)) {
         contract.mailingList.external = contract.mailingList.external.split(",");
       }
