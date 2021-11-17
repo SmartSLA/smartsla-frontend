@@ -217,6 +217,7 @@ export default {
       requests: "ticket/getCurrentPageRequests",
       requestsPaginationItems: "ticket/getPaginationTotalItems",
       allRequests: "ticket/getTickets",
+      filter: "ticket/filter",
       userContracts: "currentUser/getContracts",
       contractsList: "contract/getContracts",
       software: "software/getSoftwareList",
@@ -627,6 +628,11 @@ export default {
       this.$store.dispatch("currentUser/fetchUser");
     });
     this.$store.dispatch("client/fetchClients");
+
+    if (this.filter !== this.$route.query.filter) {
+      this.$store.dispatch("ticket/resetTickets");
+    }
+
     this.$store.dispatch("ticket/setFilter", this.$route.query.filter);
 
     if (this.$route.query.a) {
