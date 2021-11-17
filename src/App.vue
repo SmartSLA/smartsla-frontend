@@ -187,7 +187,11 @@ openpaas-login-color = #394556
 }
 
 th.column.sortable.text-xs-left {
-  padding: 10px !important;
+  padding: 15px !important;
+}
+
+.requests-list th.column.text-xs-left, .requests-list th.column.text-xs-center, .requests-list th.column.text-xs-right {
+  padding: 15px !important;
 }
 
 .login-bar .v-toolbar__content {
