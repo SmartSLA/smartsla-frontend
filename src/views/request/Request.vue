@@ -485,7 +485,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
-import { flatten, capitalize, debounce } from "lodash";
+import { flatten, capitalize, debounce, isEmpty } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import AttachmentsCreation from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
@@ -699,9 +699,15 @@ export default {
           if (!this.isPrivateTab) {
             event = {
               ...event,
-              status: this.newStatus && this.newStatus.next,
-              target: this.newResponsible
+              status: this.newStatus && this.newStatus.next
             };
+
+            if (!isEmpty(this.newResponsible)) {
+              event = {
+                ...event,
+                target: this.newResponsible
+              };
+            }
           }
 
           if (isSurvey) {
