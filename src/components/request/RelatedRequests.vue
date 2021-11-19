@@ -25,6 +25,8 @@
           hide-details
           hide-selected
           return-object
+          item-text="title"
+          item-value="_id"
           v-model="request"
           background-color="grey lighten-5"
           flat

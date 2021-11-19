@@ -10,6 +10,7 @@
     @click:append="search = null"
     hide-no-data
     item-text="name"
+    item-value="name"
     color="secondary"
     :background-color="backgroundColor"
     :prepend-icon="preprendIcon"

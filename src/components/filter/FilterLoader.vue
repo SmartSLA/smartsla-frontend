@@ -12,6 +12,7 @@
         flat
         return-object
         item-text="name"
+        item-value="name"
       ></v-overflow-btn>
       <v-tooltip top v-if="!!filters.length">
         <template v-slot:activator="{ on }">

@@ -3,6 +3,7 @@
     :items="timezones"
     :placeholder="$i18n.t('Search timezone')"
     item-text="name"
+    item-value="name"
     flat
     return-object
     :value="timezone"
