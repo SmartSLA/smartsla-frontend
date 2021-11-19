@@ -3,6 +3,7 @@
     <v-autocomplete
       :items="contractUsers"
       item-text="name"
+      item-value="name"
       :value="responsible"
       :label="$t('Assigned to')"
       return-object

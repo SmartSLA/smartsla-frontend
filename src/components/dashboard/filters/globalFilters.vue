@@ -16,6 +16,7 @@
                 chips
                 small-chips
                 item-text="name"
+                item-value="_id"
                 persistent-hint
                 return-object
                 :items="contractsList"
