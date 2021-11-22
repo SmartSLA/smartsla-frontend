@@ -275,6 +275,40 @@
                                 {{ createdAt(event.deleted.deletedAt) }}
                               </span>
                             </span>
+                            <span
+                              v-if="
+                                Object.keys(event.deleted || {}).length === 0 &&
+                                  getEventHistory(event) &&
+                                  getEventHistory(event).length > 0
+                              "
+                              class="caption pt-0 grey--text"
+                            >
+                              • {{ $t("Edited") }}
+                              <v-menu bottom right>
+                                <template v-slot:activator="{ on }">
+                                  <v-btn class="ma-0" small flat icon v-on="on">
+                                    <v-icon class="grey--text">expand_more</v-icon>
+                                  </v-btn>
+                                </template>
+                                <v-list>
+                                  <v-list-tile v-for="(evt, i) in getEventHistory(event)" :key="i">
+                                    <v-list-tile-title>
+                                      <span class="caption" v-if="getUserById(evt.editedBy)">
+                                        {{ $t("Edited") }} {{ $t("by") }} {{ getUserById(evt.editedBy) }}
+                                        <v-tooltip bottom>
+                                          <template v-slot:activator="{ on }">
+                                            <a v-on="on" class="event-time">
+                                              {{ createdAt(evt.createdAt) }}
+                                            </a>
+                                          </template>
+                                          <span>{{ evt.createdAt | formatDateFilter("llll", userLanguage) }}</span>
+                                        </v-tooltip>
+                                      </span>
+                                    </v-list-tile-title>
+                                  </v-list-tile>
+                                </v-list>
+                              </v-menu>
+                            </span>
                           </div>
                         </div>
                         <v-spacer></v-spacer>
@@ -289,7 +323,16 @@
                               <v-list-tile-title>{{ $t("Copy link") }}</v-list-tile-title>
                             </v-list-tile>
                             <v-list-tile
-                              v-if="canDeleteComment(event) && Object.keys(event.deleted || {}).length === 0"
+                              v-if="canManageComment(event) && Object.keys(event.deleted || {}).length === 0"
+                              @click="
+                                newEditedComment = getComment(event);
+                                commentEdition = event._id;
+                              "
+                            >
+                              <v-list-tile-title>{{ $t("Edit") }}</v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile
+                              v-if="canManageComment(event) && Object.keys(event.deleted || {}).length === 0"
                               @click="deleteComment(event)"
                             >
                               <v-list-tile-title>{{ $t("Delete comment") }}</v-list-tile-title>
@@ -298,8 +341,8 @@
                         </v-menu>
                       </v-card-title>
                       <v-card-text
-                        v-if="event.comment && Object.keys(event.deleted || {}).length === 0"
-                        v-html="transformToCodeblock(event.comment)"
+                        v-if="getComment(event) && Object.keys(event.deleted || {}).length === 0"
+                        v-html="transformToCodeblock(getComment(event))"
                         class="pt-0 comment-content"
                       />
                       <v-card-text v-if="Object.keys(event.deleted || {}).length > 0" class="pt-0 grey--text">
@@ -377,6 +420,30 @@
                         </a>
                       </v-card-text>
                     </v-card>
+                    <template v-if="commentEdition === event._id">
+                      <v-card>
+                        <v-card-text>
+                          <vue-editor
+                            v-model="newEditedComment"
+                            :disabled="isSubmitting"
+                            :editorToolbar="editorToolbar"
+                            :class="{ 'is-private-tab': isPrivateTab }"
+                          ></vue-editor>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="red lighten-2" flat @click="commentEdition = null">{{ $t("Cancel") }}</v-btn>
+                          <v-btn
+                            color="blue darken-1"
+                            flat
+                            :disabled="!canManageComment(event)"
+                            @click="updateComment(event)"
+                          >
+                            {{ $t("Confirm") }}
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </template>
                   </v-timeline-item>
                 </v-timeline>
                 <v-divider></v-divider>
@@ -543,7 +610,9 @@ export default {
       dialogArchive: false,
       prevRoute: null,
       vulnRefHeader: ["Source", "URL", "Tags"],
-      vulnCpeHeader: ["CPE", "Version Start", "Version End"]
+      vulnCpeHeader: ["CPE", "Version Start", "Version End"],
+      commentEdition: null,
+      newEditedComment: ""
     };
   },
   components: {
@@ -850,7 +919,7 @@ export default {
       return this.$options.filters.relativeTime(date, this.userLanguage);
     },
 
-    canDeleteComment(event) {
+    canManageComment(event) {
       if (this.isUserExpert() || this.getUserId === event.author.id) {
         return true;
       }
@@ -894,6 +963,47 @@ export default {
               });
           }
         });
+    },
+
+    updateComment(event) {
+      const { author, _id: eventId } = event;
+
+      let newComment = {
+        comment: this.newEditedComment,
+        editedBy: author.id
+      };
+
+      this.$store
+        .dispatch("ticket/updateComment", { ticketId: this.request._id, eventId, comment: newComment })
+        .then(() => {
+          this.newEditedComment = "";
+          this.commentEdition = null;
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Error while updating comment"),
+            color: "error"
+          });
+        });
+    },
+
+    getComment(event) {
+      if (event.commentHistory && event.commentHistory.length) {
+        return [...event.commentHistory].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0].comment || "";
+      }
+
+      return event.comment || "";
+    },
+
+    getEventHistory(event) {
+      if (event.commentHistory && event.commentHistory.length) {
+        return [...event.commentHistory].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || [];
+      }
+      return null;
     },
 
     getUserById(id) {

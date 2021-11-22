@@ -23,6 +23,10 @@ export default {
     return this.patch(`/ticketing/api/tickets/${ticketId}/events/${eventId}/comment`, options);
   },
 
+  updateComment(ticketId, eventId, options) {
+    return this.put(`/ticketing/api/tickets/${ticketId}/events/${eventId}/comment`, options);
+  },
+
   // TO DO: verify if it's DELETE or POST
   deleteTicket(ticketId) {
     return this.post(`/ticketing/api/tickets/${ticketId}`);
