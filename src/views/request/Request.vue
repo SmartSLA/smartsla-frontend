@@ -337,6 +337,12 @@
                             >
                               <v-list-tile-title>{{ $t("Delete comment") }}</v-list-tile-title>
                             </v-list-tile>
+                            <v-list-tile
+                              v-if="canDeleteComment(event) && Object.keys(event.deleted || {}).length > 0"
+                              @click="revertComment(event)"
+                            >
+                              <v-list-tile-title>{{ $t("Cancel comment deletion") }}</v-list-tile-title>
+                            </v-list-tile>
                           </v-list>
                         </v-menu>
                       </v-card-title>
@@ -986,6 +992,25 @@ export default {
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
             message: this.$i18n.t("Error while updating comment"),
+            color: "error"
+          });
+        });
+    },
+
+    revertComment(event) {
+      const { _id: eventId } = event;
+
+      this.$store
+        .dispatch("ticket/deleteComment", { ticketId: this.request._id, eventId })
+        .then(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("updated"),
+            color: "success"
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch("ui/displaySnackbar", {
+            message: this.$i18n.t("Error while updating ticket"),
             color: "error"
           });
         });
