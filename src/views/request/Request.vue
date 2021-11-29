@@ -992,16 +992,16 @@ export default {
     },
 
     getComment(event) {
-      if (event.commentHistory && event.commentHistory.length) {
-        return [...event.commentHistory].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0].comment || "";
+      if (event.eventHistory && event.eventHistory.length) {
+        return [...event.eventHistory].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0].comment || "";
       }
 
       return event.comment || "";
     },
 
     getEventHistory(event) {
-      if (event.commentHistory && event.commentHistory.length) {
-        return [...event.commentHistory].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || [];
+      if (event.eventHistory && event.eventHistory.length) {
+        return [...event.eventHistory].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || [];
       }
       return null;
     },
