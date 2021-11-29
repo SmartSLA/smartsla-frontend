@@ -133,7 +133,7 @@ const actions = {
   },
 
   deleteComment: ({ dispatch }, { ticketId, eventId, event }) => {
-    return Vue.axios.deleteComment(ticketId, eventId, event).then(() => dispatch("fetchTicketById", ticketId));
+    return Vue.axios.toggleCommentDeletion(ticketId, eventId, event).then(() => dispatch("fetchTicketById", ticketId));
   },
 
   updateComment: ({ dispatch }, { ticketId, eventId, comment }) => {

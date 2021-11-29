@@ -19,7 +19,7 @@ export default {
     return this.put(`/ticketing/api/tickets/${ticketId}/events`, options);
   },
 
-  deleteComment(ticketId, eventId, options) {
+  toggleCommentDeletion(ticketId, eventId, options) {
     return this.patch(`/ticketing/api/tickets/${ticketId}/events/${eventId}/comment`, options);
   },
 
