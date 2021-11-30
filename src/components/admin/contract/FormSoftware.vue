@@ -132,11 +132,27 @@
           <v-flex xs9>
             <v-autocomplete
               :items="[...referents]"
+              background-color="white"
               v-model="software.technicalReferent"
               item-text="name"
-              :search-input.sync="syncTechnical"
+              item-value="user"
               return-object
-            ></v-autocomplete>
+              multiple
+              hide-selected
+              chips
+            >
+              <template v-slot:item="{ item }">
+                <v-layout column wrap>
+                  <v-flex>{{ item.name }}</v-flex>
+                  <v-flex class="caption grey--text">{{ item.email }}</v-flex>
+                </v-layout>
+              </template>
+              <template slot="selection" slot-scope="{ item, index }">
+                <v-chip close @input="removeReferentItem(index)" class="ml-0" small>
+                  {{ item.name }}
+                </v-chip>
+              </template>
+            </v-autocomplete>
           </v-flex>
         </v-layout>
       </v-form>
@@ -176,11 +192,6 @@ export default {
         this.resetOnCancel();
         this.$refs.form.resetValidation();
       }
-    },
-    syncTechnical(referent) {
-      if (referent === "") {
-        this.software.technicalReferent = {};
-      }
     }
   },
   components: {
@@ -193,7 +204,9 @@ export default {
     }),
 
     referents() {
-      return this.$store.getters["users/getUsersByType"](USER_TYPE.EXPERT);
+      const referentList = this.$store.getters["users/getUsersByType"](USER_TYPE.BENEFICIARY);
+
+      return referentList.map(({ _id, name, email }) => ({ _id, name, email }));
     },
 
     islinInfoSecEnabledForContract() {
@@ -206,13 +219,9 @@ export default {
     },
     submit() {
       if (this.$refs.form.validate()) {
-        // Delete software.technicalReferent to prevent mongoose from storing an empty object
-        if (
-          this.software.technicalReferent &&
-          (Object.keys(this.software.technicalReferent).length === 0 &&
-            this.software.technicalReferent.constructor === Object)
-        )
+        if (!this.software.technicalReferent.length) {
           delete this.software.technicalReferent;
+        }
 
         this.$emit("submit", this.software);
       } else {
@@ -226,9 +235,9 @@ export default {
       this.software = {
         software: {},
         critical: "standard",
-        technicalReferent: {},
         os: "",
         version: "",
+        technicalReferent: [],
         SupportDate: {
           start: "",
           end: ""
@@ -247,6 +256,10 @@ export default {
     deleteFromLinifosecConfiguration(idx) {
       const conf = this.software.lininfosecConfiguration;
       this.software.lininfosecConfiguration = conf.slice(0, idx).concat(conf.slice(idx + 1, conf.length));
+    },
+
+    removeReferentItem(index) {
+      this.software.technicalReferent.splice(index, 1);
     }
   },
   created() {
