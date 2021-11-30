@@ -338,7 +338,7 @@
                               <v-list-tile-title>{{ $t("Delete comment") }}</v-list-tile-title>
                             </v-list-tile>
                             <v-list-tile
-                              v-if="canDeleteComment(event) && Object.keys(event.deleted || {}).length > 0"
+                              v-if="canManageComment(event) && Object.keys(event.deleted || {}).length > 0"
                               @click="revertComment(event)"
                             >
                               <v-list-tile-title>{{ $t("Cancel comment deletion") }}</v-list-tile-title>
