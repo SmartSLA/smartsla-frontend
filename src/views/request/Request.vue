@@ -177,7 +177,7 @@
               <v-layout>
                 <v-flex xs12 class="pt-0 pl-3">
                   <v-chip v-for="referent in technicalReferents" :key="referent._id" class="ma-2">
-                    <a :href="`mailto:${referent.name}`">{{ referent.name }}</a>
+                    <a :href="`mailto:${referent.email}`">{{ referent.name }}</a>
                   </v-chip>
                 </v-flex>
               </v-layout>
