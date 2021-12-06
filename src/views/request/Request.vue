@@ -169,6 +169,19 @@
                 </v-flex>
               </v-layout>
             </v-card-text>
+            <v-card-text v-if="technicalReferents" class="pt-1">
+              <v-subheader inset class="ml-0">
+                <v-icon class="pr-2">supervisor_account</v-icon>
+                {{ $t("Referents") }}
+              </v-subheader>
+              <v-layout>
+                <v-flex xs12 class="pt-0 pl-3">
+                  <v-chip v-for="referent in technicalReferents" :key="referent._id" class="ma-2">
+                    <a :href="`mailto:${referent.name}`">{{ referent.name }}</a>
+                  </v-chip>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
             <v-card-text v-if="attachments && attachments.length">
               <v-list subheader two-line>
                 <v-subheader inset class="ml-0">
@@ -719,6 +732,10 @@ export default {
     },
     userLanguage() {
       return this.getUserLanguage || LOCALE;
+    },
+
+    technicalReferents() {
+      return this.request.software && this.request.software.technicalReferent;
     }
   },
   watch: {

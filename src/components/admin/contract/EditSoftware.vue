@@ -22,16 +22,43 @@
             $t(props.item.critical)
           }}</v-chip>
         </td>
-        <td class="text-xs-center" v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
-          {{ props.item.lininfosecConfiguration.join(", ") }}
+        <td class="text-xs-center">
+          <span v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
+            {{ props.item.lininfosecConfiguration.join(", ") }}
+          </span>
         </td>
-        <td class="text-xs-center" v-if="props.item.SupportDate.start.length && props.item.SupportDate.end.length">
-          {{ $t("S") }}: {{ props.item.SupportDate.start }}
-          <br />
-          {{ $t("E") }}: {{ props.item.SupportDate.end }}
+        <td class="text-xs-center">
+          <div v-if="props.item.SupportDate.start.length && props.item.SupportDate.end.length">
+            {{ $t("S") }}: {{ props.item.SupportDate.start }}
+            <br />
+            {{ $t("E") }}: {{ props.item.SupportDate.end }}
+          </div>
+          <div v-else>
+            {{ $t("contract in progress") }}
+          </div>
         </td>
-        <td v-else class="text-xs-center">{{ $t("contract in progress") }}</td>
-        <td class="text-xs-center">{{ props.item.technicalReferent && props.item.technicalReferent.name }}</td>
+        <td class="text-xs-center">
+          <ul class="list">
+            <li
+              v-for="(referent, key) in props.item.technicalReferent && props.item.technicalReferent"
+              :key="key"
+              class="chips-elements"
+            >
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on">
+                    <router-link :to="{ name: routeNames.PROFILE, params: { id: getId } }">
+                      {{ referent.name }}
+                    </router-link>
+                  </span>
+                </template>
+                <span>
+                  {{ referent.email }}
+                </span>
+              </v-tooltip>
+            </li>
+          </ul>
+        </td>
         <td class="text-xs-center">
           <v-btn color="primary" flat small @click="editSoftware(props)">
             <v-icon>edit</v-icon>
@@ -82,6 +109,7 @@ import { mapGetters } from "vuex";
 import FormSoftware from "@/components/admin/contract/FormSoftware.vue";
 import ExpiredLabel from "@/components/ExpiredLabel.vue";
 import SoftwareMixin from "@/mixins/SortContractSoftware";
+import { routeNames } from "@/router";
 
 export default {
   name: "edit-contract-software",
@@ -92,7 +120,7 @@ export default {
       newSoftware: {
         software: {},
         critical: "standard",
-        technicalReferent: {},
+        technicalReferent: [],
         os: "",
         version: "",
         SupportDate: {
@@ -202,7 +230,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      configuration: "configuration/getConfiguration"
+      configuration: "configuration/getConfiguration",
+      getId: "currentUser/getId"
     }),
     softwareHeaders() {
       let softwareHeaders = [
@@ -237,6 +266,10 @@ export default {
     },
     islinInfoSecEnabledForContract() {
       return this.contract.features && this.contract.features.linInfoSec;
+    },
+
+    routeNames() {
+      return routeNames;
     }
   },
   mounted() {
@@ -257,4 +290,8 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+ul.list {
+  list-style: none;
+}
+</style>
