@@ -13,11 +13,7 @@
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl12 lg12 pt-4 px-0>
         <v-card light color="white">
-          <ticket-status
-            v-if="request.type !== 'softwareVulnerability'"
-            :status="request.status"
-            :type="request.type"
-          ></ticket-status>
+          <ticket-status :status="request.status" :type="request.type"></ticket-status>
           <v-divider />
           <v-layout wrap>
             <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
@@ -229,7 +225,7 @@
               </v-layout>
             </v-card-text>
           </v-card>
-          <v-card v-if="request.type !== 'softwareVulnerability'">
+          <v-card>
             <v-tabs icons-and-text class="comment-padding">
               <v-tabs-slider color="primary"></v-tabs-slider>
               <v-tab href="#comment">
