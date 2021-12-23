@@ -110,6 +110,10 @@ const actions = {
     return Vue.axios.addTicketEvent(ticketId, event).then(() => dispatch("fetchTicketById", ticketId));
   },
 
+  addParticipants: ({ dispatch }, { ticketId, participants }) => {
+    return Vue.axios.addParticipants(ticketId, participants).then(() => dispatch("fetchTicketById", ticketId));
+  },
+
   createTicket: ({ dispatch, commit }, ticket) => {
     return Vue.axios.createTicket(ticket).then(({ data }) => {
       commit(types.UPDATE_TICKET, data);

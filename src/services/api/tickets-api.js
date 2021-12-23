@@ -19,6 +19,10 @@ export default {
     return this.put(`/ticketing/api/tickets/${ticketId}/events`, options);
   },
 
+  addParticipants(ticketId, participants) {
+    return this.put(`/ticketing/api/tickets/${ticketId}/participants`, { participants });
+  },
+
   toggleCommentDeletion(ticketId, eventId, options) {
     return this.patch(`/ticketing/api/tickets/${ticketId}/events/${eventId}/comment`, options);
   },
