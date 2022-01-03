@@ -193,7 +193,7 @@
                       <v-list-tile-action-text>{{
                         attachment.timestamps.createdAt | calendarTimeFilter(userLanguage)
                       }}</v-list-tile-action-text>
-                      <v-btn icon ripple class="ma-0" @click.stop="scrollToEvent(attachment.event)">
+                      <v-btn icon ripple class="ma-0" @click.stop="scrollToEvent(attachment.eventId)">
                         <v-icon color="grey lighten-1">info</v-icon>
                       </v-btn>
                     </v-list-tile-action>
@@ -336,6 +336,7 @@
                               @click="
                                 newEditedComment = getComment(event);
                                 commentEdition = event._id;
+                                uploadedAttachment = getAttachments(event);
                               "
                             >
                               <v-list-tile-title>{{ $t("Edit") }}</v-list-tile-title>
@@ -407,10 +408,10 @@
                           "
                         ></p>
                       </v-card-text>
-                      <v-card-text v-if="event.attachments && event.attachments.length > 0" class="pt-0">
+                      <v-card-text v-if="getAttachments(event) && getAttachments(event).length > 0" class="pt-0">
                         <v-icon>attach_file</v-icon>
                         <ul>
-                          <li v-for="(attachment, index) in event.attachments" :key="index">
+                          <li v-for="attachment in getAttachments(event)" :key="attachment._id">
                             <a @click="downloadFile(attachment)">
                               {{ attachment.name }}
                             </a>
@@ -445,7 +446,35 @@
                             :class="{ 'is-private-tab': isPrivateTab }"
                           ></vue-editor>
                         </v-card-text>
+                        <v-card-text v-if="!!uploadedAttachment.length">
+                          <v-list subheader two-line>
+                            <v-subheader inset class="ml-0">
+                              <v-icon class="pr-2">attach_file</v-icon>
+                              {{ $t("Attachments") }}
+                            </v-subheader>
+                            <template v-for="attachment in uploadedAttachment">
+                              <v-list-tile :key="attachment._id" ripple>
+                                <v-list-tile-content>
+                                  <v-list-tile-title>{{ attachment.name }}</v-list-tile-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                  <v-btn icon ripple class="ma-0">
+                                    <v-icon color="grey lighten-1" @click.stop="onDeleteAttachment(attachment._id)">
+                                      close
+                                    </v-icon>
+                                  </v-btn>
+                                </v-list-tile-action>
+                              </v-list-tile>
+                            </template>
+                          </v-list>
+                        </v-card-text>
                         <v-card-actions>
+                          <v-flex xs12>
+                            <attachments-creation
+                              v-bind:attachments.sync="newUploadedAttachments"
+                              :disabled="isSubmitting"
+                            />
+                          </v-flex>
                           <v-spacer></v-spacer>
                           <v-btn color="red lighten-2" flat @click="commentEdition = null">{{ $t("Cancel") }}</v-btn>
                           <v-btn
@@ -586,7 +615,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
-import { flatten, capitalize, debounce, isEmpty } from "lodash";
+import { flatten, capitalize, debounce, isEmpty, last } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import AttachmentsCreation from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
@@ -627,7 +656,9 @@ export default {
       vulnRefHeader: ["Source", "URL", "Tags"],
       vulnCpeHeader: ["CPE", "Version Start", "Version End"],
       commentEdition: null,
-      newEditedComment: ""
+      newEditedComment: "",
+      newUploadedAttachments: [],
+      uploadedAttachment: []
     };
   },
   components: {
@@ -673,9 +704,29 @@ export default {
       const attachments =
         this.request.events &&
         this.request.events.map(event => {
-          return (event.attachments || []).map(attachment => {
+          if (event.eventHistory.length) {
+            const attachmentsUploaded = last(event.eventHistory).attachments || [];
+
+            if (attachmentsUploaded.length) {
+              return attachmentsUploaded.map(attachment => {
+                attachment.eventId = event._id;
+                attachment.timestamps = event.timestamps;
+
+                return attachment;
+              });
+            }
+
+            const attachmentsUpdated = event.eventHistory.some(
+              eHistory => eHistory.attachments && eHistory.attachments.length > 0
+            );
+
+            if (attachmentsUploaded.length === 0 && attachmentsUpdated) {
+              return [];
+            }
+          }
+          return [...event.attachments].map(attachment => {
+            attachment.eventId = event._id;
             attachment.timestamps = event.timestamps;
-            attachment.event = event;
 
             return attachment;
           });
@@ -758,8 +809,8 @@ export default {
     isUserExpert() {
       return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     },
-    scrollToEvent(event) {
-      const element = this.$refs[`event-${event._id}`];
+    scrollToEvent(eventId) {
+      const element = this.$refs[`event-${eventId}`];
 
       if (element && element[0] && element[0].$el) {
         this.$scrollTo(element[0].$el, { offset: -80 });
@@ -992,22 +1043,45 @@ export default {
         editedBy: author.id
       };
 
-      this.$store
-        .dispatch("ticket/updateComment", { ticketId: this.request._id, eventId, comment: newComment })
-        .then(() => {
-          this.newEditedComment = "";
-          this.commentEdition = null;
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("updated"),
-            color: "success"
+      const attachmentsPromise = this.newUploadedAttachments.length
+        ? this.$http.getUploader().uploadAll(this.newUploadedAttachments)
+        : Promise.resolve([]);
+
+      attachmentsPromise.then(attachments => {
+        if (attachments.length) {
+          newComment.attachments = attachments.map(attachment => ({
+            _id: attachment._id,
+            name: attachment.name,
+            mimeType: attachment.type
+          }));
+        }
+
+        if (this.uploadedAttachment.length) {
+          if (!newComment.attachments) {
+            newComment.attachments = [];
+          }
+          newComment.attachments.push(...this.uploadedAttachment);
+        }
+
+        this.$store
+          .dispatch("ticket/updateComment", { ticketId: this.request._id, eventId, comment: newComment })
+          .then(() => {
+            this.newEditedComment = "";
+            this.commentEdition = null;
+            this.newUploadedAttachments = [];
+            this.newUploadedAttachments.length = 0;
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("updated"),
+              color: "success"
+            });
+          })
+          .catch(() => {
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Error while updating comment"),
+              color: "error"
+            });
           });
-        })
-        .catch(() => {
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Error while updating comment"),
-            color: "error"
-          });
-        });
+      });
     },
 
     revertComment(event) {
@@ -1044,10 +1118,33 @@ export default {
       return null;
     },
 
+    getAttachments(event) {
+      if (event.eventHistory.length) {
+        const attachmentsUploaded = last(event.eventHistory).attachments || [];
+
+        if (attachmentsUploaded.length) {
+          return attachmentsUploaded;
+        }
+
+        const attachmentsUpdated = event.eventHistory.some(
+          eHistory => eHistory.attachments && eHistory.attachments.length > 0
+        );
+
+        if (attachmentsUploaded.length === 0 && attachmentsUpdated) {
+          return [];
+        }
+      }
+      return [...event.attachments];
+    },
+
     getUserById(id) {
       const user = this.$store.getters["users/getUserById"](id);
 
       return user.name || null;
+    },
+
+    onDeleteAttachment(attachmentId) {
+      this.uploadedAttachment = this.uploadedAttachment.filter(attachment => attachment._id !== attachmentId);
     }
   },
   created() {
