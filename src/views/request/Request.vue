@@ -704,7 +704,7 @@ export default {
       const attachments =
         this.request.events &&
         this.request.events.map(event => {
-          if (event.eventHistory.length) {
+          if (event.eventHistory && event.eventHistory.length) {
             const attachmentsUploaded = last(event.eventHistory).attachments || [];
 
             if (attachmentsUploaded.length) {
@@ -1119,7 +1119,7 @@ export default {
     },
 
     getAttachments(event) {
-      if (event.eventHistory.length) {
+      if (event.eventHistory && event.eventHistory.length) {
         const attachmentsUploaded = last(event.eventHistory).attachments || [];
 
         if (attachmentsUploaded.length) {
