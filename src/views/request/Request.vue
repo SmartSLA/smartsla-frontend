@@ -440,6 +440,9 @@
                       <v-card>
                         <v-card-text>
                           <vue-editor
+                            id="editorEdition"
+                            ref="editorEdition"
+                            :editorOptions="editorOptions"
                             v-model="newEditedComment"
                             :disabled="isSubmitting"
                             :editorToolbar="editorToolbar"
@@ -505,7 +508,6 @@
                     <v-btn flat value="markdown">{{ $t("Markdown Editor") }}</v-btn>
                   </v-btn-toggle>-->
                     <Editor
-                      ref="editor"
                       :outline="true"
                       :preview="true"
                       v-model="comment"
@@ -513,6 +515,9 @@
                       :disabled="isSubmitting"
                     />
                     <vue-editor
+                      id="editor"
+                      ref="editor"
+                      :editorOptions="editorOptions"
                       v-model="comment"
                       :disabled="isSubmitting"
                       :editorToolbar="editorToolbar"
@@ -615,7 +620,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue2-editor";
-import { flatten, capitalize, debounce, isEmpty, last } from "lodash";
+import { flatten, capitalize, debounce, isEmpty, filter, map, get, last } from "lodash";
 import { Editor } from "vuetify-markdown-editor";
 import AttachmentsCreation from "@/components/attachments/creation/Attachments.vue";
 import ApplicationSettings from "@/services/application-settings";
@@ -639,6 +644,8 @@ import commentModal from "@/components/request/commentModal";
 // const Codeblock = Quill.import("formats/code-block");
 // Codeblock.tagName = "pre";
 
+import "quill-mention";
+
 export default {
   data() {
     return {
@@ -658,7 +665,8 @@ export default {
       commentEdition: null,
       newEditedComment: "",
       newUploadedAttachments: [],
-      uploadedAttachment: []
+      uploadedAttachment: [],
+      instanceVueEditor: "editor"
     };
   },
   components: {
@@ -683,6 +691,58 @@ export default {
       getUserLanguage: "configuration/getUserLanguage",
       getUserId: "currentUser/getId"
     }),
+
+    users() {
+      const users = this.$store.getters["users/getUsers"];
+
+      return (users || []).map(user => ({ value: user.name, id: user.email }));
+    },
+
+    mentions() {
+      const instanceEditor = this.instanceVueEditor;
+      let editor = this.$refs[instanceEditor];
+
+      if (editor instanceof Array) {
+        editor = this.$refs[instanceEditor][0];
+      }
+
+      const marvelDelta = editor.quill.editor.delta;
+      const mentionDelta = filter(marvelDelta.ops, "insert.mention");
+      const mentions = map(mentionDelta, function(value) {
+        return get(value, "insert.mention.id");
+      });
+
+      return mentions;
+    },
+
+    editorOptions() {
+      const atUsersValue = this.users;
+
+      return {
+        modules: {
+          mention: {
+            allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+            mentionDenotationChars: ["@"],
+            source: function(searchTerm, renderList, mentionChar) {
+              let values;
+
+              if (mentionChar === "@") {
+                values = atUsersValue;
+              }
+
+              if (searchTerm.length === 0) {
+                renderList(values, searchTerm);
+              } else {
+                const matches = [];
+                for (let i = 0; i < values.length; i++)
+                  if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+                renderList(matches, searchTerm);
+              }
+            }
+          }
+        }
+      };
+    },
 
     toPreviousRoute() {
       return this.prevRoute ? this.prevRoute.fullPath : { name: routeNames.REQUESTS };
@@ -845,70 +905,83 @@ export default {
     },
 
     addEvent(isSurvey = false) {
+      this.instanceVueEditor = "editor";
       this.isSubmitting = true;
+      let participantsPromise = Promise.resolve([]);
       const attachmentsPromise = this.commentCreationAttachments.length
         ? this.$http.getUploader().uploadAll(this.commentCreationAttachments)
         : Promise.resolve([]);
 
-      attachmentsPromise
-        .then(attachments => {
-          let event = {
-            author: this.getUser,
-            comment: this.comment,
-            isPrivate: this.isPrivateTab
-          };
+      if (this.mentions.length) {
+        const participants = [...new Set([...this.request.participants, ...this.mentions])];
 
-          if (!this.isPrivateTab) {
-            event = {
-              ...event,
-              status: this.newStatus && this.newStatus.next
+        participantsPromise = this.$store.dispatch("ticket/addParticipants", {
+          ticketId: this.request._id,
+          participants: participants
+        });
+      }
+
+      participantsPromise.then(() => {
+        attachmentsPromise
+          .then(attachments => {
+            let event = {
+              author: this.getUser,
+              comment: this.comment,
+              isPrivate: this.isPrivateTab
             };
 
-            if (!isEmpty(this.newResponsible)) {
+            if (!this.isPrivateTab) {
               event = {
                 ...event,
-                target: this.newResponsible
+                status: this.newStatus && this.newStatus.next
               };
+
+              if (!isEmpty(this.newResponsible)) {
+                event = {
+                  ...event,
+                  target: this.newResponsible
+                };
+              }
             }
-          }
 
-          if (isSurvey) {
-            event.isSurvey = isSurvey;
-          }
+            if (isSurvey) {
+              event.isSurvey = isSurvey;
+            }
 
-          if (attachments.length) {
-            event.attachments = attachments.map(attachment => ({
-              _id: attachment._id,
-              name: attachment.name,
-              mimeType: attachment.type
-            }));
-          }
+            if (attachments.length) {
+              event.attachments = attachments.map(attachment => ({
+                _id: attachment._id,
+                name: attachment.name,
+                mimeType: attachment.type
+              }));
+            }
 
-          this.$store
-            .dispatch("ticket/addEvent", { ticketId: this.request._id, event })
-            .then(() => {
-              this.$store.dispatch("ui/displaySnackbar", {
-                message: this.$i18n.t("updated"),
-                color: "success"
+            this.$store
+              .dispatch("ticket/addEvent", { ticketId: this.request._id, event })
+              .then(() => {
+                this.$store.dispatch("ui/displaySnackbar", {
+                  message: this.$i18n.t("updated"),
+                  color: "success"
+                });
+                this.resetComment();
+                this.isSubmitting = false;
+              })
+              .catch(() => {
+                this.isSubmitting = false;
+                this.$store.dispatch("ui/displaySnackbar", {
+                  message: this.$i18n.t("Error while updating ticket"),
+                  color: "error"
+                });
               });
-              this.resetComment();
-              this.isSubmitting = false;
-            })
-            .catch(() => {
-              this.isSubmitting = false;
-              this.$store.dispatch("ui/displaySnackbar", {
-                message: this.$i18n.t("Error while updating ticket"),
-                color: "error"
-              });
+          })
+          .catch(() => {
+            this.isSubmitting = false;
+            this.$store.dispatch("ui/displaySnackbar", {
+              message: this.$i18n.t("Error while uploading attachments"),
+              color: "error"
             });
-        })
-        .catch(() => {
-          this.isSubmitting = false;
-          this.$store.dispatch("ui/displaySnackbar", {
-            message: this.$i18n.t("Error while uploading attachments"),
-            color: "error"
           });
-        });
+      });
     },
 
     downloadFile({ _id, name }) {
@@ -1037,11 +1110,22 @@ export default {
 
     updateComment(event) {
       const { author, _id: eventId } = event;
+      let participantsPromise = Promise.resolve([]);
+      this.instanceVueEditor = "editorEdition";
 
       let newComment = {
         comment: this.newEditedComment,
         editedBy: author.id
       };
+
+      if (this.mentions.length) {
+        const participants = [...new Set([...this.request.participants, ...this.mentions])];
+
+        participantsPromise = this.$store.dispatch("ticket/addParticipants", {
+          ticketId: this.request._id,
+          participants: participants
+        });
+      }
 
       const attachmentsPromise = this.newUploadedAttachments.length
         ? this.$http.getUploader().uploadAll(this.newUploadedAttachments)
@@ -1063,24 +1147,26 @@ export default {
           newComment.attachments.push(...this.uploadedAttachment);
         }
 
-        this.$store
-          .dispatch("ticket/updateComment", { ticketId: this.request._id, eventId, comment: newComment })
-          .then(() => {
-            this.newEditedComment = "";
-            this.commentEdition = null;
-            this.newUploadedAttachments = [];
-            this.newUploadedAttachments.length = 0;
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("updated"),
-              color: "success"
+        participantsPromise.then(() => {
+          this.$store
+            .dispatch("ticket/updateComment", { ticketId: this.request._id, eventId, comment: newComment })
+            .then(() => {
+              this.newEditedComment = "";
+              this.commentEdition = null;
+              this.newUploadedAttachments = [];
+              this.newUploadedAttachments.length = 0;
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("updated"),
+                color: "success"
+              });
+            })
+            .catch(() => {
+              this.$store.dispatch("ui/displaySnackbar", {
+                message: this.$i18n.t("Error while updating comment"),
+                color: "error"
+              });
             });
-          })
-          .catch(() => {
-            this.$store.dispatch("ui/displaySnackbar", {
-              message: this.$i18n.t("Error while updating comment"),
-              color: "error"
-            });
-          });
+        });
       });
     },
 
@@ -1161,7 +1247,10 @@ export default {
 };
 </script>
 
+<style src="quill-mention/dist/quill.mention.min.css"></style>
+
 <style lang="stylus">
+
 @media only screen and (max-width: 959px) {
   .v-stepper__label {
     display: block !important;
