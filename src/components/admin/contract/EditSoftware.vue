@@ -22,8 +22,8 @@
             $t(props.item.critical)
           }}</v-chip>
         </td>
-        <td class="text-xs-center">
-          <span v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
+        <td class="text-xs-center" v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract">
+          <span>
             {{ props.item.lininfosecConfiguration.join(", ") }}
           </span>
         </td>
@@ -47,7 +47,7 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
                   <span v-on="on">
-                    <router-link :to="{ name: routeNames.PROFILE, params: { id: getId } }">
+                    <router-link :to="{ name: routeNames.PROFILE, params: { id: referent.id } }">
                       {{ referent.name }}
                     </router-link>
                   </span>
@@ -230,8 +230,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      configuration: "configuration/getConfiguration",
-      getId: "currentUser/getId"
+      configuration: "configuration/getConfiguration"
     }),
     softwareHeaders() {
       let softwareHeaders = [

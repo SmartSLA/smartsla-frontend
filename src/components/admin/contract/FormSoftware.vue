@@ -206,7 +206,7 @@ export default {
     referents() {
       const referentList = this.$store.getters["users/getUsersByType"](USER_TYPE.BENEFICIARY);
 
-      return referentList.map(({ _id, name, email }) => ({ _id, name, email }));
+      return referentList.map(({ name, email, user }) => ({ id: user, name, email }));
     },
 
     islinInfoSecEnabledForContract() {
