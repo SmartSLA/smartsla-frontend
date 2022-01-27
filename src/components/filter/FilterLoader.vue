@@ -17,7 +17,9 @@
       <v-tooltip top v-if="!!filters.length">
         <template v-slot:activator="{ on }">
           <v-toolbar-side-icon v-on="on" @click="loadFilter">
-            <v-icon dark>add</v-icon>
+            <v-btn :dark="canAddFilter" color="primary" fab small :disabled="!canAddFilter">
+              <v-icon>add</v-icon>
+            </v-btn>
           </v-toolbar-side-icon>
         </template>
         <span>
@@ -36,6 +38,9 @@ export default {
   computed: {
     filters() {
       return this.savedFilters || [];
+    },
+    canAddFilter() {
+      return !!this.storedSelectionsFilterHolder;
     }
   },
   data() {

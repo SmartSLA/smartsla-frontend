@@ -212,17 +212,11 @@ export default {
 
     removeFilter(filter) {
       this.$store.dispatch("filter/removeAdditionalFilter", filter);
-      if (this.additionalFilters && this.additionalFilters.length === 0) {
-        this.submitFilters();
-      }
     },
 
     resetFilters() {
       this.$store.dispatch("filter/resetAdditionalFilter");
       this.$store.dispatch("filter/removeCurrentCustomFilter", this.objectType);
-      if (this.additionalFilters && this.additionalFilters.length === 0) {
-        this.submitFilters();
-      }
     },
 
     changeFilterCategory(selectedCategory) {
@@ -240,6 +234,9 @@ export default {
 
     closeFilter() {
       this.dialog = this.hideFilter = false;
+      if (this.additionalFilters && this.additionalFilters.length === 0) {
+        this.submitFilters();
+      }
     },
 
     submitFilters() {
