@@ -85,6 +85,9 @@ export default {
     },
     capitalize(term) {
       return capitalize(term);
+    },
+    getClientById(clientId) {
+      return this.$store.getters["client/getClientById"](clientId);
     }
   },
   computed: {
@@ -93,11 +96,19 @@ export default {
       const user = this.$store.getters["users/getUserById"](id);
       const { contracts } = user;
       let client;
+
       if (contracts && contracts.length) {
         const firstContract = contracts[0].contract;
         client = {
           name: firstContract && firstContract.client,
           id: firstContract && firstContract.clientId
+        };
+      }
+
+      if (user && user.client) {
+        client = {
+          id: user.client,
+          name: this.getClientById(user.client).name
         };
       }
 
