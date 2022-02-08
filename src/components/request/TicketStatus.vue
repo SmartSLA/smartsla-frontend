@@ -10,6 +10,7 @@
             :statusName="statusName"
             :ticketStatusId="ticketStatusId"
             :bypassable="isAnomaly"
+            :ticketSuspended="isUserBeneficiary"
           >
           </ticket-status-step>
         </v-stepper-header>
@@ -27,7 +28,8 @@ export default {
   name: "ticket-status",
   props: {
     status: String,
-    type: String
+    type: String,
+    user: Object
   },
 
   computed: {
@@ -47,6 +49,10 @@ export default {
 
     ticketStatusList() {
       return TICKET_STATUS;
+    },
+
+    isUserBeneficiary() {
+      return this.user && this.user.type === "beneficiary";
     }
   },
   components: {

@@ -1,12 +1,22 @@
 <template>
   <v-menu v-if="canBeDisplayed">
     <template v-slot:activator="{}">
-      <v-flex v-if="ticketStatusId < stepKey" xs1 sm4 md3 lg3>
+      <v-flex v-if="ticketStatusId < stepKey && !ticketSuspended" xs1 sm4 md3 lg3>
         <v-stepper-step
           step
           :complete="nextStatus === stepKey"
           color="primary"
           complete-icon="access_time"
+          class="px-0 caption"
+          >{{ nextStatusNameDisplay }}</v-stepper-step
+        >
+      </v-flex>
+      <v-flex v-else-if="ticketStatusId < stepKey && ticketSuspended" xs1 sm4 md3 lg3>
+        <v-stepper-step
+          step
+          :complete="nextStatus === stepKey"
+          color="warning"
+          complete-icon="pause"
           class="px-0 caption"
           >{{ nextStatusNameDisplay }}</v-stepper-step
         >
@@ -30,7 +40,8 @@ export default {
   props: {
     statusName: String,
     ticketStatusId: Number,
-    bypassable: Boolean
+    bypassable: Boolean,
+    ticketSuspended: Boolean
   },
   computed: {
     statusNameDisplay() {
