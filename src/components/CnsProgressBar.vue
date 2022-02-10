@@ -29,9 +29,21 @@
       </v-tooltip>
     </v-flex>
     <v-flex v-if="!hideClock" xs1 px-1 pt-0 pb-0>
-      <v-icon v-if="isCurrentStep" color="info">
+      <v-icon v-if="isCurrentStep && !isTicketSuspended" color="info">
         access_time
       </v-icon>
+      <v-tooltip v-if="isCurrentStep && isTicketSuspended" top>
+        <template v-slot:activator="{ on }">
+          <span v-on="on">
+            <v-icon color="warning">
+              pause
+            </v-icon>
+          </span>
+        </template>
+        <span>
+          {{ $t("Ticket suspended assigned to the beneficiary") }}
+        </span>
+      </v-tooltip>
       <v-icon v-else-if="isPreviousStep" :color="currentCnsValueColor">
         {{ currentCnsValueLabel }}
       </v-icon>
@@ -84,6 +96,9 @@ export default {
     },
     currentCnsValueEngagement() {
       return convertIsoDurationInDaysHoursMinutes(this.currentCnsValue.engagement);
+    },
+    isTicketSuspended() {
+      return this.ticket.assignedTo && this.ticket.assignedTo.type === "beneficiary";
     }
   },
   methods: {

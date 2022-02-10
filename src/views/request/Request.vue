@@ -13,7 +13,7 @@
     <v-layout row wrap justify-space-between>
       <v-flex xs12 md12 sm12 xl12 lg12 pt-4 px-0>
         <v-card light color="white">
-          <ticket-status :status="request.status" :type="request.type"></ticket-status>
+          <ticket-status :status="request.status" :type="request.type" :user="request.assignedTo"></ticket-status>
           <v-divider />
           <v-layout wrap>
             <v-flex xs8 md11 sm11 lg11 xl11 class="pt-0 pb-0">
