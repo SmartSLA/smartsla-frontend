@@ -3,10 +3,17 @@
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm6 md5 lg4>
-          <v-card class="pa-3">
-            <v-toolbar class="login-bar">
-              <v-toolbar-title class="white--text login-header">{{ $t("OpenPaaS Login") }}</v-toolbar-title>
-            </v-toolbar>
+          <v-card>
+            <v-layout justify-space-between class="pa-4">
+              <v-img contain width="160" max-height="38" class="hidden-sm-and-down" :src="logo" />
+              <v-img contain width="140" max-height="30" class="hidden-md-and-up" :src="logo" />
+            </v-layout>
+            <v-card-title class="login-bar">
+              <div>
+                <h3 class="title white--text mb-0">{{ $t("Login to your account") }}</h3>
+                <p class="white--text">{{ $t("Enter your credentials") }}</p>
+              </div>
+            </v-card-title>
             <v-card-text>
               <v-form class="login-form" @keydown.native.enter="login">
                 <v-text-field
@@ -30,11 +37,12 @@
                 ></v-text-field>
               </v-form>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions class="px-3">
               <v-layout justify-space-between>
                 <router-link v-if="sspEnabled" :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
                   {{ $t("Reset Password") }}
                 </router-link>
+                <v-spacer></v-spacer>
                 <v-btn :disabled="logMeIn" :loading="logMeIn" @click="login">{{ $t("Login") }}</v-btn>
               </v-layout>
             </v-card-actions>
@@ -64,6 +72,12 @@ export default {
     },
     sspEnabled() {
       return this.features.SSP_ENABLED;
+    },
+    defaultCompany() {
+      return ApplicationSettings.SUPPORT_ACCOUNT;
+    },
+    logo() {
+      return require("@/assets/" + this.defaultCompany.logo);
     }
   },
   methods: {
@@ -89,11 +103,11 @@ export default {
         })
         .catch(() => {
           this.$store.dispatch("ui/displaySnackbar", {
-            message: "Login error, please retry"
+            message: this.$i18n.t("Login error, please retry")
           });
         })
         .finally(() => {
-          setTimeout(() => (this.logMeIn = false), 300);
+          this.logMeIn = false;
         });
     }
   }
@@ -106,6 +120,6 @@ export default {
 }
 
 #login {
-  height: 60vh;
+  height: 80vh;
 }
 </style>

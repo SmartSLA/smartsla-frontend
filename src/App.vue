@@ -10,6 +10,7 @@
         :fixed="toolbar.fixed"
         :clipped-left="toolbar.clippedLeft"
         :clipped-right="toolbar.clippedRight"
+        v-if="$auth.check() && !hidden"
       >
         <v-toolbar-title class="d-flex align-center">
           <v-toolbar-side-icon
@@ -115,7 +116,7 @@ export default {
 </script>
 
 <style lang="stylus">
-openpaas-login-color = #394556
+openpaas-login-color = #1656a5
 
 .white-color {
   color: #ffffff !important;
@@ -194,7 +195,7 @@ th.column.sortable.text-xs-left {
   padding: 15px !important;
 }
 
-.login-bar .v-toolbar__content {
+.login-bar {
   background-color: openpaas-login-color;
 }
 
