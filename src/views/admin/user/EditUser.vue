@@ -451,8 +451,10 @@ export default {
       }
     },
     createUser() {
-      if (this.user.type === USER_TYPE.EXPERT || this.user.role === BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) {
+      if (this.user.type === USER_TYPE.EXPERT) {
         this.user.client = "";
+        this.user.contracts = [];
+      } else if (this.user.role === BENEFICIARY_ROLE_LIST.CONTRACT_MANAGER) {
         this.user.contracts = [];
       } else {
         this.user.contracts = this.filteredContractsByClient
