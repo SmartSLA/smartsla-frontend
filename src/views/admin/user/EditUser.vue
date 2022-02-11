@@ -100,7 +100,7 @@
                 <strong>{{ $t("Phone") }} :</strong>
               </v-flex>
               <v-flex xs8>
-                <v-text-field v-model="user.phone" disabled></v-text-field>
+                <v-text-field v-model="user.phone"></v-text-field>
               </v-flex>
               <v-flex xs1></v-flex>
               <v-flex xs3 class="pt-4">
