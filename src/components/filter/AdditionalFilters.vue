@@ -13,7 +13,7 @@
           :hideSearchFilter="hideSearchFilter"
           @updatedHideSearchFilter="hideSearchInput"
         ></FilterSearchInput>
-        <v-dialog v-model="dialog" width="700" overflow="false" persistent>
+        <v-dialog v-model="dialog" width="800" overflow="false" persistent>
           <template v-slot:activator="{ on }">
             <v-btn
               icon
@@ -36,48 +36,57 @@
             </v-toolbar>
             <v-card-text>
               <v-layout :class="{ 'mb-4': !showSelectedFilter }" :column="!sizeFilterDevice">
-                <v-flex xs12 md6 lg6 v-if="hideFilter == true">
+                <v-flex xs12 md4 lg4 v-if="hideFilter == true">
                   <FilterCategories
                     :categories="categories"
                     @filterCategoryChanged="changeFilterCategory"
                   ></FilterCategories>
                 </v-flex>
-                <v-flex xs12 sm5 md6 lg6 v-if="hideFilter == true">
-                  <v-toolbar v-if="!showCustomFilters" flat dense>
-                    <v-layout align-center justify-end>
-                      <v-overflow-btn
-                        :items="getSortedValues"
-                        :label="$t('Values')"
-                        :no-data-text="$t('No data available')"
-                        v-model="valuesFilter"
-                        item-text="name"
-                        item-value="id"
-                        return-object
-                        flat
-                        hide-details
-                        hide-selected
-                        editable
-                      >
-                        <template v-slot:item="{ item }">
+                <v-flex xs12 sm5 md8 lg8 v-if="hideFilter == true">
+                  <v-layout v-if="!showCustomFilters" align-center justify-end>
+                    <v-select
+                      solo
+                      multiple
+                      small-chips
+                      chips
+                      :items="getSortedValues"
+                      :label="$t('Values')"
+                      :no-data-text="$t('No data available')"
+                      v-model="valuesFilter"
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      flat
+                      hide-details
+                      hide-selected
+                    >
+                      <template v-slot:item="{ item }">
+                        <span>{{ item.name }}</span>
+                        <v-spacer v-if="item.client"></v-spacer>
+                        <span class="grey--text caption" v-if="item.client">{{ item.client }}</span>
+                      </template>
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index >= 0 && index < maxFilters">
                           <span>{{ item.name }}</span>
-                          <v-spacer v-if="item.client"></v-spacer>
-                          <span class="grey--text caption" v-if="item.client">{{ item.client }}</span>
-                        </template>
-                      </v-overflow-btn>
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                          <v-toolbar-side-icon v-on="on" @click="addFilter">
-                            <v-btn :dark="canAddFilter" color="primary" fab small :disabled="!canAddFilter">
-                              <v-icon>add</v-icon>
-                            </v-btn>
-                          </v-toolbar-side-icon>
-                        </template>
-                        <span>
-                          {{ $t("This button allows you to add an additional filter to the board") }}
-                        </span>
-                      </v-tooltip>
-                    </v-layout>
-                  </v-toolbar>
+                        </v-chip>
+                        <span v-if="index === maxFilters" class="grey--text caption"
+                          >(+{{ valuesFilter.length - index }} {{ $t("Other") }})</span
+                        >
+                      </template>
+                    </v-select>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-toolbar-side-icon v-on="on" @click="addFilter">
+                          <v-btn :dark="canAddFilter" color="primary" fab small :disabled="!canAddFilter">
+                            <v-icon>add</v-icon>
+                          </v-btn>
+                        </v-toolbar-side-icon>
+                      </template>
+                      <span>
+                        {{ $t("This button allows you to add an additional filter to the board") }}
+                      </span>
+                    </v-tooltip>
+                  </v-layout>
                   <FilterLoader
                     v-else
                     :savedFilters="customFilters"
@@ -200,6 +209,7 @@ export default {
           category: this.categoriesFilter,
           value: this.valuesFilter
         };
+
         this.$store.dispatch("filter/addAdditionalFilter", filter);
         this.valuesFilter = null;
       }
@@ -346,6 +356,22 @@ export default {
       return (
         this.currentCustomFilter && !!Object.keys(this.currentCustomFilter).length && !!this.additionalFilters.length
       );
+    },
+
+    isMobile() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return true;
+        case "sm":
+        case "md":
+        case "lg":
+        case "xl":
+          return false;
+      }
+    },
+
+    maxFilters() {
+      return this.isMobile ? 2 : 4;
     }
   },
   created() {
