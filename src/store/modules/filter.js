@@ -79,7 +79,15 @@ const mutations = {
   },
 
   [types.ADD_ADDITIONAL_FILTER](state, filter) {
-    state.additionalFilters = [...state.additionalFilters, filter];
+    const { category, value } = filter;
+    const filtersValue = Array.isArray(value) ? value : [value];
+    let filters = [];
+
+    filtersValue.forEach(value => {
+      filters = [...filters, { category, value }];
+    });
+
+    state.additionalFilters = [...state.additionalFilters, ...filters];
   },
 
   [types.REMOVE_ADDITIONAL_FILTER](state, filter) {
