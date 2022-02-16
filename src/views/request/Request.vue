@@ -1258,12 +1258,14 @@ export default {
 }
 
 .comment-content img {
-  width: 100%;
+  max-width: 100%;
 }
 
 .comment-content code {
   background-color: #23241f;
   color: #f8f8f2;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .btn-action-list span {
@@ -1280,6 +1282,10 @@ export default {
 
 .v-tabs__container--icons-and-text .v-tabs__item {
   flex-direction: initial !important;
+}
+
+pre {
+  white-space: pre-line;
 }
 </style>
 

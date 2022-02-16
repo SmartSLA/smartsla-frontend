@@ -341,6 +341,12 @@ export default {
 };
 </script>
 
+<style lang="stylus">
+pre {
+  white-space: pre-line;
+}
+</style>
+
 <style lang="stylus" scoped>
 .action-links {
   text-decoration: none;
