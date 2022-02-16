@@ -39,9 +39,9 @@
             </v-card-text>
             <v-card-actions class="px-3">
               <v-layout justify-space-between>
-                <router-link v-if="sspEnabled" :to="{ name: routeNames.RESET_PASSWORD }" target="_blank">
+                <a v-if="sspEnabled" :href="sspResetUrl" target="_blank">
                   {{ $t("Reset Password") }}
-                </router-link>
+                </a>
                 <v-spacer></v-spacer>
                 <v-btn :disabled="logMeIn" :loading="logMeIn" @click="login">{{ $t("Login") }}</v-btn>
               </v-layout>
@@ -75,6 +75,9 @@ export default {
     },
     defaultCompany() {
       return ApplicationSettings.SUPPORT_ACCOUNT;
+    },
+    sspResetUrl() {
+      return ApplicationSettings.SSP_URL_RESET;
     },
     logo() {
       return require("@/assets/" + this.defaultCompany.logo);
