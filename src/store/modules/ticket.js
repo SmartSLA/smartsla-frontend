@@ -203,6 +203,7 @@ const getters = {
         contractName: contract && contract.name,
         clientName: contract && contract.client,
         authorName: request.author && request.author.name,
+        beneficiaryName: request.beneficiary && request.beneficiary.name,
         softwareName: request.software && request.software.software && request.software.software.name,
         responsibleName: request.responsible && request.responsible.name,
         assignedToName: request.assignedTo && request.assignedTo.name,

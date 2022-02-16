@@ -85,7 +85,7 @@
               <text-highlight :queries="highlightSearch">{{ props.item.request.responsibleName }}</text-highlight>
             </td>
             <td class="text-xs-left">
-              <text-highlight :queries="highlightSearch">{{ props.item.request.authorName }}</text-highlight>
+              <text-highlight :queries="highlightSearch">{{ props.item.request.beneficiaryName }}</text-highlight>
             </td>
             <td class="text-xs-left client-contract-links">
               <client-contract-links
@@ -186,7 +186,7 @@ export default {
         { text: this.$i18n.t("Title"), value: "title", width: "25%", align: "left" },
         { text: this.$i18n.t("Assigned to"), value: "assignedToName", align: "left" },
         { text: this.$i18n.t("Responsible"), value: "responsibleName", align: "left" },
-        { text: this.$i18n.t("Author"), value: "beneficiaryName", align: "left" },
+        { text: this.$i18n.t("Beneficiary"), value: "beneficiaryName", align: "left" },
         { text: this.$i18n.t("Client - Contract"), value: "clientContract", align: "left" },
         { text: this.$i18n.t("MAJ"), value: "updatedAt", align: "center" },
         { text: this.$i18n.t("Created"), value: "createdAt", align: "center" },
@@ -289,6 +289,7 @@ export default {
       return this.requests.map(request => ({
         _id: request._id,
         author: request.author && request.author.name,
+        beneficiary: request.beneficiary && request.beneficiary.name,
         type: request.type,
         severity: request.severity,
         software: request.software,
@@ -360,6 +361,9 @@ export default {
           case "author":
             this.values = [...this.userList].map(user => ({ name: user.name, id: user.user }));
             break;
+          case "beneficiary":
+            this.values = [...this.userList].map(user => ({ name: user.name, id: user.user }));
+            break;
           case "client":
             this.values = [...this.clientsListFilter];
             break;
@@ -416,6 +420,7 @@ export default {
       let assignedFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "assignto");
       let responsibleFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "responsible");
       let transmitterFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "author");
+      let beneficiaryFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "beneficiary");
       let clientFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "contract");
       let statusFilter = this.customFilters.filter(filter => filter.category.toLowerCase() == "status");
 
@@ -425,6 +430,7 @@ export default {
       let assignedFilterMatch = true;
       let responsibleFilterMatch = true;
       let transmitterFilterMatch = true;
+      let beneficiaryFilterMatch = true;
       let clientFilterMatch = true;
       let statusFilterMatch = true;
 
@@ -500,6 +506,26 @@ export default {
         });
       }
 
+      if (beneficiaryFilter.length) {
+        beneficiaryFilterMatch = false;
+
+        beneficiaryFilter.forEach(currentFilter => {
+          if (request.beneficiary) {
+            if (
+              request.beneficiary.name &&
+              request.beneficiary.name.toLowerCase() == currentFilter.value.toLowerCase()
+            ) {
+              beneficiaryFilterMatch = true;
+            } else if (
+              request.beneficiary.displayName &&
+              request.beneficiary.displayName.toLowerCase() == currentFilter.value.toLowerCase()
+            ) {
+              beneficiaryFilterMatch = true;
+            }
+          }
+        });
+      }
+
       if (clientFilter.length) {
         clientFilterMatch = false;
 
@@ -527,6 +553,7 @@ export default {
         assignedFilterMatch &&
         responsibleFilterMatch &&
         transmitterFilterMatch &&
+        beneficiaryFilterMatch &&
         clientFilterMatch &&
         statusFilterMatch;
 
@@ -542,6 +569,7 @@ export default {
           (request.assignedToName && request.assignedToName.toLowerCase().includes(this.search)) ||
           (request.responsibleName && request.responsibleName.toLowerCase().includes(this.search)) ||
           (request.authorName && request.authorName.toLowerCase().includes(this.search)) ||
+          (request.beneficiaryName && request.beneficiaryName.toLowerCase().includes(this.search)) ||
           (request.type && request.type.toLowerCase().includes(this.search)) ||
           (request.severity && request.severity.toLowerCase().includes(this.search))
         );
