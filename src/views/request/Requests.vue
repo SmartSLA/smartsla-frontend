@@ -118,7 +118,10 @@
         </template>
         <template v-slot:no-data>
           <v-layout justify-center v-if="!loading">
-            <span v-if="!userContracts.length">
+            <span v-if="!requests.length">
+              {{ $t("No results text") }}
+            </span>
+            <span v-else-if="!userContracts.length">
               {{
                 $t(
                   "You are not registered in any contract, " +
