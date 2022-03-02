@@ -50,6 +50,7 @@ export default {
     },
 
     update(mailingList) {
+      mailingList = mailingList.filter(mail => this.isValidEmail(mail));
       this.$emit("mails:updated", mailingList);
     }
   },
