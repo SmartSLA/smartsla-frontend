@@ -148,6 +148,7 @@
                         <v-flex xs1></v-flex>
                         <v-flex xs12 md3 sm12 lg3 xl3>
                           <v-select
+                            :no-data-text="$i18n.t('No data available')"
                             prepend-icon="report"
                             :items="severityList"
                             :disabled="!ticket.type"
