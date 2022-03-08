@@ -122,6 +122,12 @@ export default {
           return `${this.$i18n.t("week").charAt(0)}${week}-${year}`;
         }
 
+        if (month) {
+          const displayMonth = `${month}`.padStart(2, "0");
+
+          return `${displayMonth}-${year}`;
+        }
+
         return moment().set({ year, month: month - 1 || 0, date: day || 1 });
       });
 
