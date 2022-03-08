@@ -237,7 +237,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 ticketing-color = #2196f3;
 
 .v-navigation-drawer--mini-variant .v-list__tile {
