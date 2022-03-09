@@ -4,7 +4,12 @@
       <v-spacer v-if="hideSearchFilter"></v-spacer>
       <v-layout row justify-end>
         <v-btn v-if="!hideSearchFilter" icon @click="hideSearchFilter = true">
-          <v-icon>search</v-icon>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">search</v-icon>
+            </template>
+            <span>{{ $t("Quick search") }}</span>
+          </v-tooltip>
         </v-btn>
         <FilterSearchInput
           @filterSearchInputChanged="changeFilterSearch"
@@ -21,7 +26,12 @@
               @click="hideFilter = true"
               :class="{ 'v-btn--active': hideFilter == true || additionalFilters.length > 0 }"
             >
-              <v-icon :color="colorFiltersIcon"> filter_list </v-icon>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" :color="colorFiltersIcon"> filter_list </v-icon>
+                </template>
+                <span>{{ $t("Filter by") }}</span>
+              </v-tooltip>
             </v-btn>
           </template>
           <v-card>

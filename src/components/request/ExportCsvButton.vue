@@ -1,7 +1,12 @@
 <template>
   <div class="mt-2">
     <v-btn flat fab small color="default" @click="exportData">
-      <v-icon>backup</v-icon>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on">backup</v-icon>
+        </template>
+        <span>{{ $t("Export sheet (CSV)") }}</span>
+      </v-tooltip>
     </v-btn>
   </div>
 </template>
