@@ -98,7 +98,18 @@
             </v-flex>
             <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
-              {{ request.software && request.software.software && request.software.software.name }}
+              <router-link
+                v-if="$auth.check('admin')"
+                :to="{
+                  name: routeNames.SOFTWARE,
+                  params: { id: request.software.software._id }
+                }"
+              >
+                {{ request.software && request.software.software && request.software.software.name }}
+              </router-link>
+              <span v-else>
+                {{ request.software && request.software.software && request.software.software.name }}
+              </span>
             </v-flex>
             <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Version") }} :</strong>
@@ -691,6 +702,10 @@ export default {
       getUserLanguage: "configuration/getUserLanguage",
       getUserId: "currentUser/getId"
     }),
+
+    routeNames() {
+      return routeNames;
+    },
 
     users() {
       const users = this.$store.getters["users/getUsers"];
