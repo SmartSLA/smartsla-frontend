@@ -116,6 +116,11 @@ import { routeNames } from "@/router";
 import { cloneDeep } from "lodash";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.isNew ? `${this.$i18n.t("Edit client")} - ${this.client.name}` : this.$i18n.t("New client")
+    };
+  },
   data() {
     return {
       valid: false,

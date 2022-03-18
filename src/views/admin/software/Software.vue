@@ -166,6 +166,11 @@
 </template>
 <script>
 export default {
+  metaInfo() {
+    return {
+      title: `${this.$i18n.t("Software")} - ${this.software.name}`
+    };
+  },
   created() {
     if (this.$route.params.id) {
       this.$store.dispatch("software/fetchSoftwareById", this.$route.params.id);

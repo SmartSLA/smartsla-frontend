@@ -170,6 +170,11 @@ import RequestFilterList from "@/components/request/RequestFilterList";
 import additionalFilters from "@/components/filter/AdditionalFilters";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Requests")
+    };
+  },
   data() {
     return {
       loading: true,

@@ -55,6 +55,11 @@ import { routeNames } from "@/router";
 import { LOCALE } from "@/i18n/constants";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Contracts")
+    };
+  },
   data() {
     return {
       search: "",

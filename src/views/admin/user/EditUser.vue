@@ -265,6 +265,11 @@ import { mapGetters } from "vuex";
 import { cloneDeep } from "lodash";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.isEdit ? this.$i18n.t("Edit User") : this.$i18n.t("New user")
+    };
+  },
   data() {
     return {
       member: null,

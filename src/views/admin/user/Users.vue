@@ -68,6 +68,11 @@ import { capitalize } from "lodash";
 import { mapGetters } from "vuex";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Users")
+    };
+  },
   data() {
     return {
       search: "",

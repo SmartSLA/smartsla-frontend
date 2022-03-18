@@ -65,6 +65,11 @@ import Snackbar from "@/components/Snackbar";
 import GlobalSearch from "@/components/search/GlobalSearch.vue";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.defaultCompany.name
+    };
+  },
   components: {
     UserMenu,
     LoggedMainNavigation,

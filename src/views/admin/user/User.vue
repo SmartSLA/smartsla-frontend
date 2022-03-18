@@ -5,6 +5,11 @@
 <script>
 import userProfile from "@/components/user/userProfile.vue";
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("User")
+    };
+  },
   name: "user",
   components: {
     userProfile: userProfile

@@ -263,6 +263,13 @@ import { LOCALE } from "@/i18n/constants";
 import EmailInput from "@/components/EmailInput.vue";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.isNew
+        ? `${this.$i18n.t("Edit contract")} - ${this.contract.name}`
+        : this.$i18n.t("Create a new contract")
+    };
+  },
   name: "edit-contract-information",
   data() {
     return {

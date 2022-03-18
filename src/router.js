@@ -31,12 +31,17 @@ import EditContract from "@/views/admin/contract/EditContract.vue";
 import AdminRoles from "@/views/admin/roles/Main.vue";
 import AdministrationHome from "@/views/admin/Home.vue";
 import Settings from "@/views/Settings.vue";
+import VueMeta from "vue-meta";
 
 import { requireRead } from "@/guards/ticket-guards";
 import { canViewProfile, canEditProfile } from "@/guards/user-guards";
 import { canListContracts, canViewContract } from "@/guards/contract-guards";
 
 Vue.use(Router);
+Vue.use(VueMeta, {
+  keyName: "metaInfo",
+  refreshOnceOnNavigation: true
+});
 
 // Set your routes here
 export const routeNames = Object.freeze({

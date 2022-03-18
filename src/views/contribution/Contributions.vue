@@ -87,6 +87,11 @@ const { mapState } = createNamespacedHelpers("contribution");
 import additionalFilters from "@/components/filter/AdditionalFilters";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Contributions list")
+    };
+  },
   data() {
     return {
       loading: false,

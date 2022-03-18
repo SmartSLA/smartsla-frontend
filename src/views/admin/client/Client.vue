@@ -77,6 +77,11 @@
 </template>
 <script>
 export default {
+  metaInfo() {
+    return {
+      title: `${this.$i18n.t("Client")} - ${this.client.name}`
+    };
+  },
   name: "client-detail",
   computed: {
     client() {

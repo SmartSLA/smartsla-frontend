@@ -43,6 +43,11 @@ import contributionEditButton from "@/components/contribution/ContributionEditBu
 import { EXPERT_ROLE } from "@/constants";
 
 export default {
+  metaInfo() {
+    return {
+      title: `${this.$i18n.t("Contribution")} - ${this.contribution.name}`
+    };
+  },
   name: "contributionDetail",
   props: {
     contribution: null
