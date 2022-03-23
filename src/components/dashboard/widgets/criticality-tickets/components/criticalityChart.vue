@@ -72,7 +72,7 @@ export default {
       let notCriticalCounter = [];
 
       Object.keys(element).map(type => {
-        if (type !== "_id") {
+        if (type !== "_id" && element[type].critical + element[type].nonCritical > 0) {
           labels.push(this.$t(type));
           criticalCounter.push(element[type].critical || 0);
           notCriticalCounter.push(element[type].nonCritical || 0);
