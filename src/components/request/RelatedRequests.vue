@@ -18,25 +18,30 @@
       </v-flex>
       <v-flex xs6 md6 mb-2>
         <v-autocomplete
-          :disabled="!possibleRelatedRequests.length"
-          :items="possibleRelatedRequests"
-          :filter="searchRequest"
+          :disabled="!contract"
+          :items="relatedRequests"
+          :search-input.sync="search"
           :label="$i18n.t('Related requests')"
           hide-details
           hide-selected
           return-object
-          item-text="title"
+          :item-text="getItemText"
           item-value="_id"
           v-model="request"
           background-color="grey lighten-5"
           flat
           solo
+          hide-no-data
+          :placeholder="$i18n.t('Start typing to search the related request')"
+          :loading="loading"
         >
           <template v-slot:selection="data">
             {{ `#${data.item._id} - ${data.item.title}` }}
           </template>
           <template v-slot:item="data">
-            {{ `#${data.item._id} - ${data.item.title}` }}
+            <text-highlight :queries="search">
+              {{ `#${data.item._id} - ${data.item.title}` }}
+            </text-highlight>
           </template>
           <template v-slot:append-outer>
             <v-btn
@@ -44,9 +49,9 @@
               class="black--text"
               @click.native="addRequest"
               icon
-              background-color="grey lighten-5"
+              background-color="primary lighten-5"
             >
-              <v-icon>mdi-plus-circle</v-icon>
+              <v-icon color="primary">mdi-plus-circle</v-icon>
             </v-btn>
           </template>
         </v-autocomplete>
@@ -70,24 +75,31 @@
 <script>
 import { RELATED_REQUEST_TYPES } from "@/constants";
 import { routeNames } from "@/router";
+import { debounce } from "lodash";
 
 export default {
   name: "related-requests",
   props: {
     requests: Array,
-    linked: Array
+    linked: Array,
+    contract: String
   },
   data() {
     return {
       type: null,
-      request: null
+      request: null,
+      search: null,
+      relatedRequests: [],
+      loading: false
     };
   },
   methods: {
     addRequest() {
+      const { _id, title } = this.request;
+
       this.$emit("relatedRequest:add", {
         link: this.type,
-        request: this.request
+        request: { _id, title }
       });
 
       this.type = this.request = null;
@@ -97,27 +109,24 @@ export default {
       this.$emit("relatedRequest:remove", relatedRequestID);
     },
 
-    searchRequest(item, queryText) {
-      const requestTitle = item.title.toLowerCase();
-      const requestId = item._id.toLowerCase();
-      const searchText = queryText.toLowerCase();
+    getItemText(item) {
+      const { _id, title } = item;
 
-      return requestTitle.indexOf(searchText) > -1 || requestId.indexOf(searchText) > -1;
+      return `${_id} ${title}`;
+    },
+
+    searchRelatedRequest(val) {
+      this.loading = true;
+      return this.$http
+        .searchTickets(val, this.contract)
+        .then(({ data }) => {
+          this.relatedRequests = data.list;
+        })
+        .finally(() => (this.loading = false));
     }
   },
 
   computed: {
-    possibleRelatedRequests() {
-      let filtredList = this.requests;
-      const store = this.linked.map(link => link.request);
-
-      filtredList = filtredList.filter(item => {
-        return !store.filter(request => request._id === item._id).length;
-      });
-
-      return filtredList;
-    },
-
     linkTypes() {
       return RELATED_REQUEST_TYPES.map(type => ({
         key: type,
@@ -128,6 +137,12 @@ export default {
     routeNames() {
       return routeNames;
     }
+  },
+
+  watch: {
+    search: debounce(function(val) {
+      val && this.searchRelatedRequest(val);
+    }, 500)
   }
 };
 </script>
