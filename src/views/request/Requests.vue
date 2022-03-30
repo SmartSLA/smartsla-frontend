@@ -70,7 +70,9 @@
               </v-tooltip>
             </td>
             <td class="text-xs-left">
-              <text-highlight :queries="highlightSearch">{{ props.item.request.title | striphtml }}</text-highlight>
+              <text-highlight :queries="highlightSearch">
+                {{ getSoftwareTitle(props.item.request) | striphtml }}
+              </text-highlight>
             </td>
             <td class="text-xs-left">
               <v-layout align-center justify-start fill-height>

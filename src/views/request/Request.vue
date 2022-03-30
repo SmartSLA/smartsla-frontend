@@ -20,8 +20,7 @@
               <v-card-title primary-title>
                 <div>
                   <h3 class="title mb-0">
-                    #{{ request._id }} - {{ request.title }}
-                    <small v-if="request.archived" class="archived"> {{ $t("Archived") }} </small>
+                    <request-title :request="request"></request-title>
                   </h3>
                 </div>
               </v-card-title>
@@ -128,6 +127,18 @@
                 {{ $t("Description") }}
               </v-subheader>
               <div class="subject-text ml-3" v-html="request.description"></div>
+              <span class="ml-3" v-if="request.vulnInfos && request.vulnInfos.nvdUrl">
+                <a target="_blank" :href="request.vulnInfos.nvdUrl">{{ request.vulnInfos.nvdUrl }} </a>
+              </span>
+            </v-card-text>
+            <v-card-text v-if="request.vulnInfos && request.vulnInfos.baseScore && request.vulnInfos.baseSeverity">
+              <v-subheader inset class="ml-0">
+                <v-icon class="pr-2">mdi-bullseye-arrow</v-icon>
+                {{ $t("Base Score") }}
+              </v-subheader>
+              <span class="text-uppercase ml-3" v-bind:class="['criticality', request.vulnInfos.baseSeverity]">
+                {{ request.vulnInfos.baseScore }} {{ $t(request.vulnInfos.baseSeverity) }}
+              </span>
             </v-card-text>
             <v-card-text
               v-if="request.vulnInfos && request.vulnInfos.references && request.vulnInfos.references.length"
@@ -157,9 +168,31 @@
               </v-subheader>
               <vuln-list :list="request.vulnInfos.cpes" :headers="vulnCpeHeader" :grid="'7fr 2fr 2fr'">
                 <template #content="item">
-                  <span>{{ item.item.cpe23Uri }} </span>
-                  <span v-if="item.item.versionStart"> {{ item.item.versionStart.version }} </span>
-                  <span v-if="item.item.versionEnd"> {{ item.item.versionEnd.version }} </span>
+                  <span>{{ item.item.cpe23Uri }}</span>
+                  <span v-if="item.item.versionStart && item.item.versionStart.including !== null">
+                    <v-icon
+                      v-if="item.item.versionStart.including"
+                      :title="$t('From (including)')"
+                      class=" align-middle pr-2"
+                    >
+                      mdi-greater-than-or-equal
+                    </v-icon>
+                    <v-icon v-else :title="$t('From (excluding)')" class="align-middle pr-2">
+                      mdi-greater-than
+                    </v-icon>
+                    {{ item.item.versionStart.version }}
+                  </span>
+                  <span v-if="item.item.versionEnd && item.item.versionEnd.including !== null">
+                    <v-icon
+                      v-if="item.item.versionEnd.including"
+                      :title="$t('Up to (including)')"
+                      class="align-middle pr-2"
+                    >
+                      mdi-less-than-or-equal
+                    </v-icon>
+                    <v-icon v-else :title="$t('Up to (excluding)')" class="align-middle pr-2">mdi-less-than</v-icon>
+                    {{ item.item.versionEnd.version }}
+                  </span>
                 </template>
               </vuln-list>
             </v-card-text>
@@ -176,7 +209,7 @@
                 </v-flex>
               </v-layout>
             </v-card-text>
-            <v-card-text v-if="technicalReferents" class="pt-1">
+            <v-card-text v-if="technicalReferents && technicalReferents.length" class="pt-1">
               <v-subheader inset class="ml-0">
                 <v-icon class="pr-2">supervisor_account</v-icon>
                 {{ $t("Referents") }}
@@ -645,6 +678,7 @@ import RelatedContributions from "@/components/request/RelatedContributions";
 import surveyUrl from "@/services/limesurvey/limesurvey.js";
 import TicketStatus from "@/components/request/TicketStatus";
 import RequestNavigationDrawer from "@/components/request/RequestNavigationDrawer";
+import RequestTitle from "@/components/request/RequestTitle";
 import { LOCALE } from "@/i18n/constants";
 import userAvatar from "@/components/user/userAvatar";
 import moment from "moment-timezone";
@@ -671,8 +705,8 @@ export default {
       hideRequestNavigationDrawer: false,
       dialogArchive: false,
       prevRoute: null,
-      vulnRefHeader: ["Source", "URL", "Tags"],
-      vulnCpeHeader: ["CPE", "Version Start", "Version End"],
+      vulnRefHeader: [this.$i18n.t("Source"), this.$i18n.t("URL"), this.$i18n.t("Tags")],
+      vulnCpeHeader: [this.$i18n.t("CPE"), this.$i18n.t("Version Start"), this.$i18n.t("Version End")],
       commentEdition: null,
       newEditedComment: "",
       newUploadedAttachments: [],
@@ -691,6 +725,7 @@ export default {
     RelatedContributions,
     TicketStatus,
     RequestNavigationDrawer,
+    RequestTitle,
     userAvatar,
     vulnList,
     commentModal
@@ -1507,6 +1542,10 @@ pre {
   color: #2195f2 !important;
 }
 
+.align-middle {
+vertical-align: middle;
+}
+
 @media only screen and (max-width: 575px) {
   .layout.row.wrap.justify-space-between {
     margin: 0px !important;
@@ -1593,6 +1632,27 @@ pre {
   border-bottom-right-radius: 0px;
   box-shadow: none;
   border-right: 1px solid rgba(1, 9, 16, 0.1);
+}
+
+.criticality {
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.criticality.low {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.criticality.medium {
+  background-color: #ffa000;
+  color: white;
+}
+
+.criticality.high {
+  background-color: #d32f2f;
+  color: white;
 }
 
 @media only screen and (max-width: 599px) {

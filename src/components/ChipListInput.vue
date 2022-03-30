@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     updateValidCPE(cpes) {
-      const regex = /^cpe:2.3:[a,o,h]:\w*:\w*:[\d,\-,\\.]*.*$/;
+      const regex = /^cpe:2\.3:[a,o,h]:[^:]*:[^:]*:[\d,\-,\\.]*.*$/;
       this.CPEValidated = cpes.filter(c => regex.test(c));
       this.$emit("CPEList:updated", cpes);
     },
