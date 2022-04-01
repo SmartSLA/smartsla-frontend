@@ -209,6 +209,7 @@
                   </v-flex>
                   <related-requests
                     :requests="requests"
+                    :contract="ticket.contract._id"
                     :linked="ticket.relatedRequests"
                     @relatedRequest:add="handleAddRelatedRequest"
                     @relatedRequest:remove="handleRemoveRelatedRequest"
@@ -718,12 +719,6 @@ export default {
   }
 };
 </script>
-
-<style>
-.v-text-field.v-text-field--solo .v-input__append-outer {
-  padding: 6px 0 0 0 !important;
-}
-</style>
 
 <style lang="stylus" scoped>
 .add-link {

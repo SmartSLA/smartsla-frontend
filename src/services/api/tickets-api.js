@@ -50,7 +50,13 @@ export default {
     return this.get("/ticketing/api/tickets", { params: { export: exportType } });
   },
 
-  searchTickets(query) {
-    return this.get("/ticketing/api/tickets/search", { params: { q: query } });
+  searchTickets(query, contract = null) {
+    let params = { q: query };
+
+    if (contract) {
+      params = { ...params, contract };
+    }
+
+    return this.get("/ticketing/api/tickets/search", { params });
   }
 };
