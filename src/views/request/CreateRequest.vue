@@ -127,6 +127,7 @@
                             :rules="[isSoftwareValid || isAnomalyTicket || $i18n.t('Required field')]"
                             :class="{ 'required-element': isAnomalyTicket }"
                             @change="softwareChanged"
+                            item-value="_id"
                             return-object
                           >
                             <template v-slot:item="data">
