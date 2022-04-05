@@ -8,6 +8,11 @@
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Administration")
+    };
+  },
   components: {
     Breadcrumbs
   },

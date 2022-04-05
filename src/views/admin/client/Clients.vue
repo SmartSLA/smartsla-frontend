@@ -62,6 +62,11 @@ import { mapGetters } from "vuex";
 import { CLIENT_STATUS } from "@/constants.js";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Clients")
+    };
+  },
   data() {
     return {
       search: "",

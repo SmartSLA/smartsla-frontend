@@ -215,6 +215,11 @@ import { routeNames } from "@/router";
 import { mapGetters } from "vuex";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.isEditing ? this.$i18n.t("Edit Contribution") : this.$i18n.t("New Contribution")
+    };
+  },
   data() {
     return {
       valid: true,

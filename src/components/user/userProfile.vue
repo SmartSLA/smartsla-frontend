@@ -65,6 +65,11 @@ import { capitalize } from "lodash";
 import { routeNames } from "@/router";
 
 export default {
+  metaInfo() {
+    return {
+      titleTemplate: `%s - ${this.ticketingUser.name}`
+    };
+  },
   data() {
     return {
       reqParamId: this.$route.params.id

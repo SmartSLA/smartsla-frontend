@@ -105,6 +105,11 @@ import ExternalLinks from "@/components/ExternalLinks.vue";
 import { cloneDeep } from "lodash";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.isNew ? `${this.$i18n.t("Edit Software")} - ${this.software.name}` : this.$i18n.t("New Software")
+    };
+  },
   data() {
     return {
       valid: false,

@@ -658,6 +658,11 @@ import commentModal from "@/components/request/commentModal";
 import "quill-mention";
 
 export default {
+  metaInfo() {
+    return {
+      title: `# ${this.request._id} ${this.request.title}`
+    };
+  },
   data() {
     return {
       commentCreationAttachments: [],

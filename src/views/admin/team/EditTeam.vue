@@ -91,6 +91,11 @@ import { routeNames } from "@/router";
 import { cloneDeep } from "lodash";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.isNew ? `${this.$i18n.t("Edit Team")} - ${this.client.name}` : this.$i18n.t("New Team")
+    };
+  },
   data() {
     return {
       openDialog: false,

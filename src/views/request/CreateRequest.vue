@@ -286,6 +286,11 @@ import { getUserAvatarUrl } from "@/services/helpers/user";
 import EmailInput from "@/components/EmailInput.vue";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("New issue")
+    };
+  },
   mixins: [SoftwareMixin],
   data() {
     return {

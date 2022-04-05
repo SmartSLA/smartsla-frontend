@@ -6,6 +6,11 @@
 import dashboardGrid from "@/components/dashboard/DashboardGrid.vue";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Dashboard")
+    };
+  },
   name: "Dashboard",
   components: {
     dashboardGrid

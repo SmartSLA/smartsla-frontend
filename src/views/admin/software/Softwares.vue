@@ -47,6 +47,11 @@
 import { mapGetters } from "vuex";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$i18n.t("Software")
+    };
+  },
   data() {
     return {
       search: "",

@@ -559,6 +559,11 @@ import { routeNames } from "@/router";
 import { LOCALE } from "@/i18n/constants";
 
 export default {
+  metaInfo() {
+    return {
+      title: `${this.$i18n.t("Contract")} - ${this.contract.name}`
+    };
+  },
   mixins: [SoftwareMixin],
   data() {
     return {
