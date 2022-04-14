@@ -230,9 +230,31 @@
                         >{{ $t(props.item.critical) }}</v-chip
                       >
                     </td>
+                    <td class="text-xs-center" v-if="isUserExpert">
+                      <ul class="list">
+                        <li
+                          v-for="(referent, key) in props.item.technicalReferent && props.item.technicalReferent"
+                          :key="key"
+                          class="chips-elements"
+                        >
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <span v-on="on">
+                                <router-link :to="{ name: routeNames.PROFILE, params: { id: referent.id } }">
+                                  {{ referent.name }}
+                                </router-link>
+                              </span>
+                            </template>
+                            <span>
+                              {{ referent.email }}
+                            </span>
+                          </v-tooltip>
+                        </li>
+                      </ul>
+                    </td>
                     <td
                       class="text-xs-center"
-                      v-if="configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract"
+                      v-if="isUserExpert && configuration.isLinInfoSecEnabled && islinInfoSecEnabledForContract"
                     >
                       {{ props.item.lininfosecConfiguration.join(", ") }}
                     </td>
@@ -594,7 +616,8 @@ export default {
   computed: {
     ...mapGetters({
       getUserLanguage: "configuration/getUserLanguage",
-      configuration: "configuration/getConfiguration"
+      configuration: "configuration/getConfiguration",
+      getUser: "currentUser/getUser"
     }),
     islinInfoSecEnabledForContract() {
       return this.contract.features && this.contract.features.linInfoSec;
@@ -608,6 +631,7 @@ export default {
         { text: this.$i18n.t("Version"), value: "version", sortable: false },
         { text: this.$i18n.t("OS"), value: "os", sortable: false },
         { text: this.$i18n.t("Critical"), value: "critical", sortable: false },
+        { text: this.$i18n.t("Referents"), value: "referents", sortable: false },
         {
           text: this.$i18n.t("CPE"),
           value: "lininfosecConfiguration",
@@ -615,8 +639,12 @@ export default {
         }
       ];
 
-      if (this.configuration.isLinInfoSecEnabled && !this.islinInfoSecEnabledForContract) {
-        return softwareHeaders.filter(header => header.value !== "lininfosecConfiguration");
+      if (!this.isUserExpert) {
+        softwareHeaders = softwareHeaders.filter(header => header.value !== "referents");
+      }
+
+      if (this.configuration.isLinInfoSecEnabled && !this.islinInfoSecEnabledForContract && !this.isUserExpert) {
+        softwareHeaders = softwareHeaders.filter(header => header.value !== "lininfosecConfiguration");
       }
 
       return softwareHeaders;
@@ -694,6 +722,9 @@ export default {
         },
         { totalCritical: 0, totalSensible: 0, totalStandard: 0 }
       );
+    },
+    isUserExpert() {
+      return this.getUser && this.getUser.type === USER_TYPE.EXPERT;
     }
   },
   created() {
@@ -854,5 +885,9 @@ td, th.column.text-xs-center {
 .contractual-commitments .v-card__text {
   padding-left: 10px;
   padding-right: 10px;
+}
+
+ul.list {
+  list-style: none;
 }
 </style>
