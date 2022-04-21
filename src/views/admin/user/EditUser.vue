@@ -121,6 +121,7 @@
                   mandatory
                   color="primary"
                   :rules="[v => !!v || $i18n.t('Required field')]"
+                  :disabled="!isAdmin"
                 >
                   <v-radio :label="$i18n.t('customer')" value="customer"></v-radio>
                   <v-radio :label="$i18n.t('operational manager')" value="operational manager"></v-radio>
@@ -191,7 +192,7 @@
                     <v-list-tile v-for="contract in filteredContractsByClient" :key="contract._id">
                       <v-flex xs2 sm2 md1 lg1>
                         <v-list-tile-action>
-                          <v-checkbox v-model="contract.selected" color="success"></v-checkbox>
+                          <v-checkbox :disabled="!isAdmin" v-model="contract.selected" color="success"></v-checkbox>
                         </v-list-tile-action>
                       </v-flex>
                       <v-flex xs5 sm6 md5 lg7>
@@ -202,7 +203,13 @@
                       </v-flex>
                       <v-flex xs6 sm4 md8 lg4 px-0>
                         <v-list-tile-action>
-                          <v-select dense :items="contractRoles" :label="$t('Role')" v-model="contract.role">
+                          <v-select
+                            :disabled="!isAdmin"
+                            dense
+                            :items="contractRoles"
+                            :label="$t('Role')"
+                            v-model="contract.role"
+                          >
                             <template slot="item" slot-scope="data">
                               <v-list-tile-content>
                                 <v-list-tile-title>
