@@ -15,7 +15,7 @@
     </v-flex>
     <v-flex class="client-contract-links text-truncate">
       <router-link
-        v-if="contract && $auth.check('admin')"
+        v-if="contract"
         :to="{
           name: 'Contract',
           params: { id: contract._id }
