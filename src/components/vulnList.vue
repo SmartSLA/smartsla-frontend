@@ -50,7 +50,7 @@ export default {
 .vn-table > div {
   & > * {
     line-height: 30px;
-    align-self: center;
+    align-self: left;
   }
 }
 
@@ -58,7 +58,7 @@ export default {
   background: rgba(153, 153, 153, 0.05);
 
   & > * {
-    text-align: center;
+    text-align: left;
     width: 100%;
   }
 }
