@@ -414,6 +414,19 @@ export default {
         });
     },
 
+    getSoftwareTitle(request) {
+      let title = request.title;
+
+      if (request.type === "softwareVulnerability" && request.vulnInfos) {
+        title = this.$i18n.t("Vulnerability detected: {CveId} on {softwareName} v-{softwareVersion}", {
+          CveId: request.vulnInfos.CveId,
+          softwareName: request.software && request.software.software && request.software.software.name,
+          softwareVersion: request.software && request.software.version
+        });
+      }
+      return title;
+    },
+
     requestsFilter(items, search, Filter) {
       if (this.ticketsFilter.length) {
         items = items.filter(item => item.request.team.toLowerCase() == this.ticketsFilter);
