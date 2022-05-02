@@ -92,10 +92,10 @@
                         contract.mailingList.vulnerability.join(", ")
                     }}
                   </v-flex>
-                  <v-flex xs4>
+                  <v-flex xs4 v-if="isAdmin">
                     <div class="subheading font-weight-medium">{{ $t("Internal mailing list") }} :</div>
                   </v-flex>
-                  <v-flex xs8>{{ contract.mailingList.internal.join(", ") }}</v-flex>
+                  <v-flex xs8 v-if="isAdmin">{{ contract.mailingList.internal.join(", ") }}</v-flex>
                   <v-flex xs4>
                     <div class="subheading font-weight-medium">{{ $t("External mailing list") }} :</div>
                   </v-flex>
