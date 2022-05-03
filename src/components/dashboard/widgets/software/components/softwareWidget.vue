@@ -19,6 +19,7 @@
             <td class="text-xs-center">{{ props.item.anomaly }}</td>
             <td class="text-xs-center">{{ props.item.information }}</td>
             <td class="text-xs-center">{{ props.item.administration }}</td>
+            <td class="text-xs-center">{{ props.item.vulnerability }}</td>
             <td class="text-xs-center">{{ props.item.other }}</td>
             <td class="text-xs-center">
               <v-chip color="primary" outline>{{ props.item.total }}</v-chip>
@@ -43,6 +44,7 @@ export default {
         { text: this.$i18n.t("anomaly"), value: "anomaly" },
         { text: this.$i18n.t("information"), value: "information" },
         { text: this.$i18n.t("administration"), value: "administration" },
+        { text: this.$i18n.t("vulnerability"), value: "vulnerability" },
         { text: this.$i18n.t("other"), value: "other" },
         { text: this.$i18n.t("ticketCount"), value: "ticketCount" }
       ]
