@@ -3,6 +3,7 @@ export const ApplicationSettings = Object.freeze({
     BASE_URL: "/",
     VUE_APP_OPENPAAS_URL: "http://localhost:8080",
     SSP_URL: "http://ssp.localhost:8080/",
+    SSP_URL_RESET: "http://ssp.localhost:8080/reset",
     SUPPORT_ACCOUNT: {
       name: "SmartSLA",
       color: "#d32f2f",
@@ -10,7 +11,7 @@ export const ApplicationSettings = Object.freeze({
     },
     LIMESURVEY_URL: "http://limesurvey.localhost:8080/",
     FEATURES: {
-      SSP_ENABLED: false
+      SSP_ENABLED: true
     }
   },
   ...process.env,
