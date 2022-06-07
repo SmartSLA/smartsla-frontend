@@ -54,9 +54,10 @@
                 </v-flex>
                 <v-flex xs12 sm5 md8 lg8 v-if="hideFilter == true">
                   <v-layout v-if="!showCustomFilters" align-center justify-end>
-                    <v-select
+                    <v-autocomplete
                       solo
                       multiple
+                      persistent-hint
                       small-chips
                       chips
                       :items="getSortedValues"
@@ -67,8 +68,10 @@
                       item-value="id"
                       return-object
                       flat
-                      hide-details
                       hide-selected
+                      hide-no-data
+                      hide-details
+                      clearable
                     >
                       <template v-slot:item="{ item }">
                         <span>{{ item.name }}</span>
@@ -83,7 +86,7 @@
                           >(+{{ valuesFilter.length - index }} {{ $t("Other") }})</span
                         >
                       </template>
-                    </v-select>
+                    </v-autocomplete>
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
                         <v-toolbar-side-icon v-on="on" @click="addFilter">
