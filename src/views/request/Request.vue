@@ -98,10 +98,10 @@
             <v-flex xs6 md3 sm3 lg3 xl3 class="pt-0">
               <strong>{{ $t("Software") }} :</strong>
               <router-link
-                v-if="$auth.check('admin')"
+                v-if="$auth.check('admin') && request.software"
                 :to="{
                   name: routeNames.SOFTWARE,
-                  params: { id: request.software.software._id }
+                  params: { id: request.software && request.software.software._id }
                 }"
               >
                 {{ request.software && request.software.software && request.software.software.name }}
