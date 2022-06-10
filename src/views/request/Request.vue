@@ -693,9 +693,11 @@ import "quill-mention";
 
 export default {
   metaInfo() {
-    return {
-      title: `# ${this.request._id} ${this.request.title}`
-    };
+    if (this.request) {
+      return {
+        title: `# ${this.request._id} ${this.request.title}`
+      };
+    }
   },
   data() {
     return {
