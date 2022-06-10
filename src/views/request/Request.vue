@@ -1312,15 +1312,35 @@ export default {
   }
 }
 
-.comment-content img {
+.comment-content img, .subject-text img {
   max-width: 100%;
 }
 
-.comment-content code {
+ pre {
   background-color: #23241f;
+  white-space: pre-wrap;
+  display: inline-block;
   color: #f8f8f2;
-  max-width: 100%;
+  width: 95%;
   overflow-x: auto;
+  padding: 15px 10px;
+  border-radius: 3px;
+  font-size: 90%;
+  margin-right: 25px;
+}
+
+.comment-content code, .subject-text code {
+  white-space: pre-wrap;
+  display: inline-block;
+  overflow-x: auto;
+  background-color: #f0f0f0;
+  color: #bd4147;
+  padding: 1px 2px;
+  border-radius: 3px;
+  font-size: 90%;
+  vertical-align: text-bottom;
+  font-weight: bold;
+  max-width: 100%;
 }
 
 .btn-action-list span {
