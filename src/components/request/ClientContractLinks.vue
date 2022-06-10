@@ -17,7 +17,7 @@
       <router-link
         v-if="contract"
         :to="{
-          name: 'Contract',
+          name: $auth.check('admin') ? 'Contract' : 'ClientContract',
           params: { id: contract._id }
         }"
         target="_blank"
