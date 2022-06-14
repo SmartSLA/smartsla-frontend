@@ -5,18 +5,18 @@
         <text-highlight :queries="query">{{ $t(request.severity) }}</text-highlight>
       </span>
     </template>
-    <span v-if="request.cns.supported">
+    <span v-if="request.cns">
       <b>{{ $t("Engagements") }} {{ $t(request.severity) }} :</b>
       <ul>
-        <li>
+        <li v-if="request.cns.supported">
           {{ $t("Support") }} :
           <b>{{ parseDuration(request.cns.supported) }}</b>
         </li>
-        <li>
+        <li v-if="request.cns.bypassed">
           {{ $t("Bypass") }} :
           <b>{{ parseDuration(request.cns.bypassed) }}</b>
         </li>
-        <li>
+        <li v-if="request.cns.resolved">
           {{ $t("Resolution") }} :
           <b>{{ parseDuration(request.cns.resolved) }}</b>
         </li>
