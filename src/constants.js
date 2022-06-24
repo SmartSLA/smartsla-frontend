@@ -203,7 +203,7 @@ export const DASHBOARD_GROUP_BY_FILTER = ["day", "week", "month", "quarter", "ye
 
 export const TICKET_DRAFT_STORAGE_KEY_PREFIX = "ticketDraft_";
 
-export const SORT_FILTERS_KEYS = ["software", "Assignto", "responsible", "author", "beneficiary", "contract"];
+export const SORT_FILTERS_KEYS = ["software", "Assignto", "responsible", "author", "beneficiary", "contract", "client"];
 
 export const CATEGORIES_REQUESTS_FILTERS = {
   type: "Type",
