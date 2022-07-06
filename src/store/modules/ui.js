@@ -27,6 +27,10 @@ const isMobile = () => {
   }
 };
 
+const MOBILE_BREAKPOINT_WIDTH = 768;
+
+const isMobileBreakpoint = () => Vue.prototype.$vuetify.breakpoint.width <= MOBILE_BREAKPOINT_WIDTH;
+
 const RIGHT_DRAWER = {
   open: true,
   clipped: true,
@@ -42,9 +46,13 @@ const DEFAULT_TOOLBAR = {
   clippedRight: true
 };
 
+const localStorageLeftDrawer = JSON.parse(localStorage.getItem(`${DRAWER_LOCALSTORAGE_KEY}_drawerLeft`)) || {};
+const localStorageRightDrawer = JSON.parse(localStorage.getItem(`${DRAWER_LOCALSTORAGE_KEY}_drawerRight`)) || {};
+
 function initialState() {
-  const localStorageLeftDrawer = JSON.parse(localStorage.getItem(`${DRAWER_LOCALSTORAGE_KEY}_drawerLeft`)) || {};
-  const localStorageRightDrawer = JSON.parse(localStorage.getItem(`${DRAWER_LOCALSTORAGE_KEY}_drawerRight`)) || {};
+  if (localStorageLeftDrawer.drawer && window.innerWidth >= MOBILE_BREAKPOINT_WIDTH) {
+    localStorageLeftDrawer.drawer.open = true;
+  }
 
   return {
     snackbar: {
@@ -88,11 +96,19 @@ const mutations = {
   },
   [types.TOGGLE_DRAWER](state, drawer) {
     // toggles the temporary drawer(shows/hides)
-    state[drawer].mini = false;
+    if (drawer === "drawerLeft" && isMobileBreakpoint()) {
+      state[drawer].mini = false;
+    }
+
     state[drawer].open = !state[drawer].open;
     localStorage.setItem(`${DRAWER_LOCALSTORAGE_KEY}_${drawer}`, JSON.stringify({ drawer: state[drawer] }));
   },
   [types.SHOW_DRAWER](state, { drawer, value }) {
+    // toggles the temporary mini drawer
+    if (drawer === "drawerLeft" && !isMobileBreakpoint()) {
+      state[drawer].mini = localStorageLeftDrawer.drawer.mini;
+    }
+
     state[drawer].open = value;
     localStorage.setItem(`${DRAWER_LOCALSTORAGE_KEY}_${drawer}`, JSON.stringify({ drawer: state[drawer] }));
   },
