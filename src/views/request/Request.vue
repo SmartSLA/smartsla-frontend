@@ -1128,7 +1128,7 @@ export default {
     },
 
     deleteComment(event) {
-      const { author, _id: eventId } = event;
+      const { _id: eventId } = event;
 
       this.$refs.commentModalRef
         .open({
@@ -1143,7 +1143,7 @@ export default {
               deleted: {
                 reason: reason,
                 deletedAt: new Date(),
-                deletedBy: author.id
+                deletedBy: this.getUserId
               }
             };
 
@@ -1166,13 +1166,13 @@ export default {
     },
 
     updateComment(event) {
-      const { author, _id: eventId } = event;
+      const { _id: eventId } = event;
       let participantsPromise = Promise.resolve([]);
       this.instanceVueEditor = "editorEdition";
 
       let newComment = {
         comment: this.newEditedComment,
-        editedBy: author.id
+        editedBy: this.getUserId
       };
 
       if (this.mentions.length) {
