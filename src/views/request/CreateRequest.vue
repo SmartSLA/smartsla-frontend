@@ -50,9 +50,17 @@
                     </v-autocomplete>
                   </v-flex>
                   <v-flex xs12 sm12 md12 v-if="!$auth.check('expert') && !userPhone">
-                    <span class="caption ml-4">
-                      {{ $t("You must fill a call number in order to let the support join you") }}
-                    </span>
+                    <p class="caption ml-4">
+                      {{
+                        $t(
+                          "You don't have a phone number registered, please fill a call number and if needed" +
+                            " the digital meeting ID in order to let the support join you."
+                        )
+                      }}
+                    </p>
+                    <p class="caption ml-4">
+                      {{ $t("You can also update your phone number in your profile.") }}
+                    </p>
                   </v-flex>
                   <v-flex xs6 sm6 md6 lg6 xl6>
                     <v-text-field
@@ -75,8 +83,6 @@
                       :label="$i18n.t('Meeting ID')"
                       type="text"
                       mask="###########"
-                      :rules="[() => (meetingId && meetingId.length > 0) || $i18n.t('Required field')]"
-                      class="required-element"
                       :hint="$t('For example, 0123456')"
                       persistent-hint
                     ></v-text-field>

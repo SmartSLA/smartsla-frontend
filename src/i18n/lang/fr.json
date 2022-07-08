@@ -7,7 +7,7 @@
     "{author} changed the beneficiary from {oldValue} to {newValue}.": "{author} a changé le bénéficiaire de {oldValue} par {newValue}.",
     "{author} changed the call number from {oldValue} to {newValue}.": "{author} a changé le numéro d'appel de {oldValue} à {newValue}.",
     "{author} changed the description.": "{author} a changé la description.",
-    "{author} changed the meeting ID from {oldValue} to {newValue}.": "{author} a changé l'ID de réunion de {oldValue} en {newValue}.",
+    "{author} changed the meeting ID from {oldValue} to {newValue}.": "{author} a changé le code ID de la conférence téléphonique de {oldValue} en {newValue}.",
     "{author} changed the participants list from {oldValue} to {newValue}.": "{author} a modifié la liste des participants de {oldValue} à {newValue}",
     "{author} changed the related requests from {oldValue} to {newValue}.": "{author} a modifié la liste des demandes liées de {oldValue} par {newValue}.",
     "{author} changed the responsible from {oldValue} to {newValue}.": "{author} a changé le responsable de {oldValue} par {newValue}.",
@@ -333,7 +333,7 @@
     "Major": "Majeur",
     "manager": "Manager",
     "medium": "moyen",
-    "Meeting ID": "ID de réunion",
+    "Meeting ID": "Code ID de la conférence téléphonique",
     "Members": "Membres",
     "Metrics": "Donnée métriques",
     "Minor": "Mineur",
@@ -567,5 +567,6 @@
     "You are not registered in any contract, you should get in touch with someone in charge of the platform in your company": "Vous n'êtes rattaché à aucun contrat, vous devez contacter un responsable en charge de la plate-forme dans votre entreprise",
     "You are registered in the contract {contract} but there are no published tickets at the moment": "Vous êtes rattaché au contrat {contract} mais il n'y a pas encore de tickets publiés pour le moment",
     "You can create a new issue": "Vous pouvez créer un nouveau ticket",
-    "You must fill a call number in order to let the support join you": "Vous devez nous fournir un numéro d'appel pour que le support  soit capable de vous joindre"
+    "You can also update your phone number in your profile.": "Vous pouvez aussi mettre à jour votre numéro de téléphone dans votre profil.",
+    "You don't have a phone number registered, please fill a call number and if needed the digital meeting ID in order to let the support join you.": "Vous n'avez pas de numéro de téléphone enregistré, veuillez indiquer votre numéro de téléphone et si besoin le numéro de la conférence téléphonique afin que l'équipe support puisse vous contacter."
 }
