@@ -244,5 +244,6 @@
   "You are not registered in any contract, you should get in touch with someone in charge of the platform in your company": "You are not registered in any contract, you should get in touch with someone in charge of the platform in your company",
   "You are registered in the contract {contract} but there are no published tickets at the moment": "You are registered in the contract {contract} but there are no published tickets at the moment",
   "You can create a new issue": "You can create a new issue",
-  "You must fill a call number in order to let the support join you": "You must fill a call number in order to let the support join you"
+  "You can also update your phone number in your profile.": "You can also update your phone number in your profile.",
+  "You don't have a phone number registered, please fill a call number and if needed the digital meeting ID in order to let the support join you.": "You don't have a phone number registered, please fill a call number and if needed the digital meeting ID in order to let the support join you."
 }
