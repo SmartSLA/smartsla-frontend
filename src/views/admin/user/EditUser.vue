@@ -237,7 +237,9 @@
                 <v-btn class="success" @click="validateFrom">
                   {{ isEdit ? $t("validate") : $t("Create") }}
                 </v-btn>
-                <v-btn color="error" @click="openDialog = true" v-if="isEdit">{{ $t("Delete") }}</v-btn>
+                <v-btn color="error" @click="openDialog = true" v-if="isEdit && $auth.check('admin')">{{
+                  $t("Delete")
+                }}</v-btn>
               </v-flex>
             </v-layout>
           </v-form>
